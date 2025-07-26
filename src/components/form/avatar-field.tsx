@@ -4,9 +4,9 @@ import * as React from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { ImageIcon } from 'lucide-react';
-import notFoundImage from '@/assets/images/avatar-default.png';
 import Image from 'next/image';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { defaultAvatar } from '@/assets';
 
 type AvatarFieldProps = {
   size?: number;
@@ -35,7 +35,7 @@ export default function AvatarField({
     }
   };
 
-  const avatarSrc = imageError || !src ? notFoundImage : src;
+  const avatarSrc = imageError || !src ? defaultAvatar : src;
 
   return (
     <>
@@ -81,7 +81,7 @@ export default function AvatarField({
             className='rounded-full object-cover'
             style={{ width: zoomSize, height: zoomSize }}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = notFoundImage.src;
+              (e.target as HTMLImageElement).src = defaultAvatar.src;
             }}
           />
         </DialogContent>

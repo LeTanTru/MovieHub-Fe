@@ -1,10 +1,10 @@
 import { storageKeys } from '@/constants';
+import { ApiConfig } from '@/types';
 import {
   getAccessTokenFromLocalStorage,
   removeAccessTokenFromLocalStorage,
   isTokenExpired,
-  getData,
-  ApiConfig
+  getData
 } from '@/utils';
 import { getCookiesServer } from '@/utils/cookies-server.util';
 

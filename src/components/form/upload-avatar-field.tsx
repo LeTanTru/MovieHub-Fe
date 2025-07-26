@@ -26,10 +26,10 @@ import {
 } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/form';
-import { logger } from '@/utils';
 import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload, useTranslate } from '@/hooks';
+import { logger } from '@/logger';
 
 type Area = { x: number; y: number; width: number; height: number };
 

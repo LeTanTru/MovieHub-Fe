@@ -1,4 +1,4 @@
-import { logger } from '@/utils';
+import { logger } from '@/logger';
 import { z } from 'zod';
 
 const configSchema = z.object({

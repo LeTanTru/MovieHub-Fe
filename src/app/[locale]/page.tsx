@@ -12,6 +12,14 @@ export default async function HomePage({
     <div>
       <div className='mx-auto max-w-3xl'>
         <VideoPlayer />
+        <VideoPlayer />
+        <VideoPlayer />
+        <VideoPlayer />
+        <VideoPlayer />
+        <VideoPlayer />
+        <VideoPlayer />
+        <VideoPlayer />
+        <VideoPlayer />
       </div>
     </div>
   );
