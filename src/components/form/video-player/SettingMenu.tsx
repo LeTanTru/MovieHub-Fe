@@ -1,4 +1,4 @@
-import { useTranslate } from '@/hooks';
+import { languageNameMap } from '@/constants';
 import {
   Menu,
   Tooltip,
@@ -40,7 +40,6 @@ export default function SettingMenu({
   placement,
   tooltipPlacement
 }: SettingsProps) {
-  const t = useTranslate();
   return (
     <Menu.Root className='parent'>
       <Tooltip.Root>
@@ -50,7 +49,7 @@ export default function SettingMenu({
           </Menu.Button>
         </Tooltip.Trigger>
         <Tooltip.Content className={tooltipClass} placement={tooltipPlacement}>
-          {t.formatMessage('SettingMenu.Settings')}
+          Cài đặt
         </Tooltip.Content>
       </Tooltip.Root>
       <Menu.Content className={menuClass} placement={placement}>
@@ -65,7 +64,6 @@ export default function SettingMenu({
 function CaptionSubmenu() {
   const options = useCaptionOptions(),
     hint = options.selectedTrack?.label ?? 'Off';
-  const t = useTranslate();
   return (
     <Menu.Root>
       <Menu.Button
@@ -76,13 +74,9 @@ function CaptionSubmenu() {
         <div className='parent-data-[open]:hidden contents'>
           <ClosedCaptionsIcon className='h-5 w-5' />
         </div>
-        <span className='parent-data-[open]:ml-0 ml-1.5'>
-          {t.formatMessage('CaptionSubmenu.captions')}
-        </span>
+        <span className='parent-data-[open]:ml-0 ml-1.5'>Phụ đề</span>
         <span className='ml-auto text-sm text-white/50'>
-          {t.formatMessage(`CaptionSubmenu.${hint?.toLowerCase()}`) ||
-            hint ||
-            hint}
+          {languageNameMap[hint]}
         </span>
         <ChevronRightIcon className='parent-data-[open]:hidden ml-0.5 h-[18px] w-[18px] text-sm text-white/50' />
       </Menu.Button>
@@ -95,9 +89,7 @@ function CaptionSubmenu() {
           {options.map(({ label, value, select }) => {
             return (
               <Radio value={value} onSelect={select} key={value}>
-                {t.formatMessage(`CaptionSubmenu.${label?.toLowerCase()}`) ||
-                  label ||
-                  label}
+                {languageNameMap[label]}
               </Radio>
             );
           })}
@@ -121,7 +113,6 @@ function Radio({ children, ...props }: Menu.RadioProps) {
 }
 
 function SpeedSubmenu() {
-  const t = useTranslate();
   const options = usePlaybackRateOptions();
   const hint = options.selectedValue + 'x';
 
@@ -135,9 +126,7 @@ function SpeedSubmenu() {
         <div className='parent-data-[open]:hidden contents'>
           <OdometerIcon size={20} />
         </div>
-        <span className='parent-data-[open]:ml-0 ml-1.5'>
-          {t.formatMessage('SpeedSubmenu.speed')}
-        </span>
+        <span className='parent-data-[open]:ml-0 ml-1.5'>Tốc độ</span>
         <span className='ml-auto text-sm text-white/50'>{hint}</span>
         <ChevronRightIcon className='parent-data-[open]:hidden ml-0.5 h-[18px] w-[18px] text-sm text-white/50' />
       </Menu.Button>
@@ -166,14 +155,13 @@ function SpeedSubmenu() {
 }
 
 function VideoQualitySubmenu() {
-  const t = useTranslate();
   const options = useVideoQualityOptions({ auto: true, sort: 'descending' });
 
   const currentQualityHeight = options.selectedQuality?.height;
   const hint =
     options.selectedValue !== 'auto' && currentQualityHeight
       ? `${currentQualityHeight}p`
-      : `${t.formatMessage(`VideoQualitySubmenu.auto`)}${currentQualityHeight ? ` (${currentQualityHeight}p)` : ''}`;
+      : `${'Tự động'}${currentQualityHeight ? ` (${currentQualityHeight}p)` : ''}`;
 
   return (
     <Menu.Root>
@@ -185,9 +173,7 @@ function VideoQualitySubmenu() {
         <div className='parent-data-[open]:hidden contents'>
           <CheckIcon className='h-5 w-5' />
         </div>
-        <span className='parent-data-[open]:ml-0 ml-1.5'>
-          {t.formatMessage('VideoQualitySubmenu.quality')}
-        </span>
+        <span className='parent-data-[open]:ml-0 ml-1.5'>Chất lượng</span>
         <span className='ml-auto text-sm text-white/50'>{hint}</span>
         <ChevronRightIcon className='parent-data-[open]:hidden ml-0.5 h-[18px] w-[18px] text-sm text-white/50' />
       </Menu.Button>
@@ -206,7 +192,9 @@ function VideoQualitySubmenu() {
             >
               <RadioButtonIcon className='h-4 w-4 text-white group-data-[checked]:hidden' />
               <RadioButtonSelectedIcon className='text-media-brand hidden h-4 w-4 group-data-[checked]:block' />
-              <span className='ml-2'>{label}</span>
+              <span className='ml-2'>
+                {label === 'Auto' ? 'Tự động' : label}
+              </span>
               {bitrateText && (
                 <span className='ml-auto text-sm text-white/40'>
                   {bitrateText}

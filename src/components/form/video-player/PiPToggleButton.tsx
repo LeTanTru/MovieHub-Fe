@@ -1,6 +1,5 @@
 'use client';
 
-import { useTranslate } from '@/hooks';
 import { PIPButton, Tooltip, useMediaState } from '@vidstack/react';
 import {
   PictureInPictureExitIcon,
@@ -10,7 +9,6 @@ import {
 export default function PiPToggleButton() {
   const isPiP = useMediaState('pictureInPicture');
   const isPiPSupported = useMediaState('canPictureInPicture');
-  const t = useTranslate();
 
   if (!isPiPSupported) return null;
 
@@ -26,9 +24,7 @@ export default function PiPToggleButton() {
         </PIPButton>
       </Tooltip.Trigger>
       <Tooltip.Content className='vds-tooltip-content' placement='top center'>
-        {isPiP
-          ? t.formatMessage('PiPToggleButton.exit')
-          : t.formatMessage('PiPToggleButton.enter')}
+        {isPiP ? 'Thoát chế độ phát thu nhỏ' : 'Vào chế độ phát thu nhỏ'}
       </Tooltip.Content>
     </Tooltip.Root>
   );

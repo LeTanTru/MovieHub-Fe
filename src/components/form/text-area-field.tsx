@@ -11,7 +11,6 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
-import { useTranslate } from '@/hooks';
 
 type TextAreaFieldProps<T extends FieldValues> = {
   control: Control<T>;
@@ -40,7 +39,6 @@ export default function TextAreaField<T extends FieldValues>({
 }: TextAreaFieldProps<T>) {
   const id = useId();
   const [charCount, setCharCount] = useState(0);
-  const translate = useTranslate();
 
   return (
     <FormField
@@ -80,8 +78,7 @@ export default function TextAreaField<T extends FieldValues>({
 
             {maxLength !== undefined && (
               <div className='text-muted-foreground mt-1 text-right text-xs'>
-                {maxLength - charCount}{' '}
-                {translate.formatMessage('TextAreaField.charactersLeft')}
+                {maxLength - charCount} còn lại
               </div>
             )}
           </div>

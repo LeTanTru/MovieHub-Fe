@@ -1,11 +1,9 @@
 'use client';
 
-import { useTranslate } from '@/hooks';
 import { FullscreenButton, Tooltip, useMediaState } from '@vidstack/react';
 import { FullscreenExitIcon, FullscreenIcon } from '@vidstack/react/icons';
 
 export default function FullscreenToggleButton() {
-  const t = useTranslate();
   const isFullscreen = useMediaState('fullscreen');
 
   return (
@@ -21,8 +19,8 @@ export default function FullscreenToggleButton() {
       </Tooltip.Trigger>
       <Tooltip.Content className='vds-tooltip-content' placement='top center'>
         {isFullscreen
-          ? t.formatMessage('FullscreenToggleButton.exit')
-          : t.formatMessage('FullscreenToggleButton.enter')}
+          ? 'Thoát khỏi chế độ toàn màn hình'
+          : 'Bật chế độ toàn màn hình'}
       </Tooltip.Content>
     </Tooltip.Root>
   );

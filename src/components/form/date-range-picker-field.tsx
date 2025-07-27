@@ -17,8 +17,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { format, Locale } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { Control, Controller } from 'react-hook-form';
-import { useLocale } from 'next-intl';
-import { enUS, vi } from 'date-fns/locale';
+import { vi } from 'date-fns/locale';
 import { Button } from '@/components/form';
 
 type Props = {
@@ -42,13 +41,7 @@ export default function DateRangePickerField({
   format: dateFormat = 'dd/MM/yyyy',
   labelClassName
 }: Props) {
-  const currentLocale = useLocale();
-  const localeMap: Record<string, Locale> = {
-    en: enUS,
-    vi: vi
-  };
-
-  const calendarLocale = localeMap[currentLocale] ?? enUS;
+  const calendarLocale: Locale = vi;
   return (
     <Controller
       name={name}

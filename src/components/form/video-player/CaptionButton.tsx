@@ -1,6 +1,5 @@
 'use client';
 
-import { useTranslate } from '@/hooks';
 import {
   CaptionButton as OriginCaptionButton,
   isTrackCaptionKind,
@@ -13,7 +12,6 @@ import {
 } from '@vidstack/react/icons';
 
 export default function CaptionButton() {
-  const t = useTranslate();
   const track = useMediaState('textTrack'),
     isOn = track && isTrackCaptionKind(track);
   return (
@@ -28,9 +26,7 @@ export default function CaptionButton() {
         </OriginCaptionButton>
       </Tooltip.Trigger>
       <Tooltip.Content className='vds-tooltip-content' placement='top center'>
-        {isOn
-          ? t.formatMessage('CaptionButton.off')
-          : t.formatMessage('CaptionButton.on')}
+        {isOn ? 'Tắt phụ đề' : 'Bật phụ đề'}
       </Tooltip.Content>
     </Tooltip.Root>
   );

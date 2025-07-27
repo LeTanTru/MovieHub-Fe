@@ -1,13 +1,13 @@
-import { logo } from '@/assets';
+import { logoWithText } from '@/assets';
+import LoginForm from '@/components/app/login/login-form';
 import DarkModeToggle from '@/components/dark-mode-toggle';
 import { Button } from '@/components/form';
-import LocaleSwitcher from '@/components/locale-switcher';
+import List from '@/components/list';
+import ListItem from '@/components/list/ListItem';
+import Navigation from '@/components/navigation';
 import {
-  NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
   NavigationMenuTrigger
 } from '@/components/ui/navigation-menu';
 import {
@@ -15,39 +15,65 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
-import { Link } from '@/i18n/navigation';
-import { cn } from '@/lib';
 import { BookOpenIcon, InfoIcon, LifeBuoyIcon, MenuIcon } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const navigationLinks = [
-  { href: '#', label: 'Home' },
+  { href: '#', label: 'Trang chủ' },
   {
     label: 'Features',
     submenu: true,
-    type: 'description',
     items: [
       {
         href: '#',
-        label: 'Components',
-        description: 'Browse all components in the library.'
+        label: 'Components'
       },
       {
         href: '#',
-        label: 'Documentation',
-        description: 'Learn how to use the library.'
+        label: 'Documentation'
       },
       {
         href: '#',
-        label: 'Templates',
-        description: 'Pre-built layouts for common use cases.'
+        label: 'Templates'
+      },
+      {
+        href: '#',
+        label: 'Changelog'
+      },
+      {
+        href: '#',
+        label: 'Changelog'
+      },
+      {
+        href: '#',
+        label: 'Changelog'
+      },
+      {
+        href: '#',
+        label: 'Changelog'
+      },
+      {
+        href: '#',
+        label: 'Changelog'
+      },
+      {
+        href: '#',
+        label: 'Changelog'
+      },
+      {
+        href: '#',
+        label: 'Changelog'
+      },
+      {
+        href: '#',
+        label: 'Changelog'
       }
     ]
   },
   {
     label: 'Pricing',
     submenu: true,
-    type: 'simple',
     items: [
       { href: '#', label: 'Product A' },
       { href: '#', label: 'Product B' },
@@ -58,11 +84,10 @@ const navigationLinks = [
   {
     label: 'About',
     submenu: true,
-    type: 'icon',
     items: [
-      { href: '#', label: 'Getting Started', icon: 'BookOpenIcon' },
-      { href: '#', label: 'Tutorials', icon: 'LifeBuoyIcon' },
-      { href: '#', label: 'About Us', icon: 'InfoIcon' }
+      { href: '#', label: 'Getting Started', icon: BookOpenIcon },
+      { href: '#', label: 'Tutorials', icon: LifeBuoyIcon },
+      { href: '#', label: 'About Us', icon: InfoIcon }
     ]
   }
 ];
@@ -85,67 +110,71 @@ export default function Header() {
                   <MenuIcon />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent align='start' className='w-64 p-1 md:hidden'>
-                <NavigationMenu className='max-w-none *:w-full'>
-                  <NavigationMenuList className='flex-col items-start gap-0 md:gap-2'>
-                    {navigationLinks.map((link, index) => (
-                      <NavigationMenuItem key={index} className='w-full'>
-                        {link.submenu ? (
-                          <>
+
+              <PopoverContent
+                align='start'
+                className='bg-background w-auto min-w-fit rounded-sm border-none p-1 md:hidden'
+              >
+                <Navigation
+                  className='max-w-none *:w-full'
+                  navListClassName='flex-col items-start gap-0 md:gap-2'
+                  navItemClassName='w-full'
+                  items={navigationLinks}
+                  render={(item, index) => {
+                    return (
+                      <>
+                        {item.submenu ? (
+                          <div className='p-1'>
                             <div className='text-muted-foreground px-2 py-1.5 text-xs font-medium'>
-                              {link.label}
+                              {item.label}
                             </div>
-                            <ul>
-                              {link.items.map((item, itemIndex) => (
-                                <li key={itemIndex}>
+                            <List
+                              className={`grid ${
+                                item.items!.length > 2
+                                  ? 'w-60 grid-cols-2'
+                                  : `w-48`
+                              }`}
+                            >
+                              {item.items!.map((subItem, itemIndex) => (
+                                <ListItem key={itemIndex}>
                                   <NavigationMenuLink
-                                    href={item.href}
-                                    className='py-1.5'
+                                    href={subItem.href}
+                                    className='py-2'
                                   >
-                                    {item.label}
+                                    {subItem.label}
                                   </NavigationMenuLink>
-                                </li>
+                                </ListItem>
                               ))}
-                            </ul>
-                          </>
+                            </List>
+                          </div>
                         ) : (
                           <NavigationMenuLink
-                            href={link.href}
-                            className='py-1.5'
+                            href={item.href}
+                            className='px-3 py-1.5'
                           >
-                            {link.label}
+                            {item.label}
                           </NavigationMenuLink>
                         )}
-                        {/* Add separator between different types of items */}
-                        {index < navigationLinks.length - 1 &&
-                          // Show separator if:
-                          // 1. One is submenu and one is simple link OR
-                          // 2. Both are submenus but with different types
-                          ((!link.submenu &&
-                            navigationLinks[index + 1].submenu) ||
-                            (link.submenu &&
-                              !navigationLinks[index + 1].submenu) ||
-                            (link.submenu &&
-                              navigationLinks[index + 1].submenu &&
-                              link.type !==
-                                navigationLinks[index + 1].type)) && (
-                            <div
-                              role='separator'
-                              aria-orientation='horizontal'
-                              className='bg-border -mx-1 my-1 h-px w-full'
-                            />
-                          )}
-                      </NavigationMenuItem>
-                    ))}
-                  </NavigationMenuList>
-                </NavigationMenu>
+
+                        {index !== navigationLinks.length - 1 && (
+                          <div
+                            role='separator'
+                            aria-orientation='horizontal'
+                            className='bg-border my-1 h-px w-full'
+                          />
+                        )}
+                      </>
+                    );
+                  }}
+                />
               </PopoverContent>
             </Popover>
+
             {/* Main nav */}
-            <div className='flex items-center gap-6'>
-              <Link href='#'>
+            <div className='flex items-center gap-2 md:gap-6'>
+              <Link href='/'>
                 <Image
-                  src={logo}
+                  src={logoWithText}
                   alt='Logo'
                   width={200}
                   height={40}
@@ -153,103 +182,60 @@ export default function Header() {
                 />
               </Link>
               {/* Navigation menu */}
-              <NavigationMenu viewport={false} className='max-md:hidden'>
-                <NavigationMenuList className='gap-2'>
-                  {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index}>
-                      {link.submenu ? (
-                        <>
-                          <NavigationMenuTrigger className='text-muted-foreground hover:text-primary bg-transparent px-2 py-1.5 font-medium *:[svg]:-me-0.5 *:[svg]:size-3.5'>
-                            {link.label}
-                          </NavigationMenuTrigger>
-                          <NavigationMenuContent className='data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! z-50 p-1'>
-                            <ul
-                              className={cn(
-                                link.type === 'description'
-                                  ? 'min-w-64'
-                                  : 'min-w-48'
-                              )}
-                            >
-                              {link.items.map((item, itemIndex) => (
-                                <li key={itemIndex}>
-                                  <NavigationMenuLink
-                                    href={item.href}
-                                    className='py-1.5'
-                                  >
-                                    {/* Display icon if present */}
-                                    {link.type === 'icon' && 'icon' in item && (
-                                      <div className='flex items-center gap-2'>
-                                        {item.icon === 'BookOpenIcon' && (
-                                          <BookOpenIcon
-                                            size={16}
-                                            className='text-foreground opacity-60'
-                                            aria-hidden='true'
-                                          />
-                                        )}
-                                        {item.icon === 'LifeBuoyIcon' && (
-                                          <LifeBuoyIcon
-                                            size={16}
-                                            className='text-foreground opacity-60'
-                                            aria-hidden='true'
-                                          />
-                                        )}
-                                        {item.icon === 'InfoIcon' && (
-                                          <InfoIcon
-                                            size={16}
-                                            className='text-foreground opacity-60'
-                                            aria-hidden='true'
-                                          />
-                                        )}
-                                        <span>{item.label}</span>
-                                      </div>
-                                    )}
-
-                                    {/* Display label with description if present */}
-                                    {link.type === 'description' &&
-                                    'description' in item ? (
-                                      <div className='space-y-1'>
-                                        <div className='font-medium'>
-                                          {item.label}
-                                        </div>
-                                        <p className='text-muted-foreground line-clamp-2 text-xs'>
-                                          {item.description}
-                                        </p>
-                                      </div>
-                                    ) : (
-                                      // Display simple label if not icon or description type
-                                      !link.type ||
-                                      (link.type !== 'icon' &&
-                                        link.type !== 'description' && (
-                                          <span>{item.label}</span>
-                                        ))
-                                    )}
-                                  </NavigationMenuLink>
-                                </li>
-                              ))}
-                            </ul>
-                          </NavigationMenuContent>
-                        </>
-                      ) : (
-                        <NavigationMenuLink
-                          href={link.href}
-                          className='text-muted-foreground hover:text-primary py-1.5 font-medium'
+              <Navigation
+                className='max-md:hidden'
+                navListClassName='gap-2'
+                items={navigationLinks}
+                render={(item) => {
+                  return item.submenu ? (
+                    <>
+                      <NavigationMenuTrigger className='text-muted-foreground hover:text-primary cursor-pointer bg-transparent font-medium transition-all duration-200 ease-linear hover:bg-transparent! data-[state=open]:bg-transparent *:[svg]:-me-0.5 *:[svg]:size-3.5'>
+                        {item.label}
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent className='data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! bg-background! z-50 border-none! duration-200'>
+                        <List
+                          className={`grid ${
+                            item.items!.length > 4
+                              ? 'w-200 grid-cols-4'
+                              : `w-48`
+                          }`}
                         >
-                          {link.label}
-                        </NavigationMenuLink>
-                      )}
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
+                          {item.items!.map((sub, index) => (
+                            <ListItem key={index}>
+                              <NavigationMenuLink
+                                href={item.href}
+                                className='text-muted-foreground hover:text-primary cursor-pointer py-2.5! pl-4'
+                              >
+                                <div className='flex items-center gap-2'>
+                                  {sub.icon && <sub.icon className='size-4' />}
+                                  {
+                                    <div className='font-medium'>
+                                      {sub.label}
+                                    </div>
+                                  }
+                                </div>
+                              </NavigationMenuLink>
+                            </ListItem>
+                          ))}
+                        </List>
+                      </NavigationMenuContent>
+                    </>
+                  ) : (
+                    <NavigationMenuLink
+                      href={item.href}
+                      className='text-muted-foreground hover:text-primary py-1.5 font-medium transition-all duration-200 ease-linear hover:bg-transparent'
+                    >
+                      {item.label}
+                    </NavigationMenuLink>
+                  );
+                }}
+              />
             </div>
           </div>
           {/* Right side */}
           <div className='flex items-center gap-2'>
-            <LocaleSwitcher />
             <DarkModeToggle />
-            <Link href='/login' className='text-lg font-bold'>
-              Login
-            </Link>
+            <LoginForm />
           </div>
         </div>
       </header>

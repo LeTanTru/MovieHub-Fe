@@ -20,8 +20,7 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Control, Controller } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/form';
-import { useLocale } from 'next-intl';
-import { enUS, vi } from 'date-fns/locale';
+import { vi } from 'date-fns/locale';
 
 type Props = {
   control: Control<any>;
@@ -46,13 +45,7 @@ export default function DateTimePickerField({
   const minutes = Array.from({ length: 60 }, (_, i) => i);
   const seconds = Array.from({ length: 60 }, (_, i) => i);
   const [isOpen, setIsOpen] = React.useState(false);
-  const currentLocale = useLocale();
-  const localeMap: Record<string, Locale> = {
-    en: enUS,
-    vi: vi
-  };
-
-  const calendarLocale = localeMap[currentLocale] ?? enUS;
+  const calendarLocale: Locale = vi;
   return (
     <Controller
       name={name}

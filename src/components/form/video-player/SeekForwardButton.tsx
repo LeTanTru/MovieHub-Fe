@@ -1,12 +1,9 @@
 'use client';
 
-import { useTranslate } from '@/hooks';
 import { SeekButton, Tooltip } from '@vidstack/react';
 import { SeekForward10Icon } from '@vidstack/react/icons';
 
 export default function SeekForwardButton() {
-  const t = useTranslate();
-
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
@@ -15,7 +12,7 @@ export default function SeekForwardButton() {
         </SeekButton>
       </Tooltip.Trigger>
       <Tooltip.Content className='vds-tooltip-content' placement='top center'>
-        {t.formatMessage('SeekForwardButton.forward10Seconds')}
+        Tiến lên 10 giây
       </Tooltip.Content>
     </Tooltip.Root>
   );

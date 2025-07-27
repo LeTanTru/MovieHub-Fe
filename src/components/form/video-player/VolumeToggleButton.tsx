@@ -1,13 +1,11 @@
 'use client';
 
-import { useTranslate } from '@/hooks';
 import { MuteButton, Tooltip, useMediaState } from '@vidstack/react';
 import { MuteIcon, VolumeHighIcon, VolumeLowIcon } from '@vidstack/react/icons';
 
 export default function VolumeToggleButton() {
   const isMuted = useMediaState('muted');
   const volume = useMediaState('volume');
-  const t = useTranslate();
 
   const renderVolumeIcon = () => {
     if (isMuted || volume === 0) {
@@ -25,9 +23,7 @@ export default function VolumeToggleButton() {
         <MuteButton className='vds-button'>{renderVolumeIcon()}</MuteButton>
       </Tooltip.Trigger>
       <Tooltip.Content className='vds-tooltip-content' placement='top center'>
-        {isMuted || volume === 0
-          ? t.formatMessage('VolumeToggleButton.unmute')
-          : t.formatMessage('VolumeToggleButton.mute')}
+        {isMuted || volume === 0 ? 'Bật âm' : 'Tắt âm'}
       </Tooltip.Content>
     </Tooltip.Root>
   );

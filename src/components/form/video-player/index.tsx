@@ -14,7 +14,6 @@ import SeekBackwardButton from '@/components/form/video-player/SeekBackwardButto
 import PiPToggleButton from '@/components/form/video-player/PiPToggleButton';
 import FullscreenToggleButton from '@/components/form/video-player/FullscreenToggleButton';
 import SettingMenu from '@/components/form/video-player/SettingMenu';
-import { useTranslate } from '@/hooks';
 import CaptionButton from '@/components/form/video-player/CaptionButton';
 
 export default function VideoPlayer() {
@@ -52,6 +51,7 @@ export default function VideoPlayer() {
         crossOrigin
         playsInline
         muted
+        preferNativeHLS={false}
         autoPlay={false}
         src='https://files.vidstack.io/sprite-fight/hls/stream.m3u8'
       >
@@ -81,16 +81,11 @@ export default function VideoPlayer() {
                 <SeekBackwardButton />
                 <SeekForwardButton />
               </>
-            )
+            ),
+            googleCastButton: null
           }}
         />
       </MediaPlayer>
-      <style jsx global>{`
-        .vds-airplay-button.vds-button,
-        .vds-google-cast-button.vds-button {
-          display: none !important;
-        }
-      `}</style>
     </div>
   );
 }

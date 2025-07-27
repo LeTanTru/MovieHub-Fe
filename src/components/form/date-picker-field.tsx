@@ -17,8 +17,7 @@ import {
 } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { enUS, vi } from 'date-fns/locale';
-import { useLocale } from 'next-intl';
+import { vi } from 'date-fns/locale';
 import { Button } from '@/components/form';
 
 type Props = {
@@ -46,13 +45,7 @@ export default function DatePickerField({
   placeholder,
   labelClassName
 }: Props) {
-  const currentLocale = useLocale();
-  const localeMap: Record<string, Locale> = {
-    en: enUS,
-    vi: vi
-  };
-
-  const calendarLocale = localeMap[currentLocale] ?? enUS;
+  const calendarLocale: Locale = vi;
   return (
     <FormField
       control={control}

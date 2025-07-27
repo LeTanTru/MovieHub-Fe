@@ -1,3 +1,2 @@
 export { useFileUpload } from './use-file-upload';
 export { default as useIsMounted } from './use-is-mounted';
-export { default as useTranslate } from './use-translate';

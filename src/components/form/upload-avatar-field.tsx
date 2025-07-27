@@ -28,7 +28,7 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/form';
 import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
-import { useFileUpload, useTranslate } from '@/hooks';
+import { useFileUpload } from '@/hooks';
 import { logger } from '@/logger';
 
 type Area = { x: number; y: number; width: number; height: number };
@@ -96,7 +96,6 @@ export default function UploadAvatarField({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [zoom, setZoom] = useState(1);
-  const translate = useTranslate();
 
   const [
     { files, isDragging },
@@ -165,7 +164,7 @@ export default function UploadAvatarField({
             onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
-            title={translate.formatMessage('UploadAvatarField.uploadImage')}
+            title={'Tải ảnh lên'}
             data-dragging={isDragging || undefined}
             aria-label={field.value ? 'Change image' : 'Upload image'}
           >
@@ -197,9 +196,7 @@ export default function UploadAvatarField({
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className='gap-0 p-0 sm:max-w-140 *:[button]:hidden'>
-          <DialogDescription className='sr-only'>
-            {translate.formatMessage('UploadAvatarField.cropImage')}
-          </DialogDescription>
+          <DialogDescription className='sr-only'>{'Cắt ảnh'}</DialogDescription>
           <DialogHeader className='contents text-left'>
             <DialogTitle className='flex items-center justify-between border-b p-4 text-base'>
               <div className='flex items-center gap-2'>
@@ -212,9 +209,7 @@ export default function UploadAvatarField({
                 >
                   <ArrowLeftIcon />
                 </Button>
-                <span>
-                  {translate.formatMessage('UploadAvatarField.cropImage')}
-                </span>
+                <span>{'Cắt ảnh'}</span>
               </div>
               <Button
                 type='button'
@@ -222,7 +217,7 @@ export default function UploadAvatarField({
                 onClick={handleApply}
                 disabled={!previewUrl}
               >
-                {translate.formatMessage('UploadAvatarField.apply')}
+                {'Áp dụng'}
               </Button>
             </DialogTitle>
           </DialogHeader>

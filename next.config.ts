@@ -1,17 +1,20 @@
 import type { NextConfig } from 'next';
-import createNextIntlPlugin from 'next-intl/plugin';
+import createBundleAnalyzer from '@next/bundle-analyzer';
 
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'scontent-hkg1-1.xx.fbcdn.net',
+        hostname: 'images.unsplash.com',
         pathname: '/**'
       }
     ]
   }
 };
 
-const withNextIntl = createNextIntlPlugin();
-export default withNextIntl(nextConfig);
+const withBundleAnalyzer = createBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true'
+});
+
+export default withBundleAnalyzer(nextConfig);
