@@ -12,12 +12,6 @@
     "format": "prettier --write .",
     "lint-staged": "lint-staged"
   },
-  "lint-staged": {
-    "*.{js,ts,jsx,tsx,html,css,md}": [
-      "node scripts/removeFinalEmptyLine.js",
-      "prettier --write"
-    ]
-  },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "@next/bundle-analyzer": "^15.4.4",
@@ -93,10 +87,12 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
+      "node scripts/removeFinalEmptyLine.js",
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md,css,scss}": [
+    "*.{json,md,css,scss,html}": [
+      "node scripts/removeFinalEmptyLine.js",
       "prettier --write"
     ]
   }
