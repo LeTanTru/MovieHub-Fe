@@ -4,7 +4,6 @@ import {
   NavigationMenuList
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib';
-import React from 'react';
 
 interface SubmenuProps {
   [key: string]: any;

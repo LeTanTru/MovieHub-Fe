@@ -20,6 +20,7 @@ type InputFieldProps<T extends FieldValues> = {
   description?: string;
   type?: string;
   className?: string;
+  formItemClassName?: string;
   required?: boolean;
   labelClassName?: string;
   disabled?: boolean;
@@ -34,6 +35,7 @@ export default function InputField<T extends FieldValues>({
   description,
   type = 'text',
   className,
+  formItemClassName,
   required,
   labelClassName,
   disabled,
@@ -44,9 +46,14 @@ export default function InputField<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={cn({ 'cursor-not-allowed opacity-50': disabled })}>
+        <FormItem
+          className={cn(
+            { 'cursor-not-allowed opacity-50': disabled },
+            formItemClassName
+          )}
+        >
           {label && (
-            <FormLabel className={cn('ml-2 gap-2', labelClassName)}>
+            <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
               {label}
               {required && <span className='text-red-500'>*</span>}
             </FormLabel>
@@ -64,7 +71,7 @@ export default function InputField<T extends FieldValues>({
             />
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
+          <FormMessage className={'mb-0 ml-1'} />
         </FormItem>
       )}
     />

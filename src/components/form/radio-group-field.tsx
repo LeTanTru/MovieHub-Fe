@@ -83,7 +83,7 @@ export default function RadioGroupField<T extends FieldValues>({
               ))}
             </RadioGroup>
           </FormControl>
-          <FormMessage />
+          <FormMessage className={'mb-0 ml-1'} />
         </FormItem>
       )}
     />

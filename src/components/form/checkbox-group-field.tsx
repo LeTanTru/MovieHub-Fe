@@ -49,7 +49,7 @@ export default function CheckboxGroupField<T extends FieldValues>({
       render={({ field }) => (
         <FormItem className={cn('space-y-2', className)}>
           {label && (
-            <FormLabel className={cn('ml-2 gap-2', labelClassName)}>
+            <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
               {label}
               {required && <span className='text-red-500'>*</span>}
             </FormLabel>
@@ -99,7 +99,7 @@ export default function CheckboxGroupField<T extends FieldValues>({
             })}
           </div>
           {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
+          <FormMessage className={'mb-0 ml-1'} />
         </FormItem>
       )}
     />

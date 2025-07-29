@@ -49,7 +49,7 @@ export default function DateRangePickerField({
       render={({ field, fieldState }) => (
         <FormItem className={cn('flex flex-col', className)}>
           {label && (
-            <FormLabel className={cn('ml-2 gap-2', labelClassName)}>
+            <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
               {label}
               {required && <span className='ml-1 text-red-500'>*</span>}
             </FormLabel>

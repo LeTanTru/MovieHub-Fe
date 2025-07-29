@@ -97,8 +97,8 @@ const sendRequest = async <Response>(
 };
 
 const http = {
-  get<Response>(apiConfig: ApiConfig, payload: Payload) {
-    return sendRequest<Response>(apiConfig, payload);
+  get<Response>(apiConfig: ApiConfig) {
+    return sendRequest<Response>(apiConfig, {});
   },
   post<Response>(apiConfig: ApiConfig, payload: Payload) {
     return sendRequest<Response>(apiConfig, payload);

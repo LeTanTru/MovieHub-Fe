@@ -63,7 +63,7 @@ export default function DatePickerField({
             })}
           >
             {label && (
-              <FormLabel className={cn('ml-2 gap-2', labelClassName)}>
+              <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
                 {label}
                 {required && <span className='text-red-500'>*</span>}
               </FormLabel>
@@ -105,7 +105,7 @@ export default function DatePickerField({
               </PopoverContent>
             </Popover>
             {description && <FormDescription>{description}</FormDescription>}
-            <FormMessage />
+            <FormMessage className={'mb-0 ml-1'} />
           </FormItem>
         );
       }}

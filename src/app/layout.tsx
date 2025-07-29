@@ -35,7 +35,6 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <QueryProvider>
-              <Header />
               <NextTopLoader showSpinner={false} />
               <Suspense>{children}</Suspense>
             </QueryProvider>

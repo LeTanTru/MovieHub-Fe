@@ -1,5 +1,6 @@
 import { logoWithText } from '@/assets';
-import LoginForm from '@/components/app/login/login-form';
+import AuthDialog from '@/components/app/auth/auth-dialog';
+import LoginForm from '@/components/app/auth/login/login-form';
 import DarkModeToggle from '@/components/dark-mode-toggle';
 import { Button } from '@/components/form';
 import List from '@/components/list';
@@ -235,7 +236,7 @@ export default function Header() {
           {/* Right side */}
           <div className='flex items-center gap-2'>
             <DarkModeToggle />
-            <LoginForm />
+            <AuthDialog />
           </div>
         </div>
       </header>

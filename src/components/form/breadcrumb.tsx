@@ -7,7 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from '@/components/ui/breadcrumb';
-import React from 'react';
+import { Fragment } from 'react';
 
 type BreadcrumbType = {
   label: string;
@@ -29,7 +29,7 @@ export default function Breadcrumb({
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <React.Fragment key={index}>
+            <Fragment key={index}>
               <BreadcrumbItem>
                 {item.href && !isLast ? (
                   <BreadcrumbLink asChild>
@@ -40,7 +40,7 @@ export default function Breadcrumb({
                 )}
               </BreadcrumbItem>
               {!isLast && separator}
-            </React.Fragment>
+            </Fragment>
           );
         })}
       </BreadcrumbList>

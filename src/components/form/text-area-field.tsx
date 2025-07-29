@@ -82,7 +82,7 @@ export default function TextAreaField<T extends FieldValues>({
               </div>
             )}
           </div>
-          <FormMessage />
+          <FormMessage className={'mb-0 ml-1'} />
         </FormItem>
       )}
     />

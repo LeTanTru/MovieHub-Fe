@@ -3,54 +3,77 @@ import AppConstants from '@/constants/app';
 const baseHeader = { 'Content-Type': 'application/json' };
 const multipartHeader = { 'Content-Type': 'multipart/form-data' };
 
-const apiConfig: any = {
+type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+
+type ApiEndpoint = {
+  baseUrl?: string;
+  method: Method;
+  header?: Record<string, string>;
+  headers?: Record<string, string>;
+  permissionCode?: string;
+  isRequiredTenantId?: boolean;
+  isUpload?: boolean;
+};
+
+type ApiConfigGroup = {
+  [key: string]: ApiEndpoint | ApiConfigGroup;
+};
+
+const defineApiConfig = <T extends ApiConfigGroup>(config: T) => config;
+
+const apiConfig = defineApiConfig({
+  api: {
+    baseUrl: '/api/auth/login',
+    method: 'POST',
+    headers: baseHeader
+  },
   user: {
     activeVip: {
       baseUrl: `${AppConstants.apiUrl}v1/user/active-vip`,
       method: 'POST',
-      header: baseHeader
+      headers: baseHeader
     },
     auth: {
       socialLogin: {
         baseUrl: `${AppConstants.apiUrl}v1/user/auth/social-login`,
         method: 'POST',
-        header: baseHeader
+        headers: baseHeader
       },
       webCallback: {
         baseUrl: `${AppConstants.apiUrl}v1/user/auth/web-callback`,
         method: 'POST',
-        header: baseHeader
+        headers: baseHeader
       }
     },
     changePassword: {
       baseUrl: `${AppConstants.apiUrl}v1/user/change-password`,
       method: 'POST',
-      header: baseHeader
+      headers: baseHeader
     },
     login: {
       baseUrl: `${AppConstants.apiUrl}v1/user/login`,
       method: 'POST',
-      header: baseHeader
+      headers: baseHeader
     },
     getProfile: {
       baseUrl: `${AppConstants.apiUrl}v1/user/profile`,
       method: 'GET',
-      header: baseHeader
+      headers: baseHeader
     },
     register: {
       baseUrl: `${AppConstants.apiUrl}v1/user/register`,
       method: 'POST',
-      header: baseHeader
+      headers: baseHeader
     },
     updateProfile: {
       baseUrl: `${AppConstants.apiUrl}v1/user/profile`,
       method: 'PUT',
-      header: baseHeader
+      headers: baseHeader
     }
   },
   file: {
     upload: {
-      path: `${AppConstants.mediaRootUrl}v1/file/upload`,
+      baseUrl: `${AppConstants.mediaRootUrl}v1/file/upload`,
       method: 'POST',
       headers: multipartHeader,
       isRequiredTenantId: true,
@@ -58,6 +81,6 @@ const apiConfig: any = {
       permissionCode: 'FILE_U'
     }
   }
-};
+});
 
 export default apiConfig;

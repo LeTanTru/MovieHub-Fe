@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils';
 type CheckboxFieldProps = {
   control: Control<any>;
   name: string;
-  label: string;
+  label: string | React.ReactNode;
   description?: string;
   className?: string;
   disabled?: boolean;

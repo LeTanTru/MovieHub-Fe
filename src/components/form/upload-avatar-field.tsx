@@ -150,7 +150,7 @@ export default function UploadAvatarField({
     <div className='space-y-2'>
       <div className='flex flex-col items-center justify-center gap-y-5'>
         {label && (
-          <FormLabel className={cn('ml-2 gap-2', labelClassName)}>
+          <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
             {label}
             {required && <span className='text-red-500'>*</span>}
           </FormLabel>

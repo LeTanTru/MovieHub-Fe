@@ -1,1 +1,2 @@
-export * from './http.type';
+export * from './api.type';
+export * from './auth.type';
