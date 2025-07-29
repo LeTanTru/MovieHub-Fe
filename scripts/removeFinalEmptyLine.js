@@ -20,15 +20,19 @@ function shouldProcess(file) {
 function removeFinalEmptyLine(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
   const lines = content.split('\n');
-  let changed = false;
+  const originalLength = lines.length;
 
-  while (lines.length > 0 && lines[lines.length - 1].trim() === '') {
-    lines.pop();
-    changed = true;
-  }
+  // Đếm số dòng trắng ở cuối
+  let i = lines.length - 1;
+  while (i >= 0 && lines[i].trim() === '') i--;
 
-  if (changed) {
-    fs.writeFileSync(filePath, lines.join('\n'));
+  const emptyLineCount = lines.length - 1 - i;
+
+  if (emptyLineCount > 0) {
+    console.log(`⚠️  ${filePath} has ${emptyLineCount} empty line(s) at end`);
+    // Xoá dòng trắng cuối
+    const cleaned = lines.slice(0, i + 1);
+    fs.writeFileSync(filePath, cleaned.join('\n'));
     console.log(`🧹 Cleaned: ${filePath}`);
   }
 }
