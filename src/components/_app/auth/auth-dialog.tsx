@@ -10,8 +10,8 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { Button } from '@/components/form';
-import LoginForm from '@/components/app/auth/login/login-form';
-import RegisterForm from '@/components/app/auth/register/register-form';
+import LoginForm from '@/components/_app/auth/login/login-form';
+import RegisterForm from '@/components/_app/auth/register/register-form';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 export default function AuthDialog() {

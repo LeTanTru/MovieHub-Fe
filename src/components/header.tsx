@@ -1,6 +1,6 @@
 import { logoWithText } from '@/assets';
-import AuthDialog from '@/components/app/auth/auth-dialog';
-import LoginForm from '@/components/app/auth/login/login-form';
+import AuthDialog from '@/components/_app/auth/auth-dialog';
+import LoginForm from '@/components/_app/auth/login/login-form';
 import DarkModeToggle from '@/components/dark-mode-toggle';
 import { Button } from '@/components/form';
 import List from '@/components/list';

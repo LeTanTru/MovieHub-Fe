@@ -1,8 +1,10 @@
 import { apiConfig } from '@/constants';
+import { Payload } from '@/types';
 import http from '@/utils/http.util';
 
 const authApiRequest = {
-  login: () => http.get(apiConfig.api)
+  loginGoogle: async (payload?: Payload) =>
+    await http.get(apiConfig.user.auth.socialLogin, payload)
 };
 
 export default authApiRequest;
