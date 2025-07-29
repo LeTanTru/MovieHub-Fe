@@ -1,5 +1,6 @@
+import envConfig from '@/config';
 import { storageKeys } from '@/constants';
-import { ApiConfig } from '@/types';
+import { ApiConfig, Payload } from '@/types';
 import {
   getAccessTokenFromLocalStorage,
   removeAccessTokenFromLocalStorage,
@@ -10,15 +11,9 @@ import { getCookiesServer } from '@/utils/cookies-server.util';
 
 const isClient = () => typeof window !== 'undefined';
 
-type Payload = {
-  params?: Record<string, any>;
-  pathParams?: Record<string, string>;
-  data?: any;
-};
-
 const sendRequest = async <Response>(
   apiConfig: ApiConfig,
-  payload: Payload
+  payload: Payload = {}
 ): Promise<{
   data?: Response;
   error?: any;
@@ -28,14 +23,15 @@ const sendRequest = async <Response>(
   const { params = {}, pathParams = {}, data = {} } = payload;
 
   let accessToken: string | null = '';
-  let tenantId: string | null = '';
+  let tenantId: string | null | undefined = '';
   if (isClient()) {
     accessToken = getAccessTokenFromLocalStorage();
     if (isTokenExpired(accessToken)) {
       removeAccessTokenFromLocalStorage();
     }
     if (isRequiredTenantId) {
-      tenantId = getData(storageKeys.X_TENANT);
+      tenantId =
+        getData(storageKeys.X_TENANT) || envConfig.NEXT_PUBLIC_TENANT_ID;
     }
   } else {
     const { sessionToken, tenantId: serverTenantId } = await getCookiesServer();
@@ -73,7 +69,7 @@ const sendRequest = async <Response>(
       const result: Response = await response.json();
       return { data: result };
     } catch (error: any) {
-      return { error };
+      throw new Error(`Error in API request: ${error.message}`);
     }
   }
 
@@ -86,19 +82,19 @@ const sendRequest = async <Response>(
         ...baseHeader,
         'Content-Type': headers['Content-Type'] || 'application/json'
       },
-      body: data ? JSON.stringify(data) : undefined
+      body: method !== 'GET' && data ? JSON.stringify(data) : undefined
     });
 
     const result: Response = await response.json();
     return { data: result };
   } catch (error: any) {
-    return { error };
+    throw new Error(`Error in API request: ${error.message}`);
   }
 };
 
 const http = {
-  get<Response>(apiConfig: ApiConfig) {
-    return sendRequest<Response>(apiConfig, {});
+  get<Response>(apiConfig: ApiConfig, payload?: Payload) {
+    return sendRequest<Response>(apiConfig, payload);
   },
   post<Response>(apiConfig: ApiConfig, payload: Payload) {
     return sendRequest<Response>(apiConfig, payload);

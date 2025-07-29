@@ -23,9 +23,13 @@ const defineApiConfig = <T extends ApiConfigGroup>(config: T) => config;
 
 const apiConfig = defineApiConfig({
   api: {
-    baseUrl: '/api/auth/login',
-    method: 'POST',
-    headers: baseHeader
+    auth: {
+      loginGoogle: {
+        baseUrl: '/api/auth/login/google',
+        method: 'GET',
+        headers: baseHeader
+      }
+    }
   },
   user: {
     activeVip: {
@@ -36,8 +40,9 @@ const apiConfig = defineApiConfig({
     auth: {
       socialLogin: {
         baseUrl: `${AppConstants.apiUrl}v1/user/auth/social-login`,
-        method: 'POST',
-        headers: baseHeader
+        method: 'GET',
+        headers: baseHeader,
+        isRequiredTenantId: true
       },
       webCallback: {
         baseUrl: `${AppConstants.apiUrl}v1/user/auth/web-callback`,

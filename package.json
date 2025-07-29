@@ -2,6 +2,7 @@
   "name": "moviehub-fe",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack --port 3636",
     "prebuild": "rimraf .next && rimraf out",
@@ -87,10 +88,12 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
+      "node scripts/removeFinalEmptyLine.js",
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md,css,scss}": [
+    "*.{json,md,css,scss,html}": [
+      "node scripts/removeFinalEmptyLine.js",
       "prettier --write"
     ]
   }

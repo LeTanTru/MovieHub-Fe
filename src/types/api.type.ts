@@ -8,3 +8,9 @@ export type ApiConfig = {
   isRequiredTenantId?: boolean;
   isUpload?: boolean;
 };
+
+export type Payload = {
+  params?: Record<string, any>;
+  pathParams?: Record<string, string>;
+  data?: any;
+};

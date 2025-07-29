@@ -1,15 +1,21 @@
 'use client';
-
+import { authApiRequest } from '@/apiRequests';
 import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
-import { apiConfig } from '@/constants';
-import http from '@/utils/http.util';
 import Image from 'next/image';
 
 export default function ButtonLoginGoogle() {
   const handleLogin = async () => {
     try {
-    } catch (error) {}
+      const response = await authApiRequest.loginGoogle({
+        params: {
+          loginType: 1
+        }
+      });
+      console.log('🚀 ~ handleLogin ~ response:', response);
+    } catch (error) {
+      console.error('Error logging in with Google:', error);
+    }
   };
 
   return (
