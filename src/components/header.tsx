@@ -235,7 +235,7 @@ export default function Header() {
           </div>
           {/* Right side */}
           <div className='flex items-center gap-2'>
-            <DarkModeToggle />
+            {/* <DarkModeToggle /> */}
             <AuthDialog />
           </div>
         </div>
