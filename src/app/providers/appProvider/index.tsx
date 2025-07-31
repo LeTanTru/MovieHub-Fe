@@ -7,11 +7,12 @@ import { getAccessTokenFromLocalStorage } from '@/utils';
 import { useEffect } from 'react';
 
 export default function AppProvider({ children }: IChildren) {
-  const { setProfile } = useProfileStore();
+  const { setProfile, setLoading } = useProfileStore();
 
   useEffect(() => {
     const accessToken = getAccessTokenFromLocalStorage();
     if (accessToken) {
+      setLoading(true);
       const handleGetProfile = async () => {
         try {
           const response = await accountApiRequest.getProfile();
@@ -19,10 +20,15 @@ export default function AppProvider({ children }: IChildren) {
           setProfile(profile!);
         } catch (error) {
           logger.error('Error fetching profile:', error);
+        } finally {
+          setLoading(false);
         }
       };
       handleGetProfile();
+    } else {
+      setProfile(null);
+      setLoading(false);
     }
-  }, [setProfile]);
+  }, [setProfile, setLoading]);
   return <div>{children}</div>;
 }

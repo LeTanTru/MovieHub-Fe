@@ -2,6 +2,7 @@
 import { accountApiRequest, authApiRequest } from '@/apiRequests';
 import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
+import envConfig from '@/config';
 import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useProfileStore } from '@/store';
@@ -22,7 +23,14 @@ export default function ButtonLoginGoogle() {
         params: { loginType: 1 }
       });
 
-      const googleLoginUrl = response.data;
+      const NODE_ENV = envConfig.NEXT_PUBLIC_NODE_ENV;
+      const googleLoginUrl =
+        NODE_ENV === 'development'
+          ? response.data
+          : response.data?.replace(
+              'http://localhost:3636',
+              envConfig.NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK
+            );
       const width = 500;
       const height = 600;
 

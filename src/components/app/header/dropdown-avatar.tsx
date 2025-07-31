@@ -1,5 +1,5 @@
 import { authApiRequest } from '@/apiRequests';
-import { Button } from '@/components/form';
+import { AvatarField, Button } from '@/components/form';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -40,23 +40,22 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
       <DropdownMenuTrigger autoFocus={false} asChild>
         <Button
           variant='ghost'
-          className='h-10 w-10 rounded-full focus:outline-none focus-visible:ring-0'
+          className='h-10 w-10 rounded-full p-0! focus:outline-none focus-visible:ring-0'
         >
-          <Avatar>
-            <AvatarImage
-              src={`/api/image-proxy?url=${encodeURIComponent(profile?.avatarPath || '')}`}
-            />
-            <Skeleton className='h-10 w-10 rounded-full' />
-          </Avatar>
+          <AvatarField
+            src={`/api/image-proxy?url=${encodeURIComponent(profile?.avatarPath || '')}`}
+            className='border-none'
+            size={40}
+          />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='bg-background border-none'>
+      <DropdownMenuContent className='bg-background shadow-accent mr-5 border-none shadow'>
         <DropdownMenuLabel className='flex min-w-0 flex-col'>
           <span className='text-foreground truncate text-sm font-medium'>
-            Keith Kennedy
+            {profile?.fullName}
           </span>
           <span className='text-muted-foreground truncate text-xs font-normal'>
-            k.kennedy@originui.com
+            {profile?.email}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
