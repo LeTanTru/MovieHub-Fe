@@ -6,7 +6,8 @@ const configSchema = z.object({
   NEXT_PUBLIC_API: z.url().optional(),
   NEXT_PUBLIC_API_MEDIA: z.url().optional(),
   NEXT_PUBLIC_API_VIDEO: z.url().optional(),
-  NEXT_PUBLIC_TENANT_ID: z.string().min(1).max(100).optional()
+  NEXT_PUBLIC_TENANT_ID: z.string().min(1).max(100).optional(),
+  NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK: z.url().optional()
 });
 
 const configProject = configSchema.safeParse({
@@ -14,7 +15,9 @@ const configProject = configSchema.safeParse({
   NEXT_PUBLIC_API: process.env.NEXT_PUBLIC_API,
   NEXT_PUBLIC_API_MEDIA: process.env.NEXT_PUBLIC_API_MEDIA,
   NEXT_PUBLIC_API_VIDEO: process.env.NEXT_PUBLIC_API_VIDEO,
-  NEXT_PUBLIC_TENANT_ID: process.env.NEXT_PUBLIC_TENANT_ID
+  NEXT_PUBLIC_TENANT_ID: process.env.NEXT_PUBLIC_TENANT_ID,
+  NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK:
+    process.env.NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK
 });
 
 if (!configProject.success) {
