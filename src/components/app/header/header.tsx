@@ -1,7 +1,8 @@
+'use client';
+
 import { logoWithText } from '@/assets';
-import AuthDialog from '@/components/_app/auth/auth-dialog';
-import LoginForm from '@/components/_app/auth/login/login-form';
-import DarkModeToggle from '@/components/dark-mode-toggle';
+import AuthDialog from '@/components/app/auth/auth-dialog';
+import DropdownAvatar from '@/components/app/header/dropdown-avatar';
 import { Button } from '@/components/form';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
@@ -16,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
+import { useProfileStore } from '@/store';
 import { BookOpenIcon, InfoIcon, LifeBuoyIcon, MenuIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -94,6 +96,8 @@ const navigationLinks = [
 ];
 
 export default function Header() {
+  const { profile } = useProfileStore();
+  if (!profile) return null;
   return (
     <div>
       <header className='border-b px-4 md:px-6'>
@@ -236,7 +240,7 @@ export default function Header() {
           {/* Right side */}
           <div className='flex items-center gap-2'>
             {/* <DarkModeToggle /> */}
-            <AuthDialog />
+            {!profile ? <AuthDialog /> : <DropdownAvatar profile={profile} />}
           </div>
         </div>
       </header>

@@ -20,5 +20,5 @@ export default function GoogleCallback() {
     }
   }, [router]);
 
-  return <p>Đang xử lý đăng nhập Google...</p>;
+  return <div className='bg-accent'></div>;
 }

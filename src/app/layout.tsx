@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import Header from '@/components/header';
+import Header from '@/components/app/header/header';
 import { AppProvider, QueryProvider } from '@/app/providers';
 
 const inter = Inter({

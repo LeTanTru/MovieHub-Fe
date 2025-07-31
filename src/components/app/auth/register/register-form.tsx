@@ -4,32 +4,31 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
 import { Button, CheckboxField, InputField } from '@/components/form';
-import Link from 'next/link';
-import ButtonLoginGoogle from '@/components/_app/auth/button-login-google';
 import PasswordField from '@/components/form/password-field';
-import { LoginType } from '@/types';
-import { loginSchema } from '@/schemaValidations';
+import Link from 'next/link';
+import ButtonLoginGoogle from '@/components/app/auth/button-login-google';
+import { registerSchema } from '@/schemaValidations';
+import { RegisterType } from '@/types';
 
-export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
-  const form = useForm<LoginType>({
-    resolver: zodResolver(loginSchema),
+export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
+  const form = useForm<RegisterType>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: '',
+      fullName: '',
       password: '',
-      rememberMe: false
+      terms: false
     }
   });
 
-  const onSubmit = (values: LoginType) => {
-    // handle login logic
-  };
+  const onSubmit = (values: RegisterType) => {};
 
   return (
     <>
       <div className='mb-5 flex flex-col items-center gap-2'>
-        <h2 className='text-xl font-semibold'>Đăng nhập</h2>
+        <h2 className='text-xl font-semibold'>Đăng ký</h2>
         <p className='text-muted-foreground text-center text-sm'>
-          Đăng nhập để có trải nghiệm tốt nhất với MovieHub
+          Đăng ký để bắt đầu sử dụng dịch vụ của chúng tôi.
         </p>
       </div>
 
@@ -40,7 +39,13 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
             name='email'
             label='Email'
             placeholder='Nhập email của bạn'
-            type='text'
+            required
+          />
+          <InputField
+            control={form.control}
+            name='fullName'
+            label='Họ và tên'
+            placeholder='Nhập họ và tên của bạn'
             required
           />
           <PasswordField
@@ -48,31 +53,30 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
             name='password'
             label='Mật khẩu'
             placeholder='Nhập mật khẩu của bạn'
-            type='password'
             required
           />
-
-          <div className='flex items-center justify-between text-sm'>
-            <CheckboxField
-              control={form.control}
-              name='rememberMe'
-              label='Ghi nhớ đăng nhập'
-            />
-            <Link href='#' className='underline hover:no-underline'>
-              Quên mật khẩu?
-            </Link>
-          </div>
-
+          <CheckboxField
+            control={form.control}
+            name='terms'
+            label={
+              <span>
+                Tôi đồng ý với{' '}
+                <Link href='/terms' className='text-primary underline'>
+                  các điều khoản và điều kiện
+                </Link>
+              </span>
+            }
+          />
           <Button type='submit' className='w-full'>
-            Đăng nhập
+            Đăng ký
           </Button>
         </form>
       </Form>
 
       <div className='my-4 flex items-center gap-3'>
-        <div className='bg-border h-px flex-1'></div>
+        <div className='bg-border h-px flex-1' />
         <span className='text-muted-foreground text-sm'>Hoặc</span>
-        <div className='bg-border h-px flex-1'></div>
+        <div className='bg-border h-px flex-1' />
       </div>
 
       <ButtonLoginGoogle />
@@ -80,14 +84,14 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
       <div className='bg-accent mt-4 h-px w-full'></div>
 
       <div className='text-muted-foreground mt-1 text-center text-sm'>
-        Chưa có tài khoản?
+        Đã có tài khoản?
         <Button
           type='button'
           variant='link'
           className='text-primary p-0 pl-1'
           onClick={onSwitch}
         >
-          Đăng ký ngay
+          Đăng nhập ngay
         </Button>
       </div>
     </>
