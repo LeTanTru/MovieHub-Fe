@@ -1,6 +1,6 @@
 import envConfig from '@/config';
 import { storageKeys } from '@/constants';
-import { ApiConfig, Payload } from '@/types';
+import { ApiConfig, ApiResponse, Payload } from '@/types';
 import {
   getAccessTokenFromLocalStorage,
   removeAccessTokenFromLocalStorage,
@@ -14,10 +14,7 @@ const isClient = () => typeof window !== 'undefined';
 const sendRequest = async <Response>(
   apiConfig: ApiConfig,
   payload: Payload = {}
-): Promise<{
-  data?: Response;
-  error?: any;
-}> => {
+): Promise<ApiResponse<Response>> => {
   let { baseUrl, headers, method, ignoreAuth, isRequiredTenantId, isUpload } =
     apiConfig;
   const { params = {}, pathParams = {}, data = {} } = payload;
@@ -37,7 +34,7 @@ const sendRequest = async <Response>(
     const { sessionToken, tenantId: serverTenantId } = await getCookiesServer();
     accessToken = sessionToken;
     if (isRequiredTenantId) {
-      tenantId = serverTenantId;
+      tenantId = serverTenantId || process.env.TENANT_ID;
     }
   }
   const baseHeader: { [key: string]: string } = { ...headers };
@@ -66,8 +63,8 @@ const sendRequest = async <Response>(
         // headers: baseHeader,
         body: formData
       });
-      const result: Response = await response.json();
-      return { data: result };
+      const result = await response.json();
+      return result;
     } catch (error: any) {
       throw new Error(`Error in API request: ${error.message}`);
     }
@@ -85,8 +82,8 @@ const sendRequest = async <Response>(
       body: method !== 'GET' && data ? JSON.stringify(data) : undefined
     });
 
-    const result: Response = await response.json();
-    return { data: result };
+    const result = await response.json();
+    return result;
   } catch (error: any) {
     throw new Error(`Error in API request: ${error.message}`);
   }

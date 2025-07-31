@@ -14,3 +14,9 @@ export type Payload = {
   pathParams?: Record<string, string>;
   data?: any;
 };
+
+export type ApiResponse<T> = {
+  data?: T;
+  message?: string;
+  result?: boolean;
+};

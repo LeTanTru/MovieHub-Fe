@@ -26,7 +26,7 @@ const apiConfig = defineApiConfig({
     auth: {
       loginGoogle: {
         baseUrl: '/api/auth/login/google',
-        method: 'GET',
+        method: 'POST',
         headers: baseHeader
       }
     }
@@ -47,7 +47,8 @@ const apiConfig = defineApiConfig({
       webCallback: {
         baseUrl: `${AppConstants.apiUrl}v1/user/auth/web-callback`,
         method: 'POST',
-        headers: baseHeader
+        headers: baseHeader,
+        isRequiredTenantId: true
       }
     },
     changePassword: {
@@ -63,7 +64,8 @@ const apiConfig = defineApiConfig({
     getProfile: {
       baseUrl: `${AppConstants.apiUrl}v1/user/profile`,
       method: 'GET',
-      headers: baseHeader
+      headers: baseHeader,
+      isRequiredTenantId: true
     },
     register: {
       baseUrl: `${AppConstants.apiUrl}v1/user/register`,

@@ -10,13 +10,16 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { Button } from '@/components/form';
-import LoginForm from '@/components/_app/auth/login/login-form';
-import RegisterForm from '@/components/_app/auth/register/register-form';
+import LoginForm from '@/components/app/auth/login/login-form';
+import RegisterForm from '@/components/app/auth/register/register-form';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { useProfileStore } from '@/store';
+import useDialogStore from '@/store/use-auth-store';
 
 export default function AuthDialog() {
-  const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const { open, setOpen, mode, setMode } = useDialogStore((state) => state);
+  const profile = useProfileStore((state) => state.profile);
+  console.log('🚀 ~ AuthDialog ~ profile:', profile);
 
   const switchMode = (targetMode: 'login' | 'register') => {
     setOpen(false);
