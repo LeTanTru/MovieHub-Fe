@@ -1,6 +1,6 @@
 import envConfig from '@/config';
 import { storageKeys } from '@/constants';
-import { ApiConfig, ApiResponse, Payload } from '@/types';
+import { ApiConfig, Payload } from '@/types';
 import {
   getAccessTokenFromLocalStorage,
   removeAccessTokenFromLocalStorage,
@@ -11,10 +11,10 @@ import { getCookiesServer } from '@/utils/cookies-server.util';
 
 const isClient = () => typeof window !== 'undefined';
 
-const sendRequest = async <Response>(
+const sendRequest = async <T>(
   apiConfig: ApiConfig,
   payload: Payload = {}
-): Promise<ApiResponse<Response>> => {
+): Promise<T> => {
   let { baseUrl, headers, method, ignoreAuth, isRequiredTenantId, isUpload } =
     apiConfig;
   const { params = {}, pathParams = {}, data = {} } = payload;
@@ -90,17 +90,17 @@ const sendRequest = async <Response>(
 };
 
 const http = {
-  get<Response>(apiConfig: ApiConfig, payload?: Payload) {
-    return sendRequest<Response>(apiConfig, payload);
+  get<T>(apiConfig: ApiConfig, payload?: Payload) {
+    return sendRequest<T>(apiConfig, payload);
   },
-  post<Response>(apiConfig: ApiConfig, payload: Payload) {
-    return sendRequest<Response>(apiConfig, payload);
+  post<T>(apiConfig: ApiConfig, payload?: Payload) {
+    return sendRequest<T>(apiConfig, payload);
   },
-  put<Response>(apiConfig: ApiConfig, payload: Payload) {
-    return sendRequest<Response>(apiConfig, payload);
+  put<T>(apiConfig: ApiConfig, payload?: Payload) {
+    return sendRequest<T>(apiConfig, payload);
   },
-  delete<Response>(apiConfig: ApiConfig, payload: Payload) {
-    return sendRequest<Response>(apiConfig, payload);
+  delete<T>(apiConfig: ApiConfig, payload?: Payload) {
+    return sendRequest<T>(apiConfig, payload);
   }
 };
 

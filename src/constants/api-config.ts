@@ -28,6 +28,11 @@ const apiConfig = defineApiConfig({
         baseUrl: '/api/auth/login/google',
         method: 'POST',
         headers: baseHeader
+      },
+      logout: {
+        baseUrl: '/api/auth/logout',
+        method: 'POST',
+        headers: baseHeader
       }
     }
   },

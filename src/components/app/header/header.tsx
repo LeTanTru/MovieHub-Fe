@@ -97,7 +97,6 @@ const navigationLinks = [
 
 export default function Header() {
   const { profile } = useProfileStore();
-  if (!profile) return null;
   return (
     <div>
       <header className='border-b px-4 md:px-6'>
