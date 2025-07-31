@@ -62,7 +62,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem className='cursor-pointer' onClick={handleLogout}>
           <LogOutIcon size={16} className='opacity-60' aria-hidden='true' />
-          <span>Logout</span>
+          <span>Đăng xuất</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
