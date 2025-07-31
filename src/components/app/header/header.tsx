@@ -17,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useProfileStore } from '@/store';
 import { BookOpenIcon, InfoIcon, LifeBuoyIcon, MenuIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -96,7 +97,7 @@ const navigationLinks = [
 ];
 
 export default function Header() {
-  const { profile } = useProfileStore();
+  const { profile, loading } = useProfileStore();
   return (
     <div>
       <header className='border-b px-4 md:px-6'>
@@ -239,7 +240,13 @@ export default function Header() {
           {/* Right side */}
           <div className='flex items-center gap-2'>
             {/* <DarkModeToggle /> */}
-            {!profile ? <AuthDialog /> : <DropdownAvatar profile={profile} />}
+            {loading ? (
+              <Skeleton className='h-10 w-10 rounded-full' />
+            ) : !profile ? (
+              <AuthDialog />
+            ) : (
+              <DropdownAvatar profile={profile} />
+            )}
           </div>
         </div>
       </header>
