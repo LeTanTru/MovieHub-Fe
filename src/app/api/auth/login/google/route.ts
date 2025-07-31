@@ -9,8 +9,8 @@ export async function POST(request: Request) {
   const code = req.code;
   try {
     const response = await authApiRequest.loginGoogleCallback(code);
-    const accessToken = response.data?.access_token!;
-    const userKind = response.data?.user_kind!;
+    const accessToken = response.access_token!;
+    const userKind = response.user_kind!;
     cookieStore.set(storageKeys.ACCESS_TOKEN, accessToken, {
       path: '/',
       httpOnly: true,
