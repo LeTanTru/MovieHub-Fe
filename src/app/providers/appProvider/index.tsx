@@ -1,34 +1,39 @@
 'use client';
-import { accountApiRequest } from '@/apiRequests';
 import { IChildren } from '@/interfaces';
 import { logger } from '@/logger';
+import { useProfileQuery } from '@/queries/use-account';
 import { useProfileStore } from '@/store';
 import { getAccessTokenFromLocalStorage } from '@/utils';
 import { useEffect } from 'react';
 
 export default function AppProvider({ children }: IChildren) {
   const { setProfile, setLoading } = useProfileStore();
+  const profileQuery = useProfileQuery();
 
   useEffect(() => {
     const accessToken = getAccessTokenFromLocalStorage();
-    if (accessToken) {
-      setLoading(true);
-      const handleGetProfile = async () => {
-        try {
-          const response = await accountApiRequest.getProfile();
-          const profile = response.data;
-          setProfile(profile!);
-        } catch (error) {
-          logger.error('Error fetching profile:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-      handleGetProfile();
-    } else {
+    if (!accessToken) {
       setProfile(null);
       setLoading(false);
+      return;
     }
-  }, [setProfile, setLoading]);
+
+    const handleGetProfile = async () => {
+      setLoading(true);
+      try {
+        const response = await profileQuery.refetch();
+        const profile = response.data?.data;
+        setProfile(profile!);
+      } catch (error) {
+        logger.error('Error fetching profile:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handleGetProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return <div>{children}</div>;
 }

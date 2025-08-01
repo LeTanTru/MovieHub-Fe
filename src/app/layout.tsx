@@ -5,7 +5,6 @@ import { ToastContainer } from 'react-toastify';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import Header from '@/components/app/header/header';
 import { AppProvider, QueryProvider } from '@/app/providers';
 
 const inter = Inter({
@@ -27,19 +26,19 @@ export default async function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body className={`${inter.variable} ${inter.className} antialiased`}>
-        <AppProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange
-          >
-            <QueryProvider>
+        <QueryProvider>
+          <AppProvider>
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange
+            >
               <NextTopLoader showSpinner={false} />
               <Suspense>{children}</Suspense>
-            </QueryProvider>
-          </ThemeProvider>
-        </AppProvider>
+            </ThemeProvider>
+          </AppProvider>
+        </QueryProvider>
         <ToastContainer />
       </body>
     </html>

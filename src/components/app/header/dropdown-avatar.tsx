@@ -1,6 +1,5 @@
 import { authApiRequest } from '@/apiRequests';
 import { AvatarField, Button } from '@/components/form';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,7 +8,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { Skeleton } from '@/components/ui/skeleton';
 import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useProfileStore } from '@/store';
