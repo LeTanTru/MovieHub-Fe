@@ -1,10 +1,11 @@
+import { logger } from '@/logger';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 
 export const decodeJwt = (token: string): JwtPayload | null => {
   try {
     return jwtDecode(token);
   } catch (error) {
-    console.error('Failed to decode JWT:', error);
+    logger.error('Failed to decode JWT:', error);
     return null;
   }
 };

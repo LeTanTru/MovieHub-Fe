@@ -1,19 +1,42 @@
 import { apiConfig } from '@/constants';
-import { ApiResponse, LoginResponse, Payload } from '@/types';
+import {
+  ApiResponse,
+  LoginBodyType,
+  LoginResponse,
+  Payload,
+  RegisterBodyType
+} from '@/types';
 import http from '@/utils/http.util';
 
 const authApiRequest = {
-  getGoogleLoginUrl: async (payload?: Payload) =>
-    await http.get<ApiResponse<any>>(apiConfig.user.auth.socialLogin, payload),
+  getGoogleLoginUrl: async (loginType: string | number) =>
+    await http.get<ApiResponse<any>>(apiConfig.user.auth.socialLogin, {
+      params: { loginType }
+    }),
   loginGoogle: async (code: string) =>
     http.post<ApiResponse<any>>(apiConfig.api.auth.loginGoogle, {
-      data: { code }
+      body: { code }
     }),
   loginGoogleCallback: async (code: string) =>
     http.post<LoginResponse>(apiConfig.user.auth.webCallback, {
-      data: { code }
+      body: { code }
     }),
-  logout: async () => http.post(apiConfig.api.auth.logout)
+  logout: async () => http.post(apiConfig.api.auth.logout),
+  login: async (body: LoginBodyType) =>
+    await http.post<ApiResponse<any> & LoginResponse>(
+      apiConfig.api.auth.login,
+      {
+        body
+      }
+    ),
+  loginFromNextServer: async (body: Payload) =>
+    await http.post<LoginResponse>(apiConfig.user.login, {
+      body
+    }),
+  register: async (body: RegisterBodyType) =>
+    await http.post<ApiResponse<any>>(apiConfig.user.register, {
+      body: body
+    })
 };
 
 export default authApiRequest;

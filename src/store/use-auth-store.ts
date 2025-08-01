@@ -1,17 +1,22 @@
+import { ProfileType } from '@/types';
 import { create } from 'zustand';
 
 type AuthStoreType = {
-  open: boolean;
-  mode: 'login' | 'register';
-  setOpen: (open: boolean) => void;
-  setMode: (mode: 'login' | 'register') => void;
+  isAuthenticated: boolean;
+  setAuthenticated: (isAuthenticated: boolean) => void;
+  profile: ProfileType | null;
+  setProfile: (profile: ProfileType | null) => void;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
 };
 
-const useDialogStore = create<AuthStoreType>((set) => ({
-  open: false,
-  mode: 'login',
-  setOpen: (open: boolean) => set({ open }),
-  setMode: (mode: 'login' | 'register') => set({ mode })
+const useAuthStore = create<AuthStoreType>((set) => ({
+  isAuthenticated: false,
+  profile: null,
+  loading: true,
+  setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
+  setProfile: (profile: ProfileType | null) => set({ profile }),
+  setLoading: (loading: boolean) => set({ loading })
 }));
 
-export default useDialogStore;
+export default useAuthStore;

@@ -1,4 +1,5 @@
 'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Dialog,
@@ -11,10 +12,10 @@ import { Button } from '@/components/form';
 import LoginForm from '@/components/app/auth/login/login-form';
 import RegisterForm from '@/components/app/auth/register/register-form';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import useDialogStore from '@/store/use-auth-store';
+import { useDialogStore } from '@/store';
 
 export default function AuthDialog() {
-  const { open, setOpen, mode, setMode } = useDialogStore((state) => state);
+  const { open, setOpen, mode, setMode } = useDialogStore();
 
   const switchMode = (targetMode: 'login' | 'register') => {
     setOpen(false);
@@ -31,7 +32,6 @@ export default function AuthDialog() {
           <Button
             className='rounded-full'
             onClick={() => {
-              setMode('login');
               setOpen(true);
             }}
           >

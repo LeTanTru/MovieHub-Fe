@@ -3,29 +3,23 @@ import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
 import { AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import { useProfileQuery } from '@/queries/use-account';
 import {
   useLoginGoogleMutation,
   useLoginGoogleQuery
 } from '@/queries/use-auth';
-import { useProfileStore } from '@/store';
-import useDialogStore from '@/store/use-auth-store';
+import { useAuthStore, useDialogStore } from '@/store';
 import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
 import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function ButtonLoginGoogle() {
-  const { setOpen, setMode } = useDialogStore();
-  const { setProfile } = useProfileStore();
+  const { setOpen } = useDialogStore();
   const loginGoogleQuery = useLoginGoogleQuery(AppConstants.loginType);
   const loginGoogleMutation = useLoginGoogleMutation();
-  const profileQuery = useProfileQuery();
+  const { setAuthenticated } = useAuthStore();
 
-  const loading =
-    loginGoogleQuery.isFetching ||
-    loginGoogleMutation.isPending ||
-    profileQuery.isFetching;
+  const loading = loginGoogleQuery.isFetching || loginGoogleMutation.isPending;
 
   const handleGetGoogleLoginUrl = async () => {
     try {
@@ -66,11 +60,8 @@ export default function ButtonLoginGoogle() {
         setAccessTokenToLocalStorage(response.data?.access_token!);
         setData(storageKeys.USER_KIND, String(response.data?.user_kind!));
 
-        const profileRes = await profileQuery.refetch();
-        const profile = profileRes.data?.data;
-        setProfile(profile!);
         setOpen(false);
-        setMode('login');
+        setAuthenticated(true);
         notify.success('Đăng nhập thành công');
       } catch (error) {
         logger.error('Error during Google login:', error);
@@ -87,7 +78,7 @@ export default function ButtonLoginGoogle() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [setOpen, setMode, setProfile, loginGoogleMutation, profileQuery]);
+  }, [loginGoogleMutation, setAuthenticated, setOpen]);
 
   return (
     <Button

@@ -12,11 +12,12 @@ export type ApiConfig = {
 export type Payload = {
   params?: Record<string, any>;
   pathParams?: Record<string, string>;
-  data?: any;
+  body?: any;
 };
 
 export type ApiResponse<T> = {
   data?: T;
   message?: string;
   result?: boolean;
+  code?: string;
 };

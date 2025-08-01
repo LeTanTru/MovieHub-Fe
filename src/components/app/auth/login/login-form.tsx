@@ -1,5 +1,4 @@
 'use client';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
@@ -7,8 +6,15 @@ import { Button, CheckboxField, InputField } from '@/components/form';
 import Link from 'next/link';
 import ButtonLoginGoogle from '@/components/app/auth/button-login-google';
 import PasswordField from '@/components/form/password-field';
-import { LoginType } from '@/types';
+import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
+import { useLoginMutation } from '@/queries/use-auth';
+import { logger } from '@/logger';
+import { pick } from 'lodash';
+import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
+import { storageKeys } from '@/constants';
+import { Loader2 } from 'lucide-react';
+import { useAuthStore, useDialogStore } from '@/store';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const form = useForm<LoginType>({
@@ -19,9 +25,32 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
       rememberMe: false
     }
   });
+  const { setOpen } = useDialogStore();
+  const { setAuthenticated } = useAuthStore();
 
-  const onSubmit = (values: LoginType) => {
-    // handle login logic
+  const loginMutation = useLoginMutation();
+
+  const onSubmit = async (values: LoginBodyType) => {
+    try {
+      const body = pick(values, ['email', 'password']);
+      const response = await loginMutation.mutateAsync(body);
+      if (response.result !== undefined && response.result === false) {
+        notify.error('Tài khoản hoặc mật khẩu không đúng');
+      } else {
+        const accessToken = response.access_token;
+        const userKind = response.user_kind;
+        setAccessTokenToLocalStorage(accessToken);
+
+        setData(storageKeys.USER_KIND, String(userKind));
+        notify.success('Đăng nhập thành công');
+        setOpen(false);
+        setTimeout(() => {
+          setAuthenticated(true);
+        }, 100);
+      }
+    } catch (error) {
+      logger.error('Login failed:', error);
+    }
   };
 
   return (
@@ -64,7 +93,11 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
           </div>
 
           <Button type='submit' className='w-full'>
-            Đăng nhập
+            {loginMutation.isPending ? (
+              <Loader2 className='h-6! w-6! animate-spin' />
+            ) : (
+              'Đăng nhập'
+            )}
           </Button>
         </form>
       </Form>

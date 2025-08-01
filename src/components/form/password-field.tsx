@@ -1,8 +1,5 @@
 'use client';
-
 import { Button } from '@/components/form';
-import List from '@/components/list';
-import ListItem from '@/components/list/ListItem';
 import {
   FormControl,
   FormDescription,
@@ -13,8 +10,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib';
-import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from 'lucide-react';
-import { useId, useMemo, useState } from 'react';
+import { EyeIcon, EyeOffIcon } from 'lucide-react';
+import { useState } from 'react';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 type InputFieldProps<T extends FieldValues> = {
@@ -96,6 +93,7 @@ export default function PasswordField<T extends FieldValues>({
                   readOnly={readOnly}
                   {...field}
                   value={value}
+                  style={{ paddingTop: 0 }}
                   className={cn(className, 'focus-visible:ring-[1px]', {
                     'cursor-not-allowed opacity-50': disabled
                   })}

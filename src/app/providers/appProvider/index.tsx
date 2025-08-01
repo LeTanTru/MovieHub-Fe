@@ -2,12 +2,12 @@
 import { IChildren } from '@/interfaces';
 import { logger } from '@/logger';
 import { useProfileQuery } from '@/queries/use-account';
-import { useProfileStore } from '@/store';
+import { useAuthStore } from '@/store';
 import { getAccessTokenFromLocalStorage } from '@/utils';
 import { useEffect } from 'react';
 
 export default function AppProvider({ children }: IChildren) {
-  const { setProfile, setLoading } = useProfileStore();
+  const { isAuthenticated, setProfile, setLoading } = useAuthStore();
   const profileQuery = useProfileQuery();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function AppProvider({ children }: IChildren) {
 
     handleGetProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAuthenticated]);
 
   return <div>{children}</div>;
 }
