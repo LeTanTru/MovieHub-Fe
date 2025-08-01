@@ -1,4 +1,4 @@
-export const languageNameMap: Record<string, string> = {
+const languageNameMap: Record<string, string> = {
   Off: 'Tắt',
   English: 'Tiếng Anh',
   Vietnamese: 'Tiếng Việt',
@@ -15,3 +15,5 @@ export const languageNameMap: Record<string, string> = {
   Arabic: 'Tiếng Ả Rập',
   Hindi: 'Tiếng Hindi'
 };
+
+export default languageNameMap;

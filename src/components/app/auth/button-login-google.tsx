@@ -1,28 +1,37 @@
 'use client';
-import { accountApiRequest, authApiRequest } from '@/apiRequests';
 import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
-import { storageKeys } from '@/constants';
+import { AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
+import { useProfileQuery } from '@/queries/use-account';
+import {
+  useLoginGoogleMutation,
+  useLoginGoogleQuery
+} from '@/queries/use-auth';
 import { useProfileStore } from '@/store';
 import useDialogStore from '@/store/use-auth-store';
 import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
 import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export default function ButtonLoginGoogle() {
   const { setOpen, setMode } = useDialogStore();
   const { setProfile } = useProfileStore();
-  const [loading, setLoading] = useState(false);
+  const loginGoogleQuery = useLoginGoogleQuery(AppConstants.loginType);
+  const loginGoogleMutation = useLoginGoogleMutation();
+  const profileQuery = useProfileQuery();
+
+  const loading =
+    loginGoogleQuery.isFetching ||
+    loginGoogleMutation.isPending ||
+    profileQuery.isFetching;
 
   const handleGetGoogleLoginUrl = async () => {
     try {
-      const response = await authApiRequest.getGoogleLoginUrl({
-        params: { loginType: 1 }
-      });
+      const response = await loginGoogleQuery.refetch();
 
-      const googleLoginUrl = response.data;
+      const googleLoginUrl = response.data?.data;
       const width = 500;
       const height = 600;
 
@@ -52,14 +61,13 @@ export default function ButtonLoginGoogle() {
   useEffect(() => {
     const handleLogin = async (code: string) => {
       try {
-        setLoading(true);
-        const response = await authApiRequest.loginGoogle(code);
+        const response = await loginGoogleMutation.mutateAsync(code);
 
         setAccessTokenToLocalStorage(response.data?.access_token!);
         setData(storageKeys.USER_KIND, String(response.data?.user_kind!));
 
-        const profileRes = await accountApiRequest.getProfile();
-        const profile = profileRes.data;
+        const profileRes = await profileQuery.refetch();
+        const profile = profileRes.data?.data;
         setProfile(profile!);
         setOpen(false);
         setMode('login');
@@ -67,8 +75,6 @@ export default function ButtonLoginGoogle() {
       } catch (error) {
         logger.error('Error during Google login:', error);
         notify.error('Đăng nhập thất bại');
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -81,7 +87,7 @@ export default function ButtonLoginGoogle() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [setOpen, setMode, setProfile]);
+  }, [setOpen, setMode, setProfile, loginGoogleMutation, profileQuery]);
 
   return (
     <Button

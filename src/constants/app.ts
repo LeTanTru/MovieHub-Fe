@@ -8,7 +8,8 @@ const AppConstants = {
   apiUrl,
   contentRootUrl: `${apiUrl}v1/file/download`,
   mediaRootUrl: `${mediaUrl}`,
-  videoRootUrl: `${videoUrl}`
+  videoRootUrl: `${videoUrl}`,
+  loginType: 1
 };
 
 export default AppConstants;
