@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import { useProfileStore } from '@/store';
+import { useAuthStore } from '@/store';
 import { ProfileType } from '@/types';
 import { notify, removeAccessTokenFromLocalStorage, removeData } from '@/utils';
 import { LogOutIcon } from 'lucide-react';
@@ -21,13 +21,14 @@ type DropdownAvatarProps = {
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
-  const { setProfile } = useProfileStore();
+  const { setAuthenticated, setProfile } = useAuthStore();
   const handleLogout = async () => {
     try {
       await authApiRequest.logout();
       removeAccessTokenFromLocalStorage();
       removeData(storageKeys.USER_KIND);
       setProfile(null);
+      setAuthenticated(false);
       notify.success('Đăng xuất thành công');
     } catch (error) {
       logger.error('Logout failed:', error);
@@ -40,11 +41,17 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
           variant='ghost'
           className='h-10 w-10 rounded-full p-0! focus:outline-none focus-visible:ring-0'
         >
-          <AvatarField
-            src={`/api/image-proxy?url=${encodeURIComponent(profile?.avatarPath || '')}`}
-            className='border-none'
-            size={40}
-          />
+          {profile?.avatarPath ? (
+            <AvatarField
+              src={`/api/image-proxy?url=${encodeURIComponent(profile?.avatarPath || '')}`}
+              className='border-none'
+              size={40}
+            />
+          ) : (
+            <div className='bg-muted flex h-10 w-10 items-center justify-center rounded-full text-xl'>
+              {profile?.fullName.charAt(0)}
+            </div>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='bg-background shadow-accent mr-5 border-none shadow'>

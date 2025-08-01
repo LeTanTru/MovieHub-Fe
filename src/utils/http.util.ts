@@ -17,7 +17,7 @@ const sendRequest = async <T>(
 ): Promise<T> => {
   let { baseUrl, headers, method, ignoreAuth, isRequiredTenantId, isUpload } =
     apiConfig;
-  const { params = {}, pathParams = {}, data = {} } = payload;
+  const { params = {}, pathParams = {}, body = {} } = payload;
 
   let accessToken: string | null = '';
   let tenantId: string | null | undefined = '';
@@ -53,8 +53,8 @@ const sendRequest = async <T>(
 
   if (headers['Content-Type'] === 'multipart/form-data' && isUpload) {
     const formData = new FormData();
-    Object.keys(data).forEach((key) => {
-      formData.append(key, data[key]);
+    Object.keys(body).forEach((key) => {
+      formData.append(key, body[key]);
     });
 
     try {
@@ -79,7 +79,7 @@ const sendRequest = async <T>(
         ...baseHeader,
         'Content-Type': headers['Content-Type'] || 'application/json'
       },
-      body: method !== 'GET' && data ? JSON.stringify(data) : undefined
+      body: method !== 'GET' && body ? JSON.stringify(body) : undefined
     });
 
     const result = await response.json();

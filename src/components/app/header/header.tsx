@@ -18,7 +18,7 @@ import {
   PopoverTrigger
 } from '@/components/ui/popover';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useProfileStore } from '@/store';
+import { useAuthStore } from '@/store';
 import { BookOpenIcon, InfoIcon, LifeBuoyIcon, MenuIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -97,7 +97,7 @@ const navigationLinks = [
 ];
 
 export default function Header() {
-  const { profile, loading } = useProfileStore();
+  const { profile, loading } = useAuthStore();
   return (
     <div>
       <header className='border-b px-4 md:px-6'>

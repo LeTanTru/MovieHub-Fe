@@ -4,6 +4,9 @@ import z from 'zod';
 type LoginType = z.output<typeof loginSchema>;
 type RegisterType = z.output<typeof registerSchema>;
 
+type LoginBodyType = Omit<LoginType, 'rememberMe'>;
+type RegisterBodyType = Omit<RegisterType, 'terms'>;
+
 type LoginResponse = {
   access_token: string;
   token_type: string;
@@ -18,4 +21,10 @@ type LoginResponse = {
   jti: string;
 };
 
-export type { LoginType, RegisterType, LoginResponse };
+export type {
+  LoginType,
+  RegisterType,
+  LoginResponse,
+  LoginBodyType,
+  RegisterBodyType
+};

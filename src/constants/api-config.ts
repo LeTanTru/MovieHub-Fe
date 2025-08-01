@@ -33,6 +33,11 @@ const apiConfig = defineApiConfig({
         baseUrl: '/api/auth/logout',
         method: 'POST',
         headers: baseHeader
+      },
+      login: {
+        baseUrl: '/api/auth/login',
+        method: 'POST',
+        headers: baseHeader
       }
     }
   },
@@ -64,7 +69,8 @@ const apiConfig = defineApiConfig({
     login: {
       baseUrl: `${AppConstants.apiUrl}v1/user/login`,
       method: 'POST',
-      headers: baseHeader
+      headers: baseHeader,
+      isRequiredTenantId: true
     },
     getProfile: {
       baseUrl: `${AppConstants.apiUrl}v1/user/profile`,
@@ -75,12 +81,14 @@ const apiConfig = defineApiConfig({
     register: {
       baseUrl: `${AppConstants.apiUrl}v1/user/register`,
       method: 'POST',
-      headers: baseHeader
+      headers: baseHeader,
+      isRequiredTenantId: true
     },
     updateProfile: {
       baseUrl: `${AppConstants.apiUrl}v1/user/profile`,
       method: 'PUT',
-      headers: baseHeader
+      headers: baseHeader,
+      isRequiredTenantId: true
     }
   },
   file: {

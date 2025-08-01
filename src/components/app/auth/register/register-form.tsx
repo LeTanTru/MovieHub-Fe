@@ -1,16 +1,21 @@
 'use client';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
 import { Button, CheckboxField, InputField } from '@/components/form';
 import PasswordField from '@/components/form/password-field';
 import Link from 'next/link';
-import ButtonLoginGoogle from '@/components/app/auth/button-login-google';
 import { registerSchema } from '@/schemaValidations';
 import { RegisterType } from '@/types';
+import { logger } from '@/logger';
+import { useRegisterMutation } from '@/queries/use-auth';
+import { registerErrorMaps } from '@/constants';
+import { Loader2 } from 'lucide-react';
+import { applyFormErrors, notify } from '@/utils';
+import { useDialogStore } from '@/store';
 
 export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
+  const { setOpen, setMode } = useDialogStore();
   const form = useForm<RegisterType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -20,8 +25,25 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
       terms: false
     }
   });
+  const registerMutation = useRegisterMutation();
 
-  const onSubmit = (values: RegisterType) => {};
+  const onSubmit = async (values: RegisterType) => {
+    try {
+      const response = await registerMutation.mutateAsync(values);
+      if (!response?.result && response.code) {
+        applyFormErrors(form, response.code, registerErrorMaps);
+      } else {
+        notify.success('Đăng ký thành công');
+        setOpen(false);
+        setTimeout(() => {
+          setOpen(true);
+          setMode('login');
+        }, 300);
+      }
+    } catch (error) {
+      logger.error('Error during registration:', error);
+    }
+  };
 
   return (
     <>
@@ -68,18 +90,14 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
             }
           />
           <Button type='submit' className='w-full'>
-            Đăng ký
+            {registerMutation.isPending ? (
+              <Loader2 className='h-6! w-6! animate-spin' />
+            ) : (
+              'Đăng ký'
+            )}
           </Button>
         </form>
       </Form>
-
-      <div className='my-4 flex items-center gap-3'>
-        <div className='bg-border h-px flex-1' />
-        <span className='text-muted-foreground text-sm'>Hoặc</span>
-        <div className='bg-border h-px flex-1' />
-      </div>
-
-      <ButtonLoginGoogle />
 
       <div className='bg-accent mt-4 h-px w-full'></div>
 
