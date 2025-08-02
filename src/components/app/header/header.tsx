@@ -1,5 +1,4 @@
 'use client';
-
 import { logoWithText } from '@/assets';
 import AuthDialog from '@/components/app/auth/auth-dialog';
 import DropdownAvatar from '@/components/app/header/dropdown-avatar';
@@ -19,6 +18,7 @@ import {
 } from '@/components/ui/popover';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthStore } from '@/store';
+import { AnimatePresence, motion } from 'framer-motion';
 import { BookOpenIcon, InfoIcon, LifeBuoyIcon, MenuIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -98,9 +98,10 @@ const navigationLinks = [
 
 export default function Header() {
   const { profile, loading } = useAuthStore();
+
   return (
     <div>
-      <header className='border-b px-4 md:px-6'>
+      <header className='border-b pr-4 pl-0'>
         <div className='flex h-16 items-center justify-between gap-4'>
           {/* Left side */}
           <div className='flex items-center gap-2'>
@@ -194,7 +195,7 @@ export default function Header() {
                 render={(item) => {
                   return item.submenu ? (
                     <>
-                      <NavigationMenuTrigger className='text-muted-foreground hover:text-primary cursor-pointer bg-transparent font-medium transition-all duration-200 ease-linear hover:bg-transparent! data-[state=open]:bg-transparent *:[svg]:-me-0.5 *:[svg]:size-3.5'>
+                      <NavigationMenuTrigger className='text-muted-foreground hover:text-primary focus:text-primary group-[state=open]:text-primary cursor-pointer bg-transparent font-medium transition-all duration-200 ease-linear group-[state=open]:bg-transparent hover:bg-transparent! focus:bg-transparent data-[state=open]:bg-transparent *:[svg]:-me-0.5 *:[svg]:size-3.5'>
                         {item.label}
                       </NavigationMenuTrigger>
                       <NavigationMenuContent className='data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! bg-background! z-50 border-none! duration-200'>
@@ -240,13 +241,39 @@ export default function Header() {
           {/* Right side */}
           <div className='flex items-center gap-2'>
             {/* <DarkModeToggle /> */}
-            {loading ? (
-              <Skeleton className='h-10 w-10 rounded-full' />
-            ) : !profile ? (
-              <AuthDialog />
-            ) : (
-              <DropdownAvatar profile={profile} />
-            )}
+            <AnimatePresence mode='wait' initial={false}>
+              {loading ? (
+                <motion.div
+                  key='loading'
+                  // initial={{ opacity: 0, x: 10 }}
+                  // animate={{ opacity: 1, x: 0 }}
+                  // exit={{ opacity: 0, x: 10 }}
+                  // transition={{ duration: 0.25 }}
+                >
+                  <Skeleton className='h-10 w-10 rounded-full' />
+                </motion.div>
+              ) : !profile ? (
+                <motion.div
+                  key='auth'
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <AuthDialog />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key='avatar'
+                  // initial={{ opacity: 0, x: 10 }}
+                  // animate={{ opacity: 1, x: 0 }}
+                  // exit={{ opacity: 0, x: 10 }}
+                  // transition={{ duration: 0.25 }}
+                >
+                  <DropdownAvatar profile={profile} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </header>

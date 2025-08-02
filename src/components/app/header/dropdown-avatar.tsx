@@ -17,19 +17,21 @@ import { LogOutIcon } from 'lucide-react';
 import React from 'react';
 
 type DropdownAvatarProps = {
-  profile: ProfileType | null;
+  profile?: ProfileType | null;
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
   const { setAuthenticated, setProfile } = useAuthStore();
   const handleLogout = async () => {
     try {
-      await authApiRequest.logout();
-      removeAccessTokenFromLocalStorage();
-      removeData(storageKeys.USER_KIND);
-      setProfile(null);
-      setAuthenticated(false);
-      notify.success('Đăng xuất thành công');
+      const response = await authApiRequest.logout();
+      if (response.result) {
+        removeAccessTokenFromLocalStorage();
+        removeData(storageKeys.USER_KIND);
+        setProfile(null);
+        setAuthenticated(false);
+        notify.success('Đăng xuất thành công');
+      }
     } catch (error) {
       logger.error('Logout failed:', error);
     }

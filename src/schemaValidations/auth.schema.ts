@@ -2,8 +2,7 @@ import z from 'zod';
 
 const loginSchema = z.object({
   email: z.string().nonempty('Bắt buộc').email('Email không hợp lệ'),
-  password: z.string().nonempty('Bắt buộc'),
-  rememberMe: z.boolean().optional()
+  password: z.string().nonempty('Bắt buộc')
 });
 
 const registerSchema = z.object({

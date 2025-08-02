@@ -1,21 +1,16 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog';
 import { Button } from '@/components/form';
 import LoginForm from '@/components/app/auth/login/login-form';
 import RegisterForm from '@/components/app/auth/register/register-form';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { useDialogStore } from '@/store';
+import { X } from 'lucide-react';
 
 export default function AuthDialog() {
   const { open, setOpen, mode, setMode } = useDialogStore();
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const switchMode = (targetMode: 'login' | 'register') => {
     setOpen(false);
@@ -25,54 +20,74 @@ export default function AuthDialog() {
     }, 300);
   };
 
+  const handleClickOutside = (e: MouseEvent) => {
+    if (overlayRef.current && e.target === overlayRef.current) {
+      setOpen(false);
+      setMode('login');
+    }
+  };
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.body.style.overflow = 'auto';
+      window.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+      window.removeEventListener('mousedown', handleClickOutside);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <div className='flex gap-4'>
-        <DialogTrigger asChild>
-          <Button
-            className='rounded-full'
-            onClick={() => {
-              setOpen(true);
-            }}
+    <>
+      <Button className='rounded-full' onClick={() => setOpen(true)}>
+        Đăng nhập
+      </Button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            ref={overlayRef}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
           >
-            Đăng nhập
-          </Button>
-        </DialogTrigger>
-      </div>
-
-      <DialogHeader>
-        <VisuallyHidden>
-          <DialogTitle>
-            {mode === 'login' ? 'Đăng nhập' : 'Đăng ký'}
-          </DialogTitle>
-        </VisuallyHidden>
-      </DialogHeader>
-
-      <DialogContent className='data-[state=open]:slide-in-from-top-16! data-[state=closed]:slide-out-to-top-16! data-[state=open]:zoom-in-100 data-[state=closed]:zoom-out-100 [&>button[data-slot=dialog-close]] w-110 border-none [&>button[data-slot=dialog-close]]:cursor-pointer [&>button[data-slot=dialog-close]]:focus:ring-0 [&>button[data-slot=dialog-close]]:focus:outline-none'>
-        <AnimatePresence mode='wait' initial={false}>
-          {mode === 'login' ? (
             <motion.div
-              key='login'
-              initial={{ y: -20, opacity: 0 }}
+              initial={{ y: -100, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 20, opacity: 0 }}
+              exit={{ y: -100, opacity: 0 }}
               transition={{ duration: 0.25 }}
+              className='bg-background relative w-[440px] max-w-full overflow-hidden rounded-xl p-6 shadow-2xl'
             >
-              <LoginForm onSwitch={() => switchMode('register')} />
+              <Button
+                variant='ghost'
+                size='icon'
+                onClick={() => setOpen(false)}
+                className='absolute top-3 right-3 text-gray-500 hover:bg-transparent! hover:text-gray-300'
+              >
+                <X className='h-5! w-5!' />
+              </Button>
+
+              {/* ✅ Đây là phần quản lý login/register chuyển đổi */}
+              <AnimatePresence mode='wait'>
+                <motion.div key={mode}>
+                  {mode === 'login' ? (
+                    <LoginForm onSwitch={() => switchMode('register')} />
+                  ) : (
+                    <RegisterForm onSwitch={() => switchMode('login')} />
+                  )}
+                </motion.div>
+              </AnimatePresence>
             </motion.div>
-          ) : (
-            <motion.div
-              key='register'
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 20, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-            >
-              <RegisterForm onSwitch={() => switchMode('login')} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </DialogContent>
-    </Dialog>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
