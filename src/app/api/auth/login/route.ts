@@ -9,22 +9,23 @@ export async function POST(request: Request) {
   const cookieStore = await cookies();
   try {
     const response = await authApiRequest.loginFromNextServer(req);
-    const accessToken = response.access_token!;
-    const userKind = response.user_kind!;
-    cookieStore.set(storageKeys.ACCESS_TOKEN, accessToken, {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: true
-    });
+    if (response.result !== false) {
+      const accessToken = response.access_token!;
+      const userKind = response.user_kind!;
+      cookieStore.set(storageKeys.ACCESS_TOKEN, accessToken, {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: true
+      });
 
-    cookieStore.set(storageKeys.USER_KIND, String(userKind), {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: true
-    });
-
+      cookieStore.set(storageKeys.USER_KIND, String(userKind), {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: true
+      });
+    }
     return Response.json(response, {
       status: 200
     });

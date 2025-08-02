@@ -4,7 +4,7 @@ import z from 'zod';
 type LoginType = z.output<typeof loginSchema>;
 type RegisterType = z.output<typeof registerSchema>;
 
-type LoginBodyType = Omit<LoginType, 'rememberMe'>;
+type LoginBodyType = LoginType;
 type RegisterBodyType = Omit<RegisterType, 'terms'>;
 
 type LoginResponse = {

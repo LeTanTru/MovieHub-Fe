@@ -2,14 +2,21 @@ import { toast, ToastOptions, Bounce } from 'react-toastify';
 
 const defaultOptions: ToastOptions = {
   position: 'top-center',
-  autoClose: 5000,
+  autoClose: 3000,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
   theme: 'light',
-  transition: Bounce
+  transition: Bounce,
+  className: `
+    bg-secondary! text-foreground!
+    [&>button]:opacity-100!
+    [&>button>svg]:fill-neutral-50!
+    w-fit!
+    pr-6!
+  `
 };
 
 const showSuccess = (message: string, options?: ToastOptions) => {

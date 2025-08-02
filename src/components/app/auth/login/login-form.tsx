@@ -21,8 +21,7 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
-      password: '',
-      rememberMe: false
+      password: ''
     }
   });
   const { setOpen } = useDialogStore();
@@ -32,8 +31,7 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
 
   const onSubmit = async (values: LoginBodyType) => {
     try {
-      const body = pick(values, ['email', 'password']);
-      const response = await loginMutation.mutateAsync(body);
+      const response = await loginMutation.mutateAsync(values);
       if (response.result !== undefined && response.result === false) {
         notify.error('Tài khoản hoặc mật khẩu không đúng');
       } else {
@@ -82,11 +80,6 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
           />
 
           <div className='flex items-center justify-between text-sm'>
-            <CheckboxField
-              control={form.control}
-              name='rememberMe'
-              label='Ghi nhớ đăng nhập'
-            />
             <Link href='#' className='underline hover:no-underline'>
               Quên mật khẩu?
             </Link>
