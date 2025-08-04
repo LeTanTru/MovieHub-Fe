@@ -18,7 +18,7 @@ const dropdownMotion: Variants = {
     scale: 0,
     x: 0,
     y: 0,
-    transformOrigin: '70% -20%'
+    transformOrigin: '70% -10%'
   },
   animate: {
     opacity: 1,
@@ -83,7 +83,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
   };
 
   return (
-    <div className='relative' ref={ref}>
+    <div className='relative h-10' ref={ref}>
       <Button
         variant='ghost'
         className='h-full w-full rounded-full p-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
@@ -111,7 +111,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='bg-background absolute top-[110%] right-[20%] mt-2 rounded-md shadow-[0px_0px_6px_2px_var(--accent)]'
+            className='bg-background absolute top-[120%] right-[20%] mt-2 rounded-md shadow-[0px_0px_6px_2px_var(--accent)]'
           >
             <div className='absolute -top-2 right-[15%] h-2 w-4'>
               <div className='bg-background h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
