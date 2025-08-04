@@ -7,14 +7,14 @@ import {
   DefaultVideoLayout,
   defaultLayoutIcons
 } from '@vidstack/react/player/layouts/default';
-import PlayToggleButton from '@/components/form/video-player/PlayToggleButton';
-import VolumeToggleButton from '@/components/form/video-player/VolumeToggleButton';
-import SeekForwardButton from '@/components/form/video-player/SeekForwardButton';
-import SeekBackwardButton from '@/components/form/video-player/SeekBackwardButton';
-import PiPToggleButton from '@/components/form/video-player/PiPToggleButton';
-import FullscreenToggleButton from '@/components/form/video-player/FullscreenToggleButton';
-import SettingMenu from '@/components/form/video-player/SettingMenu';
-import CaptionButton from '@/components/form/video-player/CaptionButton';
+import PlayToggleButton from '@/components/video-player/PlayToggleButton';
+import VolumeToggleButton from '@/components/video-player/VolumeToggleButton';
+import FullscreenToggleButton from '@/components/video-player/FullscreenToggleButton';
+import PiPToggleButton from '@/components/video-player/PiPToggleButton';
+import SettingMenu from '@/components/video-player/SettingMenu';
+import CaptionButton from '@/components/video-player/CaptionButton';
+import SeekBackwardButton from '@/components/video-player/SeekBackwardButton';
+import SeekForwardButton from '@/components/video-player/SeekForwardButton';
 
 export default function VideoPlayer() {
   const textTracks = [
