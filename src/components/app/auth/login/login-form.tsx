@@ -32,7 +32,7 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
     try {
       const response = await loginMutation.mutateAsync(values);
       if (response.result !== undefined && response.result === false) {
-        notify.error('Tài khoản hoặc mật khẩu không đúng');
+        notify.error('Email hoặc mật khẩu không đúng');
       } else {
         const accessToken = response.access_token;
         const userKind = response.user_kind;

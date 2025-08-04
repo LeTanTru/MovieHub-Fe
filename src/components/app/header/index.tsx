@@ -23,30 +23,31 @@ export default function Header() {
               {loading ? (
                 <motion.div
                   key='loading'
-                  // initial={{ opacity: 0, x: 10 }}
-                  // animate={{ opacity: 1, x: 0 }}
-                  // exit={{ opacity: 0, x: 10 }}
-                  // transition={{ duration: 0.25 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ marginRight: 24 }}
                 >
                   <Skeleton className='h-10 w-10 rounded-full' />
                 </motion.div>
               ) : !profile ? (
                 <motion.div
                   key='auth'
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  transition={{ duration: 0.25 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <AuthDialog />
                 </motion.div>
               ) : (
                 <motion.div
                   key='avatar'
-                  // initial={{ opacity: 0, x: 10 }}
-                  // animate={{ opacity: 1, x: 0 }}
-                  // exit={{ opacity: 0, x: 10 }}
-                  // transition={{ duration: 0.25 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
                 >
                   <DropdownAvatar profile={profile} />
                 </motion.div>

@@ -39,7 +39,6 @@ export default function AuthDialog() {
       document.body.style.overflow = 'auto';
       window.removeEventListener('mousedown', handleClickOutside);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return (
@@ -55,13 +54,15 @@ export default function AuthDialog() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
             className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
           >
             <motion.div
-              initial={{ y: -100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -100, opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              key='modal-content'
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -100 }}
+              transition={{ duration: 0.2 }}
               className='bg-background relative w-[440px] max-w-full overflow-hidden rounded-xl p-6 shadow-2xl'
             >
               <Button
@@ -73,15 +74,11 @@ export default function AuthDialog() {
                 <X className='h-5! w-5!' />
               </Button>
 
-              <AnimatePresence mode='wait'>
-                <motion.div key={mode}>
-                  {mode === 'login' ? (
-                    <LoginForm onSwitch={() => switchMode('register')} />
-                  ) : (
-                    <RegisterForm onSwitch={() => switchMode('login')} />
-                  )}
-                </motion.div>
-              </AnimatePresence>
+              {mode === 'login' ? (
+                <LoginForm onSwitch={() => switchMode('register')} />
+              ) : (
+                <RegisterForm onSwitch={() => switchMode('login')} />
+              )}
             </motion.div>
           </motion.div>
         )}
