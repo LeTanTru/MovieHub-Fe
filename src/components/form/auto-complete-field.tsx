@@ -38,8 +38,8 @@ type AutoCompleteFieldProps<
   className?: string;
   required?: boolean;
   multiple?: boolean;
-  getLabel: (option: TOption) => string;
-  getValue: (option: TOption) => string;
+  getLabel: (option: TOption) => string | number;
+  getValue: (option: TOption) => string | number;
   getPrefix?: (option: TOption) => React.ReactNode;
   allowClear?: boolean;
   searchText?: string;
@@ -77,13 +77,16 @@ export default function AutoCompleteField<
       control={control}
       name={name}
       render={({ field }) => {
-        const selectedValues = multiple
-          ? Array.isArray(field.value)
-            ? field.value
-            : []
-          : ([field.value] as string[]);
+        const selectedValues: (string | number)[] =
+          field.value === undefined
+            ? []
+            : multiple
+              ? Array.isArray(field.value)
+                ? field.value
+                : []
+              : [field.value];
 
-        const toggleValue = (val: string) => {
+        const toggleValue = (val: string | number) => {
           if (multiple) {
             const next = selectedValues.includes(val)
               ? selectedValues.filter((v) => v !== val)
@@ -115,41 +118,58 @@ export default function AutoCompleteField<
                   role='combobox'
                   disabled={disabled}
                   className={cn('w-full flex-wrap justify-between py-0', {
-                    'pl-1!': selectedValues.length !== 0,
+                    'pl-1!': selectedValues.length > 1,
                     'cursor-not-allowed opacity-50': disabled
                   })}
                 >
-                  {multiple && selectedValues.length > 0 ? (
-                    <div className='flex flex-wrap gap-2'>
-                      {selectedValues.map((val) => {
-                        const opt = options.find((o) => getValue(o) === val);
-                        if (!opt) return null;
-                        return (
-                          <div
-                            key={val}
-                            className='bg-accent text-accent-foreground flex items-center rounded-lg px-3 py-1 text-sm'
-                          >
-                            {getPrefix?.(opt) && (
-                              <span className='mr-1 font-mono text-xs opacity-70'>
-                                {getPrefix(opt)}
-                              </span>
-                            )}
-                            {getLabel(opt)}
-                            <span
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                field.onChange(
-                                  selectedValues.filter((v) => v !== val)
-                                );
-                              }}
-                              className='hover:text-destructive ml-2 cursor-pointer text-lg leading-none'
+                  {multiple ? (
+                    selectedValues.length > 0 ? (
+                      <div className='flex flex-wrap gap-2'>
+                        {selectedValues.map((val) => {
+                          const opt = options.find((o) => getValue(o) === val);
+                          if (!opt) return null;
+                          return (
+                            <div
+                              key={val}
+                              className='bg-accent text-accent-foreground flex items-center rounded-lg px-3 py-1 text-sm'
                             >
-                              <X />
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
+                              {getPrefix?.(opt) && (
+                                <span className='mr-1 font-mono text-xs opacity-70'>
+                                  {getPrefix(opt)}
+                                </span>
+                              )}
+                              {getLabel(opt)}
+                              <span
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  field.onChange(
+                                    selectedValues.filter((v) => v !== val)
+                                  );
+                                }}
+                                className='hover:text-destructive ml-2 cursor-pointer text-lg leading-none'
+                              >
+                                <X />
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <span className='opacity-60'>{placeholder}</span>
+                    )
+                  ) : selectedValues.length === 1 ? (
+                    (() => {
+                      const val = selectedValues[0];
+                      const opt = options.find((o) => getValue(o) === val);
+                      return opt ? (
+                        <div className='flex items-center gap-2 truncate'>
+                          {getPrefix?.(opt)}
+                          <span>{getLabel(opt)}</span>
+                        </div>
+                      ) : (
+                        <span className='opacity-60'>{placeholder}</span>
+                      );
+                    })()
                   ) : (
                     <span className='opacity-60'>{placeholder}</span>
                   )}

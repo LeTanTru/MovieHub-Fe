@@ -28,3 +28,9 @@ export const useRegisterMutation = () => {
       await authApiRequest.register(body)
   });
 };
+
+export const useLogoutMutation = () => {
+  return useMutation({
+    mutationFn: async () => await authApiRequest.logout()
+  });
+};

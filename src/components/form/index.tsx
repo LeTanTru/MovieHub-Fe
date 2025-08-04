@@ -15,5 +15,5 @@ export { default as RadioGroupField } from './radio-group-field';
 export { default as RichTextField } from './rich-text-field';
 export { default as TextAreaField } from './text-area-field';
 export { default as TimePickerField } from './time-picker-field';
-export { default as Tooltip } from './tooltip';
+export { default as ToolTip } from './tooltip';
 export { default as UploadAvatarField } from './upload-avatar-field';

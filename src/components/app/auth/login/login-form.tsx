@@ -2,19 +2,18 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@/components/ui/form';
-import { Button, CheckboxField, InputField } from '@/components/form';
+import { Button, InputField } from '@/components/form';
 import Link from 'next/link';
-import ButtonLoginGoogle from '@/components/app/auth/button-login-google';
+import ButtonLoginGoogle from '@/components/app/auth/login/button-login-google';
 import PasswordField from '@/components/form/password-field';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
 import { useLoginMutation } from '@/queries/use-auth';
 import { logger } from '@/logger';
-import { pick } from 'lodash';
 import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { Loader2 } from 'lucide-react';
-import { useAuthStore, useDialogStore } from '@/store';
+import { useAuthDialogStore, useAuthStore } from '@/store';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const form = useForm<LoginType>({
@@ -24,7 +23,7 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
       password: ''
     }
   });
-  const { setOpen } = useDialogStore();
+  const { setOpen } = useAuthDialogStore();
   const { setAuthenticated } = useAuthStore();
 
   const loginMutation = useLoginMutation();
@@ -79,7 +78,7 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
             required
           />
 
-          <div className='flex items-center justify-between text-sm'>
+          <div className='flex items-center justify-end text-sm'>
             <Link href='#' className='underline hover:no-underline'>
               Quên mật khẩu?
             </Link>

@@ -9,7 +9,8 @@ export default function QueryProvider({ children }: IChildren) {
   const queryClient = getQueryClient();
   return (
     <QueryClientProvider client={queryClient}>
-      {children} <ReactQueryDevtools initialIsOpen={false} />
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

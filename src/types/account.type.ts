@@ -1,10 +1,7 @@
-type ProfileType = {
-  id: number;
-  kind: number;
-  email: string;
-  fullName: string;
-  avatarPath: string;
-  gender: number;
-};
+import { profileSchema, updateProfileSchema } from '@/schemaValidations';
+import z from 'zod';
 
-export type { ProfileType };
+type ProfileType = z.infer<typeof profileSchema>;
+type UpdateProfileType = z.infer<typeof updateProfileSchema>;
+
+export type { ProfileType, UpdateProfileType };
