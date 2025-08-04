@@ -1,4 +1,5 @@
 'use client';
+
 import AuthDialog from '@/components/app/auth';
 import DropdownAvatar from '@/components/app/header/dropdown-avatar';
 import { Skeleton } from '@/components/ui/skeleton';
