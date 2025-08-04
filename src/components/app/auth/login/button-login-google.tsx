@@ -7,14 +7,14 @@ import {
   useLoginGoogleMutation,
   useLoginGoogleQuery
 } from '@/queries/use-auth';
-import { useAuthStore, useDialogStore } from '@/store';
+import { useAuthDialogStore, useAuthStore } from '@/store';
 import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
 import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function ButtonLoginGoogle() {
-  const { setOpen } = useDialogStore();
+  const { setOpen } = useAuthDialogStore();
   const loginGoogleQuery = useLoginGoogleQuery(AppConstants.loginType);
   const loginGoogleMutation = useLoginGoogleMutation();
   const { setAuthenticated } = useAuthStore();
@@ -61,7 +61,9 @@ export default function ButtonLoginGoogle() {
         setData(storageKeys.USER_KIND, String(response.data?.user_kind!));
 
         setOpen(false);
-        setAuthenticated(true);
+        setTimeout(() => {
+          setAuthenticated(true);
+        }, 100);
         notify.success('Đăng nhập thành công');
       } catch (error) {
         logger.error('Error during Google login:', error);
@@ -90,7 +92,7 @@ export default function ButtonLoginGoogle() {
       {loading ? (
         <LucideLoader2
           className='text-muted-foreground h-6! w-6! animate-spin'
-          strokeWidth={2}
+          strokeWidth={3}
         />
       ) : (
         <>

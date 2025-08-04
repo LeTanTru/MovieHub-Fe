@@ -1,0 +1,61 @@
+'use client';
+import AuthDialog from '@/components/app/auth';
+import DropdownAvatar from '@/components/app/header/dropdown-avatar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAuthStore } from '@/store';
+import { AnimatePresence, motion } from 'framer-motion';
+import NavigationMenu from './navigation';
+import ProfileDialog from '@/components/app/header/profile-dialog';
+
+export default function Header() {
+  const { profile, loading } = useAuthStore();
+
+  return (
+    <div>
+      <header className='border-b pr-8 pl-0'>
+        <div className='flex h-16 items-center justify-between gap-4'>
+          {/* Left side */}
+          <NavigationMenu />
+          {/* Right side */}
+          <div className='flex items-center gap-2'>
+            {/* <DarkModeToggle /> */}
+            <AnimatePresence mode='wait' initial={false}>
+              {loading ? (
+                <motion.div
+                  key='loading'
+                  // initial={{ opacity: 0, x: 10 }}
+                  // animate={{ opacity: 1, x: 0 }}
+                  // exit={{ opacity: 0, x: 10 }}
+                  // transition={{ duration: 0.25 }}
+                >
+                  <Skeleton className='h-10 w-10 rounded-full' />
+                </motion.div>
+              ) : !profile ? (
+                <motion.div
+                  key='auth'
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <AuthDialog />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key='avatar'
+                  // initial={{ opacity: 0, x: 10 }}
+                  // animate={{ opacity: 1, x: 0 }}
+                  // exit={{ opacity: 0, x: 10 }}
+                  // transition={{ duration: 0.25 }}
+                >
+                  <DropdownAvatar profile={profile} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <ProfileDialog />
+          </div>
+        </div>
+      </header>
+    </div>
+  );
+}

@@ -1,15 +1,14 @@
 'use client';
-
 import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@/components/form';
 import LoginForm from '@/components/app/auth/login/login-form';
 import RegisterForm from '@/components/app/auth/register/register-form';
-import { useDialogStore } from '@/store';
 import { X } from 'lucide-react';
+import useAuthDialogStore from '@/store/use-auth-dialog-store';
 
 export default function AuthDialog() {
-  const { open, setOpen, mode, setMode } = useDialogStore();
+  const { open, setOpen, mode, setMode } = useAuthDialogStore();
   const overlayRef = useRef<HTMLDivElement>(null);
 
   const switchMode = (targetMode: 'login' | 'register') => {
@@ -74,7 +73,6 @@ export default function AuthDialog() {
                 <X className='h-5! w-5!' />
               </Button>
 
-              {/* ✅ Đây là phần quản lý login/register chuyển đổi */}
               <AnimatePresence mode='wait'>
                 <motion.div key={mode}>
                   {mode === 'login' ? (

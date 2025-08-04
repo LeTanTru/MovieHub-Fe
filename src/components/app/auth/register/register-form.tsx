@@ -12,10 +12,10 @@ import { useRegisterMutation } from '@/queries/use-auth';
 import { registerErrorMaps } from '@/constants';
 import { Loader2 } from 'lucide-react';
 import { applyFormErrors, notify } from '@/utils';
-import { useDialogStore } from '@/store';
+import { useAuthDialogStore } from '@/store';
 
 export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
-  const { setOpen, setMode } = useDialogStore();
+  const { setOpen, setMode } = useAuthDialogStore();
   const form = useForm<RegisterType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
