@@ -198,7 +198,7 @@ export default function AutoCompleteField<
               )}
 
               <PopoverContent className='w-[var(--radix-popover-trigger-width)] p-0'>
-                <Command>
+                <Command className='bg-background'>
                   <CommandInput placeholder={searchText} />
                   <CommandEmpty>{notFoundContent}</CommandEmpty>
                   <CommandGroup>
