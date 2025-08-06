@@ -2,35 +2,74 @@ import {
   AutoCompleteField,
   Button,
   InputField,
-  UploadAvatarField,
-  ToolTip
+  ToolTip,
+  Row,
+  Col,
+  UploadImageField
 } from '@/components/form';
 import { Form } from '@/components/ui/form';
-import { useProfileDialogStore } from '@/store';
+import { GENDER, genderOptions } from '@/constants';
+import { cn } from '@/lib';
+import { logger } from '@/logger';
+import { useProfileMutation, useUploadImageMutation } from '@/queries';
+import { updateProfileSchema } from '@/schemaValidations';
+import { useAuthStore, useProfileDialogStore } from '@/store';
 import { UpdateProfileType } from '@/types';
+import { notify } from '@/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X } from 'lucide-react';
+import { Loader2, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function ProfileDialog() {
   const { open, setOpen } = useProfileDialogStore();
+  const { profile } = useAuthStore();
+  const [avatarPath, setAvatarPath] = useState(profile?.avatarPath || '');
+  const uploadImageMutation = useUploadImageMutation();
+  const profileMutation = useProfileMutation();
+
   const form = useForm<UpdateProfileType>({
+    resolver: zodResolver(updateProfileSchema),
     defaultValues: {
-      avatarPath: '',
-      email: '',
+      id: 0,
       fullName: '',
-      username: '',
+      email: '',
       phone: '',
-      gender: 0
+      username: '',
+      gender: 0,
+      avatarPath: ''
     }
   });
-  const onSubmit = async (values: UpdateProfileType) => {};
 
-  const genderOptions = [
-    { id: 0, name: 'Nam' },
-    { id: 1, name: 'Nữ' },
-    { id: 2, name: 'Khác' }
-  ];
+  useEffect(() => {
+    if (profile) {
+      form.reset({
+        ...profile,
+        username: profile?.username ?? '',
+        phone: profile?.phone ?? '',
+        gender: GENDER.includes(profile?.gender)
+          ? profile?.gender
+          : genderOptions[0].value
+      });
+      setAvatarPath(profile.avatarPath || '');
+    }
+  }, [profile, form]);
+
+  const onSubmit = async (values: UpdateProfileType) => {
+    try {
+      const response = await profileMutation.mutateAsync({
+        ...values,
+        avatarPath
+      });
+      if (response.result) {
+        notify.success('Cập nhật thành công');
+      }
+    } catch (error) {
+      logger.error('Error while updating profile: ', error);
+      notify.error('Cập nhật thất bại');
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -64,55 +103,100 @@ export default function ProfileDialog() {
             </ToolTip>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <UploadAvatarField
-                  control={form.control}
-                  name='avatarPath'
+                <UploadImageField
                   label='Ảnh đại diện'
+                  value={avatarPath}
+                  onChange={(url) => setAvatarPath(url)}
+                  uploadImageFn={async (blob) => {
+                    const response =
+                      await uploadImageMutation.mutateAsync(blob);
+                    return response.data?.filePath!;
+                  }}
                 />
-                <div className='mt-4 grid grid-cols-2 gap-4'>
-                  <InputField
-                    control={form.control}
-                    name='fullName'
-                    label='Họ và tên'
-                    required
-                    placeholder='Nhập họ và tên'
-                  />
-                  <InputField
-                    control={form.control}
-                    name='email'
-                    label='Email'
-                    required
-                    placeholder='Nhập email'
-                  />
-                  <InputField
-                    control={form.control}
-                    name='username'
-                    label='Tên đăng nhập'
-                    required
-                    placeholder='Nhập tên đăng nhập'
-                  />
-                  <AutoCompleteField
-                    control={form.control}
-                    options={genderOptions}
-                    name='gender'
-                    label='Giới tính'
-                    required
-                    getLabel={(opt) => opt.name}
-                    getValue={(opt) => opt.id}
-                    placeholder='Chọn giới tính'
-                  />
-                  <InputField
-                    control={form.control}
-                    name='phone'
-                    label='Số điện thoại'
-                    required
-                    placeholder='Nhập số điện thoại'
-                  />
-                </div>
+                <Row>
+                  <Col>
+                    <InputField
+                      control={form.control}
+                      name='fullName'
+                      label='Họ và tên'
+                      required
+                      placeholder='Nhập họ và tên'
+                    />
+                  </Col>
+                  <Col>
+                    <InputField
+                      control={form.control}
+                      name='email'
+                      label='Email'
+                      required
+                      placeholder='Nhập email'
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <InputField
+                      control={form.control}
+                      name='username'
+                      label='Tên đăng nhập'
+                      required
+                      placeholder='Nhập tên đăng nhập'
+                    />
+                  </Col>
+                  <Col>
+                    <AutoCompleteField
+                      control={form.control}
+                      options={genderOptions}
+                      name='gender'
+                      label='Giới tính'
+                      required
+                      getLabel={(opt) => opt.label}
+                      getValue={(opt) => opt.value}
+                      placeholder='Chọn giới tính'
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <InputField
+                      control={form.control}
+                      name='phone'
+                      label='Số điện thoại'
+                      required
+                      placeholder='Nhập số điện thoại'
+                    />
+                  </Col>
+                </Row>
                 <div className='mt-6 flex justify-end gap-2'>
-                  <Button variant={'destructive'}>Hủy</Button>
-                  <Button type='submit' className='ml-2'>
-                    Cập nhật
+                  <Button
+                    type='button'
+                    variant={'destructive'}
+                    onClick={() => setOpen(false)}
+                  >
+                    Hủy
+                  </Button>
+                  <Button
+                    type='submit'
+                    className={cn('ml-2 w-32', {
+                      'cursor-not-allowed opacity-50':
+                        profileMutation?.isPending ||
+                        !form.formState.isValid ||
+                        Object.keys(form.formState.dirtyFields).length === 0
+                    })}
+                    disabled={
+                      profileMutation?.isPending ||
+                      !form.formState.isValid ||
+                      Object.keys(form.formState.dirtyFields).length === 0
+                    }
+                  >
+                    {profileMutation?.isPending ? (
+                      <Loader2
+                        className='size-6 animate-spin'
+                        strokeWidth={3}
+                      />
+                    ) : (
+                      'Cập nhật'
+                    )}
                   </Button>
                 </div>
               </form>

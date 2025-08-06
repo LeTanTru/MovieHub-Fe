@@ -1,12 +1,16 @@
 'use client';
-import { IChildren } from '@/interfaces';
+
 import { logger } from '@/logger';
 import { useProfileQuery } from '@/queries/use-account';
 import { useAuthStore } from '@/store';
 import { getAccessTokenFromLocalStorage } from '@/utils';
 import { useEffect } from 'react';
 
-export default function AppProvider({ children }: IChildren) {
+export default function AppProvider({
+  children
+}: {
+  children: React.ReactNode;
+}) {
   const { isAuthenticated, setProfile, setLoading } = useAuthStore();
   const profileQuery = useProfileQuery();
 

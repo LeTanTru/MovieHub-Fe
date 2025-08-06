@@ -51,7 +51,7 @@ export default function CheckboxGroupField<T extends FieldValues>({
           {label && (
             <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
               {label}
-              {required && <span className='text-red-500'>*</span>}
+              {required && <span className='text-destructive'>*</span>}
             </FormLabel>
           )}
           <div className='flex flex-wrap gap-4'>

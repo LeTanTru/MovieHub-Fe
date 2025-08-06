@@ -65,7 +65,7 @@ export default function CheckboxField({
               )}
             >
               {label}
-              {required && <span className='text-red-500'>*</span>}
+              {required && <span className='text-destructive'>*</span>}
             </FormLabel>
           </div>
           {description && <FormDescription>{description}</FormDescription>}

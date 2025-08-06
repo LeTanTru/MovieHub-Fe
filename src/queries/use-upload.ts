@@ -1,7 +1,8 @@
+import uploadApiRequest from '@/apiRequests/upload.api-request';
 import { useMutation } from '@tanstack/react-query';
 
-export const useUploadImage = () => {
+export const useUploadImageMutation = () => {
   return useMutation({
-    mutationFn: async (file: File) => {}
+    mutationFn: async (file: Blob) => await uploadApiRequest.image(file)
   });
 };

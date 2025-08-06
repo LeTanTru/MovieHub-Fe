@@ -172,6 +172,7 @@ export default function NavigationMenu() {
             width={200}
             height={40}
             className='h-[40px] w-[200px]'
+            priority
           />
         </Link>
         {/* Navigation menu */}
