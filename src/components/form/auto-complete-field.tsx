@@ -107,7 +107,7 @@ export default function AutoCompleteField<
             {label && (
               <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
                 {label}
-                {required && <span className='text-red-500'>*</span>}
+                {required && <span className='text-destructive'>*</span>}
               </FormLabel>
             )}
             <Popover open={open} onOpenChange={setOpen}>

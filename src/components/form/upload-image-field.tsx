@@ -1,10 +1,8 @@
 'use client';
-
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useController } from 'react-hook-form';
 import {
   ArrowLeftIcon,
-  CircleUserRoundIcon,
+  UploadIcon,
   XIcon,
   ZoomInIcon,
   ZoomOutIcon
@@ -19,17 +17,18 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
-import { Button } from '@/components/form';
+import { AvatarField, Button } from '@/components/form';
 import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { logger } from '@/logger';
+import NextImage from 'next/image';
+import { apiConfig, AppConstants } from '@/constants';
 
 type Area = { x: number; y: number; width: number; height: number };
 
@@ -77,22 +76,28 @@ async function getCroppedImg(
   }
 }
 
-interface UploadAvatarFieldProps {
-  name: string;
-  control: any;
+interface UploadImageFieldProps {
   label?: string;
+  value?: string;
+  onChange?: (url: string) => void;
   required?: boolean;
   labelClassName?: string;
+  className?: string;
+  size?: number;
+  uploadImageFn: (file: Blob) => Promise<string>;
+  loading?: boolean;
 }
 
-export default function UploadAvatarField({
-  name,
-  control,
+export default function UploadImageField({
   label,
+  value,
+  onChange,
   required,
-  labelClassName
-}: UploadAvatarFieldProps) {
-  const { field } = useController({ name, control });
+  labelClassName,
+  className,
+  size = 70,
+  uploadImageFn
+}: UploadImageFieldProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [zoom, setZoom] = useState(1);
@@ -105,11 +110,13 @@ export default function UploadAvatarField({
       handleDragOver,
       handleDrop,
       openFileDialog,
-      getInputProps
+      getInputProps,
+      clearFiles
     }
   ] = useFileUpload({ accept: 'image/*' });
 
-  const previewUrl = files[0]?.preview || null;
+  const previewUrl = files[0]?.preview;
+
   const fileId = files[0]?.id;
   const previousFileIdRef = useRef<string | null>(null);
 
@@ -118,23 +125,23 @@ export default function UploadAvatarField({
   }, []);
 
   const handleApply = async () => {
-    if (!previewUrl || !fileId || !croppedAreaPixels) return;
+    if (!previewUrl || !fileId || !croppedAreaPixels || !uploadImageFn) return;
 
     const croppedBlob = await getCroppedImg(previewUrl, croppedAreaPixels);
     if (!croppedBlob) return;
 
-    const objectUrl = URL.createObjectURL(croppedBlob);
-
-    field.onChange({ blob: croppedBlob, preview: objectUrl });
-
-    setDialogOpen(false);
+    try {
+      const uploadedUrl = await uploadImageFn(croppedBlob);
+      onChange?.(uploadedUrl);
+      setDialogOpen(false);
+    } catch (error) {
+      logger.error('Lỗi khi upload ảnh:', error);
+    }
   };
 
   const handleRemove = () => {
-    if (field.value?.preview?.startsWith('blob:')) {
-      URL.revokeObjectURL(field.value.preview);
-    }
-    field.onChange(null);
+    onChange?.('');
+    clearFiles();
   };
 
   useEffect(() => {
@@ -152,13 +159,18 @@ export default function UploadAvatarField({
         {label && (
           <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
             {label}
-            {required && <span className='text-red-500'>*</span>}
+            {required && <span className='text-destructive'>*</span>}
           </FormLabel>
         )}
         <div className='relative inline-flex'>
-          <button
+          <Button
+            variant={'ghost'}
             type='button'
-            className='border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 focus-visible:border-ring focus-visible:ring-ring/50 relative flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-dashed transition-colors outline-none focus-visible:ring-[3px] has-disabled:pointer-events-none has-disabled:opacity-50 has-[img]:border-none'
+            style={{ width: size, height: size }}
+            className={cn(
+              'border-input hover:bg-accent/50 focus-visible:border-ring relative flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-dashed p-0 transition-colors outline-none focus-visible:ring-[3px]',
+              className
+            )}
             onClick={openFileDialog}
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
@@ -166,25 +178,29 @@ export default function UploadAvatarField({
             onDrop={handleDrop}
             title={'Tải ảnh lên'}
             data-dragging={isDragging || undefined}
-            aria-label={field.value ? 'Change image' : 'Upload image'}
+            aria-label={value ? 'Thay ảnh' : 'Tải lên'}
           >
-            {field.value?.preview ? (
-              <img
-                src={field.value.preview}
-                alt='Avatar'
+            {!!value ? (
+              <AvatarField
+                disablePreview
+                src={`${apiConfig.imageProxy.baseUrl}${value}`}
                 className='size-full object-cover'
               />
             ) : (
-              <CircleUserRoundIcon className='size-4 opacity-60' />
+              <UploadIcon
+                strokeWidth={1}
+                style={{ width: size / 2.2, height: size / 2.2 }}
+                className='opacity-60'
+              />
             )}
-          </button>
+          </Button>
 
-          {field.value && (
+          {value && (
             <Button
               onClick={handleRemove}
               size='icon'
               type='button'
-              className='border-background focus-visible:border-background absolute -top-1 -right-1 size-6 rounded-full border-2 shadow-none'
+              className='border-background absolute -top-1 -right-1 size-6 rounded-full border-2'
             >
               <XIcon className='size-3.5' />
             </Button>
@@ -195,9 +211,8 @@ export default function UploadAvatarField({
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className='gap-0 p-0 sm:max-w-140 *:[button]:hidden'>
-          <DialogDescription className='sr-only'>{'Cắt ảnh'}</DialogDescription>
-          <DialogHeader className='contents text-left'>
+        <DialogContent className='gap-0 p-0 sm:max-w-140'>
+          <DialogHeader className='text-left'>
             <DialogTitle className='flex items-center justify-between border-b p-4 text-base'>
               <div className='flex items-center gap-2'>
                 <Button

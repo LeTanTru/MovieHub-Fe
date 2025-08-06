@@ -1,10 +1,10 @@
 'use client';
 
-import AuthDialog from '@/components/app/auth';
-import DropdownAvatar from '@/components/app/header/dropdown-avatar';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthStore } from '@/store';
-import { AnimatePresence, motion } from 'framer-motion';
+import AuthDialog from '@/components/app/auth';
+import DropdownAvatar from '@/components/app/header/dropdown-avatar';
 import NavigationMenu from './navigation';
 import ProfileDialog from '@/components/app/header/profile-dialog';
 

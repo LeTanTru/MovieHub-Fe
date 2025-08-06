@@ -55,7 +55,7 @@ export default function InputField<T extends FieldValues>({
           {label && (
             <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
               {label}
-              {required && <span className='text-red-500'>*</span>}
+              {required && <span className='text-destructive'>*</span>}
             </FormLabel>
           )}
           <FormControl>

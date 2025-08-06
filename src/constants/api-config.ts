@@ -16,7 +16,7 @@ type ApiEndpoint = {
 };
 
 type ApiConfigGroup = {
-  [key: string]: ApiEndpoint | ApiConfigGroup;
+  [key: string]: ApiEndpoint | ApiConfigGroup | string;
 };
 
 const defineApiConfig = <T extends ApiConfigGroup>(config: T) => config;
@@ -85,7 +85,7 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true
     },
     updateProfile: {
-      baseUrl: `${AppConstants.apiUrl}v1/user/profile`,
+      baseUrl: `${AppConstants.apiUrl}v1/user/update-profile`,
       method: 'PUT',
       headers: baseHeader,
       isRequiredTenantId: true
@@ -100,6 +100,9 @@ const apiConfig = defineApiConfig({
       isUpload: true,
       permissionCode: 'FILE_U'
     }
+  },
+  imageProxy: {
+    baseUrl: '/api/image-proxy?url='
   }
 });
 

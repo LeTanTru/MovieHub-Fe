@@ -1,7 +1,7 @@
 'use client';
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
-import { storageKeys } from '@/constants';
+import { apiConfig, AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useAuthStore, useProfileDialogStore } from '@/store';
 import { ProfileType } from '@/types';
@@ -92,7 +92,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
         {profile?.avatarPath ? (
           <AvatarField
             disablePreview
-            src={`/api/image-proxy?url=${encodeURIComponent(profile?.avatarPath || '')}`}
+            src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
             className='border-none'
             size={40}
           />

@@ -51,16 +51,26 @@ const sendRequest = async <T>(
     baseUrl = baseUrl.replace(`:${key}`, value);
   });
 
-  if (headers['Content-Type'] === 'multipart/form-data' && isUpload) {
+  if (baseHeader['Content-Type'] === 'multipart/form-data' && isUpload) {
     const formData = new FormData();
+
     Object.keys(body).forEach((key) => {
-      formData.append(key, body[key]);
+      const value = body[key];
+
+      if (value instanceof Blob) {
+        const filename = 'upload.jpg';
+        formData.append(key, value, filename);
+      } else {
+        formData.append(key, value);
+      }
     });
+
+    delete baseHeader['Content-Type'];
 
     try {
       const response = await fetch(baseUrl, {
         method,
-        // headers: baseHeader,
+        headers: baseHeader,
         body: formData
       });
       const result = await response.json();
@@ -77,7 +87,7 @@ const sendRequest = async <T>(
       method,
       headers: {
         ...baseHeader,
-        'Content-Type': headers['Content-Type'] || 'application/json'
+        'Content-Type': baseHeader['Content-Type'] || 'application/json'
       },
       body: method !== 'GET' && body ? JSON.stringify(body) : undefined
     });

@@ -6,7 +6,7 @@ const videoUrl = envConfig.NEXT_PUBLIC_API_VIDEO;
 
 const AppConstants = {
   apiUrl,
-  contentRootUrl: `${apiUrl}v1/file/download`,
+  contentRootUrl: `${mediaUrl}v1/file/download`,
   mediaRootUrl: `${mediaUrl}`,
   videoRootUrl: `${videoUrl}`,
   loginType: 1

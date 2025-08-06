@@ -4,4 +4,12 @@ import z from 'zod';
 type ProfileType = z.infer<typeof profileSchema>;
 type UpdateProfileType = z.infer<typeof updateProfileSchema>;
 
-export type { ProfileType, UpdateProfileType };
+type ProfileResType = ProfileType;
+type UpdateProfileBodyType = UpdateProfileType;
+
+export type {
+  ProfileType,
+  UpdateProfileType,
+  ProfileResType,
+  UpdateProfileBodyType
+};
