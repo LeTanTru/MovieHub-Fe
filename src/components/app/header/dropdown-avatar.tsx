@@ -116,12 +116,12 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             <div className='absolute -top-2 right-[15%] h-2 w-4'>
               <div className='bg-background h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
             </div>
-            <div className='px-4 py-3'>
-              <p className='truncate text-sm font-medium'>
+            <div className='w-40 px-4 py-3'>
+              <p className='truncate overflow-hidden text-sm font-medium whitespace-nowrap'>
                 {profile?.fullName}
               </p>
               <p className='text-muted-foreground truncate text-xs'>
-                {profile?.email}
+                @{profile?.username}
               </p>
             </div>
             <Separator />

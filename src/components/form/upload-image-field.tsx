@@ -27,8 +27,7 @@ import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { logger } from '@/logger';
-import NextImage from 'next/image';
-import { apiConfig, AppConstants } from '@/constants';
+import { apiConfig } from '@/constants';
 
 type Area = { x: number; y: number; width: number; height: number };
 

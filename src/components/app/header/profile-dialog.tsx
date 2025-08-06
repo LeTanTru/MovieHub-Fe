@@ -1,60 +1,51 @@
 import {
   AutoCompleteField,
   Button,
-  InputField,
-  ToolTip,
-  Row,
   Col,
+  InputField,
+  Row,
+  ToolTip,
   UploadImageField
 } from '@/components/form';
-import { Form } from '@/components/ui/form';
+import BaseForm from '@/components/form/base-form';
 import { GENDER, genderOptions } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useProfileMutation, useUploadImageMutation } from '@/queries';
 import { updateProfileSchema } from '@/schemaValidations';
 import { useAuthStore, useProfileDialogStore } from '@/store';
-import { UpdateProfileType } from '@/types';
+import { ProfileResType, UpdateProfileType } from '@/types';
 import { notify } from '@/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Loader2, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 export default function ProfileDialog() {
   const { open, setOpen } = useProfileDialogStore();
   const { profile } = useAuthStore();
-  const [avatarPath, setAvatarPath] = useState(profile?.avatarPath || '');
+  const [avatarPath, setAvatarPath] = useState(profile?.avatarPath);
+  const [isFormChanged, setIsFormChanged] = useState(false);
+  console.log('🚀 ~ ProfileDialog ~ isFormChanged:', isFormChanged);
   const uploadImageMutation = useUploadImageMutation();
   const profileMutation = useProfileMutation();
 
-  const form = useForm<UpdateProfileType>({
-    resolver: zodResolver(updateProfileSchema),
-    defaultValues: {
-      id: 0,
-      fullName: '',
-      email: '',
-      phone: '',
-      username: '',
-      gender: 0,
-      avatarPath: ''
-    }
-  });
+  const defaultValues: ProfileResType = {
+    id: profile?.id || 0,
+    fullName: profile?.fullName || '',
+    email: profile?.email || '',
+    phone: profile?.phone || '',
+    username: profile?.username || '',
+    gender: GENDER.includes(profile?.gender!)
+      ? profile?.gender!
+      : genderOptions[0].value,
+    avatarPath
+  };
 
   useEffect(() => {
     if (profile) {
-      form.reset({
-        ...profile,
-        username: profile?.username ?? '',
-        phone: profile?.phone ?? '',
-        gender: GENDER.includes(profile?.gender)
-          ? profile?.gender
-          : genderOptions[0].value
-      });
-      setAvatarPath(profile.avatarPath || '');
+      setAvatarPath(profile.avatarPath);
     }
-  }, [profile, form]);
+  }, [profile]);
 
   const onSubmit = async (values: UpdateProfileType) => {
     try {
@@ -87,7 +78,7 @@ export default function ProfileDialog() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className='bg-background relative w-full max-w-2xl rounded-lg p-6 shadow-lg'
+            className='bg-background relative w-full max-w-2xl rounded-lg p-6 shadow-[0px_0px_10px_0px_var(--accent)]'
             onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
               e.stopPropagation()
             }
@@ -101,106 +92,108 @@ export default function ProfileDialog() {
                 <X />
               </Button>
             </ToolTip>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <UploadImageField
-                  label='Ảnh đại diện'
-                  value={avatarPath}
-                  onChange={(url) => setAvatarPath(url)}
-                  uploadImageFn={async (blob) => {
-                    const response =
-                      await uploadImageMutation.mutateAsync(blob);
-                    return response.data?.filePath!;
-                  }}
-                />
-                <Row>
-                  <Col>
-                    <InputField
-                      control={form.control}
-                      name='fullName'
-                      label='Họ và tên'
-                      required
-                      placeholder='Nhập họ và tên'
-                    />
-                  </Col>
-                  <Col>
-                    <InputField
-                      control={form.control}
-                      name='email'
-                      label='Email'
-                      required
-                      placeholder='Nhập email'
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <InputField
-                      control={form.control}
-                      name='username'
-                      label='Tên đăng nhập'
-                      required
-                      placeholder='Nhập tên đăng nhập'
-                    />
-                  </Col>
-                  <Col>
-                    <AutoCompleteField
-                      control={form.control}
-                      options={genderOptions}
-                      name='gender'
-                      label='Giới tính'
-                      required
-                      getLabel={(opt) => opt.label}
-                      getValue={(opt) => opt.value}
-                      placeholder='Chọn giới tính'
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <InputField
-                      control={form.control}
-                      name='phone'
-                      label='Số điện thoại'
-                      required
-                      placeholder='Nhập số điện thoại'
-                    />
-                  </Col>
-                </Row>
-                <div className='mt-6 flex justify-end gap-2'>
-                  <Button
-                    type='button'
-                    variant={'destructive'}
-                    onClick={() => setOpen(false)}
-                  >
-                    Hủy
-                  </Button>
-                  <Button
-                    type='submit'
-                    className={cn('ml-2 w-32', {
-                      'cursor-not-allowed opacity-50':
-                        profileMutation?.isPending ||
-                        !form.formState.isValid ||
-                        Object.keys(form.formState.dirtyFields).length === 0
-                    })}
-                    disabled={
-                      profileMutation?.isPending ||
-                      !form.formState.isValid ||
-                      Object.keys(form.formState.dirtyFields).length === 0
-                    }
-                  >
-                    {profileMutation?.isPending ? (
-                      <Loader2
-                        className='size-6 animate-spin'
-                        strokeWidth={3}
+            <BaseForm
+              schema={updateProfileSchema}
+              defaultValues={defaultValues}
+              onSubmit={onSubmit}
+              onChange={() => setIsFormChanged(true)}
+            >
+              {(form) => (
+                <>
+                  <UploadImageField
+                    label='Ảnh đại diện'
+                    value={avatarPath}
+                    onChange={(url) => {
+                      setAvatarPath(url);
+                      setIsFormChanged(true);
+                    }}
+                    uploadImageFn={async (blob) => {
+                      const response =
+                        await uploadImageMutation.mutateAsync(blob);
+                      return response.data?.filePath!;
+                    }}
+                  />
+                  <Row>
+                    <Col>
+                      <InputField
+                        control={form.control}
+                        name='fullName'
+                        label='Họ và tên'
+                        required
+                        placeholder='Nhập họ và tên'
                       />
-                    ) : (
-                      'Cập nhật'
-                    )}
-                  </Button>
-                </div>
-              </form>
-            </Form>
+                    </Col>
+                    <Col>
+                      <InputField
+                        control={form.control}
+                        name='email'
+                        label='Email'
+                        required
+                        placeholder='Nhập email'
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <InputField
+                        control={form.control}
+                        name='username'
+                        label='Tên đăng nhập'
+                        required
+                        placeholder='Nhập tên đăng nhập'
+                      />
+                    </Col>
+                    <Col>
+                      <AutoCompleteField
+                        control={form.control}
+                        options={genderOptions}
+                        name='gender'
+                        label='Giới tính'
+                        required
+                        getLabel={(opt) => opt.label}
+                        getValue={(opt) => opt.value}
+                        placeholder='Chọn giới tính'
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <InputField
+                        control={form.control}
+                        name='phone'
+                        label='Số điện thoại'
+                        required
+                        placeholder='Nhập số điện thoại'
+                      />
+                    </Col>
+                  </Row>
+                  <div className='mt-6 flex justify-end gap-2'>
+                    <Button
+                      type='button'
+                      variant={'destructive'}
+                      onClick={() => setOpen(false)}
+                    >
+                      Hủy
+                    </Button>
+                    <Button
+                      type='submit'
+                      className={cn('ml-2 w-32', {
+                        'cursor-not-allowed opacity-50': !isFormChanged
+                      })}
+                    >
+                      {profileMutation?.isPending ? (
+                        <Loader2
+                          className='size-6 animate-spin'
+                          strokeWidth={3}
+                        />
+                      ) : (
+                        'Cập nhật'
+                      )}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </BaseForm>
           </motion.div>
         </motion.div>
       )}
