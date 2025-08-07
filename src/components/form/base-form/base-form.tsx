@@ -1,15 +1,17 @@
+'use-client';
+
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
-import { DefaultValues, useForm } from 'react-hook-form';
+import { DefaultValues, useForm, UseFormReturn } from 'react-hook-form';
 
 type AsyncDefaultValues<T> = (payload?: unknown) => Promise<T>;
 
 type BaseFormProps<T extends Record<string, any>> = {
   schema: any;
   defaultValues: DefaultValues<T> | AsyncDefaultValues<T>;
-  onSubmit: (values: T) => Promise<void> | void;
-  children?: (methods: ReturnType<typeof useForm<T>>) => React.ReactNode;
+  onSubmit: (values: T, form: UseFormReturn<T>) => Promise<void> | void;
+  children?: (methods: UseFormReturn<T>) => React.ReactNode;
   className?: string;
   initialValues?: T;
   mode?: 'onBlur' | 'onChange' | 'onSubmit' | 'onTouched' | 'all' | undefined;
@@ -42,7 +44,7 @@ export default function BaseForm<T extends Record<string, any>>({
     <Form {...form}>
       <form
         className={className}
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit((values) => onSubmit(values, form))}
         onChange={onChange}
       >
         {children?.(form)}

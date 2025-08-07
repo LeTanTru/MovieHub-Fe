@@ -1,14 +1,5 @@
-import { ProfileType } from '@/types';
+import { AuthStoreType, ProfileType } from '@/types';
 import { create } from 'zustand';
-
-type AuthStoreType = {
-  isAuthenticated: boolean;
-  setAuthenticated: (isAuthenticated: boolean) => void;
-  profile: ProfileType | null;
-  setProfile: (profile: ProfileType | null) => void;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
-};
 
 const useAuthStore = create<AuthStoreType>((set) => ({
   isAuthenticated: false,

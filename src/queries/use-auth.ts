@@ -1,4 +1,4 @@
-import { authApiRequest } from '@/apiRequests';
+import { authApiRequest } from '@/api-requests';
 import { LoginBodyType, RegisterBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 

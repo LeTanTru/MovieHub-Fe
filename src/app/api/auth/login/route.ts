@@ -1,4 +1,4 @@
-import { authApiRequest } from '@/apiRequests';
+import { authApiRequest } from '@/api-requests';
 import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { cookies } from 'next/headers';

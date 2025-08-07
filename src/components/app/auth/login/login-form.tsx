@@ -1,32 +1,31 @@
 'use client';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/components/ui/form';
-import { Button, InputField } from '@/components/form';
-import Link from 'next/link';
+
+import { Button, Col, InputField, Row } from '@/components/form';
 import ButtonLoginGoogle from '@/components/app/auth/login/button-login-google';
-import PasswordField from '@/components/form/password-field';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
 import { useLoginMutation } from '@/queries/use-auth';
 import { logger } from '@/logger';
 import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
 import { storageKeys } from '@/constants';
-import { Loader2 } from 'lucide-react';
 import { useAuthDialogStore, useAuthStore } from '@/store';
+import { BaseForm } from '@/components/form/base-form';
+import PasswordField from '@/components/form/password-field';
+import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { cn } from '@/lib';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
-  const form = useForm<LoginType>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: ''
-    }
-  });
+  const loginMutation = useLoginMutation();
   const { setOpen } = useAuthDialogStore();
   const { setAuthenticated } = useAuthStore();
+  const [isFormChanged, setIsFormChanged] = useState(false);
 
-  const loginMutation = useLoginMutation();
+  const defaultValues: LoginType = {
+    email: '',
+    password: ''
+  };
 
   const onSubmit = async (values: LoginBodyType) => {
     try {
@@ -59,40 +58,63 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
         </p>
       </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
-          <InputField
-            control={form.control}
-            name='email'
-            label='Email'
-            placeholder='Nhập email của bạn'
-            type='text'
-            required
-          />
-          <PasswordField
-            control={form.control}
-            name='password'
-            label='Mật khẩu'
-            placeholder='Nhập mật khẩu của bạn'
-            type='password'
-            required
-          />
+      <BaseForm
+        schema={loginSchema}
+        defaultValues={defaultValues}
+        onSubmit={onSubmit}
+        onChange={() => setIsFormChanged(true)}
+      >
+        {(form) => (
+          <>
+            <Row>
+              <Col>
+                <InputField
+                  control={form.control}
+                  name='email'
+                  label='Email'
+                  placeholder='Nhập email của bạn'
+                  type='text'
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <PasswordField
+                  control={form.control}
+                  name='password'
+                  label='Mật khẩu'
+                  placeholder='Nhập mật khẩu của bạn'
+                  type='password'
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <div className='flex items-center justify-end text-sm'>
+                  <Link href='#' className='underline hover:no-underline'>
+                    Quên mật khẩu?
+                  </Link>
+                </div>
+              </Col>
+            </Row>
 
-          <div className='flex items-center justify-end text-sm'>
-            <Link href='#' className='underline hover:no-underline'>
-              Quên mật khẩu?
-            </Link>
-          </div>
-
-          <Button type='submit' className='w-full'>
-            {loginMutation.isPending ? (
-              <Loader2 className='h-6! w-6! animate-spin' />
-            ) : (
-              'Đăng nhập'
-            )}
-          </Button>
-        </form>
-      </Form>
+            <Button
+              type='submit'
+              className={cn('w-full', {
+                'cursor-not-allowed opacity-50': !isFormChanged
+              })}
+            >
+              {loginMutation.isPending ? (
+                <Loader2 className='h-6! w-6! animate-spin' />
+              ) : (
+                'Đăng nhập'
+              )}
+            </Button>
+          </>
+        )}
+      </BaseForm>
 
       <div className='my-4 flex items-center gap-3'>
         <div className='bg-border h-px flex-1'></div>

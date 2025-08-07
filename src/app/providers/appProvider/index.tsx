@@ -39,5 +39,5 @@ export default function AppProvider({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 
-  return <div>{children}</div>;
+  return <>{children}</>;
 }

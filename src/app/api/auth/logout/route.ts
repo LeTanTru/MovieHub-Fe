@@ -6,7 +6,7 @@ export async function POST() {
   cookieStore.delete(storageKeys.ACCESS_TOKEN);
   cookieStore.delete(storageKeys.USER_KIND);
   return Response.json(
-    { result: true, message: 'Logout successful' },
+    { result: true, message: 'Logout successfully' },
     { status: 200 }
   );
 }

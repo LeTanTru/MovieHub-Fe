@@ -7,7 +7,7 @@ import {
   ToolTip,
   UploadImageField
 } from '@/components/form';
-import BaseForm from '@/components/form/base-form';
+import { BaseForm } from '@/components/form/base-form';
 import { GENDER, genderOptions } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
@@ -25,7 +25,6 @@ export default function ProfileDialog() {
   const { profile } = useAuthStore();
   const [avatarPath, setAvatarPath] = useState(profile?.avatarPath);
   const [isFormChanged, setIsFormChanged] = useState(false);
-  console.log('🚀 ~ ProfileDialog ~ isFormChanged:', isFormChanged);
   const uploadImageMutation = useUploadImageMutation();
   const profileMutation = useProfileMutation();
 

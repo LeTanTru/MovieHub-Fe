@@ -1,4 +1,4 @@
-import { accountApiRequest } from '@/apiRequests';
+import { accountApiRequest } from '@/api-requests';
 import { useAuthStore } from '@/store';
 import { ProfileResType, UpdateProfileBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';

@@ -132,4 +132,8 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .header-height {
+    @apply h-20;
+  }
 }

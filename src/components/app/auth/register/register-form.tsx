@@ -1,8 +1,6 @@
 'use client';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/components/ui/form';
-import { Button, CheckboxField, InputField } from '@/components/form';
+import { UseFormReturn } from 'react-hook-form';
+import { Button, CheckboxField, Col, InputField, Row } from '@/components/form';
 import PasswordField from '@/components/form/password-field';
 import Link from 'next/link';
 import { registerSchema } from '@/schemaValidations';
@@ -13,21 +11,25 @@ import { registerErrorMaps } from '@/constants';
 import { Loader2 } from 'lucide-react';
 import { applyFormErrors, notify } from '@/utils';
 import { useAuthDialogStore } from '@/store';
+import { BaseForm } from '@/components/form/base-form';
+import { useState } from 'react';
+import { cn } from '@/lib';
 
 export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   const { setOpen, setMode } = useAuthDialogStore();
-  const form = useForm<RegisterType>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      email: '',
-      fullName: '',
-      password: '',
-      terms: false
-    }
-  });
+  const defaultValues: RegisterType = {
+    email: '',
+    fullName: '',
+    password: '',
+    terms: false
+  };
+  const [isFormChanged, setIsFormChanged] = useState(false);
   const registerMutation = useRegisterMutation();
 
-  const onSubmit = async (values: RegisterType) => {
+  const onSubmit = async (
+    values: RegisterType,
+    form: UseFormReturn<RegisterType>
+  ) => {
     try {
       const response = await registerMutation.mutateAsync(values);
       if (!response?.result && response.code) {
@@ -54,50 +56,78 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
         </p>
       </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-5'>
-          <InputField
-            control={form.control}
-            name='email'
-            label='Email'
-            placeholder='Nhập email của bạn'
-            required
-          />
-          <InputField
-            control={form.control}
-            name='fullName'
-            label='Họ và tên'
-            placeholder='Nhập họ và tên của bạn'
-            required
-          />
-          <PasswordField
-            control={form.control}
-            name='password'
-            label='Mật khẩu'
-            placeholder='Nhập mật khẩu của bạn'
-            required
-          />
-          <CheckboxField
-            control={form.control}
-            name='terms'
-            label={
-              <span>
-                Tôi đồng ý với{' '}
-                <Link href='/terms' className='text-primary underline'>
-                  các điều khoản và điều kiện
-                </Link>
-              </span>
-            }
-          />
-          <Button type='submit' className='w-full'>
-            {registerMutation.isPending ? (
-              <Loader2 className='h-6! w-6! animate-spin' />
-            ) : (
-              'Đăng ký'
-            )}
-          </Button>
-        </form>
-      </Form>
+      <BaseForm
+        schema={registerSchema}
+        onSubmit={onSubmit}
+        defaultValues={defaultValues}
+        onChange={() => setIsFormChanged(true)}
+      >
+        {(form) => (
+          <>
+            <Row>
+              <Col>
+                <InputField
+                  control={form.control}
+                  name='email'
+                  label='Email'
+                  placeholder='Nhập email của bạn'
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <InputField
+                  control={form.control}
+                  name='fullName'
+                  label='Họ và tên'
+                  placeholder='Nhập họ và tên của bạn'
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <PasswordField
+                  control={form.control}
+                  name='password'
+                  label='Mật khẩu'
+                  placeholder='Nhập mật khẩu của bạn'
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <CheckboxField
+                  control={form.control}
+                  name='terms'
+                  label={
+                    <span>
+                      Tôi đồng ý với{' '}
+                      <Link href='/terms' className='text-primary underline'>
+                        các điều khoản và điều kiện
+                      </Link>
+                    </span>
+                  }
+                />
+              </Col>
+            </Row>
+            <Button
+              type='submit'
+              className={cn('w-full', {
+                'cursor-not-allowed opacity-50': !isFormChanged
+              })}
+            >
+              {registerMutation.isPending ? (
+                <Loader2 className='h-6! w-6! animate-spin' />
+              ) : (
+                'Đăng ký'
+              )}
+            </Button>
+          </>
+        )}
+      </BaseForm>
 
       <div className='bg-accent mt-4 h-px w-full'></div>
 

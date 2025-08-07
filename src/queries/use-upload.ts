@@ -1,4 +1,4 @@
-import uploadApiRequest from '@/apiRequests/upload.api-request';
+import uploadApiRequest from '@/api-requests/upload.api-request';
 import { useMutation } from '@tanstack/react-query';
 
 export const useUploadImageMutation = () => {

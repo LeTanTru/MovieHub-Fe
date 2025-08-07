@@ -13,8 +13,8 @@ export default function Header() {
 
   return (
     <div>
-      <header className='border-b pr-8 pl-0'>
-        <div className='flex h-16 items-center justify-between gap-4'>
+      <header className='border-b pl-0'>
+        <div className='header-height flex items-center justify-between gap-4 pr-8'>
           {/* Left side */}
           <NavigationMenu />
           {/* Right side */}
@@ -30,7 +30,7 @@ export default function Header() {
                   transition={{ duration: 0.2 }}
                   style={{ marginRight: 24 }}
                 >
-                  <Skeleton className='h-10 w-10 rounded-full' />
+                  <Skeleton className='h-12.5 w-12.5 rounded-full' />
                 </motion.div>
               ) : !profile ? (
                 <motion.div

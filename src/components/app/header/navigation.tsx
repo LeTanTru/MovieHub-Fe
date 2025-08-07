@@ -165,7 +165,7 @@ export default function NavigationMenu() {
 
       {/* Main nav */}
       <div className='flex items-center gap-2 md:gap-6'>
-        <Link href='/'>
+        <Link href='/home'>
           <Image
             src={logoWithText}
             alt='Logo'

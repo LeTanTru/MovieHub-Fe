@@ -6,7 +6,7 @@ type ColProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>> & {
 };
 
 export default function Col({ children, className, span, ...rest }: ColProps) {
-  const spanClass = span ? `w-${span}/24` : 'w-1/2';
+  const spanClass = span ? `w-${span}/24` : 'w-full';
 
   return (
     <div className={cn('flex flex-col', spanClass, className)} {...rest}>
