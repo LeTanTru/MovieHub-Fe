@@ -6,7 +6,6 @@ import { useAuthStore } from '@/store';
 import AuthDialog from '@/components/app/auth';
 import DropdownAvatar from '@/components/app/header/dropdown-avatar';
 import NavigationMenu from './navigation';
-import ProfileDialog from '@/components/app/header/profile-dialog';
 
 export default function Header() {
   const { profile, loading } = useAuthStore();
@@ -30,7 +29,7 @@ export default function Header() {
                   transition={{ duration: 0.2 }}
                   style={{ marginRight: 24 }}
                 >
-                  <Skeleton className='h-12.5 w-12.5 rounded-full' />
+                  <Skeleton className='h-10 w-10 rounded-full' />
                 </motion.div>
               ) : !profile ? (
                 <motion.div
@@ -54,7 +53,6 @@ export default function Header() {
                 </motion.div>
               )}
             </AnimatePresence>
-            <ProfileDialog />
           </div>
         </div>
       </header>
