@@ -72,7 +72,7 @@ function CaptionSubmenu() {
       >
         <ChevronLeftIcon className='parent-data-[open]:block mr-1.5 -ml-0.5 hidden h-[18px] w-[18px]' />
         <div className='parent-data-[open]:hidden contents'>
-          <ClosedCaptionsIcon className='h-5 w-5' />
+          <ClosedCaptionsIcon className='size-5' />
         </div>
         <span className='parent-data-[open]:ml-0 ml-1.5'>Phụ đề</span>
         <span className='ml-auto text-sm text-white/50'>
@@ -171,7 +171,7 @@ function VideoQualitySubmenu() {
       >
         <ChevronLeftIcon className='parent-data-[open]:block mr-1.5 -ml-0.5 hidden h-[18px] w-[18px]' />
         <div className='parent-data-[open]:hidden contents'>
-          <CheckIcon className='h-5 w-5' />
+          <CheckIcon className='size-5' />
         </div>
         <span className='parent-data-[open]:ml-0 ml-1.5'>Chất lượng</span>
         <span className='ml-auto text-sm text-white/50'>{hint}</span>
