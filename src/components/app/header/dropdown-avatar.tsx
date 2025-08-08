@@ -1,27 +1,15 @@
 'use client';
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
-import { apiConfig, storageKeys } from '@/constants';
-import { logger } from '@/logger';
-import { useAuthStore } from '@/store';
+import { apiConfig, dropdownAvatarList } from '@/constants';
 import { ProfileType } from '@/types';
-import { notify, removeAccessTokenFromLocalStorage, removeData } from '@/utils';
-import {
-  ChevronDown,
-  Heart,
-  History,
-  ListVideo,
-  Loader2,
-  LogOutIcon,
-  User2
-} from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { AnimatePresence, motion, Variants } from 'framer-motion';
-import { useLogoutMutation } from '@/queries/use-auth';
-import { cn } from '@/lib';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
 import Link from 'next/link';
+import ButtonLogout from '@/components/button-logout';
 
 const dropdownMotion: Variants = {
   initial: {
@@ -53,65 +41,12 @@ const dropdownMotion: Variants = {
   }
 };
 
-type DropdownAvatarItemType = {
-  link: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  title: string;
-  className?: string;
-};
-
-const dropdownAvatarList: DropdownAvatarItemType[] = [
-  {
-    link: '/user/favorite',
-    icon: Heart,
-    className: 'fill-white stroke-0 size-5',
-    title: 'Yêu thích'
-  },
-  {
-    link: '/user/playlist',
-    icon: ListVideo,
-    className: 'size-5',
-    title: 'Danh sách phát'
-  },
-
-  {
-    link: '/user/watch-history',
-    icon: History,
-    className: 'size-5',
-    title: 'Xem tiếp'
-  },
-  {
-    link: '/user/profile',
-    icon: User2,
-    className: 'size-5',
-    title: 'Hồ sơ'
-  }
-];
-
 type DropdownAvatarProps = {
   profile?: ProfileType | null;
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
-  const { setAuthenticated, setProfile } = useAuthStore();
   const [open, setOpen] = useState(false);
-  const logoutMutation = useLogoutMutation();
-
-  const handleLogout = async () => {
-    try {
-      const response = await logoutMutation.mutateAsync();
-      if (response.result) {
-        removeAccessTokenFromLocalStorage();
-        removeData(storageKeys.USER_KIND);
-        setProfile(null);
-        setAuthenticated(false);
-        notify.success('Đăng xuất thành công');
-      }
-    } catch (error) {
-      logger.error('Logout failed:', error);
-      notify.error('Đăng xuất thất bại');
-    }
-  };
 
   return (
     <div className='header-height relative'>
@@ -125,7 +60,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             disablePreview
             src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
             className='border-none'
-            size={50}
+            size={40}
           />
         ) : (
           <div className='bg-muted flex h-10 w-10 items-center justify-center rounded-full text-xl'>
@@ -170,23 +105,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
               ))}
             </List>
             <Separator />
-            <Button
-              variant='ghost'
-              className={cn('h-10 w-full rounded-none', {
-                'justify-start': !logoutMutation.isPending,
-                'pointer-events-none': logoutMutation.isPending
-              })}
-              onClick={handleLogout}
-            >
-              {logoutMutation.isPending ? (
-                <Loader2 className='h-6! w-6! animate-spin' />
-              ) : (
-                <>
-                  <LogOutIcon size={16} className='opacity-60' />
-                  <span>Đăng xuất</span>
-                </>
-              )}
-            </Button>
+            <ButtonLogout />
           </motion.div>
         )}
       </AnimatePresence>
