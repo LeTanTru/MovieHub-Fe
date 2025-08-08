@@ -71,7 +71,7 @@ export default function AuthDialog() {
                 onClick={() => setOpen(false)}
                 className='absolute top-3 right-3 text-gray-500 hover:bg-transparent! hover:text-gray-300'
               >
-                <X className='h-5! w-5!' />
+                <X className='size-5!' />
               </Button>
 
               {mode === 'login' ? (

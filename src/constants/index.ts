@@ -4,3 +4,4 @@ export { default as AppConstants } from './app';
 export { default as languageNameMap } from './language-map';
 export * from './error-code';
 export * from './master-data';
+export * from './motion-variant';

@@ -1,6 +1,5 @@
 import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
 import {
-  Bell,
   Heart,
   History,
   Infinity,
@@ -56,12 +55,6 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
     icon: History,
     className: 'size-5',
     title: 'Xem tiếp'
-  },
-  {
-    link: '/user/notification',
-    icon: Bell,
-    title: 'Thông báo',
-    className: 'size-5'
   },
   {
     link: '/user/profile',

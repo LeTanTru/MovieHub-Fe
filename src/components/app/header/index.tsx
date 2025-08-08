@@ -6,6 +6,7 @@ import { useAuthStore } from '@/store';
 import AuthDialog from '@/components/app/auth';
 import DropdownAvatar from '@/components/app/header/dropdown-avatar';
 import NavigationMenu from './navigation';
+import DropdownNotification from '@/components/app/header/dropdown-notification';
 
 export default function Header() {
   const { profile, loading } = useAuthStore();
@@ -42,15 +43,26 @@ export default function Header() {
                   <AuthDialog />
                 </motion.div>
               ) : (
-                <motion.div
-                  key='avatar'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <DropdownAvatar profile={profile} />
-                </motion.div>
+                <div className='flex items-center gap-x-5'>
+                  <motion.div
+                    key='notification'
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <DropdownNotification />
+                  </motion.div>
+                  <motion.div
+                    key='avatar'
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <DropdownAvatar profile={profile} />
+                  </motion.div>
+                </div>
               )}
             </AnimatePresence>
           </div>

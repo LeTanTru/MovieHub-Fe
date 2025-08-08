@@ -1,45 +1,19 @@
 'use client';
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
-import { apiConfig, dropdownAvatarList } from '@/constants';
+import {
+  apiConfig,
+  dropdownAvatarList,
+  dropdownAvatarMotion
+} from '@/constants';
 import { ProfileType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
 import Link from 'next/link';
 import ButtonLogout from '@/components/button-logout';
-
-const dropdownMotion: Variants = {
-  initial: {
-    opacity: 0,
-    scale: 0,
-    x: 0,
-    y: 0,
-    transformOrigin: '80% -5%'
-  },
-  animate: {
-    opacity: 1,
-    scale: 1,
-    x: 0,
-    y: 0,
-    transition: {
-      duration: 0.1,
-      ease: 'linear'
-    }
-  },
-  exit: {
-    opacity: 0,
-    scale: 0,
-    x: 0,
-    y: 0,
-    transition: {
-      duration: 0.1,
-      ease: 'linear'
-    }
-  }
-};
 
 type DropdownAvatarProps = {
   profile?: ProfileType | null;
@@ -52,7 +26,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
     <div className='header-height relative'>
       <Button
         variant='ghost'
-        className='h-full w-full rounded-full p-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
+        className='size-full rounded-full p-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
         onClick={() => setOpen((prev) => !prev)}
       >
         {profile?.avatarPath ? (
@@ -63,7 +37,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             size={40}
           />
         ) : (
-          <div className='bg-muted flex h-10 w-10 items-center justify-center rounded-full text-xl'>
+          <div className='bg-muted flex size-10 items-center justify-center rounded-full text-xl'>
             {profile?.fullName?.charAt(0) ?? 'U'}
           </div>
         )}
@@ -73,16 +47,16 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
       <AnimatePresence>
         {open && (
           <motion.div
-            variants={dropdownMotion}
+            variants={dropdownAvatarMotion}
             initial='initial'
             animate='animate'
             exit='exit'
-            className='bg-background absolute top-19 right-[16%] mt-2 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-background absolute top-full right-1 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-[16%] h-2 w-4'>
               <div className='bg-background h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
             </div>
-            <div className='w-48 px-4 py-3'>
+            <div className='px-4 py-3'>
               <p className='truncate overflow-hidden text-sm font-medium whitespace-nowrap'>
                 {profile?.fullName}
               </p>
