@@ -17,7 +17,6 @@ export default function AppProvider({
   useEffect(() => {
     const accessToken = getAccessTokenFromLocalStorage();
     if (!accessToken) {
-      setProfile(null);
       setLoading(false);
       return;
     }

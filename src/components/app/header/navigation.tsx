@@ -3,7 +3,6 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
-import { logoWithText } from '@/assets';
 import { Button } from '@/components/form';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
@@ -14,8 +13,6 @@ import {
   NavigationMenuTrigger
 } from '@/components/ui/navigation-menu';
 
-import Image from 'next/image';
-import Link from 'next/link';
 import { BookOpenIcon, InfoIcon, LifeBuoyIcon, MenuIcon } from 'lucide-react';
 import Navigation from '@/components/navigation';
 
@@ -165,16 +162,6 @@ export default function NavigationMenu() {
 
       {/* Main nav */}
       <div className='flex items-center gap-2 md:gap-6'>
-        <Link href='/home'>
-          <Image
-            src={logoWithText}
-            alt='Logo'
-            width={200}
-            height={40}
-            className='h-[40px] w-[200px]'
-            priority
-          />
-        </Link>
         {/* Navigation menu */}
         <Navigation
           className='max-md:hidden'

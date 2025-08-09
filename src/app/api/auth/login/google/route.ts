@@ -15,14 +15,16 @@ export async function POST(request: Request) {
       path: '/',
       httpOnly: true,
       sameSite: 'lax',
-      secure: true
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7
     });
 
     cookieStore.set(storageKeys.USER_KIND, String(userKind), {
       path: '/',
       httpOnly: true,
       sameSite: 'lax',
-      secure: true
+      secure: true,
+      maxAge: 60 * 60 * 24 * 7
     });
 
     return Response.json(

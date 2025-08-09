@@ -1,15 +1,15 @@
 'use client';
-import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@/components/form';
 import LoginForm from '@/components/app/auth/login/login-form';
 import RegisterForm from '@/components/app/auth/register/register-form';
 import { X } from 'lucide-react';
 import useAuthDialogStore from '@/store/use-auth-dialog-store';
+import { useClickOutside } from '@/hooks';
 
 export default function AuthDialog() {
-  const { open, setOpen, mode, setMode } = useAuthDialogStore();
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const { mode, setMode } = useAuthDialogStore();
+  const { nodeRef, open, setOpen } = useClickOutside();
 
   const switchMode = (targetMode: 'login' | 'register') => {
     setOpen(false);
@@ -18,28 +18,6 @@ export default function AuthDialog() {
       setOpen(true);
     }, 300);
   };
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (overlayRef.current && e.target === overlayRef.current) {
-      setOpen(false);
-      setMode('login');
-    }
-  };
-
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.body.style.overflow = 'auto';
-      window.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto';
-      window.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [open]);
 
   return (
     <>
@@ -50,7 +28,6 @@ export default function AuthDialog() {
       <AnimatePresence>
         {open && (
           <motion.div
-            ref={overlayRef}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -58,6 +35,7 @@ export default function AuthDialog() {
             className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
           >
             <motion.div
+              ref={nodeRef}
               key='modal-content'
               initial={{ opacity: 0, y: -100 }}
               animate={{ opacity: 1, y: 0 }}

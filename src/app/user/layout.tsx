@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <Container className='flex gap-x-20 pt-20'>
+      <Container className='flex gap-x-20 pt-40'>
         <Sidebar />
         {children}
       </Container>
