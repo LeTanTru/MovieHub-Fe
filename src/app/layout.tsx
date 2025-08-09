@@ -4,8 +4,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { AppProvider, QueryProvider } from '@/app/providers';
 import ToastPortal from '@/components/toast-portal';
+import { AppProvider, QueryProvider } from '@/components/providers';
 
 const inter = Inter({
   subsets: ['latin'],

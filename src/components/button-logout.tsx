@@ -5,6 +5,7 @@ import { storageKeys } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useLogoutMutation } from '@/queries';
+import route from '@/routes';
 import { useAuthStore } from '@/store';
 import { notify, removeAccessTokenFromLocalStorage, removeData } from '@/utils';
 import { Loader2, LogOutIcon } from 'lucide-react';
@@ -26,7 +27,7 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
         setProfile(null);
         setAuthenticated(false);
         notify.success('Đăng xuất thành công');
-        router.push('/home');
+        router.push(route.home);
       }
     } catch (error) {
       logger.error('Logout failed:', error);

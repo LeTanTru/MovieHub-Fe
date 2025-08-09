@@ -3,6 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { dropdownNotificationMotion } from '@/constants';
 import { useClickOutside } from '@/hooks';
+import route from '@/routes';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BellIcon } from 'lucide-react';
 import Link from 'next/link';
@@ -40,21 +41,26 @@ export default function DropdownNotification() {
               defaultValue='tab-1'
               className='flex-1 overflow-hidden rounded-lg p-0'
             >
-              <TabsList className='border-b-accent w-full rounded-none border-b-1 bg-transparent py-0'>
-                <TabsTrigger
-                  value='tab-1'
-                  className='data-[state=active]:bg-background! cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
-                >
-                  Phim
-                </TabsTrigger>
-                <Separator orientation='vertical' />
-                <TabsTrigger
-                  value='tab-2'
-                  className='data-[state=active]:bg-background! cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
-                >
-                  Cộng đồng
-                </TabsTrigger>
-              </TabsList>
+              <div>
+                <div>
+                  <TabsList className='border-b-accent w-full rounded-none border-b-1 bg-transparent py-0'>
+                    <TabsTrigger
+                      value='tab-1'
+                      className='data-[state=active]:bg-background! cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                    >
+                      Phim
+                    </TabsTrigger>
+                    <Separator orientation='vertical' />
+                    <TabsTrigger
+                      value='tab-2'
+                      className='data-[state=active]:bg-background! cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                    >
+                      Cộng đồng
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+                <Button>Đánh dấu là đã đọc</Button>
+              </div>
               <TabsContent
                 value='tab-1'
                 className='flex items-center justify-center'
@@ -74,7 +80,7 @@ export default function DropdownNotification() {
             </Tabs>
             <Link
               className='border-t-accent hover:bg-background mt-auto block w-full border-t-1 px-4 py-2 text-center text-sm transition-all duration-500 ease-linear hover:text-slate-400'
-              href={'/user/notification'}
+              href={route.user.notification}
               onClick={() => setOpen(false)}
             >
               Xem tất cả

@@ -8,7 +8,6 @@ type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 type ApiEndpoint = {
   baseUrl?: string;
   method: Method;
-  header?: Record<string, string>;
   headers?: Record<string, string>;
   permissionCode?: string;
   isRequiredTenantId?: boolean;
@@ -99,6 +98,15 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true,
       isUpload: true,
       permissionCode: 'FILE_U'
+    }
+  },
+  category: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}v1/category/list`,
+      method: 'GET',
+      headers: baseHeader,
+      permissionCode: 'CA_L',
+      isRequiredTenantId: true
     }
   },
   imageProxy: {

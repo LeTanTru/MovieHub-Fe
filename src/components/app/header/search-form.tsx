@@ -8,9 +8,7 @@ import { Search } from 'lucide-react';
 import React from 'react';
 
 export default function SearchForm() {
-  const onSubmit = (values: SearchType) => {
-    console.log('🚀 ~ onSubmit ~ values:', values);
-  };
+  const onSubmit = (values: SearchType) => {};
   const defaultValues: SearchType = {
     title: ''
   };

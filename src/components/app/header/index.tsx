@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { logoWithText } from '@/assets';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
+import route from '@/routes';
 
 export default function Header() {
   const { profile, loading } = useAuthStore();
@@ -32,21 +33,20 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 left-0 z-9999 pl-0 transition-all duration-200 ease-linear',
+        'fixed top-0 right-0 left-0 z-9999 pr-8 pl-8 transition-all duration-200 ease-linear',
         {
           'bg-background': isFixed
         }
       )}
     >
-      <div className={'flex h-17.5 items-center justify-between gap-4 pr-8'}>
-        <div className='flex items-center justify-between gap-x-5'>
-          <Link href='/home'>
+      <div className={'flex h-17.5 items-center justify-between gap-4'}>
+        <div className='gap flex items-center justify-between gap-10'>
+          <Link href={route.home}>
             <Image
               src={logoWithText}
               alt='Logo'
-              width={200}
-              height={40}
-              className='h-11 w-50'
+              height={44}
+              className='h-11'
               priority
             />
           </Link>

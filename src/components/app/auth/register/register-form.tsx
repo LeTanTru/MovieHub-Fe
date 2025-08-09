@@ -1,11 +1,11 @@
 'use client';
+
 import { UseFormReturn } from 'react-hook-form';
 import { Button, CheckboxField, Col, InputField, Row } from '@/components/form';
 import PasswordField from '@/components/form/password-field';
 import Link from 'next/link';
 import { registerSchema } from '@/schemaValidations';
 import { RegisterType } from '@/types';
-import { logger } from '@/logger';
 import { useRegisterMutation } from '@/queries/use-auth';
 import { registerErrorMaps } from '@/constants';
 import { Loader2 } from 'lucide-react';
@@ -14,6 +14,7 @@ import { useAuthDialogStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import { useState } from 'react';
 import { cn } from '@/lib';
+import { logger } from '@/logger';
 
 export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   const { setOpen, setMode } = useAuthDialogStore();

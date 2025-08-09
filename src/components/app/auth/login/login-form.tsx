@@ -5,7 +5,6 @@ import ButtonLoginGoogle from '@/components/app/auth/login/button-login-google';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
 import { useLoginMutation } from '@/queries/use-auth';
-import { logger } from '@/logger';
 import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthDialogStore, useAuthStore } from '@/store';
@@ -15,6 +14,7 @@ import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib';
+import { logger } from '@/logger';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const loginMutation = useLoginMutation();
