@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/form';
 import { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
+import { ReactNode } from 'react';
 
 type InputFieldProps<T extends FieldValues> = {
   control: Control<T>;
@@ -25,6 +26,8 @@ type InputFieldProps<T extends FieldValues> = {
   labelClassName?: string;
   disabled?: boolean;
   readOnly?: boolean;
+  prefixIcon?: ReactNode;
+  suffixIcon?: ReactNode;
 };
 
 export default function InputField<T extends FieldValues>({
@@ -39,7 +42,9 @@ export default function InputField<T extends FieldValues>({
   required,
   labelClassName,
   disabled,
-  readOnly = false
+  readOnly = false,
+  prefixIcon,
+  suffixIcon
 }: InputFieldProps<T>) {
   return (
     <FormField
@@ -59,16 +64,30 @@ export default function InputField<T extends FieldValues>({
             </FormLabel>
           )}
           <FormControl>
-            <Input
-              placeholder={placeholder}
-              type={type}
-              disabled={disabled}
-              readOnly={readOnly}
-              {...field}
-              className={cn(className, 'focus-visible:ring-[1px]', {
-                'cursor-not-allowed opacity-50': disabled
-              })}
-            />
+            <div className='relative'>
+              {prefixIcon && (
+                <div className='text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2'>
+                  {prefixIcon}
+                </div>
+              )}
+              <Input
+                placeholder={placeholder}
+                type={type}
+                disabled={disabled}
+                readOnly={readOnly}
+                {...field}
+                className={cn(className, 'focus-visible:ring-[1px]', {
+                  'pl-10': prefixIcon,
+                  'pr-10': suffixIcon,
+                  'cursor-not-allowed opacity-50': disabled
+                })}
+              />
+              {suffixIcon && (
+                <div className='text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2'>
+                  {suffixIcon}
+                </div>
+              )}
+            </div>
           </FormControl>
           {description && <FormDescription>{description}</FormDescription>}
           <FormMessage className={'mb-0 ml-1'} />

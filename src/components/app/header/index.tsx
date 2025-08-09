@@ -4,70 +4,103 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthStore } from '@/store';
 import AuthDialog from '@/components/app/auth';
-import DropdownAvatar from '@/components/app/header/dropdown-avatar';
+import DropdownAvatar from './dropdown-avatar';
 import NavigationMenu from './navigation';
-import DropdownNotification from '@/components/app/header/dropdown-notification';
+import DropdownNotification from './dropdown-notification';
+import SearchForm from './search-form';
+import Link from 'next/link';
+import Image from 'next/image';
+import { logoWithText } from '@/assets';
+import { useEffect, useState } from 'react';
+import { cn } from '@/lib';
 
 export default function Header() {
   const { profile, loading } = useAuthStore();
+  const [isFixed, setIsFixed] = useState(false);
+
+  useEffect(() => {
+    const handleOnScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsFixed(scrollTop > 0);
+    };
+
+    window.addEventListener('scroll', handleOnScroll);
+
+    return () => window.removeEventListener('scroll', handleOnScroll);
+  }, []);
 
   return (
-    <div>
-      <header className='border-b pl-0'>
-        <div className='header-height flex items-center justify-between gap-4 pr-8'>
-          {/* Left side */}
+    <header
+      className={cn(
+        'fixed top-0 right-0 left-0 z-9999 pl-0 transition-all duration-200 ease-linear',
+        {
+          'bg-background': isFixed
+        }
+      )}
+    >
+      <div className={'flex h-17.5 items-center justify-between gap-4 pr-8'}>
+        <div className='flex items-center justify-between gap-x-5'>
+          <Link href='/home'>
+            <Image
+              src={logoWithText}
+              alt='Logo'
+              width={200}
+              height={40}
+              className='h-11 w-50'
+              priority
+            />
+          </Link>
+          <SearchForm />
           <NavigationMenu />
-          {/* Right side */}
-          <div className='flex items-center gap-2'>
-            {/* <DarkModeToggle /> */}
-            <AnimatePresence mode='wait' initial={false}>
-              {loading ? (
-                <motion.div
-                  key='loading'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ marginRight: 24 }}
-                >
-                  <Skeleton className='h-10 w-10 rounded-full' />
-                </motion.div>
-              ) : !profile ? (
-                <motion.div
-                  key='auth'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <AuthDialog />
-                </motion.div>
-              ) : (
-                <div className='flex items-center gap-x-5'>
-                  <motion.div
-                    key='notification'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <DropdownNotification />
-                  </motion.div>
-                  <motion.div
-                    key='avatar'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <DropdownAvatar profile={profile} />
-                  </motion.div>
-                </div>
-              )}
-            </AnimatePresence>
-          </div>
         </div>
-      </header>
-    </div>
+        <div className='flex items-center gap-2'>
+          <AnimatePresence mode='wait' initial={false}>
+            {loading ? (
+              <motion.div
+                key='loading'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                style={{ marginRight: 24 }}
+              >
+                <Skeleton className='h-10 w-10 rounded-full' />
+              </motion.div>
+            ) : !profile ? (
+              <motion.div
+                key='auth'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <AuthDialog />
+              </motion.div>
+            ) : (
+              <div className='flex items-center gap-x-5'>
+                <motion.div
+                  key='notification'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <DropdownNotification />
+                </motion.div>
+                <motion.div
+                  key='avatar'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <DropdownAvatar profile={profile} />
+                </motion.div>
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </header>
   );
 }

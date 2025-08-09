@@ -1,2 +1,2 @@
-export { default as QueryProvider } from './queryProvider';
-export { default as AppProvider } from './appProvider';
+export { default as QueryProvider } from './query-provider';
+export { default as AppProvider } from './app-provider';

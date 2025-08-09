@@ -16,9 +16,4 @@ type AuthStoreType = {
   setLoading: (loading: boolean) => void;
 };
 
-type ProfileDialogStoreType = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-};
-
-export type { AuthDialogStoreType, AuthStoreType, ProfileDialogStoreType };
+export type { AuthDialogStoreType, AuthStoreType };
