@@ -29,7 +29,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
         className='size-full rounded-full p-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
         onClick={() => setOpen((prev) => !prev)}
       >
-        {/* {profile?.avatarPath ? (
+        {profile?.avatarPath ? (
           <AvatarField
             disablePreview
             src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
@@ -40,7 +40,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
           <div className='bg-muted flex size-10 items-center justify-center rounded-full text-xl'>
             {profile?.fullName?.charAt(0) ?? 'U'}
           </div>
-        )} */}
+        )}
         <ChevronDown />
       </Button>
 
