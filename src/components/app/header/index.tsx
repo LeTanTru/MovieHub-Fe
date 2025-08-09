@@ -33,7 +33,7 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 left-0 z-9999 pr-8 pl-8 transition-all duration-200 ease-linear',
+        'fixed top-0 right-0 left-0 z-9999 pr-10 pl-8 transition-all duration-200 ease-linear',
         {
           'bg-background': isFixed
         }

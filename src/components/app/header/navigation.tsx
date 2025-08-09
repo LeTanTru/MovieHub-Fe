@@ -3,7 +3,6 @@ import ListItem from '@/components/list/ListItem';
 
 import {
   NavigationMenuContent,
-  NavigationMenuLink,
   NavigationMenuTrigger
 } from '@/components/ui/navigation-menu';
 
@@ -12,6 +11,7 @@ import { useCategoryQuery } from '@/queries/use-category';
 import { cn } from '@/lib';
 import { ItemProps } from '@/types';
 import route from '@/routes';
+import NavigationLink from '@/components/navigation/NavigationLink';
 
 export default function NavigationMenu() {
   const categories = useCategoryQuery();
@@ -148,7 +148,7 @@ export default function NavigationMenu() {
                   >
                     {item.subItems!.map((sub, index) => (
                       <ListItem key={index}>
-                        <NavigationMenuLink
+                        <NavigationLink
                           href={sub.href}
                           className='text-muted-foreground hover:text-primary cursor-pointer py-2.5! pl-4'
                         >
@@ -156,19 +156,19 @@ export default function NavigationMenu() {
                             {sub.icon && <sub.icon className='size-4' />}
                             {<div className='font-medium'>{sub.label}</div>}
                           </div>
-                        </NavigationMenuLink>
+                        </NavigationLink>
                       </ListItem>
                     ))}
                   </List>
                 </NavigationMenuContent>
               </>
             ) : (
-              <NavigationMenuLink
+              <NavigationLink
                 href={item.href}
                 className='text-muted-foreground hover:text-primary py-1.5 font-medium transition-all duration-200 ease-linear hover:bg-transparent'
               >
                 {item.label}
-              </NavigationMenuLink>
+              </NavigationLink>
             );
           }}
         />

@@ -15,7 +15,7 @@ type AvatarFieldProps = {
   className?: string;
   disablePreview?: boolean;
   zoomSize?: number;
-} & React.HTMLAttributes<HTMLDivElement>;
+} & React.HTMLAttributes<HTMLElement>;
 
 export default function AvatarField({
   size = 80,
