@@ -1,16 +1,5 @@
 import { NavigationMenuItem } from '@/components/ui/navigation-menu';
-
-interface SubmenuProps {
-  [key: string]: any;
-}
-
-interface ItemProps {
-  href?: string;
-  label: string;
-  submenu?: boolean;
-  type?: string;
-  items?: SubmenuProps[];
-}
+import { ItemProps } from '@/types';
 
 interface NavigationProps {
   item: ItemProps;

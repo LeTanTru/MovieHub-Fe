@@ -21,3 +21,13 @@ export type ApiResponse<T> = {
   result?: boolean;
   code?: string;
 };
+
+export type ApiResponseList<T> = {
+  result?: boolean;
+  data: {
+    content: T[];
+    totalElements: number;
+    totalPages: number;
+  };
+  message?: string;
+};

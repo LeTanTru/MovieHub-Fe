@@ -4,9 +4,10 @@ import { AvatarField } from '@/components/form';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
 import { Skeleton } from '@/components/ui/skeleton';
-import { apiConfig, dropdownAvatarList, genderIconMaps } from '@/constants';
+import { apiConfig, genderIconMaps, userSidebarList } from '@/constants';
 import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
 import { cn } from '@/lib';
+import route from '@/routes';
 import { useAuthStore } from '@/store';
 import { ProfileType } from '@/types';
 import Link from 'next/link';
@@ -20,7 +21,7 @@ export default function Sidebar() {
     <div className='bg-sidebar w-72 rounded-lg px-8 py-8 pb-6'>
       <h1 className='mb-8 text-xl font-bold'>Quản lý tài khoản</h1>
       <List className='flex flex-col'>
-        {dropdownAvatarList.map((item) => (
+        {userSidebarList.map((item) => (
           <ListItem
             key={item.link}
             className={cn('border-b-accent border-b text-slate-400', {
@@ -34,9 +35,11 @@ export default function Sidebar() {
               <item.icon
                 className={cn(item.className, {
                   'fill-white':
-                    path === '/user/favorite' && item.link === '/user/favorite',
+                    path === route.user.favorite &&
+                    item.link === route.user.favorite,
                   'fill-none stroke-2':
-                    path !== '/user/favorite' && item.link === '/user/favorite'
+                    path !== route.user.favorite &&
+                    item.link === route.user.favorite
                 })}
               />
               {item.title}
@@ -61,7 +64,7 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
 
   return (
     <>
-      {profile?.avatarPath ? (
+      {/* {profile?.avatarPath ? (
         <AvatarField
           src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
         />
@@ -69,7 +72,7 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
         <div className='bg-muted flex h-20 w-20 items-center justify-center rounded-full text-3xl'>
           {profile?.fullName?.charAt(0) ?? 'U'}
         </div>
-      )}
+      )} */}
 
       <div className='mt-5 flex items-center gap-x-1'>
         <h1>{profile?.fullName}</h1>

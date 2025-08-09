@@ -1,4 +1,5 @@
 'use client';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowLeftIcon,
@@ -26,8 +27,8 @@ import { AvatarField, Button } from '@/components/form';
 import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
-import { logger } from '@/logger';
 import { apiConfig } from '@/constants';
+import { logger } from '@/logger';
 
 type Area = { x: number; y: number; width: number; height: number };
 
@@ -179,7 +180,7 @@ export default function UploadImageField({
             data-dragging={isDragging || undefined}
             aria-label={value ? 'Thay ảnh' : 'Tải lên'}
           >
-            {!!value ? (
+            {/* {!!value ? (
               <AvatarField
                 disablePreview
                 src={`${apiConfig.imageProxy.baseUrl}${value}`}
@@ -191,7 +192,7 @@ export default function UploadImageField({
                 style={{ width: size / 2.2, height: size / 2.2 }}
                 className='opacity-60'
               />
-            )}
+            )} */}
           </Button>
 
           {value && (
