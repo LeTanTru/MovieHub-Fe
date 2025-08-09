@@ -64,7 +64,7 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
 
   return (
     <>
-      {/* {profile?.avatarPath ? (
+      {profile?.avatarPath ? (
         <AvatarField
           src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
         />
@@ -72,7 +72,7 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
         <div className='bg-muted flex h-20 w-20 items-center justify-center rounded-full text-3xl'>
           {profile?.fullName?.charAt(0) ?? 'U'}
         </div>
-      )} */}
+      )}
 
       <div className='mt-5 flex items-center gap-x-1'>
         <h1>{profile?.fullName}</h1>

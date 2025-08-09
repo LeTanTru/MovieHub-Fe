@@ -180,7 +180,7 @@ export default function UploadImageField({
             data-dragging={isDragging || undefined}
             aria-label={value ? 'Thay ảnh' : 'Tải lên'}
           >
-            {/* {!!value ? (
+            {!!value ? (
               <AvatarField
                 disablePreview
                 src={`${apiConfig.imageProxy.baseUrl}${value}`}
@@ -192,7 +192,7 @@ export default function UploadImageField({
                 style={{ width: size / 2.2, height: size / 2.2 }}
                 className='opacity-60'
               />
-            )} */}
+            )}
           </Button>
 
           {value && (
