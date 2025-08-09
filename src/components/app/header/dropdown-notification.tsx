@@ -1,11 +1,10 @@
 import { Button } from '@/components/form';
-import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { dropdownNotificationMotion } from '@/constants';
 import { useClickOutside } from '@/hooks';
 import route from '@/routes';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BellIcon } from 'lucide-react';
+import { BellIcon, CheckCheck } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DropdownNotification() {
@@ -37,36 +36,40 @@ export default function DropdownNotification() {
             <div className='absolute -top-2 right-11 h-2 w-4'>
               <div className='bg-background h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
             </div>
-            <Tabs
-              defaultValue='tab-1'
-              className='flex-1 overflow-hidden rounded-lg p-0'
-            >
-              <div>
-                <div>
-                  <TabsList className='border-b-accent w-full rounded-none border-b-1 bg-transparent py-0'>
+            <Tabs defaultValue='tab-1' className='flex-1 rounded-lg p-0'>
+              <div className='flex justify-between border-b-1'>
+                <div className='flex-1'>
+                  <TabsList className='w-full justify-start gap-x-2 rounded-none bg-transparent px-2 py-0'>
                     <TabsTrigger
                       value='tab-1'
-                      className='data-[state=active]:bg-background! cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                      className='data-[state=active]:bg-background! inline-block flex-0 cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
                     >
                       Phim
                     </TabsTrigger>
-                    <Separator orientation='vertical' />
                     <TabsTrigger
                       value='tab-2'
-                      className='data-[state=active]:bg-background! cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                      className='data-[state=active]:bg-background! flex-0 cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
                     >
                       Cộng đồng
                     </TabsTrigger>
                   </TabsList>
                 </div>
-                <Button>Đánh dấu là đã đọc</Button>
+                <div className=''>
+                  <Button
+                    variant='ghost'
+                    className='text-slate-400 hover:bg-transparent! hover:text-white'
+                  >
+                    <CheckCheck />
+                    Đã đọc
+                  </Button>
+                </div>
               </div>
               <TabsContent
                 value='tab-1'
                 className='flex items-center justify-center'
               >
                 <div className='text-muted-foreground p-4 text-center text-sm'>
-                  Không có thông báo nào
+                  Không có thông báo nào 1
                 </div>
               </TabsContent>
               <TabsContent
@@ -74,12 +77,12 @@ export default function DropdownNotification() {
                 className='flex items-center justify-center'
               >
                 <p className='text-muted-foreground p-4 text-center text-sm'>
-                  Không có thông báo nào
+                  Không có thông báo nào 2
                 </p>
               </TabsContent>
             </Tabs>
             <Link
-              className='border-t-accent hover:bg-background mt-auto block w-full border-t-1 px-4 py-2 text-center text-sm transition-all duration-500 ease-linear hover:text-slate-400'
+              className='border-t-accent hover:bg-background mt-auto block w-full border-t-1 px-4 py-2 text-center text-sm text-slate-400 transition-all duration-500 ease-linear hover:text-white'
               href={route.user.notification}
               onClick={() => setOpen(false)}
             >

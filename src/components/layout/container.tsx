@@ -4,9 +4,7 @@ export default function Container({
   children,
   className,
   ...props
-}: {
-  children: React.ReactNode;
-} & React.HTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLElement>) {
   return (
     <main className={cn('container mx-auto', className)} {...props}>
       {children}
