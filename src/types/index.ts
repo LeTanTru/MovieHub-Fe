@@ -6,3 +6,4 @@ export * from './search.type';
 export * from './store.type';
 export * from './upload.type';
 export * from './navigation-menu.type';
+export * from './master-data.type';

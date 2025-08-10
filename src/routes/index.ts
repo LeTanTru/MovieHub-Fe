@@ -1,4 +1,6 @@
-const route = {
+const defineRoute = <T>(routes: T): T => routes;
+
+const route = defineRoute({
   home: '/',
   user: {
     favorite: '/user/favorite',
@@ -17,6 +19,6 @@ const route = {
       series: '/movie/series'
     }
   }
-};
+});
 
 export default route;
