@@ -1,6 +1,5 @@
 import { categoryApiRequest } from '@/api-requests';
 import CategoryList from './category-list';
-import Header from '@/components/app/header';
 
 export async function generateStaticParams() {
   const categories = await categoryApiRequest.getList();
