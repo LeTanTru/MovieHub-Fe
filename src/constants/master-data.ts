@@ -1,6 +1,11 @@
 import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
 import route from '@/routes';
 import {
+  DropdownAvatarItemType,
+  OptionType,
+  UserSidebarItemType
+} from '@/types';
+import {
   BellIcon,
   Heart,
   History,
@@ -12,9 +17,9 @@ import {
   Venus
 } from 'lucide-react';
 
-export const GENDER = [GENDER_MALE, GENDER_FEMALE, GENDER_OTHER];
+export const GENDER: number[] = [GENDER_MALE, GENDER_FEMALE, GENDER_OTHER];
 
-export const genderOptions = [
+export const genderOptions: OptionType[] = [
   { value: GENDER_MALE, label: 'Nam' },
   { value: GENDER_FEMALE, label: 'Nữ' },
   { value: GENDER_OTHER, label: 'Khác' }
@@ -30,13 +35,6 @@ export const genderIconMaps: Record<number, LucideIcon> = {
   [GENDER_MALE]: Mars,
   [GENDER_FEMALE]: Venus,
   [GENDER_OTHER]: Infinity
-};
-
-type DropdownAvatarItemType = {
-  link: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  title: string;
-  className?: string;
 };
 
 export const dropdownAvatarList: DropdownAvatarItemType[] = [
@@ -66,7 +64,7 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
   }
 ];
 
-export const userSidebarList = [
+export const userSidebarList: UserSidebarItemType[] = [
   {
     link: route.user.favorite,
     icon: Heart,

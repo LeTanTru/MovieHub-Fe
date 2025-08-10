@@ -1,4 +1,4 @@
-- **Params**: là promise, khai báo params: Promise<{key: value}>
+- **params**: là promise, khai báo params: Promise<{key: value}>
 
 - **generateStaticParams**: dùng để tạo SSG với dynamic route
 
@@ -6,4 +6,4 @@
 
 - **middleware**: dùng NextRequest, NextResponse
 
--
+- **Tự động nhận diện type**: const define = <T>: (route: T) => route
