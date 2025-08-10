@@ -1,22 +1,8 @@
 import AppConstants from '@/constants/app';
+import { ApiConfigGroup } from '@/types';
 
 const baseHeader = { 'Content-Type': 'application/json' };
 const multipartHeader = { 'Content-Type': 'multipart/form-data' };
-
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-
-type ApiEndpoint = {
-  baseUrl?: string;
-  method: Method;
-  headers?: Record<string, string>;
-  permissionCode?: string;
-  isRequiredTenantId?: boolean;
-  isUpload?: boolean;
-};
-
-type ApiConfigGroup = {
-  [key: string]: ApiEndpoint | ApiConfigGroup | string;
-};
 
 const defineApiConfig = <T extends ApiConfigGroup>(config: T) => config;
 
@@ -106,7 +92,8 @@ const apiConfig = defineApiConfig({
       method: 'GET',
       headers: baseHeader,
       permissionCode: 'CA_L',
-      isRequiredTenantId: true
+      isRequiredTenantId: true,
+      ignoreAuth: true
     }
   },
   imageProxy: {

@@ -2,7 +2,7 @@ import Header from '@/components/app/header';
 import { Sidebar } from '@/components/app/user';
 import { Container } from '@/components/layout';
 
-export default function RootLayout({
+export default function UserLayout({
   children
 }: {
   children: React.ReactNode;

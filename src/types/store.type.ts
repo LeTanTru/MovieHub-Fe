@@ -1,13 +1,14 @@
 import { ProfileType } from '@/types/account.type';
+import { CategoryResType } from '@/types/category.type';
 
-type AuthDialogStoreType = {
+export type AuthDialogStoreType = {
   open: boolean;
   mode: 'login' | 'register';
   setOpen: (open: boolean) => void;
   setMode: (mode: 'login' | 'register') => void;
 };
 
-type AuthStoreType = {
+export type AuthStoreType = {
   isAuthenticated: boolean;
   setAuthenticated: (isAuthenticated: boolean) => void;
   profile: ProfileType | null;
@@ -16,4 +17,7 @@ type AuthStoreType = {
   setLoading: (loading: boolean) => void;
 };
 
-export type { AuthDialogStoreType, AuthStoreType };
+export type CategoryStoreType = {
+  categories: CategoryResType[];
+  setCategories: (categories: CategoryResType[]) => void;
+};
