@@ -3,11 +3,11 @@ import { useAuthStore } from '@/store';
 import { ProfileResType, UpdateProfileBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useProfileQuery = (immediate: boolean = false) => {
+export const useProfileQuery = () => {
   return useQuery({
     queryKey: ['profile'],
     queryFn: () => accountApiRequest.getProfile(),
-    enabled: immediate
+    enabled: false
   });
 };
 
