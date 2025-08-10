@@ -21,21 +21,21 @@ const sendRequest = async <T>(
 
   let accessToken: string | null = '';
   let tenantId: string | null | undefined = '';
-  if (isClient()) {
-    accessToken = getAccessTokenFromLocalStorage();
-    if (isTokenExpired(accessToken)) {
-      removeAccessTokenFromLocalStorage();
+  if (!ignoreAuth) {
+    if (isClient()) {
+      accessToken = getAccessTokenFromLocalStorage();
+      if (isTokenExpired(accessToken)) {
+        removeAccessTokenFromLocalStorage();
+      }
+    } else {
+      const { sessionToken } = await getCookiesServer();
+      accessToken = sessionToken;
     }
-    if (isRequiredTenantId) {
-      tenantId =
-        getData(storageKeys.X_TENANT) || envConfig.NEXT_PUBLIC_TENANT_ID;
-    }
+  }
+  if (isRequiredTenantId) {
+    tenantId = getData(storageKeys.X_TENANT) || envConfig.NEXT_PUBLIC_TENANT_ID;
   } else {
-    const { sessionToken, tenantId: serverTenantId } = await getCookiesServer();
-    accessToken = sessionToken;
-    if (isRequiredTenantId) {
-      tenantId = serverTenantId || process.env.TENANT_ID;
-    }
+    tenantId = process.env.TENANT_ID;
   }
   const baseHeader: { [key: string]: string } = { ...headers };
 

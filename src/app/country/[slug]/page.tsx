@@ -1,9 +1,5 @@
-export default async function CountryPage({
-  params
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+import CountryList from './country-list';
 
-  return <div>{slug}</div>;
+export default function CountryPage() {
+  return <CountryList />;
 }

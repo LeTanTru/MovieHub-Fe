@@ -1,3 +1,5 @@
+'use client';
+
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
 
