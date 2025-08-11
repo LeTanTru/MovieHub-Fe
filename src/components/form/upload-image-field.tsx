@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowLeftIcon,
+  Loader2,
   UploadIcon,
   XIcon,
   ZoomInIcon,
@@ -96,7 +97,8 @@ export default function UploadImageField({
   labelClassName,
   className,
   size = 70,
-  uploadImageFn
+  uploadImageFn,
+  loading
 }: UploadImageFieldProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
@@ -211,7 +213,10 @@ export default function UploadImageField({
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className='gap-0 p-0 sm:max-w-140'>
+        <DialogContent
+          className='gap-0 p-0 sm:max-w-140'
+          showCloseButton={false}
+        >
           <DialogHeader className='text-left'>
             <DialogTitle className='flex items-center justify-between border-b p-4 text-base'>
               <div className='flex items-center gap-2'>
@@ -224,15 +229,19 @@ export default function UploadImageField({
                 >
                   <ArrowLeftIcon />
                 </Button>
-                <span>{'Cắt ảnh'}</span>
+                <span>Cắt ảnh</span>
               </div>
               <Button
                 type='button'
-                className='-my-1'
+                className='-my-1 w-25'
                 onClick={handleApply}
-                disabled={!previewUrl}
+                disabled={!previewUrl || loading}
               >
-                {'Áp dụng'}
+                {loading ? (
+                  <Loader2 className='size-6 animate-spin stroke-2' />
+                ) : (
+                  'Áp dụng'
+                )}
               </Button>
             </DialogTitle>
           </DialogHeader>

@@ -130,6 +130,6 @@ body {
   }
 
   .header-height {
-    @apply h-22.5;
+    @apply h-17.5;
   }
 }
