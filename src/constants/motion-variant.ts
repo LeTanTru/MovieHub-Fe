@@ -6,7 +6,7 @@ export const dropdownAvatarMotion: Variants = {
     scale: 0,
     x: 0,
     y: 0,
-    transformOrigin: '80% -25px'
+    transformOrigin: '80% -15px'
   },
   animate: {
     opacity: 1,
@@ -36,7 +36,7 @@ export const dropdownNotificationMotion: Variants = {
     scale: 0,
     x: 0,
     y: 0,
-    transformOrigin: '87% -25px'
+    transformOrigin: '87% -15px'
   },
   animate: {
     opacity: 1,
