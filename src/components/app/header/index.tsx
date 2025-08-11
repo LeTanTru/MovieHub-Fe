@@ -17,31 +17,30 @@ import route from '@/routes';
 
 export default function Header() {
   const { profile, loading } = useAuthStore();
-  // const [isFixed, setIsFixed] = useState(false);
+  const [isFixed, setIsFixed] = useState(false);
 
-  // useEffect(() => {
-  //   const handleOnScroll = () => {
-  //     const scrollTop = window.scrollY;
-  //     if (scrollTop > 0) {
-  //       setIsFixed(true);
-  //     } else {
-  //       setIsFixed(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const handleOnScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsFixed(scrollTop > 0);
+    };
 
-  //   window.addEventListener('scroll', handleOnScroll);
+    window.addEventListener('scroll', handleOnScroll);
 
-  //   return () => window.removeEventListener('scroll', handleOnScroll);
-  // }, []);
+    return () => window.removeEventListener('scroll', handleOnScroll);
+  }, []);
 
   return (
     <header
       className={cn(
-        'bg-background fixed top-0 right-0 left-0 z-9999 pr-10 pl-8 transition-all duration-200 ease-linear'
+        'fixed top-0 right-0 left-0 z-9999 bg-transparent pr-10 pl-8 transition-all duration-200 ease-linear',
+        {
+          'bg-background': isFixed
+        }
       )}
     >
       <div className={'flex h-17.5 items-center justify-between gap-4'}>
-        <div className='gap flex items-center justify-between gap-10'>
+        <div className='gap flex h-full items-center justify-between gap-10'>
           <Link href={route.home}>
             <Image
               src={logoWithText}

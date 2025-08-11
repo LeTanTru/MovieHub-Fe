@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${inter.className} bg-background text-foreground ease-linear; pt-17.5 antialiased transition-all duration-200`}
+        className={`${inter.variable} ${inter.className} text-foreground antialiased transition-all duration-200 ease-linear`}
       >
         <QueryProvider>
           <AppProvider>

@@ -1,7 +1,9 @@
+import Slider from '@/components/app/home/slider';
+
 export default async function HomePage() {
   return (
     <div>
-      <div className='mx-auto max-w-3xl'>{/* <VideoPlayer /> */}</div>
+      <Slider />
     </div>
   );
 }
