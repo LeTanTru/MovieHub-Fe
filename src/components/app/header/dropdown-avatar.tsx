@@ -26,7 +26,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
     <div className='relative' ref={nodeRef}>
       <Button
         variant='ghost'
-        className='size-full rounded-full p-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
+        className='size-full rounded-full px-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
         onClick={() => setOpen((prev) => !prev)}
       >
         {profile?.avatarPath ? (
@@ -51,7 +51,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='bg-background absolute top-[calc(100%_+_5px)] right-1 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-background absolute top-[calc(100%_+_0px)] right-1 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-8 h-2 w-4'>
               <div className='bg-background h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
