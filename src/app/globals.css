@@ -165,7 +165,7 @@ body {
   gap: 2rem;
   font-size: 2rem;
   line-height: 1.4;
-  color: #ffffff30;
+  color: var(--primary);
   font-weight: 600;
   animation: logo-load 1.5s forwards;
 }
