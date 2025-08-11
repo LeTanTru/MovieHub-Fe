@@ -7,7 +7,7 @@
   width: 100%;
   margin-bottom: -120px;
   height: 860px;
-  background-color: var(--top-bg-default);
+  background-color: var(--background);
   overflow: hidden;
   aspect-ratio: 16 / 9;
 }
@@ -20,8 +20,8 @@
   bottom: 0;
   height: 200px;
   z-index: 3;
-  background: rgb(25, 27, 36);
-  background: linear-gradient(0deg, rgba(25, 27, 36, 1), rgba(25, 27, 36, 0));
+  background: var(--background);
+  background: linear-gradient(0deg, var(--background), rgba(25, 27, 36, 0));
 }
 
 .slide-elements {
@@ -32,7 +32,7 @@
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-color: #202331;
+  background-color: var(--background);
 }
 
 .slide-elements:before {
@@ -78,15 +78,15 @@
   mask-image: linear-gradient(
     0deg,
     transparent 0,
-    black 20%,
-    black 80%,
+    var(--background) 20%,
+    var(--background) 80%,
     transparent
   );
   -webkit-mask-image: linear-gradient(
     0deg,
     transparent 0,
-    black 20%,
-    black 80%,
+    var(--background) 20%,
+    var(--background) 80%,
     transparent
   );
 }
@@ -103,17 +103,17 @@
   mask-image: linear-gradient(
     90deg,
     transparent 10px,
-    rgba(0, 0, 0, 0.2) 15%,
-    black 40%,
-    black 80%,
+    var(--background) 15%,
+    var(--background) 40%,
+    var(--background) 80%,
     transparent 99%
   );
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 10px,
     rgba(0, 0, 0, 0.2) 15%,
-    black 40%,
-    black 80%,
+    var(--background) 40%,
+    var(--background) 80%,
     transparent 99%
   );
 }
@@ -389,20 +389,13 @@
   padding: 0 0.2rem;
   gap: 0.3rem;
   position: relative;
+  cursor: pointer;
 }
 
 .inc-icon {
-  width: 16px;
-  height: 16px;
   flex-shrink: 0;
   font-size: 0 !important;
   line-height: 0 !important;
-}
-
-.inc-icon img,
-.inc-icon svg {
-  width: 100% !important;
-  height: 100% !important;
 }
 
 .slide-content .touch-group .item + .item {
