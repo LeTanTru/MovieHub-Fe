@@ -107,6 +107,7 @@ export default function ProfileForm() {
                   const response = await uploadImageMutation.mutateAsync(blob);
                   return response.data?.filePath!;
                 }}
+                loading={uploadImageMutation.isPending}
               />
               <Row>
                 <Col>
@@ -170,7 +171,7 @@ export default function ProfileForm() {
                   })}
                 >
                   {profileMutation?.isPending ? (
-                    <Loader2 className='size-6 animate-spin' strokeWidth={3} />
+                    <Loader2 className='size-6 animate-spin' strokeWidth={2} />
                   ) : (
                     'Cập nhật'
                   )}

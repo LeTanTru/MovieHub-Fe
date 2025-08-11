@@ -17,7 +17,7 @@ const sendRequest = async <T>(
 ): Promise<T> => {
   let { baseUrl, headers, method, ignoreAuth, isRequiredTenantId, isUpload } =
     apiConfig;
-  const { params = {}, pathParams = {}, body = {} } = payload;
+  const { params = {}, pathParams = {}, body = {}, options = {} } = payload;
 
   let accessToken: string | null = '';
   let tenantId: string | null | undefined = '';
@@ -89,7 +89,8 @@ const sendRequest = async <T>(
         ...baseHeader,
         'Content-Type': baseHeader['Content-Type'] || 'application/json'
       },
-      body: method !== 'GET' && body ? JSON.stringify(body) : undefined
+      body: method !== 'GET' && body ? JSON.stringify(body) : undefined,
+      ...options
     });
 
     const result = await response.json();

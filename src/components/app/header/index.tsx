@@ -54,7 +54,7 @@ export default function Header() {
           <SearchForm />
           <NavigationMenu />
         </div>
-        <div className='flex items-center gap-2'>
+        <div className='header-height flex items-center gap-2'>
           <AnimatePresence mode='wait' initial={false}>
             {loading ? (
               <motion.div
