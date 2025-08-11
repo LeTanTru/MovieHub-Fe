@@ -1,0 +1,186 @@
+.thumbnails .swiper-slide-thumb-active {
+  opacity: 1;
+  border: 2px solid #fff;
+  border-radius: 8px;
+}
+
+.thumbnails .swiper-slide,
+.thumbnails .swiper-slide img {
+  border-radius: 8px;
+}
+
+.top-slide-main,
+.top-slide-wrap {
+  position: relative;
+}
+
+.top-slide-main {
+  width: 100%;
+  margin-bottom: -120px;
+  height: 860px;
+  background-color: var(--top-bg-default);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+.top-slide-main:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 200px;
+  z-index: 3;
+  background: rgb(25, 27, 36);
+  background: linear-gradient(0deg, rgba(25, 27, 36, 1), rgba(25, 27, 36, 0));
+}
+
+.slide-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 860px;
+  background-color: #202331;
+}
+
+.slide-elements:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background-image: url(https://www.rophim.me/images/dotted.png);
+  background-repeat: repeat;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+.slide-url {
+  display: none;
+}
+
+.slide-elements .background-fade {
+  width: 100%;
+  height: 860px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-position: 50%;
+  background-size: cover;
+  filter: blur(50px);
+  -webkit-filter: blur(80px);
+  opacity: 0.2;
+}
+
+.slide-elements .cover-fade {
+  width: 100%;
+  max-width: 1900px;
+  height: 860px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  mask-image: linear-gradient(
+    0deg,
+    transparent 0,
+    black 20%,
+    black 80%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    0deg,
+    transparent 0,
+    black 20%,
+    black 80%,
+    transparent
+  );
+}
+
+.top-slide-main .cover-fade {
+  height: 860px !important;
+}
+
+.slide-elements .cover-fade .cover-image {
+  width: 100%;
+  height: 860px;
+  display: block;
+  position: relative;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 10px,
+    rgba(0, 0, 0, 0.2) 15%,
+    black 40%,
+    black 80%,
+    transparent 99%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 10px,
+    rgba(0, 0, 0, 0.2) 15%,
+    black 40%,
+    black 80%,
+    transparent 99%
+  );
+}
+
+.cover-fade .cover-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 860px;
+  object-fit: cover;
+  transition: opacity 0.5s ease-in-out;
+  will-change: opacity;
+}
+
+.fade-in {
+  opacity: 0;
+  filter: blur(10px);
+  transition:
+    opacity 0.5s ease-in,
+    filter 0.5s ease-in;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.top-slide-wrap .swiper-slide-active .cover-fade {
+  animation: cover-fade 0.5s forwards;
+}
+
+@keyframes cover-fade {
+  0% {
+    transform: translateX(-45%);
+    -webkit-transform: translateX(-45%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    opacity: 1;
+  }
+}
+
+.top-slide-wrap .swiper-slide-active .cover-image {
+  animation: hide-show 1s forwards;
+}
+
+@keyframes hide-show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
