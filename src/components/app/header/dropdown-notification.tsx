@@ -31,7 +31,7 @@ export default function DropdownNotification() {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='bg-background absolute top-[calc(100%_+_10px)] -right-8 mt-2 flex max-h-[80dvh] min-h-50 w-100 flex-col justify-between rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-background absolute top-[calc(100%_+_8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-50 w-100 flex-col justify-between rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11 h-2 w-4'>
               <div className='bg-background h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
