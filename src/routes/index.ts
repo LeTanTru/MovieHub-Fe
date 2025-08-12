@@ -18,7 +18,8 @@ const route = defineRoute({
       single: '/movie/single',
       series: '/movie/series'
     }
-  }
+  },
+  topic: '/topic'
 });
 
 export default route;
