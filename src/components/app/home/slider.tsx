@@ -15,11 +15,10 @@ import {
   Thumbs
 } from 'swiper/modules';
 
-import './style.css';
+import './slider.css';
 
 import { useState } from 'react';
 import { HeartIcon, InfoIcon, Play } from 'lucide-react';
-import { InfoCircledIcon } from '@radix-ui/react-icons';
 
 export default function Slider() {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
@@ -153,10 +152,10 @@ export default function Slider() {
                         </a>
                       </div>
                       <div className='description lim-3'>
-                        Thông minh, hay châm chọc và &quot;`chết trong
-                        lòng&quot;` một chút, Wednesday Addams điều tra một vụ
-                        giết người liên hoàn trong khi có thêm bạn và cả kẻ thù
-                        mới học Học viện Nevermore.
+                        Thông minh, hay châm chọc và &quot;chết trong lòng&quot;
+                        một chút, Wednesday Addams điều tra một vụ giết người
+                        liên hoàn trong khi có thêm bạn và cả kẻ thù mới học Học
+                        viện Nevermore.
                       </div>
                       <div className='touch'>
                         <a
