@@ -20,6 +20,10 @@ export default function NavigationMenu() {
 
   const navigationList: ItemProps[] = [
     {
+      label: 'Chủ đề',
+      href: route.topic
+    },
+    {
       label: 'Thể loại',
       submenu: true,
       href: '',
@@ -40,11 +44,22 @@ export default function NavigationMenu() {
       label: 'Quốc gia',
       submenu: true,
       subItems: [
-        { href: `${route.country}/` + 'viet-nam', label: 'Việt Nam' },
-        { href: `${route.country}/` + 'nhat-ban', label: 'Nhật Bản' },
+        { href: `${route.country}/` + 'an-do', label: 'Ấn Độ' },
+        { href: `${route.country}/` + 'anh', label: 'Anh' },
+        { href: `${route.country}/` + 'duc', label: 'Đức' },
         { href: `${route.country}/` + 'han-quoc', label: 'Hàn Quốc' },
+        { href: `${route.country}/` + 'hong-kong', label: 'Hồng Kông' },
+        { href: `${route.country}/` + 'indonesia', label: 'Indonesia' },
+        { href: `${route.country}/` + 'italia', label: 'Italia' },
+        { href: `${route.country}/` + 'my', label: 'Mỹ' },
+        { href: `${route.country}/` + 'nhat-ban', label: 'Nhật Bản' },
+        { href: `${route.country}/` + 'phap', label: 'Pháp' },
         { href: `${route.country}/` + 'trung-quoc', label: 'Trung Quốc' },
-        { href: `${route.country}/` + 'thai-lan', label: 'Thái Lan' }
+        { href: `${route.country}/` + 'thai-lan', label: 'Thái Lan' },
+        { href: `${route.country}/` + 'uc', label: 'Úc' },
+        { href: `${route.country}/` + 'canada', label: 'Canada' },
+        { href: `${route.country}/` + 'nga', label: 'Nga' },
+        { href: `${route.country}/` + 'viet-nam', label: 'Việt Nam' }
       ]
     },
     {
@@ -141,17 +156,17 @@ export default function NavigationMenu() {
                 <NavigationMenuTrigger className='text-muted-foreground hover:text-primary focus:text-primary group-[state=open]:text-primary cursor-pointer bg-transparent font-medium transition-all duration-200 ease-linear group-[state=open]:bg-transparent hover:bg-transparent! focus:bg-transparent data-[state=open]:bg-transparent *:[svg]:-me-0.5 *:[svg]:size-3.5'>
                   {item.label}
                 </NavigationMenuTrigger>
-                <NavigationMenuContent className='data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! bg-background! z-50 border-none! duration-200'>
+                <NavigationMenuContent className='data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! bg-background/90! z-50 border-none! duration-200'>
                   <List
                     className={cn('grid', {
                       'w-48': item.subItems!.length <= 4,
-                      'w-200 grid-cols-4': item.subItems!.length > 4
+                      'w-150 grid-cols-4': item.subItems!.length > 4
                     })}
                   >
                     {item.subItems!.map((sub, index) => (
                       <ListItem key={index}>
                         <NavigationLink
-                          href={sub.href}
+                          href={sub.href!}
                           className='text-muted-foreground hover:text-primary cursor-pointer py-2.5! pl-4'
                         >
                           <div className='flex items-center gap-2'>
@@ -166,7 +181,7 @@ export default function NavigationMenu() {
               </>
             ) : (
               <NavigationLink
-                href={item.href}
+                href={item.href!}
                 className='text-muted-foreground hover:text-primary py-1.5 font-medium transition-all duration-200 ease-linear hover:bg-transparent'
               >
                 {item.label}
