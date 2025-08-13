@@ -14,10 +14,13 @@ import { logoWithText } from '@/assets';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
 import route from '@/routes';
+import { Button } from '@/components/form';
+import { Search, X } from 'lucide-react';
 
 export default function Header() {
   const { profile, loading } = useAuthStore();
   const [isFixed, setIsFixed] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   useEffect(() => {
     const handleOnScroll = () => {
@@ -33,27 +36,40 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 left-0 z-999 bg-transparent pr-10 pl-8 transition-all duration-200 ease-linear',
+        'xxl:pr-10 xxl:pl-8 fixed top-0 right-0 left-0 z-999 bg-transparent pl-4 transition-all duration-200 ease-linear',
         {
           'bg-background': isFixed
         }
       )}
     >
       <div className={'flex h-17.5 items-center justify-between gap-4'}>
-        <div className='gap flex h-full items-center justify-between gap-10'>
-          <Link href={route.home}>
-            <Image
-              src={logoWithText}
-              alt='Logo'
-              height={44}
-              className='h-11'
-              priority
-            />
-          </Link>
-          <SearchForm />
-          <NavigationMenu />
+        {/* Left side */}
+        <div className='xxl:gap-10 flex h-full flex-1 items-center gap-4'>
+          {!showSearch && (
+            <>
+              <div className='xxl:hidden'>
+                <NavigationMenu />
+              </div>
+              <Link href={route.home} className='flex-shrink-0'>
+                <Image
+                  src={logoWithText}
+                  alt='Logo'
+                  height={44}
+                  className='h-11'
+                  priority
+                />
+              </Link>
+            </>
+          )}
+          <div className='xxl:block hidden w-92 max-w-92'>
+            <SearchForm className='w-full' />
+          </div>
+          <div className='xxl:block hidden flex-grow-1 items-center gap-2'>
+            <NavigationMenu />
+          </div>
         </div>
-        <div className='header-height flex items-center gap-2'>
+        {/* Right side */}
+        <div className='h-header xxl:flex hidden items-center gap-2'>
           <AnimatePresence mode='wait' initial={false}>
             {loading ? (
               <motion.div
@@ -77,7 +93,7 @@ export default function Header() {
                 <AuthDialog />
               </motion.div>
             ) : (
-              <div className='flex items-center gap-x-5'>
+              <div className='flex h-full items-center gap-x-5'>
                 <motion.div
                   key='notification'
                   initial={{ opacity: 0 }}
@@ -100,6 +116,34 @@ export default function Header() {
             )}
           </AnimatePresence>
         </div>
+        {/* Search */}
+        <div className='xxl:hidden mr-2 items-center'>
+          <Button
+            variant='ghost'
+            className='p-1 hover:bg-transparent'
+            onClick={() => setShowSearch(!showSearch)}
+          >
+            {showSearch ? (
+              <X className='size-5' />
+            ) : (
+              <Search className='size-5' />
+            )}
+          </Button>
+        </div>
+        <AnimatePresence>
+          {showSearch && (
+            <motion.div
+              key='mobile-search'
+              initial={{ y: '-30px' }}
+              animate={{ y: 0 }}
+              exit={{ y: '-30px' }}
+              transition={{ duration: 0.1, ease: 'linear' }}
+              className='bg-background absolute right-[50px] left-[10px] z-[1000] p-3 shadow-lg'
+            >
+              <SearchForm className='w-full' />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

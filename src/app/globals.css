@@ -40,6 +40,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --breakpoint-xxl: 1368px;
+  --spacing-header: 70px;
+  --spacing-search-form: 44.8px;
 }
 
 body {
@@ -127,10 +130,6 @@ body {
   .scrollbar-none {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-
-  .header-height {
-    @apply h-17.5;
   }
 
   img,

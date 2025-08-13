@@ -29,7 +29,7 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} ${inter.className} text-foreground antialiased transition-all duration-200 ease-linear`}
       >
-        <BodyLoad />
+        {/* <BodyLoad /> */}
         <QueryProvider>
           <AppProvider>
             <ThemeProvider
