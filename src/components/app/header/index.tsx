@@ -117,27 +117,45 @@ export default function Header() {
           </AnimatePresence>
         </div>
         {/* Search */}
-        <div className='xxl:hidden mr-2 items-center'>
+        <div className='xxl:hidden mr-4 items-center'>
           <Button
             variant='ghost'
             className='p-1 hover:bg-transparent'
             onClick={() => setShowSearch(!showSearch)}
           >
-            {showSearch ? (
-              <X className='size-5' />
-            ) : (
-              <Search className='size-5' />
-            )}
+            <AnimatePresence mode='wait' initial={false}>
+              {showSearch ? (
+                <motion.div
+                  key='close'
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <X className='size-5' />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key='search'
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <Search className='size-5' />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </Button>
         </div>
         <AnimatePresence>
           {showSearch && (
             <motion.div
               key='mobile-search'
-              initial={{ y: '-30px' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-30px' }}
-              transition={{ duration: 0.1, ease: 'linear' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'linear' }}
               className='bg-background absolute right-[50px] left-[10px] z-[1000] p-3 shadow-lg'
             >
               <SearchForm className='w-full' />
