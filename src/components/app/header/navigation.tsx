@@ -14,6 +14,14 @@ import { cn } from '@/lib';
 import { ItemProps } from '@/types';
 import route from '@/routes';
 import NavigationLink from '@/components/navigation/NavigationLink';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover';
+import { Button } from '@/components/form';
+import { MenuIcon } from 'lucide-react';
+import Link from 'next/link';
 
 export default function NavigationMenu() {
   const categories = useCategoryQuery();
@@ -73,30 +81,28 @@ export default function NavigationMenu() {
   ];
 
   return (
-    <div className='flex items-center gap-2'>
-      {/* Main nav */}
-      {/* Mobile menu trigger */}
-
-      {/* <Popover>
+    <>
+      {/* Mobile menu */}
+      <Popover>
         <PopoverTrigger asChild>
           <Button
-            className='group size-8 md:hidden'
+            className='group xxl:hidden size-8'
             variant='ghost'
             size='icon'
           >
-            <MenuIcon />
+            <MenuIcon className='size-8' />
           </Button>
         </PopoverTrigger>
 
         <PopoverContent
           align='start'
-          className='bg-background w-auto min-w-fit rounded-sm border-none p-1 md:hidden'
+          className='bg-background xxl:hidden w-auto min-w-fit rounded-sm border-none p-1'
         >
           <Navigation
             className='max-w-none *:w-full'
             navListClassName='flex-col items-start gap-0 md:gap-2'
             navItemClassName='w-full'
-            items={categories}
+            items={navigationList}
             render={(item, index) => {
               return (
                 <>
@@ -107,31 +113,27 @@ export default function NavigationMenu() {
                       </div>
                       <List
                         className={`grid ${
-                          item.items!.length > 2 ? 'w-60 grid-cols-2' : `w-48`
+                          item.subItems!.length > 2
+                            ? 'w-60 grid-cols-2'
+                            : `w-48`
                         }`}
                       >
-                        {item.items!.map((subItem, itemIndex) => (
+                        {item.subItems!.map((subItem, itemIndex) => (
                           <ListItem key={itemIndex}>
-                            <NavigationMenuLink
-                              href={subItem.href}
-                              className='py-2'
-                            >
+                            <Link href={subItem.href!} className='py-2'>
                               {subItem.label}
-                            </NavigationMenuLink>
+                            </Link>
                           </ListItem>
                         ))}
                       </List>
                     </div>
                   ) : (
-                    <NavigationMenuLink
-                      href={item.href}
-                      className='px-3 py-1.5'
-                    >
+                    <Link href={item.href!} className='px-3 py-1.5'>
                       {item.label}
-                    </NavigationMenuLink>
+                    </Link>
                   )}
 
-                  {index !== navigationLinks.length - 1 && (
+                  {index !== item.subItems!.length - 1 && (
                     <div
                       role='separator'
                       aria-orientation='horizontal'
@@ -143,11 +145,10 @@ export default function NavigationMenu() {
             }}
           />
         </PopoverContent>
-      </Popover> */}
-      <div className='flex items-center gap-2 md:gap-6'>
-        {/* Navigation menu */}
+      </Popover>
+      {/* Desktop menu */}
+      <div className='xxl:block flex hidden items-center gap-2 md:gap-6'>
         <Navigation
-          className='max-md:hidden'
           navListClassName='gap-2'
           items={navigationList}
           render={(item: ItemProps) => {
@@ -167,7 +168,7 @@ export default function NavigationMenu() {
                       <ListItem key={index}>
                         <NavigationLink
                           href={sub.href!}
-                          className='text-muted-foreground hover:text-primary cursor-pointer py-2.5! pl-4'
+                          className='text-muted-foreground hover:text-primary cursor-pointer py-2.5! pl-4 whitespace-nowrap'
                         >
                           <div className='flex items-center gap-2'>
                             {sub.icon && <sub.icon className='size-4' />}
@@ -182,7 +183,7 @@ export default function NavigationMenu() {
             ) : (
               <NavigationLink
                 href={item.href!}
-                className='text-muted-foreground hover:text-primary py-1.5 font-medium transition-all duration-200 ease-linear hover:bg-transparent'
+                className='text-muted-foreground hover:text-primary py-1.5 font-medium whitespace-nowrap transition-all duration-200 ease-linear hover:bg-transparent'
               >
                 {item.label}
               </NavigationLink>
@@ -190,6 +191,6 @@ export default function NavigationMenu() {
           }}
         />
       </div>
-    </div>
+    </>
   );
 }
