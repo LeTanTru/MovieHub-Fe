@@ -96,51 +96,47 @@ export default function NavigationMenu() {
 
         <PopoverContent
           align='start'
-          className='bg-background xxl:hidden w-auto min-w-fit rounded-sm border-none p-1'
+          className='bg-popover xxl:hidden w-auto min-w-fit rounded-sm border-none p-1'
         >
           <Navigation
-            className='max-w-none *:w-full'
-            navListClassName='flex-col items-start gap-0 md:gap-2'
-            navItemClassName='w-full'
+            navListClassName='gap-2 grid grid-cols-2 w-80'
+            navItemClassName='[&>button]:px-2 [&>button]:text-sm [&>button>svg]:-rotate-90 [&>button[data-state="open"]>svg]:rotate-0'
             items={navigationList}
-            render={(item, index) => {
-              return (
+            render={(item: ItemProps) => {
+              return item.submenu ? (
                 <>
-                  {item.submenu ? (
-                    <div className='p-1'>
-                      <div className='text-muted-foreground px-2 py-1.5 text-xs font-medium'>
-                        {item.label}
-                      </div>
-                      <List
-                        className={`grid ${
-                          item.subItems!.length > 2
-                            ? 'w-60 grid-cols-2'
-                            : `w-48`
-                        }`}
-                      >
-                        {item.subItems!.map((subItem, itemIndex) => (
-                          <ListItem key={itemIndex}>
-                            <Link href={subItem.href!} className='py-2'>
-                              {subItem.label}
-                            </Link>
-                          </ListItem>
-                        ))}
-                      </List>
-                    </div>
-                  ) : (
-                    <Link href={item.href!} className='px-3 py-1.5'>
-                      {item.label}
-                    </Link>
-                  )}
-
-                  {index !== item.subItems!.length - 1 && (
-                    <div
-                      role='separator'
-                      aria-orientation='horizontal'
-                      className='bg-border my-1 h-px w-full'
-                    />
-                  )}
+                  <NavigationMenuTrigger className='text-muted-foreground hover:text-primary focus:text-primary group-[state=open]:text-primary cursor-pointer bg-transparent font-medium transition-all duration-200 ease-linear group-[state=open]:bg-transparent hover:bg-transparent! focus:bg-transparent data-[state=open]:bg-transparent *:[svg]:-me-0.5 *:[svg]:size-3.5'>
+                    {item.label}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className='data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! bg-popover absolute z-50 w-100 border-none! duration-200'>
+                    <List className={cn('grid w-100 grid-cols-2')}>
+                      {item.subItems!.map((sub, index) => (
+                        <ListItem key={index}>
+                          <NavigationLink
+                            href={sub.href!}
+                            className='text-muted-foreground hover:text-primary cursor-pointer py-2.5! whitespace-nowrap'
+                          >
+                            <div className='flex items-center gap-2'>
+                              {sub.icon && <sub.icon className='size-4' />}
+                              {
+                                <div className='text-sm font-medium'>
+                                  {sub.label}
+                                </div>
+                              }
+                            </div>
+                          </NavigationLink>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </NavigationMenuContent>
                 </>
+              ) : (
+                <NavigationLink
+                  href={item.href!}
+                  className='text-muted-foreground hover:text-primary py-1.5 text-sm font-medium whitespace-nowrap transition-all duration-200 ease-linear hover:bg-transparent'
+                >
+                  {item.label}
+                </NavigationLink>
               );
             }}
           />

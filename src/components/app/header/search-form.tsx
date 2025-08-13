@@ -35,11 +35,11 @@ export default function SearchForm({
             <Col className='h-search-form'>
               <InputField
                 formItemClassName='h-search-form'
-                className='h-search-form'
+                className='h-search-form border-none! focus-visible:ring-slate-500'
                 prefixIcon={
                   <Button
                     variant='ghost'
-                    className={cn('p-1! hover:bg-transparent!', inputClassName)}
+                    className={cn('p-1! hover:bg-transparent!')}
                   >
                     <Search size={16} />
                   </Button>
