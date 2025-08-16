@@ -14,13 +14,15 @@ import ListItem from '@/components/list/ListItem';
 import Link from 'next/link';
 import ButtonLogout from '@/components/button-logout';
 import useClickOutSide from '@/hooks/use-click-out-side';
+import { useState } from 'react';
 
 type DropdownAvatarProps = {
   profile?: ProfileType | null;
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
-  const { nodeRef, setOpen, open } = useClickOutSide();
+  const [open, setOpen] = useState(false);
+  const nodeRef = useClickOutSide<HTMLDivElement>(() => setOpen(false));
 
   return (
     <div className='relative' ref={nodeRef}>
@@ -51,10 +53,10 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='bg-background absolute top-[calc(100%_+_0px)] right-1 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-popover absolute top-[calc(100%_+_0px)] right-1 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-8 h-2 w-4'>
-              <div className='bg-background h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
+              <div className='bg-popover h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
             </div>
             <div className='px-4 py-3'>
               <p className='truncate overflow-hidden text-sm font-medium whitespace-nowrap'>

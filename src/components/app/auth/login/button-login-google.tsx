@@ -15,10 +15,10 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function ButtonLoginGoogle() {
-  const { setOpen } = useAuthDialogStore();
+  const authDialogStore = useAuthDialogStore();
+  const authStore = useAuthStore();
   const loginGoogleQuery = useLoginGoogleQuery(AppConstants.loginType);
   const loginGoogleMutation = useLoginGoogleMutation();
-  const { setAuthenticated } = useAuthStore();
 
   const loading = loginGoogleQuery.isFetching || loginGoogleMutation.isPending;
 
@@ -61,9 +61,9 @@ export default function ButtonLoginGoogle() {
         setAccessTokenToLocalStorage(response.data?.access_token!);
         setData(storageKeys.USER_KIND, String(response.data?.user_kind!));
 
-        setOpen(false);
+        authDialogStore.setOpen(false);
         setTimeout(() => {
-          setAuthenticated(true);
+          authStore.setAuthenticated(true);
         }, 100);
         notify.success('Đăng nhập thành công');
       } catch (error) {
@@ -81,7 +81,11 @@ export default function ButtonLoginGoogle() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [loginGoogleMutation, setAuthenticated, setOpen]);
+  }, [
+    loginGoogleMutation,
+    authStore.setAuthenticated,
+    authDialogStore.setOpen
+  ]);
 
   return (
     <Button

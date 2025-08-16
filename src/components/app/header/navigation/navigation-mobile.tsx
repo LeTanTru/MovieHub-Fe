@@ -1,5 +1,4 @@
 'use client';
-
 import AuthDialog from '@/components/app/auth';
 import { Button } from '@/components/form';
 import List from '@/components/list';
@@ -16,16 +15,18 @@ export default function NavigationMobile({
 }: {
   navigationList: ItemProps[];
 }) {
+  const [open, setOpen] = useState(false);
   const [openSub, setOpenSub] = useState<string | null>(null);
-  const { nodeRef, open, setOpen } = useClickOutside(() => {
+  const menuRef = useClickOutside<HTMLDivElement>(() => {
     setOpenSub(null);
   });
+
   return (
-    <div className='xxl:hidden relative' ref={nodeRef}>
+    <div className='xxl:hidden'>
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}
-        className='group flex size-8 items-center justify-center rounded-md hover:bg-transparent!'
+        className='group flex size-8 items-center justify-center hover:bg-transparent!'
       >
         <AnimatePresence mode='wait' initial={false}>
           {open ? (
@@ -51,14 +52,16 @@ export default function NavigationMobile({
           )}
         </AnimatePresence>
       </Button>
+
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, scale: 0, transformOrigin: '5% 0%' }}
+            ref={menuRef}
+            initial={{ opacity: 0, scale: 0.8, transformOrigin: '5% 0%' }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
+            exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-accent absolute top-10 w-80 rounded p-6'
+            className='bg-accent top-header absolute w-80 rounded-lg p-6'
           >
             <div className='flex justify-center'>
               <AuthDialog />
@@ -90,7 +93,10 @@ export default function NavigationMobile({
                           transition={{ duration: 0.05, ease: 'linear' }}
                           className='bg-popover absolute top-10 left-0 grid w-80 grid-cols-2 gap-2 rounded-sm p-2 px-6 py-4 shadow-lg'
                         >
-                          {item.subItems!.map((sub, index) => (
+                          <div className='absolute -top-2 left-5'>
+                            <div className='bg-popover h-4 w-4 rotate-45 shadow-[-5px_-5px_8px_0px_var(--bg-popover)]' />
+                          </div>
+                          {item.subItems!.map((sub) => (
                             <Link
                               key={sub.label}
                               href={sub.href!}

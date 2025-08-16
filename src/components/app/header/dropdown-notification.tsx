@@ -6,9 +6,11 @@ import route from '@/routes';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BellIcon, CheckCheck } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function DropdownNotification() {
-  const { nodeRef, setOpen, open } = useClickOutside();
+  const [open, setOpen] = useState(false);
+  const nodeRef = useClickOutside<HTMLDivElement>(() => setOpen(false));
 
   return (
     <div className='relative' ref={nodeRef}>
@@ -31,10 +33,10 @@ export default function DropdownNotification() {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='bg-background absolute top-[calc(100%_+_8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-50 w-100 flex-col justify-between rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-popover absolute top-[calc(100%_+_8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-50 w-100 flex-col justify-between rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11 h-2 w-4'>
-              <div className='bg-background h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
+              <div className='bg-popover h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
             </div>
             <Tabs defaultValue='tab-1' className='flex-1 rounded-lg p-0'>
               <div className='flex justify-between border-b-1'>
@@ -42,13 +44,13 @@ export default function DropdownNotification() {
                   <TabsList className='w-full justify-start gap-x-2 rounded-none bg-transparent px-2 py-0'>
                     <TabsTrigger
                       value='tab-1'
-                      className='data-[state=active]:bg-background! inline-block flex-0 cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                      className='data-[state=active]:bg-popover! inline-block flex-0 cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
                     >
                       Phim
                     </TabsTrigger>
                     <TabsTrigger
                       value='tab-2'
-                      className='data-[state=active]:bg-background! flex-0 cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                      className='data-[state=active]:bg-popover! flex-0 cursor-pointer border-0 border-r-1 border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
                     >
                       Cộng đồng
                     </TabsTrigger>
@@ -82,7 +84,7 @@ export default function DropdownNotification() {
               </TabsContent>
             </Tabs>
             <Link
-              className='border-t-accent hover:bg-background mt-auto block w-full border-t-1 px-4 py-2 text-center text-sm text-slate-400 transition-all duration-500 ease-linear hover:text-white'
+              className='border-t-accent hover:bg-popover mt-auto block w-full border-t-1 px-4 py-2 text-center text-sm text-slate-400 transition-all duration-500 ease-linear hover:text-white'
               href={route.user.notification}
               onClick={() => setOpen(false)}
             >

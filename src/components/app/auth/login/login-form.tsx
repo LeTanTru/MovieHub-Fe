@@ -18,13 +18,13 @@ import { logger } from '@/logger';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const loginMutation = useLoginMutation();
-  const { setOpen } = useAuthDialogStore();
-  const { setAuthenticated } = useAuthStore();
+  const authDialogStore = useAuthDialogStore();
+  const authStore = useAuthStore();
   const [isFormChanged, setIsFormChanged] = useState(false);
 
   const defaultValues: LoginType = {
-    email: '',
-    password: ''
+    email: 'dopamine@gmail.com',
+    password: 'Abc@1234'
   };
 
   const onSubmit = async (values: LoginBodyType) => {
@@ -39,9 +39,9 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
 
         setData(storageKeys.USER_KIND, String(userKind));
         notify.success('Đăng nhập thành công');
-        setOpen(false);
+        authDialogStore.setOpen(false);
         setTimeout(() => {
-          setAuthenticated(true);
+          authStore.setAuthenticated(true);
         }, 100);
       }
     } catch (error) {

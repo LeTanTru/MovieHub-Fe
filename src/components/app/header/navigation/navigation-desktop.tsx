@@ -25,7 +25,7 @@ export default function NavigationDesktop({
               onMouseEnter={() => setHovered(item.label)}
               onMouseLeave={() => setHovered(null)}
             >
-              <div className='flex items-center gap-1 transition-colors duration-200 ease-linear hover:text-white'>
+              <div className='flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear hover:text-white'>
                 {item.label}
                 <ChevronDown
                   className={cn(
@@ -62,18 +62,18 @@ export default function NavigationDesktop({
                       transformStyle: 'preserve-3d'
                     }}
                     className={cn(
-                      'bg-background absolute top-10 -left-1/2 z-50 w-48 grid-cols-1 rounded p-2 shadow-[0px_0px_6px_2px_var(--accent)]',
+                      'bg-popover absolute top-12 -left-12 z-50 w-48 grid-cols-1 rounded shadow-[0px_0px_6px_2px_var(--accent)]',
                       {
-                        '': item.subItems!.length <= 4 && item.isGrid,
-                        'w-160 grid-cols-4 p-4':
+                        // 'p-0': item.subItems!.length <= 4 && item.isGrid,
+                        'w-160 grid-cols-4 p-2':
                           item.subItems!.length > 4 && item.isGrid,
                         grid: item.isGrid,
-                        'w-48 p-2': !item.isGrid
+                        'w-48 p-1': !item.isGrid
                       }
                     )}
                   >
                     <div className='absolute -top-2 left-20 z-[-1]'>
-                      <div className='bg-background h-4 w-4 rotate-45 shadow-[-5px_-5px_8px_0px_var(--accent)]' />
+                      <div className='bg-popover h-4 w-4 rotate-45 shadow-[-5px_-5px_8px_0px_var(--accent)]' />
                     </div>
                     {item.subItems?.map((sub) => (
                       <ListItem
@@ -90,7 +90,7 @@ export default function NavigationDesktop({
           ) : (
             <ListItem
               key={item.label}
-              className='p-2 text-sm text-gray-400 transition-all duration-200 ease-linear hover:text-white'
+              className='p-2 text-sm whitespace-nowrap text-gray-400 transition-all duration-200 ease-linear hover:text-white'
             >
               <Link href={item.href!}>{item.label}</Link>
             </ListItem>
