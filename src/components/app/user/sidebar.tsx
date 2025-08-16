@@ -1,17 +1,18 @@
 'use client';
-import ButtonLogout from '@/components/button-logout';
+
+import { apiConfig, genderIconMaps, userSidebarList } from '@/constants';
 import { AvatarField } from '@/components/form';
+import { cn } from '@/lib';
+import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
+import { ProfileType } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAuthStore } from '@/store';
+import { usePathname } from 'next/navigation';
+import ButtonLogout from '@/components/button-logout';
+import Link from 'next/link';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
-import { Skeleton } from '@/components/ui/skeleton';
-import { apiConfig, genderIconMaps, userSidebarList } from '@/constants';
-import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
-import { cn } from '@/lib';
 import route from '@/routes';
-import { useAuthStore } from '@/store';
-import { ProfileType } from '@/types';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 export default function Sidebar() {
   const path = usePathname();
