@@ -10,12 +10,5 @@ export type ItemProps = {
   submenu?: boolean;
   type?: string;
   subItems?: SubmenuProps[];
-};
-
-export type NavigationProps = {
-  className?: string;
-  navListClassName?: string;
-  navItemClassName?: string;
-  items: ItemProps[];
-  render: (item: ItemProps, index: number) => React.ReactNode;
+  isGrid?: boolean;
 };

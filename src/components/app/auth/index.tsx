@@ -21,7 +21,7 @@ export default function AuthDialog() {
 
   return (
     <>
-      <Button className='rounded-full' onClick={() => setOpen(true)}>
+      <Button className='w-full rounded-full' onClick={() => setOpen(true)}>
         Đăng nhập
       </Button>
 
@@ -32,7 +32,7 @@ export default function AuthDialog() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+            className='fixed inset-0 z-9999 flex items-center justify-center bg-black/50'
           >
             <motion.div
               ref={nodeRef}

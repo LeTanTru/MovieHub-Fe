@@ -13,10 +13,7 @@ type SearchFormProps = {
   inputClassName?: string;
 };
 
-export default function SearchForm({
-  className,
-  inputClassName
-}: SearchFormProps) {
+export default function SearchForm({ className }: SearchFormProps) {
   const onSubmit = (values: SearchType) => {};
   const defaultValues: SearchType = {
     title: ''

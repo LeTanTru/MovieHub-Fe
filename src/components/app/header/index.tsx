@@ -120,7 +120,7 @@ export default function Header() {
         <div className='xxl:hidden mr-4 items-center'>
           <Button
             variant='ghost'
-            className='p-1 hover:bg-transparent'
+            className='p-1 hover:bg-transparent!'
             onClick={() => setShowSearch(!showSearch)}
           >
             <AnimatePresence mode='wait' initial={false}>
@@ -132,7 +132,7 @@ export default function Header() {
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <X className='size-5' />
+                  <X className='size-6' />
                 </motion.div>
               ) : (
                 <motion.div
@@ -142,7 +142,7 @@ export default function Header() {
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.15 }}
                 >
-                  <Search className='size-5' />
+                  <Search className='size-6' />
                 </motion.div>
               )}
             </AnimatePresence>
