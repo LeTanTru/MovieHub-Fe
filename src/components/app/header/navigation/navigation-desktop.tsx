@@ -73,7 +73,7 @@ export default function NavigationDesktop({
                     )}
                   >
                     <div className='absolute -top-2 left-20 z-[-1]'>
-                      <div className='bg-popover h-4 w-4 rotate-45 shadow-[-5px_-5px_8px_0px_var(--accent)]' />
+                      <div className='bg-popover h-4 w-4 rotate-45 shadow-[-3px_-3px_6px_0px_var(--accent)]' />
                     </div>
                     {item.subItems?.map((sub) => (
                       <ListItem
