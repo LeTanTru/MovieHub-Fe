@@ -1,9 +1,16 @@
 'use client';
 import AuthDialog from '@/components/app/auth';
-import { Button } from '@/components/form';
+import ButtonLogout from '@/components/button-logout';
+import { AvatarField, Button } from '@/components/form';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
+import { Separator } from '@/components/ui/separator';
+import { apiConfig, genderIconMaps, userSidebarList } from '@/constants';
+import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
 import { useClickOutside } from '@/hooks';
+import { cn } from '@/lib';
+import route from '@/routes';
+import { useAuthStore } from '@/store';
 import { ItemProps } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, MenuIcon, X } from 'lucide-react';
@@ -16,10 +23,15 @@ export default function NavigationMobile({
   navigationList: ItemProps[];
 }) {
   const [open, setOpen] = useState(false);
+  const { profile } = useAuthStore();
   const [openSub, setOpenSub] = useState<string | null>(null);
   const menuRef = useClickOutside<HTMLDivElement>(() => {
     setOpenSub(null);
   });
+
+  const navMobileList = userSidebarList.filter(
+    (item) => item.link !== route.user.notification
+  );
 
   return (
     <div className='xxl:hidden'>
@@ -61,11 +73,55 @@ export default function NavigationMobile({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-accent top-header absolute w-80 rounded-lg p-6'
+            className='bg-accent top-header absolute w-90 rounded-lg p-4'
           >
-            <div className='flex justify-center'>
-              <AuthDialog />
-            </div>
+            {!profile ? (
+              <div className='flex justify-center'>
+                <AuthDialog />
+              </div>
+            ) : (
+              <>
+                <div className='mb-2'>
+                  <div className='flex items-center justify-between'>
+                    <div className='flex gap-2'>
+                      <p className='text-sm'>{profile.fullName}</p>
+                      {(() => {
+                        const Icon = genderIconMaps[profile.gender];
+                        return (
+                          <Icon
+                            className={cn('size-4.5', {
+                              'stroke-cyan-500':
+                                profile?.gender === GENDER_MALE,
+                              'stroke-pink-500':
+                                profile?.gender === GENDER_FEMALE,
+                              'stroke-amber-400':
+                                profile?.gender === GENDER_OTHER
+                            })}
+                          />
+                        );
+                      })()}
+                    </div>
+                    <AvatarField
+                      src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
+                      size={40}
+                    />
+                  </div>
+                  <List className='grid grid-cols-2 gap-2 pt-2'>
+                    {navMobileList.map((item) => (
+                      <ListItem
+                        key={item.link}
+                        className='flex items-center gap-x-2 gap-y-4 rounded-lg border px-2 py-2 text-sm'
+                      >
+                        <item.icon className={item.className} />
+                        <Link href={item.link}>{item.title}</Link>
+                      </ListItem>
+                    ))}
+                    <ButtonLogout className='mt-2! justify-start border' />
+                  </List>
+                </div>
+                <Separator />
+              </>
+            )}
             <List className='mt-4 grid w-full grid-cols-2 gap-2'>
               {navigationList.map((item) =>
                 item.submenu ? (
