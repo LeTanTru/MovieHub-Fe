@@ -46,6 +46,7 @@ type AutoCompleteFieldProps<
   notFoundContent?: React.ReactNode;
   labelClassName?: string;
   disabled?: boolean;
+  onValueChange?: (value: string | number | (string | number)[]) => void;
 };
 
 export default function AutoCompleteField<
@@ -68,7 +69,8 @@ export default function AutoCompleteField<
   searchText,
   notFoundContent,
   labelClassName,
-  disabled = false
+  disabled = false,
+  onValueChange
 }: AutoCompleteFieldProps<TFieldValues, TOption>) {
   const [open, setOpen] = React.useState(false);
 
@@ -92,8 +94,10 @@ export default function AutoCompleteField<
               ? selectedValues.filter((v) => v !== val)
               : [...selectedValues, val];
             field.onChange(next);
+            onValueChange?.(next);
           } else {
             field.onChange(val);
+            onValueChange?.(val);
             setOpen(false);
           }
         };

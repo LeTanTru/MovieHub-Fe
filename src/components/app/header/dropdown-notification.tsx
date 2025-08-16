@@ -1,7 +1,6 @@
 import { Button } from '@/components/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { dropdownNotificationMotion } from '@/constants';
-import { useClickOutside } from '@/hooks';
 import route from '@/routes';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BellIcon, CheckCheck } from 'lucide-react';
@@ -10,10 +9,13 @@ import { useState } from 'react';
 
 export default function DropdownNotification() {
   const [open, setOpen] = useState(false);
-  const nodeRef = useClickOutside<HTMLDivElement>(() => setOpen(false));
 
   return (
-    <div className='relative' ref={nodeRef}>
+    <div
+      className='relative'
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
       <Button
         variant='ghost'
         className='size-full rounded-full p-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'

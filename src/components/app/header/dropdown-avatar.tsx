@@ -13,7 +13,6 @@ import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
 import Link from 'next/link';
 import ButtonLogout from '@/components/button-logout';
-import useClickOutSide from '@/hooks/use-click-out-side';
 import { useState } from 'react';
 
 type DropdownAvatarProps = {
@@ -22,14 +21,16 @@ type DropdownAvatarProps = {
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
   const [open, setOpen] = useState(false);
-  const nodeRef = useClickOutSide<HTMLDivElement>(() => setOpen(false));
 
   return (
-    <div className='relative' ref={nodeRef}>
+    <div
+      className='group relative'
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
       <Button
         variant='ghost'
         className='size-full rounded-full px-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
-        onClick={() => setOpen((prev) => !prev)}
       >
         {profile?.avatarPath ? (
           <AvatarField

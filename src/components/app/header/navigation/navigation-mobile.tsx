@@ -116,7 +116,7 @@ export default function NavigationMobile({
                         <Link href={item.link}>{item.title}</Link>
                       </ListItem>
                     ))}
-                    <ButtonLogout className='mt-2! justify-start border' />
+                    <ButtonLogout className='justify-start border' />
                   </List>
                 </div>
                 <Separator />
