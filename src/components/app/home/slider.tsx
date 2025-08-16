@@ -26,7 +26,7 @@ export default function Slider() {
 
   const sliders = [
     {
-      src: 'https://static.nutscdn.com/vimg/1920-0/f240f8af00e2bca18281331bc5f30bd9.jpg'
+      src: 'https://static.nutscdn.com/vimg/1920-0/1cba2f47c59fcd0f6f35315bc3e88bf6.jpg'
     },
     {
       src: 'https://static.nutscdn.com/vimg/1920-0/f9f19a5f7eaa5795b11e3d369c48cbca.webp'
