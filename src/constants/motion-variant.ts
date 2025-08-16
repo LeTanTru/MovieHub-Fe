@@ -14,7 +14,7 @@ export const dropdownAvatarMotion: Variants = {
     x: 0,
     y: 0,
     transition: {
-      duration: 0.1,
+      duration: 0.2,
       ease: 'linear'
     }
   },
@@ -24,7 +24,7 @@ export const dropdownAvatarMotion: Variants = {
     x: 0,
     y: 0,
     transition: {
-      duration: 0.1,
+      duration: 0.2,
       ease: 'linear'
     }
   }
@@ -44,7 +44,7 @@ export const dropdownNotificationMotion: Variants = {
     x: 0,
     y: 0,
     transition: {
-      duration: 0.1,
+      duration: 0.2,
       ease: 'linear'
     }
   },
@@ -54,7 +54,7 @@ export const dropdownNotificationMotion: Variants = {
     x: 0,
     y: 0,
     transition: {
-      duration: 0.1,
+      duration: 0.2,
       ease: 'linear'
     }
   }

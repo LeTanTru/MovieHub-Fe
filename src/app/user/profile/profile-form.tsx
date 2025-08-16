@@ -149,6 +149,7 @@ export default function ProfileForm() {
                     getLabel={(opt) => opt.label}
                     getValue={(opt) => opt.value}
                     placeholder='Chọn giới tính'
+                    onValueChange={() => setIsFormChanged(true)}
                   />
                 </Col>
               </Row>
