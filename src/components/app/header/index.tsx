@@ -61,7 +61,7 @@ export default function Header() {
               </Link>
             </>
           )}
-          <div className='xxl:block hidden w-92 max-w-92'>
+          <div className='xxl:block hidden w-80 max-w-92'>
             <SearchForm className='w-full' />
           </div>
           <div className='xxl:block hidden flex-grow-1 items-center gap-2'>
