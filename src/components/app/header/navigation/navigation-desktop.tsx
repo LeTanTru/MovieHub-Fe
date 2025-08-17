@@ -78,9 +78,11 @@ export default function NavigationDesktop({
                     {item.subItems?.map((sub) => (
                       <ListItem
                         key={sub.label}
-                        className='hover:bg-accent rounded px-4 py-2 transition-all duration-200 ease-linear hover:text-white'
+                        className='hover:bg-accent rounded transition-all duration-200 ease-linear hover:text-white'
                       >
-                        <Link href={sub.href!}>{sub.label}</Link>
+                        <Link className='block px-4 py-2' href={sub.href!}>
+                          {sub.label}
+                        </Link>
                       </ListItem>
                     ))}
                   </motion.ul>
