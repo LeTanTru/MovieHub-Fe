@@ -1,4 +1,10 @@
 import ProfileForm from './profile-form';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Hồ sơ',
+  description: 'Trang quản lý thông tin cá nhân'
+};
 
 export default function ProfilePage() {
   return (

@@ -204,12 +204,20 @@ export default function UploadImageField({
               size='icon'
               type='button'
               className='border-background absolute -top-1 -right-1 size-6 rounded-full border-2'
+              aria-label='Remove image'
             >
               <XIcon className='size-3.5' />
             </Button>
           )}
-
-          <input {...getInputProps()} className='sr-only' tabIndex={-1} />
+          <label htmlFor='input' className='cursor-pointer'>
+            <span className='sr-only'>Upload file</span>
+            <input
+              id='input'
+              {...getInputProps()}
+              className='sr-only'
+              tabIndex={-1}
+            />
+          </label>
         </div>
       </div>
 

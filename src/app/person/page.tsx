@@ -1,4 +1,10 @@
 import PersonList from '@/app/person/_components/person-list';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Diễn viên',
+  description: 'Trang danh sách diễn viên MovieHub'
+};
 
 export default async function PersonPage() {
   return (

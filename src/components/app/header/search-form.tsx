@@ -35,6 +35,7 @@ export default function SearchForm({ className }: SearchFormProps) {
                 className='h-search-form border-none! focus-visible:ring-slate-500'
                 prefixIcon={
                   <Button
+                    aria-label='Search icon'
                     variant='ghost'
                     className={cn('p-1! hover:bg-transparent!')}
                   >

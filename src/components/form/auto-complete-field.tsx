@@ -120,6 +120,7 @@ export default function AutoCompleteField<
                   type='button'
                   variant='outline'
                   role='combobox'
+                  aria-label='Select'
                   disabled={disabled}
                   className={cn('w-full flex-wrap justify-between py-0', {
                     'pl-1!': selectedValues.length > 1,
