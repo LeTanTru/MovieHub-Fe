@@ -1,40 +1,48 @@
 'use client';
 
-import { AppConstants } from '@/constants';
+import { useState, useEffect } from 'react';
 import { usePersonQuery } from '@/queries/use-person';
-import route from '@/routes';
-import Image from 'next/image';
-import Link from 'next/link';
 import './person-card.css';
+import PersonCard from '@/app/person/_components/person-card';
+import PersonCardSkeleton from '@/app/person/_components/person-card-skeleton';
+import Pagination from '@/components/pagination';
+import { useSearchParams } from 'next/navigation';
 
 export default function PersonList() {
-  const personList = usePersonQuery();
+  const [columns, setColumns] = useState<number>(8);
+  const params = useSearchParams();
+  const page = params.get('page') ?? 0;
+
+  useEffect(() => {
+    const updateCols = () => {
+      const width = window.innerWidth;
+      if (width <= 480) setColumns(2);
+      else if (width <= 640) setColumns(3);
+      else if (width <= 990) setColumns(4);
+      else if (width <= 1600) setColumns(6);
+      else setColumns(8);
+    };
+    updateCols();
+    window.addEventListener('resize', updateCols);
+    return () => window.removeEventListener('resize', updateCols);
+  }, []);
+
+  const skeletonCount = columns * 3;
+  const res = usePersonQuery({ page, size: skeletonCount });
+  const personList = res.data?.data.content;
 
   return (
-    <div className='grid grid-cols-8 gap-6'>
-      {personList?.content.map((person) => (
-        <div key={person.id} className='relative'>
-          <Link
-            href={`${route.person}/${person.id}`}
-            className='image-mask relative block h-62.5 rounded-lg'
-          >
-            <Image
-              src={`${AppConstants.contentRootUrl}${person.avatarPath}`}
-              alt={person.name}
-              fill
-              style={{ objectFit: 'cover' }}
-              sizes='(max-width: 640px) 100vw,
-                    (max-width: 768px) 50vw,
-                    (max-width: 1024px) 33vw,
-                    25vw'
-              className='transition-all duration-200 ease-linear hover:scale-105'
-            />
-          </Link>
-          <div className='absolute bottom-2 left-1/2 -translate-x-1/2 text-center'>
-            <h3>{person.otherName}</h3>
-          </div>
-        </div>
-      ))}
-    </div>
+    <>
+      <div className='grid grid-cols-8 gap-6 max-[1600px]:grid-cols-6 max-[990px]:grid-cols-4 max-[640px]:grid-cols-3 max-[480px]:grid-cols-2'>
+        {!res.isLoading
+          ? personList?.map((person) => (
+              <PersonCard person={person} key={person.id} />
+            ))
+          : Array.from({ length: skeletonCount }, (_, index) => (
+              <PersonCardSkeleton key={index} />
+            ))}
+      </div>
+      {!res.isLoading && <Pagination totalPages={res.data!.data.totalPages} />}
+    </>
   );
 }
