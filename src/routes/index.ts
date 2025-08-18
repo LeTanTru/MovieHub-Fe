@@ -10,7 +10,7 @@ const route = defineRoute({
     watchHistory: '/user/watch-history'
   },
   category: '/category',
-  actor: '/actor',
+  person: '/person',
   country: '/country',
   schedule: '/schedule',
   movie: {

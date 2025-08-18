@@ -1,5 +1,5 @@
 import Header from '@/components/app/header';
-import { Sidebar } from '@/components/app/user';
+import { Sidebar } from '@/app/user/_components';
 import { Container } from '@/components/layout';
 
 export default function UserLayout({

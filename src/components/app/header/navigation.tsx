@@ -57,7 +57,7 @@ export default function NavigationMenu() {
     },
     {
       label: 'Diễn viên',
-      href: route.actor
+      href: route.person
     },
     {
       label: 'Lịch chiếu',
