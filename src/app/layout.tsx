@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import ToastPortal from '@/components/toast-portal';
 import { AppProvider, QueryProvider } from '@/components/providers';
 import BodyLoad from '@/components/app/body-load';
+import { WebVitals } from '@/app/reportWebVitals';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -38,6 +39,7 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
+              {/* <WebVitals /> */}
               <NextTopLoader showSpinner={false} />
               <Suspense>{children}</Suspense>
             </ThemeProvider>
