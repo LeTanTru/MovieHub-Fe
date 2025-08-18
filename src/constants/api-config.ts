@@ -91,13 +91,28 @@ const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.apiUrl}v1/category/list`,
       method: 'GET',
       headers: baseHeader,
-      permissionCode: 'CA_L',
       isRequiredTenantId: true,
       ignoreAuth: true
     }
   },
   imageProxy: {
     baseUrl: '/api/image-proxy?url='
+  },
+  person: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}v1/person/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
+    },
+    getById: {
+      baseUrl: `${AppConstants.apiUrl}v1/person/get/:id`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
+    }
   }
 });
 
