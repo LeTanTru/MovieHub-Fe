@@ -36,7 +36,7 @@ export default function Header() {
   return (
     <header
       className={cn(
-        'xxl:pr-10 xxl:pl-8 fixed top-0 right-0 left-0 z-999 bg-transparent pl-4 transition-all duration-200 ease-linear',
+        'fixed top-0 right-0 left-0 z-999 bg-transparent pl-4 transition-all duration-200 ease-linear min-[1368px]:pr-10 min-[1368px]:pl-8',
         {
           'bg-background': isFixed
         }
@@ -44,10 +44,10 @@ export default function Header() {
     >
       <div className={'flex h-17.5 items-center justify-between gap-4'}>
         {/* Left side */}
-        <div className='xxl:gap-10 flex h-full flex-1 items-center gap-4'>
+        <div className='flex h-full flex-1 items-center gap-4 min-[1368px]:gap-10'>
           {!showSearch && (
             <>
-              <div className='xxl:hidden'>
+              <div className='min-[1368px]:hidden'>
                 <NavigationMenu />
               </div>
               <Link href={route.home} className='flex-shrink-0'>
@@ -61,15 +61,15 @@ export default function Header() {
               </Link>
             </>
           )}
-          <div className='xxl:block hidden w-80 max-w-92'>
+          <div className='hidden w-80 max-w-92 min-[1368px]:block'>
             <SearchForm className='w-full' />
           </div>
-          <div className='xxl:block hidden flex-grow-1 items-center gap-2'>
+          <div className='hidden flex-grow-1 items-center gap-2 min-[1368px]:block'>
             <NavigationMenu />
           </div>
         </div>
         {/* Right side */}
-        <div className='h-header xxl:flex hidden items-center gap-2'>
+        <div className='h-header hidden items-center gap-2 min-[1368px]:flex'>
           <AnimatePresence mode='wait' initial={false}>
             {loading ? (
               <motion.div
@@ -117,7 +117,7 @@ export default function Header() {
           </AnimatePresence>
         </div>
         {/* Search */}
-        <div className='xxl:hidden mr-4 items-center'>
+        <div className='mr-4 items-center min-[1368px]:hidden'>
           <Button
             variant='ghost'
             className='p-1 hover:bg-transparent!'

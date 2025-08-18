@@ -5,7 +5,10 @@ type RowProps = PropsWithChildren<HTMLAttributes<HTMLDivElement>>;
 
 export default function Row({ children, className, ...rest }: RowProps) {
   return (
-    <div className={cn('my-4 flex flex-row gap-x-4', className)} {...rest}>
+    <div
+      className={cn('my-4 flex w-full flex-row gap-x-4', className)}
+      {...rest}
+    >
       {children}
     </div>
   );

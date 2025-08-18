@@ -1,4 +1,4 @@
-import { languageNameMap } from '@/constants';
+import { getLanguageLabel } from '@/utils';
 import {
   Menu,
   Tooltip,
@@ -76,7 +76,7 @@ function CaptionSubmenu() {
         </div>
         <span className='parent-data-[open]:ml-0 ml-1.5'>Phụ đề</span>
         <span className='ml-auto text-sm text-white/50'>
-          {languageNameMap[hint]}
+          {getLanguageLabel(hint)}
         </span>
         <ChevronRightIcon className='parent-data-[open]:hidden ml-0.5 h-[18px] w-[18px] text-sm text-white/50' />
       </Menu.Button>
@@ -89,7 +89,7 @@ function CaptionSubmenu() {
           {options.map(({ label, value, select }) => {
             return (
               <Radio value={value} onSelect={select} key={value}>
-                {languageNameMap[label]}
+                {getLanguageLabel(label)}
               </Radio>
             );
           })}
