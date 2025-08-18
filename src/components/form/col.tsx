@@ -33,7 +33,7 @@ export default function Col({ children, className, span, ...rest }: ColProps) {
     24: 'w-full'
   } as const;
 
-  const spanClass = span ? `w-[${(span / 24) * 100}%]` : 'w-full';
+  const spanClass = span ? spanMap[span] : 'w-full';
 
   return (
     <div className={cn('flex flex-col', spanClass, className)} {...rest}>
