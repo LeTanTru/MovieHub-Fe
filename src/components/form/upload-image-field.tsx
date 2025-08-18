@@ -170,7 +170,7 @@ export default function UploadImageField({
             type='button'
             style={{ width: size, height: size }}
             className={cn(
-              'border-input hover:bg-accent/50 focus-visible:border-ring relative flex size-16 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-dashed p-0 transition-colors outline-none focus-visible:ring-[3px]',
+              'border-input hover:bg-accent/50 focus-visible:border-ring relative flex cursor-pointer items-center justify-center overflow-hidden rounded-full border border-dashed p-0 transition-colors outline-none focus-visible:ring-[3px]',
               className
             )}
             onClick={openFileDialog}
@@ -187,6 +187,7 @@ export default function UploadImageField({
                 disablePreview
                 src={`${apiConfig.imageProxy.baseUrl}${value}`}
                 className='size-full object-cover'
+                size={size}
               />
             ) : (
               <UploadIcon
