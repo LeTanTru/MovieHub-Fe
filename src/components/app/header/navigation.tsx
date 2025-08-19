@@ -1,13 +1,13 @@
 'use client';
 
-import { useCategoryQuery } from '@/queries/use-category';
+import { useCategoryListQuery } from '@/queries/use-category';
 import { ItemProps } from '@/types';
 import route from '@/routes';
 import NavigationDesktop from './navigation/navigation-desktop';
 import NavigationMobile from './navigation/navigation-mobile';
 
 export default function NavigationMenu() {
-  const categories = useCategoryQuery();
+  const categories = useCategoryListQuery();
 
   const navigationList: ItemProps[] = [
     {

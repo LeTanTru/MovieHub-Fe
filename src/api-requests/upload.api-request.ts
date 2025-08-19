@@ -1,6 +1,6 @@
 import { apiConfig, uploadOptions } from '@/constants';
 import { ApiResponse, UploadImageResponseType } from '@/types';
-import http from '@/utils/http.util';
+import { http } from '@/utils';
 
 const uploadApiRequest = {
   image: async (file: Blob) =>

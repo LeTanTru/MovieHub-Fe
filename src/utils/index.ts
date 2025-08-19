@@ -4,3 +4,4 @@ export * from './storage.util';
 export * from './jwt.util';
 export * from './form-error.util';
 export * from './language.util';
+export * from './datetime.util';

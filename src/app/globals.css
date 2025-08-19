@@ -66,6 +66,7 @@
   --spacing-22\/24: 91.666667%;
   --spacing-23\/24: 95.833333%;
   --spacing-24\/24: 100%;
+  --color-transparent-white: #ffffff10;
 }
 
 body {
@@ -159,4 +160,12 @@ body {
   svg {
     vertical-align: middle;
   }
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

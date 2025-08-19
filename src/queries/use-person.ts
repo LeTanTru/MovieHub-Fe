@@ -1,7 +1,9 @@
+'use client';
+
 import { personApiRequest } from '@/api-requests';
 import { useQuery } from '@tanstack/react-query';
 
-export const usePersonQuery = ({
+export const usePersonListQuery = ({
   page,
   size
 }: {
@@ -10,7 +12,13 @@ export const usePersonQuery = ({
 }) => {
   return useQuery({
     queryKey: ['persons', page],
-    queryFn: async () => await personApiRequest.getList({ page, size }),
-    enabled: true
+    queryFn: async () => await personApiRequest.getList({ page, size })
+  });
+};
+
+export const usePersonQuery = ({ id }: { id: string }) => {
+  return useQuery({
+    queryKey: ['person', id],
+    queryFn: async () => await personApiRequest.getById({ id })
   });
 };

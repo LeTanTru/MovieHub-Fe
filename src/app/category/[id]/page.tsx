@@ -9,12 +9,12 @@ export async function generateStaticParams() {
 export default async function CategoryPage({
   params
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { slug } = await params;
+  const { id } = await params;
   return (
     <>
-      <CategoryList slug={slug} />
+      <CategoryList id={id} />
     </>
   );
 }

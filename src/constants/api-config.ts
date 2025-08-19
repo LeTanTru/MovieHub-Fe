@@ -113,6 +113,15 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true,
       ignoreAuth: true
     }
+  },
+  movie: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}v1/movie/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
+    }
   }
 });
 

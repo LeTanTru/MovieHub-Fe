@@ -3,7 +3,7 @@
 import { categoryApiRequest } from '@/api-requests';
 import { useQuery } from '@tanstack/react-query';
 
-export const useCategoryQuery = () => {
+export const useCategoryListQuery = () => {
   const { data } = useQuery({
     queryKey: ['category'],
     queryFn: () => categoryApiRequest.getList()
