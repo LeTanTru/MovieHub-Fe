@@ -2,6 +2,7 @@ import { personApiRequest } from '@/api-requests';
 import PersonSidebar from '@/app/person/[id]/person-sidebar';
 import PersonMovieList from '@/app/person/[id]/person-movie-list';
 import { AppConstants } from '@/constants';
+import { stripHtml } from '@/utils';
 
 export async function generateMetadata({
   params
@@ -10,10 +11,15 @@ export async function generateMetadata({
 }) {
   const { id } = await params;
   const res = await personApiRequest.getById({ id });
+  const plainDescription = stripHtml(
+    res.data?.bio ?? 'Trang chi tiết diễn viên'
+  ).slice(0, 160);
   return {
     title: res.data?.otherName,
-    description: res.data?.bio,
+    description: plainDescription,
     openGraph: {
+      title: res.data?.otherName,
+      description: plainDescription,
       images: [`${AppConstants.contentRootUrl}${res.data?.avatarPath}`]
     }
   };
