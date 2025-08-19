@@ -16,7 +16,7 @@ export type ApiConfigGroup = {
 
 export type Payload = {
   params?: Record<string, any>;
-  pathParams?: Record<string, string>;
+  pathParams?: Record<string, string | number>;
   body?: any;
   options?: RequestInit;
 };

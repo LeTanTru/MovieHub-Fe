@@ -9,7 +9,7 @@ import { Heart, X, ChevronDown } from 'lucide-react';
 import { RiTelegram2Fill } from 'react-icons/ri';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function PersonSidebar({ id }: { id: string }) {
+export default function PersonSidebar({ id }: { id: number }) {
   const res = usePersonQuery({ id });
   const person = res.data?.data;
   const [isModalOpen, setIsModalOpen] = useState(false);

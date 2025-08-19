@@ -16,7 +16,7 @@ const personApiRequest = {
         size
       }
     }),
-  getById: async ({ id }: { id: string }) =>
+  getById: async ({ id }: { id: number }) =>
     await http.get<ApiResponse<PersonResType>>(apiConfig.person.getById, {
       pathParams: {
         id: id
