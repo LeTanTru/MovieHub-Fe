@@ -48,7 +48,7 @@ const sendRequest = async <T>(
   }
 
   Object.entries(pathParams).forEach(([key, value]) => {
-    baseUrl = baseUrl.replace(`:${key}`, value);
+    baseUrl = baseUrl.replace(`:${key}`, value.toString());
   });
 
   if (baseHeader['Content-Type'] === 'multipart/form-data' && isUpload) {

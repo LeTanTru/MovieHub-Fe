@@ -1,5 +1,5 @@
 export type CategoryResType = {
-  id: BigInteger;
+  id: number;
   status: number;
   name: string;
   slug: string;

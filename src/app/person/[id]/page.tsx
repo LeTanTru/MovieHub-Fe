@@ -6,7 +6,7 @@ import { AppConstants } from '@/constants';
 export async function generateMetadata({
   params
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: number }>;
 }) {
   const { id } = await params;
   const res = await personApiRequest.getById({ id });
@@ -22,7 +22,7 @@ export async function generateMetadata({
 export default async function PersonDetail({
   params
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: number }>;
 }) {
   const { id } = await params;
 
