@@ -115,4 +115,4 @@ const http = {
   }
 };
 
-export default http;
+export { http };

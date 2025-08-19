@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePersonQuery } from '@/queries/use-person';
+import { usePersonListQuery } from '@/queries/use-person';
 import './person-card.css';
 import PersonCard from '@/app/person/_components/person-card';
 import PersonCardSkeleton from '@/app/person/_components/person-card-skeleton';
@@ -30,7 +30,7 @@ export default function PersonList() {
   }, []);
 
   const skeletonCount = columns * 3;
-  const res = usePersonQuery({ page: +page - 1, size: skeletonCount });
+  const res = usePersonListQuery({ page: +page - 1, size: skeletonCount });
   const personList = res.data?.data.content;
 
   return (

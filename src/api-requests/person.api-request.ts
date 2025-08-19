@@ -1,6 +1,6 @@
 import { apiConfig } from '@/constants';
-import { ApiResponseList, PersonResType } from '@/types';
-import http from '@/utils/http.util';
+import { ApiResponse, ApiResponseList, PersonResType } from '@/types';
+import { http } from '@/utils';
 
 const personApiRequest = {
   getList: async ({
@@ -14,6 +14,12 @@ const personApiRequest = {
       params: {
         page,
         size
+      }
+    }),
+  getById: async ({ id }: { id: string }) =>
+    await http.get<ApiResponse<PersonResType>>(apiConfig.person.getById, {
+      pathParams: {
+        id: id
       }
     })
 };

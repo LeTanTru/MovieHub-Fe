@@ -6,7 +6,7 @@ import {
   Payload,
   RegisterBodyType
 } from '@/types';
-import http from '@/utils/http.util';
+import { http } from '@/utils';
 
 const authApiRequest = {
   getGoogleLoginUrl: async (loginType: string | number) =>

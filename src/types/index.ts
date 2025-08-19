@@ -3,6 +3,7 @@ export * from './api.type';
 export * from './auth.type';
 export * from './category.type';
 export * from './master-data.type';
+export * from './movie.type';
 export * from './navigation-menu.type';
 export * from './person.type';
 export * from './search.type';
