@@ -9,10 +9,12 @@ import Pagination from '@/components/pagination';
 import { useSearchParams } from 'next/navigation';
 
 export default function PersonList() {
-  const [columns, setColumns] = useState<number>(8);
+  const defaultColPerRow = 8;
+  const [columns, setColumns] = useState<number>(defaultColPerRow);
   const params = useSearchParams();
-  const page = params.get('page') ?? 0;
+  const page = params.get('page') ?? 1;
 
+  // Render col per row
   useEffect(() => {
     const updateCols = () => {
       const width = window.innerWidth;
@@ -28,7 +30,7 @@ export default function PersonList() {
   }, []);
 
   const skeletonCount = columns * 3;
-  const res = usePersonQuery({ page, size: skeletonCount });
+  const res = usePersonQuery({ page: +page - 1, size: skeletonCount });
   const personList = res.data?.data.content;
 
   return (
