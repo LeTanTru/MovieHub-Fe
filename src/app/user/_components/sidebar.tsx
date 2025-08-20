@@ -1,9 +1,15 @@
 'use client';
 
-import { apiConfig, genderIconMaps, userSidebarList } from '@/constants';
+import {
+  apiConfig,
+  GENDER_FEMALE,
+  GENDER_MALE,
+  GENDER_OTHER,
+  genderIconMaps,
+  userSidebarList
+} from '@/constants';
 import { AvatarField } from '@/components/form';
 import { cn } from '@/lib';
-import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
 import { ProfileType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthStore } from '@/store';

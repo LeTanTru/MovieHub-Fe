@@ -1,4 +1,4 @@
-import AppConstants from '@/constants/app';
+import { AppConstants } from '@/constants';
 import { ApiConfigGroup } from '@/types';
 
 const baseHeader = { 'Content-Type': 'application/json' };
@@ -117,6 +117,15 @@ const apiConfig = defineApiConfig({
   movie: {
     getList: {
       baseUrl: `${AppConstants.apiUrl}v1/movie/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
+    }
+  },
+  moviePerson: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}v1/movie-person/list`,
       method: 'GET',
       headers: baseHeader,
       isRequiredTenantId: true,

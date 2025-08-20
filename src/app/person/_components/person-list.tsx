@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { usePersonListQuery } from '@/queries/use-person';
 import './person-card.css';
 import PersonCard from '@/app/person/_components/person-card';
 import PersonCardSkeleton from '@/app/person/_components/person-card-skeleton';
 import Pagination from '@/components/pagination';
 import { useSearchParams } from 'next/navigation';
+import { usePersonListQuery } from '@/queries';
 
 export default function PersonList() {
   const defaultColPerRow = 8;

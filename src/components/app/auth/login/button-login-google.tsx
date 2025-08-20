@@ -4,10 +4,7 @@ import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
 import { AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import {
-  useLoginGoogleMutation,
-  useLoginGoogleQuery
-} from '@/queries/use-auth';
+import { useLoginGoogleMutation, useLoginGoogleQuery } from '@/queries';
 import { useAuthDialogStore, useAuthStore } from '@/store';
 import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
 import { LucideLoader2 } from 'lucide-react';

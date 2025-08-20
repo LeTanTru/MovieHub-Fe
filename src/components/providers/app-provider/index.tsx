@@ -1,7 +1,7 @@
 'use client';
 
 import { logger } from '@/logger';
-import { useProfileQuery } from '@/queries/use-account';
+import { useProfileQuery } from '@/queries';
 import { useAuthStore } from '@/store';
 import { getAccessTokenFromLocalStorage } from '@/utils';
 import { useEffect } from 'react';

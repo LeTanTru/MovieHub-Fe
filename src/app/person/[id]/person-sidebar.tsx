@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useRef, useEffect } from 'react';
 import { AvatarField, Button } from '@/components/form';
 import { apiConfig, genderOptions } from '@/constants';

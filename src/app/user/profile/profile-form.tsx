@@ -9,8 +9,7 @@ import {
   UploadImageField
 } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import { GENDER, genderOptions } from '@/constants';
-import { GENDER_MALE } from '@/constants/constant';
+import { GENDER, GENDER_MALE, genderOptions } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useProfileMutation, useUploadImageMutation } from '@/queries';

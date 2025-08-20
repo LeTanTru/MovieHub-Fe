@@ -1,4 +1,4 @@
-import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
+import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from './constant';
 import route from '@/routes';
 import {
   DropdownAvatarItemType,
