@@ -58,14 +58,14 @@ export default function PersonSidebar({ id }: { id: number }) {
       </p>
 
       <div className='mb-4 flex justify-center gap-2'>
-        <div className='flex cursor-pointer items-center gap-2 rounded-[48px] border border-white px-4 py-2 text-[13px] text-white hover:opacity-80'>
-          <Heart className='h-4 w-4 fill-white stroke-transparent' />
-          <span>Yêu thích</span>
-        </div>
-        <div className='flex cursor-pointer items-center gap-2 rounded-[48px] border border-white px-4 py-2 text-[13px] text-white hover:opacity-80'>
-          <RiTelegram2Fill className='h-4 w-4 fill-white' />
-          <span>Chia sẻ</span>
-        </div>
+        <ActionButton
+          icon={<Heart className='h-4 w-4 fill-white stroke-transparent' />}
+          label='Yêu thích'
+        />
+        <ActionButton
+          icon={<RiTelegram2Fill className='h-4 w-4 fill-white' />}
+          label='Chia sẻ'
+        />
       </div>
 
       <div className='mb-2 flex'>
@@ -142,6 +142,21 @@ export default function PersonSidebar({ id }: { id: number }) {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+function ActionButton({
+  icon,
+  label
+}: {
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className='flex cursor-pointer items-center gap-2 rounded-[48px] border border-white px-4 py-2 text-[13px] text-white hover:opacity-80'>
+      {icon}
+      <span>{label}</span>
     </div>
   );
 }
