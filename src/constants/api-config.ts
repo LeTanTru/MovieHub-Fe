@@ -1,4 +1,4 @@
-import { AppConstants } from '@/constants';
+import AppConstants from '@/constants/app';
 import { ApiConfigGroup } from '@/types';
 
 const baseHeader = { 'Content-Type': 'application/json' };
