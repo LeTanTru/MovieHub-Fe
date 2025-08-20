@@ -1,4 +1,3 @@
-import { personApiRequest } from '@/api-requests';
 import PersonSidebar from '@/app/person/[id]/person-sidebar';
 import PersonMovieList from '@/app/person/[id]/person-movie-list';
 import { AppConstants } from '@/constants';
@@ -6,6 +5,7 @@ import { stripHtml } from '@/utils';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { logger } from '@/logger';
 import { getPersonDetail } from '@/app/person/[id]/person';
+import envConfig from '@/config';
 
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },
@@ -42,7 +42,7 @@ export async function generateMetadata(
         images
       },
       alternates: {
-        canonical: `/person/${id}`
+        canonical: `${envConfig.NEXT_PUBLIC_URL}/person/${id}`
       }
     };
   } catch (error) {
