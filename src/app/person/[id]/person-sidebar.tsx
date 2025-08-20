@@ -11,11 +11,13 @@ import { cn } from '@/lib';
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import route from '@/routes';
+import { useTopLoader } from 'nextjs-toploader';
 
 export default function PersonSidebar({ person }: { person?: PersonResType }) {
   // const res = usePersonQuery({ id });
   // const person = res.data?.data;
   const router = useRouter();
+  const loader = useTopLoader();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showScrollIcon, setShowScrollIcon] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
@@ -48,7 +50,10 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
       <Button
         className='absolute top-0 left-0 -mt-4 p-0! hover:bg-transparent!'
         variant='ghost'
-        onClick={() => router.push(route.person)}
+        onClick={() => {
+          router.push(route.person);
+          loader.start();
+        }}
       >
         <FaArrowLeftLong className='h-10! w-10!' />
       </Button>
