@@ -1,18 +1,18 @@
 'use client';
 
 import * as React from 'react';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { ImageIcon } from 'lucide-react';
 import Image from 'next/image';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { defaultAvatar } from '@/assets';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type AvatarFieldProps = {
   size?: number;
   icon?: React.ReactNode;
   src?: string;
   className?: string;
+  previewClassName?: string;
   disablePreview?: boolean;
   zoomSize?: number;
 } & React.HTMLAttributes<HTMLElement>;
@@ -23,6 +23,7 @@ export default function AvatarField({
   icon,
   src,
   className,
+  previewClassName,
   disablePreview = false,
   ...props
 }: AvatarFieldProps) {
@@ -61,31 +62,43 @@ export default function AvatarField({
           icon || <ImageIcon className='h-1/2 w-1/2 opacity-40' />
         )}
       </div>
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent
-          className={cn(
-            'max-w-md overflow-hidden rounded-full p-0',
-            'ring-0 focus:ring-0 focus:outline-none',
-            '[&>[data-slot=dialog-close]]:hidden'
-          )}
-          style={{ width: zoomSize, height: zoomSize }}
-        >
-          <DialogTitle asChild>
-            <VisuallyHidden>Avatar preview</VisuallyHidden>
-          </DialogTitle>
-          <Image
-            src={avatarSrc}
-            alt='Avatar preview'
-            width={zoomSize}
-            height={zoomSize}
-            className='rounded-full object-cover'
-            style={{ width: zoomSize, height: zoomSize }}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = defaultAvatar.src;
-            }}
-          />
-        </DialogContent>
-      </Dialog>
+
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsModalOpen(false)}
+          >
+            <motion.div
+              className={cn(
+                'relative overflow-hidden rounded-full select-none',
+                previewClassName
+              )}
+              style={{ width: zoomSize, height: zoomSize }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Image
+                src={avatarSrc}
+                alt='Avatar preview'
+                width={zoomSize}
+                height={zoomSize}
+                className={cn('rounded-full object-cover', previewClassName)}
+                style={{ width: zoomSize, height: zoomSize }}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = defaultAvatar.src;
+                }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

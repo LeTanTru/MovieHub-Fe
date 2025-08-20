@@ -1,9 +1,11 @@
 type MovieType = {
+  id: number;
   title: string;
   originalTitle: string;
   slug: string;
   thumbnailUrl: string;
   type: number;
+  releaseDate: string;
 };
 
 type PersonType = {
