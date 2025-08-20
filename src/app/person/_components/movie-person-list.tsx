@@ -5,10 +5,8 @@ import { cn } from '@/lib';
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import route from '@/routes';
-import Image from 'next/image';
-import { apiConfig, PERSON_ACTOR } from '@/constants';
+import { PERSON_ACTOR } from '@/constants';
+import MoviePersonCard from '@/app/person/_components/movie-person-card';
 
 export default function PersonMovieList({ id }: { id: number }) {
   const res = useMoviePersonListQuery({ personId: id, kind: PERSON_ACTOR });
@@ -50,33 +48,7 @@ export default function PersonMovieList({ id }: { id: number }) {
           {/* show all */}
           <div className='grid grid-cols-6 gap-6'>
             {moviePersonList?.content.map((mp) => (
-              <div key={mp.id} className='relative flex flex-col gap-3'>
-                <Link
-                  className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-[8px] pb-[150%]'
-                  href={`${route.movie}/${mp.id}`}
-                >
-                  <div>
-                    <Image
-                      fill
-                      src={`${apiConfig.imageProxy.baseUrl}${mp.movie.thumbnailUrl}`}
-                      alt={mp.movie.title}
-                      className='absolute top-0 right-0 bottom-0 left-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
-                    />
-                  </div>
-                </Link>
-                <div className='min-h-10.5 text-center'>
-                  <h4 className='hover:text-light-golden-yellow mb-0 line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear'>
-                    <Link href={`${route.movie}/${mp.id}`}>
-                      {mp.movie.title}
-                    </Link>
-                  </h4>
-                  <h4 className='text-light-gray mt-[5px] line-clamp-1 text-xs leading-6'>
-                    <Link href={`${route.movie}/${mp.id}`}>
-                      {mp.movie.originalTitle}
-                    </Link>
-                  </h4>
-                </div>
-              </div>
+              <MoviePersonCard moviePerson={mp} key={mp.id} />
             ))}
           </div>
         </div>
@@ -89,9 +61,7 @@ function ActionButton({
   action,
   text,
   activeKey,
-  setActiveKey,
-  index,
-  total
+  setActiveKey
 }: {
   action: string;
   text: string;

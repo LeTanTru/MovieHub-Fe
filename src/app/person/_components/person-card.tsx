@@ -3,7 +3,6 @@ import route from '@/routes';
 import { PersonResType } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
 
 export default function PersonCard({ person }: { person: PersonResType }) {
   return (

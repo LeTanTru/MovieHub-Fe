@@ -11,12 +11,10 @@ import { PersonResType } from '@/types';
 import { cn } from '@/lib';
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
-import route from '@/routes';
 import { useTopLoader } from 'nextjs-toploader';
+import route from '@/routes';
 
 export default function PersonSidebar({ person }: { person?: PersonResType }) {
-  // const res = usePersonQuery({ id });
-  // const person = res.data?.data;
   const router = useRouter();
   const loader = useTopLoader();
   const [isModalOpen, setIsModalOpen] = useState(false);

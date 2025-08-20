@@ -1,11 +1,11 @@
-import PersonSidebar from '@/app/person/[id]/person-sidebar';
-import PersonMovieList from '@/app/person/[id]/person-movie-list';
-import { AppConstants } from '@/constants';
+import PersonSidebar from '@/app/person/_components/person-sidebar';
+import PersonMovieList from '@/app/person/_components/movie-person-list';
 import { stripHtml } from '@/utils';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { logger } from '@/logger';
-import { getPersonDetail } from '@/app/person/[id]/person';
+import { getPersonDetail } from '@/app/person/_components/person';
 import envConfig from '@/config';
+import { AppConstants } from '@/constants';
 
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },
@@ -74,7 +74,6 @@ export default async function PersonDetail({
 
   return (
     <div className='relative mx-auto flex w-full max-w-[1640px] items-stretch justify-between gap-0 px-5 py-0'>
-      {/* <PersonSidebar id={numericId} /> */}
       <PersonSidebar person={res.data} />
       <PersonMovieList id={numericId} />
     </div>

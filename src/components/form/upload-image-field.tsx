@@ -28,8 +28,8 @@ import { AvatarField, Button } from '@/components/form';
 import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
-import { apiConfig } from '@/constants';
 import { logger } from '@/logger';
+import { apiConfig } from '@/constants';
 
 type Area = { x: number; y: number; width: number; height: number };
 
