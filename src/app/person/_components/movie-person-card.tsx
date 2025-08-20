@@ -39,9 +39,9 @@ export default function MoviePersonList({
       <AnimatePresence mode='wait'>
         <motion.div
           key={type}
-          initial={{ opacity: 0, y: 10, scale: 1 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -10, scale: 0.98 }}
+          initial={{ opacity: 0, y: type === 'all' ? -10 : 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: type === 'all' ? -10 : 10 }}
         >
           {type === 'all' ? (
             <MovieCardByAll type={type} moviePersonList={moviePersonList} />
@@ -78,9 +78,6 @@ function MovieCardByAll({
             animate='animate'
             exit='exit'
             transition={itemTransition}
-            whileHover={{ y: -2, scale: 1.01 }}
-            whileTap={{ scale: 0.99 }}
-            style={{ transformOrigin: '50% 50%' }}
             className='relative flex flex-col gap-3'
           >
             <Link
@@ -161,9 +158,6 @@ function MoviePersonCardByTime({
                 animate='animate'
                 exit='exit'
                 transition={itemTransition}
-                whileHover={{ y: -2, scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                style={{ transformOrigin: '50% 50%' }}
                 className='relative flex w-full flex-col gap-3'
               >
                 <Link
