@@ -124,6 +124,7 @@ export default function Header() {
               variant='ghost'
               className='p-1 hover:bg-transparent!'
               onClick={() => setShowSearch(!showSearch)}
+              aria-label='Search icon'
             >
               <AnimatePresence mode='wait' initial={false}>
                 {showSearch ? (
