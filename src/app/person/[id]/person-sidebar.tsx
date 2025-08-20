@@ -1,17 +1,21 @@
 'use client';
-
 import { useState, useRef, useEffect } from 'react';
 import { AvatarField, Button } from '@/components/form';
 import { apiConfig, genderOptions } from '@/constants';
-import { usePersonQuery } from '@/queries/use-person';
 import { formatDate } from '@/utils';
 import { Heart, X, ChevronDown } from 'lucide-react';
 import { RiTelegram2Fill } from 'react-icons/ri';
 import { motion, AnimatePresence } from 'framer-motion';
+import { PersonResType } from '@/types';
+import { cn } from '@/lib';
+import { FaArrowLeftLong } from 'react-icons/fa6';
+import { useRouter } from 'next/navigation';
+import route from '@/routes';
 
-export default function PersonSidebar({ id }: { id: number }) {
-  const res = usePersonQuery({ id });
-  const person = res.data?.data;
+export default function PersonSidebar({ person }: { person?: PersonResType }) {
+  // const res = usePersonQuery({ id });
+  // const person = res.data?.data;
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showScrollIcon, setShowScrollIcon] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
@@ -41,8 +45,17 @@ export default function PersonSidebar({ id }: { id: number }) {
 
   return (
     <div className='border-r-transparent-white w-110 flex-shrink-0 border-r p-4'>
+      <Button
+        className='absolute top-0 left-0 -mt-4 p-0! hover:bg-transparent!'
+        variant='ghost'
+        onClick={() => router.push(route.person)}
+      >
+        <FaArrowLeftLong className='h-10! w-10!' />
+      </Button>
       <AvatarField
-        className='mx-auto mb-10 rounded-[25%] border-none'
+        className={cn('mx-auto mb-10 rounded-[25%] border-none', {
+          'rounded-full': !!person
+        })}
         size={160}
         src={
           person?.avatarPath

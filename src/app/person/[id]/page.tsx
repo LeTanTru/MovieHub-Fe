@@ -4,12 +4,8 @@ import PersonMovieList from '@/app/person/[id]/person-movie-list';
 import { AppConstants } from '@/constants';
 import { stripHtml } from '@/utils';
 import type { Metadata, ResolvingMetadata } from 'next';
-import { cache } from 'react';
 import { logger } from '@/logger';
-
-export const getPersonDetail = cache(
-  async (id: number) => await personApiRequest.getById({ id })
-);
+import { getPersonDetail } from '@/app/person/[id]/person';
 
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },
@@ -74,10 +70,12 @@ export default async function PersonDetail({
 }) {
   const { id } = await params;
   const numericId = Number(id);
+  const res = await getPersonDetail(numericId);
 
   return (
     <div className='relative mx-auto flex w-full max-w-[1640px] items-stretch justify-between gap-0 px-5 py-0'>
-      <PersonSidebar id={numericId} />
+      {/* <PersonSidebar id={numericId} /> */}
+      <PersonSidebar person={res.data} />
       <PersonMovieList id={numericId} />
     </div>
   );
