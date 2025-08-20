@@ -5,8 +5,14 @@ import { AvatarField, Button } from '@/components/form';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
 import { Separator } from '@/components/ui/separator';
-import { apiConfig, genderIconMaps, userSidebarList } from '@/constants';
-import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
+import {
+  apiConfig,
+  GENDER_FEMALE,
+  GENDER_MALE,
+  GENDER_OTHER,
+  genderIconMaps,
+  userSidebarList
+} from '@/constants';
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
 import route from '@/routes';

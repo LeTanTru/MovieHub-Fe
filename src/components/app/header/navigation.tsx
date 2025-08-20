@@ -1,10 +1,10 @@
 'use client';
 
-import { useCategoryListQuery } from '@/queries/use-category';
 import { ItemProps } from '@/types';
 import route from '@/routes';
 import NavigationDesktop from './navigation/navigation-desktop';
 import NavigationMobile from './navigation/navigation-mobile';
+import { useCategoryListQuery } from '@/queries';
 
 export default function NavigationMenu() {
   const categories = useCategoryListQuery();
@@ -26,11 +26,11 @@ export default function NavigationMenu() {
     },
     {
       label: 'Phim lẻ',
-      href: `${route.movie.type.single}`
+      href: `${route.movieType.single}`
     },
     {
       label: 'Phim bộ',
-      href: `${route.movie.type.series}`
+      href: `${route.movieType.series}`
     },
     {
       label: 'Quốc gia',

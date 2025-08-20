@@ -13,11 +13,10 @@ const route = defineRoute({
   person: '/person',
   country: '/country',
   schedule: '/schedule',
-  movie: {
-    type: {
-      single: '/movie/single',
-      series: '/movie/series'
-    }
+  movie: '/movie',
+  movieType: {
+    single: '/movie/single',
+    series: '/movie/series'
   },
   topic: '/topic'
 });

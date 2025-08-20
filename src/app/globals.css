@@ -67,6 +67,9 @@
   --spacing-23\/24: 95.833333%;
   --spacing-24\/24: 100%;
   --color-transparent-white: #ffffff10;
+  --color-gunmetal-blue: #2f3346;
+  --color-light-gray: #aaa;
+  --color-light-golden-yellow: #ffd875;
 }
 
 body {

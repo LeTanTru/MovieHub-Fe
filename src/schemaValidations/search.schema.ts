@@ -15,3 +15,10 @@ export const movieSearchSchema = z.object({
   title: z.string().optional(),
   type: z.number().optional()
 });
+
+export const moviePersonSearchSchema = z.object({
+  id: z.number().optional(),
+  kind: z.number().optional(),
+  movieId: z.number().optional(),
+  personId: z.number().optional()
+});
