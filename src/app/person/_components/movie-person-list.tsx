@@ -1,5 +1,4 @@
 'use client';
-
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { useMoviePersonListQuery } from '@/queries';
@@ -21,7 +20,6 @@ export default function PersonMovieList({ id }: { id: number }) {
     <div className='flex-grow-1'>
       <div className='border-b-transparent-white border-b border-solid'>
         <div className='pt-0 pb-10 pl-10'>
-          {/* header */}
           <div className='mb-8 flex items-center justify-between gap-8'>
             <div className='mb-0 text-xl leading-1.5 font-semibold text-white'>
               Các phim đã tham gia
@@ -31,26 +29,21 @@ export default function PersonMovieList({ id }: { id: number }) {
               className='relative flex flex-shrink-0 items-stretch rounded-[8px] border border-solid border-white p-0.5 text-sm font-normal'
               role='tablist'
             >
-              {actions.map((action, index) => (
+              {actions.map((action) => (
                 <ActionButton
                   key={action.key}
                   text={action.text}
                   action={action.key}
                   activeKey={activeKey}
                   setActiveKey={setActiveKey}
-                  index={index}
-                  total={actions.length}
                 />
               ))}
             </div>
           </div>
-          {/* body */}
-          {/* show all */}
-          <div className='grid grid-cols-6 gap-6'>
-            {moviePersonList?.content.map((mp) => (
-              <MoviePersonCard moviePerson={mp} key={mp.id} />
-            ))}
-          </div>
+          <MoviePersonCard
+            moviePersonList={moviePersonList?.content || []}
+            type={activeKey}
+          />
         </div>
       </div>
     </div>
@@ -67,8 +60,6 @@ function ActionButton({
   text: string;
   activeKey: string;
   setActiveKey: (key: string) => void;
-  index: number;
-  total: number;
 }) {
   const isActive = action === activeKey;
 

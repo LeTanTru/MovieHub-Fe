@@ -4,12 +4,12 @@ import { useState, useRef, useEffect } from 'react';
 import { AvatarField, Button } from '@/components/form';
 import { apiConfig, genderOptions } from '@/constants';
 import { formatDate } from '@/utils';
-import { Heart, X, ChevronDown } from 'lucide-react';
+import { Heart, X } from 'lucide-react';
 import { RiTelegram2Fill } from 'react-icons/ri';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PersonResType } from '@/types';
 import { cn } from '@/lib';
-import { FaArrowLeftLong } from 'react-icons/fa6';
+import { FaArrowDown, FaArrowLeftLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import { useTopLoader } from 'nextjs-toploader';
 import route from '@/routes';
@@ -28,17 +28,19 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
     if (!isModalOpen) return;
     const el = modalContentRef.current;
     if (!el) return;
+
     const checkScroll = () => {
-      setShowScrollIcon(el.scrollTop === 0);
+      const canScroll = el.scrollHeight > el.clientHeight;
+      const atTop = el.scrollTop === 0;
+      setShowScrollIcon(canScroll && atTop);
     };
 
-    const timer = setTimeout(checkScroll, 0);
+    checkScroll();
 
     el.addEventListener('scroll', checkScroll);
     window.addEventListener('resize', checkScroll);
 
     return () => {
-      clearTimeout(timer);
       el.removeEventListener('scroll', checkScroll);
       window.removeEventListener('resize', checkScroll);
     };
@@ -57,8 +59,11 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
         <FaArrowLeftLong className='h-10! w-10!' />
       </Button>
       <AvatarField
-        className={cn('mx-auto mb-10 rounded-[25%] border-none', {
-          'rounded-full': !!person
+        className={cn('mx-auto mb-10 rounded border-none', {
+          'rounded-full': !person?.avatarPath
+        })}
+        previewClassName={cn({
+          rounded: person?.avatarPath
         })}
         size={160}
         src={
@@ -147,13 +152,14 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
               />
               <motion.div
                 className='bg-accent absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce rounded-full p-2'
+                initial={{ bottom: -30, display: 'none' }}
                 animate={{
                   bottom: showScrollIcon ? 30 : -30,
                   display: showScrollIcon ? 'block' : 'none'
                 }}
                 transition={{ duration: 0.2, ease: 'linear' }}
               >
-                <ChevronDown className='h-6 w-6 text-white' />
+                <FaArrowDown className='h-6 w-6 text-white' />
               </motion.div>
             </motion.div>
           </motion.div>
