@@ -4,7 +4,13 @@ import { apiConfig } from '@/constants';
 import { cn } from '@/lib';
 import route from '@/routes';
 import { MoviePersonResType } from '@/types';
-import { AnimatePresence, motion, LayoutGroup } from 'framer-motion';
+import {
+  AnimatePresence,
+  motion,
+  LayoutGroup,
+  Variants,
+  Transition
+} from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -19,10 +25,10 @@ const makeItemVariants = (dir: Dir) => {
     initial: { opacity: 0, y: from, scale: 0.98, filter: 'blur(6px)' },
     animate: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
     exit: { opacity: 0, y: toExit, scale: 0.98, filter: 'blur(6px)' }
-  } satisfies import('framer-motion').Variants;
+  } satisfies Variants;
 };
 
-const itemTransition: import('framer-motion').Transition = {
+const itemTransition: Transition = {
   opacity: { duration: 0.25, ease: [0.0, 0.0, 0.2, 1] },
   default: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }
 };
