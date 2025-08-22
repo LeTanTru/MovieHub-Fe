@@ -49,7 +49,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
   return (
     <div className='border-r-transparent-white w-110 flex-shrink-0 border-r p-4'>
       <Button
-        className='absolute top-0 left-0 -mt-4 p-0! hover:bg-transparent!'
+        className='absolute top-0 left-0 -mt-4 ml-8 p-0! hover:bg-transparent!'
         variant='ghost'
         onClick={() => {
           router.push(route.person);
