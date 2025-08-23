@@ -45,7 +45,11 @@ export default function Header() {
           }
         )}
       >
-        <div className={'flex h-17.5 items-center justify-between gap-4'}>
+        <div
+          className={
+            'flex h-17.5 items-center justify-between gap-4 max-[1600px]:h-15'
+          }
+        >
           {/* Left side */}
           <div className='flex h-full flex-1 items-center gap-4 min-[1368px]:gap-10'>
             {!showSearch && (
