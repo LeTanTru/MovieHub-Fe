@@ -13,6 +13,7 @@ import { FaArrowDown, FaArrowLeftLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import { useTopLoader } from 'nextjs-toploader';
 import route from '@/routes';
+import { useMobile } from '@/hooks';
 
 export default function PersonSidebar({ person }: { person?: PersonResType }) {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showScrollIcon, setShowScrollIcon] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
+  const isMobile = useMobile();
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -47,9 +49,14 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
   }, [isModalOpen]);
 
   return (
-    <div className='border-r-transparent-white w-110 flex-shrink-0 border-r p-4'>
+    <div className='border-r-transparent-white w-110 flex-shrink-0 border-r pr-10 max-[1600px]:w-85 max-[1120px]:w-full max-[1120px]:border-none max-[1120px]:pr-0'>
       <Button
-        className='absolute top-0 left-0 -mt-4 ml-8 p-0! hover:bg-transparent!'
+        className={cn(
+          'absolute top-0 left-0 -mt-4 ml-8 p-0! hover:bg-transparent!',
+          {
+            hidden: isMobile
+          }
+        )}
         variant='ghost'
         onClick={() => {
           router.push(route.person);
@@ -112,7 +119,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
         {person?.bio && (
           <Button
             onClick={handleOpenModal}
-            className='bg-accent hover:bg-background mt-2 ml-auto block text-sm text-white'
+            className='bg-accent hover:bg-background mt-2 ml-auto block text-sm text-white max-[1600px]:mt-4 max-[1120px]:mx-auto max-[1120px]:mb-4 max-[1120px]:w-110 max-[800px]:w-full'
           >
             Xem thêm
           </Button>

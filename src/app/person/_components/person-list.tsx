@@ -35,7 +35,7 @@ export default function PersonList() {
 
   return (
     <>
-      <div className='grid grid-cols-8 gap-6 max-[1600px]:grid-cols-6 max-[990px]:grid-cols-4 max-[640px]:grid-cols-3 max-[480px]:grid-cols-2'>
+      <div className='grid grid-cols-8 gap-6 max-[1600px]:grid-cols-6 max-[1600px]:gap-5 max-[1600px]:gap-y-8 max-[990px]:grid-cols-4 max-[640px]:grid-cols-3 max-[640px]:gap-x-2.5 max-[640px]:gap-y-6 max-[480px]:grid-cols-2'>
         {!res.isLoading
           ? personList?.map((person) => (
               <PersonCard person={person} key={person.id} />

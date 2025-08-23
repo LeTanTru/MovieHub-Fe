@@ -73,7 +73,7 @@ export default async function PersonDetail({
   const res = await getPersonDetail(numericId);
 
   return (
-    <div className='relative mx-auto flex w-full max-w-[1640px] items-stretch justify-between gap-0 px-5 py-0'>
+    <div className='relative mx-auto flex w-full max-w-[1640px] items-stretch justify-between gap-0 px-5 py-0 max-[1120px]:flex-col max-[1120px]:px-0'>
       <PersonSidebar person={res.data} />
       <PersonMovieList id={numericId} />
     </div>
