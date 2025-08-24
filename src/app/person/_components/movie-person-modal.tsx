@@ -1,7 +1,6 @@
 import './person-card.css';
 import { ageRatings, AppConstants } from '@/constants';
 import { Button } from '@/components/form';
-import { cn } from '@/lib';
 import { FaHeart, FaPlay } from 'react-icons/fa6';
 import { FaInfoCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,6 +8,12 @@ import { MoviePersonResType } from '@/types';
 import Link from 'next/link';
 import { formatDate } from '@/utils';
 import route from '@/routes';
+import {
+  TagAgeRating,
+  TagCategory,
+  TagNormal,
+  TagWrapper
+} from '@/components/tag';
 
 export default function MoviePersonModal({
   mp,
@@ -74,37 +79,33 @@ export default function MoviePersonModal({
                   </Button>
                 </Link>
               </div>
-              <div className='mb-3 flex flex-wrap items-center justify-start gap-[5px]'>
-                <div className='flex flex-shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-[26px] font-medium text-black'>
-                  <span className='leading-[20px]'>
-                    <strong>
-                      {
-                        ageRatings.find(
-                          (age) => age.value === mp.movie.ageRating
-                        )!.label
+              <TagWrapper className='gap-[5px]'>
+                <TagAgeRating
+                  className='flex flex-shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-[22px] font-medium text-black'
+                  value={
+                    ageRatings.find((age) => age.value === mp.movie.ageRating)!
+                      .label
+                  }
+                />
+                <TagNormal
+                  className='bg-transparent-white inline-flex h-[22px] items-center rounded border-none px-1.5 text-xs text-white'
+                  value={formatDate(mp.movie.releaseDate).split('/')[2]}
+                />
+              </TagWrapper>
+              <div className=''>
+                <TagWrapper className='mt-2 gap-[5px]'>
+                  {mp.movie.categories.map((item, index) => (
+                    <TagCategory
+                      text={item.name}
+                      key={item.id}
+                      className={
+                        index > 0
+                          ? 'before:content[""] ml-0.5 before:mr-1.5 before:h-1 before:w-1 before:rounded-full before:bg-white'
+                          : ''
                       }
-                    </strong>
-                  </span>
-                </div>
-                <div className='bg-transparent-white inline-flex h-[22px] items-center rounded border-none px-1.5 text-xs text-white'>
-                  {formatDate(mp.movie.releaseDate).split('/')[2]}
-                </div>
-              </div>
-              <div className='mt-2 mb-3 flex flex-wrap items-center justify-start gap-[5px]'>
-                {mp.movie.categories.map((item, index) => (
-                  <div
-                    key={item.id}
-                    className={cn(
-                      'relative inline-flex h-auto items-center rounded bg-transparent p-0 text-xs text-white',
-                      {
-                        'before:content[""] ml-0.5 before:mr-1.5 before:h-1 before:w-1 before:rounded-full before:bg-white':
-                          index > 0
-                      }
-                    )}
-                  >
-                    {item.name}
-                  </div>
-                ))}
+                    />
+                  ))}
+                </TagWrapper>
               </div>
             </div>
           </div>

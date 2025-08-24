@@ -10,7 +10,12 @@ import {
   BREAKPOINT_TABLET,
   GENDER_FEMALE,
   GENDER_MALE,
-  GENDER_OTHER
+  GENDER_OTHER,
+  MOVIE_ITEM_KIND_EPISODE,
+  MOVIE_ITEM_KIND_SEASON,
+  MOVIE_ITEM_KIND_TRAILER,
+  MOVIE_KIND_SERIES,
+  MOVIE_KIND_SINGLE
 } from '@/constants/constant';
 import route from '@/routes';
 import {
@@ -130,3 +135,14 @@ export const ageRatings: { value: number | string; label: string }[] = [
   },
   { value: AGE_RATING_18, label: '18+' }
 ];
+
+export const movieItemKinds = {
+  MOVIE_ITEM_KIND_TRAILER,
+  MOVIE_ITEM_KIND_EPISODE,
+  MOVIE_ITEM_KIND_SEASON
+};
+
+export const movieKinds = {
+  MOVIE_KIND_SINGLE,
+  MOVIE_KIND_SERIES
+};

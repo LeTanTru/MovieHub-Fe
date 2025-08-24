@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export const useCategoryListQuery = () => {
   const { data } = useQuery({
-    queryKey: ['category'],
+    queryKey: ['categories'],
     queryFn: () => categoryApiRequest.getList()
   });
   return data?.data?.content || [];

@@ -3,8 +3,8 @@
 import { Button, Col, InputField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { cn } from '@/lib';
-import { searchSchema } from '@/schemaValidations';
-import { SearchType } from '@/types';
+import { searchParamSchema } from '@/schemaValidations';
+import { SearchParamType } from '@/types';
 import { Search } from 'lucide-react';
 import React from 'react';
 
@@ -14,14 +14,14 @@ type SearchFormProps = {
 };
 
 export default function SearchForm({ className }: SearchFormProps) {
-  const onSubmit = (values: SearchType) => {};
-  const defaultValues: SearchType = {
+  const onSubmit = (values: SearchParamType) => {};
+  const defaultValues: SearchParamType = {
     title: ''
   };
 
   return (
     <BaseForm
-      schema={searchSchema}
+      schema={searchParamSchema}
       defaultValues={defaultValues}
       onSubmit={onSubmit}
       className={className}

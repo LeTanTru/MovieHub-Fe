@@ -1,11 +1,22 @@
 import { apiConfig } from '@/constants';
-import { ApiResponseList, MovieResType, MovieSearchType } from '@/types';
+import {
+  ApiResponse,
+  ApiResponseList,
+  MovieResType,
+  MovieSearchParamType
+} from '@/types';
 import { http } from '@/utils';
 
 const movieApiRequest = {
-  getList: async (params: MovieSearchType) =>
+  getList: async (params?: MovieSearchParamType) =>
     await http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
       params
+    }),
+  getBySlug: async (slug: string) =>
+    await http.get<ApiResponse<MovieResType>>(apiConfig.movie.getBySlug, {
+      pathParams: {
+        slug
+      }
     })
 };
 
