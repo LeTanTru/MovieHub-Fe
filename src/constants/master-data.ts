@@ -1,4 +1,11 @@
-import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants/constant';
+import {
+  BREAKPOINT_DESKTOP,
+  BREAKPOINT_MOBILE,
+  BREAKPOINT_TABLET,
+  GENDER_FEMALE,
+  GENDER_MALE,
+  GENDER_OTHER
+} from '@/constants/constant';
 import route from '@/routes';
 import {
   DropdownAvatarItemType,
@@ -96,3 +103,9 @@ export const userSidebarList: UserSidebarItemType[] = [
     title: 'Hồ sơ'
   }
 ];
+
+export const breakPoints = {
+  mobile: BREAKPOINT_MOBILE,
+  tablet: BREAKPOINT_TABLET,
+  desktop: BREAKPOINT_DESKTOP
+};
