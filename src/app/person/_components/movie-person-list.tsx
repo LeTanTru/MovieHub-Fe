@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PERSON_ACTOR } from '@/constants';
 import MoviePersonList from '@/app/person/_components/movie-person-card';
+import MoviePersonModal from '@/app/person/_components/movie-person-modal';
 
 export default function PersonMovieList({ id }: { id: number }) {
   const res = useMoviePersonListQuery({ personId: id, kind: PERSON_ACTOR });
@@ -24,7 +25,6 @@ export default function PersonMovieList({ id }: { id: number }) {
             <div className='mb-0 text-xl leading-1.5 font-semibold text-white max-[1120px]:text-xl max-[640px]:text-[16px]'>
               Các phim đã tham gia
             </div>
-
             <div
               className='relative flex flex-shrink-0 items-stretch rounded-[8px] border border-solid border-white p-0.5 text-sm font-normal'
               role='tablist'

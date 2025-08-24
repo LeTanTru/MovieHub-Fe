@@ -1,9 +1,12 @@
 'use client';
 
-import { apiConfig } from '@/constants';
+import MoviePersonModal from '@/app/person/_components/movie-person-modal';
+import { apiConfig, breakPoints } from '@/constants';
 import { cn } from '@/lib';
 import route from '@/routes';
 import { MoviePersonResType } from '@/types';
+import { useMediaQuery } from 'react-responsive';
+
 import {
   AnimatePresence,
   motion,
@@ -13,6 +16,8 @@ import {
 } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 type Dir = 'up' | 'down';
 
@@ -62,39 +67,78 @@ export default function MoviePersonList({
 
 function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
   const itemVariants = makeItemVariants(dir);
+  const isDesktop = useMediaQuery({
+    query: `(min-width: ${breakPoints.desktop}px)`
+  });
+  const [modalPos, setModalPos] = useState<{ x: number; y: number } | null>(
+    null
+  );
+
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
+  const handleMouseEnter = () => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const scrollY = window.scrollY;
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2 + scrollY;
+
+    hoverTimeout.current = setTimeout(() => {
+      setModalPos({ x: centerX, y: centerY });
+    }, 200);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+      hoverTimeout.current = null;
+    }
+    setModalPos(null);
+  };
+
   return (
-    <motion.div
-      key={mp.id}
-      layout
-      variants={itemVariants}
-      initial='initial'
-      animate='animate'
-      exit='exit'
-      transition={itemTransition}
-      className='relative flex flex-col gap-3'
+    <div
+      onPointerEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className='relative'
     >
-      <Link
-        className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-[8px] pb-[150%]'
-        href={`${route.movie}/${mp.movie.id}`}
+      <motion.div
+        key={mp.id}
+        ref={cardRef}
+        layout
+        variants={itemVariants}
+        initial='initial'
+        animate='animate'
+        exit='exit'
+        transition={itemTransition}
+        className='relative flex flex-col gap-3'
       >
-        <Image
-          fill
-          src={`${apiConfig.imageProxy.baseUrl}${mp.movie.thumbnailUrl}`}
-          alt={mp.movie.title}
-          className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
-        />
-      </Link>
-      <div className='min-h-10.5 text-center'>
-        <h4 className='hover:text-light-golden-yellow mb-0 line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear'>
-          <Link href={`${route.movie}/${mp.movie.id}`}>{mp.movie.title}</Link>
-        </h4>
-        <h4 className='text-light-gray mt-[5px] line-clamp-1 text-xs leading-6'>
-          <Link href={`${route.movie}/${mp.movie.id}`}>
-            {mp.movie.originalTitle}
-          </Link>
-        </h4>
-      </div>
-    </motion.div>
+        <Link
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-[8px] pb-[150%]'
+          href={`${route.movie}/${mp.movie.id}`}
+        >
+          <Image
+            fill
+            src={`${apiConfig.imageProxy.baseUrl}${mp.movie.thumbnailUrl}`}
+            alt={mp.movie.title}
+            className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
+          />
+        </Link>
+        <div className='min-h-10.5 text-center'>
+          <h4 className='hover:text-light-golden-yellow mb-0 line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear'>
+            <Link href={`${route.movie}/${mp.movie.id}`}>{mp.movie.title}</Link>
+          </h4>
+          <h4 className='text-light-gray mt-[5px] line-clamp-1 text-xs leading-6'>
+            <Link href={`${route.movie}/${mp.movie.id}`}>
+              {mp.movie.originalTitle}
+            </Link>
+          </h4>
+        </div>
+      </motion.div>
+      {isDesktop &&
+        createPortal(<MoviePersonModal pos={modalPos} />, document.body)}
+    </div>
   );
 }
 
