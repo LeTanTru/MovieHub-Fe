@@ -8,3 +8,10 @@ export const PERSON_DIRECTOR = 2;
 export const BREAKPOINT_MOBILE = 0;
 export const BREAKPOINT_TABLET = 768;
 export const BREAKPOINT_DESKTOP = 1280;
+
+export const AGE_RATING_G = 1;
+export const AGE_RATING_PG = 2;
+export const AGE_RATING_PG13 = 3;
+export const AGE_RATING_R = 4;
+export const AGE_RATING_NC17 = 5;
+export const AGE_RATING_18 = 6;

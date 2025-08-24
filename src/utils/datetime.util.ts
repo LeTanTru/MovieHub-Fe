@@ -1,3 +1,4 @@
+import { logger } from '@/logger';
 import { format as formatFn, parse } from 'date-fns';
 
 export const formatDate = (
@@ -10,7 +11,7 @@ export const formatDate = (
     const parsedDate = parse(date, inputFormat, new Date());
     return formatFn(parsedDate, outputFormat);
   } catch (error) {
-    console.error('Invalid date', date, error);
+    logger.error('Invalid date', date, error);
     return date;
   }
 };

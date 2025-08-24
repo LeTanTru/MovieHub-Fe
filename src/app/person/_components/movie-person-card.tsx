@@ -74,19 +74,21 @@ function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
     null
   );
 
-  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  const handleMouseEnter = () => {
+  const openModal = () => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const scrollY = window.scrollY;
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2 + scrollY;
+    setModalPos({ x: centerX, y: centerY });
+  };
 
-    hoverTimeout.current = setTimeout(() => {
-      setModalPos({ x: centerX, y: centerY });
-    }, 200);
+  const handleMouseEnter = () => {
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+    hoverTimeout.current = setTimeout(openModal, 300);
   };
 
   const handleMouseLeave = () => {
@@ -94,15 +96,13 @@ function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
       clearTimeout(hoverTimeout.current);
       hoverTimeout.current = null;
     }
-    setModalPos(null);
+    hoverTimeout.current = setTimeout(() => {
+      setModalPos(null);
+    }, 200);
   };
 
   return (
-    <div
-      onPointerEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      className='relative'
-    >
+    <div className='relative'>
       <motion.div
         key={mp.id}
         ref={cardRef}
@@ -116,7 +116,9 @@ function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
       >
         <Link
           className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-[8px] pb-[150%]'
-          href={`${route.movie}/${mp.movie.id}`}
+          href={`${route.movie}/${mp.movie.slug}`}
+          onPointerEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <Image
             fill
@@ -125,19 +127,33 @@ function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
             className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
           />
         </Link>
+
         <div className='min-h-10.5 text-center'>
           <h4 className='hover:text-light-golden-yellow mb-0 line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear'>
-            <Link href={`${route.movie}/${mp.movie.id}`}>{mp.movie.title}</Link>
+            <Link href={`${route.movie}/${mp.movie.slug}`}>
+              {mp.movie.title}
+            </Link>
           </h4>
           <h4 className='text-light-gray mt-[5px] line-clamp-1 text-xs leading-6'>
-            <Link href={`${route.movie}/${mp.movie.id}`}>
+            <Link href={`${route.movie}/${mp.movie.slug}`}>
               {mp.movie.originalTitle}
             </Link>
           </h4>
         </div>
       </motion.div>
+
       {isDesktop &&
-        createPortal(<MoviePersonModal pos={modalPos} />, document.body)}
+        createPortal(
+          <div
+            onMouseEnter={() => {
+              if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
+            }}
+            onMouseLeave={() => setModalPos(null)}
+          >
+            <MoviePersonModal mp={mp} pos={modalPos} />
+          </div>,
+          document.body
+        )}
     </div>
   );
 }
