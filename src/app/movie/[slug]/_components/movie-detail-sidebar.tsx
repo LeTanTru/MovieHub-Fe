@@ -13,6 +13,7 @@ import route from '@/routes';
 import { MovieResType } from '@/types';
 import { formatDate, formatDuration } from '@/utils';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
   const res = useMovieItemListQuery({
@@ -21,7 +22,8 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
   });
   const movieItems = res.data?.data.content;
   if (!movieItems) return null;
-  const video = movieItems[0].video;
+  const movieItem = movieItems[0];
+  const video = movieItem.video;
   return (
     <div className='bg-background/30 flex w-110 flex-shrink-0 flex-col p-10'>
       <div className='mb-4 font-light min-[1280px]:w-40'>
@@ -80,6 +82,17 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
             </div>
           </div>
         )}
+        <div className='mb-5 flex items-end gap-2 text-sm'>
+          <div className='font-medium whitespace-nowrap text-white'>
+            Quốc gia:
+          </div>
+          <Link
+            href={`${route.country}/${movie.country}`}
+            className='text-statuary font-light'
+          >
+            {movie.country}
+          </Link>
+        </div>
       </div>
     </div>
   );
