@@ -1,3 +1,19 @@
 'use client';
 
-export const useMovieListQuery = () => {};
+import movieApiRequest from '@/api-requests/movie.api-request';
+import { MovieSearchParamType } from '@/types';
+import { useQuery } from '@tanstack/react-query';
+
+export const useMovieListQuery = (params?: MovieSearchParamType) => {
+  return useQuery({
+    queryKey: ['movieList', params],
+    queryFn: async () => await movieApiRequest.getList(params)
+  });
+};
+
+export const useMovieBySlugQuery = (slug: string) => {
+  return useQuery({
+    queryKey: ['movieDetail', slug],
+    queryFn: async () => await movieApiRequest.getBySlug(slug)
+  });
+};

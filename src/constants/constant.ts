@@ -15,3 +15,10 @@ export const AGE_RATING_PG13 = 3;
 export const AGE_RATING_R = 4;
 export const AGE_RATING_NC17 = 5;
 export const AGE_RATING_18 = 6;
+
+export const MOVIE_KIND_SINGLE = 1;
+export const MOVIE_KIND_SERIES = 2;
+
+export const MOVIE_ITEM_KIND_SEASON = 1;
+export const MOVIE_ITEM_KIND_EPISODE = 2;
+export const MOVIE_ITEM_KIND_TRAILER = 3;

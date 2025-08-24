@@ -1,17 +1,25 @@
 import {
-  baseSearchSchema,
-  moviePersonSearchSchema,
-  movieSearchSchema,
-  searchSchema
+  baseSearchParamSchema,
+  movieItemSearchParamSchema,
+  moviePersonSearchParamSchema,
+  movieSearchParamSchema,
+  searchParamSchema
 } from '@/schemaValidations';
 import z from 'zod';
 
-export type BaseSearchType = z.infer<typeof baseSearchSchema>;
+export type BaseSearchParamType = z.infer<typeof baseSearchParamSchema>;
 
-export type SearchType = z.infer<typeof searchSchema>;
+export type SearchParamType = z.infer<typeof searchParamSchema>;
 
-export type MovieSearchType = z.infer<typeof movieSearchSchema> &
-  BaseSearchType;
+export type MovieSearchParamType = z.infer<typeof movieSearchParamSchema> &
+  BaseSearchParamType;
 
-export type MoviePersonSearchType = z.infer<typeof moviePersonSearchSchema> &
-  BaseSearchType;
+export type MoviePersonSearchParamType = z.infer<
+  typeof moviePersonSearchParamSchema
+> &
+  BaseSearchParamType;
+
+export type MovieItemSearchParamType = z.infer<
+  typeof movieItemSearchParamSchema
+> &
+  BaseSearchParamType;
