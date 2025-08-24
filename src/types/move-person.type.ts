@@ -1,11 +1,16 @@
+import { CategoryResType } from '@/types/category.type';
+
 type MovieType = {
   id: number;
   title: string;
   originalTitle: string;
   slug: string;
   thumbnailUrl: string;
+  posterUrl: string;
   type: number;
   releaseDate: string;
+  ageRating: string;
+  categories: CategoryResType[];
 };
 
 type PersonType = {

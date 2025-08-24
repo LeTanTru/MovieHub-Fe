@@ -6,7 +6,6 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PERSON_ACTOR } from '@/constants';
 import MoviePersonList from '@/app/person/_components/movie-person-card';
-import MoviePersonModal from '@/app/person/_components/movie-person-modal';
 
 export default function PersonMovieList({ id }: { id: number }) {
   const res = useMoviePersonListQuery({ personId: id, kind: PERSON_ACTOR });

@@ -1,4 +1,10 @@
 import {
+  AGE_RATING_18,
+  AGE_RATING_G,
+  AGE_RATING_NC17,
+  AGE_RATING_PG,
+  AGE_RATING_PG13,
+  AGE_RATING_R,
   BREAKPOINT_DESKTOP,
   BREAKPOINT_MOBILE,
   BREAKPOINT_TABLET,
@@ -109,3 +115,18 @@ export const breakPoints = {
   tablet: BREAKPOINT_TABLET,
   desktop: BREAKPOINT_DESKTOP
 };
+
+export const ageRatings: { value: number | string; label: string }[] = [
+  { value: AGE_RATING_G, label: 'G' },
+  { value: AGE_RATING_PG, label: 'PG' },
+  {
+    value: AGE_RATING_PG13,
+    label: 'PG-13'
+  },
+  { value: AGE_RATING_R, label: 'R' },
+  {
+    value: AGE_RATING_NC17,
+    label: 'NC-17'
+  },
+  { value: AGE_RATING_18, label: '18+' }
+];

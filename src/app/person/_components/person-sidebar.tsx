@@ -51,12 +51,9 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
   return (
     <div className='border-r-transparent-white w-110 flex-shrink-0 border-r pr-10 max-[1600px]:w-85 max-[1120px]:w-full max-[1120px]:border-none max-[1120px]:pr-0'>
       <Button
-        className={cn(
-          'absolute top-0 left-0 -mt-4 ml-8 p-0! hover:bg-transparent!',
-          {
-            hidden: isMobile
-          }
-        )}
+        className={cn('top-0 left-0 ml-0 p-0! hover:bg-transparent!', {
+          hidden: isMobile
+        })}
         variant='ghost'
         onClick={() => {
           router.push(route.person);
