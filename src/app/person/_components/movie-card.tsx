@@ -18,6 +18,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import MovieGridSkeleton from '@/app/person/_components/movie-card-skeleton';
 
 type Dir = 'up' | 'down';
 
@@ -54,7 +55,9 @@ export default function MoviePersonList({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: type === 'all' ? -10 : 10 }}
         >
-          {type === 'all' ? (
+          {moviePersonList.length === 0 ? (
+            <MovieGridSkeleton />
+          ) : type === 'all' ? (
             <MovieGrid moviePersonList={moviePersonList} dir='down' />
           ) : (
             <MovieGridByYear moviePersonList={moviePersonList} />
@@ -65,7 +68,7 @@ export default function MoviePersonList({
   );
 }
 
-function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
+function MovieCard({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
   const itemVariants = makeItemVariants(dir);
   const isDesktop = useMediaQuery({
     query: `(min-width: ${breakPoints.desktop}px)`
@@ -88,7 +91,7 @@ function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
 
   const handleMouseEnter = () => {
     if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
-    hoverTimeout.current = setTimeout(openModal, 300);
+    hoverTimeout.current = setTimeout(openModal, 500);
   };
 
   const handleMouseLeave = () => {
@@ -165,24 +168,6 @@ function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
   );
 }
 
-function MovieGrid({
-  moviePersonList,
-  dir
-}: {
-  moviePersonList: MoviePersonResType[];
-  dir: Dir;
-}) {
-  return (
-    <div className='grid grid-cols-6 gap-6 max-[1600px]:grid-cols-5 max-[1600px]:gap-4 max-[1360px]:grid-cols-4 max-[1120px]:grid-cols-5 max-[800px]:grid-cols-4 max-[640px]:grid-cols-3 max-[480px]:grid-cols-2'>
-      <AnimatePresence mode='popLayout' initial={false}>
-        {moviePersonList?.map((mp) => (
-          <MovieCardItem key={mp.id} mp={mp} dir={dir} />
-        ))}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 function groupByYear(list: MoviePersonResType[]) {
   return list.reduce((acc: Record<string, MoviePersonResType[]>, mp) => {
     const year = mp.movie.releaseDate?.split(' ')[0].split('/')[2];
@@ -219,10 +204,29 @@ function MovieGridByYear({
         <div className='relative z-3 grid w-full flex-grow-1 grid-cols-6 gap-6 gap-x-4 gap-y-6 max-[1600px]:grid-cols-5 max-[1600px]:gap-4 max-[1360px]:grid-cols-4 max-[1120px]:grid-cols-5 max-[800px]:grid-cols-4 max-[640px]:grid-cols-3 max-[480px]:grid-cols-2'>
           <AnimatePresence mode='popLayout' initial={false}>
             {grouped[year].map((mp) => (
-              <MovieCardItem key={mp.id} mp={mp} dir='up' />
+              <MovieCard key={mp.id} mp={mp} dir='up' />
             ))}
           </AnimatePresence>
         </div>
       </div>
     ));
+}
+
+function MovieGrid({
+  moviePersonList,
+  dir
+}: {
+  moviePersonList: MoviePersonResType[];
+  dir: Dir;
+}) {
+  return (
+    <div className='grid grid-cols-6 gap-6 max-[1600px]:grid-cols-5 max-[1600px]:gap-4 max-[1360px]:grid-cols-4 max-[1120px]:grid-cols-5 max-[800px]:grid-cols-4 max-[640px]:grid-cols-3 max-[480px]:grid-cols-2'>
+      <AnimatePresence mode='popLayout' initial={false}>
+        {moviePersonList &&
+          moviePersonList.map((mp) => (
+            <MovieCard key={mp.id} mp={mp} dir={dir} />
+          ))}
+      </AnimatePresence>
+    </div>
+  );
 }

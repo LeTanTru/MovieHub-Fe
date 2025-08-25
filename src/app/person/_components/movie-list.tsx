@@ -1,20 +1,21 @@
 'use client';
+
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PERSON_ACTOR } from '@/constants';
-import MoviePersonList from '@/app/person/_components/movie-person-card';
+import MoviePersonList from '@/app/person/_components/movie-card';
 
-export default function PersonMovieList({ id }: { id: number }) {
+export default function MovieList({ id }: { id: number }) {
   const res = useMoviePersonListQuery({ personId: id, kind: PERSON_ACTOR });
   const actions: { key: string; text: string }[] = [
     { key: 'all', text: 'Tất cả' },
     { key: 'time', text: 'Thời gian' }
   ];
   const [activeKey, setActiveKey] = useState(actions[0].key);
-  const moviePersonList = res.data?.data;
+  const moviePersonList = res.data?.data.content || [];
 
   return (
     <div className='flex-grow-1'>
@@ -39,10 +40,7 @@ export default function PersonMovieList({ id }: { id: number }) {
               ))}
             </div>
           </div>
-          <MoviePersonList
-            moviePersonList={moviePersonList?.content || []}
-            type={activeKey}
-          />
+          <MoviePersonList moviePersonList={moviePersonList} type={activeKey} />
         </div>
       </div>
     </div>

@@ -8,34 +8,49 @@ import Pagination from '@/components/pagination';
 import { useSearchParams } from 'next/navigation';
 import { usePersonListQuery } from '@/queries';
 
-export default function PersonList() {
-  const defaultColPerRow = 8;
-  const [columns, setColumns] = useState<number>(defaultColPerRow);
-  const params = useSearchParams();
-  const page = params.get('page') ?? 1;
+function useColumns() {
+  const [columns, setColumns] = useState<number | null>(null);
 
-  // Render col per row
   useEffect(() => {
     const updateCols = () => {
       const width = window.innerWidth;
-      if (width <= 480) setColumns(2);
-      else if (width <= 640) setColumns(3);
-      else if (width <= 990) setColumns(4);
-      else if (width <= 1600) setColumns(6);
-      else setColumns(8);
+      let cols = 8;
+      if (width <= 480) cols = 2;
+      else if (width <= 640) cols = 3;
+      else if (width <= 990) cols = 4;
+      else if (width <= 1600) cols = 6;
+      setColumns(cols);
     };
+
     updateCols();
     window.addEventListener('resize', updateCols);
     return () => window.removeEventListener('resize', updateCols);
   }, []);
 
-  const skeletonCount = columns * 3;
-  const res = usePersonListQuery({ page: +page - 1, size: skeletonCount });
+  return columns;
+}
+
+export default function PersonList() {
+  const columns = useColumns();
+  const params = useSearchParams();
+  const page = params.get('page') ?? 1;
+
+  const skeletonCount = columns ? columns * 3 : 0;
+  const res = usePersonListQuery(
+    {
+      page: +page - 1,
+      size: skeletonCount
+    },
+    !!columns
+  );
+
   const personList = res.data?.data.content;
 
   return (
     <>
-      <div className='grid grid-cols-8 gap-6 max-[1600px]:grid-cols-6 max-[1600px]:gap-5 max-[1600px]:gap-y-8 max-[990px]:grid-cols-4 max-[640px]:grid-cols-3 max-[640px]:gap-x-2.5 max-[640px]:gap-y-6 max-[480px]:grid-cols-2'>
+      <div
+        className={`grid gap-6 ${columns === 8 ? 'grid-cols-8' : ''} ${columns === 6 ? 'gap-5 gap-y-8 max-[1600px]:grid-cols-6' : ''} ${columns === 4 ? 'max-[990px]:grid-cols-4' : ''} ${columns === 3 ? 'gap-x-2.5 gap-y-6 max-[640px]:grid-cols-3' : ''} ${columns === 2 ? 'max-[480px]:grid-cols-2' : ''}`}
+      >
         {!res.isLoading
           ? personList?.map((person) => (
               <PersonCard person={person} key={person.id} />
@@ -44,7 +59,9 @@ export default function PersonList() {
               <PersonCardSkeleton key={index} />
             ))}
       </div>
-      {!res.isLoading && <Pagination totalPages={res.data!.data.totalPages} />}
+      {!res.isLoading && res.data && (
+        <Pagination totalPages={res.data.data.totalPages} />
+      )}
     </>
   );
 }

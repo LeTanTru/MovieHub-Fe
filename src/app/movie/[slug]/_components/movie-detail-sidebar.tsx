@@ -7,8 +7,13 @@ import {
   TagNormal,
   TagWrapper
 } from '@/components/tag';
-import { ageRatings, AppConstants, movieItemKinds } from '@/constants';
-import { useMovieItemListQuery } from '@/queries';
+import {
+  ageRatings,
+  AppConstants,
+  movieItemKinds,
+  PERSON_DIRECTOR
+} from '@/constants';
+import { useMovieItemListQuery, useMoviePersonListQuery } from '@/queries';
 import route from '@/routes';
 import { MovieResType } from '@/types';
 import { formatDate, formatDuration } from '@/utils';
@@ -16,12 +21,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
-  const res = useMovieItemListQuery({
+  const movieItemRes = useMovieItemListQuery({
     movieId: movie.id,
     kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
   });
-  const movieItems = res.data?.data.content;
-  if (!movieItems) return null;
+  const personRes = useMoviePersonListQuery({
+    movieId: movie.id,
+    kind: PERSON_DIRECTOR
+  });
+  const movieItems = movieItemRes.data?.data.content;
+  const persons = personRes.data?.data.content;
+  if (!movieItems || !persons) return null;
   const movieItem = movieItems[0];
   const video = movieItem.video;
   return (
@@ -31,8 +41,13 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
           {movie && (
             <Image
               fill
+              sizes='(max-width: 480px) 100vw,
+                    (max-width: 640px) 50vw,
+                    (max-width: 1280px) 33vw,
+                    25vw'
               src={`${AppConstants.contentRootUrl}${movie.thumbnailUrl}`}
               alt={`${movie?.title} - ${movie?.originalTitle}`}
+              className='object-cover'
             />
           )}
         </div>
@@ -88,10 +103,25 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
           </div>
           <Link
             href={`${route.country}/${movie.country}`}
-            className='text-statuary font-light'
+            className='text-statuary hover:text-light-golden-yellow linear font-light transition duration-200'
           >
             {movie.country}
           </Link>
+        </div>
+        <div className='mb-5 flex items-end gap-2 text-sm'>
+          <div className='font-medium whitespace-nowrap text-white'>
+            Đạo diễn:
+          </div>
+          {persons.map((person, index) => (
+            <Link
+              key={person.id}
+              href={`${route.person}/${person.person.id}`}
+              className='text-statuary hover:text-light-golden-yellow linear font-light transition duration-200'
+            >
+              {person.person.otherName}
+              {index < persons.length - 1 && ','}
+            </Link>
+          ))}
         </div>
       </div>
     </div>

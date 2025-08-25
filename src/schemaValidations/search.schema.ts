@@ -30,3 +30,13 @@ export const movieItemSearchParamSchema = z.object({
   parentId: z.number().optional(),
   title: z.string().optional()
 });
+
+export const personSearchParamSchema = z.object({
+  id: z.number().optional(),
+  country: z.string().optional(),
+  gender: z.number().optional(),
+  kind: z.number().optional(),
+  movieId: z.number().optional(),
+  name: z.string().optional(),
+  otherName: z.string().optional()
+});
