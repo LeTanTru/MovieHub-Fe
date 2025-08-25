@@ -119,6 +119,13 @@ function MovieCardItem({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
           href={`${route.movie}/${mp.movie.slug}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onClick={() => {
+            if (hoverTimeout.current) {
+              clearTimeout(hoverTimeout.current);
+              hoverTimeout.current = null;
+            }
+            setModalPos(null);
+          }}
         >
           <Image
             fill
