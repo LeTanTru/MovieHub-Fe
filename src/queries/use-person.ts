@@ -1,18 +1,17 @@
 'use client';
 
 import { personApiRequest } from '@/api-requests';
+import { PersonSearchParamType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
-export const usePersonListQuery = ({
-  page,
-  size
-}: {
-  page?: string | number;
-  size?: string | number;
-}) => {
+export const usePersonListQuery = (
+  params: PersonSearchParamType,
+  enabled?: boolean
+) => {
   return useQuery({
-    queryKey: ['persons', page],
-    queryFn: async () => await personApiRequest.getList({ page, size })
+    queryKey: ['persons', params],
+    queryFn: async () => await personApiRequest.getList(params),
+    enabled
   });
 };
 

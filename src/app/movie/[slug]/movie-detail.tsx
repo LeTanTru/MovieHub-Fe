@@ -1,11 +1,45 @@
 'use client';
-
 import { AppConstants } from '@/constants';
 import { useMovieBySlugQuery } from '@/queries';
 import './movie-detail.css';
 import { Container } from '@/components/layout';
 import MovieDetailSidebar from '@/app/movie/[slug]/_components/movie-detail-sidebar';
 import MovieDetailContent from '@/app/movie/[slug]/_components/movie-detail-content';
+import { Metadata, ResolvingMetadata } from 'next';
+import { getMovieDetail } from '@/app/movie/[slug]/_components/movie-detail';
+import envConfig from '@/config';
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { slug } = await params;
+
+  const res = await getMovieDetail(slug);
+  const previousImages = (await parent).openGraph?.images || [];
+  const images = res.data?.posterUrl
+    ? [`${AppConstants.contentRootUrl}${res.data.posterUrl}`, ...previousImages]
+    : previousImages;
+
+  return {
+    title: `Thông tin chi tiết phim ${res.data?.title} - ${res.data?.originalTitle}`,
+    description: res.data?.description,
+    openGraph: {
+      title: `Thông tin chi tiết phim ${res.data?.title} - ${res.data?.originalTitle}`,
+      description: res.data?.description,
+      images
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Thông tin chi tiết phim ${res.data?.title} - ${res.data?.originalTitle}`,
+      description: res.data?.description,
+      images
+    },
+    alternates: {
+      canonical: `${envConfig.NEXT_PUBLIC_URL}/movie/${slug}`
+    }
+  };
+}
 
 export default function MovieDetail({ slug }: { slug: string }) {
   const res = useMovieBySlugQuery(slug);

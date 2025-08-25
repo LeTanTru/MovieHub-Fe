@@ -4,6 +4,6 @@ import { cache } from 'react';
 
 export const getPersonDetail = cache(
   async (id: number): Promise<ApiResponse<PersonResType>> => {
-    return personApiRequest.getById({ id });
+    return await personApiRequest.getById({ id });
   }
 );

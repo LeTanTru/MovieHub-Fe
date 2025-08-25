@@ -1,8 +1,7 @@
 import PersonSidebar from '@/app/person/_components/person-sidebar';
-import PersonMovieList from '@/app/person/_components/movie-person-list';
+import PersonMovieList from '@/app/person/_components/movie-list';
 import { stripHtml } from '@/utils';
 import type { Metadata, ResolvingMetadata } from 'next';
-import { logger } from '@/logger';
 import { getPersonDetail } from '@/app/person/_components/person';
 import envConfig from '@/config';
 import { AppConstants } from '@/constants';
@@ -14,56 +13,39 @@ export async function generateMetadata(
   const { id } = await params;
   const numericId = Number(id);
 
-  try {
-    const res = await getPersonDetail(numericId);
-    const plainDescription = stripHtml(
-      res.data?.bio ?? 'Thông tin diễn viên'
-    ).slice(0, 160);
-    const previousImages = (await parent).openGraph?.images || [];
-    const images = res.data?.avatarPath
-      ? [
-          `${AppConstants.contentRootUrl}${res.data.avatarPath}`,
-          ...previousImages
-        ]
-      : previousImages;
+  const res = await getPersonDetail(numericId);
+  const plainDescription = stripHtml(
+    res.data?.bio ?? 'Thông tin diễn viên'
+  ).slice(0, 160);
+  const previousImages = (await parent).openGraph?.images || [];
+  const images = res.data?.avatarPath
+    ? [
+        `${AppConstants.contentRootUrl}${res.data.avatarPath}`,
+        ...previousImages
+      ]
+    : previousImages;
 
-    return {
+  return {
+    title: `Thông tin diễn viên ${res.data?.otherName}`,
+    description: plainDescription,
+    openGraph: {
       title: `Thông tin diễn viên ${res.data?.otherName}`,
       description: plainDescription,
-      openGraph: {
-        title: `Thông tin diễn viên ${res.data?.otherName}`,
-        description: plainDescription,
-        images
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: `Thông tin diễn viên ${res.data?.otherName}`,
-        description: plainDescription,
-        images
-      },
-      alternates: {
-        canonical: `${envConfig.NEXT_PUBLIC_URL}/person/${id}`
-      }
-    };
-  } catch (error) {
-    logger.error('🚀 ~ generateMetadata ~ error:', error);
-    return {
-      title: 'Thông tin diễn viên',
-      description: 'Trang chi tiết diễn viên',
-      openGraph: {
-        title: 'Thông tin diễn viên',
-        description: 'Trang chi tiết diễn viên'
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: 'Thông tin diễn viên',
-        description: 'Trang chi tiết diễn viên'
-      }
-    };
-  }
+      images
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Thông tin diễn viên ${res.data?.otherName}`,
+      description: plainDescription,
+      images
+    },
+    alternates: {
+      canonical: `${envConfig.NEXT_PUBLIC_URL}/person/${id}`
+    }
+  };
 }
 
-export default async function PersonDetail({
+export default async function PersonDetailPage({
   params
 }: {
   params: Promise<{ id: string }>;

@@ -3,6 +3,7 @@ import {
   movieItemSearchParamSchema,
   moviePersonSearchParamSchema,
   movieSearchParamSchema,
+  personSearchParamSchema,
   searchParamSchema
 } from '@/schemaValidations';
 import z from 'zod';
@@ -22,4 +23,7 @@ export type MoviePersonSearchParamType = z.infer<
 export type MovieItemSearchParamType = z.infer<
   typeof movieItemSearchParamSchema
 > &
+  BaseSearchParamType;
+
+export type PersonSearchParamType = z.infer<typeof personSearchParamSchema> &
   BaseSearchParamType;

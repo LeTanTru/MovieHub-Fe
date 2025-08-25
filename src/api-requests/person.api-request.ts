@@ -1,20 +1,16 @@
 import { apiConfig } from '@/constants';
-import { ApiResponse, ApiResponseList, PersonResType } from '@/types';
+import {
+  ApiResponse,
+  ApiResponseList,
+  MovieSearchParamType,
+  PersonResType
+} from '@/types';
 import { http } from '@/utils';
 
 const personApiRequest = {
-  getList: async ({
-    page,
-    size = 20
-  }: {
-    page?: string | number;
-    size?: string | number;
-  }) =>
+  getList: async (params: MovieSearchParamType) =>
     await http.get<ApiResponseList<PersonResType>>(apiConfig.person.getList, {
-      params: {
-        page,
-        size
-      }
+      params
     }),
   getById: async ({ id }: { id: number }) =>
     await http.get<ApiResponse<PersonResType>>(apiConfig.person.getById, {
