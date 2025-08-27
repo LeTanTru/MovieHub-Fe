@@ -41,7 +41,7 @@ export default function NavigationMobile({
   );
 
   return (
-    <div className='min-[1368px]:hidden'>
+    <div className='min-1368:hidden'>
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}

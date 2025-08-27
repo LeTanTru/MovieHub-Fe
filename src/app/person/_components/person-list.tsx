@@ -49,7 +49,7 @@ export default function PersonList() {
   return (
     <>
       <div
-        className={`grid gap-6 ${columns === 8 ? 'grid-cols-8' : ''} ${columns === 6 ? 'gap-5 gap-y-8 max-[1600px]:grid-cols-6' : ''} ${columns === 4 ? 'max-[990px]:grid-cols-4' : ''} ${columns === 3 ? 'gap-x-2.5 gap-y-6 max-[640px]:grid-cols-3' : ''} ${columns === 2 ? 'max-[480px]:grid-cols-2' : ''}`}
+        className={`grid gap-6 ${columns === 8 ? 'grid-cols-8' : ''} ${columns === 6 ? 'max-1600:grid-cols-6 gap-5 gap-y-8' : ''} ${columns === 4 ? 'max-990:grid-cols-4' : ''} ${columns === 3 ? 'gap-x-2.5 gap-y-6 max-sm:grid-cols-3' : ''} ${columns === 2 ? 'max-480:grid-cols-2' : ''}`}
       >
         {!res.isLoading
           ? personList?.map((person) => (

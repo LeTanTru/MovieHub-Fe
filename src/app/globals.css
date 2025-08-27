@@ -71,6 +71,20 @@
   --color-light-gray: #aaa;
   --color-light-golden-yellow: #ffd875;
   --color-statuary: #9fa0a5;
+  --breakpoint-1120: 1120px;
+  --breakpoint-1360: 1360px;
+  --breakpoint-1360: 1360px;
+  --breakpoint-1600: 1600px;
+  --breakpoint-1919: 1919px;
+  --breakpoint-480: 480px;
+  --breakpoint-800: 800px;
+  --breakpoint-989: 989px;
+  --breakpoint-990: 990px;
+  --breakpoint-1368: 1368px;
+  --breakpoint-600: 600px;
+  --breakpoint-1359: 1359px;
+  --breakpoint-500: 500px;
+  --breakpoint-1537: 1537px;
 }
 
 body {

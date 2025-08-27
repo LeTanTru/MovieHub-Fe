@@ -49,7 +49,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
   }, [isModalOpen]);
 
   return (
-    <div className='border-r-transparent-white w-110 flex-shrink-0 border-r pr-10 max-[1600px]:w-85 max-[1120px]:w-full max-[1120px]:border-none max-[1120px]:pr-0'>
+    <div className='border-r-transparent-white max-1120:w-full max-1120:border-none max-1120:pr-0 max-1600:w-85 w-110 flex-shrink-0 border-r pr-10'>
       <Button
         className={cn('top-0 left-0 ml-0 p-0! hover:bg-transparent!', {
           hidden: isMobile
@@ -116,7 +116,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
         {person?.bio && (
           <Button
             onClick={handleOpenModal}
-            className='bg-accent hover:bg-background mt-2 ml-auto block text-sm text-white max-[1600px]:mt-4 max-[1120px]:mx-auto max-[1120px]:mb-4 max-[1120px]:w-110 max-[800px]:w-full'
+            className='bg-accent hover:bg-background max-1120:mx-auto max-1120:mb-4 max-1120:w-110 max-1600:mt-4 max-800:w-full mt-2 ml-auto block text-sm text-white'
           >
             Xem thêm
           </Button>

@@ -33,15 +33,7 @@ export default function SearchForm({ className }: SearchFormProps) {
               <InputField
                 formItemClassName='h-search-form'
                 className='h-search-form border-none! focus-visible:ring-slate-500'
-                prefixIcon={
-                  <Button
-                    aria-label='Search icon'
-                    variant='ghost'
-                    className={cn('p-1! hover:bg-transparent!')}
-                  >
-                    <Search size={16} />
-                  </Button>
-                }
+                prefixIcon={<Search size={16} />}
                 control={form.control}
                 name='title'
                 placeholder='Tìm kiếm phim, diễn viên'

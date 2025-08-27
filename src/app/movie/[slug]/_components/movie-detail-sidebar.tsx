@@ -9,8 +9,10 @@ import {
 } from '@/components/tag';
 import {
   ageRatings,
+  apiConfig,
   AppConstants,
   movieItemKinds,
+  PERSON_ACTOR,
   PERSON_DIRECTOR
 } from '@/constants';
 import { useMovieItemListQuery, useMoviePersonListQuery } from '@/queries';
@@ -26,17 +28,19 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
     kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
   });
   const personRes = useMoviePersonListQuery({
-    movieId: movie.id,
-    kind: PERSON_DIRECTOR
+    movieId: movie.id
   });
   const movieItems = movieItemRes.data?.data.content;
   const persons = personRes.data?.data.content;
   if (!movieItems || !persons) return null;
   const movieItem = movieItems[0];
+  const actors = persons.filter((person) => person.kind === PERSON_ACTOR);
+  const directors = persons.filter((person) => person.kind === PERSON_DIRECTOR);
   const video = movieItem.video;
+
   return (
     <div className='bg-background/30 flex w-110 flex-shrink-0 flex-col p-10'>
-      <div className='mb-4 font-light min-[1280px]:w-40'>
+      <div className='mb-4 font-light min-xl:w-40'>
         <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'>
           {movie && (
             <Image
@@ -108,20 +112,52 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
             {movie.country}
           </Link>
         </div>
-        <div className='mb-5 flex items-end gap-2 text-sm'>
+        <div className='mb-5 flex flex-wrap items-end gap-2 text-sm'>
           <div className='font-medium whitespace-nowrap text-white'>
             Đạo diễn:
           </div>
-          {persons.map((person, index) => (
+          {directors.map((director, index) => (
             <Link
-              key={person.id}
-              href={`${route.person}/${person.person.id}`}
+              key={director.id}
+              href={`${route.person}/${director.person.id}`}
               className='text-statuary hover:text-light-golden-yellow linear font-light transition duration-200'
             >
-              {person.person.otherName}
-              {index < persons.length - 1 && ','}
+              {director.person.otherName}
+              {index < directors.length - 1 && ','}
             </Link>
           ))}
+        </div>
+        <div className='relative mb-8 block border-none p-0'>
+          <div className='mb-4 min-h-10 text-xl leading-[1.5] font-semibold text-white'>
+            Diễn viên:
+          </div>
+          <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
+            {actors.map((actor) => (
+              <div
+                key={actor.id}
+                className='flex flex-col items-center gap-3 text-center'
+              >
+                <Link
+                  href={`${route.person}/${actor.person.id}`}
+                  className='bg-background relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-full'
+                >
+                  <Image
+                    className='absolute top-0 right-0 bottom-0 left-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
+                    src={`${apiConfig.imageProxy.baseUrl}${actor.person.avatarPath}`}
+                    alt={actor.person.otherName}
+                    fill
+                  />
+                </Link>
+                <div>
+                  <h4 className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 text-sm leading-[1.5] font-normal whitespace-nowrap text-white transition-all duration-200 ease-linear'>
+                    <Link href={`${route.person}/${actor.person.id}`}>
+                      {actor.person.otherName}
+                    </Link>
+                  </h4>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
