@@ -19,3 +19,4 @@ export { default as TextAreaField } from './text-area-field';
 export { default as TimePickerField } from './time-picker-field';
 export { default as ToolTip } from './tooltip';
 export { default as UploadImageField } from './upload-image-field';
+export { default as OTPInputField } from './otp-input';

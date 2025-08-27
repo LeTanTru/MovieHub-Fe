@@ -191,17 +191,17 @@ function MovieGridByYear({
       <div
         key={year}
         className={cn(
-          'relative -ml-10 flex items-start justify-start max-[1120px]:ml-0 max-[1120px]:flex-col max-[1120px]:justify-center max-[1120px]:gap-4 max-[800px]:gap-2',
-          { 'mt-12 max-[1120px]:mt-4': index > 0 }
+          'max-1120:ml-0 max-1120:flex-col max-1120:justify-center max-1120:gap-4 max-800:gap-2 relative -ml-10 flex items-start justify-start',
+          { 'max-1120:mt-4 mt-12': index > 0 }
         )}
       >
-        <div className='before:bg-light-golden-yellow relative z-2 h-20 w-20 flex-shrink-0 text-center font-semibold text-white before:absolute before:top-0 before:-left-[5px] before:h-2.5 before:w-2.5 before:rounded-full before:content-[""] max-[1120px]:h-auto max-[1120px]:before:top-1'>
-          <span className='flex h-full w-full -rotate-90 items-center justify-end pl-4 text-[40px] font-black tracking-[3px] opacity-20 max-[1120px]:rotate-0 max-[1120px]:justify-start max-[1120px]:text-2xl max-[1120px]:text-white max-[1120px]:opacity-80'>
+        <div className='before:bg-light-golden-yellow max-1120:h-auto max-1120:before:top-1 relative z-2 h-20 w-20 flex-shrink-0 text-center font-semibold text-white before:absolute before:top-0 before:-left-[5px] before:h-2.5 before:w-2.5 before:rounded-full before:content-[""]'>
+          <span className='max-1120:rotate-0 max-1120:justify-start max-1120:text-2xl max-1120:text-white max-1120:opacity-80 flex h-full w-full -rotate-90 items-center justify-end pl-4 text-[40px] font-black tracking-[3px] opacity-20'>
             {year}
           </span>
         </div>
 
-        <div className='relative z-3 grid w-full flex-grow-1 grid-cols-6 gap-6 gap-x-4 gap-y-6 max-[1600px]:grid-cols-5 max-[1600px]:gap-4 max-[1360px]:grid-cols-4 max-[1120px]:grid-cols-5 max-[800px]:grid-cols-4 max-[640px]:grid-cols-3 max-[480px]:grid-cols-2'>
+        <div className='max-1120:grid-cols-5 max-1360:grid-cols-4 max-1600:grid-cols-5 max-1600:gap-4 max-480:grid-cols-2 max-800:grid-cols-4 relative z-3 grid w-full flex-grow-1 grid-cols-6 gap-6 gap-x-4 gap-y-6 max-sm:grid-cols-3'>
           <AnimatePresence mode='popLayout' initial={false}>
             {grouped[year].map((mp) => (
               <MovieCard key={mp.id} mp={mp} dir='up' />
@@ -220,7 +220,7 @@ function MovieGrid({
   dir: Dir;
 }) {
   return (
-    <div className='grid grid-cols-6 gap-6 max-[1600px]:grid-cols-5 max-[1600px]:gap-4 max-[1360px]:grid-cols-4 max-[1120px]:grid-cols-5 max-[800px]:grid-cols-4 max-[640px]:grid-cols-3 max-[480px]:grid-cols-2'>
+    <div className='max-1120:grid-cols-5 max-1360:grid-cols-4 max-1600:grid-cols-5 max-1600:gap-4 max-480:grid-cols-2 max-800:grid-cols-4 grid grid-cols-6 gap-6 max-sm:grid-cols-3'>
       <AnimatePresence mode='popLayout' initial={false}>
         {moviePersonList &&
           moviePersonList.map((mp) => (

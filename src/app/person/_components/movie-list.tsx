@@ -20,9 +20,9 @@ export default function MovieList({ id }: { id: number }) {
   return (
     <div className='flex-grow-1'>
       <div className='border-b-transparent-white border-b border-solid'>
-        <div className='pt-0 pb-10 pl-10 max-[1120px]:pl-0'>
-          <div className='mb-8 flex items-center justify-between gap-8 max-[1120px]:mb-4'>
-            <div className='mb-0 text-xl leading-1.5 font-semibold text-white max-[1120px]:text-xl max-[640px]:text-[16px]'>
+        <div className='max-1120:pl-0 pt-0 pb-10 pl-10'>
+          <div className='max-1120:mb-4 mb-8 flex items-center justify-between gap-8'>
+            <div className='max-1120:text-xl mb-0 text-xl leading-1.5 font-semibold text-white max-sm:text-[16px]'>
               Các phim đã tham gia
             </div>
             <div

@@ -26,11 +26,11 @@ export default function Sidebar() {
   const { profile } = useAuthStore();
 
   return (
-    <div className='bg-sidebar w-75 flex-shrink-0 rounded-lg p-10 pb-6 max-[1537px]:ml-4 max-[1120px]:w-full max-[1120px]:pt-6 max-[1120px]:pb-0 max-[600px]:px-0'>
-      <h1 className='mb-8 text-xl font-bold max-[1120px]:mb-2 max-[1120px]:text-center'>
+    <div className='bg-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 w-75 flex-shrink-0 rounded-lg p-10 pb-6'>
+      <h1 className='max-1120:mb-2 max-1120:text-center mb-8 text-xl font-bold'>
         Quản lý tài khoản
       </h1>
-      <List className='flex flex-col max-[1120px]:mt-4 max-[1120px]:flex-row max-[1120px]:justify-center max-[1120px]:gap-4 max-[640px]:gap-0'>
+      <List className='max-1120:mt-4 max-1120:flex-row max-1120:justify-center max-1120:gap-4 flex flex-col max-sm:gap-0'>
         {userSidebarList.map((item) => (
           <ListItem
             key={item.link}
@@ -40,7 +40,7 @@ export default function Sidebar() {
           >
             <Link
               href={item.link}
-              className='flex items-center gap-2 py-4 text-sm max-[1120px]:px-4 max-[800px]:flex-col max-[800px]:text-xs max-[500px]:px-2'
+              className='max-1120:px-4 max-800:flex-col max-800:text-xs max-500:px-2 flex items-center gap-2 py-4 text-sm'
             >
               <item.icon
                 className={cn(
@@ -53,23 +53,23 @@ export default function Sidebar() {
                       path !== route.user.favorite &&
                       item.link === route.user.favorite
                   },
-                  'max-[800px]:size-4'
+                  'max-800:size-4'
                 )}
               />
               {item.title}
             </Link>
-            <Separator className='max-[1120px]:hidden' />
+            <Separator className='max-1120:hidden' />
           </ListItem>
         ))}
       </List>
-      <div className='mt-20 max-[1120px]:hidden'>
+      <div className='max-1120:hidden mt-20'>
         {!!profile ? (
           <ProfileSection profile={profile} />
         ) : (
           <ProfileSectionSkeleton />
         )}
       </div>
-      <ButtonLogout className='mt-4 w-full justify-center p-0! text-slate-400 transition-all duration-200 ease-linear hover:bg-transparent! hover:text-white max-[1120px]:hidden' />
+      <ButtonLogout className='max-1120:hidden mt-4 w-full justify-center p-0! text-slate-400 transition-all duration-200 ease-linear hover:bg-transparent! hover:text-white' />
     </div>
   );
 }

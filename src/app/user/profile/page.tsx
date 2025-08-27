@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ProfilePage() {
   return (
-    <div className='w-full p-0 min-[1919px]:p-6'>
+    <div className='min-1919:p-6 w-full p-0'>
       <ProfileForm />
     </div>
   );

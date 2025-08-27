@@ -52,7 +52,7 @@ export default function MovieDetail({ slug }: { slug: string }) {
       </h1>
       <div
         className={
-          'bg-background before:content[""] after:from-background/100 after:to-background/0 dotted-bg relative z-1 h-200 w-full overflow-hidden before:absolute before:top-0 before:right-0 before:bottom-0 before:left-0 before:z-1 before:bg-repeat before:opacity-20 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-3 after:h-20 after:bg-linear-to-t after:content-[""] max-[1919px]:h-0 max-[1919px]:pb-[50%] max-[1120px]:pb-120 max-[1120px]:opacity-70 max-[800px]:pb-75 max-[480px]:pb-50'
+          'bg-background before:content[""] after:from-background/100 after:to-background/0 dotted-bg max-1919:h-0 max-1919:pb-[50%] max-1120:pb-120 max-1120:opacity-70 max-800:pb-75 max-480:pb-50 relative z-1 h-200 w-full overflow-hidden before:absolute before:top-0 before:right-0 before:bottom-0 before:left-0 before:z-1 before:bg-repeat before:opacity-20 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-3 after:h-20 after:bg-linear-to-t after:content-[""]'
         }
       >
         <div

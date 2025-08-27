@@ -15,7 +15,7 @@ export default function NavigationDesktop({
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
-    <div className='flex hidden items-center gap-2 min-[1368px]:block md:gap-6'>
+    <div className='min-1368:block flex hidden items-center gap-2 md:gap-6'>
       <List className='flex gap-4'>
         {navigationList.map((item) =>
           item.submenu ? (

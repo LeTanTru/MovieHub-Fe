@@ -23,7 +23,7 @@ export default function MovieGridSkeleton() {
   }, []);
 
   return (
-    <div className='grid grid-cols-6 gap-6 max-[1600px]:grid-cols-5 max-[1600px]:gap-4 max-[1360px]:grid-cols-4 max-[1120px]:grid-cols-5 max-[800px]:grid-cols-4 max-[640px]:grid-cols-3 max-[480px]:grid-cols-2'>
+    <div className='max-1120:grid-cols-5 max-1360:grid-cols-4 max-1600:grid-cols-5 max-1600:gap-4 max-480:grid-cols-2 max-800:grid-cols-4 grid grid-cols-6 gap-6 max-sm:grid-cols-3'>
       <AnimatePresence mode='popLayout' initial={false}>
         {Array.from({ length: cols * 3 }).map((_, i) => (
           <MovieCardSkeleton key={i} />

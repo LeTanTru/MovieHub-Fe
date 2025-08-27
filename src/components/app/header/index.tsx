@@ -36,10 +36,10 @@ export default function Header() {
   }, []);
 
   return (
-    <header className='fixed top-0 right-0 left-0 z-10 block max-[800px]:relative max-[800px]:top-auto max-[800px]:right-auto max-[800px]:left-auto'>
+    <header className='max-800:relative max-800:top-auto max-800:right-auto max-800:left-auto fixed top-0 right-0 left-0 z-10 block'>
       <div
         className={cn(
-          'bg-transparent pl-4 transition-all duration-200 ease-linear min-[1368px]:pr-10 min-[1368px]:pl-8',
+          'min-1368:pr-10 min-1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear',
           {
             'bg-background': isFixed && mounted
           }
@@ -47,13 +47,13 @@ export default function Header() {
       >
         <div
           className={
-            'flex h-17.5 items-center justify-between gap-4 max-[1600px]:h-15'
+            'max-1600:h-15 flex h-17.5 items-center justify-between gap-4'
           }
         >
-          <div className='flex h-full flex-1 items-center gap-4 min-[1368px]:gap-10'>
+          <div className='min-1368:gap-10 flex h-full flex-1 items-center gap-4'>
             {!showSearch && (
               <>
-                <div className='min-[1368px]:hidden'>
+                <div className='min-1368:hidden'>
                   <NavigationMenu />
                 </div>
                 <Link href={route.home} className='flex-shrink-0'>
@@ -61,20 +61,20 @@ export default function Header() {
                     src={logoWithText}
                     alt='Logo'
                     height={46}
-                    className='h-auto max-[1919px]:h-10 max-[1359px]:h-9'
+                    className='max-1919:h-10 max-1359:h-9 h-auto'
                   />
                 </Link>
               </>
             )}
-            <div className='hidden w-80 max-w-92 min-[1368px]:block'>
+            <div className='min-1368:block hidden w-80 max-w-92'>
               <SearchForm className='w-full' />
             </div>
-            <div className='hidden flex-grow-1 items-center gap-2 min-[1368px]:block'>
+            <div className='min-1368:block hidden flex-grow-1 items-center gap-2'>
               <NavigationMenu />
             </div>
           </div>
           {/* Right side */}
-          <div className='h-header hidden items-center gap-2 min-[1368px]:flex'>
+          <div className='h-header min-1368:flex hidden items-center gap-2'>
             <AnimatePresence mode='wait' initial={false}>
               {loading ? (
                 <motion.div
@@ -122,7 +122,7 @@ export default function Header() {
             </AnimatePresence>
           </div>
           {/* Search */}
-          <div className='mr-4 items-center min-[1368px]:hidden'>
+          <div className='min-1368:hidden mr-4 items-center'>
             <Button
               variant='ghost'
               className='p-1 hover:bg-transparent!'
