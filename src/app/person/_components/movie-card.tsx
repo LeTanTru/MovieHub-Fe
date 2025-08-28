@@ -119,7 +119,7 @@ function MovieCard({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
       >
         <Link
           className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-[8px] pb-[150%]'
-          href={`${route.movie}/${mp.movie.slug}`}
+          href={`${route.movie}/${mp.movie.slug}.${mp.movie.id}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onClick={() => {
@@ -140,12 +140,12 @@ function MovieCard({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
 
         <div className='min-h-10.5 text-center'>
           <h4 className='hover:text-light-golden-yellow mb-0 line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear'>
-            <Link href={`${route.movie}/${mp.movie.slug}`}>
+            <Link href={`${route.movie}/${mp.movie.slug}.${mp.movie.id}`}>
               {mp.movie.title}
             </Link>
           </h4>
           <h4 className='text-light-gray mt-[5px] line-clamp-1 text-xs leading-6'>
-            <Link href={`${route.movie}/${mp.movie.slug}`}>
+            <Link href={`${route.movie}/${mp.movie.slug}.${mp.movie.id}`}>
               {mp.movie.originalTitle}
             </Link>
           </h4>

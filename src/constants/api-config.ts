@@ -122,8 +122,8 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true,
       ignoreAuth: true
     },
-    getBySlug: {
-      baseUrl: `${AppConstants.apiUrl}v1/movie/get/slug/:slug`,
+    getById: {
+      baseUrl: `${AppConstants.apiUrl}v1/movie/get/:id`,
       method: 'GET',
       headers: baseHeader,
       isRequiredTenantId: true,

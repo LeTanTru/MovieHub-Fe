@@ -3,7 +3,7 @@ import { ApiResponse, MovieResType } from '@/types';
 import { cache } from 'react';
 
 export const getMovieDetail = cache(
-  async (slug: string): Promise<ApiResponse<MovieResType>> => {
-    return await movieApiRequest.getBySlug(slug);
+  async (id: string): Promise<ApiResponse<MovieResType>> => {
+    return await movieApiRequest.getById(id);
   }
 );

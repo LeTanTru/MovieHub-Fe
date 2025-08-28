@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { registerSchema } from '@/schemaValidations';
 import { RegisterType } from '@/types';
 import { registerErrorMaps } from '@/constants';
-import { Loader2 } from 'lucide-react';
 import { applyFormErrors, notify } from '@/utils';
 import { useAuthDialogStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
@@ -15,6 +14,7 @@ import { useState } from 'react';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useRegisterMutation } from '@/queries';
+import ButtonLoading from '@/components/loading/button-loading';
 
 export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   const { setOpen, setMode } = useAuthDialogStore();
@@ -120,11 +120,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
                 'cursor-not-allowed opacity-50': !isFormChanged
               })}
             >
-              {registerMutation.isPending ? (
-                <Loader2 className='h-6! w-6! animate-spin' />
-              ) : (
-                'Đăng ký'
-              )}
+              {registerMutation.isPending ? <ButtonLoading /> : 'Đăng ký'}
             </Button>
           </>
         )}

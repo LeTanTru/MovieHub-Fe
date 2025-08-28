@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/form';
+import ButtonLoading from '@/components/loading/button-loading';
 import { storageKeys } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
@@ -8,7 +9,7 @@ import { useLogoutMutation } from '@/queries';
 import route from '@/routes';
 import { useAuthStore } from '@/store';
 import { notify, removeAccessTokenFromLocalStorage, removeData } from '@/utils';
-import { Loader2, LogOutIcon } from 'lucide-react';
+import { LogOutIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -45,7 +46,7 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
       {...props}
     >
       {logoutMutation.isPending ? (
-        <Loader2 className='h-6! w-6! animate-spin' />
+        <ButtonLoading />
       ) : (
         <>
           <LogOutIcon size={16} className='opacity-60' />

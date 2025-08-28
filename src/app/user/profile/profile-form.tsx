@@ -9,17 +9,23 @@ import {
   UploadImageField
 } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import { GENDER, GENDER_MALE, genderOptions } from '@/constants';
+import ButtonLoading from '@/components/loading/button-loading';
+import {
+  GENDER,
+  GENDER_MALE,
+  genderOptions,
+  profileErrorMaps
+} from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useProfileMutation, useUploadImageMutation } from '@/queries';
 import { updateProfileSchema } from '@/schemaValidations';
 import { useAuthStore } from '@/store';
-import { ProfileResType, UpdateProfileType } from '@/types';
-import { notify } from '@/utils';
+import { ProfileResType, ProfileType, UpdateProfileType } from '@/types';
+import { applyFormErrors, notify } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
 
 export default function ProfileForm() {
   const { profile } = useAuthStore();
@@ -52,7 +58,15 @@ export default function ProfileForm() {
         : GENDER_MALE,
       avatarPath: profile?.avatarPath || ''
     }),
-    [profile]
+    [
+      profile?.avatarPath,
+      profile?.email,
+      profile?.fullName,
+      profile?.gender,
+      profile?.id,
+      profile?.phone,
+      profile?.username
+    ]
   );
 
   useEffect(() => {
@@ -61,7 +75,10 @@ export default function ProfileForm() {
     }
   }, [profile]);
 
-  const onSubmit = async (values: UpdateProfileType) => {
+  const onSubmit = async (
+    values: UpdateProfileType,
+    form: UseFormReturn<ProfileType>
+  ) => {
     try {
       const response = await profileMutation.mutateAsync({
         ...values,
@@ -69,8 +86,15 @@ export default function ProfileForm() {
       });
       if (response.result) {
         notify.success('Cập nhật thành công');
+        setIsFormChanged(false);
+      } else {
+        const errorCode = response.code;
+        if (errorCode) {
+          applyFormErrors(form, errorCode, profileErrorMaps);
+        } else {
+          notify.error('Có lỗi xảy ra');
+        }
       }
-      setIsFormChanged(false);
     } catch (error) {
       logger.error('Error while updating profile: ', error);
       notify.error('Cập nhật thất bại');
@@ -135,7 +159,8 @@ export default function ProfileForm() {
                         label='Email'
                         required
                         placeholder='Nhập email'
-                        className='text-sm'
+                        className='text-sm disabled:opacity-100'
+                        disabled
                       />
                     </Col>
                   </Row>
@@ -144,9 +169,9 @@ export default function ProfileForm() {
                       <InputField
                         control={form.control}
                         name='username'
-                        label='Tên đăng nhập'
+                        label='Tên hiển thị'
                         required
-                        placeholder='Nhập tên đăng nhập'
+                        placeholder='Nhập tên hiển thị'
                         className='text-sm'
                       />
                     </Col>
@@ -185,10 +210,7 @@ export default function ProfileForm() {
                       })}
                     >
                       {profileMutation?.isPending ? (
-                        <Loader2
-                          className='size-6 animate-spin'
-                          strokeWidth={2}
-                        />
+                        <ButtonLoading />
                       ) : (
                         'Cập nhật'
                       )}
