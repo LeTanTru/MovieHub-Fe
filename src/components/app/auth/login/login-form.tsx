@@ -10,11 +10,11 @@ import { useAuthDialogStore, useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import PasswordField from '@/components/form/password-field';
 import Link from 'next/link';
-import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useLoginMutation } from '@/queries';
+import ButtonLoading from '@/components/loading/button-loading';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const loginMutation = useLoginMutation();
@@ -106,11 +106,7 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
                 'cursor-not-allowed opacity-50': !isFormChanged
               })}
             >
-              {loginMutation.isPending ? (
-                <Loader2 className='h-6! w-6! animate-spin' />
-              ) : (
-                'Đăng nhập'
-              )}
+              {loginMutation.isPending ? <ButtonLoading /> : 'Đăng nhập'}
             </Button>
           </>
         )}

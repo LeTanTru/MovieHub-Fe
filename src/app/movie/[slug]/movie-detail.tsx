@@ -1,6 +1,6 @@
 'use client';
+
 import { AppConstants } from '@/constants';
-import { useMovieBySlugQuery } from '@/queries';
 import './movie-detail.css';
 import { Container } from '@/components/layout';
 import MovieDetailSidebar from '@/app/movie/[slug]/_components/movie-detail-sidebar';
@@ -8,6 +8,7 @@ import MovieDetailContent from '@/app/movie/[slug]/_components/movie-detail-cont
 import { Metadata, ResolvingMetadata } from 'next';
 import { getMovieDetail } from '@/app/movie/[slug]/_components/movie-detail';
 import envConfig from '@/config';
+import { useMovieQuery } from '@/queries';
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string }> },
@@ -42,7 +43,8 @@ export async function generateMetadata(
 }
 
 export default function MovieDetail({ slug }: { slug: string }) {
-  const res = useMovieBySlugQuery(slug);
+  const id = slug.split('.')[1];
+  const res = useMovieQuery(id);
   const movie = res.data?.data;
   if (!movie) return null;
   return (

@@ -20,7 +20,7 @@ export default function NavigationMenu() {
       href: '',
       subItems: categories.map((category) => ({
         label: category.name,
-        href: `${route.category}/${category.slug}`
+        href: `${route.category}/${category.slug}.${category.id}`
       })),
       isGrid: true
     },

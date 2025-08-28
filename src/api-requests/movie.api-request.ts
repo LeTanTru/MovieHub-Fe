@@ -12,10 +12,10 @@ const movieApiRequest = {
     await http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
       params
     }),
-  getBySlug: async (slug: string) =>
-    await http.get<ApiResponse<MovieResType>>(apiConfig.movie.getBySlug, {
+  getById: async (id: string) =>
+    await http.get<ApiResponse<MovieResType>>(apiConfig.movie.getById, {
       pathParams: {
-        slug
+        id
       }
     })
 };

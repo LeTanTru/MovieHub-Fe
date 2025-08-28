@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowLeftIcon,
-  Loader2,
   UploadIcon,
   XIcon,
   ZoomInIcon,
@@ -30,6 +29,7 @@ import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { logger } from '@/logger';
 import { apiConfig } from '@/constants';
+import ButtonLoading from '@/components/loading/button-loading';
 
 type Area = { x: number; y: number; width: number; height: number };
 
@@ -246,11 +246,7 @@ export default function UploadImageField({
                 onClick={handleApply}
                 disabled={!previewUrl || loading}
               >
-                {loading ? (
-                  <Loader2 className='size-6 animate-spin stroke-2' />
-                ) : (
-                  'Áp dụng'
-                )}
+                {loading ? <ButtonLoading /> : 'Áp dụng'}
               </Button>
             </DialogTitle>
           </DialogHeader>

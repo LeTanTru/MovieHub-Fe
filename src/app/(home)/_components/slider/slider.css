@@ -126,8 +126,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.5s ease-in-out;
-  will-change: opacity;
+  /* transition: opacity 0.5s ease-in-out; */
 }
 
 .fade-in {
@@ -144,7 +143,7 @@
 }
 
 .top-slide-wrap .swiper-slide-active .cover-fade {
-  animation: cover-fade 0.5s forwards;
+  /* animation: cover-fade 0.5s forwards; */
 }
 
 @keyframes cover-fade {
@@ -161,7 +160,7 @@
 }
 
 .top-slide-wrap .swiper-slide-active .cover-image {
-  animation: hide-show 1s forwards;
+  /* animation: hide-show 1s forwards; */
 }
 
 @keyframes hide-show {
@@ -200,7 +199,7 @@
 }
 
 .top-slide-wrap .swiper-slide-active .slide-content {
-  animation: slide-content 0.5s forwards;
+  /* animation: slide-content 0.5s forwards; */
 }
 
 @keyframes slide-content {

@@ -63,9 +63,11 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
               <p className='truncate overflow-hidden text-sm font-medium whitespace-nowrap'>
                 {profile?.fullName}
               </p>
-              <p className='text-muted-foreground truncate text-xs'>
-                @{profile?.username}
-              </p>
+              {profile?.username && (
+                <p className='text-muted-foreground truncate text-xs'>
+                  @{profile.username}
+                </p>
+              )}
             </div>
             <Separator />
             <List>

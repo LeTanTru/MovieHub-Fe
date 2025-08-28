@@ -11,9 +11,9 @@ export const useMovieListQuery = (params?: MovieSearchParamType) => {
   });
 };
 
-export const useMovieBySlugQuery = (slug: string) => {
+export const useMovieQuery = (id: string) => {
   return useQuery({
-    queryKey: ['movieDetail', slug],
-    queryFn: async () => await movieApiRequest.getBySlug(slug)
+    queryKey: ['movieDetail', id],
+    queryFn: async () => await movieApiRequest.getById(id)
   });
 };

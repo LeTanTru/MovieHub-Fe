@@ -27,22 +27,22 @@ export default function Slider() {
 
   const sliders = [
     {
-      src: 'https://static.nutscdn.com/vimg/1920-0/1cba2f47c59fcd0f6f35315bc3e88bf6.jpg'
+      src: 'https://static.nutscdn.com/vimg/1920-0/930d4b7f9669d7ebbaedf7553827f0e1.webp'
     },
     {
-      src: 'https://static.nutscdn.com/vimg/1920-0/f9f19a5f7eaa5795b11e3d369c48cbca.webp'
+      src: 'https://static.nutscdn.com/vimg/1920-0/29cca985f832ea53a5cefa528fa7f666.webp'
     },
     {
-      src: 'https://static.nutscdn.com/vimg/1920-0/862b61e1bc770c7e25e84e6ec745009e.webp'
+      src: 'https://static.nutscdn.com/vimg/1920-0/b83f91db6c94d70423914163dc77feae.jpg'
     },
     {
-      src: 'https://static.nutscdn.com/vimg/1920-0/77a1a72c536f7dd9b9fc6b9aaf55c89a.webp'
+      src: 'https://static.nutscdn.com/vimg/1920-0/af2d9ffe736e0e2318656cf41c87e122.webp'
     },
     {
-      src: 'https://static.nutscdn.com/vimg/1920-0/72f87b8c3294dbdb51ca1afa4b9ee760.webp'
+      src: 'https://static.nutscdn.com/vimg/1920-0/9e6ae90defef4165073da40ba64cc2d9.jpg'
     },
     {
-      src: 'https://static.nutscdn.com/vimg/1920-0/ecd581a3c6ebadbad901ae1301e5e1d5.jpg'
+      src: 'https://static.nutscdn.com/vimg/1920-0/931fb23eb19f7496494d3168a38f81eb.jpg'
     }
   ];
   return (
@@ -65,7 +65,7 @@ export default function Slider() {
                 ></a>
                 <div
                   className='background-fade'
-                  style={{ background: `url(${slider.src})` }}
+                  style={{ backgroundImage: `url(${slider.src})` }}
                 ></div>
                 <div className='cover-fade'>
                   <div className='cover-image'>
@@ -91,6 +91,7 @@ export default function Slider() {
                           <img
                             alt='Thứ Tư'
                             src='https://static.nutscdn.com/vimg/0-260/961f955325f77aceef42872258356426.png'
+                            loading='lazy'
                           />
                         </a>
                       </div>
