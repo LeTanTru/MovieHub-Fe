@@ -5,6 +5,14 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { getPersonDetail } from '@/app/person/_components/person';
 import envConfig from '@/config';
 import { AppConstants } from '@/constants';
+import { personApiRequest } from '@/api-requests';
+
+export async function generateStaticParams() {
+  const persons = await personApiRequest.getList();
+  return persons.data.content.map((person) => ({
+    id: `${person.id}`
+  }));
+}
 
 export async function generateMetadata(
   { params }: { params: Promise<{ id: string }> },

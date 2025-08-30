@@ -3,18 +3,9 @@
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 
-import {
-  EffectFade,
-  Navigation,
-  Pagination,
-  FreeMode,
-  Thumbs
-} from 'swiper/modules';
+import { EffectFade, Thumbs, Autoplay } from 'swiper/modules';
 
 import './slider.css';
 
@@ -52,8 +43,13 @@ export default function Slider() {
           effect='fade'
           slidesPerView={1}
           loop={true}
+          grabCursor={true}
           thumbs={{ swiper: thumbsSwiper }}
-          modules={[EffectFade, Navigation, Pagination, FreeMode, Thumbs]}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false
+          }}
+          modules={[EffectFade, Thumbs, Autoplay]}
           className='top-slide-main'
         >
           {sliders.map((slider, index) => (
@@ -195,7 +191,7 @@ export default function Slider() {
           slidesPerView={6}
           allowTouchMove={false}
           watchSlidesProgress
-          modules={[Navigation, Thumbs]}
+          modules={[Thumbs]}
           className='top-slide-small'
         >
           {sliders.map((slider, index) => (

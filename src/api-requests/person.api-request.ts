@@ -8,7 +8,7 @@ import {
 import { http } from '@/utils';
 
 const personApiRequest = {
-  getList: async (params: MovieSearchParamType) =>
+  getList: async (params?: MovieSearchParamType) =>
     await http.get<ApiResponseList<PersonResType>>(apiConfig.person.getList, {
       params
     }),

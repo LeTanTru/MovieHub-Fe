@@ -85,6 +85,7 @@
   --breakpoint-1359: 1359px;
   --breakpoint-500: 500px;
   --breakpoint-1537: 1537px;
+  --text-md: 16px;
 }
 
 body {
