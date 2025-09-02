@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 export const useProfileQuery = () => {
   return useQuery({
     queryKey: ['profile'],
-    queryFn: () => accountApiRequest.getProfile(),
+    queryFn: async () => await accountApiRequest.getProfile(),
     enabled: false
   });
 };
