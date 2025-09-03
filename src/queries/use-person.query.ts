@@ -10,7 +10,7 @@ export const usePersonListQuery = (
 ) => {
   return useQuery({
     queryKey: ['persons', params],
-    queryFn: async () => await personApiRequest.getList(params),
+    queryFn: () => personApiRequest.getList(params),
     enabled
   });
 };
@@ -18,6 +18,6 @@ export const usePersonListQuery = (
 export const usePersonQuery = ({ id }: { id: number }) => {
   return useQuery({
     queryKey: ['person', id],
-    queryFn: async () => await personApiRequest.getById({ id })
+    queryFn: () => personApiRequest.getById({ id })
   });
 };

@@ -1,5 +1,4 @@
 'use client';
-
 import { logger } from '@/logger';
 import { useProfileQuery } from '@/queries';
 import { useAuthStore } from '@/store';

@@ -6,15 +6,15 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 export const useProfileQuery = () => {
   return useQuery({
     queryKey: ['profile'],
-    queryFn: async () => await accountApiRequest.getProfile(),
+    queryFn: () => accountApiRequest.getProfile(),
     enabled: false
   });
 };
 
 export const useProfileMutation = () => {
   return useMutation({
-    mutationFn: async (body: UpdateProfileBodyType) =>
-      await accountApiRequest.updateProfile(body),
+    mutationFn: (body: UpdateProfileBodyType) =>
+      accountApiRequest.updateProfile(body),
     onSuccess: async () => {
       const response = await accountApiRequest.getProfile();
       useAuthStore.getState().setProfile(response.data as ProfileResType);
