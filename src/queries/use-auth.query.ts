@@ -12,25 +12,24 @@ export const useLoginGoogleQuery = (loginType: string | number) => {
 
 export const useLoginGoogleMutation = () => {
   return useMutation({
-    mutationFn: async (code: string) => authApiRequest.loginGoogle(code)
+    mutationFn: (code: string) => authApiRequest.loginGoogle(code)
   });
 };
 
 export const useLoginMutation = () => {
   return useMutation({
-    mutationFn: async (body: LoginBodyType) => await authApiRequest.login(body)
+    mutationFn: (body: LoginBodyType) => authApiRequest.login(body)
   });
 };
 
 export const useRegisterMutation = () => {
   return useMutation({
-    mutationFn: async (body: RegisterBodyType) =>
-      await authApiRequest.register(body)
+    mutationFn: (body: RegisterBodyType) => authApiRequest.register(body)
   });
 };
 
 export const useLogoutMutation = () => {
   return useMutation({
-    mutationFn: async () => await authApiRequest.logout()
+    mutationFn: () => authApiRequest.logout()
   });
 };

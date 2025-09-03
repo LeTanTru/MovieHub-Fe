@@ -18,7 +18,7 @@ export default function NavigationMenu() {
       label: 'Thể loại',
       submenu: true,
       href: '',
-      subItems: categories.map((category) => ({
+      subItems: (categories.data?.data.content || []).map((category) => ({
         label: category.name,
         href: `${route.category}/${category.slug}.${category.id}`
       })),

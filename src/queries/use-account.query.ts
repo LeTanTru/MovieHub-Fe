@@ -13,8 +13,8 @@ export const useProfileQuery = () => {
 
 export const useProfileMutation = () => {
   return useMutation({
-    mutationFn: async (body: UpdateProfileBodyType) =>
-      await accountApiRequest.updateProfile(body),
+    mutationFn: (body: UpdateProfileBodyType) =>
+      accountApiRequest.updateProfile(body),
     onSuccess: async () => {
       const response = await accountApiRequest.getProfile();
       useAuthStore.getState().setProfile(response.data as ProfileResType);

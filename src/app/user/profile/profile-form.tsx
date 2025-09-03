@@ -133,8 +133,18 @@ export default function ProfileForm() {
                       setIsFormChanged(true);
                     }}
                     uploadImageFn={async (blob) => {
-                      const response =
-                        await uploadImageMutation.mutateAsync(blob);
+                      const response = await uploadImageMutation.mutateAsync(
+                        blob,
+                        {
+                          onError: (error) => {
+                            logger.error(
+                              'Error while uploading avatar:',
+                              error
+                            );
+                            notify.error('Tải lên avatar thất bại');
+                          }
+                        }
+                      );
                       return response.data?.filePath!;
                     }}
                     loading={uploadImageMutation.isPending}

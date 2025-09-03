@@ -1,5 +1,4 @@
 'use client';
-
 import { logger } from '@/logger';
 import { useProfileQuery } from '@/queries';
 import { useAuthStore } from '@/store';
@@ -26,7 +25,9 @@ export default function AppProvider({
       try {
         const response = await profileQuery.refetch();
         const profile = response.data?.data;
-        setProfile(profile!);
+        if (profile) {
+          setProfile(profile);
+        }
       } catch (error) {
         logger.error('Error fetching profile:', error);
       } finally {
