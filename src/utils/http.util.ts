@@ -4,99 +4,122 @@ import { ApiConfig, Payload } from '@/types';
 import {
   getAccessTokenFromLocalStorage,
   removeAccessTokenFromLocalStorage,
+  getData,
   isTokenExpired,
-  getData
+  getCookiesServer
 } from '@/utils';
-import { getCookiesServer } from '@/utils/cookies-server.util';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const isClient = () => typeof window !== 'undefined';
 
-const sendRequest = async <T>(
+// const TIME_OUT = 10000;
+
+export const sendRequest = async <T>(
   apiConfig: ApiConfig,
   payload: Payload = {}
 ): Promise<T> => {
   let { baseUrl, headers, method, ignoreAuth, isRequiredTenantId, isUpload } =
     apiConfig;
-  const { params = {}, pathParams = {}, body = {}, options = {} } = payload;
+
+  const {
+    params = {},
+    pathParams = {},
+    body = {},
+    options = {},
+    authorization
+  } = payload;
 
   let accessToken: string | null = '';
   let tenantId: string | null | undefined = '';
+
   if (!ignoreAuth) {
     if (isClient()) {
       accessToken = getAccessTokenFromLocalStorage();
       if (isTokenExpired(accessToken)) {
         removeAccessTokenFromLocalStorage();
+        accessToken = null;
       }
     } else {
       const { sessionToken } = await getCookiesServer();
       accessToken = sessionToken;
     }
   }
+
   if (isRequiredTenantId) {
-    tenantId = getData(storageKeys.X_TENANT) || envConfig.NEXT_PUBLIC_TENANT_ID;
-  } else {
-    tenantId = process.env.TENANT_ID;
+    if (isClient()) {
+      tenantId =
+        getData(storageKeys.X_TENANT) || envConfig.NEXT_PUBLIC_TENANT_ID;
+    } else {
+      tenantId = process.env.TENANT_ID;
+    }
   }
-  const baseHeader: { [key: string]: string } = { ...headers };
+
+  const baseHeader: Record<string, string> = { ...headers };
 
   if (!ignoreAuth && accessToken) {
     baseHeader['Authorization'] = `Bearer ${accessToken}`;
   }
 
-  if (isRequiredTenantId) {
-    baseHeader[storageKeys.X_TENANT] = tenantId!;
+  if (authorization) {
+    baseHeader['Authorization'] = authorization;
+  }
+
+  if (tenantId) {
+    baseHeader[storageKeys.X_TENANT] = tenantId;
   }
 
   Object.entries(pathParams).forEach(([key, value]) => {
     baseUrl = baseUrl.replace(`:${key}`, value.toString());
   });
 
-  if (baseHeader['Content-Type'] === 'multipart/form-data' && isUpload) {
-    const formData = new FormData();
-
-    Object.keys(body).forEach((key) => {
-      const value = body[key];
-
-      if (value instanceof Blob) {
-        const filename = 'upload.jpg';
-        formData.append(key, value, filename);
-      } else {
-        formData.append(key, value);
-      }
-    });
-
-    delete baseHeader['Content-Type'];
-
-    try {
-      const response = await fetch(baseUrl, {
-        method,
-        headers: baseHeader,
-        body: formData
-      });
-      const result = await response.json();
-      return result;
-    } catch (error: any) {
-      throw new Error(`Error in API request: ${error.message}`);
-    }
-  }
-
-  const queryParams = new URLSearchParams(params).toString();
-  const fullUrl = queryParams ? `${baseUrl}?${queryParams}` : baseUrl;
   try {
-    const response = await fetch(fullUrl, {
+    const axiosConfig: AxiosRequestConfig = {
+      url: baseUrl,
       method,
-      headers: {
-        ...baseHeader,
-        'Content-Type': baseHeader['Content-Type'] || 'application/json'
-      },
-      body: method !== 'GET' && body ? JSON.stringify(body) : undefined,
+      headers: baseHeader,
+      params,
+      // timeout: TIME_OUT,
       ...options
-    });
+    };
 
-    const result = await response.json();
-    return result;
+    if (isUpload) {
+      const formData = new FormData();
+
+      Object.keys(body).forEach((key) => {
+        const value = body[key];
+
+        if (value instanceof Blob) {
+          let filename = 'upload';
+
+          if (value instanceof File && value.name) {
+            filename = value.name;
+          } else {
+            const ext = value.type.split('/').pop() || 'bin';
+            filename = `upload.${ext}`;
+          }
+
+          formData.append(key, value, filename);
+        } else {
+          formData.append(key, value);
+        }
+      });
+
+      axiosConfig.data = formData;
+
+      delete axiosConfig.headers!['Content-Type'];
+    } else if (method !== 'GET') {
+      axiosConfig.data = body;
+      axiosConfig.headers = {
+        ...axiosConfig.headers,
+        'Content-Type': baseHeader['Content-Type'] || 'application/json'
+      };
+    }
+
+    const response: AxiosResponse = await axios.request<T>(axiosConfig);
+    return response.data;
   } catch (error: any) {
-    throw new Error(`Error in API request: ${error.message}`);
+    const err = error as AxiosError;
+    throw err;
   }
 };
 
@@ -108,6 +131,9 @@ const http = {
     return sendRequest<T>(apiConfig, payload);
   },
   put<T>(apiConfig: ApiConfig, payload?: Payload) {
+    return sendRequest<T>(apiConfig, payload);
+  },
+  patch<T>(apiConfig: ApiConfig, payload?: Payload) {
     return sendRequest<T>(apiConfig, payload);
   },
   delete<T>(apiConfig: ApiConfig, payload?: Payload) {

@@ -1,5 +1,4 @@
 'use client';
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowLeftIcon,
@@ -28,8 +27,8 @@ import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { logger } from '@/logger';
-import { apiConfig } from '@/constants';
-import ButtonLoading from '@/components/loading/button-loading';
+import { CircleLoading } from '@/components/loading';
+import { renderImageUrl } from '@/utils';
 
 type Area = { x: number; y: number; width: number; height: number };
 
@@ -185,7 +184,7 @@ export default function UploadImageField({
             {!!value ? (
               <AvatarField
                 disablePreview
-                src={`${apiConfig.imageProxy.baseUrl}${value}`}
+                src={renderImageUrl(value)}
                 className='size-full object-cover'
                 size={size}
               />
@@ -246,7 +245,11 @@ export default function UploadImageField({
                 onClick={handleApply}
                 disabled={!previewUrl || loading}
               >
-                {loading ? <ButtonLoading /> : 'Áp dụng'}
+                {loading ? (
+                  <CircleLoading className='stroke-slate-500' />
+                ) : (
+                  'Áp dụng'
+                )}
               </Button>
             </DialogTitle>
           </DialogHeader>

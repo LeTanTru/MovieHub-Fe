@@ -1,13 +1,15 @@
 import { logger } from '@/logger';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
-export const decodeJwt = (token: string): JwtPayload | null => {
+export const decodeJwt = (
+  token: string
+): { exp: number; authorities: string[] } | null => {
   try {
     return jwtDecode(token);
   } catch (error) {
     logger.error('Failed to decode JWT:', error);
-    return null;
   }
+  return null;
 };
 
 export const isTokenExpired = (token: string | null): boolean => {
@@ -18,4 +20,19 @@ export const isTokenExpired = (token: string | null): boolean => {
 
   const now = Math.floor(Date.now() / 1000);
   return payload.exp < now;
+};
+
+export const isTokenExpiringSoon = (
+  token: string | null,
+  thresholdMinutes = 15
+): boolean => {
+  if (!token) return true;
+
+  const payload = decodeJwt(token);
+  if (!payload || !payload.exp) return true;
+
+  const now = Math.floor(Date.now() / 1000);
+  const threshold = thresholdMinutes * 60;
+
+  return payload.exp < now + threshold;
 };

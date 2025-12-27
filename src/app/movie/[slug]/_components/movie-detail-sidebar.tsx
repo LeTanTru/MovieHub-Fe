@@ -9,16 +9,15 @@ import {
 } from '@/components/tag';
 import {
   ageRatings,
-  apiConfig,
   AppConstants,
   movieItemKinds,
   PERSON_ACTOR,
   PERSON_DIRECTOR
 } from '@/constants';
 import { useMovieItemListQuery, useMoviePersonListQuery } from '@/queries';
-import route from '@/routes';
+import { route } from '@/routes';
 import { MovieResType } from '@/types';
-import { formatDate, formatDuration } from '@/utils';
+import { formatDate, formatDuration, renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -39,8 +38,8 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
   const video = movieItem.video;
 
   return (
-    <div className='bg-background/30 flex w-110 flex-shrink-0 flex-col p-10'>
-      <div className='mb-4 font-light min-xl:w-40'>
+    <div className='bg-background/30 flex w-110 shrink-0 flex-col p-10'>
+      <div className='mb-4 font-light xl:w-40'>
         <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'>
           {movie && (
             <Image
@@ -56,7 +55,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
           )}
         </div>
       </div>
-      <h2 className='mb-2 text-2xl leading-[1.5] font-semibold text-white'>
+      <h2 className='mb-2 text-2xl leading-normal font-semibold text-white'>
         {movie?.title}
       </h2>
       <div className='text-light-golden-yellow mb-6 text-sm font-normal'>
@@ -128,7 +127,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
           ))}
         </div>
         <div className='relative mb-8 block border-none p-0'>
-          <div className='mb-4 min-h-10 text-xl leading-[1.5] font-semibold text-white'>
+          <div className='mb-4 min-h-10 text-xl leading-normal font-semibold text-white'>
             Diễn viên:
           </div>
           <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
@@ -139,17 +138,17 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
               >
                 <Link
                   href={`${route.person}/${actor.person.id}`}
-                  className='bg-background relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-full'
+                  className='bg-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
                 >
                   <Image
                     className='absolute top-0 right-0 bottom-0 left-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
-                    src={`${apiConfig.imageProxy.baseUrl}${actor.person.avatarPath}`}
+                    src={renderImageUrl(actor.person.avatarPath)}
                     alt={actor.person.otherName}
                     fill
                   />
                 </Link>
                 <div>
-                  <h4 className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 text-sm leading-[1.5] font-normal whitespace-nowrap text-white transition-all duration-200 ease-linear'>
+                  <h4 className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 text-sm leading-normal font-normal whitespace-nowrap text-white transition-all duration-200 ease-linear'>
                     <Link href={`${route.person}/${actor.person.id}`}>
                       {actor.person.otherName}
                     </Link>

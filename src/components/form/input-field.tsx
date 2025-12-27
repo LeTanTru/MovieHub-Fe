@@ -50,7 +50,7 @@ export default function InputField<T extends FieldValues>({
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem
           className={cn(
             { 'cursor-not-allowed opacity-50': disabled },
@@ -76,11 +76,17 @@ export default function InputField<T extends FieldValues>({
                 disabled={disabled}
                 readOnly={readOnly}
                 {...field}
-                className={cn(className, 'focus-visible:ring-[1px]', {
-                  'pl-10': prefixIcon,
-                  'pr-10': suffixIcon,
-                  'cursor-not-allowed opacity-50': disabled
-                })}
+                className={cn(
+                  className,
+                  'pt-0! pb-0.5 placeholder:text-gray-300 focus-visible:ring-[1px]',
+                  {
+                    'pl-10': prefixIcon,
+                    'pr-10': suffixIcon,
+                    'cursor-not-allowed opacity-50': disabled,
+                    'border-red-400 focus-visible:border-red-400 focus-visible:ring-red-400':
+                      fieldState.error
+                  }
+                )}
               />
               {suffixIcon && (
                 <div className='text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2'>

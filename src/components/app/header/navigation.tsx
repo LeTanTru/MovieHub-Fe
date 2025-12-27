@@ -1,10 +1,10 @@
 'use client';
 
 import { ItemProps } from '@/types';
-import route from '@/routes';
 import NavigationDesktop from './navigation/navigation-desktop';
 import NavigationMobile from './navigation/navigation-mobile';
 import { useCategoryListQuery } from '@/queries';
+import { route } from '@/routes';
 
 export default function NavigationMenu() {
   const categories = useCategoryListQuery();

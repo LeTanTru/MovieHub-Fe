@@ -2,6 +2,7 @@
 
 import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
+import envConfig from '@/config';
 import { AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useLoginGoogleMutation, useLoginGoogleQuery } from '@/queries';
@@ -70,7 +71,8 @@ export default function ButtonLoginGoogle() {
     };
 
     const handleMessage = async (event: MessageEvent) => {
-      if (event.origin !== 'http://localhost:3636') return;
+      if (event.origin !== envConfig.NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK)
+        return;
       if (event.data?.code) {
         await handleLogin(event.data.code);
       }
@@ -81,7 +83,9 @@ export default function ButtonLoginGoogle() {
   }, [
     loginGoogleMutation,
     authStore.setAuthenticated,
-    authDialogStore.setOpen
+    authDialogStore.setOpen,
+    authDialogStore,
+    authStore
   ]);
 
   return (

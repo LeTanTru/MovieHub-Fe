@@ -17,7 +17,7 @@ import {
   MOVIE_KIND_SERIES,
   MOVIE_KIND_SINGLE
 } from '@/constants/constant';
-import route from '@/routes';
+import { route } from '@/routes';
 import {
   DropdownAvatarItemType,
   OptionType,

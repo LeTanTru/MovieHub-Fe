@@ -122,10 +122,13 @@ export default function AutoCompleteField<
                   role='combobox'
                   aria-label='Select'
                   disabled={disabled}
-                  className={cn('w-full flex-wrap justify-between py-0', {
-                    'pl-1!': selectedValues.length > 1,
-                    'cursor-not-allowed opacity-50': disabled
-                  })}
+                  className={cn(
+                    'focus-visible:border-dodger-blue focus-visible:ring-ring/0 w-full flex-wrap justify-between border-1 py-0 opacity-80 focus-visible:shadow-none focus-visible:ring-[1px]',
+                    {
+                      'pl-1!': selectedValues.length > 1,
+                      'cursor-not-allowed opacity-50': disabled
+                    }
+                  )}
                 >
                   {multiple ? (
                     selectedValues.length > 0 ? (
@@ -160,7 +163,7 @@ export default function AutoCompleteField<
                         })}
                       </div>
                     ) : (
-                      <span className='opacity-60'>{placeholder}</span>
+                      <span className='opacity-30'>{placeholder}</span>
                     )
                   ) : selectedValues.length === 1 ? (
                     (() => {
@@ -172,11 +175,11 @@ export default function AutoCompleteField<
                           <span>{getLabel(opt)}</span>
                         </div>
                       ) : (
-                        <span className='opacity-60'>{placeholder}</span>
+                        <span className='opacity-30'>{placeholder}</span>
                       );
                     })()
                   ) : (
-                    <span className='opacity-60'>{placeholder}</span>
+                    <span className='opacity-30'>{placeholder}</span>
                   )}
 
                   {selectedValues.length > 0 && allowClear ? (

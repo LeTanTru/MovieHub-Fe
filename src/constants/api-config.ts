@@ -78,7 +78,7 @@ const apiConfig = defineApiConfig({
   },
   file: {
     upload: {
-      baseUrl: `${AppConstants.mediaRootUrl}v1/file/upload`,
+      baseUrl: `${AppConstants.mediaUrl}v1/file/upload`,
       method: 'POST',
       headers: multipartHeader,
       isRequiredTenantId: true,

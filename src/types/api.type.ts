@@ -1,4 +1,6 @@
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+import { AxiosRequestConfig } from 'axios';
+
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export type ApiConfig = {
   baseUrl: string;
@@ -18,7 +20,8 @@ export type Payload = {
   params?: Record<string, any>;
   pathParams?: Record<string, string | number>;
   body?: any;
-  options?: RequestInit;
+  options?: AxiosRequestConfig;
+  authorization?: string;
 };
 
 export type ApiResponse<T> = {

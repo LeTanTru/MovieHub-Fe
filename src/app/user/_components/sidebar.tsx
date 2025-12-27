@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  apiConfig,
   GENDER_FEMALE,
   GENDER_MALE,
   GENDER_OTHER,
@@ -18,15 +17,16 @@ import ButtonLogout from '@/components/button-logout';
 import Link from 'next/link';
 import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
-import route from '@/routes';
 import { Separator } from '@/components/ui/separator';
+import { route } from '@/routes';
+import { renderImageUrl } from '@/utils';
 
 export default function Sidebar() {
   const path = usePathname();
   const { profile } = useAuthStore();
 
   return (
-    <div className='bg-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 w-75 flex-shrink-0 rounded-lg p-10 pb-6'>
+    <div className='bg-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 w-75 shrink-0 rounded-lg p-10 pb-6'>
       <h1 className='max-1120:mb-2 max-1120:text-center mb-8 text-xl font-bold'>
         Quản lý tài khoản
       </h1>
@@ -80,9 +80,7 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
   return (
     <>
       {profile?.avatarPath ? (
-        <AvatarField
-          src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
-        />
+        <AvatarField src={renderImageUrl(profile.avatarPath)} />
       ) : (
         <div className='bg-muted flex h-20 w-20 items-center justify-center rounded-full text-3xl'>
           {profile?.fullName?.charAt(0) ?? 'U'}

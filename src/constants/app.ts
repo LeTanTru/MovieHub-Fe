@@ -1,14 +1,14 @@
 import envConfig from '@/config';
 
-const apiUrl = envConfig.NEXT_PUBLIC_API;
-const mediaUrl = envConfig.NEXT_PUBLIC_API_MEDIA;
-const videoUrl = envConfig.NEXT_PUBLIC_API_VIDEO;
+const apiUrl = envConfig.NEXT_PUBLIC_API_URL;
+const mediaUrl = envConfig.NEXT_PUBLIC_API_MEDIA_URL;
 
 const AppConstants = {
-  apiUrl,
+  apiUrl: `${apiUrl}`,
+  mediaUrl: `${mediaUrl}`,
   contentRootUrl: `${mediaUrl}v1/file/download`,
-  mediaRootUrl: `${mediaUrl}`,
-  videoRootUrl: `${videoUrl}`,
+  publicContentUrl: `${mediaUrl}/v1/file/public-download`,
+  videoRootUrl: `${mediaUrl}/v1/file/download-video-resource`,
   loginType: 1
 };
 

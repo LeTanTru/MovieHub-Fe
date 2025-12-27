@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useRegisterMutation } from '@/queries';
-import ButtonLoading from '@/components/loading/button-loading';
+import { CircleLoading } from '@/components/loading';
 
 export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   const { setOpen, setMode } = useAuthDialogStore();
@@ -120,7 +120,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
                 'cursor-not-allowed opacity-50': !isFormChanged
               })}
             >
-              {registerMutation.isPending ? <ButtonLoading /> : 'Đăng ký'}
+              {registerMutation.isPending ? <CircleLoading /> : 'Đăng ký'}
             </Button>
           </>
         )}
