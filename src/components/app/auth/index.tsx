@@ -1,10 +1,11 @@
 'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@/components/form';
 import LoginForm from '@/components/app/auth/login/login-form';
-import RegisterForm from '@/components/app/auth/register/register-form';
 import { X } from 'lucide-react';
-import useAuthDialogStore from '@/store/use-auth-dialog-store';
+import { useAuthDialogStore } from '@/store';
+import RegisterForm from '@/components/app/auth/register/register-form';
 
 export default function AuthDialog() {
   const authDialogStore = useAuthDialogStore();

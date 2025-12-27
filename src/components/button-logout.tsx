@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@/components/form';
-import ButtonLoading from '@/components/loading/button-loading';
+import { CircleLoading } from '@/components/loading';
 import { storageKeys } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useLogoutMutation } from '@/queries';
-import route from '@/routes';
+import { route } from '@/routes';
 import { useAuthStore } from '@/store';
 import { notify, removeAccessTokenFromLocalStorage, removeData } from '@/utils';
 import { LogOutIcon } from 'lucide-react';
@@ -46,7 +46,7 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
       {...props}
     >
       {logoutMutation.isPending ? (
-        <ButtonLoading />
+        <CircleLoading />
       ) : (
         <>
           <LogOutIcon size={16} className='opacity-60' />

@@ -9,8 +9,8 @@ import { useEffect } from 'react';
 
 function MovieDetailSkeleton() {
   return (
-    <Container className='relative z-9 min-h-[calc(100vh_-_400px)] pt-0 pb-40'>
-      <div className='relative z-[3] mx-auto mb-0 flex w-full max-w-[1640px] items-stretch justify-between px-5 py-0'>
+    <Container className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
+      <div className='relative z-3 mx-auto mb-0 flex w-full max-w-[1640px] items-stretch justify-between px-5 py-0'>
         <div className='h-[500px] w-1/3 animate-pulse rounded-lg bg-gray-700' />
         <div className='ml-4 w-2/3 animate-pulse'>
           <div className='mb-4 h-10 w-1/2 rounded bg-gray-700' />
@@ -50,11 +50,11 @@ export default function MovieDetail({ slug }: { slug: string }) {
       </h1>
       <div
         className={
-          'bg-background before:content[""] after:from-background/100 after:to-background/0 dotted-bg max-1919:h-0 max-1919:pb-[50%] max-1120:pb-120 max-1120:opacity-70 max-800:pb-75 max-480:pb-50 relative z-1 h-200 w-full overflow-hidden before:absolute before:top-0 before:right-0 before:bottom-0 before:left-0 before:z-1 before:bg-repeat before:opacity-20 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-3 after:h-20 after:bg-linear-to-t after:content-[""]'
+          'bg-background before:content[""] after:from-background after:to-background/0 dotted-bg max-1919:h-0 max-1919:pb-[50%] max-1120:pb-120 max-1120:opacity-70 max-800:pb-75 max-480:pb-50 relative z-1 h-200 w-full overflow-hidden before:absolute before:top-0 before:right-0 before:bottom-0 before:left-0 before:z-1 before:bg-repeat before:opacity-20 after:absolute after:right-0 after:bottom-0 after:left-0 after:z-3 after:h-20 after:bg-linear-to-t after:content-[""]'
         }
       >
         <div
-          className='webkit-filter absolute top-0 right-0 bottom-0 left-0 h-full w-full bg-cover bg-[50%] opacity-20'
+          className='webkit-filter absolute top-0 right-0 bottom-0 left-0 h-full w-full bg-cover bg-position-[50%] opacity-20'
           style={{
             backgroundImage: `url(${AppConstants.contentRootUrl}${movie.posterUrl})`
           }}
@@ -68,8 +68,8 @@ export default function MovieDetail({ slug }: { slug: string }) {
           />
         </div>
       </div>
-      <Container className='relative z-9 min-h-[calc(100vh_-_400px)] pt-0 pb-40'>
-        <div className='relative z-[3] mx-auto mb-0 flex w-full max-w-[1640px] items-stretch justify-between px-5 py-0'>
+      <Container className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
+        <div className='relative z-3 mx-auto mb-0 flex w-full max-w-[1640px] items-stretch justify-between px-5 py-0'>
           <MovieDetailSidebar movie={movie} />
           <MovieDetailContent movie={movie} />
         </div>

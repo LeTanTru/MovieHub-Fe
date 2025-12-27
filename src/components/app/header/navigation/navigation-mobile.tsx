@@ -1,4 +1,5 @@
 'use client';
+
 import AuthDialog from '@/components/app/auth';
 import ButtonLogout from '@/components/button-logout';
 import { AvatarField, Button } from '@/components/form';
@@ -6,7 +7,6 @@ import List from '@/components/list';
 import ListItem from '@/components/list/ListItem';
 import { Separator } from '@/components/ui/separator';
 import {
-  apiConfig,
   GENDER_FEMALE,
   GENDER_MALE,
   GENDER_OTHER,
@@ -16,9 +16,10 @@ import {
 
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
-import route from '@/routes';
+import { route } from '@/routes';
 import { useAuthStore } from '@/store';
 import { ItemProps } from '@/types';
+import { renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, MenuIcon, X } from 'lucide-react';
 import Link from 'next/link';
@@ -41,7 +42,7 @@ export default function NavigationMobile({
   );
 
   return (
-    <div className='min-1368:hidden'>
+    <div className='1368:hidden'>
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}
@@ -110,7 +111,7 @@ export default function NavigationMobile({
                       })()}
                     </div>
                     <AvatarField
-                      src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
+                      src={renderImageUrl(profile.avatarPath)}
                       size={40}
                     />
                   </div>

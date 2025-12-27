@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useLoginMutation } from '@/queries';
-import ButtonLoading from '@/components/loading/button-loading';
+import { CircleLoading } from '@/components/loading';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const loginMutation = useLoginMutation();
@@ -106,7 +106,11 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
                 'cursor-not-allowed opacity-50': !isFormChanged
               })}
             >
-              {loginMutation.isPending ? <ButtonLoading /> : 'Đăng nhập'}
+              {loginMutation.isPending ? (
+                <CircleLoading className='stroke-slate-500' />
+              ) : (
+                'Đăng nhập'
+              )}
             </Button>
           </>
         )}

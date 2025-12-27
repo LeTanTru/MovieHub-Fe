@@ -13,10 +13,10 @@ import Image from 'next/image';
 import { logoWithText } from '@/assets';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
-import route from '@/routes';
 import { Button } from '@/components/form';
 import { Search, X } from 'lucide-react';
 import { useIsMounted } from '@/hooks';
+import { route } from '@/routes';
 
 export default function Header() {
   const { profile, loading } = useAuthStore();
@@ -39,7 +39,7 @@ export default function Header() {
     <header className='max-800:relative max-800:top-auto max-800:right-auto max-800:left-auto fixed top-0 right-0 left-0 z-10 block'>
       <div
         className={cn(
-          'min-1368:pr-10 min-1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear',
+          '1368:pr-10 1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear',
           {
             'bg-background': isFixed && mounted
           }
@@ -47,16 +47,16 @@ export default function Header() {
       >
         <div
           className={
-            'max-1600:h-15 flex h-17.5 items-center justify-between gap-4'
+            'max-1600:h-15 h-header flex items-center justify-between gap-4'
           }
         >
-          <div className='min-1368:gap-10 flex h-full flex-1 items-center gap-4'>
+          <div className='1368:gap-10 flex h-full flex-1 items-center gap-4'>
             {!showSearch && (
               <>
-                <div className='min-1368:hidden'>
+                <div className='1368:hidden'>
                   <NavigationMenu />
                 </div>
-                <Link href={route.home} className='flex-shrink-0'>
+                <Link href={route.home} className='shrink-0'>
                   <Image
                     src={logoWithText}
                     alt='Logo'
@@ -66,15 +66,15 @@ export default function Header() {
                 </Link>
               </>
             )}
-            <div className='min-1368:block hidden w-80 max-w-92'>
+            <div className='1368:block hidden w-80 max-w-92'>
               <SearchForm className='w-full' />
             </div>
-            <div className='min-1368:block hidden flex-grow-1 items-center gap-2'>
+            <div className='1368:block hidden grow items-center gap-2'>
               <NavigationMenu />
             </div>
           </div>
           {/* Right side */}
-          <div className='h-header min-1368:flex hidden items-center gap-2'>
+          <div className='h-header 1368:flex hidden items-center gap-2'>
             <AnimatePresence mode='wait' initial={false}>
               {loading ? (
                 <motion.div
@@ -122,7 +122,7 @@ export default function Header() {
             </AnimatePresence>
           </div>
           {/* Search */}
-          <div className='min-1368:hidden mr-4 items-center'>
+          <div className='1368:hidden mr-4 items-center'>
             <Button
               variant='ghost'
               className='p-1 hover:bg-transparent!'
@@ -162,7 +162,7 @@ export default function Header() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: 'linear' }}
-                className='bg-background absolute right-[50px] left-[10px] z-[1000] p-3 shadow-lg'
+                className='bg-background absolute right-[50px] left-2.5 z-1000 p-3 shadow-lg'
               >
                 <SearchForm className='w-full' />
               </motion.div>

@@ -1,9 +1,8 @@
 'use client';
 
 import MoviePersonModal from '@/app/person/_components/movie-person-modal';
-import { apiConfig, breakPoints } from '@/constants';
+import { breakPoints } from '@/constants';
 import { cn } from '@/lib';
-import route from '@/routes';
 import { MoviePersonResType } from '@/types';
 import { useMediaQuery } from 'react-responsive';
 
@@ -19,6 +18,8 @@ import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import MovieGridSkeleton from '@/app/person/_components/movie-card-skeleton';
+import { route } from '@/routes';
+import { renderImageUrl } from '@/utils';
 
 type Dir = 'up' | 'down';
 
@@ -118,7 +119,7 @@ function MovieCard({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
         className='relative flex flex-col gap-3'
       >
         <Link
-          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-[8px] pb-[150%]'
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-xl pb-[150%]'
           href={`${route.movie}/${mp.movie.slug}.${mp.movie.id}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -132,7 +133,7 @@ function MovieCard({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
         >
           <Image
             fill
-            src={`${apiConfig.imageProxy.baseUrl}${mp.movie.thumbnailUrl}`}
+            src={renderImageUrl(mp.movie.thumbnailUrl)}
             alt={mp.movie.title}
             className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
           />
@@ -195,13 +196,13 @@ function MovieGridByYear({
           { 'max-1120:mt-4 mt-12': index > 0 }
         )}
       >
-        <div className='before:bg-light-golden-yellow max-1120:h-auto max-1120:before:top-1 relative z-2 h-20 w-20 flex-shrink-0 text-center font-semibold text-white before:absolute before:top-0 before:-left-[5px] before:h-2.5 before:w-2.5 before:rounded-full before:content-[""]'>
+        <div className='before:bg-light-golden-yellow max-1120:h-auto max-1120:before:top-1 relative z-2 h-20 w-20 shrink-0 text-center font-semibold text-white before:absolute before:top-0 before:-left-[5px] before:h-2.5 before:w-2.5 before:rounded-full before:content-[""]'>
           <span className='max-1120:rotate-0 max-1120:justify-start max-1120:text-2xl max-1120:text-white max-1120:opacity-80 flex h-full w-full -rotate-90 items-center justify-end pl-4 text-[40px] font-black tracking-[3px] opacity-20'>
             {year}
           </span>
         </div>
 
-        <div className='max-1120:grid-cols-5 max-1360:grid-cols-4 max-1600:grid-cols-5 max-1600:gap-4 max-480:grid-cols-2 max-800:grid-cols-4 relative z-3 grid w-full flex-grow-1 grid-cols-6 gap-6 gap-x-4 gap-y-6 max-sm:grid-cols-3'>
+        <div className='max-1120:grid-cols-5 max-1360:grid-cols-4 max-1600:grid-cols-5 max-1600:gap-4 max-480:grid-cols-2 max-800:grid-cols-4 relative z-3 grid w-full grow grid-cols-6 gap-6 gap-x-4 gap-y-6 max-sm:grid-cols-3'>
           <AnimatePresence mode='popLayout' initial={false}>
             {grouped[year].map((mp) => (
               <MovieCard key={mp.id} mp={mp} dir='up' />

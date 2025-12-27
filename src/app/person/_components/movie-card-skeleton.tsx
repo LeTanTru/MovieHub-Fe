@@ -43,7 +43,7 @@ function MovieCardSkeleton() {
         exit='exit'
         className='relative flex animate-pulse flex-col gap-3'
       >
-        <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-[8px] pb-[150%]'>
+        <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-xl pb-[150%]'>
           <div className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105' />
         </div>
 

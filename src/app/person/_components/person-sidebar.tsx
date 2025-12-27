@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { AvatarField, Button } from '@/components/form';
-import { apiConfig, genderOptions } from '@/constants';
-import { formatDate } from '@/utils';
+import { genderOptions } from '@/constants';
+import { formatDate, renderImageUrl } from '@/utils';
 import { Heart, X } from 'lucide-react';
 import { RiTelegram2Fill } from 'react-icons/ri';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,8 +12,8 @@ import { cn } from '@/lib';
 import { FaArrowDown, FaArrowLeftLong } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import { useTopLoader } from 'nextjs-toploader';
-import route from '@/routes';
 import { useMobile } from '@/hooks';
+import { route } from '@/routes';
 
 export default function PersonSidebar({ person }: { person?: PersonResType }) {
   const router = useRouter();
@@ -49,7 +49,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
   }, [isModalOpen]);
 
   return (
-    <div className='border-r-transparent-white max-1120:w-full max-1120:border-none max-1120:pr-0 max-1600:w-85 w-110 flex-shrink-0 border-r pr-10'>
+    <div className='border-r-transparent-white max-1120:w-full max-1120:border-none max-1120:pr-0 max-1600:w-85 w-110 shrink-0 border-r pr-10'>
       <Button
         className={cn('top-0 left-0 ml-0 p-0! hover:bg-transparent!', {
           hidden: isMobile
@@ -70,11 +70,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
           rounded: person?.avatarPath
         })}
         size={160}
-        src={
-          person?.avatarPath
-            ? `${apiConfig.imageProxy.baseUrl}${person?.avatarPath}`
-            : ''
-        }
+        src={renderImageUrl(person?.avatarPath)}
       />
       <h2 className='mb-4 text-center text-2xl leading-1.5 font-semibold text-white'>
         {person?.otherName}

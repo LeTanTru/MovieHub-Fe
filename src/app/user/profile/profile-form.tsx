@@ -9,7 +9,7 @@ import {
   UploadImageField
 } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import ButtonLoading from '@/components/loading/button-loading';
+import { CircleLoading } from '@/components/loading';
 import {
   GENDER,
   GENDER_MALE,
@@ -220,7 +220,7 @@ export default function ProfileForm() {
                       })}
                     >
                       {profileMutation?.isPending ? (
-                        <ButtonLoading />
+                        <CircleLoading className='stroke-slate-500' />
                       ) : (
                         'Cập nhật'
                       )}

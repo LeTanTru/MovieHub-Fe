@@ -1,11 +1,8 @@
 'use client';
+
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
-import {
-  apiConfig,
-  dropdownAvatarList,
-  dropdownAvatarMotion
-} from '@/constants';
+import { dropdownAvatarList, dropdownAvatarMotion } from '@/constants';
 import { ProfileType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -14,6 +11,7 @@ import ListItem from '@/components/list/ListItem';
 import Link from 'next/link';
 import ButtonLogout from '@/components/button-logout';
 import { useState } from 'react';
+import { renderImageUrl } from '@/utils';
 
 type DropdownAvatarProps = {
   profile?: ProfileType | null;
@@ -35,7 +33,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
         {profile?.avatarPath ? (
           <AvatarField
             disablePreview
-            src={`${apiConfig.imageProxy.baseUrl}${profile.avatarPath}`}
+            src={renderImageUrl(profile.avatarPath)}
             className='border-none'
             size={40}
           />
@@ -54,7 +52,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='bg-popover absolute top-[calc(100%_+_0px)] right-1 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-popover absolute top-[calc(100%+0px)] right-1 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-8 h-2 w-4'>
               <div className='bg-popover h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />

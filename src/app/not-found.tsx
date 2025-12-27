@@ -2,7 +2,7 @@ import { image404 } from '@/assets';
 import Header from '@/components/app/header';
 import { Button } from '@/components/form';
 import { Container } from '@/components/layout';
-import route from '@/routes';
+import { route } from '@/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronLeft } from 'react-icons/fa6';
@@ -11,7 +11,7 @@ export default function NotFound() {
   return (
     <div>
       <Header />
-      <Container className='min-h-[calc(100vh_-_400px)] pt-40 pb-40'>
+      <Container className='min-h-[calc(100vh-400px)] pt-40 pb-40'>
         <div className='mx-auto my-24 w-full max-w-200 px-0 py-7.5 text-center'>
           <div className='mb-8 grayscale-[1]'>
             <Image
@@ -22,7 +22,7 @@ export default function NotFound() {
               className='mx-auto h-auto w-full max-w-75 opacity-30'
             />
           </div>
-          <div className='mb-4 text-3xl leading-[1.5] font-bold text-white'>
+          <div className='mb-4 text-3xl leading-normal font-bold text-white'>
             Lỗi 404 - Không tìm thấy trang
           </div>
           <div className='text-statuary mb-12 text-sm'>

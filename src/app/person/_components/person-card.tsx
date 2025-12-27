@@ -1,5 +1,5 @@
 import { AppConstants } from '@/constants';
-import route from '@/routes';
+import { route } from '@/routes';
 import { PersonResType } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ export default function PersonCard({ person }: { person: PersonResType }) {
       <div className='flex flex-col items-center justify-center gap-0'>
         <Link
           href={`${route.person}/${person.id}`}
-          className='image-mask relative m-0 h-0 w-full flex-shrink-0 overflow-hidden rounded-none bg-[#282b3a] pb-[calc(100%_+_40px)]'
+          className='image-mask relative m-0 h-0 w-full shrink-0 overflow-hidden rounded-none bg-[#282b3a] pb-[calc(100%+40px)]'
         >
           <Image
             src={`${AppConstants.contentRootUrl}${person.avatarPath}`}

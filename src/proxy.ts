@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const publicPaths = ['/'];
 const privatePaths = ['/user'];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const accessToken = request.cookies.get(storageKeys.ACCESS_TOKEN)?.value;
   if (privatePaths.some((p) => pathname.startsWith(p))) {
