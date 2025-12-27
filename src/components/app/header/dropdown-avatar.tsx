@@ -6,12 +6,11 @@ import { dropdownAvatarList, dropdownAvatarMotion } from '@/constants';
 import { ProfileType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import List from '@/components/list';
-import ListItem from '@/components/list/ListItem';
 import Link from 'next/link';
 import ButtonLogout from '@/components/button-logout';
 import { useState } from 'react';
 import { renderImageUrl } from '@/utils';
+import { List, ListItem } from '@/components/list';
 
 type DropdownAvatarProps = {
   profile?: ProfileType | null;

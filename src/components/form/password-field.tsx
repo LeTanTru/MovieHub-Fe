@@ -75,12 +75,16 @@ export default function PasswordField<T extends FieldValues>({
         return (
           <FormItem
             className={cn(
-              { 'cursor-not-allowed opacity-50': disabled },
+              { 'cursor-not-allowed': disabled },
               formItemClassName
             )}
           >
             {label && (
-              <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
+              <FormLabel
+                className={cn('ml-2 gap-1.5', labelClassName, {
+                  'opacity-50 select-none': disabled
+                })}
+              >
                 {label}
                 {required && <span className='text-destructive'>*</span>}
               </FormLabel>
@@ -92,20 +96,26 @@ export default function PasswordField<T extends FieldValues>({
                   type={isVisible ? 'text' : type}
                   disabled={disabled}
                   readOnly={readOnly}
+                  autoFocus={false}
                   autoComplete='off'
                   {...field}
                   value={value}
                   style={{ paddingTop: 0 }}
                   className={cn(
                     className,
-                    'pt-0! pb-0.5! placeholder:text-gray-300 focus-visible:ring-[1px]',
+                    'pb-0 leading-9 shadow-none placeholder:text-gray-300 focus-visible:ring-2',
                     {
-                      'cursor-not-allowed opacity-50': disabled
+                      'cursor-not-allowed': disabled
                     },
                     {
-                      'cursor-not-allowed opacity-50': disabled,
-                      'border-red-400 focus-visible:border-red-400 focus-visible:ring-red-400':
-                        fieldState.error
+                      'cursor-not-allowed': disabled,
+                      'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500':
+                        !!fieldState.error
+                    },
+                    !fieldState.error &&
+                      'focus-visible:ring-dodger-blue focus-visible:border-transparent',
+                    {
+                      'pt-0! pb-0!': !value
                     }
                   )}
                 />
@@ -117,6 +127,7 @@ export default function PasswordField<T extends FieldValues>({
                   aria-label={isVisible ? 'Hide password' : 'Show password'}
                   aria-pressed={isVisible}
                   aria-controls='password'
+                  tabIndex={-1}
                 >
                   {isVisible ? (
                     <EyeOffIcon size={16} aria-hidden='true' />
@@ -124,10 +135,14 @@ export default function PasswordField<T extends FieldValues>({
                     <EyeIcon size={16} aria-hidden='true' />
                   )}
                 </Button>
+                {fieldState.error && (
+                  <div className='animate-in fade-in absolute -bottom-6 left-2 z-0 mt-1 text-sm text-red-500'>
+                    <FormMessage />
+                  </div>
+                )}
               </div>
             </FormControl>
             {description && <FormDescription>{description}</FormDescription>}
-            <FormMessage className={'mb-0 ml-1'} />
 
             {/* Strength bar */}
             {/* <div

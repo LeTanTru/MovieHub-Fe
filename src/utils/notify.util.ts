@@ -1,7 +1,7 @@
 import { toast, ToastOptions, Bounce } from 'react-toastify';
 
 const defaultOptions: ToastOptions = {
-  position: 'top-center',
+  position: 'top-right',
   autoClose: 3000,
   hideProgressBar: false,
   closeOnClick: true,
@@ -11,27 +11,39 @@ const defaultOptions: ToastOptions = {
   theme: 'light',
   transition: Bounce,
   className: `
-    bg-secondary! text-foreground!
-    [&>button]:opacity-100!
-    [&>button>svg]:fill-neutral-50!
+    whitespace-nowrap
+    pr-10!
+    min-w-80!
+    max-w-300!
     w-fit!
-    pr-6!
   `
 };
 
-const showSuccess = (message: string, options?: ToastOptions) => {
+const showSuccess = (
+  message: string | React.ReactNode,
+  options?: ToastOptions
+) => {
   toast.success(message, { ...defaultOptions, ...options });
 };
 
-const showError = (message: string, options?: ToastOptions) => {
+const showError = (
+  message: string | React.ReactNode,
+  options?: ToastOptions
+) => {
   toast.error(message, { ...defaultOptions, ...options });
 };
 
-const showInfo = (message: string, options?: ToastOptions) => {
+const showInfo = (
+  message: string | React.ReactNode,
+  options?: ToastOptions
+) => {
   toast.info(message, { ...defaultOptions, ...options });
 };
 
-const showWarning = (message: string, options?: ToastOptions) => {
+const showWarning = (
+  message: string | React.ReactNode,
+  options?: ToastOptions
+) => {
   toast.warn(message, { ...defaultOptions, ...options });
 };
 

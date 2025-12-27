@@ -15,6 +15,9 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: ['**/public/**']
+  },
   ...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
   {
     files: ['**/*.{ts,tsx}'],
@@ -37,8 +40,8 @@ const eslintConfig = [
       'react-refresh': reactRefresh
     },
     rules: {
-      'no-unused-vars': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      'no-unused-vars': ['off'],
+      '@typescript-eslint/no-unused-vars': ['warn'],
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
       'react/jsx-no-target-blank': 'off',

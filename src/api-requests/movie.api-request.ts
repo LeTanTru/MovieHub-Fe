@@ -8,12 +8,12 @@ import {
 import { http } from '@/utils';
 
 const movieApiRequest = {
-  getList: async (params?: MovieSearchParamType) =>
-    await http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
+  getList: (params?: MovieSearchParamType) =>
+    http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
       params
     }),
-  getById: async (id: string) =>
-    await http.get<ApiResponse<MovieResType>>(apiConfig.movie.getById, {
+  getById: (id: string) =>
+    http.get<ApiResponse<MovieResType>>(apiConfig.movie.getById, {
       pathParams: {
         id
       }

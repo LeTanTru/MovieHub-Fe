@@ -1,11 +1,12 @@
-import List from '@/components/list';
-import ListItem from '@/components/list/ListItem';
+'use client';
+
 import { ItemProps } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { cn } from '@/lib';
+import { List, ListItem } from '@/components/list';
 
 export default function NavigationDesktop({
   navigationList
@@ -15,7 +16,7 @@ export default function NavigationDesktop({
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
-    <div className='min-1368:block flex hidden items-center gap-2 md:gap-6'>
+    <div className='1368:block flex hidden items-center gap-2 md:gap-6'>
       <List className='flex gap-4'>
         {navigationList.map((item) =>
           item.submenu ? (

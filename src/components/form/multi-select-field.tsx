@@ -25,9 +25,9 @@ import { ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/form';
 import Image from 'next/image';
 import { emptyData } from '@/assets';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-type SelectFieldProps<
+type MultiSelectFieldProps<
   TFieldValues extends FieldValues,
   TOption extends Record<string, any>
 > = {
@@ -42,13 +42,11 @@ type SelectFieldProps<
   getLabel?: (option: TOption) => string | number;
   getValue?: (option: TOption) => string | number;
   getPrefix?: (option: TOption) => React.ReactNode;
-  allowClear?: boolean;
   searchText?: string;
   notFoundContent?: React.ReactNode;
   labelClassName?: string;
   disabled?: boolean;
-  onValueChange?: (value: string | number | null) => void;
-  renderOption?: (option: TOption) => React.ReactNode;
+  onValueChange?: (value: Array<string | number>) => void;
 };
 
 const normalizeText = (text: string): string =>
@@ -68,7 +66,7 @@ const fuzzyMatch = (text: string, search: string) => {
   return new RegExp(pattern).test(t);
 };
 
-export default function SelectField<
+export default function MultiSelectField<
   TFieldValues extends FieldValues,
   TOption extends Record<string, any>
 >({
@@ -80,17 +78,15 @@ export default function SelectField<
   description,
   className,
   required,
-  allowClear,
+  getLabel = (opt) => opt.label,
+  getValue = (opt) => opt.value,
+  getPrefix = (opt) => opt.prefix,
   searchText,
   notFoundContent = 'Không có kết quả nào',
   labelClassName,
   disabled = false,
-  renderOption,
-  getLabel = (opt) => opt.label,
-  getValue = (opt) => opt.value,
-  getPrefix = (opt) => opt.prefix,
   onValueChange
-}: SelectFieldProps<TFieldValues, TOption>) {
+}: MultiSelectFieldProps<TFieldValues, TOption>) {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -109,22 +105,33 @@ export default function SelectField<
       control={control}
       name={name}
       render={({ field, fieldState }) => {
-        const selectedValue = field.value;
-        const selectedOption = options.find(
-          (o) => getValue(o) === selectedValue
-        );
+        let selectedValues: Array<string | number> = [];
+        if (Array.isArray(field.value)) {
+          selectedValues = field.value;
+        } else if (typeof field.value === 'string' && field.value) {
+          selectedValues = (field.value as string)
+            .split(',')
+            .map((v) => v.trim())
+            .filter(Boolean);
+        }
 
         const handleSelect = (val: string | number) => {
-          field.onChange(val);
-          onValueChange?.(val);
-          setOpen(false);
+          let newValues: Array<string | number> = [];
+          if (selectedValues.includes(val)) {
+            newValues = selectedValues.filter((v) => v !== val);
+          } else {
+            newValues = [...selectedValues, val];
+          }
+          field.onChange(newValues);
+          onValueChange?.(newValues);
         };
 
-        const handleClear = (e: React.MouseEvent) => {
+        const handleRemove = (val: string | number, e: React.MouseEvent) => {
           e.stopPropagation();
-          field.onChange(null);
-          onValueChange?.(null);
-          setOpen(false);
+          e.preventDefault();
+          const newValues = selectedValues.filter((v) => v !== val);
+          field.onChange(newValues);
+          onValueChange?.(newValues);
         };
 
         return (
@@ -150,40 +157,49 @@ export default function SelectField<
                   type='button'
                   variant='outline'
                   role='combobox'
-                  aria-label='Select'
                   disabled={disabled}
                   className={cn(
-                    'focus-visible:border-dodger-blue w-full justify-between border px-3! py-0 text-black shadow-none focus:ring-0 focus-visible:border-2',
+                    'focus-visible:border-dodger-blue h-auto min-h-9 w-full justify-between border px-1! py-1 text-black shadow-none focus:ring-0 focus-visible:border-2',
                     {
+                      'cursor-not-allowed border-gray-300 bg-gray-200/80 text-gray-500':
+                        disabled,
                       'border-dodger-blue ring-dodger-blue ring-[1px]': open,
-                      '[&>div>span]:text-gray-300': fieldState.invalid,
-                      'border-red-500 ring-red-500': fieldState.invalid,
-                      'cursor-not-allowed border-gray-300 bg-gray-200/50 text-gray-400':
-                        disabled
+                      'border-red-500 ring-red-500': fieldState.invalid
                     }
                   )}
                 >
-                  {selectedOption ? (
-                    <div className='flex min-w-0 flex-1 items-center gap-2'>
-                      {getPrefix?.(selectedOption)}
-                      <span className='block truncate'>
-                        {getLabel(selectedOption)}
-                      </span>
+                  {selectedValues.length ? (
+                    <div className='flex min-w-0 flex-wrap gap-1'>
+                      {selectedValues?.length > 0
+                        ? selectedValues.map((val) => {
+                            const option = options.find(
+                              (o) => getValue(o) === val
+                            );
+                            if (!option) return null;
+                            return (
+                              <span
+                                key={val}
+                                className='flex items-center gap-1 rounded bg-gray-200/60 py-1 pr-1 pl-1.5 text-sm'
+                              >
+                                {getLabel(option)}
+                                <span
+                                  className='flex items-center justify-center rounded-sm transition-colors hover:bg-gray-300/60'
+                                  onClick={(e) => handleRemove(val, e)}
+                                  onMouseDown={(e) => e.stopPropagation()}
+                                >
+                                  <X className='h-3 w-3' />
+                                </span>
+                              </span>
+                            );
+                          })
+                        : placeholder}
                     </div>
                   ) : (
-                    <span className='text-gray-300'>{placeholder}</span>
-                  )}
-
-                  {selectedOption && allowClear ? (
-                    <span
-                      onClick={handleClear}
-                      className='bg-accent ml-2 flex h-4 w-4 items-center justify-center rounded-full hover:opacity-80'
-                    >
-                      <X className='size-3' />
+                    <span className='truncate pl-2 text-gray-300'>
+                      {placeholder}
                     </span>
-                  ) : (
-                    <ChevronDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                   )}
+                  <ChevronDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                 </Button>
               </PopoverTrigger>
 
@@ -195,9 +211,9 @@ export default function SelectField<
 
               <PopoverContent className='w-(--radix-popover-trigger-width) p-0'>
                 <Command
-                  ref={commandRef}
                   className='bg-background'
                   shouldFilter={false}
+                  ref={commandRef}
                 >
                   <CommandInput
                     placeholder={searchText}
@@ -217,8 +233,8 @@ export default function SelectField<
                         );
                       } else if (e.key === 'Enter') {
                         e.preventDefault();
-                        const selected = filteredOptions[highlightedIndex];
-                        if (selected) handleSelect(getValue(selected));
+                        const option = filteredOptions[highlightedIndex];
+                        if (option) handleSelect(getValue(option));
                       }
                     }}
                   />
@@ -250,14 +266,15 @@ export default function SelectField<
                   >
                     {filteredOptions.map((opt, idx) => {
                       const val = getValue(opt);
-                      const isSelected = val === selectedValue;
+                      const isSelected = selectedValues.includes(val);
                       return (
                         <CommandItem
                           key={val}
                           onMouseEnter={() => setHighlightedIndex(idx)}
+                          onMouseLeave={() => setHighlightedIndex(-1)}
                           onSelect={() => handleSelect(val)}
                           className={cn(
-                            'block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                            'block cursor-pointer truncate rounded-none transition-all first:rounded-tl first:rounded-tr last:rounded-br last:rounded-bl data-[state=active]:bg-transparent',
                             {
                               'bg-accent text-accent-foreground':
                                 highlightedIndex === idx,
@@ -265,18 +282,12 @@ export default function SelectField<
                             }
                           )}
                         >
-                          {renderOption ? (
-                            renderOption(opt)
-                          ) : (
-                            <>
-                              {getPrefix?.(opt) && (
-                                <span className='mr-1 font-mono text-xs opacity-70'>
-                                  {getPrefix(opt)}
-                                </span>
-                              )}
-                              {getLabel(opt)}
-                            </>
+                          {getPrefix?.(opt) && (
+                            <span className='mr-1 font-mono text-xs opacity-70'>
+                              {getPrefix(opt)}
+                            </span>
                           )}
+                          {getLabel(opt)}
                         </CommandItem>
                       );
                     })}

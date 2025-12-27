@@ -1,6 +1,6 @@
 'use client';
 
-import { ControllerRenderProps, FieldValues } from 'react-hook-form';
+import { FieldValues } from 'react-hook-form';
 import {
   FormControl,
   FormField,
@@ -45,8 +45,8 @@ export default function RadioGroupField<T extends FieldValues>({
     <FormField
       control={control}
       name={name}
-      render={({ field }: { field: ControllerRenderProps<T, any> }) => (
-        <FormItem className='space-y-3'>
+      render={({ field, fieldState }) => (
+        <FormItem className='relative space-y-3'>
           {label && (
             <FormLabel className={cn('ml-1 gap-2', labelClassName)}>
               {label}
@@ -83,7 +83,11 @@ export default function RadioGroupField<T extends FieldValues>({
               ))}
             </RadioGroup>
           </FormControl>
-          <FormMessage className={'mb-0 ml-1'} />
+          {fieldState.error && (
+            <div className='animate-in fade-in absolute -bottom-6 left-2 z-0 mt-1 text-sm text-red-500'>
+              <FormMessage />
+            </div>
+          )}
         </FormItem>
       )}
     />
