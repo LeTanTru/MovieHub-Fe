@@ -3,8 +3,7 @@
 import AuthDialog from '@/components/app/auth';
 import ButtonLogout from '@/components/button-logout';
 import { AvatarField, Button } from '@/components/form';
-import List from '@/components/list';
-import ListItem from '@/components/list/ListItem';
+import { List, ListItem } from '@/components/list';
 import { Separator } from '@/components/ui/separator';
 import {
   GENDER_FEMALE,

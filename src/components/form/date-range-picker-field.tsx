@@ -29,6 +29,7 @@ type Props = {
   className?: string;
   format?: string;
   labelClassName?: string;
+  disabled?: boolean;
 };
 
 export default function DateRangePickerField({
@@ -39,7 +40,8 @@ export default function DateRangePickerField({
   required,
   className,
   format: dateFormat = 'dd/MM/yyyy',
-  labelClassName
+  labelClassName,
+  disabled
 }: Props) {
   const calendarLocale: Locale = vi;
   return (
@@ -47,9 +49,13 @@ export default function DateRangePickerField({
       name={name}
       control={control}
       render={({ field, fieldState }) => (
-        <FormItem className={cn('flex flex-col', className)}>
+        <FormItem className={cn('relative flex flex-col', className)}>
           {label && (
-            <FormLabel className={cn('ml-1 gap-1.5', labelClassName)}>
+            <FormLabel
+              className={cn('ml-2 gap-1.5', labelClassName, {
+                'opacity-50 select-none': disabled
+              })}
+            >
               {label}
               {required && <span className='text-destructive'>*</span>}
             </FormLabel>
@@ -58,10 +64,15 @@ export default function DateRangePickerField({
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
+                  disabled={disabled}
                   variant='outline'
                   className={cn(
-                    'w-full justify-between text-left font-normal',
-                    !field.value && 'text-muted-foreground'
+                    'w-full justify-between text-left font-normal shadow-none',
+                    !field.value && 'text-muted-foreground',
+                    {
+                      'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500 data-[state=open]:border-red-500 data-[state=open]:ring-1 data-[state=open]:ring-red-500':
+                        fieldState.error
+                    }
                   )}
                 >
                   {field.value?.from ? (
@@ -93,7 +104,11 @@ export default function DateRangePickerField({
             </PopoverContent>
           </Popover>
           {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage>{fieldState.error?.message}</FormMessage>
+          {fieldState.error && (
+            <div className='animate-in fade-in absolute -bottom-6 left-2 z-0 mt-1 text-sm text-red-500'>
+              <FormMessage />
+            </div>
+          )}
         </FormItem>
       )}
     />

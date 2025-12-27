@@ -15,11 +15,10 @@ import { useAuthStore } from '@/store';
 import { usePathname } from 'next/navigation';
 import ButtonLogout from '@/components/button-logout';
 import Link from 'next/link';
-import List from '@/components/list';
-import ListItem from '@/components/list/ListItem';
 import { Separator } from '@/components/ui/separator';
 import { route } from '@/routes';
 import { renderImageUrl } from '@/utils';
+import { List, ListItem } from '@/components/list';
 
 export default function Sidebar() {
   const path = usePathname();

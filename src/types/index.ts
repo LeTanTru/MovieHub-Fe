@@ -1,6 +1,7 @@
 export * from './account.type';
 export * from './api.type';
 export * from './auth.type';
+export * from './breadcrumb.type';
 export * from './category.type';
 export * from './master-data.type';
 export * from './movie-item.type';

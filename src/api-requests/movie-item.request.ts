@@ -4,13 +4,10 @@ import { MovieItemResType } from '@/types/movie-item.type';
 import { http } from '@/utils';
 
 const movieItemApiRequest = {
-  getList: async (params?: MovieItemSearchParamType) =>
-    await http.get<ApiResponseList<MovieItemResType>>(
-      apiConfig.movieItem.getList,
-      {
-        params
-      }
-    )
+  getList: (params?: MovieItemSearchParamType) =>
+    http.get<ApiResponseList<MovieItemResType>>(apiConfig.movieItem.getList, {
+      params
+    })
 };
 
 export default movieItemApiRequest;
