@@ -94,7 +94,8 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps<any>>(
                         disabled,
                       'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500':
                         fieldState.error,
-                      'pb-px': !field.value
+                      'pb-px': !field.value,
+                      'pb-0': !!field.value
                     },
                     !fieldState.error &&
                       'focus-visible:ring-dodger-blue focus-visible:border-transparent'

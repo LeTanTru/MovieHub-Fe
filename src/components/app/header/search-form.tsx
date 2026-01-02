@@ -1,12 +1,10 @@
 'use client';
 
-import { Button, Col, InputField, Row } from '@/components/form';
+import { Col, InputField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import { cn } from '@/lib';
 import { searchParamSchema } from '@/schemaValidations';
 import { SearchParamType } from '@/types';
 import { Search } from 'lucide-react';
-import React from 'react';
 
 type SearchFormProps = {
   className?: string;
