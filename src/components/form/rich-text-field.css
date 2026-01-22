@@ -14,7 +14,7 @@
   border: 1px solid transparent !important;
   box-shadow:
     0 0 0 0px #fff,
-    0 0 0 calc(2px + 0px) var(--color-dodger-blue),
+    0 0 0 calc(2px + 0px) var(--color-main-color),
     0 0 #0000;
 }
 

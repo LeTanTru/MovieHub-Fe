@@ -1,13 +1,14 @@
 'use client';
 
 import { cn } from '@/lib';
+import type { ReactNode } from 'react';
 
-interface FieldSetProps {
+type FieldSetProps = {
   title?: string;
   description?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
-}
+};
 
 export default function FieldSet({
   title,

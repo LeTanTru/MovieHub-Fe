@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import {
   Command,
   CommandEmpty,
@@ -25,7 +25,13 @@ import { ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/form';
 import Image from 'next/image';
 import { emptyData } from '@/assets';
-import { useEffect, useRef, useState } from 'react';
+import {
+  type MouseEvent,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 
 type MultiSelectFieldProps<
   TFieldValues extends FieldValues,
@@ -41,9 +47,9 @@ type MultiSelectFieldProps<
   required?: boolean;
   getLabel?: (option: TOption) => string | number;
   getValue?: (option: TOption) => string | number;
-  getPrefix?: (option: TOption) => React.ReactNode;
+  getPrefix?: (option: TOption) => ReactNode;
   searchText?: string;
-  notFoundContent?: React.ReactNode;
+  notFoundContent?: ReactNode;
   labelClassName?: string;
   disabled?: boolean;
   onValueChange?: (value: Array<string | number>) => void;
@@ -126,7 +132,7 @@ export default function MultiSelectField<
           onValueChange?.(newValues);
         };
 
-        const handleRemove = (val: string | number, e: React.MouseEvent) => {
+        const handleRemove = (val: string | number, e: MouseEvent) => {
           e.stopPropagation();
           e.preventDefault();
           const newValues = selectedValues.filter((v) => v !== val);
@@ -159,12 +165,12 @@ export default function MultiSelectField<
                   role='combobox'
                   disabled={disabled}
                   className={cn(
-                    'focus-visible:border-dodger-blue h-auto min-h-9 w-full justify-between border px-1! py-1 text-black shadow-none focus:ring-0 focus-visible:border-2',
+                    'focus-visible:border-main-color h-auto min-h-9 w-full justify-between border px-1! py-1 text-black shadow-none focus:ring-0 focus-visible:border-2',
                     {
                       'cursor-not-allowed border-gray-300 bg-gray-200/80 text-gray-500':
                         disabled,
-                      'border-dodger-blue ring-dodger-blue ring-[1px]': open,
-                      'border-red-500 ring-red-500': fieldState.invalid
+                      'ring-main-color border-transparent ring-2': open,
+                      'border-red-500 ring-red-500': !!fieldState.error
                     }
                   )}
                 >
@@ -278,7 +284,7 @@ export default function MultiSelectField<
                             {
                               'bg-accent text-accent-foreground':
                                 highlightedIndex === idx,
-                              'bg-dodger-blue/10': isSelected
+                              'bg-main-color/10': isSelected
                             }
                           )}
                         >

@@ -25,7 +25,7 @@ export default function DropdownNotification() {
       >
         <div className='relative flex size-10 items-center justify-center rounded-full border border-slate-500 p-4'>
           <BellIcon className={'size-5 fill-white stroke-2'} />
-          <div className='text-accent text-md absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white'>
+          <div className='text-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-base'>
             0
           </div>
         </div>

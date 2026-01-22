@@ -2,7 +2,7 @@
 
 import { Check, X } from 'lucide-react';
 import { useId } from 'react';
-import { Control } from 'react-hook-form';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import {
   FormField,
   FormItem,
@@ -13,9 +13,9 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib';
 
-type BooleanFieldProps = {
-  control: Control<any>;
-  name: string;
+type BooleanFieldProps<T extends FieldValues> = {
+  control: Control<T>;
+  name: FieldPath<T>;
   label?: string;
   required?: boolean;
   labelClassName?: string;
@@ -23,7 +23,7 @@ type BooleanFieldProps = {
   disabled?: boolean;
 };
 
-export default function BooleanField({
+export default function BooleanField<T extends FieldValues>({
   control,
   name,
   label,
@@ -31,7 +31,7 @@ export default function BooleanField({
   className,
   labelClassName,
   disabled
-}: BooleanFieldProps) {
+}: BooleanFieldProps<T>) {
   const id = useId();
 
   return (
@@ -45,7 +45,7 @@ export default function BooleanField({
           {label && (
             <FormLabel
               htmlFor={id}
-              className={cn('ml-1 cursor-pointer gap-1.5', labelClassName, {
+              className={cn('ml-2 cursor-pointer gap-1.5', labelClassName, {
                 'opacity-50 select-none': disabled
               })}
             >
@@ -61,7 +61,7 @@ export default function BooleanField({
                 disabled={disabled}
                 checked={field.value}
                 onCheckedChange={field.onChange}
-                className='peer data-[state=checked]:bg-dodger-blue absolute inset-0 h-[inherit] w-auto cursor-pointer data-[state=unchecked]:bg-gray-300 [&_span]:z-10 [&_span]:size-5.5 [&_span]:transition-transform [&_span]:duration-300 [&_span]:ease-[cubic-bezier(0.16,1,0.3,1)] [&_span]:data-[state=checked]:translate-x-[calc(100%+7px)] [&_span]:data-[state=checked]:rtl:-translate-x-full'
+                className='peer data-[state=checked]:bg-main-color absolute inset-0 h-[inherit] w-auto cursor-pointer data-[state=unchecked]:bg-gray-300 [&_span]:z-10 [&_span]:size-5.5 [&_span]:transition-transform [&_span]:duration-300 [&_span]:ease-[cubic-bezier(0.16,1,0.3,1)] [&_span]:data-[state=checked]:translate-x-[calc(100%+7px)] [&_span]:data-[state=checked]:rtl:-translate-x-full'
               />
               <span className='relative flex min-w-7 items-center justify-center text-center text-white transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] peer-data-[state=checked]:invisible peer-data-[state=unchecked]:translate-x-[calc(100%-5px)] peer-data-[state=unchecked]:rtl:-translate-x-full'>
                 <X size={16} aria-hidden='true' />

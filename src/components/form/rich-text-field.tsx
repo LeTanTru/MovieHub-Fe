@@ -1,9 +1,8 @@
 'use client';
 
-import { Control, FieldPath, FieldValues } from 'react-hook-form';
+import './rich-text-field.css';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
-import { Editor } from '@tinymce/tinymce-react';
-import { useIsMounted } from '@/hooks';
 import {
   FormField,
   FormItem,
@@ -11,7 +10,6 @@ import {
   FormControl,
   FormMessage
 } from '@/components/ui/form';
-import './rich-text-field.css';
 
 type RichTextFieldProps<T extends FieldValues> = {
   control: Control<T>;
@@ -27,6 +25,19 @@ type RichTextFieldProps<T extends FieldValues> = {
 
 import type { Editor as TinyMCEEditor } from 'tinymce';
 import envConfig from '@/config';
+import dynamic from 'next/dynamic';
+
+const TinyEditor = dynamic(
+  () => import('@tinymce/tinymce-react').then((m) => m.Editor),
+  {
+    ssr: false,
+    loading: () => (
+      <div className='bg-muted text-muted-foreground flex h-[450px] items-center justify-center rounded border text-sm'>
+        Loading editor...
+      </div>
+    )
+  }
+);
 
 export default function RichTextField<T extends FieldValues>({
   control,
@@ -39,9 +50,6 @@ export default function RichTextField<T extends FieldValues>({
   readOnly = false,
   height
 }: RichTextFieldProps<T>) {
-  const isMounted = useIsMounted();
-  if (!isMounted) return null;
-
   return (
     <FormField
       control={control}
@@ -56,7 +64,7 @@ export default function RichTextField<T extends FieldValues>({
           )}
 
           <FormControl>
-            <Editor
+            <TinyEditor
               tinymceScriptSrc={envConfig.NEXT_PUBLIC_TINYMCE_URL}
               licenseKey='gpl'
               value={field.value || ''}
@@ -94,7 +102,7 @@ export default function RichTextField<T extends FieldValues>({
                   'emoticons'
                 ],
                 toolbar:
-                  'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                  'undo redo | bold italic underline strikethrough | fontfamily fontsizeinput blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample code | ltr rtl',
                 placeholder: placeholder,
                 content_style: `
                   body { 
@@ -111,8 +119,8 @@ export default function RichTextField<T extends FieldValues>({
                 paste_auto_cleanup_on_paste: true,
                 branding: false,
                 font_size_input_default_unit: 'px',
+                font_size_formats: '8px 12px 14px 15px 16px 18px 20px 32px',
                 promotion: false,
-                tabfocus_elements: ':prev,:next',
                 setup: (editor: TinyMCEEditor) => {
                   editor.on('keydown', (e: KeyboardEvent) => {
                     if (e.key === 'Tab' && !e.shiftKey) {

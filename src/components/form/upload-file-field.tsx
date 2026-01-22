@@ -1,11 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  type ReactNode,
+  type MouseEvent
+} from 'react';
 import { FileIcon, XIcon } from 'lucide-react';
 import {
-  Control,
-  FieldPath,
-  FieldValues,
+  type Control,
+  type FieldPath,
+  type FieldValues,
   useController
 } from 'react-hook-form';
 
@@ -15,12 +21,13 @@ import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { CircleLoading } from '@/components/loading';
 import { logger } from '@/logger';
-import { ApiResponse } from '@/types';
+import type { ApiResponse } from '@/types';
+import { formatBytes } from '@/hooks/use-file-upload';
 
 type UploadFileFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
-  label?: React.ReactNode;
+  label?: ReactNode;
   required?: boolean;
   className?: string;
   accept: string;
@@ -95,7 +102,7 @@ export default function UploadFileField<T extends FieldValues>({
     }
   };
 
-  const handleRemove = async (e: React.MouseEvent) => {
+  const handleRemove = async (e: MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
     try {
@@ -144,7 +151,7 @@ export default function UploadFileField<T extends FieldValues>({
         <input {...getInputProps()} className='hidden' />
 
         <FileIcon
-          className={cn('text-gray-300', {
+          className={cn('stroke-1 text-gray-300', {
             'text-destructive': !!error && !uploading
           })}
         />
@@ -166,9 +173,7 @@ export default function UploadFileField<T extends FieldValues>({
             )}
           </span>
           {file && (
-            <span className='text-xs opacity-60'>
-              {formatFileSize(file.size)}
-            </span>
+            <span className='text-xs opacity-60'>{formatBytes(file.size)}</span>
           )}
         </div>
 
@@ -188,7 +193,7 @@ export default function UploadFileField<T extends FieldValues>({
       {uploading && (
         <div className='mt-2 h-2 w-full overflow-hidden rounded-full'>
           <div
-            className='bg-dodger-blue! skeleton h-full transition-all'
+            className='bg-main-color! skeleton h-full transition-all'
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -197,7 +202,7 @@ export default function UploadFileField<T extends FieldValues>({
       <div className='flex items-center gap-2'>
         {uploading && (
           <div className='flex items-center gap-2 text-sm'>
-            <CircleLoading className='stroke-dodger-blue' />
+            <CircleLoading className='stroke-main-color' />
             {progress}% đang tải...
           </div>
         )}
@@ -208,12 +213,4 @@ export default function UploadFileField<T extends FieldValues>({
       )}
     </div>
   );
-}
-
-function formatFileSize(size: number) {
-  const kb = size / 1024;
-  const mb = kb / 1024;
-
-  if (mb >= 1) return `${mb.toFixed(1)} MB`;
-  return `${kb.toFixed(1)} KB`;
 }

@@ -4,8 +4,13 @@ import { Form } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Ref, useEffect } from 'react';
-import { DefaultValues, useForm, UseFormReturn } from 'react-hook-form';
+import { type ReactNode, type Ref, useEffect } from 'react';
+import {
+  type DefaultValues,
+  useForm,
+  type UseFormReturn,
+  useFormState
+} from 'react-hook-form';
 
 type AsyncDefaultValues<T> = (payload?: unknown) => Promise<T>;
 
@@ -13,7 +18,7 @@ type BaseFormProps<T extends Record<string, any>> = {
   schema: any;
   defaultValues: DefaultValues<T> | AsyncDefaultValues<T>;
   onSubmit: (values: T, form: UseFormReturn<T>) => Promise<void> | void;
-  children?: (methods: UseFormReturn<T>) => React.ReactNode;
+  children?: (methods: UseFormReturn<T>) => ReactNode;
   className?: string;
   initialValues?: T;
   mode?: 'onBlur' | 'onChange' | 'onSubmit' | 'onTouched' | 'all';
@@ -41,15 +46,23 @@ export default function BaseForm<T extends Record<string, any>>({
     shouldFocusError: false
   });
 
+  const formState = useFormState({ control: form.control });
+
   useEffect(() => {
     if (initialValues) {
       form.reset(initialValues);
     }
   }, [initialValues, form]);
-  if (Object.keys(form.formState.errors).length) {
-    logger.info('BaseForm ~ form:', form.formState.errors);
+
+  if (Object.keys(formState.errors).length) {
+    logger.info('BaseForm ~ form:', formState.errors);
     logger.info('BaseForm ~ form:', form.getValues());
   }
+
+  const enhancedForm = {
+    ...form,
+    formState
+  };
 
   return (
     <Form {...form}>
@@ -60,7 +73,7 @@ export default function BaseForm<T extends Record<string, any>>({
         onSubmit={form.handleSubmit((values) => onSubmit(values, form))}
         onChange={onChange}
       >
-        {children?.(form)}
+        {children?.(enhancedForm as UseFormReturn<T>)}
       </form>
     </Form>
   );

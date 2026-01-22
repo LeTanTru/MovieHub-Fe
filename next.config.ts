@@ -1,12 +1,14 @@
 import type { NextConfig } from 'next';
 import createBundleAnalyzer from '@next/bundle-analyzer';
+import envConfig from '@/config';
+import path from 'path';
 
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'media.moviehub.biz',
+        hostname: envConfig.NEXT_PUBLIC_MEDIA_HOST,
         pathname: '/**'
       },
       {
@@ -20,7 +22,9 @@ const nextConfig: NextConfig = {
         pathname: '/**'
       }
     ]
-  }
+  },
+  outputFileTracingRoot: path.join(__dirname),
+  reactCompiler: true
 };
 
 const withBundleAnalyzer = createBundleAnalyzer({

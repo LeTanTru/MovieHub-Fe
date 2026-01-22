@@ -145,7 +145,7 @@ function MovieCard({ mp, dir }: { mp: MoviePersonResType; dir: Dir }) {
               {mp.movie.title}
             </Link>
           </h4>
-          <h4 className='text-light-gray mt-[5px] line-clamp-1 text-xs leading-6'>
+          <h4 className='text-light-gray mt-1.25 line-clamp-1 text-xs leading-6'>
             <Link href={`${route.movie}/${mp.movie.slug}.${mp.movie.id}`}>
               {mp.movie.originalTitle}
             </Link>
@@ -196,7 +196,7 @@ function MovieGridByYear({
           { 'max-1120:mt-4 mt-12': index > 0 }
         )}
       >
-        <div className='before:bg-light-golden-yellow max-1120:h-auto max-1120:before:top-1 relative z-2 h-20 w-20 shrink-0 text-center font-semibold text-white before:absolute before:top-0 before:-left-[5px] before:h-2.5 before:w-2.5 before:rounded-full before:content-[""]'>
+        <div className='before:bg-light-golden-yellow max-1120:h-auto max-1120:before:top-1 relative z-2 h-20 w-20 shrink-0 text-center font-semibold text-white before:absolute before:top-0 before:-left-1.25 before:h-2.5 before:w-2.5 before:rounded-full before:content-[""]'>
           <span className='max-1120:rotate-0 max-1120:justify-start max-1120:text-2xl max-1120:text-white max-1120:opacity-80 flex h-full w-full -rotate-90 items-center justify-end pl-4 text-[40px] font-black tracking-[3px] opacity-20'>
             {year}
           </span>

@@ -30,7 +30,7 @@ export default function NotFound() {
             hoặc quay về trang chủ.
           </div>
           <Button
-            className='hover:bg-light-golden-yellow bg-light-golden-yellow text-md mx-auto flex min-h-12.5 items-center gap-x-2 rounded-4xl font-semibold text-black'
+            className='hover:bg-light-golden-yellow bg-light-golden-yellow mx-auto flex min-h-12.5 items-center gap-x-2 rounded-4xl text-base font-semibold text-black'
             size={'lg'}
           >
             <FaChevronLeft />

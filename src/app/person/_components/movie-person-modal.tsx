@@ -81,21 +81,21 @@ export default function MoviePersonModal({
                   </Button>
                 </Link>
               </div>
-              <TagWrapper className='gap-[5px]'>
+              <TagWrapper className='gap-1.25'>
                 <TagAgeRating
-                  className='flex shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-[22px] font-medium text-black'
+                  className='flex shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-5.5 font-medium text-black'
                   value={
                     ageRatings.find((age) => age.value === mp.movie.ageRating)!
                       .label
                   }
                 />
                 <TagNormal
-                  className='bg-transparent-white inline-flex h-[22px] items-center rounded border-none px-1.5 text-xs text-white'
+                  className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
                   value={formatDate(mp.movie.releaseDate).split('/')[2]}
                 />
               </TagWrapper>
               <div className=''>
-                <TagWrapper className='mt-2 gap-[5px]'>
+                <TagWrapper className='mt-2 gap-1.25'>
                   {mp.movie.categories.map((item, index) => (
                     <TagCategory
                       text={item.name}

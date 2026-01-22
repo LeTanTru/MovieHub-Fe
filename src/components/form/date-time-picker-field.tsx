@@ -1,8 +1,5 @@
 'use client';
 
-import * as React from 'react';
-import { CalendarIcon } from '@radix-ui/react-icons';
-import { format, isValid, Locale, parse } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
@@ -12,15 +9,15 @@ import {
 import {
   FormControl,
   FormDescription,
+  FormField,
   FormItem,
   FormLabel
 } from '@/components/ui/form';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { Control, Controller } from 'react-hook-form';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/form';
-import { vi } from 'date-fns/locale';
-import { DropdownProps } from 'react-day-picker';
+import type { DropdownProps } from 'react-day-picker';
 import {
   Select,
   SelectContent,
@@ -30,10 +27,14 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { DATE_TIME_FORMAT } from '@/constants';
+import { type ChangeEvent, useState } from 'react';
+import { CalendarIcon } from 'lucide-react';
+import { format, isValid, Locale, parse } from 'date-fns';
+import { vi } from 'date-fns/locale';
 
-type Props = {
-  control: Control<any>;
-  name: string;
+type DateTimePickerFieldProps<T extends FieldValues> = {
+  control: Control<T>;
+  name: FieldPath<T>;
   label?: string;
   description?: string;
   required?: boolean;
@@ -43,7 +44,7 @@ type Props = {
   placeholder?: string;
 };
 
-export default function DateTimePickerField({
+export default function DateTimePickerField<T extends FieldValues>({
   control,
   name,
   label,
@@ -53,11 +54,11 @@ export default function DateTimePickerField({
   labelClassName,
   disabled,
   placeholder
-}: Props) {
+}: DateTimePickerFieldProps<T>) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const minutes = Array.from({ length: 60 }, (_, i) => i);
   const seconds = Array.from({ length: 60 }, (_, i) => i);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const calendarLocale: Locale = vi;
 
   const parseDate = (value: string) => {
@@ -67,7 +68,7 @@ export default function DateTimePickerField({
   };
 
   return (
-    <Controller
+    <FormField
       name={name}
       control={control}
       render={({ field, fieldState }) => {
@@ -133,7 +134,7 @@ export default function DateTimePickerField({
                     className={cn(
                       'w-full justify-between text-left font-normal text-black opacity-100',
                       'focus:ring-0 focus-visible:border-gray-200 focus-visible:ring-0',
-                      'data-[state=open]:border-dodger-blue data-[state=open]:ring-dodger-blue shadow-none data-[state=open]:ring-1',
+                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color shadow-none data-[state=open]:ring-1',
                       {
                         'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500 data-[state=open]:border-red-500 data-[state=open]:ring-1 data-[state=open]:ring-red-500':
                           fieldState.error,
@@ -159,11 +160,11 @@ export default function DateTimePickerField({
                     className='flex-1'
                     classNames={{
                       day_button:
-                        'data-[selected-single=true]:bg-dodger-blue data-[selected-single=true]:text-white cursor-pointer ring-0! !focus-visible:ring-0 !focus-visible:ring-offset-0',
+                        'data-[selected-single=true]:bg-main-color data-[selected-single=true]:text-white cursor-pointer ring-0! !focus-visible:ring-0 !focus-visible:ring-offset-0',
                       button_next:
-                        'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -mr-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-dodger-blue',
+                        'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -mr-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-main-color',
                       button_previous:
-                        'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -ml-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-dodger-blue'
+                        'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -ml-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-main-color'
                     }}
                     locale={calendarLocale}
                     mode='single'
@@ -313,7 +314,7 @@ function CustomSelectDropdown(props: DropdownProps) {
         target: {
           value: newValue
         }
-      } as React.ChangeEvent<HTMLSelectElement>;
+      } as ChangeEvent<HTMLSelectElement>;
       onChange(syntheticEvent);
     }
   };

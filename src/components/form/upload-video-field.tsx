@@ -1,11 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import {
+  useState,
+  useEffect,
+  useRef,
+  type ReactNode,
+  type MouseEvent
+} from 'react';
 import { VideoIcon, XIcon } from 'lucide-react';
 import {
-  Control,
-  FieldPath,
-  FieldValues,
+  type Control,
+  type FieldPath,
+  type FieldValues,
   useController
 } from 'react-hook-form';
 
@@ -15,12 +21,12 @@ import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { CircleLoading } from '@/components/loading';
 import { logger } from '@/logger';
-import { ApiResponse } from '@/types';
+import type { ApiResponse } from '@/types';
 
 type UploadVideoFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
-  label?: React.ReactNode;
+  label?: ReactNode;
   onChange?: (url: string) => void;
   required?: boolean;
   className?: string;
@@ -92,7 +98,7 @@ export default function UploadVideoField<T extends FieldValues>({
     }
   };
 
-  const handleRemove = async (e: React.MouseEvent) => {
+  const handleRemove = async (e: MouseEvent) => {
     e.stopPropagation();
     try {
       if (deleteImageFn && value) {
@@ -139,7 +145,7 @@ export default function UploadVideoField<T extends FieldValues>({
         <input {...getInputProps()} className='hidden' />
 
         <VideoIcon
-          className={cn('text-gray-300', {
+          className={cn('stroke-1 text-gray-300', {
             'text-destructive': !!error && !uploading
           })}
         />
@@ -187,7 +193,7 @@ export default function UploadVideoField<T extends FieldValues>({
       {uploading && (
         <div className='mt-2 h-2 w-full overflow-hidden rounded-full'>
           <div
-            className='bg-dodger-blue! skeleton h-full transition-all'
+            className='bg-main-color! skeleton h-full transition-all'
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -196,7 +202,7 @@ export default function UploadVideoField<T extends FieldValues>({
       <div className='flex items-center gap-2'>
         {uploading && (
           <div className='flex items-center gap-2 text-sm'>
-            <CircleLoading className='stroke-dodger-blue' />
+            <CircleLoading className='stroke-main-color' />
             {progress}% đang tải...
           </div>
         )}
