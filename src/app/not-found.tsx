@@ -34,7 +34,7 @@ export default function NotFound() {
             size={'lg'}
           >
             <FaChevronLeft />
-            <Link className='block w-full' href={route.home}>
+            <Link className='block w-full' href={route.home.path}>
               Về trang chủ
             </Link>
           </Button>

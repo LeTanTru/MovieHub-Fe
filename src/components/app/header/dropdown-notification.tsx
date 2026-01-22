@@ -89,7 +89,7 @@ export default function DropdownNotification() {
             </Tabs>
             <Link
               className='border-t-accent hover:bg-popover mt-auto block w-full border-t px-4 py-2 text-center text-sm text-slate-400 transition-all duration-500 ease-linear hover:text-white'
-              href={route.user.notification}
+              href={route.user.notification.path}
               onClick={() => setOpen(false)}
             >
               Xem tất cả

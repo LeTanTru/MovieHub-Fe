@@ -72,7 +72,7 @@ export default function MoviePersonModal({
                   Thích
                 </Button>
                 <Link
-                  href={`${route.movie}/${mp.movie.slug}.${mp.movie.id}`}
+                  href={`${route.movie.path}/${mp.movie.slug}.${mp.movie.id}`}
                   className='block grow'
                 >
                   <Button className='w-full border border-white/50 bg-transparent! text-white'>

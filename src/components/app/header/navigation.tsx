@@ -12,7 +12,7 @@ export default function NavigationMenu() {
   const navigationList: ItemProps[] = [
     {
       label: 'Chủ đề',
-      href: route.topic
+      href: route.topic.path
     },
     {
       label: 'Thể loại',
@@ -20,48 +20,48 @@ export default function NavigationMenu() {
       href: '',
       subItems: (categories.data?.data.content || []).map((category) => ({
         label: category.name,
-        href: `${route.category}/${category.slug}.${category.id}`
+        href: `${route.category.path}/${category.slug}.${category.id}`
       })),
       isGrid: true
     },
     {
       label: 'Phim lẻ',
-      href: `${route.movieType.single}`
+      href: `${route.movieType.single.path}`
     },
     {
       label: 'Phim bộ',
-      href: `${route.movieType.series}`
+      href: `${route.movieType.series.path}`
     },
     {
       label: 'Quốc gia',
       submenu: true,
       subItems: [
-        { href: `${route.country}/` + 'an-do', label: 'Ấn Độ' },
-        { href: `${route.country}/` + 'anh', label: 'Anh' },
-        { href: `${route.country}/` + 'canada', label: 'Canada' },
-        { href: `${route.country}/` + 'duc', label: 'Đức' },
-        { href: `${route.country}/` + 'han-quoc', label: 'Hàn Quốc' },
-        { href: `${route.country}/` + 'hong-kong', label: 'Hồng Kông' },
-        { href: `${route.country}/` + 'indonesia', label: 'Indonesia' },
-        { href: `${route.country}/` + 'italia', label: 'Italia' },
-        { href: `${route.country}/` + 'my', label: 'Mỹ' },
-        { href: `${route.country}/` + 'nga', label: 'Nga' },
-        { href: `${route.country}/` + 'nhat-ban', label: 'Nhật Bản' },
-        { href: `${route.country}/` + 'phap', label: 'Pháp' },
-        { href: `${route.country}/` + 'thai-lan', label: 'Thái Lan' },
-        { href: `${route.country}/` + 'trung-quoc', label: 'Trung Quốc' },
-        { href: `${route.country}/` + 'uc', label: 'Úc' },
-        { href: `${route.country}/` + 'viet-nam', label: 'Việt Nam' }
+        { href: `${route.country.path}/` + 'an-do', label: 'Ấn Độ' },
+        { href: `${route.country.path}/` + 'anh', label: 'Anh' },
+        { href: `${route.country.path}/` + 'canada', label: 'Canada' },
+        { href: `${route.country.path}/` + 'duc', label: 'Đức' },
+        { href: `${route.country.path}/` + 'han-quoc', label: 'Hàn Quốc' },
+        { href: `${route.country.path}/` + 'hong-kong', label: 'Hồng Kông' },
+        { href: `${route.country.path}/` + 'indonesia', label: 'Indonesia' },
+        { href: `${route.country.path}/` + 'italia', label: 'Italia' },
+        { href: `${route.country.path}/` + 'my', label: 'Mỹ' },
+        { href: `${route.country.path}/` + 'nga', label: 'Nga' },
+        { href: `${route.country.path}/` + 'nhat-ban', label: 'Nhật Bản' },
+        { href: `${route.country.path}/` + 'phap', label: 'Pháp' },
+        { href: `${route.country.path}/` + 'thai-lan', label: 'Thái Lan' },
+        { href: `${route.country.path}/` + 'trung-quoc', label: 'Trung Quốc' },
+        { href: `${route.country.path}/` + 'uc', label: 'Úc' },
+        { href: `${route.country.path}/` + 'viet-nam', label: 'Việt Nam' }
       ],
       isGrid: false
     },
     {
       label: 'Diễn viên',
-      href: route.person
+      href: route.person.path
     },
     {
       label: 'Lịch chiếu',
-      href: route.schedule
+      href: route.schedule.path
     }
   ];
 

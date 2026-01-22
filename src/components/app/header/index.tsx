@@ -56,7 +56,7 @@ export default function Header() {
                 <div className='1368:hidden'>
                   <NavigationMenu />
                 </div>
-                <Link href={route.home} className='shrink-0'>
+                <Link href={route.home.path} className='shrink-0'>
                   <Image
                     src={logoWithText}
                     alt='Logo'
