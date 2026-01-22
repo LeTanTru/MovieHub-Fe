@@ -46,11 +46,11 @@ export default function Sidebar() {
                   item.className,
                   {
                     'fill-white':
-                      path === route.user.favorite &&
-                      item.link === route.user.favorite,
+                      path === route.user.favorite.path &&
+                      item.link === route.user.favorite.path,
                     'fill-none stroke-2':
-                      path !== route.user.favorite &&
-                      item.link === route.user.favorite
+                      path !== route.user.favorite.path &&
+                      item.link === route.user.favorite.path
                   },
                   'max-800:size-4'
                 )}

@@ -78,7 +78,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
           {movie?.categories.map((category) => (
             <TagCategoryLink
               key={category.id}
-              href={`${route.category}/${category.slug}`}
+              href={`${route.category.path}/${category.slug}`}
               text={category.name}
             />
           ))}
@@ -105,7 +105,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
             Quốc gia:
           </div>
           <Link
-            href={`${route.country}/${movie.country}`}
+            href={`${route.country.path}/${movie.country}`}
             className='text-statuary hover:text-light-golden-yellow linear font-light transition duration-200'
           >
             {movie.country}
@@ -118,7 +118,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
           {directors.map((director, index) => (
             <Link
               key={director.id}
-              href={`${route.person}/${director.person.id}`}
+              href={`${route.person.path}/${director.person.id}`}
               className='text-statuary hover:text-light-golden-yellow linear font-light transition duration-200'
             >
               {director.person.otherName}
@@ -137,7 +137,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
                 className='flex flex-col items-center gap-3 text-center'
               >
                 <Link
-                  href={`${route.person}/${actor.person.id}`}
+                  href={`${route.person.path}/${actor.person.id}`}
                   className='bg-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
                 >
                   <Image
@@ -149,7 +149,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
                 </Link>
                 <div>
                   <h4 className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 text-sm leading-normal font-normal whitespace-nowrap text-white transition-all duration-200 ease-linear'>
-                    <Link href={`${route.person}/${actor.person.id}`}>
+                    <Link href={`${route.person.path}/${actor.person.id}`}>
                       {actor.person.otherName}
                     </Link>
                   </h4>

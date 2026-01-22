@@ -56,7 +56,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
         })}
         variant='ghost'
         onClick={() => {
-          router.push(route.person);
+          router.push(route.person.path);
           loader.start();
         }}
       >

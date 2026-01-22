@@ -9,7 +9,7 @@ const AppConstants = {
   metaApiUrl: `${metaApiUrl}`,
   apiUrl: `${apiUrl}`,
   mediaUrl: `${mediaUrl}`,
-  contentRootUrl: `${mediaUrl}v1/file/download`,
+  contentRootUrl: `${mediaUrl}/v1/file/download`,
   publicContentUrl: `${mediaUrl}/v1/file/public-download`,
   videoRootUrl: `${mediaUrl}/v1/file/download-video-resource`,
   loginType: GOOGLE_WEB_LOGIN_TYPE

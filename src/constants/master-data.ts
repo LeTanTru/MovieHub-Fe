@@ -57,25 +57,25 @@ export const genderIconMaps: Record<number, LucideIcon> = {
 
 export const dropdownAvatarList: DropdownAvatarItemType[] = [
   {
-    link: route.user.favorite,
+    link: route.user.favorite.path,
     icon: Heart,
     className: 'fill-white stroke-0 size-5',
     title: 'Yêu thích'
   },
   {
-    link: route.user.playlist,
+    link: route.user.playlist.path,
     icon: ListVideo,
     className: 'size-5',
     title: 'Danh sách phát'
   },
   {
-    link: route.user.watchHistory,
+    link: route.user.watchHistory.path,
     icon: History,
     className: 'size-5',
     title: 'Xem tiếp'
   },
   {
-    link: route.user.profile,
+    link: route.user.profile.path,
     icon: User2,
     className: 'size-5',
     title: 'Hồ sơ'
@@ -84,31 +84,31 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
 
 export const userSidebarList: UserSidebarItemType[] = [
   {
-    link: route.user.favorite,
+    link: route.user.favorite.path,
     icon: Heart,
     className: 'fill-white stroke-0 size-5',
     title: 'Yêu thích'
   },
   {
-    link: route.user.playlist,
+    link: route.user.playlist.path,
     icon: ListVideo,
     className: 'size-5',
     title: 'Danh sách phát'
   },
   {
-    link: route.user.watchHistory,
+    link: route.user.watchHistory.path,
     icon: History,
     className: 'size-5',
     title: 'Xem tiếp'
   },
   {
-    link: route.user.notification,
+    link: route.user.notification.path,
     icon: BellIcon,
     className: 'size-5',
     title: 'Thông báo'
   },
   {
-    link: route.user.profile,
+    link: route.user.profile.path,
     icon: User2,
     className: 'size-5',
     title: 'Hồ sơ'

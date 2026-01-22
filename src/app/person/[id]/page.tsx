@@ -14,44 +14,44 @@ export async function generateStaticParams() {
   }));
 }
 
-// export async function generateMetadata(
-//   { params }: { params: Promise<{ id: string }> },
-//   parent: ResolvingMetadata
-// ): Promise<Metadata> {
-//   const { id } = await params;
-//   const numericId = Number(id);
+export async function generateMetadata(
+  { params }: { params: Promise<{ id: string }> },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { id } = await params;
+  const numericId = Number(id);
 
-//   const res = await getPersonDetail(numericId);
-//   const plainDescription = stripHtml(
-//     res.data?.bio ?? 'Thông tin diễn viên'
-//   ).slice(0, 160);
-//   const previousImages = (await parent).openGraph?.images || [];
-//   const images = res.data?.avatarPath
-//     ? [
-//         `${AppConstants.contentRootUrl}${res.data.avatarPath}`,
-//         ...previousImages
-//       ]
-//     : previousImages;
+  const res = await getPersonDetail(numericId);
+  const plainDescription = stripHtml(
+    res.data?.bio ?? 'Thông tin diễn viên'
+  ).slice(0, 160);
+  const previousImages = (await parent).openGraph?.images || [];
+  const images = res.data?.avatarPath
+    ? [
+        `${AppConstants.contentRootUrl}${res.data.avatarPath}`,
+        ...previousImages
+      ]
+    : previousImages;
 
-//   return {
-//     title: `Thông tin diễn viên ${res.data?.otherName}`,
-//     description: plainDescription,
-//     openGraph: {
-//       title: `Thông tin diễn viên ${res.data?.otherName}`,
-//       description: plainDescription,
-//       images
-//     },
-//     twitter: {
-//       card: 'summary_large_image',
-//       title: `Thông tin diễn viên ${res.data?.otherName}`,
-//       description: plainDescription,
-//       images
-//     },
-//     alternates: {
-//       canonical: `${envConfig.NEXT_PUBLIC_URL}/person/${id}`
-//     }
-//   };
-// }
+  return {
+    title: `Thông tin diễn viên ${res.data?.otherName}`,
+    description: plainDescription,
+    openGraph: {
+      title: `Thông tin diễn viên ${res.data?.otherName}`,
+      description: plainDescription,
+      images
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `Thông tin diễn viên ${res.data?.otherName}`,
+      description: plainDescription,
+      images
+    },
+    alternates: {
+      canonical: `${envConfig.NEXT_PUBLIC_URL}/person/${id}`
+    }
+  };
+}
 
 export default async function PersonDetailPage({
   params

@@ -28,7 +28,7 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
         setProfile(null);
         setAuthenticated(false);
         notify.success('Đăng xuất thành công');
-        router.push(route.home);
+        router.push(route.home.path);
       }
     } catch (error) {
       logger.error('Logout failed:', error);

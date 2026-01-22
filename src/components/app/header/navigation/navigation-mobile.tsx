@@ -37,7 +37,7 @@ export default function NavigationMobile({
   });
 
   const navMobileList = userSidebarList.filter(
-    (item) => item.link !== route.user.notification
+    (item) => item.link !== route.user.notification.path
   );
 
   return (

@@ -1,29 +1,64 @@
 export type RouteItem = {
-  [key: string]: RouteItem | string;
+  path?: string;
+  auth?: boolean;
+  permissionCode?: string[];
+  [key: string]: RouteItem | string[] | boolean | string | number | undefined;
 };
 
-const defineRoute = <T extends RouteItem>(routes: T): T => routes;
+export type RouteConfig = Record<string, RouteItem>;
+
+const defineRoute = <T extends RouteConfig>(routes: T): T => routes;
 
 const route = defineRoute({
-  home: '/',
+  home: {
+    path: '/'
+  },
   user: {
-    favorite: '/user/favorite',
-    notification: '/user/notification',
-    playlist: '/user/playlist',
-    profile: '/user/profile',
-    watchHistory: '/user/watch-history'
+    favorite: {
+      path: '/user/favorite'
+    },
+    notification: {
+      path: '/user/notification'
+    },
+    playlist: {
+      path: '/user/playlist'
+    },
+    profile: {
+      path: '/user/profile'
+    },
+    watchHistory: {
+      path: '/user/watch-history'
+    }
   },
-  category: '/category',
-  person: '/person',
-  country: '/country',
-  schedule: '/schedule',
-  movie: '/movie',
+  category: {
+    path: '/category'
+  },
+  person: {
+    path: '/person'
+  },
+  country: {
+    path: '/country'
+  },
+  schedule: {
+    path: '/schedule'
+  },
+  movie: {
+    path: '/movie'
+  },
   movieType: {
-    single: '/movie/single',
-    series: '/movie/series'
+    single: {
+      path: '/movie/single'
+    },
+    series: {
+      path: '/movie/series'
+    }
   },
-  topic: '/topic',
-  watch: '/watch',
+  topic: {
+    path: '/topic'
+  },
+  watch: {
+    path: '/watch'
+  },
   login: {
     path: '/login'
   }
