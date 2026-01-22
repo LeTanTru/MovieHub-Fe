@@ -23,24 +23,29 @@ const apiConfig = defineApiConfig({
         baseUrl: '/api/auth/login',
         method: 'POST',
         headers: baseHeader
+      },
+      refresh: {
+        baseUrl: '/api/auth/refresh-token',
+        method: 'POST',
+        headers: baseHeader
       }
     }
   },
   user: {
     activeVip: {
-      baseUrl: `${AppConstants.apiUrl}//v1/user/active-vip`,
+      baseUrl: `${AppConstants.apiUrl}/v1/user/active-vip`,
       method: 'POST',
       headers: baseHeader
     },
     auth: {
       socialLogin: {
-        baseUrl: `${AppConstants.apiUrl}//v1/user/auth/social-login`,
+        baseUrl: `${AppConstants.apiUrl}/v1/user/auth/social-login`,
         method: 'GET',
         headers: baseHeader,
         isRequiredTenantId: true
       },
       webCallback: {
-        baseUrl: `${AppConstants.apiUrl}//v1/user/auth/web-callback`,
+        baseUrl: `${AppConstants.apiUrl}/v1/user/auth/web-callback`,
         method: 'POST',
         headers: baseHeader,
         isRequiredTenantId: true
@@ -53,18 +58,18 @@ const apiConfig = defineApiConfig({
       }
     },
     changePassword: {
-      baseUrl: `${AppConstants.apiUrl}//v1/user/change-password`,
+      baseUrl: `${AppConstants.apiUrl}/v1/user/change-password`,
       method: 'POST',
       headers: baseHeader
     },
     login: {
-      baseUrl: `${AppConstants.apiUrl}//v1/user/login`,
+      baseUrl: `${AppConstants.apiUrl}/v1/user/login`,
       method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true
     },
     getProfile: {
-      baseUrl: `${AppConstants.apiUrl}//v1/user/profile`,
+      baseUrl: `${AppConstants.apiUrl}/v1/user/profile`,
       method: 'GET',
       headers: baseHeader,
       isRequiredTenantId: true
