@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import {
   Command,
   CommandEmpty,
@@ -25,7 +25,13 @@ import { ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/form';
 import Image from 'next/image';
 import { emptyData } from '@/assets';
-import { useEffect, useState, useRef } from 'react';
+import {
+  useEffect,
+  useState,
+  useRef,
+  type ReactNode,
+  type MouseEvent
+} from 'react';
 
 type SelectFieldProps<
   TFieldValues extends FieldValues,
@@ -41,14 +47,14 @@ type SelectFieldProps<
   required?: boolean;
   getLabel?: (option: TOption) => string | number;
   getValue?: (option: TOption) => string | number;
-  getPrefix?: (option: TOption) => React.ReactNode;
+  getPrefix?: (option: TOption) => ReactNode;
   allowClear?: boolean;
   searchText?: string;
-  notFoundContent?: React.ReactNode;
+  notFoundContent?: ReactNode;
   labelClassName?: string;
   disabled?: boolean;
   onValueChange?: (value: string | number | null) => void;
-  renderOption?: (option: TOption) => React.ReactNode;
+  renderOption?: (option: TOption) => ReactNode;
 };
 
 const normalizeText = (text: string): string =>
@@ -120,7 +126,7 @@ export default function SelectField<
           setOpen(false);
         };
 
-        const handleClear = (e: React.MouseEvent) => {
+        const handleClear = (e: MouseEvent) => {
           e.stopPropagation();
           field.onChange(null);
           onValueChange?.(null);
@@ -153,11 +159,11 @@ export default function SelectField<
                   aria-label='Select'
                   disabled={disabled}
                   className={cn(
-                    'focus-visible:border-dodger-blue w-full justify-between border px-3! py-0 text-black shadow-none focus:ring-0 focus-visible:border-2',
+                    'focus-visible:border-main-color w-full justify-between border px-3! py-0 text-black shadow-none',
                     {
-                      'border-dodger-blue ring-dodger-blue ring-[1px]': open,
+                      'ring-main-color border-transparent ring-2': open,
                       '[&>div>span]:text-gray-300': fieldState.invalid,
-                      'border-red-500 ring-red-500': fieldState.invalid,
+                      'border-red-500 ring-red-500': !!fieldState.error,
                       'cursor-not-allowed border-gray-300 bg-gray-200/50 text-gray-400':
                         disabled
                     }
@@ -261,7 +267,7 @@ export default function SelectField<
                             {
                               'bg-accent text-accent-foreground':
                                 highlightedIndex === idx,
-                              'bg-dodger-blue/10': isSelected
+                              'bg-main-color/10': isSelected
                             }
                           )}
                         >

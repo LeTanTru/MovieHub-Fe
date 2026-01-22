@@ -3,6 +3,7 @@ export * from './api.type';
 export * from './auth.type';
 export * from './breadcrumb.type';
 export * from './category.type';
+export * from './form-error.type';
 export * from './master-data.type';
 export * from './movie-item.type';
 export * from './movie-person.type';

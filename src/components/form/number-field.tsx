@@ -10,13 +10,13 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import {
-  Control,
-  FieldPath,
-  FieldValues,
+  type Control,
+  type FieldPath,
+  type FieldValues,
   useController
 } from 'react-hook-form';
 import { cn } from '@/lib/utils';
-import { ReactNode, useState, useEffect } from 'react';
+import { type ReactNode, useState, useEffect } from 'react';
 import Button from '@/components/form/button';
 import ToolTip from '@/components/form/tooltip';
 
@@ -178,7 +178,7 @@ export default function NumberField<T extends FieldValues>({
                       disabled,
                     'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500':
                       fieldState.error,
-                    'focus-visible:ring-dodger-blue focus-visible:border-transparent focus-visible:ring-2':
+                    'focus-visible:ring-main-color focus-visible:border-transparent focus-visible:ring-2':
                       !fieldState.error,
                     'pb-[0.25px]': !field.value,
                     'pb-[0.5px]': !!field.value

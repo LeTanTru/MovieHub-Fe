@@ -23,7 +23,10 @@ const route = defineRoute({
     series: '/movie/series'
   },
   topic: '/topic',
-  watch: '/watch'
+  watch: '/watch',
+  login: {
+    path: '/login'
+  }
 });
 
 export default route;

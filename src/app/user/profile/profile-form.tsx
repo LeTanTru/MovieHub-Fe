@@ -1,40 +1,49 @@
 'use client';
 
 import {
-  AutoCompleteField,
   Button,
   Col,
   InputField,
   Row,
+  SelectField,
   UploadImageField
 } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import { CircleLoading } from '@/components/loading';
 import {
   GENDER,
   GENDER_MALE,
   genderOptions,
   profileErrorMaps
 } from '@/constants';
+import { useFileUploadManager } from '@/hooks';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
-import { useProfileMutation, useUploadImageMutation } from '@/queries';
+import {
+  useDeleteFileMutation,
+  useProfileMutation,
+  useUploadImageMutation
+} from '@/queries';
 import { updateProfileSchema } from '@/schemaValidations';
 import { useAuthStore } from '@/store';
 import { ProfileResType, ProfileType, UpdateProfileType } from '@/types';
-import { applyFormErrors, notify } from '@/utils';
+import { applyFormErrors, notify, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { useMemo, useState } from 'react';
+import type { UseFormReturn } from 'react-hook-form';
 
 export default function ProfileForm() {
   const { profile } = useAuthStore();
-  const [avatarPath, setAvatarPath] = useState<string>(
-    profile?.avatarPath || ''
-  );
   const [isFormChanged, setIsFormChanged] = useState(false);
   const uploadImageMutation = useUploadImageMutation();
   const profileMutation = useProfileMutation();
+  const deleteFileMutation = useDeleteFileMutation();
+
+  const imageManager = useFileUploadManager({
+    initialUrl: profile?.avatarPath,
+    deleteFileMutation: deleteFileMutation,
+    isEditing: true,
+    onOpen: true
+  });
 
   const defaultValues: ProfileResType = {
     id: 0,
@@ -69,20 +78,15 @@ export default function ProfileForm() {
     ]
   );
 
-  useEffect(() => {
-    if (profile) {
-      setAvatarPath(profile.avatarPath || '');
-    }
-  }, [profile]);
-
   const onSubmit = async (
     values: UpdateProfileType,
     form: UseFormReturn<ProfileType>
   ) => {
+    await imageManager.handleSubmit();
     try {
       const response = await profileMutation.mutateAsync({
         ...values,
-        avatarPath
+        avatarPath: imageManager.currentUrl
       });
       if (response.result) {
         notify.success('Cập nhật thành công');
@@ -101,6 +105,10 @@ export default function ProfileForm() {
     }
   };
 
+  const handleCancel = async () => {
+    await imageManager.handleCancel();
+  };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -108,7 +116,7 @@ export default function ProfileForm() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.25 }}
-        className='bg-background max-1120:mx-auto max-1120:mt-8 max-1120:w-[560px] max-1368:w-5/6 max-600:w-full relative w-2/3 rounded-lg'
+        className='bg-background max-1120:mx-auto max-1120:mt-8 max-1120:w-140 max-1368:w-5/6 max-600:w-full relative w-2/3 rounded-lg'
       >
         <h1 className='max-1120:text-center'>Tài khoản</h1>
         <p className='max-1120:text-center mt-2 text-sm text-slate-400'>
@@ -126,28 +134,19 @@ export default function ProfileForm() {
               <Row className='max-1120:mt-10 max-1120:items-center max-1120:gap-0 flex-col gap-2'>
                 <Col className='max-1120:mb-4 max-1120:w-full mx-auto w-1/6'>
                   <UploadImageField
+                    value={renderImageUrl(imageManager.currentUrl)}
+                    control={form.control}
+                    name='avatarPath'
                     label='Ảnh đại diện'
-                    value={avatarPath}
-                    onChange={(url) => {
-                      setAvatarPath(url);
-                      setIsFormChanged(true);
-                    }}
-                    uploadImageFn={async (blob) => {
-                      const response = await uploadImageMutation.mutateAsync(
-                        blob,
-                        {
-                          onError: (error) => {
-                            logger.error(
-                              'Error while uploading avatar:',
-                              error
-                            );
-                            notify.error('Tải lên avatar thất bại');
-                          }
-                        }
-                      );
-                      return response.data?.filePath!;
+                    onChange={imageManager.trackUpload}
+                    uploadImageFn={async (file: Blob) => {
+                      const res = await uploadImageMutation.mutateAsync({
+                        file
+                      });
+                      return res.data?.filePath ?? '';
                     }}
                     loading={uploadImageMutation.isPending}
+                    deleteImageFn={imageManager.handleDeleteOnClick}
                   />
                 </Col>
                 <Col>
@@ -198,14 +197,12 @@ export default function ProfileForm() {
                   </Row>
                   <Row className='max-1120:mt-0 max-1120:flex-col max-1120:gap-4'>
                     <Col span={12} className='max-1120:w-full'>
-                      <AutoCompleteField
+                      <SelectField
                         control={form.control}
                         options={genderOptions}
                         name='gender'
                         label='Giới tính'
                         required
-                        getLabel={(opt) => opt.label}
-                        getValue={(opt) => opt.value}
                         placeholder='Chọn giới tính'
                         onValueChange={() => setIsFormChanged(true)}
                         className='text-sm'
@@ -215,15 +212,20 @@ export default function ProfileForm() {
                   <div className='max-1120:mt-4 flex justify-end gap-2'>
                     <Button
                       type='submit'
+                      className={cn('ml-2 w-32')}
+                      variant={'ghost'}
+                      onClick={handleCancel}
+                    >
+                      Hủy
+                    </Button>
+                    <Button
+                      type='submit'
                       className={cn('ml-2 w-32', {
                         'cursor-not-allowed opacity-50': !isFormChanged
                       })}
+                      loading={profileMutation?.isPending}
                     >
-                      {profileMutation?.isPending ? (
-                        <CircleLoading className='stroke-slate-500' />
-                      ) : (
-                        'Cập nhật'
-                      )}
+                      Cập nhật
                     </Button>
                   </div>
                 </Col>

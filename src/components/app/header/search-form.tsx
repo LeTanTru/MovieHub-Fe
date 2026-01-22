@@ -27,10 +27,10 @@ export default function SearchForm({ className }: SearchFormProps) {
       {(form) => (
         <>
           <Row className='h-search-form my-0'>
-            <Col className='h-search-form'>
+            <Col className='h-search-form' span={24}>
               <InputField
                 formItemClassName='h-search-form'
-                className='h-search-form border-none! focus-visible:ring-slate-500'
+                className='h-search-form border-none focus-visible:ring-slate-500'
                 prefixIcon={<Search size={16} />}
                 control={form.control}
                 name='title'

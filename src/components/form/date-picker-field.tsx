@@ -1,7 +1,6 @@
 'use client';
 
-import { Control } from 'react-hook-form';
-import { format, isValid, Locale, parse } from 'date-fns';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import {
   FormControl,
   FormDescription,
@@ -18,9 +17,8 @@ import {
 } from '@/components/ui/popover';
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { vi } from 'date-fns/locale';
 import { Button } from '@/components/form';
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent } from 'react';
 import {
   Select,
   SelectContent,
@@ -29,12 +27,14 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import { DropdownProps } from 'react-day-picker';
+import { DropdownProps } from 'react-day-picker/';
 import { DEFAULT_DATE_FORMAT } from '@/constants';
+import { vi } from 'date-fns/locale';
+import { format, parse, isValid, Locale } from 'date-fns';
 
-type Props = {
-  control: Control<any>;
-  name: string;
+type DatePickerFieldProps<T extends FieldValues> = {
+  control: Control<T>;
+  name: FieldPath<T>;
   label?: string;
   description?: string;
   className?: string;
@@ -45,7 +45,7 @@ type Props = {
   labelClassName?: string;
 };
 
-export default function DatePickerField({
+export default function DatePickerField<T extends FieldValues>({
   control,
   name,
   label,
@@ -56,7 +56,7 @@ export default function DatePickerField({
   required,
   placeholder,
   labelClassName
-}: Props) {
+}: DatePickerFieldProps<T>) {
   const calendarLocale: Locale = vi;
   const [open, setOpen] = useState(false);
   // const [popoverWidth, setPopoverWidth] = useState<number | undefined>();
@@ -108,7 +108,7 @@ export default function DatePickerField({
                     className={cn(
                       'w-full justify-between text-left font-normal text-black opacity-100',
                       'focus:ring-0 focus-visible:border-gray-200 focus-visible:ring-0',
-                      'data-[state=open]:border-dodger-blue data-[state=open]:ring-dodger-blue px-3! shadow-none data-[state=open]:ring-1',
+                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color px-3! shadow-none data-[state=open]:ring-1',
                       !field.value && 'text-gray-300',
                       {
                         'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500 data-[state=open]:border-red-500 data-[state=open]:ring-1 data-[state=open]:ring-red-500':
@@ -146,11 +146,11 @@ export default function DatePickerField({
                   }}
                   classNames={{
                     day_button:
-                      'data-[selected-single=true]:bg-dodger-blue data-[selected-single=true]:text-white cursor-pointer ring-0! !focus-visible:ring-0 !focus-visible:ring-offset-0',
+                      'data-[selected-single=true]:bg-main-color data-[selected-single=true]:text-white cursor-pointer ring-0! !focus-visible:ring-0 !focus-visible:ring-offset-0',
                     button_next:
-                      'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -mr-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-dodger-blue',
+                      'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -mr-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-main-color',
                     button_previous:
-                      'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -ml-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-dodger-blue'
+                      'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -ml-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-main-color'
                   }}
                   captionLayout='dropdown'
                   defaultMonth={parsedValue ?? new Date()}
@@ -206,7 +206,7 @@ function CustomSelectDropdown(props: DropdownProps) {
         target: {
           value: newValue
         }
-      } as React.ChangeEvent<HTMLSelectElement>;
+      } as ChangeEvent<HTMLSelectElement>;
 
       onChange(syntheticEvent);
     }

@@ -6,8 +6,11 @@ import {
   useId,
   useRef,
   useState,
-  ForwardedRef,
-  useImperativeHandle
+  type ForwardedRef,
+  useImperativeHandle,
+  type ReactNode,
+  type TextareaHTMLAttributes,
+  type ReactElement
 } from 'react';
 import {
   FormControl,
@@ -17,13 +20,13 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 
 type TextAreaFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
-  label?: string | React.ReactNode;
+  label?: string | ReactNode;
   placeholder?: string;
   className?: string;
   labelClassName?: string;
@@ -34,7 +37,7 @@ type TextAreaFieldProps<T extends FieldValues> = {
   maxLength?: number;
   rows?: number;
   maxRows?: number;
-} & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 const TextAreaField = <T extends FieldValues>(
   {
@@ -111,7 +114,7 @@ const TextAreaField = <T extends FieldValues>(
                 rows={rows ?? 4}
                 className={cn(
                   floatLabel && 'bg-background pt-6',
-                  'focus-visible:ring-dodger-blue min-h-40 shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 aria-invalid:ring-transparent',
+                  'focus-visible:ring-main-color min-h-40 shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 aria-invalid:ring-transparent',
                   {
                     'focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-red-500!':
                       !!fieldState.error
@@ -149,6 +152,6 @@ const TextAreaField = <T extends FieldValues>(
 
 export default forwardRef(TextAreaField) as <T extends FieldValues>(
   props: TextAreaFieldProps<T> & {
-    ref?: React.ForwardedRef<HTMLTextAreaElement>;
+    ref?: ForwardedRef<HTMLTextAreaElement>;
   }
-) => React.ReactElement;
+) => ReactElement;

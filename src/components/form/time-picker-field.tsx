@@ -5,16 +5,21 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
-import { FormControl, FormItem, FormLabel } from '@/components/ui/form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel
+} from '@/components/ui/form';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { Control, Controller } from 'react-hook-form';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { useState } from 'react';
 import { Button } from '@/components/form';
 
-type Props = {
-  control: Control<any>;
-  name: string;
+type TimePickerFieldProps<T extends FieldValues> = {
+  control: Control<T>;
+  name: FieldPath<T>;
   label?: string;
   required?: boolean;
   format?: 'HH:mm:ss' | 'HH:mm' | 'mm:ss';
@@ -22,9 +27,10 @@ type Props = {
   className?: string;
   labelClassName?: string;
   disabled?: boolean;
+  onChange?: (value: string) => void;
 };
 
-export default function TimePickerField({
+export default function TimePickerField<T extends FieldValues>({
   control,
   name,
   label,
@@ -33,8 +39,9 @@ export default function TimePickerField({
   placeholder,
   className,
   labelClassName,
-  disabled = false
-}: Props) {
+  disabled = false,
+  onChange
+}: TimePickerFieldProps<T>) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const minutes = Array.from({ length: 60 }, (_, i) => i);
   const seconds = Array.from({ length: 60 }, (_, i) => i);
@@ -45,7 +52,7 @@ export default function TimePickerField({
   const showSecond = timeFormat.includes('ss');
 
   return (
-    <Controller
+    <FormField
       name={name}
       control={control}
       render={({ field, fieldState }) => {
@@ -58,17 +65,17 @@ export default function TimePickerField({
           minute = Math.floor((field.value % 3600) / 60);
           second = field.value % 60;
 
-          const hh = pad(Math.floor(field.value / 3600));
-          const mm = pad(Math.floor((field.value % 3600) / 60));
-          const ss = pad(field.value % 60);
+          // const hh = pad(Math.floor(field.value / 3600));
+          // const mm = pad(Math.floor((field.value % 3600) / 60));
+          // const ss = pad(field.value % 60);
 
-          const formatted = `${hh}:${mm}:${ss}`;
+          // const formatted = `${hh}:${mm}:${ss}`;
 
-          if (String(field.value) !== formatted) {
-            setTimeout(() => field.onChange(formatted), 0);
-          }
+          // if (String(field.value) !== formatted) {
+          //   setTimeout(() => field.onChange(formatted), 0);
+          // }
         } else if (typeof field.value === 'string') {
-          const parts = field.value.split(':').map((v) => parseInt(v));
+          const parts = field.value.split(':').map((v: string) => parseInt(v));
           hour = isNaN(parts[0]) ? 0 : parts[0];
           minute = isNaN(parts[1]) ? 0 : parts[1];
           second = isNaN(parts[2]) ? 0 : parts[2];
@@ -88,6 +95,7 @@ export default function TimePickerField({
           else if (timeFormat === 'HH:mm') result = `${pad(hh)}:${pad(mm)}`;
           else if (timeFormat === 'mm:ss') result = `${pad(mm)}:${pad(ss)}`;
           field.onChange(result);
+          onChange?.(result);
           // field.onChange(hh * 3600 + mm * 60 + ss);
         };
 
@@ -121,7 +129,7 @@ export default function TimePickerField({
                     className={cn(
                       'w-full justify-start text-left font-normal',
                       !field.value && 'text-muted-foreground',
-                      'data-[state=open]:border-dodger-blue data-[state=open]:ring-dodger-blue px-3! shadow-none data-[state=open]:ring-1',
+                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color px-3! shadow-none data-[state=open]:ring-1',
                       {
                         'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500 data-[state=open]:border-red-500 data-[state=open]:ring-1 data-[state=open]:ring-red-500':
                           fieldState.error
@@ -131,7 +139,8 @@ export default function TimePickerField({
                     <span
                       suppressHydrationWarning
                       className={cn({
-                        'text-gray-300': !field.value,
+                        'text-gray-300':
+                          field.value === null || field.value === undefined,
                         'text-destructive': !!fieldState.error
                       })}
                     >
@@ -145,7 +154,7 @@ export default function TimePickerField({
                 side='bottom'
                 align='start'
               >
-                <div className='flex flex-col divide-y sm:h-[250px] sm:flex-row sm:divide-x sm:divide-y-0'>
+                <div className='flex flex-col divide-y sm:h-62.5 sm:flex-row sm:divide-x sm:divide-y-0'>
                   {showHour && (
                     <ScrollArea className='w-64 sm:w-auto'>
                       <div className='flex p-2 sm:flex-col'>

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { toast, ToastOptions, Bounce } from 'react-toastify';
 
 const defaultOptions: ToastOptions = {
@@ -19,31 +20,19 @@ const defaultOptions: ToastOptions = {
   `
 };
 
-const showSuccess = (
-  message: string | React.ReactNode,
-  options?: ToastOptions
-) => {
+const showSuccess = (message: string | ReactNode, options?: ToastOptions) => {
   toast.success(message, { ...defaultOptions, ...options });
 };
 
-const showError = (
-  message: string | React.ReactNode,
-  options?: ToastOptions
-) => {
+const showError = (message: string | ReactNode, options?: ToastOptions) => {
   toast.error(message, { ...defaultOptions, ...options });
 };
 
-const showInfo = (
-  message: string | React.ReactNode,
-  options?: ToastOptions
-) => {
+const showInfo = (message: string | ReactNode, options?: ToastOptions) => {
   toast.info(message, { ...defaultOptions, ...options });
 };
 
-const showWarning = (
-  message: string | React.ReactNode,
-  options?: ToastOptions
-) => {
+const showWarning = (message: string | ReactNode, options?: ToastOptions) => {
   toast.warn(message, { ...defaultOptions, ...options });
 };
 

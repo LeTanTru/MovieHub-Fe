@@ -7,10 +7,11 @@ import {
   TooltipTrigger
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib';
+import type { ReactNode } from 'react';
 
 type TooltipProps = {
-  title: React.ReactNode;
-  children: React.ReactNode;
+  title: ReactNode;
+  children: ReactNode;
   side?: 'top' | 'bottom' | 'left' | 'right';
   align?: 'start' | 'center' | 'end';
   sideOffset?: number;

@@ -1,16 +1,24 @@
 'use client';
 
-import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { EyeIcon } from 'lucide-react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { AiOutlineUser } from 'react-icons/ai';
+import {
+  type HTMLAttributes,
+  type MouseEvent,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 
 type AvatarFieldProps = {
   size?: number;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   src?: string;
   className?: string;
   previewClassName?: string;
@@ -24,10 +32,10 @@ type AvatarFieldProps = {
   alt?: string;
   zoomOnScroll?: boolean;
   showHoverIcon?: boolean;
-} & React.HTMLAttributes<HTMLElement>;
+} & HTMLAttributes<HTMLElement>;
 
 export default function AvatarField({
-  size = 50,
+  size = 48,
   previewSize = 200,
   icon,
   src,
@@ -44,38 +52,41 @@ export default function AvatarField({
   alt,
   ...props
 }: AvatarFieldProps) {
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [scale, setScale] = React.useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [scale, setScale] = useState(1);
 
-  const previewRef = React.useRef<HTMLDivElement | null>(null);
+  const previewRef = useRef<HTMLDivElement | null>(null);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = (e: MouseEvent) => {
     if (disablePreview || !src) return;
     e.preventDefault();
     e.stopPropagation();
     setIsModalOpen(true);
   };
 
-  const handleWheel = (e: WheelEvent) => {
-    if (!zoomOnScroll) return;
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      if (!zoomOnScroll) return;
 
-    e.preventDefault();
+      e.preventDefault();
 
-    setScale((prev) => {
-      let next = prev + (e.deltaY > 0 ? -0.1 : 0.1);
-      next = Math.max(1, Math.min(3, next));
-      return next;
-    });
-  };
+      setScale((prev) => {
+        let next = prev + (e.deltaY > 0 ? -0.1 : 0.1);
+        next = Math.max(1, Math.min(3, next));
+        return next;
+      });
+    },
+    [zoomOnScroll]
+  );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isModalOpen || !previewRef.current) return;
 
     const node = previewRef.current;
     node.addEventListener('wheel', handleWheel, { passive: false });
 
     return () => node.removeEventListener('wheel', handleWheel);
-  }, [isModalOpen]);
+  }, [handleWheel, isModalOpen]);
 
   return (
     <>
@@ -119,64 +130,66 @@ export default function AvatarField({
         )}
       </div>
 
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setScale(1);
-              setIsModalOpen(false);
-            }}
-          >
-            <motion.div
-              ref={previewRef}
-              className={cn(
-                'relative cursor-zoom-in rounded',
-                previewClassName
-              )}
-              style={{
-                width: previewSize * previewAspect,
-                height: previewSize
+      <LazyMotion features={domAnimation} strict>
+        <AnimatePresence>
+          {isModalOpen && (
+            <m.div
+              className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setScale(1);
+                setIsModalOpen(false);
               }}
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              onClick={(e) => e.stopPropagation()}
             >
-              {src && (
-                <div
-                  className='relative'
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    overflow: 'visible'
-                  }}
-                >
-                  <Image
-                    src={src}
-                    alt='Preview'
-                    fill
-                    className={cn(
-                      'rounded-full object-cover transition-transform duration-100',
-                      imagePreviewClassName
-                    )}
+              <m.div
+                ref={previewRef}
+                className={cn(
+                  'relative cursor-zoom-in rounded',
+                  previewClassName
+                )}
+                style={{
+                  width: previewSize * previewAspect,
+                  height: previewSize
+                }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {src && (
+                  <div
+                    className='relative'
                     style={{
-                      transform: `scale(${scale})`,
-                      transformOrigin: 'center center'
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'visible'
                     }}
-                    unoptimized
-                  />
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  >
+                    <Image
+                      src={src}
+                      alt='Preview'
+                      fill
+                      className={cn(
+                        'rounded-full object-cover transition-transform duration-100',
+                        imagePreviewClassName
+                      )}
+                      style={{
+                        transform: `scale(${scale})`,
+                        transformOrigin: 'center center'
+                      }}
+                      unoptimized
+                    />
+                  </div>
+                )}
+              </m.div>
+            </m.div>
+          )}
+        </AnimatePresence>
+      </LazyMotion>
     </>
   );
 }

@@ -146,3 +146,7 @@ export const movieKinds = {
   MOVIE_KIND_SINGLE,
   MOVIE_KIND_SERIES
 };
+
+export const queryKeys = {
+  FILE: 'file'
+};

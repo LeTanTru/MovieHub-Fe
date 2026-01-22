@@ -8,7 +8,12 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { Control, FieldPath, FieldValues, useWatch } from 'react-hook-form';
+import {
+  type Control,
+  type FieldPath,
+  type FieldValues,
+  useWatch
+} from 'react-hook-form';
 import {
   Command,
   CommandEmpty,
@@ -24,7 +29,7 @@ import {
 import { cn } from '@/lib/utils';
 import { ChevronDown, X } from 'lucide-react';
 import { Button } from '@/components/form';
-import { ApiConfig, ApiResponseList } from '@/types';
+import type { ApiConfig, ApiResponseList } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { http } from '@/utils';
 import {
@@ -35,13 +40,13 @@ import {
 import debounce from 'lodash/debounce';
 import Image from 'next/image';
 import { emptyData } from '@/assets';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { CircleLoading } from '@/components/loading';
 
 type AutoCompleteOption<T = any> = {
   label: string;
   value: string | number;
-  prefix?: React.ReactNode;
+  prefix?: ReactNode;
   extra?: T;
 };
 
@@ -60,14 +65,15 @@ type AutoCompleteFieldProps<
   required?: boolean;
   allowClear?: boolean;
   searchText?: string;
-  notFoundContent?: React.ReactNode;
+  notFoundContent?: ReactNode;
   labelClassName?: string;
   disabled?: boolean;
   apiConfig: ApiConfig;
   fetchAll?: boolean;
+  initialOptionParamName?: string;
   onValueChange?: (value: string | number | null) => void;
   mappingData: (option: TOption) => AutoCompleteOption | null;
-  renderOption?: (option: AutoCompleteOption<TOption>) => React.ReactNode;
+  renderOption?: (option: AutoCompleteOption<TOption>) => ReactNode;
 };
 
 export default function AutoCompleteField<
@@ -90,6 +96,7 @@ export default function AutoCompleteField<
   disabled = false,
   apiConfig,
   fetchAll = false,
+  initialOptionParamName,
   onValueChange,
   mappingData,
   renderOption
@@ -136,7 +143,7 @@ export default function AutoCompleteField<
       }
       return http.get<ApiResponseList<TOption>>(apiConfig, { params });
     },
-    enabled: true
+    enabled: open
   });
 
   const loading = query.isLoading || query.isFetching;
@@ -145,7 +152,7 @@ export default function AutoCompleteField<
     if (debouncedSearch !== '') {
       query.refetch();
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, query]);
 
   const options: AutoCompleteOption<TOption>[] = (
     query.data?.data.content || []
@@ -166,7 +173,7 @@ export default function AutoCompleteField<
 
     const getInitialOptions = async () => {
       const res = await http.get<ApiResponseList<TOption>>(apiConfig, {
-        params: { id: fieldValue }
+        params: { [initialOptionParamName || 'id']: fieldValue }
       });
       if (res.result && res.data.content.length > 0) {
         const mapped = mappingData(res.data.content[0]);
@@ -180,7 +187,13 @@ export default function AutoCompleteField<
 
     getInitialOptions();
     initialFetched.current = true;
-  }, [apiConfig, fieldValue, mappingData]);
+  }, [
+    apiConfig,
+    fieldValue,
+    initialOptionParamName,
+    mappingData,
+    selectedOption?.value
+  ]);
 
   const combinedOptions: AutoCompleteOption[] = useMemo(() => {
     const opts = options.filter((opt) => initialOption?.value !== opt.value);
@@ -253,9 +266,9 @@ export default function AutoCompleteField<
                     {
                       'disabled:cursor-not-allowed disabled:opacity-100 disabled:hover:bg-transparent disabled:[&>div>span]:opacity-80':
                         disabled,
-                      'border-dodger-blue ring-dodger-blue ring-1': open,
+                      'ring-main-color border-transparent ring-2': open,
                       '[&>div>span]:text-gray-300': fieldState.invalid,
-                      'border-red-500 ring-red-500': fieldState.invalid
+                      'border-red-500 ring-red-500': !!fieldState.error
                     }
                   )}
                 >
@@ -355,7 +368,7 @@ export default function AutoCompleteField<
                       }}
                     >
                       {loading ? (
-                        <CircleLoading className='stroke-dodger-blue my-2 size-7' />
+                        <CircleLoading className='stroke-main-color my-2 size-7' />
                       ) : (
                         combinedOptions.map((opt, idx) => (
                           <CommandItem

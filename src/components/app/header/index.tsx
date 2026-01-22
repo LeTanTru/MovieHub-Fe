@@ -67,7 +67,7 @@ export default function Header() {
               </>
             )}
             <div className='1368:block hidden w-80 max-w-92'>
-              <SearchForm className='w-full' />
+              <SearchForm className='w-full bg-transparent' />
             </div>
             <div className='1368:block hidden grow items-center gap-2'>
               <NavigationMenu />
@@ -162,7 +162,7 @@ export default function Header() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: 'linear' }}
-                className='bg-background absolute right-[50px] left-2.5 z-1000 p-3 shadow-lg'
+                className='bg-background absolute right-12.5 left-2.5 z-1000 p-3 shadow-lg'
               >
                 <SearchForm className='w-full' />
               </motion.div>
