@@ -58,103 +58,103 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-// const refreshToken = async () => {
-//   let token: string | null = null;
-//   if (isClient()) {
-//     token = getRefreshTokenFromLocalStorage();
-//   } else {
-//     token = await getRefreshTokenFromCookie();
-//   }
-//   const response: ApiResponse<RefreshTokenResType> = await axios.post(
-//     apiConfig.auth.refreshToken.baseUrl,
-//     {
-//       refresh_token: token,
-//       grant_type: envConfig.NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN
-//     },
-//     {
-//       headers: {
-//         Authorization: `Basic ${btoa(`${envConfig.NEXT_PUBLIC_APP_USERNAME}:${envConfig.NEXT_PUBLIC_APP_PASSWORD}`)}`
-//       }
-//     }
-//   );
-//   const data = response.data;
-//   if (data) {
-//     const newAccessToken = data.access_token;
-//     const newRefreshToken = data.refresh_token;
-//     if (isClient()) {
-//       if (newAccessToken) setAccessTokenToLocalStorage(newAccessToken);
-//       if (newRefreshToken) setRefreshTokenToLocalStorage(newRefreshToken);
-//     } else {
-//       if (newAccessToken) await setAccessTokenToCookie(newAccessToken);
-//       if (newRefreshToken) await setRefreshTokenToCookie(newRefreshToken);
-//     }
-//   }
-//   return response.data?.access_token;
-// };
+const refreshToken = async () => {
+  let token: string | null = null;
+  if (isClient()) {
+    token = getRefreshTokenFromLocalStorage();
+  } else {
+    token = await getRefreshTokenFromCookie();
+  }
+  const response: ApiResponse<RefreshTokenResType> = await axios.post(
+    apiConfig.user.auth.refreshToken.baseUrl,
+    {
+      refresh_token: token,
+      grant_type: envConfig.NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN
+    },
+    {
+      headers: {
+        Authorization: `Basic ${btoa(`${envConfig.NEXT_PUBLIC_APP_USERNAME}:${envConfig.NEXT_PUBLIC_APP_PASSWORD}`)}`
+      }
+    }
+  );
+  const data = response.data;
+  if (data) {
+    const newAccessToken = data.access_token;
+    const newRefreshToken = data.refresh_token;
+    if (isClient()) {
+      if (newAccessToken) setAccessTokenToLocalStorage(newAccessToken);
+      if (newRefreshToken) setRefreshTokenToLocalStorage(newRefreshToken);
+    } else {
+      if (newAccessToken) await setAccessTokenToCookie(newAccessToken);
+      if (newRefreshToken) await setRefreshTokenToCookie(newRefreshToken);
+    }
+  }
+  return response.data?.access_token;
+};
 
-// axiosInstance.interceptors.response.use(
-//   (res) => res,
-//   async (error: AxiosError) => {
-//     const originalConfig = error.config as RequestConfigWithRetry;
-//     if (
-//       error.response &&
-//       error.status === HttpStatusCode.Unauthorized &&
-//       !originalConfig._retry
-//     ) {
-//       originalConfig._retry = true;
+axiosInstance.interceptors.response.use(
+  (res) => res,
+  async (error: AxiosError) => {
+    const originalConfig = error.config as RequestConfigWithRetry;
+    if (
+      error.response &&
+      error.status === HttpStatusCode.Unauthorized &&
+      !originalConfig._retry
+    ) {
+      originalConfig._retry = true;
 
-//       if (isRefreshing) {
-//         return new Promise((resolve, reject) => {
-//           failedQueue.push({ resolve, reject });
-//         })
-//           .then((token) => {
-//             if (originalConfig.headers) {
-//               originalConfig.headers['Authorization'] = `Bearer ${token}`;
-//             }
-//             return axiosInstance.request(originalConfig);
-//           })
-//           .catch((err) => {
-//             return Promise.reject(err);
-//           });
-//       }
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            if (originalConfig.headers) {
+              originalConfig.headers['Authorization'] = `Bearer ${token}`;
+            }
+            return axiosInstance.request(originalConfig);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
 
-//       isRefreshing = true;
+      isRefreshing = true;
 
-//       try {
-//         const newAccessToken = await refreshToken();
+      try {
+        const newAccessToken = await refreshToken();
 
-//         if (originalConfig.headers && newAccessToken) {
-//           originalConfig.headers['Authorization'] = `Bearer ${newAccessToken}`;
-//         }
+        if (originalConfig.headers && newAccessToken) {
+          originalConfig.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        }
 
-//         processQueue(null, newAccessToken);
-//         isRefreshing = false;
+        processQueue(null, newAccessToken);
+        isRefreshing = false;
 
-//         return axiosInstance.request(originalConfig);
-//       } catch (refreshError) {
-//         if (
-//           refreshError instanceof AxiosError &&
-//           refreshError?.response?.status === HttpStatusCode.BadRequest
-//         ) {
-//           if (isClient()) {
-//             removeAccessTokenFromLocalStorage();
-//             removeRefreshTokenFromLocalStorage();
-//             window.location.href = route.login.path;
-//           } else {
-//             await removeAccessTokenFromCookie();
-//             await removeRefreshTokenFromCookie();
-//             redirect(route.login.path);
-//           }
-//         }
-//         processQueue(refreshError, null);
-//         isRefreshing = false;
-//         return Promise.reject(refreshError);
-//       }
-//     }
+        return axiosInstance.request(originalConfig);
+      } catch (refreshError) {
+        if (
+          refreshError instanceof AxiosError &&
+          refreshError?.response?.status === HttpStatusCode.BadRequest
+        ) {
+          if (isClient()) {
+            removeAccessTokenFromLocalStorage();
+            removeRefreshTokenFromLocalStorage();
+            window.location.href = route.login.path;
+          } else {
+            await removeAccessTokenFromCookie();
+            await removeRefreshTokenFromCookie();
+            redirect(route.login.path);
+          }
+        }
+        processQueue(refreshError, null);
+        isRefreshing = false;
+        return Promise.reject(refreshError);
+      }
+    }
 
-//     return Promise.reject(error);
-//   }
-// );
+    return Promise.reject(error);
+  }
+);
 
 export const sendRequest = async <T>(
   apiConfig: ApiConfig,
