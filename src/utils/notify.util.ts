@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { toast, ToastOptions, Bounce } from 'react-toastify';
 
 const defaultOptions: ToastOptions = {
-  position: 'top-right',
+  position: 'bottom-right',
   autoClose: 3000,
   hideProgressBar: false,
   closeOnClick: true,

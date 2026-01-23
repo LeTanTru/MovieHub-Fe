@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import envConfig from '@/config';
+import { CircleLoading } from '@/components/loading';
 
 export default function GoogleCallback() {
   const router = useRouter();
@@ -19,7 +20,11 @@ export default function GoogleCallback() {
     } else {
       router.push('/');
     }
-  }, [router]);
+  }, [callbackUrl, router]);
 
-  return <div className='bg-accent'></div>;
+  return (
+    <div className='bg-accent flex h-screen items-center justify-center'>
+      <CircleLoading className='size-10' />
+    </div>
+  );
 }

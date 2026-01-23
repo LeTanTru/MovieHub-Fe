@@ -2,7 +2,7 @@ import { apiConfig } from '@/constants';
 import {
   ApiResponse,
   LoginBodyType,
-  LoginResponse,
+  LoginResponseType,
   Payload,
   RegisterBodyType
 } from '@/types';
@@ -14,26 +14,30 @@ const authApiRequest = {
       params: { loginType }
     }),
   loginGoogle: (code: string) =>
-    http.post<ApiResponse<any>>(apiConfig.api.auth.loginGoogle, {
-      body: { code }
-    }),
+    http.post<ApiResponse<any> & LoginResponseType>(
+      apiConfig.api.auth.loginGoogle,
+      {
+        body: { code }
+      }
+    ),
   loginGoogleCallback: (code: string) =>
-    http.post<LoginResponse>(apiConfig.user.auth.webCallback, {
+    http.post<LoginResponseType>(apiConfig.user.auth.webCallback, {
       body: { code }
     }),
-  logout: () => http.post<ApiResponse<any>>(apiConfig.api.auth.logout),
   login: (body: LoginBodyType) =>
-    http.post<ApiResponse<any> & LoginResponse>(apiConfig.api.auth.login, {
+    http.post<ApiResponse<any> & LoginResponseType>(apiConfig.api.auth.login, {
       body
     }),
   loginFromNextServer: (body: Payload) =>
-    http.post<ApiResponse<any> & LoginResponse>(apiConfig.user.login, {
+    http.post<ApiResponse<any> & LoginResponseType>(apiConfig.user.login, {
       body
     }),
   register: (body: RegisterBodyType) =>
     http.post<ApiResponse<any>>(apiConfig.user.register, {
       body: body
-    })
+    }),
+  logout: () => http.post<ApiResponse<any>>(apiConfig.api.auth.logout),
+  logoutFromNextServer: () => http.post<ApiResponse<any>>(apiConfig.user.logout)
 };
 
 export default authApiRequest;

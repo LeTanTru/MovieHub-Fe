@@ -49,13 +49,13 @@ const apiConfig = defineApiConfig({
         method: 'POST',
         headers: baseHeader,
         isRequiredTenantId: true
-      },
-      refreshToken: {
-        baseUrl: `${AppConstants.metaApiUrl}/api/token`,
-        method: 'POST',
-        headers: baseHeader,
-        isRequiredTenantId: true
       }
+    },
+    refreshToken: {
+      baseUrl: `${AppConstants.metaApiUrl}/api/token`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
     },
     changePassword: {
       baseUrl: `${AppConstants.apiUrl}/v1/user/change-password`,
@@ -64,6 +64,12 @@ const apiConfig = defineApiConfig({
     },
     login: {
       baseUrl: `${AppConstants.apiUrl}/v1/user/login`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    logout: {
+      baseUrl: `${AppConstants.metaApiUrl}/v1/auth/logout`,
       method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true

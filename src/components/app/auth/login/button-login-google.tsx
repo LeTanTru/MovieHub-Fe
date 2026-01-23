@@ -5,26 +5,40 @@ import { Button } from '@/components/form';
 import envConfig from '@/config';
 import { AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import { useLoginGoogleMutation, useLoginGoogleQuery } from '@/queries';
+import {
+  useLoginGoogleMutation,
+  useLoginGoogleQuery,
+  useProfileQuery
+} from '@/queries';
 import { useAuthDialogStore, useAuthStore } from '@/store';
-import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
+import {
+  notify,
+  setAccessTokenToLocalStorage,
+  setData,
+  setRefreshTokenToLocalStorage
+} from '@/utils';
 import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function ButtonLoginGoogle() {
-  const authDialogStore = useAuthDialogStore();
-  const authStore = useAuthStore();
-  const loginGoogleQuery = useLoginGoogleQuery(AppConstants.loginType);
-  const loginGoogleMutation = useLoginGoogleMutation();
+  const setOpen = useAuthDialogStore((s) => s.setOpen);
+  const setProfile = useAuthStore((s) => s.setProfile);
 
-  const loading = loginGoogleQuery.isFetching || loginGoogleMutation.isPending;
+  const { refetch: getLoginGoogleUrl, isFetching } = useLoginGoogleQuery(
+    AppConstants.loginType
+  );
+  const { mutateAsync: loginGoogleMutation, isPending } =
+    useLoginGoogleMutation();
+  const { refetch: getProfile } = useProfileQuery();
+
+  const loading = isFetching || isPending;
 
   const handleGetGoogleLoginUrl = async () => {
     try {
-      const response = await loginGoogleQuery.refetch();
+      const res = await getLoginGoogleUrl();
 
-      const googleLoginUrl = response.data?.data;
+      const googleLoginUrl = res.data?.data;
       const width = 500;
       const height = 600;
 
@@ -47,23 +61,25 @@ export default function ButtonLoginGoogle() {
         `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no,status=no`
       );
     } catch (error) {
-      logger.error('Error logging in with Google:', error);
+      logger.error('Error logging in google', error);
     }
   };
 
   useEffect(() => {
     const handleLogin = async (code: string) => {
       try {
-        const response = await loginGoogleMutation.mutateAsync(code);
-
-        setAccessTokenToLocalStorage(response.data?.access_token!);
-        setData(storageKeys.USER_KIND, String(response.data?.user_kind!));
-
-        authDialogStore.setOpen(false);
-        setTimeout(() => {
-          authStore.setAuthenticated(true);
-        }, 100);
-        notify.success('Đăng nhập thành công');
+        const res = await loginGoogleMutation(code);
+        if (res.result) {
+          setAccessTokenToLocalStorage(res.access_token);
+          setRefreshTokenToLocalStorage(res.refresh_token);
+          setData(storageKeys.USER_KIND, String(res.user_kind));
+          notify.success('Đăng nhập thành công');
+          const profile = await getProfile();
+          if (profile.data?.data) {
+            setProfile(profile.data?.data);
+          }
+          setOpen(false);
+        }
       } catch (error) {
         logger.error('Error during Google login:', error);
         notify.error('Đăng nhập thất bại');
@@ -80,13 +96,7 @@ export default function ButtonLoginGoogle() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [
-    loginGoogleMutation,
-    authStore.setAuthenticated,
-    authDialogStore.setOpen,
-    authDialogStore,
-    authStore
-  ]);
+  }, [getProfile, loginGoogleMutation, setOpen, setProfile]);
 
   return (
     <Button

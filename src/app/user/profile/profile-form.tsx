@@ -84,15 +84,15 @@ export default function ProfileForm() {
   ) => {
     await imageManager.handleSubmit();
     try {
-      const response = await profileMutation.mutateAsync({
+      const res = await profileMutation.mutateAsync({
         ...values,
         avatarPath: imageManager.currentUrl
       });
-      if (response.result) {
+      if (res.result) {
         notify.success('Cập nhật thành công');
         setIsFormChanged(false);
       } else {
-        const errorCode = response.code;
+        const errorCode = res.code;
         if (errorCode) {
           applyFormErrors(form, errorCode, profileErrorMaps);
         } else {

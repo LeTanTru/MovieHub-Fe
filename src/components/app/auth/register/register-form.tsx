@@ -1,20 +1,24 @@
 'use client';
 
 import { UseFormReturn } from 'react-hook-form';
-import { Button, CheckboxField, Col, InputField, Row } from '@/components/form';
-import PasswordField from '@/components/form/password-field';
+import {
+  Button,
+  CheckboxField,
+  Col,
+  InputField,
+  PasswordField,
+  Row
+} from '@/components/form';
 import Link from 'next/link';
 import { registerSchema } from '@/schemaValidations';
 import { RegisterType } from '@/types';
-import { registerErrorMaps } from '@/constants';
+import { AUTH_DIALOG_DELAY, registerErrorMaps } from '@/constants';
 import { applyFormErrors, notify } from '@/utils';
 import { useAuthDialogStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import { useState } from 'react';
-import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useRegisterMutation } from '@/queries';
-import { CircleLoading } from '@/components/loading';
 
 export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   const { setOpen, setMode } = useAuthDialogStore();
@@ -25,26 +29,27 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
     terms: false
   };
   const [isFormChanged, setIsFormChanged] = useState(false);
-  const registerMutation = useRegisterMutation();
+  const { mutateAsync: registerMutation, isPending: loading } =
+    useRegisterMutation();
 
   const onSubmit = async (
     values: RegisterType,
     form: UseFormReturn<RegisterType>
   ) => {
     try {
-      const response = await registerMutation.mutateAsync(values);
-      if (!response?.result && response.code) {
-        applyFormErrors(form, response.code, registerErrorMaps);
+      const res = await registerMutation(values);
+      if (!res?.result && res.code) {
+        applyFormErrors(form, res.code, registerErrorMaps);
       } else {
         notify.success('Đăng ký thành công');
         setOpen(false);
         setTimeout(() => {
           setOpen(true);
           setMode('login');
-        }, 300);
+        }, AUTH_DIALOG_DELAY);
       }
     } catch (error) {
-      logger.error('Error during registration:', error);
+      logger.error('Error while registering', error);
     }
   };
 
@@ -62,11 +67,12 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onChange={() => setIsFormChanged(true)}
+        className='bg-transparent'
       >
         {(form) => (
           <>
             <Row>
-              <Col>
+              <Col span={24}>
                 <InputField
                   control={form.control}
                   name='email'
@@ -77,7 +83,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col span={24}>
                 <InputField
                   control={form.control}
                   name='fullName'
@@ -88,7 +94,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col span={24}>
                 <PasswordField
                   control={form.control}
                   name='password'
@@ -99,7 +105,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col span={24}>
                 <CheckboxField
                   control={form.control}
                   name='terms'
@@ -116,11 +122,11 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
             </Row>
             <Button
               type='submit'
-              className={cn('w-full', {
-                'cursor-not-allowed opacity-50': !isFormChanged
-              })}
+              className='w-full'
+              disabled={loading || !isFormChanged}
+              loading={loading}
             >
-              {registerMutation.isPending ? <CircleLoading /> : 'Đăng ký'}
+              Đăng ký
             </Button>
           </>
         )}

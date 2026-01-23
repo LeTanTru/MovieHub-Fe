@@ -1,27 +1,18 @@
-import { apiConfig, queryKeys, uploadOptions } from '@/constants';
-import { ApiResponse, UploadImageResponseType } from '@/types';
-import { http } from '@/utils';
+import { fileApiRequest } from '@/api-requests';
+import { queryKeys } from '@/constants';
 import { useMutation } from '@tanstack/react-query';
 
 export const useUploadImageMutation = () => {
   return useMutation({
     mutationKey: [`upload-image-${queryKeys.FILE}`],
     mutationFn: ({ file }: { file: Blob }) =>
-      http.post<ApiResponse<UploadImageResponseType>>(apiConfig.file.upload, {
-        body: {
-          file: file,
-          type: uploadOptions.AVATAR
-        }
-      })
+      fileApiRequest.uploadImage({ file })
   });
 };
 
 export const useDeleteFileMutation = () => {
   return useMutation({
     mutationKey: [`delete-${queryKeys.FILE}`],
-    mutationFn: (body: { filePath: string }) =>
-      http.post<ApiResponse<any>>(apiConfig.file.delete, {
-        body
-      })
+    mutationFn: (body: { filePath: string }) => fileApiRequest.deleteFile(body)
   });
 };

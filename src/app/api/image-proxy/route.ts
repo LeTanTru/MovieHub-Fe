@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     return new Response('Missing URL', { status: 400 });
   }
 
-  const response = await fetch(
+  const res = await fetch(
     `${imageUrl.includes('lh3.googleusercontent.com') ? imageUrl : `${AppConstants.contentRootUrl}${imageUrl}`}`,
     {
       headers: {
@@ -16,10 +16,10 @@ export async function GET(req: NextRequest) {
     }
   );
 
-  const buffer = await response.arrayBuffer();
+  const buffer = await res.arrayBuffer();
   return new Response(buffer, {
     headers: {
-      'Content-Type': response.headers.get('Content-Type') || 'image/jpeg',
+      'Content-Type': res.headers.get('Content-Type') || 'image/jpeg',
       'Cache-Control': 'public, max-age=3600'
     }
   });
