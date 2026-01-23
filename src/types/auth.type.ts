@@ -7,7 +7,7 @@ export type RegisterType = z.output<typeof registerSchema>;
 export type LoginBodyType = LoginType;
 export type RegisterBodyType = Omit<RegisterType, 'terms'>;
 
-export type LoginResponse = {
+export type LoginResponseType = {
   access_token: string;
   token_type: string;
   refresh_token: string;
@@ -34,3 +34,5 @@ export type RefreshTokenResType = {
   additional_info: string;
   jti: string;
 };
+
+export type AuthType = 'login' | 'register';

@@ -1,51 +1,56 @@
 'use client';
 
-import { Button, Col, InputField, Row } from '@/components/form';
-import ButtonLoginGoogle from '@/components/app/auth/login/button-login-google';
+import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import { notify, setAccessTokenToLocalStorage, setData } from '@/utils';
+import {
+  notify,
+  setAccessTokenToLocalStorage,
+  setData,
+  setRefreshTokenToLocalStorage
+} from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthDialogStore, useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
-import PasswordField from '@/components/form/password-field';
 import Link from 'next/link';
 import { useState } from 'react';
-import { cn } from '@/lib';
 import { logger } from '@/logger';
-import { useLoginMutation } from '@/queries';
-import { CircleLoading } from '@/components/loading';
+import { useLoginMutation, useProfileQuery } from '@/queries';
+import ButtonLoginGoogle from './button-login-google';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
-  const loginMutation = useLoginMutation();
-  const authDialogStore = useAuthDialogStore();
-  const authStore = useAuthStore();
+  const { refetch: getProfile } = useProfileQuery();
+  const { mutateAsync: loginMutation, isPending: loading } = useLoginMutation();
+  const setProfile = useAuthStore((s) => s.setProfile);
+  const setOpen = useAuthDialogStore((s) => s.setOpen);
+  const setIsSubmitting = useAuthDialogStore((s) => s.setIsSubmitting);
   const [isFormChanged, setIsFormChanged] = useState(false);
-
   const defaultValues: LoginType = {
-    email: 'dopamine@gmail.com',
+    email: 'dopaminee1311@gmail.com',
     password: 'Abc@1234'
   };
 
   const onSubmit = async (values: LoginBodyType) => {
+    setIsSubmitting(true);
     try {
-      const response = await loginMutation.mutateAsync(values);
-      if (response.result !== undefined && response.result === false) {
-        notify.error('Email hoặc mật khẩu không đúng');
-      } else {
-        const accessToken = response.access_token;
-        const userKind = response.user_kind;
-        setAccessTokenToLocalStorage(accessToken);
-
-        setData(storageKeys.USER_KIND, String(userKind));
+      const res = await loginMutation(values);
+      if (res.result) {
+        setAccessTokenToLocalStorage(res.access_token);
+        setRefreshTokenToLocalStorage(res.refresh_token);
+        setData(storageKeys.USER_KIND, String(res.user_kind));
         notify.success('Đăng nhập thành công');
-        authDialogStore.setOpen(false);
-        setTimeout(() => {
-          authStore.setAuthenticated(true);
-        }, 100);
+        const profile = await getProfile();
+        if (profile.data?.data) {
+          setProfile(profile.data?.data);
+        }
+        setOpen(false);
+      } else {
+        notify.error('Email hoặc mật khẩu không đúng');
       }
     } catch (error) {
-      logger.error('Login failed:', error);
+      logger.error('Login failed', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -63,35 +68,34 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onChange={() => setIsFormChanged(true)}
+        className='bg-transparent'
       >
         {(form) => (
           <>
             <Row>
-              <Col>
+              <Col span={24}>
                 <InputField
                   control={form.control}
                   name='email'
                   label='Email'
                   placeholder='Nhập email của bạn'
-                  type='text'
                   required
                 />
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col span={24}>
                 <PasswordField
                   control={form.control}
                   name='password'
                   label='Mật khẩu'
                   placeholder='Nhập mật khẩu của bạn'
-                  type='password'
                   required
                 />
               </Col>
             </Row>
             <Row>
-              <Col>
+              <Col span={24}>
                 <div className='flex items-center justify-end text-sm'>
                   <Link href='#' className='underline hover:no-underline'>
                     Quên mật khẩu?
@@ -102,15 +106,11 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
 
             <Button
               type='submit'
-              className={cn('w-full', {
-                'cursor-not-allowed opacity-50': !isFormChanged
-              })}
+              className='w-full'
+              disabled={!isFormChanged || loading}
+              loading={loading}
             >
-              {loginMutation.isPending ? (
-                <CircleLoading className='stroke-slate-500' />
-              ) : (
-                'Đăng nhập'
-              )}
+              Đăng nhập
             </Button>
           </>
         )}

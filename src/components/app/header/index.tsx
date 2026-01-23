@@ -15,12 +15,12 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
 import { Button } from '@/components/form';
 import { Search, X } from 'lucide-react';
-import { useIsMounted } from '@/hooks';
+import { useAppLoading } from '@/hooks';
 import { route } from '@/routes';
 
 export default function Header() {
-  const { profile, loading } = useAuthStore();
-  const mounted = useIsMounted();
+  const profile = useAuthStore((s) => s.profile);
+  const loading = useAppLoading();
   const [isFixed, setIsFixed] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -41,7 +41,7 @@ export default function Header() {
         className={cn(
           '1368:pr-10 1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear',
           {
-            'bg-background': isFixed && mounted
+            'bg-background': isFixed
           }
         )}
       >

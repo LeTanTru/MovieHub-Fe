@@ -1,38 +1,74 @@
 import { authApiRequest } from '@/api-requests';
+import envConfig from '@/config';
 import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import {
+  isAxiosError,
+  setAccessTokenToCookie,
+  setCookieData,
+  setRefreshTokenToCookie
+} from '@/utils';
+import { HttpStatusCode } from 'axios';
+
+const maxAge = 60 * 60 * 24 * 7;
 
 export async function POST(request: Request) {
   const req = await request.json();
-  const cookieStore = await cookies();
   try {
-    const response = await authApiRequest.loginFromNextServer(req);
-    if (response.result !== false) {
-      const accessToken = response.access_token!;
-      const userKind = response.user_kind!;
-      cookieStore.set(storageKeys.ACCESS_TOKEN, accessToken, {
+    const res = await authApiRequest.loginFromNextServer(req);
+    if (res.access_token) {
+      const accessToken = res.access_token;
+      const refreshToken = res.refresh_token;
+      const userKind = res.user_kind;
+
+      setAccessTokenToCookie(accessToken, {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
-        secure: true,
-        maxAge: 60 * 60 * 24 * 7
+        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
+        maxAge
       });
 
-      cookieStore.set(storageKeys.USER_KIND, String(userKind), {
+      setRefreshTokenToCookie(refreshToken, {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
-        secure: true,
-        maxAge: 60 * 60 * 24 * 7
+        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
+        maxAge
+      });
+
+      setCookieData(storageKeys.USER_KIND, String(userKind), {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
+        maxAge
+      });
+      return Response.json(
+        { ...res, result: true },
+        {
+          status: HttpStatusCode.Ok
+        }
+      );
+    }
+    return Response.json(
+      { ...res },
+      {
+        status: HttpStatusCode.BadGateway
+      }
+    );
+  } catch (error) {
+    if (isAxiosError(error)) {
+      logger.error('Error while login', error?.response?.data);
+      return Response.json(error?.response?.data, {
+        status: HttpStatusCode.BadGateway
       });
     }
-    return Response.json(response, {
-      status: 200
-    });
-  } catch (error) {
-    logger.error('Error while login: ', error);
+    return Response.json(
+      { result: false, message: 'Invalid email or password' },
+      {
+        status: HttpStatusCode.BadGateway
+      }
+    );
   }
-  return NextResponse.json({ success: true, provider: 'google' });
 }

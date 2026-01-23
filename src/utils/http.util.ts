@@ -10,18 +10,18 @@ import type {
 } from '@/types';
 import {
   getAccessTokenFromLocalStorage,
-  removeAccessTokenFromLocalStorage,
   getData,
   getRefreshTokenFromLocalStorage,
-  removeRefreshTokenFromLocalStorage,
   setAccessTokenToLocalStorage,
   setRefreshTokenToLocalStorage,
   getAccessTokenFromCookie,
   getRefreshTokenFromCookie,
-  removeAccessTokenFromCookie,
-  removeRefreshTokenFromCookie,
   setAccessTokenToCookie,
-  setRefreshTokenToCookie
+  setRefreshTokenToCookie,
+  removeAccessTokenFromLocalStorage,
+  removeRefreshTokenFromLocalStorage,
+  removeAccessTokenFromCookie,
+  removeRefreshTokenFromCookie
 } from '@/utils';
 import axios, {
   AxiosError,
@@ -65,8 +65,8 @@ const refreshToken = async () => {
   } else {
     token = await getRefreshTokenFromCookie();
   }
-  const response: ApiResponse<RefreshTokenResType> = await axios.post(
-    apiConfig.user.auth.refreshToken.baseUrl,
+  const res: ApiResponse<RefreshTokenResType> = await axios.post(
+    apiConfig.user.refreshToken.baseUrl,
     {
       refresh_token: token,
       grant_type: envConfig.NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN
@@ -77,7 +77,7 @@ const refreshToken = async () => {
       }
     }
   );
-  const data = response.data;
+  const data = res.data;
   if (data) {
     const newAccessToken = data.access_token;
     const newRefreshToken = data.refresh_token;
@@ -89,7 +89,7 @@ const refreshToken = async () => {
       if (newRefreshToken) await setRefreshTokenToCookie(newRefreshToken);
     }
   }
-  return response.data?.access_token;
+  return res.data?.access_token;
 };
 
 axiosInstance.interceptors.response.use(
@@ -131,24 +131,27 @@ axiosInstance.interceptors.response.use(
         isRefreshing = false;
 
         return axiosInstance.request(originalConfig);
-      } catch (refreshError) {
+      } catch (error) {
+        logger.error('Error while refreshing token', error);
         if (
-          refreshError instanceof AxiosError &&
-          refreshError?.response?.status === HttpStatusCode.BadRequest
+          error instanceof AxiosError &&
+          error?.response?.status === HttpStatusCode.BadRequest &&
+          error?.response?.data?.length &&
+          error?.response?.data?.includes('refresh token')
         ) {
           if (isClient()) {
             removeAccessTokenFromLocalStorage();
             removeRefreshTokenFromLocalStorage();
-            window.location.href = route.login.path;
+            // window.location.href = route.login.path;
           } else {
             await removeAccessTokenFromCookie();
             await removeRefreshTokenFromCookie();
-            redirect(route.login.path);
+            // redirect(route.login.path);
           }
         }
-        processQueue(refreshError, null);
+        processQueue(error, null);
         isRefreshing = false;
-        return Promise.reject(refreshError);
+        return Promise.reject(error);
       }
     }
 
@@ -252,8 +255,8 @@ export const sendRequest = async <T>(
       };
     }
 
-    const response: AxiosResponse = await axiosInstance.request<T>(axiosConfig);
-    return response.data;
+    const res: AxiosResponse = await axiosInstance.request<T>(axiosConfig);
+    return res.data;
   } catch (error: any) {
     const err = error as AxiosError;
     throw err;
@@ -277,3 +280,7 @@ export const http = {
     return sendRequest<T>(apiConfig, payload);
   }
 };
+
+export function isAxiosError(error: unknown): error is AxiosError {
+  return (error as AxiosError)?.isAxiosError === true;
+}

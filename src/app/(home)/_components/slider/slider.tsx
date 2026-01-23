@@ -1,14 +1,11 @@
 'use client';
 
+import './slider.css';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/thumbs';
-
 import { EffectFade, Thumbs, Autoplay } from 'swiper/modules';
-
-import './slider.css';
-
 import { useState } from 'react';
 import { HeartIcon, InfoIcon, Play } from 'lucide-react';
 
@@ -66,7 +63,7 @@ export default function Slider() {
                 <div className='cover-fade'>
                   <div className='cover-image'>
                     <img
-                      className='fade-in visible'
+                      className='slider-fade-in visible'
                       title='Thế Giới Khủng Long: Tái Sinh'
                       loading='lazy'
                       src={slider.src}

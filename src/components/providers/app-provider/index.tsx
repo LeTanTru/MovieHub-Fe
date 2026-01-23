@@ -1,7 +1,7 @@
 'use client';
-import { logger } from '@/logger';
+
 import { useProfileQuery } from '@/queries';
-import { useAuthStore } from '@/store';
+import { useAppLoadingStore, useAuthStore } from '@/store';
 import { getAccessTokenFromLocalStorage } from '@/utils';
 import { useEffect } from 'react';
 
@@ -10,34 +10,27 @@ export default function AppProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, setProfile, setLoading } = useAuthStore();
-  const profileQuery = useProfileQuery();
+  const accessToken = getAccessTokenFromLocalStorage();
+  const setProfile = useAuthStore((s) => s.setProfile);
+  const setLoading = useAppLoadingStore((s) => s.setLoading);
+
+  const {
+    data: profile,
+    isLoading,
+    isFetching
+  } = useProfileQuery(!!accessToken);
 
   useEffect(() => {
-    const accessToken = getAccessTokenFromLocalStorage();
-    if (!accessToken) {
-      setLoading(false);
-      return;
+    setLoading(isLoading || isFetching);
+  }, [isFetching, isLoading, setLoading]);
+
+  useEffect(() => {
+    if (!profile?.data) return;
+
+    if (profile.result && profile.data) {
+      setProfile(profile.data);
     }
-
-    const handleGetProfile = async () => {
-      setLoading(true);
-      try {
-        const response = await profileQuery.refetch();
-        const profile = response.data?.data;
-        if (profile) {
-          setProfile(profile);
-        }
-      } catch (error) {
-        logger.error('Error fetching profile:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    handleGetProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
+  }, [profile?.data, profile?.result, setProfile]);
 
   return <>{children}</>;
 }

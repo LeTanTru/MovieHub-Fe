@@ -1,23 +1,26 @@
 import { ProfileType } from '@/types/account.type';
-import { CategoryResType } from '@/types/category.type';
+import { AuthType } from '@/types/auth.type';
 
-export type AuthDialogStoreType = {
+type AuthDialogState = {
   open: boolean;
-  mode: 'login' | 'register';
+  mode: AuthType;
+  isSubmitting: boolean;
+};
+
+type AuthDialogActions = {
   setOpen: (open: boolean) => void;
-  setMode: (mode: 'login' | 'register') => void;
+  setMode: (mode: AuthType) => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
 };
 
-export type AuthStoreType = {
-  isAuthenticated: boolean;
-  setAuthenticated: (isAuthenticated: boolean) => void;
+export type AuthDialogStoreType = AuthDialogState & AuthDialogActions;
+
+type AuthState = {
   profile: ProfileType | null;
-  setProfile: (profile: ProfileType | null) => void;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
 };
 
-export type CategoryStoreType = {
-  categories: CategoryResType[];
-  setCategories: (categories: CategoryResType[]) => void;
+type AuthActions = {
+  setProfile: (profile: ProfileType | null) => void;
 };
+
+export type AuthStoreType = AuthState & AuthActions;

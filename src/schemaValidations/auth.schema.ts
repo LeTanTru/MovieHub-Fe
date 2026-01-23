@@ -1,11 +1,11 @@
 import z from 'zod';
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
   email: z.string().nonempty('Bắt buộc').email('Email không hợp lệ'),
   password: z.string().nonempty('Bắt buộc')
 });
 
-const registerSchema = z.object({
+export const registerSchema = z.object({
   email: z
     .string()
     .nonempty('Bắt buộc phải nhập email')
@@ -22,5 +22,3 @@ const registerSchema = z.object({
     message: 'Bạn phải đồng ý với điều khoản'
   })
 });
-
-export { loginSchema, registerSchema };

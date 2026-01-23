@@ -3,8 +3,11 @@
 import { logoWithText } from '@/assets';
 import './body-load.css';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export default function BodyLoad() {
+  const pathname = usePathname();
+  if (pathname.startsWith('/auth/google/callback')) return null;
   return (
     <div id='body-load'>
       <div className='bl-logo'>

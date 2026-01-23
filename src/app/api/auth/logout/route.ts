@@ -1,12 +1,28 @@
+import { authApiRequest } from '@/api-requests';
 import { storageKeys } from '@/constants';
-import { cookies } from 'next/headers';
+import { logger } from '@/logger';
+import {
+  removeAccessTokenFromCookie,
+  removeCookieData,
+  removeRefreshTokenFromCookie
+} from '@/utils';
+import { HttpStatusCode } from 'axios';
 
 export async function POST() {
-  const cookieStore = await cookies();
-  cookieStore.delete(storageKeys.ACCESS_TOKEN);
-  cookieStore.delete(storageKeys.USER_KIND);
-  return Response.json(
-    { result: true, message: 'Logout successfully' },
-    { status: 200 }
-  );
+  try {
+    const res = await authApiRequest.logoutFromNextServer();
+    if (res.result) {
+      removeAccessTokenFromCookie();
+      removeRefreshTokenFromCookie();
+      removeCookieData(storageKeys.USER_KIND);
+    }
+    return Response.json(res, { status: HttpStatusCode.Ok });
+  } catch (error) {
+    logger.error('Error while logging out', error);
+
+    return Response.json(
+      { result: false, message: 'Logout failed' },
+      { status: HttpStatusCode.BadRequest }
+    );
+  }
 }

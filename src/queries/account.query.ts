@@ -3,11 +3,11 @@ import { useAuthStore } from '@/store';
 import { ProfileResType, UpdateProfileBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useProfileQuery = () => {
+export const useProfileQuery = (enabled: boolean = false) => {
   return useQuery({
     queryKey: ['profile'],
     queryFn: () => accountApiRequest.getProfile(),
-    enabled: false
+    enabled: enabled
   });
 };
 
@@ -16,8 +16,8 @@ export const useProfileMutation = () => {
     mutationFn: (body: UpdateProfileBodyType) =>
       accountApiRequest.updateProfile(body),
     onSuccess: async () => {
-      const response = await accountApiRequest.getProfile();
-      useAuthStore.getState().setProfile(response.data as ProfileResType);
+      const res = await accountApiRequest.getProfile();
+      useAuthStore.getState().setProfile(res.data as ProfileResType);
     }
   });
 };
