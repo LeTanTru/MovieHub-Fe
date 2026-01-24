@@ -11,7 +11,7 @@ export const useProfileQuery = (enabled: boolean = false) => {
   });
 };
 
-export const useProfileMutation = () => {
+export const useUpdateProfileMutation = () => {
   return useMutation({
     mutationFn: (body: UpdateProfileBodyType) =>
       accountApiRequest.updateProfile(body),

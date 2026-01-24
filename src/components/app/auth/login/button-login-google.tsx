@@ -25,14 +25,16 @@ export default function ButtonLoginGoogle() {
   const setOpen = useAuthDialogStore((s) => s.setOpen);
   const setProfile = useAuthStore((s) => s.setProfile);
 
-  const { refetch: getLoginGoogleUrl, isFetching } = useLoginGoogleQuery(
-    AppConstants.loginType
-  );
-  const { mutateAsync: loginGoogleMutation, isPending } =
+  const {
+    refetch: getLoginGoogleUrl,
+    isLoading,
+    isFetching
+  } = useLoginGoogleQuery(AppConstants.loginType);
+  const { mutateAsync: loginGoogleMutate, isPending: loginGoogleLoading } =
     useLoginGoogleMutation();
   const { refetch: getProfile } = useProfileQuery();
 
-  const loading = isFetching || isPending;
+  const loading = isLoading || isFetching || loginGoogleLoading;
 
   const handleGetGoogleLoginUrl = async () => {
     try {
@@ -68,7 +70,7 @@ export default function ButtonLoginGoogle() {
   useEffect(() => {
     const handleLogin = async (code: string) => {
       try {
-        const res = await loginGoogleMutation(code);
+        const res = await loginGoogleMutate(code);
         if (res.result) {
           setAccessTokenToLocalStorage(res.access_token);
           setRefreshTokenToLocalStorage(res.refresh_token);
@@ -96,7 +98,7 @@ export default function ButtonLoginGoogle() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [getProfile, loginGoogleMutation, setOpen, setProfile]);
+  }, [getProfile, loginGoogleMutate, setOpen, setProfile]);
 
   return (
     <Button

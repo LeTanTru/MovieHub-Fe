@@ -7,7 +7,7 @@ import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
 
 export default function NavigationMenu() {
-  const categories = useCategoryListQuery();
+  const { data: categoryListData } = useCategoryListQuery();
 
   const navigationList: ItemProps[] = [
     {
@@ -18,7 +18,7 @@ export default function NavigationMenu() {
       label: 'Thể loại',
       submenu: true,
       href: '',
-      subItems: (categories.data?.data.content || []).map((category) => ({
+      subItems: (categoryListData?.data.content || []).map((category) => ({
         label: category.name,
         href: `${route.category.path}/${category.slug}.${category.id}`
       })),

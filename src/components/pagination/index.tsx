@@ -28,7 +28,7 @@ export default function Pagination({ totalPages }: PaginationProps) {
       <span
         key={page}
         className={cn(
-          'bg-background flex h-10 w-10 items-center justify-center rounded font-medium'
+          'bg-background flex h-8 w-8 items-center justify-center rounded font-medium'
         )}
       >
         {page}

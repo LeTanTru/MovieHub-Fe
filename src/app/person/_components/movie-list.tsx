@@ -9,16 +9,19 @@ import { PERSON_ACTOR } from '@/constants';
 import MoviePersonList from '@/app/person/_components/movie-card';
 
 export default function MovieList({ id }: { id: number }) {
-  const res = useMoviePersonListQuery({ personId: id, kind: PERSON_ACTOR });
+  const { data } = useMoviePersonListQuery({
+    personId: id,
+    kind: PERSON_ACTOR
+  });
   const actions: { key: string; text: string }[] = [
     { key: 'all', text: 'Tất cả' },
     { key: 'time', text: 'Thời gian' }
   ];
   const [activeKey, setActiveKey] = useState(actions[0].key);
-  const moviePersonList = res.data?.data.content || [];
+  const moviePersonList = data?.data.content || [];
 
   return (
-    <div className='flex-grow-1'>
+    <div className='grow'>
       <div className='border-b-transparent-white border-b border-solid'>
         <div className='max-1120:pl-0 pt-0 pb-10 pl-10'>
           <div className='max-1120:mb-4 mb-8 flex items-center justify-between gap-8'>
@@ -26,7 +29,7 @@ export default function MovieList({ id }: { id: number }) {
               Các phim đã tham gia
             </div>
             <div
-              className='relative flex flex-shrink-0 items-stretch rounded-[8px] border border-solid border-white p-0.5 text-sm font-normal'
+              className='relative flex shrink-0 items-stretch rounded-xl border border-solid border-white p-0.5 text-sm font-normal'
               role='tablist'
             >
               {actions.map((action) => (
@@ -65,7 +68,7 @@ function ActionButton({
       <Button
         variant='ghost'
         className={cn(
-          'flex h-[26px] cursor-pointer items-center rounded px-2 text-sm transition-all duration-200 ease-linear hover:bg-transparent!',
+          'flex h-6.5 cursor-pointer items-center rounded px-2 text-sm transition-all duration-200 ease-linear hover:bg-transparent!',
           {
             'text-background hover:text-background': isActive,
             'text-foreground': !isActive

@@ -1,4 +1,4 @@
-import movieApiRequest from '@/api-requests/movie.api-request';
+import { movieApiRequest } from '@/api-requests';
 import { ApiResponse, MovieResType } from '@/types';
 import { cache } from 'react';
 

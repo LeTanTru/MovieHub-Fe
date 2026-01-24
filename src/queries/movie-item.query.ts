@@ -1,4 +1,4 @@
-import movieItemApiRequest from '@/api-requests/movie-item.request';
+import { movieItemApiRequest } from '@/api-requests';
 import { MovieItemSearchParamType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 

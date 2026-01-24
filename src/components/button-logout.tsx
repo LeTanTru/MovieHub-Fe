@@ -19,13 +19,14 @@ import { useRouter } from 'next/navigation';
 type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function ButtonLogout(props: ButtonLogoutProps) {
-  const { setProfile } = useAuthStore();
-  const { mutateAsync: logoutMutation, isPending } = useLogoutMutation();
+  const setProfile = useAuthStore((s) => s.setProfile);
+  const { mutateAsync: logoutMutate, isPending: logoutLoading } =
+    useLogoutMutation();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      const res = await logoutMutation();
+      const res = await logoutMutate();
       if (res.result) {
         removeAccessTokenFromLocalStorage();
         removeRefreshTokenFromLocalStorage();
@@ -43,12 +44,12 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
     <Button
       variant='ghost'
       className={cn('h-10 w-full rounded-none', {
-        'justify-start': !isPending,
-        'pointer-events-none': isPending
+        'justify-start': !logoutLoading,
+        'pointer-events-none': logoutLoading
       })}
       onClick={handleLogout}
       {...props}
-      loading={isPending}
+      loading={logoutLoading}
     >
       <LogOutIcon size={16} className='opacity-60' />
       <span>Đăng xuất</span>

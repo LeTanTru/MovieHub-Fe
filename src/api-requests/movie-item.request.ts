@@ -1,6 +1,9 @@
 import { apiConfig } from '@/constants';
-import { ApiResponseList, MovieItemSearchParamType } from '@/types';
-import { MovieItemResType } from '@/types/movie-item.type';
+import {
+  ApiResponseList,
+  MovieItemResType,
+  MovieItemSearchParamType
+} from '@/types';
 import { http } from '@/utils';
 
 const movieItemApiRequest = {

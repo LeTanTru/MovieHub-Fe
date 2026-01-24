@@ -1,6 +1,6 @@
 'use client';
 
-import movieApiRequest from '@/api-requests/movie.api-request';
+import { movieApiRequest } from '@/api-requests';
 import { MovieSearchParamType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 

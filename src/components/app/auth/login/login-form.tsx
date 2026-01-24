@@ -20,7 +20,8 @@ import ButtonLoginGoogle from './button-login-google';
 
 export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const { refetch: getProfile } = useProfileQuery();
-  const { mutateAsync: loginMutation, isPending: loading } = useLoginMutation();
+  const { mutateAsync: loginMutate, isPending: loginLoading } =
+    useLoginMutation();
   const setProfile = useAuthStore((s) => s.setProfile);
   const setOpen = useAuthDialogStore((s) => s.setOpen);
   const setIsSubmitting = useAuthDialogStore((s) => s.setIsSubmitting);
@@ -33,7 +34,7 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   const onSubmit = async (values: LoginBodyType) => {
     setIsSubmitting(true);
     try {
-      const res = await loginMutation(values);
+      const res = await loginMutate(values);
       if (res.result) {
         setAccessTokenToLocalStorage(res.access_token);
         setRefreshTokenToLocalStorage(res.refresh_token);
@@ -107,8 +108,8 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
             <Button
               type='submit'
               className='w-full'
-              disabled={!isFormChanged || loading}
-              loading={loading}
+              disabled={!isFormChanged || loginLoading}
+              loading={loginLoading}
             >
               Đăng nhập
             </Button>

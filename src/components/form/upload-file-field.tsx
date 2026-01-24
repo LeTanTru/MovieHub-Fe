@@ -38,7 +38,7 @@ type UploadFileFieldProps<T extends FieldValues> = {
     onProgress: (progress: number) => void
   ) => Promise<string>;
 
-  deleteImageFn?: (url: string) => Promise<ApiResponse<any>>;
+  deleteImageFn?: (url: string) => Promise<ApiResponse<any> | undefined>;
 };
 
 export default function UploadFileField<T extends FieldValues>({
@@ -193,7 +193,7 @@ export default function UploadFileField<T extends FieldValues>({
       {uploading && (
         <div className='mt-2 h-2 w-full overflow-hidden rounded-full'>
           <div
-            className='bg-main-color! skeleton h-full transition-all'
+            className='bg-dodger-blue! skeleton h-full transition-all'
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -202,7 +202,7 @@ export default function UploadFileField<T extends FieldValues>({
       <div className='flex items-center gap-2'>
         {uploading && (
           <div className='flex items-center gap-2 text-sm'>
-            <CircleLoading className='stroke-main-color' />
+            <CircleLoading className='stroke-dodger-blue' />
             {progress}% đang tải...
           </div>
         )}

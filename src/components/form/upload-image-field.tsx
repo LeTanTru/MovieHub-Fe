@@ -104,7 +104,7 @@ type UploadImageFieldProps<T extends FieldValues> = {
   defaultCrop?: boolean;
   onChange?: (url: string) => void;
   uploadImageFn: (file: Blob) => Promise<string>;
-  deleteImageFn?: (url: string) => Promise<ApiResponse<any>>;
+  deleteImageFn?: (url: string) => Promise<ApiResponse<any> | undefined>;
 };
 
 export default function UploadImageField<T extends FieldValues>({
