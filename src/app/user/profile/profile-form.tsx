@@ -20,7 +20,7 @@ import { cn } from '@/lib';
 import { logger } from '@/logger';
 import {
   useDeleteFileMutation,
-  useProfileMutation,
+  useUpdateProfileMutation,
   useUploadImageMutation
 } from '@/queries';
 import { updateProfileSchema } from '@/schemaValidations';
@@ -34,13 +34,15 @@ import type { UseFormReturn } from 'react-hook-form';
 export default function ProfileForm() {
   const { profile } = useAuthStore();
   const [isFormChanged, setIsFormChanged] = useState(false);
-  const uploadImageMutation = useUploadImageMutation();
-  const profileMutation = useProfileMutation();
-  const deleteFileMutation = useDeleteFileMutation();
+  const { mutateAsync: uploadImageMutate, isPending: uploadImageLoading } =
+    useUploadImageMutation();
+  const { mutateAsync: updateProfileMutate, isPending: updateProfileLoading } =
+    useUpdateProfileMutation();
+  const { mutateAsync: deleteFileMutate } = useDeleteFileMutation();
 
   const imageManager = useFileUploadManager({
     initialUrl: profile?.avatarPath,
-    deleteFileMutation: deleteFileMutation,
+    deleteFileMutate: deleteFileMutate,
     isEditing: true,
     onOpen: true
   });
@@ -84,7 +86,7 @@ export default function ProfileForm() {
   ) => {
     await imageManager.handleSubmit();
     try {
-      const res = await profileMutation.mutateAsync({
+      const res = await updateProfileMutate({
         ...values,
         avatarPath: imageManager.currentUrl
       });
@@ -140,12 +142,12 @@ export default function ProfileForm() {
                     label='Ảnh đại diện'
                     onChange={imageManager.trackUpload}
                     uploadImageFn={async (file: Blob) => {
-                      const res = await uploadImageMutation.mutateAsync({
+                      const res = await uploadImageMutate({
                         file
                       });
                       return res.data?.filePath ?? '';
                     }}
-                    loading={uploadImageMutation.isPending}
+                    loading={uploadImageLoading}
                     deleteImageFn={imageManager.handleDeleteOnClick}
                   />
                 </Col>
@@ -223,7 +225,7 @@ export default function ProfileForm() {
                       className={cn('ml-2 w-32', {
                         'cursor-not-allowed opacity-50': !isFormChanged
                       })}
-                      loading={profileMutation?.isPending}
+                      loading={updateProfileLoading}
                     >
                       Cập nhật
                     </Button>

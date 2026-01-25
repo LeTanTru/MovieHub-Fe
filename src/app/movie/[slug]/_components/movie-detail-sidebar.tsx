@@ -9,7 +9,6 @@ import {
 } from '@/components/tag';
 import {
   ageRatings,
-  AppConstants,
   movieItemKinds,
   PERSON_ACTOR,
   PERSON_DIRECTOR
@@ -22,15 +21,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
-  const movieItemRes = useMovieItemListQuery({
+  const { data: movieItemRes } = useMovieItemListQuery({
     movieId: movie.id,
     kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
   });
-  const personRes = useMoviePersonListQuery({
+  const { data: personRes } = useMoviePersonListQuery({
     movieId: movie.id
   });
-  const movieItems = movieItemRes.data?.data.content;
-  const persons = personRes.data?.data.content;
+  const movieItems = movieItemRes?.data.content;
+  const persons = personRes?.data.content;
   if (!movieItems || !persons) return null;
   const movieItem = movieItems[0];
   const actors = persons.filter((person) => person.kind === PERSON_ACTOR);
@@ -48,7 +47,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
                     (max-width: 640px) 50vw,
                     (max-width: 1280px) 33vw,
                     25vw'
-              src={`${AppConstants.contentRootUrl}${movie.thumbnailUrl}`}
+              src={renderImageUrl(movie.thumbnailUrl)}
               alt={`${movie?.title} - ${movie?.originalTitle}`}
               className='object-cover'
             />

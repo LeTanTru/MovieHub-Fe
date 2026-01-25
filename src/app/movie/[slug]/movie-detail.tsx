@@ -10,8 +10,8 @@ import { useEffect } from 'react';
 function MovieDetailSkeleton() {
   return (
     <Container className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
-      <div className='relative z-3 mx-auto mb-0 flex w-full max-w-[1640px] items-stretch justify-between px-5 py-0'>
-        <div className='h-[500px] w-1/3 animate-pulse rounded-lg bg-gray-700' />
+      <div className='relative z-3 mx-auto mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
+        <div className='h-125 w-1/3 animate-pulse rounded-lg bg-gray-700' />
         <div className='ml-4 w-2/3 animate-pulse'>
           <div className='mb-4 h-10 w-1/2 rounded bg-gray-700' />
           <div className='mb-2 h-6 w-3/4 rounded bg-gray-700' />
@@ -25,8 +25,8 @@ function MovieDetailSkeleton() {
 
 export default function MovieDetail({ slug }: { slug: string }) {
   const id = slug.split('.')[1];
-  const res = useMovieQuery(id);
-  const movie = res.data?.data;
+  const { data } = useMovieQuery(id);
+  const movie = data?.data;
 
   useEffect(() => {
     if (!movie) {
@@ -69,7 +69,7 @@ export default function MovieDetail({ slug }: { slug: string }) {
         </div>
       </div>
       <Container className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
-        <div className='relative z-3 mx-auto mb-0 flex w-full max-w-[1640px] items-stretch justify-between px-5 py-0'>
+        <div className='relative z-3 mx-auto mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
           <MovieDetailSidebar movie={movie} />
           <MovieDetailContent movie={movie} />
         </div>

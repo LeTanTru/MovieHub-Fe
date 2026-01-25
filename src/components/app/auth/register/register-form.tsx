@@ -29,7 +29,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
     terms: false
   };
   const [isFormChanged, setIsFormChanged] = useState(false);
-  const { mutateAsync: registerMutation, isPending: loading } =
+  const { mutateAsync: registerMutate, isPending: registerLoading } =
     useRegisterMutation();
 
   const onSubmit = async (
@@ -37,7 +37,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
     form: UseFormReturn<RegisterType>
   ) => {
     try {
-      const res = await registerMutation(values);
+      const res = await registerMutate(values);
       if (!res?.result && res.code) {
         applyFormErrors(form, res.code, registerErrorMaps);
       } else {
@@ -123,8 +123,8 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
             <Button
               type='submit'
               className='w-full'
-              disabled={loading || !isFormChanged}
-              loading={loading}
+              disabled={registerLoading || !isFormChanged}
+              loading={registerLoading}
             >
               Đăng ký
             </Button>

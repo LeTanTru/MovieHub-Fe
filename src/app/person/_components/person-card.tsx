@@ -1,6 +1,6 @@
-import { AppConstants } from '@/constants';
 import { route } from '@/routes';
 import { PersonResType } from '@/types';
+import { renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -13,7 +13,7 @@ export default function PersonCard({ person }: { person: PersonResType }) {
           className='image-mask relative m-0 h-0 w-full shrink-0 overflow-hidden rounded-none bg-[#282b3a] pb-[calc(100%+40px)]'
         >
           <Image
-            src={`${AppConstants.contentRootUrl}${person.avatarPath}`}
+            src={renderImageUrl(person.avatarPath)}
             alt={person.name}
             fill
             style={{ objectFit: 'cover' }}

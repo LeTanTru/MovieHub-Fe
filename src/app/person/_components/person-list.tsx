@@ -36,7 +36,7 @@ export default function PersonList() {
   const page = params.get('page') ?? 1;
 
   const skeletonCount = columns ? columns * 3 : 0;
-  const res = usePersonListQuery(
+  const { data, isLoading } = usePersonListQuery(
     {
       page: +page - 1,
       size: skeletonCount
@@ -44,14 +44,14 @@ export default function PersonList() {
     !!columns
   );
 
-  const personList = res.data?.data.content;
+  const personList = data?.data.content;
 
   return (
     <>
       <div
         className={`grid gap-6 ${columns === 8 ? 'grid-cols-8' : ''} ${columns === 6 ? 'max-1600:grid-cols-6 gap-5 gap-y-8' : ''} ${columns === 4 ? 'max-990:grid-cols-4' : ''} ${columns === 3 ? 'gap-x-2.5 gap-y-6 max-sm:grid-cols-3' : ''} ${columns === 2 ? 'max-480:grid-cols-2' : ''}`}
       >
-        {!res.isLoading
+        {!isLoading
           ? personList?.map((person) => (
               <PersonCard person={person} key={person.id} />
             ))
@@ -59,9 +59,7 @@ export default function PersonList() {
               <PersonCardSkeleton key={index} />
             ))}
       </div>
-      {!res.isLoading && res.data && (
-        <Pagination totalPages={res.data.data.totalPages} />
-      )}
+      {!isLoading && data && <Pagination totalPages={data.data.totalPages} />}
     </>
   );
 }

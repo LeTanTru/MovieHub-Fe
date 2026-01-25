@@ -1,4 +1,4 @@
-import movieApiRequest from '@/api-requests/movie.api-request';
+import { movieApiRequest } from '@/api-requests';
 import { getMovieDetail } from '@/app/movie/[slug]/_components/movie-detail';
 import MovieDetail from '@/app/movie/[slug]/movie-detail';
 import envConfig from '@/config';

@@ -51,25 +51,19 @@ const apiConfig = defineApiConfig({
         isRequiredTenantId: true
       }
     },
-    refreshToken: {
-      baseUrl: `${AppConstants.metaApiUrl}/api/token`,
-      method: 'POST',
-      headers: baseHeader,
-      isRequiredTenantId: true
-    },
     changePassword: {
       baseUrl: `${AppConstants.apiUrl}/v1/user/change-password`,
       method: 'POST',
       headers: baseHeader
     },
-    login: {
-      baseUrl: `${AppConstants.apiUrl}/v1/user/login`,
+    forgotPassword: {
+      baseUrl: `${AppConstants.apiUrl}/v1/user/forgot-password`,
       method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true
     },
-    logout: {
-      baseUrl: `${AppConstants.metaApiUrl}/v1/auth/logout`,
+    login: {
+      baseUrl: `${AppConstants.apiUrl}/v1/user/login`,
       method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true
@@ -86,9 +80,39 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true
     },
+    requestForgotPassword: {
+      baseUrl: `${AppConstants.apiUrl}/v1/request-forgot-password`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    resendOtp: {
+      baseUrl: `${AppConstants.apiUrl}/v1/resend-otp`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
     updateProfile: {
       baseUrl: `${AppConstants.apiUrl}/v1/user/update-profile`,
       method: 'PUT',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    verifyOtp: {
+      baseUrl: `${AppConstants.apiUrl}/v1/verify-otp`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    refreshToken: {
+      baseUrl: `${AppConstants.metaApiUrl}/api/token`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    logout: {
+      baseUrl: `${AppConstants.metaApiUrl}/v1/auth/logout`,
+      method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true
     }
@@ -118,9 +142,6 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true,
       ignoreAuth: true
     }
-  },
-  imageProxy: {
-    baseUrl: '/api/image-proxy?url='
   },
   person: {
     getList: {
