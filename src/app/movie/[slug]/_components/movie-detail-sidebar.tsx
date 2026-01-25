@@ -9,7 +9,6 @@ import {
 } from '@/components/tag';
 import {
   ageRatings,
-  AppConstants,
   movieItemKinds,
   PERSON_ACTOR,
   PERSON_DIRECTOR
@@ -48,7 +47,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
                     (max-width: 640px) 50vw,
                     (max-width: 1280px) 33vw,
                     25vw'
-              src={`${AppConstants.contentRootUrl}${movie.thumbnailUrl}`}
+              src={renderImageUrl(movie.thumbnailUrl)}
               alt={`${movie?.title} - ${movie?.originalTitle}`}
               className='object-cover'
             />

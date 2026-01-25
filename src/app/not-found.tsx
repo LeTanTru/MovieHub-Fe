@@ -15,7 +15,7 @@ export default function NotFound() {
         <div className='mx-auto my-24 w-full max-w-200 px-0 py-7.5 text-center'>
           <div className='mb-8 grayscale-[1]'>
             <Image
-              src={image404.src}
+              src={image404}
               alt='404'
               width={200}
               height={200}
