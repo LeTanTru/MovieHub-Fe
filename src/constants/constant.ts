@@ -37,5 +37,3 @@ export const DATE_DAY_TIME_FORMAT_UTC = 'EEEE HH:mm:ss MM/dd/yyyy';
 export const DEFAULT_TABLE_PAGE_START = 0;
 export const MAX_PAGE_SIZE = 1_000_000;
 export const INITIAL_AUTO_COMPLETE_SIZE = 10;
-
-export const AUTH_DIALOG_DELAY = 200;

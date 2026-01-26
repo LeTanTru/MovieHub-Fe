@@ -12,16 +12,15 @@ import {
 import Link from 'next/link';
 import { registerSchema } from '@/schemaValidations';
 import { RegisterType } from '@/types';
-import { AUTH_DIALOG_DELAY, registerErrorMaps } from '@/constants';
+import { registerErrorMaps } from '@/constants';
 import { applyFormErrors, notify } from '@/utils';
-import { useAuthDialogStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import { useState } from 'react';
 import { logger } from '@/logger';
 import { useRegisterMutation } from '@/queries';
+import { route } from '@/routes';
 
-export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
-  const { setOpen, setMode } = useAuthDialogStore();
+export default function RegisterForm() {
   const defaultValues: RegisterType = {
     email: '',
     fullName: '',
@@ -42,11 +41,6 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
         applyFormErrors(form, res.code, registerErrorMaps);
       } else {
         notify.success('Đăng ký thành công');
-        setOpen(false);
-        setTimeout(() => {
-          setOpen(true);
-          setMode('login');
-        }, AUTH_DIALOG_DELAY);
       }
     } catch (error) {
       logger.error('Error while registering', error);
@@ -54,7 +48,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   };
 
   return (
-    <>
+    <section className='rounded-lg bg-slate-800/40 px-6 py-4'>
       <div className='mb-5 flex flex-col items-center gap-2'>
         <h2 className='text-xl font-semibold'>Đăng ký</h2>
         <p className='text-muted-foreground text-center text-sm'>
@@ -67,7 +61,7 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onChange={() => setIsFormChanged(true)}
-        className='bg-transparent'
+        className='bg-transparent px-0'
       >
         {(form) => (
           <>
@@ -134,17 +128,15 @@ export default function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
 
       <div className='bg-accent mt-4 h-px w-full'></div>
 
-      <div className='text-muted-foreground mt-1 text-center text-sm'>
-        Đã có tài khoản?
-        <Button
-          type='button'
-          variant='link'
-          className='text-primary p-0 pl-1'
-          onClick={onSwitch}
+      <div className='text-muted-foreground mt-4 text-center text-sm'>
+        Đã có tài khoản? &nbsp;
+        <Link
+          href={route.login.path}
+          className='transition-all duration-200 ease-linear hover:text-white'
         >
           Đăng nhập ngay
-        </Button>
+        </Link>
       </div>
-    </>
+    </section>
   );
 }

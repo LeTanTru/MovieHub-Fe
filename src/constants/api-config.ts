@@ -81,13 +81,13 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true
     },
     requestForgotPassword: {
-      baseUrl: `${AppConstants.apiUrl}/v1/request-forgot-password`,
+      baseUrl: `${AppConstants.apiUrl}/v1/user/request-forgot-password`,
       method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true
     },
     resendOtp: {
-      baseUrl: `${AppConstants.apiUrl}/v1/resend-otp`,
+      baseUrl: `${AppConstants.apiUrl}/v1/user/resend-otp`,
       method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true
@@ -99,7 +99,7 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true
     },
     verifyOtp: {
-      baseUrl: `${AppConstants.apiUrl}/v1/verify-otp`,
+      baseUrl: `${AppConstants.apiUrl}/v1/user/verify-otp`,
       method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true

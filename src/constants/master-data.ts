@@ -148,5 +148,12 @@ export const movieKinds = {
 };
 
 export const queryKeys = {
-  FILE: 'file'
+  FILE: 'file',
+  FORGOT_PASSWORD: 'forgot-password',
+  LOGIN_GOOGLE: 'login_google',
+  LOGIN: 'login',
+  LOGOUT: 'logout',
+  REGISTER: 'register',
+  REQUEST_FORGOT_PASSSWORD: 'request-forgot-password',
+  RESEND_OTP: 'resend-otp'
 };

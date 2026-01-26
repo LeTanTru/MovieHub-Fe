@@ -44,7 +44,9 @@ export default function CheckboxField<T extends FieldValues>({
       name={name}
       render={({ field, fieldState }) => (
         <FormItem className={cn('relative flex flex-col space-y-1', className)}>
-          <div className={cn('flex items-center space-x-2', itemClassName)}>
+          <div
+            className={cn('mb-0 flex items-center space-x-2', itemClassName)}
+          >
             <FormControl>
               <Checkbox
                 id={field.name}

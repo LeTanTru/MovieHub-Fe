@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthStore } from '@/store';
-import AuthDialog from '@/components/app/auth';
 import DropdownAvatar from './dropdown-avatar';
 import NavigationMenu from './navigation';
 import DropdownNotification from './dropdown-notification';
@@ -15,12 +14,13 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
 import { Button } from '@/components/form';
 import { Search, X } from 'lucide-react';
-import { useAppLoading } from '@/hooks';
+import { useAppLoading, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 
 export default function Header() {
   const profile = useAuthStore((s) => s.profile);
   const loading = useAppLoading();
+  const navigate = useNavigate();
   const [isFixed, setIsFixed] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
@@ -34,6 +34,10 @@ export default function Header() {
 
     return () => window.removeEventListener('scroll', handleOnScroll);
   }, []);
+
+  const handleLogin = () => {
+    navigate(route.login.path);
+  };
 
   return (
     <header className='max-800:relative max-800:top-auto max-800:right-auto max-800:left-auto fixed top-0 right-0 left-0 z-10 block'>
@@ -95,7 +99,9 @@ export default function Header() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <AuthDialog />
+                  <Button onClick={handleLogin} className='w-full rounded-full'>
+                    Đăng nhập
+                  </Button>
                 </motion.div>
               ) : (
                 <div className='flex h-full items-center gap-x-5'>

@@ -10,7 +10,8 @@ import {
   useLoginGoogleQuery,
   useProfileQuery
 } from '@/queries';
-import { useAuthDialogStore, useAuthStore } from '@/store';
+import { route } from '@/routes';
+import { useAuthStore } from '@/store';
 import {
   notify,
   setAccessTokenToLocalStorage,
@@ -22,7 +23,6 @@ import Image from 'next/image';
 import { useEffect } from 'react';
 
 export default function ButtonLoginGoogle() {
-  const setOpen = useAuthDialogStore((s) => s.setOpen);
   const setProfile = useAuthStore((s) => s.setProfile);
 
   const {
@@ -80,7 +80,7 @@ export default function ButtonLoginGoogle() {
           if (profile.data?.data) {
             setProfile(profile.data?.data);
           }
-          setOpen(false);
+          window.location.href = route.home.path;
         }
       } catch (error) {
         logger.error('Error during Google login:', error);
@@ -98,7 +98,7 @@ export default function ButtonLoginGoogle() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [getProfile, loginGoogleMutate, setOpen, setProfile]);
+  }, [getProfile, loginGoogleMutate, setProfile]);
 
   return (
     <Button

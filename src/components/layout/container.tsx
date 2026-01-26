@@ -1,6 +1,8 @@
+import type { HTMLAttributes } from 'react';
+
 export default function Container({
   children,
   ...props
-}: React.HTMLAttributes<HTMLElement>) {
+}: HTMLAttributes<HTMLElement>) {
   return <main {...props}>{children}</main>;
 }

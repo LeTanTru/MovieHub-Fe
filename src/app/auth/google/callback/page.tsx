@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import envConfig from '@/config';
 import { CircleLoading } from '@/components/loading';
+import { useNavigate } from '@/hooks';
 
 export default function GoogleCallback() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const callbackUrl = envConfig.NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK;
 
   useEffect(() => {
@@ -18,9 +18,9 @@ export default function GoogleCallback() {
 
       window.close();
     } else {
-      router.push('/');
+      navigate('/');
     }
-  }, [callbackUrl, router]);
+  }, [callbackUrl, navigate]);
 
   return (
     <div className='bg-accent flex h-screen items-center justify-center'>

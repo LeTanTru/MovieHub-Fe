@@ -38,7 +38,7 @@ export const TagAgeRating = ({
   return (
     <div
       className={cn(
-        'flex shrink-0 items-center overflow-hidden rounded bg-white px-2 py-0 text-xs leading-[26px] font-medium text-black',
+        'flex shrink-0 items-center overflow-hidden rounded bg-white px-2 py-0 text-xs leading-6.5 font-medium text-black',
         className
       )}
     >
@@ -59,7 +59,7 @@ export const TagNormal = ({
   return (
     <div
       className={cn(
-        'bg-transparent-white inline-flex h-[26px] items-center rounded border border-solid border-white px-2 py-0 text-sm text-xs text-white',
+        'bg-transparent-white inline-flex h-6.5 items-center rounded border border-solid border-white px-2 py-0 text-sm text-xs text-white',
         className
       )}
     >
@@ -97,7 +97,7 @@ export const TagCategoryLink = ({
   return (
     <Link
       href={href}
-      className='bg-transparent-white inline-flex h-[26px] items-center rounded px-0 px-2 text-xs text-white'
+      className='bg-transparent-white inline-flex h-6.5 items-center rounded px-0 px-2 text-xs text-white'
     >
       {text}
     </Link>
