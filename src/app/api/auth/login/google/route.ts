@@ -1,32 +1,49 @@
 import { authApiRequest } from '@/api-requests';
+import envConfig from '@/config';
 import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
+import {
+  isAxiosError,
+  setAccessTokenToCookie,
+  setCookieData,
+  setRefreshTokenToCookie
+} from '@/utils';
 import { HttpStatusCode } from 'axios';
-import { cookies } from 'next/headers';
+
+const maxAge = 60 * 60 * 24 * 7;
 
 export async function POST(request: Request) {
   const req = await request.json();
-  const cookieStore = await cookies();
   const code = req.code;
   try {
     const res = await authApiRequest.loginGoogleCallback(code);
     if (res.access_token) {
       const accessToken = res.access_token;
+      const refreshToken = res.refresh_token;
       const userKind = res.user_kind;
-      cookieStore.set(storageKeys.ACCESS_TOKEN, accessToken, {
+
+      setAccessTokenToCookie(accessToken, {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
-        secure: true,
-        maxAge: 60 * 60 * 24 * 7
+        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
+        maxAge
       });
 
-      cookieStore.set(storageKeys.USER_KIND, String(userKind), {
+      setRefreshTokenToCookie(refreshToken, {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
-        secure: true,
-        maxAge: 60 * 60 * 24 * 7
+        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
+        maxAge
+      });
+
+      setCookieData(storageKeys.USER_KIND, String(userKind), {
+        path: '/',
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
+        maxAge
       });
 
       return Response.json(
@@ -43,10 +60,17 @@ export async function POST(request: Request) {
       }
     );
   } catch (error) {
-    logger.error('Error while loggin google:', error);
+    if (isAxiosError(error)) {
+      logger.error('Error while login', error?.response?.data);
+      return Response.json(error?.response?.data, {
+        status: HttpStatusCode.BadGateway
+      });
+    }
     return Response.json(
-      { result: false, error: 'Login failed' },
-      { status: HttpStatusCode.InternalServerError }
+      { result: false, message: 'Invalid email or password' },
+      {
+        status: HttpStatusCode.BadGateway
+      }
     );
   }
 }
