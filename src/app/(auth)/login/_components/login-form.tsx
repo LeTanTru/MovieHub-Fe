@@ -27,8 +27,8 @@ export default function LoginForm() {
   const setProfile = useAuthStore((s) => s.setProfile);
   const [isFormChanged, setIsFormChanged] = useState(false);
   const defaultValues: LoginType = {
-    email: 'dopaminee1311@gmail.com',
-    password: 'Abc@1234'
+    email: '',
+    password: ''
   };
 
   const onSubmit = async (values: LoginBodyType) => {
