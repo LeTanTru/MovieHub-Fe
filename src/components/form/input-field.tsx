@@ -22,7 +22,6 @@ import {
 } from 'react';
 import { Check } from 'lucide-react';
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
-import 'tailwindcss-animate';
 
 type InputFieldProps<T extends FieldValues> = {
   control: Control<T>;
