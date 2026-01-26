@@ -67,6 +67,9 @@ const route = defineRoute({
   },
   forgotPassword: {
     path: 'forgot-password'
+  },
+  verifyOtp: {
+    path: 'verify-otp'
   }
 });
 

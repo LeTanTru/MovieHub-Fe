@@ -155,5 +155,6 @@ export const queryKeys = {
   LOGOUT: 'logout',
   REGISTER: 'register',
   REQUEST_FORGOT_PASSSWORD: 'request-forgot-password',
-  RESEND_OTP: 'resend-otp'
+  RESEND_OTP: 'resend-otp',
+  VERIFY_OTP: 'verify-otp'
 };

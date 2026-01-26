@@ -11,8 +11,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib';
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
-import { useState } from 'react';
+import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from 'lucide-react';
+import { useId, useState } from 'react';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 type InputFieldProps<T extends FieldValues> = {
@@ -28,6 +28,47 @@ type InputFieldProps<T extends FieldValues> = {
   labelClassName?: string;
   disabled?: boolean;
   readOnly?: boolean;
+  showStrength?: boolean;
+};
+
+const List = ({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLUListElement>) => {
+  return (
+    <ul className={cn('list-none', className)} {...props}>
+      {children}
+    </ul>
+  );
+};
+
+const ListItem = ({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLLIElement>) => {
+  return (
+    <li className={cn(className)} {...props}>
+      {children}
+    </li>
+  );
+};
+
+const getStrengthColor = (score: number): string => {
+  if (score === 0) return 'bg-gray-200';
+  if (score <= 1) return 'bg-red-500';
+  if (score <= 2) return 'bg-orange-500';
+  if (score <= 3) return 'bg-yellow-500';
+  return 'bg-emerald-500';
+};
+
+const getStrengthText = (score: number): string => {
+  if (score === 0) return 'Nhập mật khẩu';
+  if (score <= 1) return 'Mật khẩu yếu';
+  if (score <= 2) return 'Mật khẩu trung bình';
+  if (score <= 3) return 'Mật khẩu khá';
+  return 'Mật khẩu mạnh';
 };
 
 export default function PasswordField<T extends FieldValues>({
@@ -42,8 +83,10 @@ export default function PasswordField<T extends FieldValues>({
   required,
   labelClassName,
   disabled,
-  readOnly = false
+  readOnly = false,
+  showStrength = false
 }: InputFieldProps<T>) {
+  const id = useId();
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
@@ -100,18 +143,15 @@ export default function PasswordField<T extends FieldValues>({
                   autoComplete='off'
                   {...field}
                   value={value}
-                  style={{ paddingTop: 0 }}
                   className={cn(
                     className,
-                    'pb-0 leading-normal shadow-none placeholder:text-gray-300 focus-visible:ring-2',
+                    'shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
                     {
-                      'cursor-not-allowed': disabled,
-                      'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500':
+                      'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/50 text-gray-500':
+                        disabled,
+                      'border-red-500 focus-visible:ring-red-500':
                         !!fieldState.error,
-                      'focus-visible:ring-main-color focus-visible:border-transparent':
-                        !fieldState.error,
-                      'pt-0! pb-0!': !value,
-                      'pb-px': !!value
+                      'focus-visible:ring-main-color': !fieldState.error
                     }
                   )}
                 />
@@ -140,57 +180,64 @@ export default function PasswordField<T extends FieldValues>({
             </FormControl>
             {description && <FormDescription>{description}</FormDescription>}
 
-            {/* Strength bar */}
-            {/* <div
-              className='bg-border mt-3 mb-4 h-1 w-full overflow-hidden rounded-full'
-              role='progressbar'
-              aria-valuenow={strengthScore}
-              aria-valuemin={0}
-              aria-valuemax={4}
-              aria-label='Password strength'
-            >
-              <div
-                className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
-                style={{ width: `${(strengthScore / 4) * 100}%` }}
-              ></div>
-            </div>
+            {showStrength && value && (
+              <>
+                {/* Strength bar */}
+                <div
+                  className='bg-border mt-3 mb-4 h-1 w-full overflow-hidden rounded-full'
+                  role='progressbar'
+                  aria-valuenow={strengthScore}
+                  aria-valuemin={0}
+                  aria-valuemax={4}
+                  aria-label='Password strength'
+                >
+                  <div
+                    className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
+                    style={{ width: `${(strengthScore / 4) * 100}%` }}
+                  ></div>
+                </div>
 
-            <p
-              id={`${id}-description`}
-              className='text-foreground mb-2 text-sm font-medium'
-            >
-              {getStrengthText(strengthScore)}. Phải chứa:
-            </p>
+                <p
+                  id={`${id}-description`}
+                  className='text-foreground mb-2 text-sm font-medium'
+                >
+                  {getStrengthText(strengthScore)}. Phải chứa:
+                </p>
 
-            <List className='space-y-1.5' aria-label='Password requirements'>
-              {strength.map((req, index) => (
-                <ListItem key={index} className='flex items-center gap-1'>
-                  {req.met ? (
-                    <CheckIcon
-                      size={16}
-                      className='text-emerald-500'
-                      aria-hidden='true'
-                    />
-                  ) : (
-                    <XIcon
-                      size={16}
-                      className='text-muted-foreground/80'
-                      aria-hidden='true'
-                    />
-                  )}
-                  <span
-                    className={`text-xs ${req.met ? 'text-emerald-600' : 'text-muted-foreground'}`}
-                  >
-                    {req.text}
-                    <span className='sr-only'>
-                      {req.met
-                        ? ' - Requirement met'
-                        : ' - Requirement not met'}
-                    </span>
-                  </span>
-                </ListItem>
-              ))}
-            </List> */}
+                <List
+                  className='space-y-1.5'
+                  aria-label='Password requirements'
+                >
+                  {strength.map((req, index) => (
+                    <ListItem key={index} className='flex items-center gap-2'>
+                      {req.met ? (
+                        <CheckIcon
+                          size={16}
+                          className='text-emerald-500'
+                          aria-hidden='true'
+                        />
+                      ) : (
+                        <XIcon
+                          size={16}
+                          className='text-muted-foreground/80'
+                          aria-hidden='true'
+                        />
+                      )}
+                      <span
+                        className={`text-xs ${req.met ? 'text-emerald-600' : 'text-muted-foreground'}`}
+                      >
+                        {req.text}
+                        <span className='sr-only'>
+                          {req.met
+                            ? ' - Requirement met'
+                            : ' - Requirement not met'}
+                        </span>
+                      </span>
+                    </ListItem>
+                  ))}
+                </List>
+              </>
+            )}
           </FormItem>
         );
       }}

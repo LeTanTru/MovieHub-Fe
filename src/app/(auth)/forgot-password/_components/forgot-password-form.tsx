@@ -46,6 +46,7 @@ export default function ForgotPasswordForm() {
   const [countdown, setCountdown] = useState(0); // Store cooldown time if reaching resend limitation
   const [cooldownRemaining, setCooldownRemaining] = useState(0); // Store remaining time for next resend time
   const [lastResendTime, setLastResendTime] = useState(0); // Store last resend time OTP successfully
+  const [isFormChanged, setIsFormChanged] = useState(false);
 
   const {
     mutateAsync: requestForgotPasswordMutate,
@@ -66,7 +67,6 @@ export default function ForgotPasswordForm() {
     password: '',
     confirmPassword: ''
   };
-  const [isFormChanged, setIsFormChanged] = useState(false);
 
   useEffect(() => {
     if (getData(storageKeys.EMAIL)) {

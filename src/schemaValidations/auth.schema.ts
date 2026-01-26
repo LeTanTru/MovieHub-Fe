@@ -5,23 +5,35 @@ export const loginSchema = z.object({
   password: z.string().nonempty('Bắt buộc')
 });
 
-export const registerSchema = z.object({
-  email: z
-    .string()
-    .nonempty('Bắt buộc phải nhập email')
-    .email('Email không hợp lệ'),
-  fullName: z.string().nonempty('Bắt buộc'),
-  password: z
-    .string()
-    .nonempty('Bắt buộc')
-    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/, {
-      message:
-        'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số'
-    }),
-  terms: z.boolean().refine((val) => val === true, {
-    message: 'Bạn phải đồng ý với điều khoản'
+export const registerSchema = z
+  .object({
+    email: z
+      .string()
+      .nonempty('Bắt buộc phải nhập email')
+      .email('Email không hợp lệ'),
+    fullName: z.string().nonempty('Bắt buộc'),
+    password: z
+      .string()
+      .nonempty('Bắt buộc')
+      .min(8, 'Mật khẩu tối thiểu 8 ký tự')
+      .regex(/[A-Z]/, 'Phải có ít nhất 1 chữ hoa')
+      .regex(/[a-z]/, 'Phải có ít nhất 1 chữ thường')
+      .regex(/[0-9]/, 'Phải có ít nhất 1 chữ số')
+      .regex(/[^A-Za-z0-9]/, 'Phải có ít nhất 1 ký tự đặc biệt'),
+    confirmPassword: z.string().nonempty('Bắt buộc'),
+    terms: z.boolean().refine((val) => val === true, {
+      message: 'Bạn phải đồng ý với điều khoản'
+    })
   })
-});
+  .superRefine((data, ctx) => {
+    if (data.confirmPassword !== data.password) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Mật khẩu nhập lại không khớp',
+        path: ['confirmPassword']
+      });
+    }
+  });
 
 export const otpSchema = z.object({
   email: z.string().email().nonempty(),
