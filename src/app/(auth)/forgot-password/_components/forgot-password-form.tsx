@@ -207,7 +207,10 @@ export default function ForgotPasswordForm() {
             const errorCode = res.code;
             if (errorCode) {
               const message = forgotPasswordErrorMaps[errorCode];
-              if (message) notify.error(message[0][1].message);
+              if (message) {
+                notify.error(message[0][1].message);
+                applyFormErrors(form, errorCode, forgotPasswordErrorMaps);
+              }
             } else {
               notify.error('Có lỗi xảy ra khi gửi OTP');
             }
