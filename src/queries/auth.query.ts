@@ -3,7 +3,8 @@ import { queryKeys } from '@/constants';
 import {
   ForgotPasswordBodyType,
   LoginBodyType,
-  RegisterBodyType
+  RegisterBodyType,
+  VerifyOtpBodyType
 } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
@@ -63,5 +64,12 @@ export const useResendOtpMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.RESEND_OTP],
     mutationFn: (body: { email: string }) => authApiRequest.resendOtp(body)
+  });
+};
+
+export const useVerifyOtpMutation = () => {
+  return useMutation({
+    mutationKey: [queryKeys.VERIFY_OTP],
+    mutationFn: (body: VerifyOtpBodyType) => authApiRequest.verifyOtp(body)
   });
 };

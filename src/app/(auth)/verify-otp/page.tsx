@@ -1,3 +1,9 @@
-export default function VerifyPage() {
-  return <div>VerifyPage</div>;
+import { VerifyOtpForm } from '@/app/(auth)/verify-otp/_components';
+
+export default function ForgotPasswordPage() {
+  return (
+    <div className='mx-auto flex w-full max-w-125 flex-col gap-8 text-sm text-white'>
+      <VerifyOtpForm />
+    </div>
+  );
 }

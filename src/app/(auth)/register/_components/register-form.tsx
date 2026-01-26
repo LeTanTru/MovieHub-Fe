@@ -12,19 +12,22 @@ import {
 import Link from 'next/link';
 import { registerSchema } from '@/schemaValidations';
 import { RegisterType } from '@/types';
-import { registerErrorMaps } from '@/constants';
-import { applyFormErrors, notify } from '@/utils';
+import { registerErrorMaps, storageKeys } from '@/constants';
+import { applyFormErrors, notify, setData } from '@/utils';
 import { BaseForm } from '@/components/form/base-form';
 import { useState } from 'react';
 import { logger } from '@/logger';
 import { useRegisterMutation } from '@/queries';
 import { route } from '@/routes';
+import { useNavigate } from '@/hooks';
 
 export default function RegisterForm() {
+  const navigate = useNavigate();
   const defaultValues: RegisterType = {
     email: '',
     fullName: '',
     password: '',
+    confirmPassword: '',
     terms: false
   };
   const [isFormChanged, setIsFormChanged] = useState(false);
@@ -37,10 +40,17 @@ export default function RegisterForm() {
   ) => {
     try {
       const res = await registerMutate(values);
-      if (!res?.result && res.code) {
-        applyFormErrors(form, res.code, registerErrorMaps);
-      } else {
+      if (res.result) {
         notify.success('Đăng ký thành công');
+        setData(storageKeys.EMAIL, values.email);
+        navigate(route.verifyOtp.path);
+      } else {
+        const errorCode = res.code;
+        if (errorCode) {
+          const message = registerErrorMaps[errorCode];
+          if (message) notify.error(message[0][1].message);
+          applyFormErrors(form, errorCode, registerErrorMaps);
+        }
       }
     } catch (error) {
       logger.error('Error while registering', error);
@@ -61,7 +71,7 @@ export default function RegisterForm() {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onChange={() => setIsFormChanged(true)}
-        className='bg-transparent px-0'
+        className='bg-transparent p-0'
       >
         {(form) => (
           <>
@@ -94,6 +104,17 @@ export default function RegisterForm() {
                   name='password'
                   label='Mật khẩu'
                   placeholder='Nhập mật khẩu của bạn'
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <PasswordField
+                  control={form.control}
+                  name='confirmPassword'
+                  label='Nhập lại mật khẩu'
+                  placeholder='Nhập lại mật khẩu'
                   required
                 />
               </Col>

@@ -6,7 +6,8 @@ import {
   LoginResponseType,
   Payload,
   RegisterBodyType,
-  RequestForgotPasswordBodyType
+  RequestForgotPasswordBodyType,
+  VerifyOtpBodyType
 } from '@/types';
 import { http } from '@/utils';
 
@@ -51,6 +52,10 @@ const authApiRequest = {
     }),
   resendOtp: (body: { email: string }) =>
     http.post<ApiResponse<any>>(apiConfig.user.resendOtp, {
+      body
+    }),
+  verifyOtp: (body: VerifyOtpBodyType) =>
+    http.post<ApiResponse<any>>(apiConfig.user.verifyOtp, {
       body
     })
 };

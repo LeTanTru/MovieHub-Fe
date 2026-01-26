@@ -12,9 +12,8 @@ export type LoginType = z.output<typeof loginSchema>;
 export type RegisterType = z.output<typeof registerSchema>;
 
 export type LoginBodyType = LoginType;
-export type RegisterBodyType = Omit<RegisterType, 'terms'>;
-export type OtpBodyType = z.infer<typeof otpSchema>;
-
+export type RegisterBodyType = Omit<RegisterType, 'terms' | 'confirmPassword'>;
+export type VerifyOtpBodyType = z.infer<typeof otpSchema>;
 export type RequestForgotPasswordBodyType = z.infer<
   typeof forgotPasswordStep1Schema
 >;

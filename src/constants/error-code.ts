@@ -1,4 +1,9 @@
-import { ForgotPasswordBodyType, ProfileType, RegisterType } from '@/types';
+import {
+  ForgotPasswordBodyType,
+  ProfileType,
+  RegisterType,
+  VerifyOtpBodyType
+} from '@/types';
 import { ErrorMaps } from '@/types/form-error.type';
 
 export const ErrorCode = {
@@ -52,6 +57,18 @@ export const forgotPasswordErrorMaps: ErrorMaps<ForgotPasswordBodyType> = {
       {
         type: 'manual',
         message: 'Mật khẩu nhập lại không chính xác'
+      }
+    ]
+  ]
+};
+
+export const verifyOtpErrorMaps: ErrorMaps<VerifyOtpBodyType> = {
+  [ErrorCode.USER_ERROR_OTP_INVALID]: [
+    [
+      'otp',
+      {
+        type: 'manual',
+        message: 'Mã OTP không hợp lệ hoặc đã hết hạn'
       }
     ]
   ]
