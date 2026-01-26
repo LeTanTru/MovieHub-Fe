@@ -45,7 +45,7 @@ const authApiRequest = {
     http.post<ApiResponse<any>>(apiConfig.user.requestForgotPassword, {
       body
     }),
-  forgotPassword: (body: ForgotPasswordBodyType) =>
+  forgotPassword: (body: Pick<ForgotPasswordBodyType, 'email'>) =>
     http.post<ApiResponse<any>>(apiConfig.user.forgotPassword, {
       body
     }),

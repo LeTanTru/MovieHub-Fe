@@ -1,23 +1,58 @@
-import { ProfileType, RegisterType } from '@/types';
+import { ForgotPasswordBodyType, ProfileType, RegisterType } from '@/types';
 import { ErrorMaps } from '@/types/form-error.type';
 
 export const ErrorCode = {
-  ERROR_ACCOUNT_ERROR_0004: 'ERROR-ACCOUNT-ERROR-0004',
-  ERROR_USER_ERROR_0002: 'ERROR-USER-ERROR-0002',
-  ERROR_USER_ERROR_0003: 'ERROR-USER-ERROR-0003'
+  ACCOUNT_ERROR_NOT_FOUND: 'ERROR-ACCOUNT-ERROR-0000',
+
+  ACCOUNT_ERROR_EMAIL_EXISTED: 'ERROR-ACCOUNT-ERROR-0004',
+
+  USER_ERROR_USERNAME_EXISTED: 'ERROR-USER-ERROR-0002',
+  USER_ERROR_PHONE_EXISTED: 'ERROR-USER-ERROR-0003',
+  USER_ERROR_OTP_INVALID: 'ERROR-USER-ERROR-0007',
+  USER_ERROR_CONFIRM_PASSWORD_INVALID: 'ERROR-USER-ERROR-0009'
 } as const;
 
 export const registerErrorMaps: ErrorMaps<RegisterType> = {
-  [ErrorCode.ERROR_ACCOUNT_ERROR_0004]: [
+  [ErrorCode.ACCOUNT_ERROR_EMAIL_EXISTED]: [
     ['email', { type: 'manual', message: 'Email đã tồn tại' }]
   ]
 };
 
 export const profileErrorMaps: ErrorMaps<ProfileType> = {
-  [ErrorCode.ERROR_USER_ERROR_0002]: [
+  [ErrorCode.USER_ERROR_USERNAME_EXISTED]: [
     ['username', { type: 'manual', message: 'Tên hiển thị đã tồn tại' }]
   ],
-  [ErrorCode.ERROR_USER_ERROR_0003]: [
+  [ErrorCode.USER_ERROR_PHONE_EXISTED]: [
     ['phone', { type: 'manual', message: 'Số điện thoại đã tồn tại' }]
+  ]
+};
+
+export const forgotPasswordErrorMaps: ErrorMaps<ForgotPasswordBodyType> = {
+  [ErrorCode.ACCOUNT_ERROR_NOT_FOUND]: [
+    [
+      'email',
+      {
+        type: 'manual',
+        message: 'Email không chính xác hoặc chưa được đăng ký'
+      }
+    ]
+  ],
+  [ErrorCode.USER_ERROR_OTP_INVALID]: [
+    [
+      'otp',
+      {
+        type: 'manual',
+        message: 'Mã OTP không hợp lệ hoặc đã hết hạn'
+      }
+    ]
+  ],
+  [ErrorCode.USER_ERROR_CONFIRM_PASSWORD_INVALID]: [
+    [
+      'confirmPassword',
+      {
+        type: 'manual',
+        message: 'Mật khẩu nhập lại không chính xác'
+      }
+    ]
   ]
 };

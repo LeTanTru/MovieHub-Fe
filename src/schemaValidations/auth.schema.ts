@@ -28,17 +28,23 @@ export const otpSchema = z.object({
   otp: z
     .string()
     .nonempty('Bắt buộc')
-    .min(6, 'Otp phải có đủ 6 ký tự')
-    .max(6, 'Otp phải có đủ 6 ký tự')
+    .min(6, 'OTP phải có đủ 6 ký tự')
+    .max(6, 'OTP phải có đủ 6 ký tự')
 });
 
 export const forgotPasswordStep1Schema = z.object({
-  email: z.string().nonempty('Bắt buộc').email('Email không hợp lệ')
+  email: z
+    .string()
+    .nonempty('Bắt buộc')
+    .email('Email không chính xác hoặc chưa được đăng ký')
 });
 
 export const forgotPasswordStep2Schema = z
   .object({
-    otp: z.string().nonempty('Bắt buộc'),
+    otp: z
+      .string()
+      .nonempty('Bắt buộc')
+      .length(6, { error: 'OTP phải có đủ 6 ký tự' }),
     password: z
       .string()
       .nonempty('Bắt buộc')

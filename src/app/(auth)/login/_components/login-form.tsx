@@ -5,6 +5,7 @@ import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
 import {
   notify,
+  removeData,
   setAccessTokenToLocalStorage,
   setData,
   setRefreshTokenToLocalStorage
@@ -51,6 +52,12 @@ export default function LoginForm() {
     }
   };
 
+  const handleClearForgotPasswordData = () => {
+    removeData(storageKeys.EMAIL);
+    removeData(storageKeys.RESEND_OTP_TIME);
+    removeData(storageKeys.LAST_RESEND_TIME);
+  };
+
   return (
     <section className='rounded-lg bg-slate-800/40 px-6 py-4'>
       <div className='mb-5 flex flex-col items-center gap-2'>
@@ -94,7 +101,12 @@ export default function LoginForm() {
             <Row>
               <Col span={24}>
                 <div className='text-muted-foreground text-right text-sm transition-all duration-200 ease-linear hover:text-white'>
-                  <Link href={route.forgotPassword.path}>Quên mật khẩu?</Link>
+                  <Link
+                    onClick={handleClearForgotPasswordData}
+                    href={route.forgotPassword.path}
+                  >
+                    Quên mật khẩu?
+                  </Link>
                 </div>
               </Col>
             </Row>
