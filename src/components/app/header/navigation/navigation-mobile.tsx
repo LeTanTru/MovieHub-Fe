@@ -1,6 +1,5 @@
 'use client';
 
-import AuthDialog from '@/components/app/auth';
 import ButtonLogout from '@/components/button-logout';
 import { AvatarField, Button } from '@/components/form';
 import { List, ListItem } from '@/components/list';
@@ -85,7 +84,7 @@ export default function NavigationMobile({
           >
             {!profile ? (
               <div className='flex justify-center'>
-                <AuthDialog />
+                <Button className='w-full rounded-full'>Đăng nhập</Button>
               </div>
             ) : (
               <>

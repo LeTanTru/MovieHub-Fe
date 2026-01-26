@@ -12,6 +12,5 @@ export * from './movie.type';
 export * from './navigation-menu.type';
 export * from './person.type';
 export * from './search.type';
-export * from './store.type';
 export * from './upload.type';
 export * from './video.type';

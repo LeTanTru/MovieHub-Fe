@@ -5,7 +5,7 @@
   right: 0;
   bottom: 0;
   height: 100vh;
-  background-color: var(--background);
+  background: linear-gradient(to bottom, #020618, #060f2a 50%, #010107);
   opacity: 1;
   animation: body-load-effect 1.5s forwards;
 }

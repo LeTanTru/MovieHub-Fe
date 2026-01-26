@@ -1,10 +1,12 @@
 import { apiConfig } from '@/constants';
 import {
   ApiResponse,
+  ForgotPasswordBodyType,
   LoginBodyType,
   LoginResponseType,
   Payload,
-  RegisterBodyType
+  RegisterBodyType,
+  RequestForgotPasswordBodyType
 } from '@/types';
 import { http } from '@/utils';
 
@@ -37,7 +39,20 @@ const authApiRequest = {
       body: body
     }),
   logout: () => http.post<ApiResponse<any>>(apiConfig.api.auth.logout),
-  logoutFromNextServer: () => http.post<ApiResponse<any>>(apiConfig.user.logout)
+  logoutFromNextServer: () =>
+    http.post<ApiResponse<any>>(apiConfig.user.logout),
+  requestForgotPassword: (body: RequestForgotPasswordBodyType) =>
+    http.post<ApiResponse<any>>(apiConfig.user.requestForgotPassword, {
+      body
+    }),
+  forgotPassword: (body: ForgotPasswordBodyType) =>
+    http.post<ApiResponse<any>>(apiConfig.user.forgotPassword, {
+      body
+    }),
+  resendOtp: (body: { email: string }) =>
+    http.post<ApiResponse<any>>(apiConfig.user.resendOtp, {
+      body
+    })
 };
 
 export default authApiRequest;

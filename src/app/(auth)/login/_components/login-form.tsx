@@ -10,21 +10,20 @@ import {
   setRefreshTokenToLocalStorage
 } from '@/utils';
 import { storageKeys } from '@/constants';
-import { useAuthDialogStore, useAuthStore } from '@/store';
+import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import Link from 'next/link';
 import { useState } from 'react';
 import { logger } from '@/logger';
 import { useLoginMutation, useProfileQuery } from '@/queries';
 import ButtonLoginGoogle from './button-login-google';
+import { route } from '@/routes';
 
-export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
+export default function LoginForm() {
   const { refetch: getProfile } = useProfileQuery();
   const { mutateAsync: loginMutate, isPending: loginLoading } =
     useLoginMutation();
   const setProfile = useAuthStore((s) => s.setProfile);
-  const setOpen = useAuthDialogStore((s) => s.setOpen);
-  const setIsSubmitting = useAuthDialogStore((s) => s.setIsSubmitting);
   const [isFormChanged, setIsFormChanged] = useState(false);
   const defaultValues: LoginType = {
     email: 'dopaminee1311@gmail.com',
@@ -32,7 +31,6 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   };
 
   const onSubmit = async (values: LoginBodyType) => {
-    setIsSubmitting(true);
     try {
       const res = await loginMutate(values);
       if (res.result) {
@@ -44,19 +42,17 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
         if (profile.data?.data) {
           setProfile(profile.data?.data);
         }
-        setOpen(false);
+        window.location.href = route.home.path;
       } else {
         notify.error('Email hoặc mật khẩu không đúng');
       }
     } catch (error) {
       logger.error('Login failed', error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   return (
-    <>
+    <section className='rounded-lg bg-slate-800/40 px-6 py-4'>
       <div className='mb-5 flex flex-col items-center gap-2'>
         <h2 className='text-xl font-semibold'>Đăng nhập</h2>
         <p className='text-muted-foreground text-center text-sm'>
@@ -69,7 +65,7 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onChange={() => setIsFormChanged(true)}
-        className='bg-transparent'
+        className='bg-transparent p-0'
       >
         {(form) => (
           <>
@@ -97,10 +93,8 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
             </Row>
             <Row>
               <Col span={24}>
-                <div className='flex items-center justify-end text-sm'>
-                  <Link href='#' className='underline hover:no-underline'>
-                    Quên mật khẩu?
-                  </Link>
+                <div className='text-muted-foreground text-right text-sm transition-all duration-200 ease-linear hover:text-white'>
+                  <Link href={route.forgotPassword.path}>Quên mật khẩu?</Link>
                 </div>
               </Col>
             </Row>
@@ -127,17 +121,15 @@ export default function LoginForm({ onSwitch }: { onSwitch: () => void }) {
 
       <div className='bg-accent mt-4 h-px w-full'></div>
 
-      <div className='text-muted-foreground mt-1 text-center text-sm'>
-        Chưa có tài khoản?
-        <Button
-          type='button'
-          variant='link'
-          className='text-primary p-0 pl-1'
-          onClick={onSwitch}
+      <div className='text-muted-foreground mt-4 text-center text-sm'>
+        Chưa có tài khoản? &nbsp;
+        <Link
+          href={route.register.path}
+          className='transition-all duration-200 ease-linear hover:text-white'
         >
           Đăng ký ngay
-        </Button>
+        </Link>
       </div>
-    </>
+    </section>
   );
 }

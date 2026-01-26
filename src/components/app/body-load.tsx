@@ -5,9 +5,12 @@ import './body-load.css';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
+const hidePathnames = ['/auth/google/callback'];
+
 export default function BodyLoad() {
   const pathname = usePathname();
-  if (pathname.startsWith('/auth/google/callback')) return null;
+  if (hidePathnames.includes(pathname)) return null;
+
   return (
     <div id='body-load'>
       <div className='bl-logo'>

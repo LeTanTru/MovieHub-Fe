@@ -10,18 +10,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PersonResType } from '@/types';
 import { cn } from '@/lib';
 import { FaArrowDown, FaArrowLeftLong } from 'react-icons/fa6';
-import { useRouter } from 'next/navigation';
-import { useTopLoader } from 'nextjs-toploader';
-import { useMobile } from '@/hooks';
+import { useMobile, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 
 export default function PersonSidebar({ person }: { person?: PersonResType }) {
-  const router = useRouter();
-  const loader = useTopLoader();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showScrollIcon, setShowScrollIcon] = useState(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobile();
+  const navigate = useNavigate();
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
@@ -56,8 +53,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
         })}
         variant='ghost'
         onClick={() => {
-          router.push(route.person.path);
-          loader.start();
+          navigate(route.person.path);
         }}
       >
         <FaArrowLeftLong className='h-10! w-10!' />

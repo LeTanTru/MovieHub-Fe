@@ -3,7 +3,7 @@ import { getMovieDetail } from '@/app/movie/[slug]/_components/movie-detail';
 import MovieDetail from '@/app/movie/[slug]/movie-detail';
 import envConfig from '@/config';
 import { AppConstants } from '@/constants';
-import { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 
 export async function generateStaticParams() {
   const movies = await movieApiRequest.getList();

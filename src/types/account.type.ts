@@ -1,5 +1,5 @@
 import { profileSchema, updateProfileSchema } from '@/schemaValidations';
-import z from 'zod';
+import { z } from 'zod';
 
 export type ProfileType = z.infer<typeof profileSchema>;
 export type UpdateProfileType = z.infer<typeof updateProfileSchema>;

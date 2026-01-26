@@ -63,11 +63,6 @@
   --color-main-color: #181b24;
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--background);
-}
-
 :root {
   --radius: 0.625rem;
   --card: oklch(1 0 0);
