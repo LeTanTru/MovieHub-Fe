@@ -114,7 +114,7 @@ const TextAreaField = <T extends FieldValues>(
                 rows={rows ?? 4}
                 className={cn(
                   floatLabel && 'bg-background pt-6',
-                  'focus-visible:ring-main-color min-h-40 shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 aria-invalid:ring-transparent',
+                  'focus-visible:ring-main-color min-h-40 shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 aria-invalid:ring-transparent dark:disabled:border-slate-800',
                   {
                     'focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-red-500!':
                       !!fieldState.error

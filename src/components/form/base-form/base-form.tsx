@@ -69,7 +69,10 @@ export default function BaseForm<T extends Record<string, any>>({
       <form
         ref={ref}
         id={id}
-        className={cn('relative rounded-lg bg-white p-4', className)}
+        className={cn(
+          'relative rounded-lg bg-white p-4 dark:bg-transparent',
+          className
+        )}
         onSubmit={form.handleSubmit((values) => onSubmit(values, form))}
         onChange={onChange}
       >

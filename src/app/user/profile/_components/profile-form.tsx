@@ -107,8 +107,11 @@ export default function ProfileForm() {
     }
   };
 
-  const handleCancel = async () => {
+  const handleCancel = async (form: UseFormReturn<ProfileType>) => {
     await imageManager.handleCancel();
+    setIsFormChanged(false);
+    form.clearErrors();
+    form.reset(initialValues);
   };
 
   return (
@@ -118,7 +121,7 @@ export default function ProfileForm() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.25 }}
-        className='bg-background max-1120:mx-auto max-1120:mt-8 max-1120:w-140 max-1368:w-5/6 max-600:w-full relative w-2/3 rounded-lg'
+        className='bg-background max-1120:mx-auto max-1120:mt-8 max-1120:w-140 max-1368:w-5/6 max-600:w-full relative mx-auto rounded-lg'
       >
         <h1 className='max-1120:text-center'>Tài khoản</h1>
         <p className='max-1120:text-center mt-2 text-sm text-slate-400'>
@@ -134,7 +137,10 @@ export default function ProfileForm() {
           {(form) => (
             <>
               <Row className='max-1120:mt-10 max-1120:items-center max-1120:gap-0 flex-col gap-2'>
-                <Col className='max-1120:mb-4 max-1120:w-full mx-auto w-1/6'>
+                <Col
+                  span={24}
+                  className='max-1120:mb-4 max-1120:w-full mx-auto w-1/6'
+                >
                   <UploadImageField
                     value={renderImageUrl(imageManager.currentUrl)}
                     control={form.control}
@@ -151,7 +157,7 @@ export default function ProfileForm() {
                     deleteImageFn={imageManager.handleDeleteOnClick}
                   />
                 </Col>
-                <Col>
+                <Col span={24}>
                   <Row className='max-1120:mt-0 max-1120:flex-col max-1120:gap-4'>
                     <Col span={12} className='max-1120:w-full'>
                       <InputField
@@ -213,19 +219,20 @@ export default function ProfileForm() {
                   </Row>
                   <div className='max-1120:mt-4 flex justify-end gap-2'>
                     <Button
-                      type='submit'
+                      type='button'
                       className={cn('ml-2 w-32')}
-                      variant={'ghost'}
-                      onClick={handleCancel}
+                      variant={'outline'}
+                      onClick={() => handleCancel(form)}
+                      disabled={!isFormChanged}
                     >
                       Hủy
                     </Button>
                     <Button
                       type='submit'
-                      className={cn('ml-2 w-32', {
-                        'cursor-not-allowed opacity-50': !isFormChanged
-                      })}
+                      variant='primary'
+                      className={cn('ml-2 w-32')}
                       loading={updateProfileLoading}
+                      disabled={!isFormChanged}
                     >
                       Cập nhật
                     </Button>
