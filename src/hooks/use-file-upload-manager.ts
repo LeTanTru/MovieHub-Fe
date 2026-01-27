@@ -45,6 +45,13 @@ const useFileUploadManager = ({
     setOriginalUrl('');
   }, []);
 
+  // Reset state but keep current URL (for cancel without navigation)
+  const resetKeepingCurrentUrl = useCallback(() => {
+    setUploadedFiles([]);
+    setOriginalUrl(initialUrl);
+    setCurrentUrl(initialUrl);
+  }, [initialUrl]);
+
   // Add new uploaded file to tracking list
   const trackUpload = useCallback((url: string) => {
     if (url) {
@@ -160,11 +167,20 @@ const useFileUploadManager = ({
   }, [isEditing, originalUrl, currentUrl, uploadedFiles]);
 
   // Execute deletion on cancel
-  const handleCancel = useCallback(async () => {
-    const filesToDelete = getFilesToDeleteOnCancel();
-    await deleteFiles(filesToDelete);
-    reset();
-  }, [getFilesToDeleteOnCancel, deleteFiles, reset]);
+  // shouldNavigate: true if user will navigate away, false if staying on same page
+  const handleCancel = useCallback(
+    async (shouldNavigate: boolean = true) => {
+      const filesToDelete = getFilesToDeleteOnCancel();
+      await deleteFiles(filesToDelete);
+
+      if (shouldNavigate) {
+        reset();
+      } else {
+        resetKeepingCurrentUrl();
+      }
+    },
+    [getFilesToDeleteOnCancel, deleteFiles, reset, resetKeepingCurrentUrl]
+  );
 
   // Execute deletion on submit
   const handleSubmit = useCallback(async () => {

@@ -237,7 +237,8 @@ export default function UploadImageField<T extends FieldValues>({
               'border-input hover:bg-accent/50 focus-visible:border-ring relative flex cursor-pointer items-center justify-center overflow-hidden border border-dashed p-0 transition-colors outline-none focus-visible:ring-[3px]',
               className,
               {
-                'border border-solid border-red-500': !!error
+                'border border-solid border-red-500': !!error,
+                'border-none': !!value
               }
             )}
             onClick={openFileDialog}
@@ -254,7 +255,7 @@ export default function UploadImageField<T extends FieldValues>({
                 disablePreview
                 showHoverIcon={false}
                 src={value}
-                className='size-full rounded-none object-cover'
+                className='size-full rounded-none border-none object-cover'
                 aspect={aspect}
                 width={size * aspect}
                 height={size}
