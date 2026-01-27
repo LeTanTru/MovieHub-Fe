@@ -28,12 +28,11 @@ import { useAuthStore } from '@/store';
 import { ProfileResType, ProfileType, UpdateProfileType } from '@/types';
 import { applyFormErrors, notify, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
 export default function ProfileForm() {
   const { profile } = useAuthStore();
-  const [isFormChanged, setIsFormChanged] = useState(false);
   const { mutateAsync: uploadImageMutate, isPending: uploadImageLoading } =
     useUploadImageMutation();
   const { mutateAsync: updateProfileMutate, isPending: updateProfileLoading } =
@@ -92,7 +91,6 @@ export default function ProfileForm() {
       });
       if (res.result) {
         notify.success('Cập nhật thành công');
-        setIsFormChanged(false);
       } else {
         const errorCode = res.code;
         if (errorCode) {
@@ -108,8 +106,7 @@ export default function ProfileForm() {
   };
 
   const handleCancel = async (form: UseFormReturn<ProfileType>) => {
-    await imageManager.handleCancel();
-    setIsFormChanged(false);
+    await imageManager.handleCancel(false);
     form.clearErrors();
     form.reset(initialValues);
   };
@@ -132,115 +129,116 @@ export default function ProfileForm() {
           initialValues={initialValues}
           defaultValues={defaultValues}
           onSubmit={onSubmit}
-          onChange={() => setIsFormChanged(true)}
         >
-          {(form) => (
-            <>
-              <Row className='max-1120:mt-10 max-1120:items-center max-1120:gap-0 flex-col gap-2'>
-                <Col
-                  span={24}
-                  className='max-1120:mb-4 max-1120:w-full mx-auto w-1/6'
-                >
-                  <UploadImageField
-                    value={renderImageUrl(imageManager.currentUrl)}
-                    control={form.control}
-                    name='avatarPath'
-                    label='Ảnh đại diện'
-                    onChange={imageManager.trackUpload}
-                    uploadImageFn={async (file: Blob) => {
-                      const res = await uploadImageMutate({
-                        file
-                      });
-                      return res.data?.filePath ?? '';
-                    }}
-                    loading={uploadImageLoading}
-                    deleteImageFn={imageManager.handleDeleteOnClick}
-                  />
-                </Col>
-                <Col span={24}>
-                  <Row className='max-1120:mt-0 max-1120:flex-col max-1120:gap-4'>
-                    <Col span={12} className='max-1120:w-full'>
-                      <InputField
-                        control={form.control}
-                        name='fullName'
-                        label='Họ và tên'
-                        required
-                        placeholder='Nhập họ và tên'
-                        className='text-sm'
-                      />
-                    </Col>
-                    <Col span={12} className='max-1120:w-full'>
-                      <InputField
-                        control={form.control}
-                        name='email'
-                        label='Email'
-                        required
-                        placeholder='Nhập email'
-                        className='text-sm disabled:opacity-100'
-                        disabled
-                      />
-                    </Col>
-                  </Row>
-                  <Row className='max-1120:mt-0 max-1120:flex-col max-1120:gap-4'>
-                    <Col span={12} className='max-1120:w-full'>
-                      <InputField
-                        control={form.control}
-                        name='username'
-                        label='Tên hiển thị'
-                        required
-                        placeholder='Nhập tên hiển thị'
-                        className='text-sm'
-                      />
-                    </Col>
-                    <Col span={12} className='max-1120:w-full'>
-                      <InputField
-                        control={form.control}
-                        name='phone'
-                        label='Số điện thoại'
-                        required
-                        placeholder='Nhập số điện thoại'
-                        className='text-sm'
-                      />
-                    </Col>
-                  </Row>
-                  <Row className='max-1120:mt-0 max-1120:flex-col max-1120:gap-4'>
-                    <Col span={12} className='max-1120:w-full'>
-                      <SelectField
-                        control={form.control}
-                        options={genderOptions}
-                        name='gender'
-                        label='Giới tính'
-                        required
-                        placeholder='Chọn giới tính'
-                        onValueChange={() => setIsFormChanged(true)}
-                        className='text-sm'
-                      />
-                    </Col>
-                  </Row>
-                  <div className='max-1120:mt-4 flex justify-end gap-2'>
-                    <Button
-                      type='button'
-                      className={cn('ml-2 w-32')}
-                      variant={'outline'}
-                      onClick={() => handleCancel(form)}
-                      disabled={!isFormChanged}
-                    >
-                      Hủy
-                    </Button>
-                    <Button
-                      type='submit'
-                      variant='primary'
-                      className={cn('ml-2 w-32')}
-                      loading={updateProfileLoading}
-                      disabled={!isFormChanged}
-                    >
-                      Cập nhật
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </>
-          )}
+          {(form) => {
+            return (
+              <>
+                <Row className='max-1120:mt-10 max-1120:items-center max-1120:gap-0 flex-col gap-2'>
+                  <Col
+                    span={24}
+                    className='max-1120:mb-4 max-1120:w-full mx-auto w-1/6'
+                  >
+                    <UploadImageField
+                      value={renderImageUrl(imageManager.currentUrl)}
+                      control={form.control}
+                      name='avatarPath'
+                      label='Ảnh đại diện'
+                      onChange={imageManager.trackUpload}
+                      uploadImageFn={async (file: Blob) => {
+                        const res = await uploadImageMutate({
+                          file
+                        });
+                        return res.data?.filePath ?? '';
+                      }}
+                      loading={uploadImageLoading}
+                      deleteImageFn={imageManager.handleDeleteOnClick}
+                      size={100}
+                    />
+                  </Col>
+                  <Col span={24}>
+                    <Row className='max-1120:mt-0 max-1120:flex-col max-1120:gap-4'>
+                      <Col span={12} className='max-1120:w-full'>
+                        <InputField
+                          control={form.control}
+                          name='fullName'
+                          label='Họ và tên'
+                          required
+                          placeholder='Nhập họ và tên'
+                          className='text-sm'
+                        />
+                      </Col>
+                      <Col span={12} className='max-1120:w-full'>
+                        <InputField
+                          control={form.control}
+                          name='email'
+                          label='Email'
+                          required
+                          placeholder='Nhập email'
+                          className='text-sm disabled:opacity-100'
+                          disabled
+                        />
+                      </Col>
+                    </Row>
+                    <Row className='max-1120:mt-0 max-1120:flex-col max-1120:gap-4'>
+                      <Col span={12} className='max-1120:w-full'>
+                        <InputField
+                          control={form.control}
+                          name='username'
+                          label='Tên hiển thị'
+                          required
+                          placeholder='Nhập tên hiển thị'
+                          className='text-sm'
+                        />
+                      </Col>
+                      <Col span={12} className='max-1120:w-full'>
+                        <InputField
+                          control={form.control}
+                          name='phone'
+                          label='Số điện thoại'
+                          required
+                          placeholder='Nhập số điện thoại'
+                          className='text-sm'
+                        />
+                      </Col>
+                    </Row>
+                    <Row className='max-1120:mt-0 max-1120:flex-col max-1120:gap-4'>
+                      <Col span={12} className='max-1120:w-full'>
+                        <SelectField
+                          control={form.control}
+                          options={genderOptions}
+                          name='gender'
+                          label='Giới tính'
+                          required
+                          placeholder='Chọn giới tính'
+                          className='text-sm'
+                        />
+                      </Col>
+                    </Row>
+                    <div className='max-1120:mt-4 flex justify-end gap-2'>
+                      <Button
+                        type='button'
+                        className={cn('ml-2 w-32')}
+                        variant={'outline'}
+                        onClick={() => handleCancel(form)}
+                        disabled={!form.formState.isDirty}
+                      >
+                        Hủy
+                      </Button>
+                      <Button
+                        type='submit'
+                        variant='primary'
+                        className={cn('ml-2 w-32')}
+                        loading={updateProfileLoading}
+                        disabled={!form.formState.isDirty}
+                      >
+                        Cập nhật
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </>
+            );
+          }}
         </BaseForm>
       </motion.div>
     </AnimatePresence>
