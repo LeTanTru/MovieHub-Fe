@@ -165,7 +165,7 @@ export default function MultiSelectField<
                   role='combobox'
                   disabled={disabled}
                   className={cn(
-                    'focus-visible:border-main-color h-auto min-h-9 w-full justify-between border px-1! py-1 text-black shadow-none focus:ring-0 focus-visible:border-2',
+                    'focus-visible:border-main-color h-auto min-h-9 w-full justify-between border px-1! py-1 text-black shadow-none focus:ring-0 focus-visible:border-2 dark:hover:text-white',
                     {
                       'cursor-not-allowed border-gray-300 bg-gray-200/80 text-gray-500 dark:border-slate-800':
                         disabled,

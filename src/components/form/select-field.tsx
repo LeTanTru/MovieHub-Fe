@@ -159,7 +159,7 @@ export default function SelectField<
                   aria-label='Select'
                   disabled={disabled}
                   className={cn(
-                    'dark:bg-input/30 w-full justify-between border px-3! py-0 text-black focus-visible:border-transparent dark:border-gray-200/30 dark:text-white',
+                    'dark:bg-input/30 w-full justify-between border px-3! py-0 text-black focus-visible:border-transparent dark:border-gray-200/30 dark:text-white dark:hover:text-white',
                     {
                       'ring-main-color border-transparent! ring-2': open,
                       '[&>div>span]:text-gray-300': fieldState.invalid,
