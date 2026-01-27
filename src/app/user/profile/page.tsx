@@ -1,4 +1,4 @@
-import ProfileForm from './profile-form';
+import { ProfileForm } from '@/app/user/profile/_components';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

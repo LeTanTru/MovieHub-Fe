@@ -72,7 +72,7 @@ export default function LoginForm() {
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onChange={() => setIsFormChanged(true)}
-        className='bg-transparent p-0'
+        className='p-0'
       >
         {(form) => (
           <>

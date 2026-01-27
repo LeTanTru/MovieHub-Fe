@@ -277,7 +277,7 @@ export default function ForgotPasswordForm() {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onChange={() => setIsFormChanged(true)}
-        className='bg-transparent p-0'
+        className='p-0'
       >
         {(form) => {
           return (

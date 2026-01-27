@@ -71,7 +71,7 @@ export default function RegisterForm() {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onChange={() => setIsFormChanged(true)}
-        className='bg-transparent p-0'
+        className='p-0'
       >
         {(form) => (
           <>
