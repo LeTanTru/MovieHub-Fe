@@ -16,7 +16,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s',
+    template: '%s | MovieHub',
     default: 'MovieHub'
   },
   description: 'Trang chủ MovieHub'
