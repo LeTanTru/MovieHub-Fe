@@ -41,7 +41,7 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
   return (
     <Button
       variant='ghost'
-      className={cn('w-full rounded-none', {
+      className={cn('w-full rounded-none rounded-br rounded-bl', {
         'justify-start': !logoutLoading,
         'pointer-events-none': logoutLoading
       })}

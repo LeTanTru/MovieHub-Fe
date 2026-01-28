@@ -43,10 +43,10 @@ export default function ForgotPasswordForm() {
     count: number;
     timestamp: number;
   }>({ count: 0, timestamp: 0 });
-  const [countdown, setCountdown] = useState(0); // Store cooldown time if reaching resend limitation
-  const [cooldownRemaining, setCooldownRemaining] = useState(0); // Store remaining time for next resend time
-  const [lastResendTime, setLastResendTime] = useState(0); // Store last resend time OTP successfully
-  const [isFormChanged, setIsFormChanged] = useState(false);
+  const [countdown, setCountdown] = useState<number>(0); // Store cooldown time if reaching resend limitation
+  const [cooldownRemaining, setCooldownRemaining] = useState<number>(0); // Store remaining time for next resend time
+  const [lastResendTime, setLastResendTime] = useState<number>(0); // Store last resend time OTP successfully
+  const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
 
   const {
     mutateAsync: requestForgotPasswordMutate,

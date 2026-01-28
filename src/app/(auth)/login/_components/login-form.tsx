@@ -25,7 +25,7 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending: loginLoading } =
     useLoginMutation();
   const setProfile = useAuthStore((s) => s.setProfile);
-  const [isFormChanged, setIsFormChanged] = useState(false);
+  const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const defaultValues: LoginType = {
     email: '',
     password: ''

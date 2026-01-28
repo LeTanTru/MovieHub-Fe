@@ -52,8 +52,8 @@ export default function AvatarField({
   alt,
   ...props
 }: AvatarFieldProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [scale, setScale] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [scale, setScale] = useState<number>(1);
 
   const previewRef = useRef<HTMLDivElement | null>(null);
 

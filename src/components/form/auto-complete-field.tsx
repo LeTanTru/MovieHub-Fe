@@ -101,9 +101,9 @@ export default function AutoCompleteField<
   mappingData,
   renderOption
 }: AutoCompleteFieldProps<TFieldValues, TOption>) {
-  const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [open, setOpen] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>('');
+  const [debouncedSearch, setDebouncedSearch] = useState<string>('');
   const [selectedOption, setSelectedOption] =
     useState<AutoCompleteOption | null>(null);
   const [initialOption, setInitialOption] = useState<AutoCompleteOption | null>(

@@ -1,16 +1,24 @@
 import { movieItemSearchSchema } from '@/schemaValidations';
+import { MovieResType } from '@/types/movie.type';
 import { BaseSearchType } from '@/types/search.type';
 import { VideoResType } from '@/types/video.type';
 import z from 'zod';
 
 export type MovieItemResType = {
-  id: string;
-  status: number;
-  title: string;
+  createdDate: string;
+  description: string;
+  episodes: any[];
+  id: number;
   kind: number;
+  label: string;
+  modifiedDate: string;
+  movie: MovieResType;
   ordering: number;
-  video: VideoResType;
   releaseDate: string;
+  status: number;
+  thumbnailUrl: string;
+  title: string;
+  video: VideoResType;
 };
 
 export type MovieItemSearchType = z.infer<typeof movieItemSearchSchema> &

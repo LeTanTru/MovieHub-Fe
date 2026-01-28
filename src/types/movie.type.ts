@@ -1,26 +1,88 @@
 import { movieSearchSchema } from '@/schemaValidations';
 import { CategoryResType } from '@/types/category.type';
+import { MovieItemResType } from '@/types/movie-item.type';
 import { BaseSearchType } from '@/types/search.type';
+import { VideoResType } from '@/types/video.type';
 import z from 'zod';
 
-export type MovieResType = {
-  id: string;
-  status: number;
-  modifiedDate: string;
+export type SeasonResType = {
   createdDate: string;
-  title: string;
-  originalTitle: string;
-  slug: string;
   description: string;
-  thumbnailUrl: string;
-  posterUrl: string;
+  episodes: any[];
+  id: string;
+  kind: number;
+  label: string;
+  modifiedDate: string;
+  ordering: number;
   releaseDate: string;
-  type: number;
+  status: number;
+  thumbnailUrl: string;
+  title: string;
+  video: VideoResType;
+};
+
+export type MovieResType = {
+  ageRating: number;
+  averageRating: number;
+  categories: CategoryResType[];
+  commentCount: number;
+  country: string;
+  createdDate: string;
+  description: string;
+  id: string;
   isFeatured: boolean;
   language: string;
-  country: string;
+  modifiedDate: string;
+  originalTitle: string;
+  posterUrl: string;
+  releaseDate: string;
+  reviewCount: number;
+  seasons: SeasonResType[];
+  slug: string;
+  status: number;
+  thumbnailUrl: string;
+  title: string;
+  type: number;
+  viewCount: number;
+};
+
+export type MovieHistoryResType = {
+  createdDate: string;
+  id: string;
+  isCompleted: boolean;
+  lastWatchSeconds: number;
+  modifiedDate: string;
+  movie: MovieResType;
+  movieId: number;
+  movieItem: MovieItemResType;
+  movieItemId: number;
+  status: number;
+  timesWatched: number;
+  userId: number;
+};
+
+export type MovieTopViewsResType = {
   ageRating: number;
+  averageRating: number;
   categories: CategoryResType[];
+  commentCount: number;
+  country: string;
+  createdDate: string;
+  description: string;
+  id: string;
+  isFeatured: boolean;
+  language: string;
+  modifiedDate: string;
+  originalTitle: string;
+  posterUrl: string;
+  releaseDate: string;
+  reviewCount: number;
+  seasons: SeasonResType[];
+  slug: string;
+  status: number;
+  thumbnailUrl: string;
+  title: string;
+  type: number;
   viewCount: number;
 };
 

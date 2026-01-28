@@ -1,24 +1,24 @@
-import MovieCard from '@/app/person/[id]/_components/movie-card';
+import { MovieCard } from '@/components/app/movie-card';
 import { cn } from '@/lib';
-import { MoviePersonResType } from '@/types';
+import { MovieResType } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 
-function groupByYear(list: MoviePersonResType[]) {
-  return list.reduce((acc: Record<string, MoviePersonResType[]>, mp) => {
-    const year = mp.movie.releaseDate?.split(' ')[0].split('/')[2];
+function groupByYear(list: MovieResType[]) {
+  return list.reduce((acc: Record<string, MovieResType[]>, movie) => {
+    const year = movie.releaseDate?.split(' ')[0].split('/')[2];
     if (!year) return acc;
     if (!acc[year]) acc[year] = [];
-    acc[year].push(mp);
+    acc[year].push(movie);
     return acc;
   }, {});
 }
 
 export default function MovieGridByYear({
-  moviePersonList
+  movieList
 }: {
-  moviePersonList: MoviePersonResType[];
+  movieList: MovieResType[];
 }) {
-  const grouped = groupByYear(moviePersonList);
+  const grouped = groupByYear(movieList);
 
   return Object.keys(grouped)
     .sort((a, b) => Number(b) - Number(a))
@@ -38,8 +38,8 @@ export default function MovieGridByYear({
 
         <div className='max-1120:grid-cols-5 max-1360:grid-cols-4 max-1600:grid-cols-5 max-1600:gap-4 max-480:grid-cols-2 max-800:grid-cols-4 relative z-3 grid w-full grow grid-cols-6 gap-6 gap-x-4 gap-y-6 max-sm:grid-cols-3'>
           <AnimatePresence mode='popLayout' initial={false}>
-            {grouped[year].map((mp) => (
-              <MovieCard key={mp.id} mp={mp} dir='up' />
+            {grouped[year].map((movie) => (
+              <MovieCard key={movie.id} movie={movie} dir='up' />
             ))}
           </AnimatePresence>
         </div>

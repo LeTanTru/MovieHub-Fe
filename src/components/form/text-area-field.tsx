@@ -60,7 +60,7 @@ const TextAreaField = <T extends FieldValues>(
 ) => {
   const id = useId();
   const internalRef = useRef<HTMLTextAreaElement | null>(null);
-  const [charCount, setCharCount] = useState(0);
+  const [charCount, setCharCount] = useState<number>(0);
 
   // expose internal ref ra ngoài
   useImperativeHandle(ref, () => internalRef.current!);

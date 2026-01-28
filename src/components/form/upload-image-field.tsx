@@ -123,10 +123,10 @@ export default function UploadImageField<T extends FieldValues>({
   uploadImageFn,
   deleteImageFn
 }: UploadImageFieldProps<T>) {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-  const [shouldCrop, setShouldCrop] = useState(defaultCrop ?? false);
-  const [zoom, setZoom] = useState(1);
+  const [shouldCrop, setShouldCrop] = useState<boolean>(defaultCrop ?? false);
+  const [zoom, setZoom] = useState<number>(1);
   const {
     field: { value: fieldValue, onChange: fieldOnChange },
     fieldState: { error }

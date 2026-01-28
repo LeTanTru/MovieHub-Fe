@@ -20,7 +20,7 @@ export default function TimeSlider({
 }) {
   return (
     <BaseTimeSlider.Root className='group relative mx-[7.5px] inline-flex h-10 w-full cursor-pointer touch-none items-center rounded outline-none select-none aria-hidden:hidden'>
-      <BaseTimeSlider.Track className='relative z-0 h-[5px] w-full overflow-hidden rounded-sm bg-white/30 ring-sky-400 group-data-focus:ring-[3px]'>
+      <BaseTimeSlider.Track className='relative z-0 h-1.25 w-full overflow-hidden rounded-sm bg-white/30 ring-sky-400 group-data-focus:ring-[3px]'>
         <BaseTimeSlider.TrackFill className='absolute h-full w-(--slider-fill) rounded-sm bg-[#f5f5f5] will-change-[width]' />
         <BaseTimeSlider.Progress className='absolute z-10 h-full w-(--slider-progress) rounded-sm bg-[#ffffff80] will-change-[width]' />
 
@@ -48,7 +48,7 @@ export default function TimeSlider({
         noClamp
       >
         <BaseTimeSlider.Thumbnail.Root
-          className='block h-(--thumbnail-height) max-h-40 min-h-20 w-(--thumbnail-width) max-w-[180px] min-w-[120px] overflow-hidden border border-white bg-black'
+          className='block h-(--thumbnail-height) max-h-40 min-h-20 w-(--thumbnail-width) max-w-45 min-w-30 overflow-hidden border border-white bg-black'
           src={vttUrl}
         >
           <BaseTimeSlider.Thumbnail.Img />
@@ -56,7 +56,7 @@ export default function TimeSlider({
         <BaseTimeSlider.Value className='rounded-sm bg-black px-2 py-px text-[13px] font-medium text-white' />
       </BaseTimeSlider.Preview>
 
-      <BaseTimeSlider.Thumb className='absolute top-1/2 left-(--slider-fill) z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity will-change-[left] group-data-active:opacity-100 group-data-dragging:ring-4' />
+      <BaseTimeSlider.Thumb className='absolute top-1/2 left-(--slider-fill) z-20 h-3.75 w-3.75 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity will-change-[left] group-data-active:opacity-100 group-data-dragging:ring-4' />
     </BaseTimeSlider.Root>
   );
 }

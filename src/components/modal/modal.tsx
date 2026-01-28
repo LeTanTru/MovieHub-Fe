@@ -47,7 +47,7 @@ export default function Modal({
 }: ModalProps) {
   const isMounted = useIsMounted();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [showScrollArrow, setShowScrollArrow] = useState(false);
+  const [showScrollArrow, setShowScrollArrow] = useState<boolean>(false);
 
   useEffect(() => {
     const checkOverflow = () => {

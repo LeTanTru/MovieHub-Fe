@@ -3,35 +3,36 @@
 import { Button } from '@/components/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { dropdownNotificationMotion } from '@/constants';
+import { useDisclosure } from '@/hooks';
 import { route } from '@/routes';
 import { AnimatePresence, motion } from 'framer-motion';
-import { BellIcon, CheckCheck } from 'lucide-react';
+import { CheckCheck } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { FaBell } from 'react-icons/fa';
 
 export default function DropdownNotification() {
-  const [open, setOpen] = useState(false);
+  const { opened, open, close } = useDisclosure();
+
+  const handleOpen = () => open();
+  const handleClose = () => close();
 
   return (
     <div
       className='relative'
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={handleOpen}
+      onMouseLeave={handleClose}
     >
       <Button
-        variant='ghost'
-        className='size-full rounded-full p-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
-        onClick={() => setOpen((prev) => !prev)}
+        variant='outline'
+        className='h-10 w-10 rounded-full p-0! focus:outline-none focus-visible:ring-0 dark:border-white'
       >
-        <div className='relative flex size-10 items-center justify-center rounded-full border border-slate-500 p-4'>
-          <BellIcon className={'size-5 fill-white stroke-2'} />
-          <div className='text-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-base'>
-            0
-          </div>
+        <FaBell className='size-5 stroke-2' />
+        <div className='text-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-base'>
+          0
         </div>
       </Button>
       <AnimatePresence>
-        {open && (
+        {opened && (
           <motion.div
             variants={dropdownNotificationMotion}
             initial='initial'
@@ -90,7 +91,7 @@ export default function DropdownNotification() {
             <Link
               className='border-t-accent hover:bg-popover mt-auto block w-full border-t px-4 py-2 text-center text-sm text-slate-400 transition-all duration-500 ease-linear hover:text-white'
               href={route.user.notification.path}
-              onClick={() => setOpen(false)}
+              onClick={handleClose}
             >
               Xem tất cả
             </Link>

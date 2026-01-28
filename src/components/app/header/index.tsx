@@ -21,8 +21,8 @@ export default function Header() {
   const profile = useAuthStore((s) => s.profile);
   const loading = useAppLoading();
   const navigate = useNavigate();
-  const [isFixed, setIsFixed] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
+  const [isFixed, setIsFixed] = useState<boolean>(false);
+  const [showSearch, setShowSearch] = useState<boolean>(false);
 
   useEffect(() => {
     const handleOnScroll = () => {

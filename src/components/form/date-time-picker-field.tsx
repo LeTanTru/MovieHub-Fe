@@ -58,7 +58,7 @@ export default function DateTimePickerField<T extends FieldValues>({
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const minutes = Array.from({ length: 60 }, (_, i) => i);
   const seconds = Array.from({ length: 60 }, (_, i) => i);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const calendarLocale: Locale = vi;
 
   const parseDate = (value: string) => {

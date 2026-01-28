@@ -1,11 +1,13 @@
 'use client';
-import { AppConstants } from '@/constants';
+
 import './movie-detail.css';
 import { Container } from '@/components/layout';
 import MovieDetailSidebar from '@/app/movie/[slug]/_components/movie-detail-sidebar';
 import MovieDetailContent from '@/app/movie/[slug]/_components/movie-detail-content';
 import { useMovieQuery } from '@/queries';
 import { useEffect } from 'react';
+import { MovieResType } from '@/types';
+import { renderImageUrl } from '@/utils';
 
 function MovieDetailSkeleton() {
   return (
@@ -25,8 +27,8 @@ function MovieDetailSkeleton() {
 
 export default function MovieDetail({ slug }: { slug: string }) {
   const id = slug.split('.')[1];
-  const { data } = useMovieQuery(id);
-  const movie = data?.data;
+  const { data: movieData } = useMovieQuery(id);
+  const movie: MovieResType | undefined = movieData?.data;
 
   useEffect(() => {
     if (!movie) {
@@ -56,14 +58,14 @@ export default function MovieDetail({ slug }: { slug: string }) {
         <div
           className='webkit-filter absolute top-0 right-0 bottom-0 left-0 h-full w-full bg-cover bg-position-[50%] opacity-20'
           style={{
-            backgroundImage: `url(${AppConstants.contentRootUrl}${movie.posterUrl})`
+            backgroundImage: `url(${renderImageUrl(movie.thumbnailUrl)})`
           }}
         ></div>
         <div className='cover-fade'>
           <div
             className='cover-image'
             style={{
-              backgroundImage: `url(${AppConstants.contentRootUrl}${movie.posterUrl})`
+              backgroundImage: `url(${renderImageUrl(movie.thumbnailUrl)})`
             }}
           />
         </div>

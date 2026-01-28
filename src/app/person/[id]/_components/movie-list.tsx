@@ -6,21 +6,30 @@ import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { PERSON_ACTOR } from '@/constants';
-import MovieGridSkeleton from '@/app/person/[id]/_components/movie-card-skeleton';
-import MovieGridByYear from '@/app/person/[id]/_components/movie-grid-by-year';
-import MovieGrid from '@/app/person/[id]/_components/movie-grid';
+import MovieGridByYear from './movie-grid-by-year';
+import MovieGrid from './movie-grid';
+import MovieGridSkeleton from './movie-grid-skeleton';
+import { MoviePersonResType, MovieResType } from '@/types';
 
 export default function MovieList({ id }: { id: number }) {
-  const { data } = useMoviePersonListQuery({
-    personId: id,
-    kind: PERSON_ACTOR
-  });
   const actions: { key: string; text: string }[] = [
     { key: 'all', text: 'Tất cả' },
     { key: 'time', text: 'Thời gian' }
   ];
-  const [activeKey, setActiveKey] = useState(actions[0].key);
-  const moviePersonList = data?.data.content || [];
+  const [activeKey, setActiveKey] = useState<string>(actions[0].key);
+
+  const { data: moviePersonListData, isLoading: movieListLoading } =
+    useMoviePersonListQuery({
+      personId: id,
+      kind: PERSON_ACTOR
+    });
+
+  const moviePersonList: MoviePersonResType[] =
+    moviePersonListData?.data?.content || [];
+
+  const movieList: MovieResType[] = moviePersonList.map(
+    (moviePerson) => moviePerson.movie
+  );
 
   return (
     <div className='grow'>
@@ -31,7 +40,7 @@ export default function MovieList({ id }: { id: number }) {
               Các phim đã tham gia
             </div>
             <div
-              className='relative flex shrink-0 items-stretch rounded-xl border border-solid border-white p-0.5 text-sm font-normal'
+              className='relative flex shrink-0 items-stretch overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
               role='tablist'
             >
               {actions.map((action) => (
@@ -53,12 +62,14 @@ export default function MovieList({ id }: { id: number }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: activeKey === 'all' ? -10 : 10 }}
               >
-                {moviePersonList.length === 0 ? (
+                {movieListLoading ? (
                   <MovieGridSkeleton />
+                ) : movieList.length == 0 ? (
+                  'Không có phim nào'
                 ) : activeKey === 'all' ? (
-                  <MovieGrid moviePersonList={moviePersonList} dir='down' />
+                  <MovieGrid movieList={movieList} dir='down' />
                 ) : (
-                  <MovieGridByYear moviePersonList={moviePersonList} />
+                  <MovieGridByYear movieList={movieList} />
                 )}
               </motion.div>
             </AnimatePresence>
@@ -87,7 +98,7 @@ function ActionButton({
       <Button
         variant='ghost'
         className={cn(
-          'flex h-6.5 cursor-pointer items-center rounded px-2 text-sm transition-all duration-200 ease-linear hover:bg-transparent!',
+          'flex h-6.5 cursor-pointer items-center rounded-none! px-2 text-sm transition-all duration-200 ease-linear hover:bg-transparent!',
           {
             'text-background hover:text-background': isActive,
             'text-foreground': !isActive

@@ -8,7 +8,7 @@ import {
   TagWrapper
 } from '@/components/tag';
 import {
-  ageRatings,
+  ageRatingOptions,
   movieItemKinds,
   PERSON_ACTOR,
   PERSON_DIRECTOR
@@ -21,16 +21,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
-  const { data: movieItemRes } = useMovieItemListQuery({
+  const { data: movieItemResData } = useMovieItemListQuery({
     movieId: movie.id,
     kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
   });
-  const { data: personRes } = useMoviePersonListQuery({
+
+  const { data: personResData } = useMoviePersonListQuery({
     movieId: movie.id
   });
-  const movieItems = movieItemRes?.data.content;
-  const persons = personRes?.data.content;
+
+  const movieItems = movieItemResData?.data?.content;
+  const persons = personResData?.data?.content;
+
   if (!movieItems || !persons) return null;
+
   const movieItem = movieItems[0];
   const actors = persons.filter((person) => person.kind === PERSON_ACTOR);
   const directors = persons.filter((person) => person.kind === PERSON_DIRECTOR);
@@ -47,7 +51,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
                     (max-width: 640px) 50vw,
                     (max-width: 1280px) 33vw,
                     25vw'
-              src={renderImageUrl(movie.thumbnailUrl)}
+              src={renderImageUrl(movie.posterUrl)}
               alt={`${movie?.title} - ${movie?.originalTitle}`}
               className='object-cover'
             />
@@ -65,7 +69,8 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
           <TagIMDb value='7.7' />
           <TagAgeRating
             value={
-              ageRatings.find((age) => movie?.ageRating === age.value)?.label!
+              ageRatingOptions.find((age) => movie?.ageRating === age.value)
+                ?.label!
             }
           />
           <TagNormal

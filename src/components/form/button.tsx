@@ -6,7 +6,7 @@ import { Loader2 } from 'lucide-react';
 import type { ComponentProps } from 'react';
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-normal disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer transition-all ease-linear duration-200 disabled:pointer-events-auto disabled:cursor-not-allowed focus-visible:ring-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-normal disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-all ease-linear duration-200 disabled:pointer-events-auto disabled:cursor-not-allowed focus-visible:ring-0",
   {
     variants: {
       variant: {
@@ -15,11 +15,10 @@ export const buttonVariants = cva(
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/80 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 hover:opacity-80 disabled:bg-destructive/80 disabled:hover:bg-destructive/80 dark:bg-destructive dark:disabled:bg-destructive/80 dark:disabled:hover:bg-destructive/80',
         outline:
-          'border border-input bg-transparent disabled:hover:bg-transparent disabled:border-gray-500/80 disabled:hover:border-gray-500/80 dark:border-gray-500 dark:hover:border-gray-500/80 dark:disabled:bg-transparent dark:hover:text-gray-500/80 dark:disabled:text-gray-500/80 dark:disabled:border-gray-500/80',
+          'border border-input bg-transparent disabled:hover:bg-transparent disabled:border-gray-200/80 disabled:hover:border-gray-200/80 dark:border-gray-200 dark:hover:border-gray-200/80 dark:disabled:bg-transparent dark:hover:text-gray-200/80 dark:disabled:text-gray-200/80 dark:disabled:border-gray-200/80',
         secondary:
           'border border-gray-500 bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-gray-500/80 hover:border-gray-500/80 disabled:text-gray-500/80 disabled:hover:border-gray-500/80 dark:bg-secondary dark:hover:bg-secondary/80 dark:disabled:bg-secondary/80 dark:disabled:hover:bg-secondary/80 dark:disabled:text-gray-400 dark:border-none',
-        ghost:
-          'hover:bg-transparent hover:text-gray-500/80 disabled:bg-secondary/80 disabled:hover:bg-secondary/80 disabled:text-gray-500/80 disabled:hover:text-gray-500/80 dark:hover:bg-transparent dark:disabled:bg-secondary/50 dark:disabled:hover:bg-secondary/50 dark:hover:text-gray-500/80 dark:disabled:text-gray-500/80',
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         primary:
           'bg-main-color text-primary-foreground hover:bg-main-color/80 disabled:bg-main-color/80 disabled:hover:bg-main-color/80 disabled:text-primary-foreground/80 dark:disabled:bg-main-color/80 dark:disabled:hover:bg-main-color/80'

@@ -70,8 +70,8 @@ export default function UploadVideoField<T extends FieldValues>({
   const previewUrl = files[0]?.preview;
   const fileId = files[0]?.id;
 
-  const [uploading, setUploading] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
 
   const prevFileId = useRef<string | null>(null);
 
