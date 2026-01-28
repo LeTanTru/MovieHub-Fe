@@ -137,6 +137,7 @@ export default function RegisterForm() {
             </Row>
             <Button
               type='submit'
+              variant='primary'
               className='w-full'
               disabled={registerLoading || !isFormChanged}
               loading={registerLoading}

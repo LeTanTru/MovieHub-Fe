@@ -60,7 +60,7 @@
   --breakpoint-800: 800px;
   --breakpoint-989: 989px;
   --breakpoint-990: 990px;
-  --color-main-color: white;
+  --color-main-color: var(--color-gray-300);
 }
 
 :root {

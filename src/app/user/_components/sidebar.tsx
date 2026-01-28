@@ -79,9 +79,9 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
   return (
     <>
       {profile?.avatarPath ? (
-        <AvatarField src={renderImageUrl(profile.avatarPath)} />
+        <AvatarField src={renderImageUrl(profile.avatarPath)} size={60} />
       ) : (
-        <div className='bg-muted flex h-20 w-20 items-center justify-center rounded-full text-3xl'>
+        <div className='bg-muted flex h-15 w-15 items-center justify-center rounded-full text-3xl'>
           {profile?.fullName?.charAt(0) ?? 'U'}
         </div>
       )}

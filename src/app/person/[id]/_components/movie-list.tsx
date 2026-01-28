@@ -4,9 +4,11 @@ import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { PERSON_ACTOR } from '@/constants';
-import MoviePersonList from '@/app/person/_components/movie-card';
+import MovieGridSkeleton from '@/app/person/[id]/_components/movie-card-skeleton';
+import MovieGridByYear from '@/app/person/[id]/_components/movie-grid-by-year';
+import MovieGrid from '@/app/person/[id]/_components/movie-grid';
 
 export default function MovieList({ id }: { id: number }) {
   const { data } = useMoviePersonListQuery({
@@ -43,7 +45,24 @@ export default function MovieList({ id }: { id: number }) {
               ))}
             </div>
           </div>
-          <MoviePersonList moviePersonList={moviePersonList} type={activeKey} />
+          <LayoutGroup>
+            <AnimatePresence mode='wait'>
+              <motion.div
+                key={activeKey}
+                initial={{ opacity: 0, y: activeKey === 'all' ? -10 : 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: activeKey === 'all' ? -10 : 10 }}
+              >
+                {moviePersonList.length === 0 ? (
+                  <MovieGridSkeleton />
+                ) : activeKey === 'all' ? (
+                  <MovieGrid moviePersonList={moviePersonList} dir='down' />
+                ) : (
+                  <MovieGridByYear moviePersonList={moviePersonList} />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </LayoutGroup>
         </div>
       </div>
     </div>

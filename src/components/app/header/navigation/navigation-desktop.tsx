@@ -63,7 +63,7 @@ export default function NavigationDesktop({
                       transformStyle: 'preserve-3d'
                     }}
                     className={cn(
-                      'bg-popover absolute top-12 -left-12 z-50 w-48 grid-cols-1 rounded shadow-[0px_0px_6px_2px_var(--accent)]',
+                      'bg-popover scrollbar-none absolute top-12 -left-50 z-50 max-h-120 w-48 grid-cols-1 overflow-y-auto rounded shadow-[0px_0px_6px_2px_var(--accent)]',
                       {
                         // 'p-0': item.subItems!.length <= 4 && item.isGrid,
                         'w-160 grid-cols-4 p-2':
@@ -79,9 +79,13 @@ export default function NavigationDesktop({
                     {item.subItems?.map((sub) => (
                       <ListItem
                         key={sub.label}
+                        title={sub.label}
                         className='hover:bg-accent rounded transition-all duration-200 ease-linear hover:text-white'
                       >
-                        <Link className='block px-4 py-2' href={sub.href!}>
+                        <Link
+                          className='line-clamp-1 block truncate px-4 py-2'
+                          href={sub.href!}
+                        >
                           {sub.label}
                         </Link>
                       </ListItem>

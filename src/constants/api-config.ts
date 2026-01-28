@@ -141,6 +141,13 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true,
       ignoreAuth: true
+    },
+    getById: {
+      baseUrl: `${AppConstants.apiUrl}/v1/category/get/:id`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
     }
   },
   person: {

@@ -1,15 +1,16 @@
 'use client';
 
 import { personApiRequest } from '@/api-requests';
-import { PersonSearchParamType } from '@/types';
+import { queryKeys } from '@/constants';
+import { PersonSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const usePersonListQuery = (
-  params: PersonSearchParamType,
+  params: PersonSearchType,
   enabled?: boolean
 ) => {
   return useQuery({
-    queryKey: ['persons', params],
+    queryKey: [`${queryKeys.PERSON}-list`, params],
     queryFn: () => personApiRequest.getList(params),
     enabled
   });
@@ -17,7 +18,7 @@ export const usePersonListQuery = (
 
 export const usePersonQuery = ({ id }: { id: number }) => {
   return useQuery({
-    queryKey: ['person', id],
+    queryKey: [queryKeys.PERSON, id],
     queryFn: () => personApiRequest.getById({ id })
   });
 };

@@ -1,5 +1,5 @@
 export type VideoResType = {
-  id: number;
+  id: string;
   status: number;
   name: string;
   shortDescription: string;

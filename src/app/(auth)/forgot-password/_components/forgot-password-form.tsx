@@ -296,6 +296,7 @@ export default function ForgotPasswordForm() {
                 </Row>
                 <Button
                   type='submit'
+                  variant='primary'
                   className='w-full'
                   disabled={requestForgotPasswordLoading || !isFormChanged}
                   loading={requestForgotPasswordLoading}
@@ -326,6 +327,7 @@ export default function ForgotPasswordForm() {
                   <Col span={24}>
                     <Button
                       type='button'
+                      variant='primary'
                       className='mx-auto'
                       onClick={handleResendOtp}
                       disabled={isResendDisabled}
@@ -382,6 +384,8 @@ export default function ForgotPasswordForm() {
                 <Row className='mb-4'>
                   <Col span={24}>
                     <Button
+                      type='submit'
+                      variant='primary'
                       disabled={
                         forgotPasswordLoading || !form.formState.isValid
                       }

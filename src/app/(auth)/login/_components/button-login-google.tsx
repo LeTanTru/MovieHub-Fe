@@ -104,7 +104,7 @@ export default function ButtonLoginGoogle() {
     <Button
       variant='secondary'
       onClick={handleGetGoogleLoginUrl}
-      className='flex w-full items-center justify-center gap-2'
+      className='flex w-full items-center justify-center gap-2 border-none'
       disabled={loading}
     >
       {loading ? (

@@ -1,7 +1,10 @@
+import { moviePersonSearchSchema } from '@/schemaValidations';
 import { CategoryResType } from '@/types/category.type';
+import { BaseSearchType } from '@/types/search.type';
+import z from 'zod';
 
 type MovieType = {
-  id: number;
+  id: string;
   title: string;
   originalTitle: string;
   slug: string;
@@ -14,7 +17,7 @@ type MovieType = {
 };
 
 type PersonType = {
-  id: number;
+  id: string;
   name: string;
   otherName: string;
   avatarPath: string;
@@ -23,7 +26,7 @@ type PersonType = {
 };
 
 export type MoviePersonResType = {
-  id: number;
+  id: string;
   status: number;
   modifiedDate: string;
   createdDate: string;
@@ -33,3 +36,6 @@ export type MoviePersonResType = {
   characterName: string;
   ordering: number;
 };
+
+export type MoviePersonSearchType = z.infer<typeof moviePersonSearchSchema> &
+  BaseSearchType;

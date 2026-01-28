@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import './person-card.css';
-import PersonCard from '@/app/person/_components/person-card';
-import PersonCardSkeleton from '@/app/person/_components/person-card-skeleton';
+import './person-list.css';
+import PersonCard from './person-card';
+import PersonCardSkeleton from './person-card-skeleton';
 import Pagination from '@/components/pagination';
 import { useSearchParams } from 'next/navigation';
 import { usePersonListQuery } from '@/queries';

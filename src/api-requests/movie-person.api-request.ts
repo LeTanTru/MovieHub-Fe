@@ -2,12 +2,12 @@ import { apiConfig } from '@/constants';
 import {
   ApiResponseList,
   MoviePersonResType,
-  MoviePersonSearchParamType
+  MoviePersonSearchType
 } from '@/types';
 import { http } from '@/utils';
 
 const moviePersonApiRequest = {
-  getList: (params?: MoviePersonSearchParamType) =>
+  getList: (params?: MoviePersonSearchType) =>
     http.get<ApiResponseList<MoviePersonResType>>(
       apiConfig.moviePerson.getList,
       {

@@ -72,7 +72,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
                 <ListItem key={item.link} onClick={() => setOpen(false)}>
                   <Link
                     href={item.link}
-                    className='hover:bg-accent hover:text-accent-foreground flex h-10 w-full cursor-pointer items-center justify-start gap-2 rounded-none px-4 text-sm transition-all duration-200 ease-linear focus:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50'
+                    className='hover:bg-accent hover:text-accent-foreground flex h-9 w-full cursor-pointer items-center justify-start gap-2 rounded-none px-4 text-sm transition-all duration-200 ease-linear focus:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50'
                   >
                     <item.icon size={16} className={item.className} />
                     <span>{item.title}</span>

@@ -142,11 +142,11 @@ axiosInstance.interceptors.response.use(
           if (isClient()) {
             removeAccessTokenFromLocalStorage();
             removeRefreshTokenFromLocalStorage();
-            // window.location.href = route.login.path;
+            window.location.href = route.login.path;
           } else {
             await removeAccessTokenFromCookie();
             await removeRefreshTokenFromCookie();
-            // redirect(route.login.path);
+            redirect(route.login.path);
           }
         }
         processQueue(error, null);
@@ -246,7 +246,7 @@ export const sendRequest = async <T>(
 
       axiosConfig.data = formData;
 
-      delete axiosConfig.headers!['Content-Type'];
+      delete axiosConfig.headers?.['Content-Type'];
     } else if (method !== 'GET') {
       axiosConfig.data = body;
       axiosConfig.headers = {

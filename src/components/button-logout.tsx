@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/form';
 import { storageKeys } from '@/constants';
-import { useNavigate } from '@/hooks';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useLogoutMutation } from '@/queries';
@@ -22,7 +21,6 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
   const setProfile = useAuthStore((s) => s.setProfile);
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -33,7 +31,7 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
         removeData(storageKeys.USER_KIND);
         setProfile(null);
         notify.success('Đăng xuất thành công');
-        navigate(route.home.path);
+        window.location.href = route.home.path;
       }
     } catch (error) {
       logger.error('Logout failed:', error);
@@ -43,13 +41,13 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
   return (
     <Button
       variant='ghost'
-      className={cn('h-10 w-full rounded-none', {
+      className={cn('w-full rounded-none', {
         'justify-start': !logoutLoading,
         'pointer-events-none': logoutLoading
       })}
       onClick={handleLogout}
-      {...props}
       loading={logoutLoading}
+      {...props}
     >
       <LogOutIcon size={16} className='opacity-60' />
       <span>Đăng xuất</span>
