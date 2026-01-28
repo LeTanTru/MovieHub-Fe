@@ -1,12 +1,19 @@
 export type VideoResType = {
-  id: string;
-  status: number;
-  name: string;
-  shortDescription: string;
-  description: string;
   content: string;
-  relativeContentPath: string;
-  thumbnailUrl: string;
+  createdDate: string;
+  description: string;
   duration: number;
+  id: string;
+  introEnd: number;
+  introStart: number;
+  modifiedDate: string;
+  name: string;
+  outroStart: number;
+  relativeContentPath: string;
+  sourceType: number;
+  spriteUrl: string;
   state: number;
+  status: number;
+  thumbnailUrl: string;
+  vttUrl: string;
 };

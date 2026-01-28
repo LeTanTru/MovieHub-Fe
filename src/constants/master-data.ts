@@ -1,10 +1,9 @@
 import {
-  AGE_RATING_18,
-  AGE_RATING_G,
-  AGE_RATING_NC17,
-  AGE_RATING_PG,
-  AGE_RATING_PG13,
-  AGE_RATING_R,
+  AGE_RATING_K,
+  AGE_RATING_P,
+  AGE_RATING_T13,
+  AGE_RATING_T16,
+  AGE_RATING_T18,
   BREAKPOINT_DESKTOP,
   BREAKPOINT_MOBILE,
   BREAKPOINT_TABLET,
@@ -121,19 +120,32 @@ export const breakPoints = {
   desktop: BREAKPOINT_DESKTOP
 };
 
-export const ageRatings: { value: number | string; label: string }[] = [
-  { value: AGE_RATING_G, label: 'G' },
-  { value: AGE_RATING_PG, label: 'PG' },
+export const ageRatingOptions = [
   {
-    value: AGE_RATING_PG13,
-    label: 'PG-13'
+    value: AGE_RATING_P,
+    label: 'P',
+    mean: 'Mọi lứa tuổi'
   },
-  { value: AGE_RATING_R, label: 'R' },
   {
-    value: AGE_RATING_NC17,
-    label: 'NC-17'
+    value: AGE_RATING_K,
+    label: 'K',
+    mean: 'Dưới 13 tuổi'
   },
-  { value: AGE_RATING_18, label: '18+' }
+  {
+    value: AGE_RATING_T13,
+    label: 'T13',
+    mean: '13 tuổi trở lên'
+  },
+  {
+    value: AGE_RATING_T16,
+    label: 'T16',
+    mean: '16 tuổi trở lên'
+  },
+  {
+    value: AGE_RATING_T18,
+    label: 'T18',
+    mean: '18 tuổi trở lên'
+  }
 ];
 
 export const movieItemKinds = {

@@ -28,7 +28,7 @@ export default function NavigationMobile({
 }: {
   navigationList: ItemProps[];
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const { profile } = useAuthStore();
   const [openSub, setOpenSub] = useState<string | null>(null);
   const menuRef = useClickOutside<HTMLDivElement>(() => {

@@ -58,7 +58,7 @@ export default function DatePickerField<T extends FieldValues>({
   labelClassName
 }: DatePickerFieldProps<T>) {
   const calendarLocale: Locale = vi;
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   // const [popoverWidth, setPopoverWidth] = useState<number | undefined>();
   const triggerRef = useRef<HTMLButtonElement>(null);
 

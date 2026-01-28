@@ -11,7 +11,7 @@ export const TagWrapper = ({
   return (
     <div
       className={cn(
-        'mb-3 flex flex-wrap items-center justify-start gap-2.5',
+        'flex flex-wrap items-center justify-start gap-2.5',
         className
       )}
     >

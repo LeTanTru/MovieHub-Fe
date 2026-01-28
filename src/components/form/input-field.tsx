@@ -63,7 +63,7 @@ function InputFieldInner<T extends FieldValues>(
   }: InputFieldProps<T>,
   ref: ForwardedRef<HTMLInputElement>
 ) {
-  const [showOptions, setShowOptions] = useState(false);
+  const [showOptions, setShowOptions] = useState<boolean>(false);
   const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
   const containerRef = useRef<HTMLDivElement>(null);
 

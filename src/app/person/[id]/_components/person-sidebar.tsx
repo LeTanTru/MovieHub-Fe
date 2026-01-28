@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { AvatarField, Button } from '@/components/form';
-import { genderOptions } from '@/constants';
+import { DEFAULT_DATE_FORMAT, genderOptions } from '@/constants';
 import { formatDate, renderImageUrl } from '@/utils';
 import { Heart, X } from 'lucide-react';
 import { RiTelegram2Fill } from 'react-icons/ri';
@@ -10,21 +10,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { PersonResType } from '@/types';
 import { cn } from '@/lib';
 import { FaArrowDown, FaArrowLeftLong } from 'react-icons/fa6';
-import { useMobile, useNavigate } from '@/hooks';
+import { useDisclosure, useMobile, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 
 export default function PersonSidebar({ person }: { person?: PersonResType }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showScrollIcon, setShowScrollIcon] = useState(false);
+  const { opened, open, close } = useDisclosure();
+  const [showScrollIcon, setShowScrollIcon] = useState<boolean>(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobile();
   const navigate = useNavigate();
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  const handleOpenModal = () => open();
+  const handleCloseModal = () => close();
 
   useEffect(() => {
-    if (!isModalOpen) return;
+    if (!opened) return;
     const el = modalContentRef.current;
     if (!el) return;
 
@@ -43,7 +43,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
       el.removeEventListener('scroll', checkScroll);
       window.removeEventListener('resize', checkScroll);
     };
-  }, [isModalOpen]);
+  }, [opened]);
 
   return (
     <div className='border-r-transparent-white max-1120:w-full max-1120:border-none max-1120:pr-0 max-1600:w-85 w-110 shrink-0 border-r pr-10'>
@@ -71,7 +71,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
       <h2 className='mb-4 text-center text-2xl leading-1.5 font-semibold text-white'>
         {person?.otherName}
       </h2>
-      <p className='text-foreground/60 mb-4 text-center text-sm'>
+      <p className='text-foreground/80 mb-4 text-center text-sm'>
         {person?.name}
       </p>
 
@@ -88,27 +88,29 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
 
       <div className='mb-2 flex'>
         Giới tính:&nbsp;
-        <p className='text-foreground/60'>
+        <p className='text-foreground/80'>
           {genderOptions.find((item) => item.value === person?.gender)?.label ??
             'Đang cập nhật'}
         </p>
       </div>
       <div className='mb-2 flex'>
         Ngày sinh:&nbsp;
-        <p className='text-foreground/60'>
-          {formatDate(person?.dateOfBirth!) ?? 'Đang cập nhật'}
+        <p className='text-foreground/80'>
+          {formatDate(person?.dateOfBirth, DEFAULT_DATE_FORMAT) ??
+            'Đang cập nhật'}
         </p>
       </div>
 
       <div>
         Giới thiệu:
-        <div className='text-foreground/60 line-clamp-10 text-justify'>
+        <div className='text-foreground/80 line-clamp-10 text-justify'>
           <div dangerouslySetInnerHTML={{ __html: person?.bio || '' }} />
         </div>
         {person?.bio && (
           <Button
             onClick={handleOpenModal}
             className='bg-accent hover:bg-background max-1120:mx-auto max-1120:mb-4 max-1120:w-110 max-1600:mt-4 max-800:w-full mt-2 ml-auto block text-sm text-white'
+            variant='secondary'
           >
             Xem thêm
           </Button>
@@ -116,9 +118,9 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
       </div>
 
       <AnimatePresence>
-        {isModalOpen && (
+        {opened && (
           <motion.div
-            className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/80'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -135,7 +137,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
               <Button
                 variant='ghost'
                 className='absolute top-2 right-0 hover:bg-transparent!'
-                onClick={() => setIsModalOpen(false)}
+                onClick={handleCloseModal}
               >
                 <X className='size-5' />
               </Button>

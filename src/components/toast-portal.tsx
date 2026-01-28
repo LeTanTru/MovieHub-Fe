@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 import { ToastContainer } from 'react-toastify';
 
 export default function ToastPortal() {
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
     setMounted(true);

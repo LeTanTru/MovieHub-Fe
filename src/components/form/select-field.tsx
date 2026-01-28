@@ -97,9 +97,9 @@ export default function SelectField<
   getPrefix = (opt) => opt.prefix,
   onValueChange
 }: SelectFieldProps<TFieldValues, TOption>) {
-  const [open, setOpen] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [open, setOpen] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const commandRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter((option) =>

@@ -8,22 +8,25 @@ import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import ButtonLogout from '@/components/button-logout';
-import { useState } from 'react';
 import { renderImageUrl } from '@/utils';
 import { List, ListItem } from '@/components/list';
+import { useDisclosure } from '@/hooks';
 
 type DropdownAvatarProps = {
   profile?: ProfileType | null;
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
-  const [open, setOpen] = useState(false);
+  const { opened, open, close } = useDisclosure();
+
+  const handleOpen = () => open();
+  const handleClose = () => close();
 
   return (
     <div
       className='group relative'
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={handleOpen}
+      onMouseLeave={handleClose}
     >
       <Button
         variant='ghost'
@@ -45,7 +48,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
       </Button>
 
       <AnimatePresence>
-        {open && (
+        {opened && (
           <motion.div
             variants={dropdownAvatarMotion}
             initial='initial'
@@ -69,7 +72,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             <Separator />
             <List>
               {dropdownAvatarList.map((item) => (
-                <ListItem key={item.link} onClick={() => setOpen(false)}>
+                <ListItem key={item.link} onClick={handleClose}>
                   <Link
                     href={item.link}
                     className='hover:bg-accent hover:text-accent-foreground flex h-9 w-full cursor-pointer items-center justify-start gap-2 rounded-none px-4 text-sm transition-all duration-200 ease-linear focus:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50'

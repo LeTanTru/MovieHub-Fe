@@ -53,8 +53,8 @@ export default function ImageField({
   zoomOnScroll = true,
   ...props
 }: ImageFieldProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scale, setScale] = useState(1);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [scale, setScale] = useState<number>(1);
 
   const previewRef = useRef<HTMLDivElement | null>(null);
 

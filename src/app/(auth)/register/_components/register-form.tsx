@@ -30,7 +30,7 @@ export default function RegisterForm() {
     confirmPassword: '',
     terms: false
   };
-  const [isFormChanged, setIsFormChanged] = useState(false);
+  const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const { mutateAsync: registerMutate, isPending: registerLoading } =
     useRegisterMutation();
 

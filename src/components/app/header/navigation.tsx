@@ -1,6 +1,6 @@
 'use client';
 
-import { ItemProps } from '@/types';
+import { CategoryResType, ItemProps } from '@/types';
 import NavigationDesktop from './navigation/navigation-desktop';
 import NavigationMobile from './navigation/navigation-mobile';
 import { useCategoryListQuery } from '@/queries';
@@ -9,6 +9,7 @@ import { countryOptions } from '@/constants';
 
 export default function NavigationMenu() {
   const { data: categoryListData } = useCategoryListQuery();
+  const categoryList: CategoryResType[] = categoryListData?.data?.content || [];
 
   const navigationList: ItemProps[] = [
     {
@@ -19,7 +20,7 @@ export default function NavigationMenu() {
       label: 'Thể loại',
       submenu: true,
       href: '',
-      subItems: (categoryListData?.data.content || [])
+      subItems: categoryList
         .map((category) => ({
           label: category.name,
           href: `${route.category.path}/${category.slug}.${category.id}`

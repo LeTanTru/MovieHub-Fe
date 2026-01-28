@@ -1,8 +1,8 @@
 'use client';
-import { breakPoints } from '@/constants';
-import { MoviePersonResType } from '@/types';
-import { useMediaQuery } from 'react-responsive';
 
+import { breakPoints } from '@/constants';
+import { MovieResType } from '@/types';
+import { useMediaQuery } from 'react-responsive';
 import { motion, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { route } from '@/routes';
 import { renderImageUrl } from '@/utils';
-import MoviePersonModal from './movie-modal';
+import MovieModal from './movie-modal';
 
 type Dir = 'up' | 'down';
 
@@ -31,12 +31,15 @@ const itemTransition: Transition = {
   default: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }
 };
 
+const MODAL_WIDTH = 400;
+const EDGE_PADDING = 20;
+
 export default function MovieCard({
-  mp,
-  dir
+  movie,
+  dir = 'up'
 }: {
-  mp: MoviePersonResType;
-  dir: Dir;
+  movie: MovieResType;
+  dir?: Dir;
 }) {
   const itemVariants = makeItemVariants(dir);
   const isDesktop = useMediaQuery({
@@ -51,10 +54,24 @@ export default function MovieCard({
 
   const openModal = () => {
     if (!cardRef.current) return;
+
     const rect = cardRef.current.getBoundingClientRect();
     const scrollY = window.scrollY;
-    const centerX = rect.left + rect.width / 2;
+    const viewportWidth = window.innerWidth;
+
+    let centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2 + scrollY;
+
+    const modalLeftEdge = centerX - MODAL_WIDTH / 2;
+    if (modalLeftEdge < EDGE_PADDING) {
+      centerX = MODAL_WIDTH / 2 + EDGE_PADDING;
+    }
+
+    const modalRightEdge = centerX + MODAL_WIDTH / 2;
+    if (modalRightEdge > viewportWidth - EDGE_PADDING) {
+      centerX = viewportWidth - MODAL_WIDTH / 2 - EDGE_PADDING;
+    }
+
     setModalPos({ x: centerX, y: centerY });
   };
 
@@ -74,9 +91,9 @@ export default function MovieCard({
   };
 
   return (
-    <div className='relative'>
+    <>
       <motion.div
-        key={mp.id}
+        key={movie.id}
         ref={cardRef}
         layout
         variants={itemVariants}
@@ -88,7 +105,7 @@ export default function MovieCard({
       >
         <Link
           className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-xl pb-[150%]'
-          href={`${route.movie.path}/${mp.movie.slug}.${mp.movie.id}`}
+          href={`${route.movie.path}/${movie.slug}.${movie.id}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           onClick={() => {
@@ -100,22 +117,30 @@ export default function MovieCard({
           }}
         >
           <Image
-            fill
-            src={renderImageUrl(mp.movie.thumbnailUrl)}
-            alt={mp.movie.title}
+            width={0}
+            height={0}
+            unoptimized
+            src={renderImageUrl(movie.posterUrl)}
+            alt={movie.title}
             className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
           />
         </Link>
 
         <div className='min-h-10.5 text-center'>
-          <h4 className='hover:text-light-golden-yellow mb-0 line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear'>
-            <Link href={`${route.movie.path}/${mp.movie.slug}.${mp.movie.id}`}>
-              {mp.movie.title}
+          <h4 className='hover:text-light-golden-yellow line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear'>
+            <Link
+              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+              title={movie.title}
+            >
+              {movie.title}
             </Link>
           </h4>
-          <h4 className='text-light-gray mt-1.25 line-clamp-1 text-xs leading-6'>
-            <Link href={`${route.movie.path}/${mp.movie.slug}.${mp.movie.id}`}>
-              {mp.movie.originalTitle}
+          <h4 className='text-light-gray line-clamp-1 text-xs leading-6'>
+            <Link
+              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+              title={movie.originalTitle}
+            >
+              {movie.originalTitle}
             </Link>
           </h4>
         </div>
@@ -129,10 +154,10 @@ export default function MovieCard({
             }}
             onMouseLeave={() => setModalPos(null)}
           >
-            <MoviePersonModal mp={mp} pos={modalPos} />
+            <MovieModal movie={movie} pos={modalPos} />
           </div>,
           document.body
         )}
-    </div>
+    </>
   );
 }

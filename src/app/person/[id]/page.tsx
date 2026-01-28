@@ -5,7 +5,7 @@ import { AppConstants } from '@/constants';
 import { personApiRequest } from '@/api-requests';
 import {
   getPersonDetail,
-  PersonMovieList,
+  MovieList,
   PersonSidebar
 } from '@/app/person/[id]/_components';
 
@@ -67,7 +67,7 @@ export default async function PersonDetailPage({
   return (
     <div className='max-1120:flex-col max-1120:px-0 relative mx-auto flex w-full max-w-410 items-stretch justify-between gap-0 px-5 py-0'>
       <PersonSidebar person={res.data} />
-      <PersonMovieList id={numericId} />
+      <MovieList id={numericId} />
     </div>
   );
 }

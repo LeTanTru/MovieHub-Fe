@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export default function useMobile(): boolean {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof navigator === 'undefined') return;

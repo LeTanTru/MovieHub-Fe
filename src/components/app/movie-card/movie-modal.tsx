@@ -1,12 +1,12 @@
 'use client';
 
-import './person-card.css';
+import './movie-modal.css';
 import { ageRatingOptions, DEFAULT_DATE_FORMAT } from '@/constants';
 import { Button } from '@/components/form';
 import { FaHeart, FaPlay } from 'react-icons/fa6';
 import { FaInfoCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MoviePersonResType } from '@/types';
+import { MovieResType } from '@/types';
 import Link from 'next/link';
 import { formatDate, renderImageUrl } from '@/utils';
 import {
@@ -18,11 +18,11 @@ import {
 import { route } from '@/routes';
 import { cn } from '@/lib';
 
-export default function MoviePersonModal({
-  mp,
+export default function MovieModal({
+  movie,
   pos
 }: {
-  mp: MoviePersonResType;
+  movie: MovieResType;
   pos: { x: number; y: number } | null;
 }) {
   return (
@@ -46,7 +46,7 @@ export default function MoviePersonModal({
             <div
               className='image-modal-mask relative bg-cover bg-position-[50%]'
               style={{
-                backgroundImage: `url(${renderImageUrl(mp.movie.thumbnailUrl)})`
+                backgroundImage: `url(${renderImageUrl(movie.thumbnailUrl)})`
               }}
             >
               <div className='absolute top-0 right-0 bottom-0 left-0 z-3 flex flex-col items-start justify-end bg-[linear-gradient(20deg,rgba(47,51,70,.6),rgba(47,51,70,0))] p-4' />
@@ -55,10 +55,10 @@ export default function MoviePersonModal({
             <div className='w-full bg-[linear-gradient(0deg,rgba(47,51,70,1),rgba(47,51,70,.7))] p-6 pt-2'>
               <div className='mb-4'>
                 <h3 className='font-semibold text-shadow-[0_0_3px_#00000030]'>
-                  {mp.movie.title}
+                  {movie.title}
                 </h3>
                 <h3 className='text-light-golden-yellow mb-0 text-sm text-xs leading-normal font-normal'>
-                  {mp.movie.originalTitle}
+                  {movie.originalTitle}
                 </h3>
               </div>
               <div className='mb-5 flex items-stretch justify-between gap-2.5'>
@@ -73,7 +73,7 @@ export default function MoviePersonModal({
                   Thích
                 </Button>
                 <Link
-                  href={`${route.movie.path}/${mp.movie.slug}.${mp.movie.id}`}
+                  href={`${route.movie.path}/${movie.slug}.${movie.id}`}
                   className='block grow'
                 >
                   <Button className='w-full border border-white/50 bg-transparent! text-white'>
@@ -87,21 +87,21 @@ export default function MoviePersonModal({
                   className='flex shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-5.5 font-medium text-black'
                   value={
                     ageRatingOptions.find(
-                      (age) => age.value === mp.movie.ageRating
+                      (age) => age.value === movie.ageRating
                     )?.label || 'U'
                   }
                 />
                 <TagNormal
                   className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
                   value={
-                    formatDate(mp.movie.releaseDate, DEFAULT_DATE_FORMAT).split(
+                    formatDate(movie.releaseDate, DEFAULT_DATE_FORMAT).split(
                       '/'
                     )[2]
                   }
                 />
               </TagWrapper>
               <TagWrapper className='mt-2 gap-1.25'>
-                {mp.movie.categories.map((item, index) => (
+                {movie.categories.map((item, index) => (
                   <TagCategory
                     text={item.name}
                     key={item.id}
