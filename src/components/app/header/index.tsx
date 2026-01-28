@@ -62,10 +62,10 @@ export default function Header() {
                 </div>
                 <Link href={route.home.path} className='shrink-0'>
                   <Image
-                    src={logoWithText}
                     alt='Logo'
-                    height={46}
                     className='max-1919:h-10 max-1359:h-9 h-auto'
+                    height={46}
+                    src={logoWithText}
                   />
                 </Link>
               </>

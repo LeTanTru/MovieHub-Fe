@@ -9,6 +9,8 @@ import {
 } from '@/components/tag';
 import {
   ageRatingOptions,
+  countryOptions,
+  DEFAULT_DATE_FORMAT,
   movieItemKinds,
   PERSON_ACTOR,
   PERSON_DIRECTOR
@@ -46,14 +48,11 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
         <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'>
           {movie && (
             <Image
+              alt={`${movie.title} - ${movie.originalTitle}`}
+              className='h-full w-full object-cover'
               fill
-              sizes='(max-width: 480px) 100vw,
-                    (max-width: 640px) 50vw,
-                    (max-width: 1280px) 33vw,
-                    25vw'
+              sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
               src={renderImageUrl(movie.posterUrl)}
-              alt={`${movie?.title} - ${movie?.originalTitle}`}
-              className='object-cover'
             />
           )}
         </div>
@@ -65,7 +64,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
         {movie?.originalTitle}
       </div>
       <div>
-        <TagWrapper>
+        <TagWrapper className='mb-4'>
           <TagIMDb value='7.7' />
           <TagAgeRating
             value={
@@ -74,7 +73,12 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
             }
           />
           <TagNormal
-            value={formatDate(movie?.releaseDate as string).split('/')[2]}
+            value={
+              formatDate(
+                movie?.releaseDate as string,
+                DEFAULT_DATE_FORMAT
+              ).split('/')[2]
+            }
           />
           {video && <TagNormal value={formatDuration(video.duration)} />}
         </TagWrapper>
@@ -90,7 +94,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
         <div className='mt-5 mb-5 text-sm'>
           <div className='mb-2 block font-medium text-white'>Giới thiệu:</div>
           <div
-            className='text-statuary text-sm font-light'
+            className='text-foreground/80 text-sm font-light'
             dangerouslySetInnerHTML={{ __html: movie?.description || '' }}
           />
         </div>
@@ -99,7 +103,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
             <div className='font-medium whitespace-nowrap text-white'>
               Thời lượng:
             </div>
-            <div className='text-statuary font-light'>
+            <div className='text-foreground/80 font-light'>
               {formatDuration(video.duration)}
             </div>
           </div>
@@ -110,9 +114,12 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
           </div>
           <Link
             href={`${route.country.path}/${movie.country}`}
-            className='text-statuary hover:text-light-golden-yellow linear font-light transition duration-200'
+            className='text-foreground/80 hover:text-light-golden-yellow linear font-light transition duration-200'
           >
-            {movie.country}
+            {
+              countryOptions.find((country) => country.value === movie.country)
+                ?.label
+            }
           </Link>
         </div>
         <div className='mb-5 flex flex-wrap items-end gap-2 text-sm'>
@@ -123,7 +130,7 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
             <Link
               key={director.id}
               href={`${route.person.path}/${director.person.id}`}
-              className='text-statuary hover:text-light-golden-yellow linear font-light transition duration-200'
+              className='text-foreground/80 hover:text-light-golden-yellow linear font-light transition duration-200'
             >
               {director.person.otherName}
               {index < directors.length - 1 && ','}
@@ -145,10 +152,11 @@ export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
                   className='bg-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
                 >
                   <Image
-                    className='absolute top-0 right-0 bottom-0 left-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
-                    src={renderImageUrl(actor.person.avatarPath)}
                     alt={actor.person.otherName}
+                    className='absolute top-0 right-0 bottom-0 left-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
                     fill
+                    sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                    src={renderImageUrl(actor.person.avatarPath)}
                   />
                 </Link>
                 <div>
