@@ -18,7 +18,7 @@ export default function CategoryList({ id }: { id: string }) {
   return (
     <div className='max-989:mb-2.5 mb-5'>
       {categoryLoading ? (
-        <h3 className='max-1600:text-2xl skeleton m-0 h-8 w-30 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'></h3>
+        <div className='skeleton m-0 h-10 w-50'></div>
       ) : (
         <h3 className='max-1600:text-2xl m-0 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           {category?.name}
