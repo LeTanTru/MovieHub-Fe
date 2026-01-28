@@ -11,18 +11,18 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-xs hover:bg-primary/80 disabled:bg-primary/80 disabled:hover:bg-primary/80 dark:bg-primary dark:disabled:bg-primary/60 dark:disabled:hover:bg-primary/60',
+          'bg-primary text-primary-foreground shadow-xs hover:bg-primary/80 disabled:bg-primary/80 disabled:hover:bg-primary/80 dark:bg-primary dark:hover:bg-primary/80 dark:disabled:bg-primary/80 dark:disabled:hover:bg-primary/80',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/80 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 hover:opacity-80 disabled:bg-destructive/80 disabled:hover:bg-destructive/80 dark:bg-destructive dark:disabled:bg-destructive/80 dark:disabled:hover:bg-destructive/80',
         outline:
           'border border-input bg-transparent disabled:hover:bg-transparent disabled:border-gray-500/80 disabled:hover:border-gray-500/80 dark:border-gray-500 dark:hover:border-gray-500/80 dark:disabled:bg-transparent dark:hover:text-gray-500/80 dark:disabled:text-gray-500/80 dark:disabled:border-gray-500/80',
         secondary:
-          'border border-gray-500 bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-gray-500/80 hover:border-gray-500/80 disabled:text-gray-500/80 disabled:hover:border-gray-500/80 dark:bg-secondary dark:hover:bg-secondary/80 dark:disabled:bg-secondary/80 dark:disabled:hover:bg-secondary/80 dark:disabled:text-gray-400',
+          'border border-gray-500 bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-gray-500/80 hover:border-gray-500/80 disabled:text-gray-500/80 disabled:hover:border-gray-500/80 dark:bg-secondary dark:hover:bg-secondary/80 dark:disabled:bg-secondary/80 dark:disabled:hover:bg-secondary/80 dark:disabled:text-gray-400 dark:border-none',
         ghost:
-          'hover:bg-transparent hover:text-gray-500/80 disabled:bg-secondary/80 disabled:hover:bg-secondary/80 disabled:text-gray-500/80 disabled:hover:text-gray-500/80 dark:hover:bg-secondary/50 dark:disabled:bg-secondary/50 dark:disabled:hover:bg-secondary/50 dark:hover:text-gray-500/80 dark:disabled:text-gray-500/80',
+          'hover:bg-transparent hover:text-gray-500/80 disabled:bg-secondary/80 disabled:hover:bg-secondary/80 disabled:text-gray-500/80 disabled:hover:text-gray-500/80 dark:hover:bg-transparent dark:disabled:bg-secondary/50 dark:disabled:hover:bg-secondary/50 dark:hover:text-gray-500/80 dark:disabled:text-gray-500/80',
         link: 'text-primary underline-offset-4 hover:underline',
         primary:
-          'bg-main-color text-primary-foreground hover:bg-main-color/80 disabled:bg-main-color/80 disabled:hover:bg-main-color/80 disabled:text-primary-foreground/80 dark:disabled:bg-gray-500/80 dark:disabled:hover:bg-gray-500/80'
+          'bg-main-color text-primary-foreground hover:bg-main-color/80 disabled:bg-main-color/80 disabled:hover:bg-main-color/80 disabled:text-primary-foreground/80 dark:disabled:bg-main-color/80 dark:disabled:hover:bg-main-color/80'
       },
       size: {
         default: 'h-9 px-4 has-[>svg]:px-4 py-2',

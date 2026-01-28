@@ -5,6 +5,7 @@ import NavigationDesktop from './navigation/navigation-desktop';
 import NavigationMobile from './navigation/navigation-mobile';
 import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
+import { countryOptions } from '@/constants';
 
 export default function NavigationMenu() {
   const { data: categoryListData } = useCategoryListQuery();
@@ -18,10 +19,12 @@ export default function NavigationMenu() {
       label: 'Thể loại',
       submenu: true,
       href: '',
-      subItems: (categoryListData?.data.content || []).map((category) => ({
-        label: category.name,
-        href: `${route.category.path}/${category.slug}.${category.id}`
-      })),
+      subItems: (categoryListData?.data.content || [])
+        .map((category) => ({
+          label: category.name,
+          href: `${route.category.path}/${category.slug}.${category.id}`
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
       isGrid: true
     },
     {
@@ -35,25 +38,11 @@ export default function NavigationMenu() {
     {
       label: 'Quốc gia',
       submenu: true,
-      subItems: [
-        { href: `${route.country.path}/` + 'an-do', label: 'Ấn Độ' },
-        { href: `${route.country.path}/` + 'anh', label: 'Anh' },
-        { href: `${route.country.path}/` + 'canada', label: 'Canada' },
-        { href: `${route.country.path}/` + 'duc', label: 'Đức' },
-        { href: `${route.country.path}/` + 'han-quoc', label: 'Hàn Quốc' },
-        { href: `${route.country.path}/` + 'hong-kong', label: 'Hồng Kông' },
-        { href: `${route.country.path}/` + 'indonesia', label: 'Indonesia' },
-        { href: `${route.country.path}/` + 'italia', label: 'Italia' },
-        { href: `${route.country.path}/` + 'my', label: 'Mỹ' },
-        { href: `${route.country.path}/` + 'nga', label: 'Nga' },
-        { href: `${route.country.path}/` + 'nhat-ban', label: 'Nhật Bản' },
-        { href: `${route.country.path}/` + 'phap', label: 'Pháp' },
-        { href: `${route.country.path}/` + 'thai-lan', label: 'Thái Lan' },
-        { href: `${route.country.path}/` + 'trung-quoc', label: 'Trung Quốc' },
-        { href: `${route.country.path}/` + 'uc', label: 'Úc' },
-        { href: `${route.country.path}/` + 'viet-nam', label: 'Việt Nam' }
-      ],
-      isGrid: false
+      subItems: countryOptions.map((country) => ({
+        href: `${route.country.path}/${country.value}`,
+        label: country.label
+      })),
+      isGrid: true
     },
     {
       label: 'Diễn viên',

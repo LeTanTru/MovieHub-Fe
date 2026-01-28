@@ -1,11 +1,13 @@
-import PersonSidebar from '@/app/person/_components/person-sidebar';
-import PersonMovieList from '@/app/person/_components/movie-list';
 import { stripHtml } from '@/utils';
 import type { Metadata, ResolvingMetadata } from 'next';
-import { getPersonDetail } from '@/app/person/_components/person';
 import envConfig from '@/config';
 import { AppConstants } from '@/constants';
 import { personApiRequest } from '@/api-requests';
+import {
+  getPersonDetail,
+  PersonMovieList,
+  PersonSidebar
+} from '@/app/person/[id]/_components';
 
 export async function generateStaticParams() {
   const persons = await personApiRequest.getList();

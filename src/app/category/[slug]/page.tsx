@@ -1,5 +1,5 @@
 import { categoryApiRequest } from '@/api-requests';
-import CategoryList from './category-list';
+import CategoryList from './_components/category-list';
 
 export async function generateStaticParams() {
   const categories = await categoryApiRequest.getList();
@@ -14,9 +14,6 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return (
-    <>
-      <CategoryList slug={slug} />
-    </>
-  );
+  const id = slug.split('.')[1];
+  return <CategoryList id={id} />;
 }

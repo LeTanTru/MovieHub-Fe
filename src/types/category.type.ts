@@ -1,5 +1,9 @@
+import { categorySearchSchema } from '@/schemaValidations';
+import { BaseSearchType } from '@/types/search.type';
+import z from 'zod';
+
 export type CategoryResType = {
-  id: number;
+  id: string;
   status: number;
   name: string;
   slug: string;
@@ -14,3 +18,6 @@ type CategoryActions = {
 };
 
 export type CategoryStoreType = CategoryState & CategoryActions;
+
+export type CategorySearchType = z.infer<typeof categorySearchSchema> &
+  BaseSearchType;

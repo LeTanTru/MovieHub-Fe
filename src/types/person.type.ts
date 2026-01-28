@@ -1,5 +1,9 @@
+import { personSearchSchema } from '@/schemaValidations';
+import { BaseSearchType } from '@/types/search.type';
+import z from 'zod';
+
 export type PersonResType = {
-  id: number;
+  id: string;
   status: number;
   modifiedDate: string;
   createdDate: string;
@@ -12,3 +16,6 @@ export type PersonResType = {
   country: string;
   kinds: number[];
 };
+
+export type PersonSearchType = z.infer<typeof personSearchSchema> &
+  BaseSearchType;

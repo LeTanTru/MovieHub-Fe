@@ -267,6 +267,8 @@ export default function VerifyOtpForm() {
               <Row className='mb-4'>
                 <Col span={24}>
                   <Button
+                    type='submit'
+                    variant='primary'
                     disabled={verifyOtpLoading || !isFormChanged}
                     loading={verifyOtpLoading}
                   >

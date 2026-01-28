@@ -3,12 +3,12 @@ import {
   ApiResponse,
   ApiResponseList,
   MovieResType,
-  MovieSearchParamType
+  MovieSearchType
 } from '@/types';
 import { http } from '@/utils';
 
 const movieApiRequest = {
-  getList: (params?: MovieSearchParamType) =>
+  getList: (params?: MovieSearchType) =>
     http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
       params
     }),

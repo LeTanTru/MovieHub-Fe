@@ -1,12 +1,13 @@
 'use client';
 
 import { moviePersonApiRequest } from '@/api-requests';
-import { MoviePersonSearchParamType } from '@/types';
+import { queryKeys } from '@/constants';
+import { MoviePersonSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
-export const useMoviePersonListQuery = (params: MoviePersonSearchParamType) => {
+export const useMoviePersonListQuery = (params: MoviePersonSearchType) => {
   return useQuery({
-    queryKey: ['moviePersons', params],
+    queryKey: [`${queryKeys.MOVIE_PERSON}-list`, params],
     queryFn: () => moviePersonApiRequest.getList(params)
   });
 };
