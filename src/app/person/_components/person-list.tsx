@@ -14,12 +14,12 @@ import { Activity } from '@/components/activity';
 export default function PersonList() {
   const skeletonCount = 24;
   const params = useSearchParams();
-  const page = params.get('page') ?? 0;
+  const page = params.get('page') ?? 1;
 
   const { data: personListData, isLoading: personListLoading } =
     usePersonListQuery(
       {
-        page: page,
+        page: +page - 1,
         size: skeletonCount,
         kind: PERSON_ACTOR
       },

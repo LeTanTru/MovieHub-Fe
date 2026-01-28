@@ -59,7 +59,7 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
         <FaArrowLeftLong className='h-10! w-10!' />
       </Button>
       <AvatarField
-        className={cn('mx-auto mb-10 rounded border-none', {
+        className={cn('mx-auto mb-6 rounded-full border-none', {
           'rounded-full': !person?.avatarPath
         })}
         previewClassName={cn({
@@ -104,7 +104,10 @@ export default function PersonSidebar({ person }: { person?: PersonResType }) {
       <div>
         Giới thiệu:
         <div className='text-foreground/80 line-clamp-10 text-justify'>
-          <div dangerouslySetInnerHTML={{ __html: person?.bio || '' }} />
+          <div
+            className='text-foreground/80'
+            dangerouslySetInnerHTML={{ __html: person?.bio || '' }}
+          />
         </div>
         {person?.bio && (
           <Button
