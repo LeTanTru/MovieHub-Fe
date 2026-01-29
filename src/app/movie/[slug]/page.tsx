@@ -8,7 +8,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 export async function generateStaticParams() {
   const movies = await movieApiRequest.getList();
   return movies.data.content.map((movie) => ({
-    slug: `${movie.slug}.${movie.id.toString()}`
+    slug: `${movie?.slug}.${movie?.id}`
   }));
 }
 

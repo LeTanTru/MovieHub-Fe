@@ -1,7 +1,6 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthStore } from '@/store';
 import DropdownAvatar from './dropdown-avatar';
 import NavigationMenu from './navigation';
@@ -66,6 +65,7 @@ export default function Header() {
                     className='max-1919:h-10 max-1359:h-9 h-auto'
                     height={46}
                     src={logoWithText}
+                    loading='eager'
                   />
                 </Link>
               </>
@@ -89,7 +89,7 @@ export default function Header() {
                   transition={{ duration: 0.2 }}
                   style={{ marginRight: 24 }}
                 >
-                  <Skeleton className='h-10 w-10 rounded-full' />
+                  <div className='skeleton h-10 w-10 rounded-full!' />
                 </motion.div>
               ) : !profile ? (
                 <motion.div

@@ -120,7 +120,6 @@ export default function MovieCard({
             alt={movie.title}
             className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
             fill
-            sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
             src={renderImageUrl(movie.posterUrl)}
             unoptimized
           />

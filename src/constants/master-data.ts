@@ -161,6 +161,7 @@ export const movieKinds = {
 
 export const queryKeys = {
   CATEGORY: 'category',
+  COLLECTION: 'collection',
   FILE: 'file',
   FORGOT_PASSWORD: 'forgot-password',
   LOGIN_GOOGLE: 'login_google',

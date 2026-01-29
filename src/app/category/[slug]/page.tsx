@@ -3,9 +3,9 @@ import CategoryList from './_components/category-list';
 import type { Metadata } from 'next';
 
 export async function generateStaticParams() {
-  const categories = await categoryApiRequest.getList();
+  const categories = await categoryApiRequest.getList({ size: 20 });
   return categories.data.content.map((category) => ({
-    slug: category.id.toString()
+    slug: `${category?.slug}.${category?.id}`
   }));
 }
 

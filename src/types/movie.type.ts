@@ -53,12 +53,12 @@ export type MovieHistoryResType = {
   lastWatchSeconds: number;
   modifiedDate: string;
   movie: MovieResType;
-  movieId: number;
+  movieId: string;
   movieItem: MovieItemResType;
-  movieItemId: number;
+  movieItemId: string;
   status: number;
   timesWatched: number;
-  userId: number;
+  userId: string;
 };
 
 export type MovieTopViewsResType = {

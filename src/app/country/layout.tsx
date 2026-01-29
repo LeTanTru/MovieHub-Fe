@@ -1,8 +1,7 @@
 import Header from '@/components/app/header';
-import { Sidebar } from '@/app/user/_components';
 import { Container } from '@/components/layout';
 
-export default function UserLayout({
+export default function CountryLayout({
   children
 }: {
   children: React.ReactNode;
@@ -10,8 +9,7 @@ export default function UserLayout({
   return (
     <>
       <Header />
-      <Container className='max-1120:flex-col max-1600:pt-28 max-1368:pt-20 mx-auto flex max-w-410 gap-x-10 px-5 pt-40'>
-        <Sidebar />
+      <Container className='max-1919:px-5 max-1600:pt-28 max-1360:pt-20 max-990:pb-24 max-800:pt-8 min-h-[calc(100vh-400px)] px-12.5 pt-40 pb-40 max-sm:px-4'>
         {children}
       </Container>
     </>

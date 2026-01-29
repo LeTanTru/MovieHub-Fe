@@ -6,10 +6,12 @@ import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { PERSON_ACTOR } from '@/constants';
-import MovieGridByYear from './movie-grid-by-year';
-import MovieGrid from './movie-grid';
-import MovieGridSkeleton from './movie-grid-skeleton';
 import { MoviePersonResType, MovieResType } from '@/types';
+import {
+  MovieGrid,
+  MovieGridByYear,
+  MovieGridSkeleton
+} from '@/components/app/movie-grid';
 
 export default function MovieList({ id }: { id: number }) {
   const actions: { key: string; text: string }[] = [
@@ -61,15 +63,23 @@ export default function MovieList({ id }: { id: number }) {
                 initial={{ opacity: 0, y: activeKey === 'all' ? -10 : 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: activeKey === 'all' ? -10 : 10 }}
+                className='block'
               >
                 {movieListLoading ? (
-                  <MovieGridSkeleton />
+                  <MovieGridSkeleton className='grid-cols-6' />
                 ) : movieList.length == 0 ? (
                   'Không có phim nào'
                 ) : activeKey === 'all' ? (
-                  <MovieGrid movieList={movieList} dir='down' />
+                  <MovieGrid
+                    movieList={movieList}
+                    dir='down'
+                    className='grid-cols-6'
+                  />
                 ) : (
-                  <MovieGridByYear movieList={movieList} />
+                  <MovieGridByYear
+                    movieList={movieList}
+                    className='grid-cols-6'
+                  />
                 )}
               </motion.div>
             </AnimatePresence>

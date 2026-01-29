@@ -6,6 +6,7 @@ import NavigationMobile from './navigation/navigation-mobile';
 import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
 import { countryOptions } from '@/constants';
+import { removeAccents } from '@/utils';
 
 export default function NavigationMenu() {
   const { data: categoryListData } = useCategoryListQuery();
@@ -14,7 +15,7 @@ export default function NavigationMenu() {
   const navigationList: ItemProps[] = [
     {
       label: 'Chủ đề',
-      href: route.topic.path
+      href: route.topics.path
     },
     {
       label: 'Thể loại',
@@ -40,7 +41,7 @@ export default function NavigationMenu() {
       label: 'Quốc gia',
       submenu: true,
       subItems: countryOptions.map((country) => ({
-        href: `${route.country.path}/${country.value}`,
+        href: `${route.country.path}/${removeAccents(country.label).toLowerCase().split(' ').join('-')}.${country.value}`,
         label: country.label
       })),
       isGrid: true

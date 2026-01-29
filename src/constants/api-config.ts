@@ -199,6 +199,15 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true,
       ignoreAuth: true
     }
+  },
+  collection: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/collection/topics`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
+    }
   }
 });
 
