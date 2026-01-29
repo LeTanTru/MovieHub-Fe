@@ -129,7 +129,7 @@
   /* transition: opacity 0.5s ease-in-out; */
 }
 
-.slider-fade-in {
+.slide-elements .fade-in {
   opacity: 0;
   filter: blur(10px);
   transition:
@@ -137,7 +137,7 @@
     filter 0.5s ease-in;
 }
 
-.slider-fade-in.visible {
+.slide-elements .fade-in.visible {
   opacity: 1;
   filter: blur(0);
 }

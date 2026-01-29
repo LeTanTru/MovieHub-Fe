@@ -12,7 +12,7 @@ import {
 export async function generateStaticParams() {
   const persons = await personApiRequest.getList();
   return persons.data.content.map((person) => ({
-    id: `${person.id}`
+    id: `${person?.id}`
   }));
 }
 

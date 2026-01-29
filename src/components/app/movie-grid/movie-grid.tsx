@@ -1,4 +1,5 @@
 import { MovieCard } from '@/components/app/movie-card';
+import { cn } from '@/lib';
 import { MovieResType } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 
@@ -6,17 +7,20 @@ type Dir = 'up' | 'down';
 
 export default function MovieGrid({
   movieList,
-  dir
+  dir,
+  className
 }: {
   movieList: MovieResType[];
   dir: Dir;
+  className?: string;
 }) {
   return (
-    <div className='max-1120:grid-cols-5 max-1360:grid-cols-4 max-1600:grid-cols-5 max-1600:gap-4 max-480:grid-cols-2 max-800:grid-cols-4 grid grid-cols-6 gap-6 max-sm:grid-cols-3'>
+    <div className={cn('grid grow grid-cols-8 gap-6', className)}>
       <AnimatePresence mode='popLayout' initial={false}>
-        {movieList.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} dir={dir} />
-        ))}
+        {movieList &&
+          movieList.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} dir={dir} />
+          ))}
       </AnimatePresence>
     </div>
   );

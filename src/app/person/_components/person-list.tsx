@@ -2,7 +2,6 @@
 
 import './person-list.css';
 import PersonCard from './person-card';
-import PersonCardSkeleton from './person-card-skeleton';
 import Pagination from '@/components/pagination';
 import { useSearchParams } from 'next/navigation';
 import { usePersonListQuery } from '@/queries';
@@ -10,9 +9,10 @@ import { cn } from '@/lib';
 import { PERSON_ACTOR } from '@/constants';
 import { PersonResType } from '@/types';
 import { Activity } from '@/components/activity';
+import PersonListSkeleton from './person-list-skeleton';
 
 export default function PersonList() {
-  const skeletonCount = 24;
+  const personSize = 24;
   const params = useSearchParams();
   const page = params.get('page') ?? 1;
 
@@ -20,7 +20,7 @@ export default function PersonList() {
     usePersonListQuery(
       {
         page: +page - 1,
-        size: skeletonCount,
+        size: personSize,
         kind: PERSON_ACTOR
       },
       true
@@ -32,13 +32,13 @@ export default function PersonList() {
   return (
     <>
       <div className={cn('grid grid-cols-8 gap-6')}>
-        {personListLoading
-          ? Array.from({ length: skeletonCount }, (_, index) => (
-              <PersonCardSkeleton key={index} />
-            ))
-          : personList?.map((person) => (
-              <PersonCard person={person} key={person.id} />
-            ))}
+        {personListLoading ? (
+          <PersonListSkeleton />
+        ) : (
+          personList.map((person) => (
+            <PersonCard person={person} key={person.id} />
+          ))
+        )}
       </div>
       <Activity visible={!!totalPages}>
         <Pagination totalPages={totalPages} />

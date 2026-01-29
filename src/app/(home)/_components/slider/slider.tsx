@@ -63,7 +63,7 @@ export default function Slider() {
                 <div className='cover-fade'>
                   <div className='cover-image'>
                     <img
-                      className='slider-fade-in visible'
+                      className='fade-in visible'
                       title='Thế Giới Khủng Long: Tái Sinh'
                       loading='lazy'
                       src={slider.src}

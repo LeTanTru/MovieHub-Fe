@@ -8,7 +8,7 @@ export type MovieItemResType = {
   createdDate: string;
   description: string;
   episodes: any[];
-  id: number;
+  id: string;
   kind: number;
   label: string;
   modifiedDate: string;
