@@ -18,7 +18,7 @@ export default function AppProvider({
     data: profile,
     isLoading,
     isFetching
-  } = useProfileQuery(!!accessToken);
+  } = useProfileQuery({ enabled: !!accessToken });
 
   useEffect(() => {
     setLoading(isLoading || isFetching);

@@ -29,7 +29,7 @@ export default function ButtonLoginGoogle() {
     refetch: getLoginGoogleUrl,
     isLoading,
     isFetching
-  } = useLoginGoogleQuery(AppConstants.loginType);
+  } = useLoginGoogleQuery({ loginType: AppConstants.loginType });
   const { mutateAsync: loginGoogleMutate, isPending: loginGoogleLoading } =
     useLoginGoogleMutation();
   const { refetch: getProfile } = useProfileQuery();

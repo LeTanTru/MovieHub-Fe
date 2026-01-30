@@ -24,12 +24,17 @@ import Link from 'next/link';
 
 export default function MovieDetailSidebar({ movie }: { movie: MovieResType }) {
   const { data: movieItemResData } = useMovieItemListQuery({
-    movieId: movie.id,
-    kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
+    params: {
+      movieId: movie.id,
+      kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
+    },
+    enabled: !!movie
   });
 
   const { data: personResData } = useMoviePersonListQuery({
-    movieId: movie.id
+    params: {
+      movieId: movie.id
+    }
   });
 
   const movieItems = movieItemResData?.data?.content;

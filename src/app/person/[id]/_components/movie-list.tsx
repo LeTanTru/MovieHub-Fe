@@ -22,8 +22,11 @@ export default function MovieList({ id }: { id: number }) {
 
   const { data: moviePersonListData, isLoading: movieListLoading } =
     useMoviePersonListQuery({
-      personId: id,
-      kind: PERSON_ACTOR
+      params: {
+        personId: id,
+        kind: PERSON_ACTOR
+      },
+      enabled: true
     });
 
   const moviePersonList: MoviePersonResType[] =

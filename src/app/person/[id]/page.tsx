@@ -1,7 +1,7 @@
 import { stripHtml } from '@/utils';
 import type { Metadata, ResolvingMetadata } from 'next';
 import envConfig from '@/config';
-import { AppConstants } from '@/constants';
+import { AppConstants, DEFAULT_STATIC_PARAM_SIZE } from '@/constants';
 import { personApiRequest } from '@/api-requests';
 import {
   getPersonDetail,
@@ -10,7 +10,9 @@ import {
 } from '@/app/person/[id]/_components';
 
 export async function generateStaticParams() {
-  const persons = await personApiRequest.getList();
+  const persons = await personApiRequest.getList({
+    params: { size: DEFAULT_STATIC_PARAM_SIZE }
+  });
   return persons.data.content.map((person) => ({
     id: `${person?.id}`
   }));

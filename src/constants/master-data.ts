@@ -175,7 +175,8 @@ export const queryKeys = {
   REGISTER: 'register',
   REQUEST_FORGOT_PASSSWORD: 'request-forgot-password',
   RESEND_OTP: 'resend-otp',
-  VERIFY_OTP: 'verify-otp'
+  VERIFY_OTP: 'verify-otp',
+  COLLECTION_ITEM: 'collection-item'
 };
 
 export const countryOptions = [

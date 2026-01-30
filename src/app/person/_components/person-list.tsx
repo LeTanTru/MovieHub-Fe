@@ -17,14 +17,14 @@ export default function PersonList() {
   const page = params.get('page') ?? 1;
 
   const { data: personListData, isLoading: personListLoading } =
-    usePersonListQuery(
-      {
+    usePersonListQuery({
+      params: {
         page: +page - 1,
         size: personSize,
         kind: PERSON_ACTOR
       },
-      true
-    );
+      enabled: true
+    });
 
   const personList: PersonResType[] = personListData?.data?.content || [];
   const totalPages = personListData?.data?.totalPages || 0;

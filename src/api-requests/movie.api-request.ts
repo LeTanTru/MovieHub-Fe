@@ -8,11 +8,11 @@ import {
 import { http } from '@/utils';
 
 const movieApiRequest = {
-  getList: (params?: MovieSearchType) =>
+  getList: ({ params }: { params?: MovieSearchType } = {}) =>
     http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
       params
     }),
-  getById: (id: string) =>
+  getById: ({ id }: { id: string }) =>
     http.get<ApiResponse<MovieResType>>(apiConfig.movie.getById, {
       pathParams: {
         id

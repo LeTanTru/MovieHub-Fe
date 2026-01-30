@@ -3,14 +3,15 @@
 import { NoData } from '@/components/no-data';
 import TopicItem from './topic-item';
 import { cn } from '@/lib';
-import { useCollectionListQuery } from '@/queries';
+import { useCollectionTopicListQuery } from '@/queries';
 import { CollectionResType } from '@/types';
 import { AnimatePresence } from 'framer-motion';
-import TopicListSkeleton from '@/app/topics/_components/topic-skeleton';
+import TopicListSkeleton from './topic-skeleton';
 
 export default function TopicList() {
   const { data: topicListData, isLoading: topicListLoading } =
-    useCollectionListQuery();
+    useCollectionTopicListQuery({ enabled: true });
+
   const topicList: CollectionResType[] = topicListData?.data?.content || [];
 
   return (

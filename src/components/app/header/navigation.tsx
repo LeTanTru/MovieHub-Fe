@@ -9,13 +9,13 @@ import { countryOptions } from '@/constants';
 import { generateSlug } from '@/utils';
 
 export default function NavigationMenu() {
-  const { data: categoryListData } = useCategoryListQuery();
+  const { data: categoryListData } = useCategoryListQuery({ enabled: true });
   const categoryList: CategoryResType[] = categoryListData?.data?.content || [];
 
   const navigationList: ItemProps[] = [
     {
       label: 'Chủ đề',
-      href: route.topics.path
+      href: route.topic.path
     },
     {
       label: 'Thể loại',

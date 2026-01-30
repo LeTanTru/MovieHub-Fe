@@ -21,5 +21,5 @@ export function removeAccents(str: string) {
 }
 
 export function generateSlug(str: string) {
-  return removeAccents(str).split(' ').join('-');
+  return removeAccents(str).toLowerCase().split(' ').join('-');
 }

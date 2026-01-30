@@ -4,14 +4,19 @@ import {
   ForgotPasswordBodyType,
   LoginBodyType,
   RegisterBodyType,
+  RequestForgotPasswordBodyType,
   VerifyOtpBodyType
 } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useLoginGoogleQuery = (loginType: string | number) => {
+export const useLoginGoogleQuery = ({
+  loginType
+}: {
+  loginType: string | number;
+}) => {
   return useQuery({
     queryKey: [`get-${queryKeys.LOGIN_GOOGLE}`, loginType],
-    queryFn: () => authApiRequest.getGoogleLoginUrl(loginType),
+    queryFn: () => authApiRequest.getGoogleLoginUrl({ loginType }),
     enabled: false
   });
 };
@@ -40,7 +45,7 @@ export const useRegisterMutation = () => {
 export const useRequestForgotPasswordMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.REQUEST_FORGOT_PASSSWORD],
-    mutationFn: (body: Pick<ForgotPasswordBodyType, 'email'>) =>
+    mutationFn: (body: RequestForgotPasswordBodyType) =>
       authApiRequest.requestForgotPassword(body)
   });
 };

@@ -10,8 +10,13 @@ export default function CountryList({ countryCode }: { countryCode: string }) {
   const countryName = countryOptions.find(
     (country) => country.value === countryCode
   )?.label;
+
   const { data: movieListData, isLoading: movieListLoading } =
-    useMovieListQuery({ country: countryCode }, true);
+    useMovieListQuery({
+      params: { country: countryCode },
+      enabled: !!countryCode
+    });
+
   const movieList: MovieResType[] = movieListData?.data?.content || [];
 
   return (

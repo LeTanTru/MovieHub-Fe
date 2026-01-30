@@ -27,7 +27,7 @@ function MovieDetailSkeleton() {
 
 export default function MovieDetail({ slug }: { slug: string }) {
   const id = slug.split('.')[1];
-  const { data: movieData } = useMovieQuery(id);
+  const { data: movieData } = useMovieQuery({ id });
   const movie: MovieResType | undefined = movieData?.data;
 
   useEffect(() => {

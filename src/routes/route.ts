@@ -53,8 +53,8 @@ const route = defineRoute({
       path: '/movie/series'
     }
   },
-  topics: {
-    path: '/topics'
+  topic: {
+    path: '/topic'
   },
   watch: {
     path: '/watch'

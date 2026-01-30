@@ -7,10 +7,12 @@ import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function CategoryList({ id }: { id: string }) {
-  const { data: categoryData, isLoading: categoryLoading } =
-    useCategoryQuery(id);
+  const { data: categoryData, isLoading: categoryLoading } = useCategoryQuery({
+    id
+  });
+
   const { data: movieListData, isLoading: movieListLoading } =
-    useMovieListQuery({ categoryIds: id }, !!id);
+    useMovieListQuery({ params: { categoryIds: id }, enabled: true });
 
   const category: CategoryResType | undefined = categoryData?.data;
   const movieList: MovieResType[] = movieListData?.data?.content || [];

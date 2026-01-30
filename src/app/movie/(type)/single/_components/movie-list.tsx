@@ -8,7 +8,10 @@ import { MovieResType } from '@/types';
 
 export default function MovieList() {
   const { data: movieListData, isLoading: movieListLoading } =
-    useMovieListQuery({ type: movieKinds.MOVIE_KIND_SINGLE }, true);
+    useMovieListQuery({
+      params: { type: movieKinds.MOVIE_KIND_SINGLE },
+      enabled: true
+    });
   const movieList: MovieResType[] = movieListData?.data?.content || [];
 
   return (
