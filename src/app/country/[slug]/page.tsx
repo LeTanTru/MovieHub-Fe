@@ -1,11 +1,11 @@
 import { countryOptions } from '@/constants';
 import CountryList from './_components/country-list';
 import { Metadata } from 'next';
-import { removeAccents } from '@/utils';
+import { generateSlug } from '@/utils';
 
 export async function generateStaticParams() {
   return countryOptions.slice(0, 20).map((country) => ({
-    slug: `${removeAccents(country.label).toLowerCase().split(' ').join('-')}.${country.value}`
+    slug: `${generateSlug(country.label)}.${country.value}`
   }));
 }
 
