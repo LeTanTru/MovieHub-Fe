@@ -9,11 +9,11 @@ export default function MovieGridSkeleton({
 }: {
   className?: string;
 }) {
-  const skeletonCount = 24;
+  const skeletonCount = 18;
   return (
     <div className={cn('grid grid-cols-8 gap-6', className)}>
       <AnimatePresence mode='popLayout' initial={false}>
-        {Array.from({ length: skeletonCount * 3 }).map((_, i) => (
+        {Array.from({ length: skeletonCount }).map((_, i) => (
           <MovieCardSkeleton key={i} />
         ))}
       </AnimatePresence>

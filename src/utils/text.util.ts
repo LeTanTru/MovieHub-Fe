@@ -19,3 +19,7 @@ export function removeAccents(str: string) {
     .replace(/đ/g, 'd')
     .replace(/Đ/g, 'D');
 }
+
+export function generateSlug(str: string) {
+  return removeAccents(str).split(' ').join('-');
+}
