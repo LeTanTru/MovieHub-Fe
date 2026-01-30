@@ -4,7 +4,6 @@ import {
   ForgotPasswordBodyType,
   LoginBodyType,
   LoginResponseType,
-  Payload,
   RegisterBodyType,
   RequestForgotPasswordBodyType,
   VerifyOtpBodyType
@@ -12,7 +11,7 @@ import {
 import { http } from '@/utils';
 
 const authApiRequest = {
-  getGoogleLoginUrl: (loginType: string | number) =>
+  getGoogleLoginUrl: ({ loginType }: { loginType: string | number }) =>
     http.get<ApiResponse<any>>(apiConfig.user.auth.socialLogin, {
       params: { loginType }
     }),
@@ -23,7 +22,7 @@ const authApiRequest = {
         body: { code }
       }
     ),
-  loginGoogleCallback: (code: string) =>
+  loginGoogleCallback: ({ code }: { code: string }) =>
     http.post<LoginResponseType>(apiConfig.user.auth.webCallback, {
       body: { code }
     }),
@@ -31,7 +30,7 @@ const authApiRequest = {
     http.post<ApiResponse<any> & LoginResponseType>(apiConfig.api.auth.login, {
       body
     }),
-  loginFromNextServer: (body: Payload) =>
+  loginFromNextServer: ({ body }: { body: LoginBodyType }) =>
     http.post<ApiResponse<any> & LoginResponseType>(apiConfig.user.login, {
       body
     }),

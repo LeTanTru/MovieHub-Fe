@@ -1,5 +1,6 @@
 import { apiConfig } from '@/constants';
 import {
+  ApiResponse,
   ApiResponseList,
   CollectionResType,
   CollectionSearchType
@@ -7,9 +8,18 @@ import {
 import { http } from '@/utils';
 
 const collectionApiRequest = {
-  getList: async (params?: CollectionSearchType) =>
-    http.get<ApiResponseList<CollectionResType>>(apiConfig.collection.getList, {
-      params
+  getTopicList: ({ params }: { params?: CollectionSearchType }) =>
+    http.get<ApiResponseList<CollectionResType>>(
+      apiConfig.collection.getTopicList,
+      {
+        params
+      }
+    ),
+  getById: ({ id }: { id: string }) =>
+    http.get<ApiResponse<CollectionResType>>(apiConfig.collection.getById, {
+      pathParams: {
+        id
+      }
     })
 };
 

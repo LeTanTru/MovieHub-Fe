@@ -29,15 +29,15 @@ export default function NotFound() {
             Trang bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra đường dẫn
             hoặc quay về trang chủ.
           </div>
-          <Button
-            className='hover:bg-light-golden-yellow bg-light-golden-yellow mx-auto flex min-h-12.5 items-center gap-x-2 rounded-4xl text-base font-semibold text-black'
-            size={'lg'}
-          >
-            <FaChevronLeft />
-            <Link className='block w-full' href={route.home.path}>
+          <Link className='block w-full' href={route.home.path}>
+            <Button
+              className='hover:bg-light-golden-yellow bg-light-golden-yellow mx-auto flex min-h-12.5 items-center gap-x-2 rounded-4xl text-base font-semibold text-black'
+              size={'lg'}
+            >
+              <FaChevronLeft />
               Về trang chủ
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
       </Container>
     </div>

@@ -8,7 +8,7 @@ import {
 import { http } from '@/utils';
 
 const categoryApiRequest = {
-  getList: (params?: CategorySearchType) =>
+  getList: ({ params }: { params?: CategorySearchType }) =>
     http.get<ApiResponseList<CategoryResType>>(apiConfig.category.getList, {
       params: {
         size: MAX_PAGE_SIZE,

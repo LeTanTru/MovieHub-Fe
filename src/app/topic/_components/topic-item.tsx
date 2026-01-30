@@ -3,6 +3,7 @@
 import './topics.css';
 import { route } from '@/routes';
 import { CollectionResType } from '@/types';
+import { generateSlug } from '@/utils';
 import Link from 'next/link';
 import { FaAngleRight } from 'react-icons/fa6';
 
@@ -15,7 +16,7 @@ export default function TopicItem({ topic }: { topic: CollectionResType }) {
 
   return (
     <Link
-      href={`${route.topics.path}/${topic.name}.${topic.id}`}
+      href={`${route.topic.path}/${generateSlug(topic.name)}.${topic.id}`}
       className='topic bg-background/50 group relative top-0 justify-between overflow-hidden rounded-xl pt-5 pr-10 pb-5 pl-6 transition-all duration-200 ease-linear hover:-translate-y-2'
     >
       <div

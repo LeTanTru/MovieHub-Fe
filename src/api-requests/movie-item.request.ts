@@ -7,7 +7,7 @@ import {
 import { http } from '@/utils';
 
 const movieItemApiRequest = {
-  getList: (params?: MovieItemSearchType) =>
+  getList: ({ params }: { params?: MovieItemSearchType }) =>
     http.get<ApiResponseList<MovieItemResType>>(apiConfig.movieItem.getList, {
       params
     })

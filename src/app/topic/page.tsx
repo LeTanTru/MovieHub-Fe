@@ -1,4 +1,4 @@
-import { TopicList } from '@/app/topics/_components';
+import { TopicList } from '@/app/topic/_components';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
