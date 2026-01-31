@@ -44,16 +44,20 @@ export default function Header() {
         className={cn(
           '1368:pr-10 1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear',
           {
-            'bg-background': isFixed
+            'bg-fixed-header': isFixed
           }
         )}
       >
         <div
-          className={
-            'max-1600:h-15 h-header flex items-center justify-between gap-4'
-          }
+          className={cn(
+            'flex items-center justify-between gap-2 transition-all duration-200 ease-linear',
+            {
+              'h-fixed-header': isFixed,
+              'h-header': !isFixed
+            }
+          )}
         >
-          <div className='1368:gap-10 flex h-full flex-1 items-center gap-4'>
+          <div className='1368:gap-8 flex h-full flex-1 items-center gap-4'>
             {!showSearch && (
               <>
                 <div className='1368:hidden'>
@@ -70,8 +74,8 @@ export default function Header() {
                 </Link>
               </>
             )}
-            <div className='1368:block hidden w-80 max-w-92'>
-              <SearchForm className='w-full bg-transparent' />
+            <div className='1368:block hidden h-full w-full max-w-92'>
+              <SearchForm className='flex h-full w-full items-center bg-transparent p-0' />
             </div>
             <div className='1368:block hidden grow items-center gap-2'>
               <NavigationMenu />
@@ -168,7 +172,7 @@ export default function Header() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: 'linear' }}
-                className='bg-background absolute right-12.5 left-2.5 z-1000 p-3 shadow-lg'
+                className='absolute right-12.5 left-2.5 z-1000 p-3 shadow-lg'
               >
                 <SearchForm className='w-full' />
               </motion.div>

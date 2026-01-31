@@ -23,7 +23,7 @@ export default function TopicItem({ topic }: { topic: CollectionResType }) {
         className='mask absolute top-0 right-0 bottom-0 left-0'
         style={gradientStyle}
       ></div>
-      <div className='relative z-3 flex h-full min-h-27.5 w-full shrink-0 flex-col items-start justify-end gap-3 p-0 transition-all duration-200 ease-linear'>
+      <div className='relative z-3 flex h-full min-h-27.5 w-full shrink-0 flex-col items-start justify-end gap-3 p-0'>
         <h3 className='line-clamp-2 block truncate text-[28px] leading-[1.3] font-bold text-white transition-all duration-200 ease-linear text-shadow-[0_1px_0_#eee] group-hover:opacity-80'>
           {topic.name}
         </h3>

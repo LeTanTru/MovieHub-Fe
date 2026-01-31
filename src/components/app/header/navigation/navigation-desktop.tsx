@@ -63,7 +63,7 @@ export default function NavigationDesktop({
                       transformStyle: 'preserve-3d'
                     }}
                     className={cn(
-                      'bg-popover scrollbar-none absolute top-12 -left-50 z-50 max-h-120 w-48 grid-cols-1 overflow-y-auto rounded shadow-[0px_0px_6px_2px_var(--accent)]',
+                      'bg-navigation scrollbar-none absolute top-12 -left-50 z-50 max-h-120 w-48 grid-cols-1 overflow-y-auto rounded shadow-[0px_0px_6px_2px_var(--accent)]',
                       {
                         // 'p-0': item.subItems!.length <= 4 && item.isGrid,
                         'w-160 grid-cols-4 p-2':
@@ -74,7 +74,7 @@ export default function NavigationDesktop({
                     )}
                   >
                     <div className='absolute -top-2 left-20 z-[-1]'>
-                      <div className='bg-popover h-4 w-4 rotate-45 shadow-[-3px_-3px_6px_0px_var(--accent)]' />
+                      <div className='bg-navigation h-4 w-4 rotate-45 shadow-[-3px_-3px_6px_0px_var(--accent)]' />
                     </div>
                     {item.subItems?.map((sub) => (
                       <ListItem

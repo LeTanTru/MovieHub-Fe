@@ -40,7 +40,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --spacing-header: 70px;
+  --spacing-header: 90px;
+  --spacing-fixed-header: 70px;
   --spacing-search-form: 44.8px;
   --color-transparent-white: #ffffff10;
   --color-gunmetal-blue: #2f3346;
@@ -61,6 +62,10 @@
   --breakpoint-989: 989px;
   --breakpoint-990: 990px;
   --color-main-color: var(--color-gray-300);
+  --color-fixed-header: #070a18;
+  --color-main-background: rgb(21, 20, 32);
+  --color-navigation: rgba(21, 20, 32, 0.9);
+  --color-navigation-mobile: rgb(15, 23, 43);
 }
 
 :root {
@@ -150,11 +155,11 @@
   }
 
   html {
-    background: #000;
+    background: var(--color-black);
   }
 
   body {
-    @apply bg-background text-foreground min-h-screen text-sm font-normal;
+    @apply bg-main-background text-foreground min-h-screen text-sm font-normal;
     font-family: var(--font-sans);
   }
 
@@ -166,18 +171,18 @@
 
 @layer utilities {
   li::marker {
-    --tw-prose-bullets: #000;
+    --tw-prose-bullets: var(--color-black);
   }
   .skeleton {
     position: relative;
     overflow: hidden;
-    background-color: #070f2b;
+    background-color: oklch(0.1807 0.0581 267.75);
     will-change: background-position;
     background-image: linear-gradient(
       135deg,
       transparent 0%,
       transparent 40%,
-      #393e46 50%,
+      oklch(0.3623 0.0154 259.81) 50%,
       transparent 60%,
       transparent 100%
     );

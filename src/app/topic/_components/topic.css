@@ -36,7 +36,7 @@
   bottom: 0;
   -webkit-mask-image: linear-gradient(-45deg, black, transparent 40%);
   mask-image: linear-gradient(-45deg, black, transparent 40%);
-  background-image: url('../../../assets/images/wave.png');
+  background-image: url('/wave.png');
   background-repeat: no-repeat;
   background-size: 200px 140px;
   background-position: 100% 100%;
