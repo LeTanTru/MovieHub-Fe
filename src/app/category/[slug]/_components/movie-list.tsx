@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { useQueryParams } from '@/hooks';
 
-export default function CategoryList({ id }: { id: string }) {
+export default function MovieList({ id }: { id: string }) {
   const {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();

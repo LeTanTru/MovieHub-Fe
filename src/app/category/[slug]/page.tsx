@@ -1,10 +1,10 @@
 import { categoryApiRequest, movieApiRequest } from '@/api-requests';
-import CategoryList from './_components/category-list';
 import type { Metadata } from 'next';
 import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import { getQueryClient } from '@/components/providers';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { MovieSearchType } from '@/types';
+import { MovieList } from '@/app/category/[slug]/_components';
 
 export async function generateStaticParams() {
   const categories = await categoryApiRequest.getList({
@@ -62,7 +62,7 @@ export default async function CategoryPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CategoryList id={id} />
+      <MovieList id={id} />
     </HydrationBoundary>
   );
 }

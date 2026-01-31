@@ -1,8 +1,9 @@
 import { movieApiRequest } from '@/api-requests';
-import { getMovieDetail } from '@/app/movie/[slug]/_components/movie-detail';
-import MovieDetail from '@/app/movie/[slug]/movie-detail';
+import { MovieDetail } from '@/app/movie/[slug]/_components';
+import { getQueryClient } from '@/components/providers';
 import envConfig from '@/config';
-import { AppConstants, DEFAULT_PAGE_SIZE } from '@/constants';
+import { AppConstants, DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 
 export async function generateStaticParams() {
@@ -21,7 +22,7 @@ export async function generateMetadata(
   const { slug } = await params;
   const id = slug.split('.')[1];
 
-  const res = await getMovieDetail(id);
+  const res = await movieApiRequest.getById({ id });
   const previousImages = (await parent).openGraph?.images || [];
   const images = res.data?.posterUrl
     ? [`${AppConstants.contentRootUrl}${res.data.posterUrl}`, ...previousImages]
@@ -53,5 +54,18 @@ export default async function MovieDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <MovieDetail slug={slug} />;
+  const id = slug.split('.')[1];
+
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: [queryKeys.MOVIE, id],
+    queryFn: () => movieApiRequest.getById({ id })
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <MovieDetail id={id} />
+    </HydrationBoundary>
+  );
 }
