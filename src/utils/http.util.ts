@@ -136,8 +136,8 @@ axiosInstance.interceptors.response.use(
         if (
           error instanceof AxiosError &&
           error?.response?.status === HttpStatusCode.BadRequest &&
-          error?.response?.data?.length &&
-          error?.response?.data?.includes('refresh token')
+          error?.response?.data?.message &&
+          error?.response?.data?.message?.includes('Invalid refresh token')
         ) {
           if (isClient()) {
             removeAccessTokenFromLocalStorage();

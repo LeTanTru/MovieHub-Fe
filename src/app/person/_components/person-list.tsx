@@ -6,13 +6,12 @@ import Pagination from '@/components/pagination';
 import { useSearchParams } from 'next/navigation';
 import { usePersonListQuery } from '@/queries';
 import { cn } from '@/lib';
-import { PERSON_ACTOR } from '@/constants';
+import { DEFAULT_PAGE_SIZE, PERSON_ACTOR } from '@/constants';
 import { PersonResType } from '@/types';
 import { Activity } from '@/components/activity';
 import PersonListSkeleton from './person-list-skeleton';
 
 export default function PersonList() {
-  const personSize = 24;
   const params = useSearchParams();
   const page = params.get('page') ?? 1;
 
@@ -20,7 +19,7 @@ export default function PersonList() {
     usePersonListQuery({
       params: {
         page: +page - 1,
-        size: personSize,
+        size: DEFAULT_PAGE_SIZE,
         kind: PERSON_ACTOR
       },
       enabled: true

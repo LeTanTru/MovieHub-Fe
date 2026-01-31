@@ -5,11 +5,12 @@ import { cn } from '@/lib';
 import { AnimatePresence } from 'framer-motion';
 
 export default function MovieGridSkeleton({
-  className
+  className,
+  skeletonCount = 16
 }: {
   className?: string;
+  skeletonCount?: number;
 }) {
-  const skeletonCount = 18;
   return (
     <div className={cn('grid grid-cols-8 gap-6', className)}>
       <AnimatePresence mode='popLayout' initial={false}>

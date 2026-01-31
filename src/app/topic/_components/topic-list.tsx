@@ -7,10 +7,14 @@ import { useCollectionTopicListQuery } from '@/queries';
 import { CollectionResType } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 import TopicListSkeleton from './topic-skeleton';
+import { MAX_PAGE_SIZE } from '@/constants';
 
 export default function TopicList() {
   const { data: topicListData, isLoading: topicListLoading } =
-    useCollectionTopicListQuery({ enabled: true });
+    useCollectionTopicListQuery({
+      enabled: true,
+      params: { size: MAX_PAGE_SIZE }
+    });
 
   const topicList: CollectionResType[] = topicListData?.data?.content || [];
 

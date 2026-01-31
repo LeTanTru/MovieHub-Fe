@@ -1,10 +1,10 @@
-import { countryOptions, DEFAULT_STATIC_PARAM_SIZE } from '@/constants';
+import { countryOptions, DEFAULT_PAGE_SIZE } from '@/constants';
 import CountryList from './_components/country-list';
 import { Metadata } from 'next';
 import { generateSlug } from '@/utils';
 
 export async function generateStaticParams() {
-  return countryOptions.slice(0, DEFAULT_STATIC_PARAM_SIZE).map((country) => ({
+  return countryOptions.slice(0, DEFAULT_PAGE_SIZE).map((country) => ({
     slug: `${generateSlug(country.label)}.${country.value}`
   }));
 }

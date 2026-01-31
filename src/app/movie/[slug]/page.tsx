@@ -2,12 +2,12 @@ import { movieApiRequest } from '@/api-requests';
 import { getMovieDetail } from '@/app/movie/[slug]/_components/movie-detail';
 import MovieDetail from '@/app/movie/[slug]/movie-detail';
 import envConfig from '@/config';
-import { AppConstants, DEFAULT_STATIC_PARAM_SIZE } from '@/constants';
+import { AppConstants, DEFAULT_PAGE_SIZE } from '@/constants';
 import type { Metadata, ResolvingMetadata } from 'next';
 
 export async function generateStaticParams() {
   const movies = await movieApiRequest.getList({
-    params: { size: DEFAULT_STATIC_PARAM_SIZE }
+    params: { size: DEFAULT_PAGE_SIZE }
   });
   return movies.data.content.map((movie) => ({
     slug: `${movie?.slug}.${movie?.id}`

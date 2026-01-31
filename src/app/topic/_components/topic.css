@@ -42,3 +42,18 @@
   background-position: 100% 100%;
   opacity: 0.3;
 }
+
+.topic-detail-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 50vh;
+  mask-image: linear-gradient(0deg, transparent 0, black);
+  -webkit-mask-image: linear-gradient(0deg, transparent 0, black);
+  opacity: 0.5;
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}

@@ -7,11 +7,11 @@ type Dir = 'up' | 'down';
 
 export default function MovieGrid({
   movieList,
-  dir,
+  dir = 'up',
   className
 }: {
   movieList: MovieResType[];
-  dir: Dir;
+  dir?: Dir;
   className?: string;
 }) {
   return (

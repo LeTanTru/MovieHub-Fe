@@ -4,7 +4,7 @@ import { MovieResType } from '@/types';
 import { NoData } from '@/components/no-data';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { useMovieListQuery } from '@/queries';
-import { countryOptions } from '@/constants';
+import { countryOptions, DEFAULT_PAGE_SIZE } from '@/constants';
 
 export default function CountryList({ countryCode }: { countryCode: string }) {
   const countryName = countryOptions.find(
@@ -13,7 +13,7 @@ export default function CountryList({ countryCode }: { countryCode: string }) {
 
   const { data: movieListData, isLoading: movieListLoading } =
     useMovieListQuery({
-      params: { country: countryCode },
+      params: { country: countryCode, size: DEFAULT_PAGE_SIZE },
       enabled: !!countryCode
     });
 
@@ -29,7 +29,7 @@ export default function CountryList({ countryCode }: { countryCode: string }) {
       ) : movieList.length === 0 ? (
         <NoData />
       ) : (
-        <MovieGrid movieList={movieList} dir={'up'} />
+        <MovieGrid movieList={movieList} />
       )}
     </div>
   );
