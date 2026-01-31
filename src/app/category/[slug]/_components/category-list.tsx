@@ -6,15 +6,24 @@ import { NoData } from '@/components/no-data';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
+import { useQueryParams } from '@/hooks';
 
 export default function CategoryList({ id }: { id: string }) {
+  const {
+    searchParams: { page }
+  } = useQueryParams<{ page: string }>();
+
   const { data: categoryData, isLoading: categoryLoading } = useCategoryQuery({
     id
   });
 
   const { data: movieListData, isLoading: movieListLoading } =
     useMovieListQuery({
-      params: { categoryIds: id, size: DEFAULT_PAGE_SIZE },
+      params: {
+        page: page ? Number(page) - 1 : 0,
+        categoryIds: id,
+        size: DEFAULT_PAGE_SIZE
+      },
       enabled: true
     });
 

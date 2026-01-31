@@ -1,19 +1,31 @@
 'use client';
 
+import { Activity } from '@/components/activity';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
+import Pagination from '@/components/pagination';
 import { DEFAULT_PAGE_SIZE, movieKinds } from '@/constants';
+import { useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';
 import { MovieResType } from '@/types';
 
 export default function MovieList() {
+  const {
+    searchParams: { page }
+  } = useQueryParams<{ page: string }>();
+
   const { data: movieListData, isLoading: movieListLoading } =
     useMovieListQuery({
-      params: { type: movieKinds.MOVIE_KIND_SERIES, size: DEFAULT_PAGE_SIZE },
+      params: {
+        page: page ? Number(page) - 1 : 0,
+        type: movieKinds.MOVIE_KIND_SERIES,
+        size: DEFAULT_PAGE_SIZE
+      },
       enabled: true
     });
 
   const movieList: MovieResType[] = movieListData?.data?.content || [];
+  const totalPages: number = movieListData?.data?.totalPages || 0;
 
   return (
     <div className='max-989:mb-2.5 mb-5'>
@@ -27,6 +39,9 @@ export default function MovieList() {
       ) : (
         <MovieGrid movieList={movieList} />
       )}
+      <Activity visible={!!totalPages}>
+        <Pagination totalPages={totalPages} />
+      </Activity>
     </div>
   );
 }
