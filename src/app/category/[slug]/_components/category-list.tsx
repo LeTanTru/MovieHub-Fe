@@ -5,6 +5,7 @@ import { CategoryResType, MovieResType } from '@/types';
 import { NoData } from '@/components/no-data';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { Skeleton } from '@/components/ui/skeleton';
+import { DEFAULT_PAGE_SIZE } from '@/constants';
 
 export default function CategoryList({ id }: { id: string }) {
   const { data: categoryData, isLoading: categoryLoading } = useCategoryQuery({
@@ -12,7 +13,10 @@ export default function CategoryList({ id }: { id: string }) {
   });
 
   const { data: movieListData, isLoading: movieListLoading } =
-    useMovieListQuery({ params: { categoryIds: id }, enabled: true });
+    useMovieListQuery({
+      params: { categoryIds: id, size: DEFAULT_PAGE_SIZE },
+      enabled: true
+    });
 
   const category: CategoryResType | undefined = categoryData?.data;
   const movieList: MovieResType[] = movieListData?.data?.content || [];
@@ -31,7 +35,7 @@ export default function CategoryList({ id }: { id: string }) {
       ) : movieList.length === 0 ? (
         <NoData />
       ) : (
-        <MovieGrid movieList={movieList} dir={'up'} />
+        <MovieGrid movieList={movieList} />
       )}
     </div>
   );

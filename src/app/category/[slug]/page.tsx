@@ -1,11 +1,11 @@
 import { categoryApiRequest } from '@/api-requests';
 import CategoryList from './_components/category-list';
 import type { Metadata } from 'next';
-import { DEFAULT_STATIC_PARAM_SIZE } from '@/constants';
+import { DEFAULT_PAGE_SIZE } from '@/constants';
 
 export async function generateStaticParams() {
   const categories = await categoryApiRequest.getList({
-    params: { size: DEFAULT_STATIC_PARAM_SIZE }
+    params: { size: DEFAULT_PAGE_SIZE }
   });
   return categories.data.content.map((category) => ({
     slug: `${category?.slug}.${category?.id}`

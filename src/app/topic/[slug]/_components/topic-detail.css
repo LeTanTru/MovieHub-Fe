@@ -1,0 +1,14 @@
+.topic-detail-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  min-height: 100vh;
+  mask-image: linear-gradient(0deg, transparent 0, black);
+  -webkit-mask-image: linear-gradient(0deg, transparent 0, black);
+  opacity: 0.5;
+  background-size: cover;
+  background-position: 50%;
+  background-repeat: no-repeat;
+}

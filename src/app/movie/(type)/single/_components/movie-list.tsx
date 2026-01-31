@@ -2,16 +2,17 @@
 
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
-import { movieKinds } from '@/constants';
+import { DEFAULT_PAGE_SIZE, movieKinds } from '@/constants';
 import { useMovieListQuery } from '@/queries';
 import { MovieResType } from '@/types';
 
 export default function MovieList() {
   const { data: movieListData, isLoading: movieListLoading } =
     useMovieListQuery({
-      params: { type: movieKinds.MOVIE_KIND_SINGLE },
+      params: { type: movieKinds.MOVIE_KIND_SINGLE, size: DEFAULT_PAGE_SIZE },
       enabled: true
     });
+
   const movieList: MovieResType[] = movieListData?.data?.content || [];
 
   return (
@@ -24,7 +25,7 @@ export default function MovieList() {
       ) : movieList.length === 0 ? (
         <NoData />
       ) : (
-        <MovieGrid movieList={movieList} dir={'up'} />
+        <MovieGrid movieList={movieList} />
       )}
     </div>
   );

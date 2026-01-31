@@ -1,10 +1,10 @@
 import { collectionApiRequest } from '@/api-requests';
 import { MovieList } from '@/app/topic/[slug]/_components';
-import { DEFAULT_STATIC_PARAM_SIZE } from '@/constants';
+import { DEFAULT_PAGE_SIZE } from '@/constants';
 
 export async function generateStaticParams() {
   const topicList = await collectionApiRequest.getTopicList({
-    params: { size: DEFAULT_STATIC_PARAM_SIZE }
+    params: { size: DEFAULT_PAGE_SIZE }
   });
   return topicList.data.content.map((topic) => ({
     slug: `${topic.name}.${topic.id}`

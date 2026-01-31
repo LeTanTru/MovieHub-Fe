@@ -5,7 +5,7 @@ import { cn } from '@/lib';
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
-import { PERSON_ACTOR } from '@/constants';
+import { DEFAULT_PAGE_SIZE, PERSON_ACTOR } from '@/constants';
 import { MoviePersonResType, MovieResType } from '@/types';
 import {
   MovieGrid,
@@ -24,7 +24,8 @@ export default function MovieList({ id }: { id: number }) {
     useMoviePersonListQuery({
       params: {
         personId: id,
-        kind: PERSON_ACTOR
+        kind: PERSON_ACTOR,
+        size: DEFAULT_PAGE_SIZE
       },
       enabled: true
     });
@@ -69,7 +70,10 @@ export default function MovieList({ id }: { id: number }) {
                 className='block'
               >
                 {movieListLoading ? (
-                  <MovieGridSkeleton className='grid-cols-6' />
+                  <MovieGridSkeleton
+                    className='grid-cols-6'
+                    skeletonCount={12}
+                  />
                 ) : movieList.length == 0 ? (
                   'Không có phim nào'
                 ) : activeKey === 'all' ? (

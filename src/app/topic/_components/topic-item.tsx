@@ -1,6 +1,6 @@
 'use client';
 
-import './topics.css';
+import './topic.css';
 import { route } from '@/routes';
 import { CollectionResType } from '@/types';
 import { generateSlug } from '@/utils';
