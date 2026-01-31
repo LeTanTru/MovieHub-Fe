@@ -3,22 +3,23 @@
 import './person-list.css';
 import PersonCard from './person-card';
 import Pagination from '@/components/pagination';
-import { useSearchParams } from 'next/navigation';
 import { usePersonListQuery } from '@/queries';
 import { cn } from '@/lib';
 import { DEFAULT_PAGE_SIZE, PERSON_ACTOR } from '@/constants';
 import { PersonResType } from '@/types';
 import { Activity } from '@/components/activity';
 import PersonListSkeleton from './person-list-skeleton';
+import { useQueryParams } from '@/hooks';
 
 export default function PersonList() {
-  const params = useSearchParams();
-  const page = params.get('page') ?? 1;
+  const {
+    searchParams: { page }
+  } = useQueryParams<{ page: string }>();
 
   const { data: personListData, isLoading: personListLoading } =
     usePersonListQuery({
       params: {
-        page: +page - 1,
+        page: page ? Number(page) - 1 : 0,
         size: DEFAULT_PAGE_SIZE,
         kind: PERSON_ACTOR
       },

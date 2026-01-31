@@ -19,7 +19,7 @@ export const usePersonListQuery = ({
   });
 };
 
-export const usePersonQuery = ({ id }: { id: number }) => {
+export const usePersonQuery = ({ id }: { id: string }) => {
   return useQuery({
     queryKey: [queryKeys.PERSON, id],
     queryFn: () => personApiRequest.getById({ id }),

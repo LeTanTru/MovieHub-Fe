@@ -1,15 +1,22 @@
 'use client';
 
+import { Activity } from '@/components/activity';
 import './topic-detail.css';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
+import { useQueryParams } from '@/hooks';
 import { useCollectionQuery } from '@/queries';
 import { useCollectionItemListQuery } from '@/queries/collection-item.query';
 import { CollectionItemResType } from '@/types';
+import Pagination from '@/components/pagination';
 
 export default function MovieList({ collectionId }: { collectionId: string }) {
+  const {
+    searchParams: { page }
+  } = useQueryParams<{ page: string }>();
+
   const { data: collectionData, isLoading: collectionLoading } =
     useCollectionQuery({ id: collectionId });
 
@@ -18,12 +25,14 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
   const { data: movieListData, isLoading: collectionItemListLoading } =
     useCollectionItemListQuery({
       params: {
+        page: page ? Number(page) - 1 : 0,
         collectionId,
         size: DEFAULT_PAGE_SIZE
       }
     });
 
   const movieList: CollectionItemResType[] = movieListData?.data?.content || [];
+  const totalPages = movieListData?.data?.totalPages || 0;
   const colors = JSON.parse(collection?.color || '[]');
 
   const gradientStyle = {
@@ -47,6 +56,9 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
       ) : (
         <MovieGrid movieList={movieList} />
       )}
+      <Activity visible={!!totalPages}>
+        <Pagination totalPages={totalPages} />
+      </Activity>
     </div>
   );
 }

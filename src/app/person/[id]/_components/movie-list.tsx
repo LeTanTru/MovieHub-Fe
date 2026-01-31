@@ -5,7 +5,7 @@ import { cn } from '@/lib';
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
-import { DEFAULT_PAGE_SIZE, PERSON_ACTOR } from '@/constants';
+import { MAX_PAGE_SIZE, PERSON_ACTOR } from '@/constants';
 import { MoviePersonResType, MovieResType } from '@/types';
 import {
   MovieGrid,
@@ -13,7 +13,7 @@ import {
   MovieGridSkeleton
 } from '@/components/app/movie-grid';
 
-export default function MovieList({ id }: { id: number }) {
+export default function MovieList({ id }: { id: string }) {
   const actions: { key: string; text: string }[] = [
     { key: 'all', text: 'Tất cả' },
     { key: 'time', text: 'Thời gian' }
@@ -25,7 +25,7 @@ export default function MovieList({ id }: { id: number }) {
       params: {
         personId: id,
         kind: PERSON_ACTOR,
-        size: DEFAULT_PAGE_SIZE
+        size: MAX_PAGE_SIZE
       },
       enabled: true
     });
@@ -45,20 +45,22 @@ export default function MovieList({ id }: { id: number }) {
             <div className='max-1120:text-xl mb-0 text-xl leading-1.5 font-semibold text-white max-sm:text-[16px]'>
               Các phim đã tham gia
             </div>
-            <div
-              className='relative flex shrink-0 items-stretch overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
-              role='tablist'
-            >
-              {actions.map((action) => (
-                <ActionButton
-                  key={action.key}
-                  text={action.text}
-                  action={action.key}
-                  activeKey={activeKey}
-                  setActiveKey={setActiveKey}
-                />
-              ))}
-            </div>
+            {!movieListLoading && movieList.length > 0 && (
+              <div
+                className='relative flex shrink-0 items-stretch overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
+                role='tablist'
+              >
+                {actions.map((action) => (
+                  <ActionButton
+                    key={action.key}
+                    text={action.text}
+                    action={action.key}
+                    activeKey={activeKey}
+                    setActiveKey={setActiveKey}
+                  />
+                ))}
+              </div>
+            )}
           </div>
           <LayoutGroup>
             <AnimatePresence mode='wait'>

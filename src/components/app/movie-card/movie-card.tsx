@@ -11,6 +11,7 @@ import { createPortal } from 'react-dom';
 import { route } from '@/routes';
 import { renderImageUrl } from '@/utils';
 import MovieModal from './movie-modal';
+import { useIsMounted } from '@/hooks';
 
 type Dir = 'up' | 'down';
 
@@ -41,6 +42,7 @@ export default function MovieCard({
   movie: MovieResType;
   dir?: Dir;
 }) {
+  const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
   const isDesktop = useMediaQuery({
     query: `(min-width: ${breakPoints.desktop}px)`
@@ -145,7 +147,8 @@ export default function MovieCard({
         </div>
       </motion.div>
 
-      {isDesktop &&
+      {isMounted &&
+        isDesktop &&
         createPortal(
           <div
             onMouseEnter={() => {
