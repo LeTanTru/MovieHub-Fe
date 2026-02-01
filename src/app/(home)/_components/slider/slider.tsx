@@ -162,7 +162,7 @@ export default function Slider() {
                         <div className='touch-group transition-all duration-200 ease-linear hover:border-white!'>
                           <a className='item group'>
                             <div className='inc-icon icon-20'>
-                              <HeartIcon className='size-5! fill-white group-hover:fill-[#FFD875] group-hover:stroke-0' />
+                              <HeartIcon className='group-hover:fill-light-golden-yellow size-5! fill-white group-hover:stroke-0' />
                             </div>
                           </a>
                           <a
@@ -170,7 +170,7 @@ export default function Slider() {
                             href='/phim/thu-tu.fc2lVFZu'
                           >
                             <div className='inc-icon icon-20'>
-                              <InfoIcon className='size-5 fill-white stroke-black group-hover:fill-[#FFD875]' />
+                              <InfoIcon className='group-hover:fill-light-golden-yellow size-5 fill-white stroke-black' />
                             </div>
                           </a>
                         </div>

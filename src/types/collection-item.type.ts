@@ -2,7 +2,7 @@ import { collectionSearchSchema } from '@/schemaValidations';
 import { CategoryResType } from '@/types/category.type';
 import { SeasonResType } from '@/types/movie.type';
 import { BaseSearchType } from '@/types/search.type';
-import z from 'zod';
+import { z } from 'zod';
 
 export type CollectionItemResType = {
   ageRating: number;

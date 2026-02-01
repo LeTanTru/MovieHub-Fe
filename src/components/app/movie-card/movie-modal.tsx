@@ -3,7 +3,7 @@
 import './movie-modal.css';
 import { ageRatings } from '@/constants';
 import { Button } from '@/components/form';
-import { FaHeart, FaPlay } from 'react-icons/fa6';
+import { FaHeart } from 'react-icons/fa6';
 import { FaInfoCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MovieResType } from '@/types';
@@ -14,9 +14,10 @@ import {
   TagCategory,
   TagNormal,
   TagWrapper
-} from '@/components/tag';
+} from '@/components/app/tag';
 import { route } from '@/routes';
 import { cn } from '@/lib';
+import { ButtonWatchNow } from '@/components/app/button-watch-now';
 
 export default function MovieModal({
   movie,
@@ -69,15 +70,10 @@ export default function MovieModal({
                 </h3>
               </div>
               <div className='mb-5 flex items-stretch justify-between gap-2.5'>
-                <Link
+                <ButtonWatchNow
                   href={`${route.watch.path}/${movie.slug}.${movie.id}`}
-                  className='block grow'
-                >
-                  <Button className='bg-light-golden-yellow color text-background border-light-golden-yellow hover:bg-light-golden-yellow w-full border'>
-                    <FaPlay />
-                    Xem ngay
-                  </Button>
-                </Link>
+                  className='bg-light-golden-yellow! hover:bg-light-golden-yellow/80! w-full text-black!'
+                />
                 <Button className='border border-white/50 bg-transparent! text-white'>
                   <FaHeart />
                   Thích

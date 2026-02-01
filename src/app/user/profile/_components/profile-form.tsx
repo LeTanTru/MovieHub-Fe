@@ -118,7 +118,7 @@ export default function ProfileForm() {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.25 }}
-        className='bg-background max-1120:mx-auto max-1120:mt-8 max-1120:w-140 max-1368:w-5/6 max-600:w-full relative mx-auto rounded-lg'
+        className='bg-main-background max-1120:mx-auto max-1120:mt-8 max-1120:w-140 max-1368:w-5/6 max-600:w-full relative mx-auto rounded-lg'
       >
         <h1 className='max-1120:text-center'>Tài khoản</h1>
         <p className='max-1120:text-center mt-2 text-sm text-slate-400'>

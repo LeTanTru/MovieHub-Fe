@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod';
 
 export const collectionSearchSchema = z.object({
   collectionId: z.string().optional().nullable(),

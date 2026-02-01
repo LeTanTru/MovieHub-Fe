@@ -3,6 +3,15 @@ import emptyData from './empty-data.webp';
 import googleIcon from './google.svg';
 import image404 from './404.svg';
 import logo from './logo.png';
-import logoWithText from './logo.svg';
+import logoWithText from './logo-with-text.svg';
+import authBackground from './auth-background.webp';
 
-export { defaultAvatar, emptyData, googleIcon, image404, logo, logoWithText };
+export {
+  defaultAvatar,
+  emptyData,
+  googleIcon,
+  image404,
+  logo,
+  logoWithText,
+  authBackground
+};

@@ -3,7 +3,7 @@ import {
   movieItemApiRequest,
   moviePersonApiRequest
 } from '@/api-requests';
-import { MovieDetail } from '@/app/movie/[slug]/_components';
+import { Movie } from '@/app/movie/[slug]/_components';
 import { getQueryClient } from '@/components/providers';
 import envConfig from '@/config';
 import {
@@ -58,7 +58,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function MovieDetailPage({
+export default async function MoviePage({
   params
 }: {
   params: Promise<{ slug: string }>;
@@ -93,7 +93,7 @@ export default async function MovieDetailPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <MovieDetail id={id} />
+      <Movie id={id} />
     </HydrationBoundary>
   );
 }
