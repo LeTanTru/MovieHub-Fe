@@ -59,7 +59,7 @@ export default function LoginForm() {
   };
 
   return (
-    <section className='rounded-lg bg-slate-800/40 px-6 py-4'>
+    <section className='bg-auth-form rounded-lg px-6 py-4'>
       <div className='mb-5 flex flex-col items-center gap-2'>
         <h2 className='text-xl font-semibold'>Đăng nhập</h2>
         <p className='text-muted-foreground text-center text-sm'>

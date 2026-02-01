@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function MovieDetailSkeleton() {
+export default function MovieSkeleton() {
   return (
     <div className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
       <div className='relative z-3 mx-auto mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>

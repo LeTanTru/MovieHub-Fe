@@ -5,7 +5,7 @@ import {
   TagCategoryLink,
   TagNormal,
   TagWrapper
-} from '@/components/tag';
+} from '@/components/app/tag';
 import {
   ageRatings,
   countries,
@@ -27,7 +27,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function MovieDetailSidebar({
+export default function MovieInfo({
   movieItems,
   persons,
   movie
@@ -155,23 +155,23 @@ export default function MovieDetailSidebar({
             >
               <Link
                 href={`${route.person.path}/${actor.person.id}`}
-                className='bg-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
+                className='bg-main-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
               >
                 <Image
                   alt={actor.person.otherName}
-                  className='absolute top-0 right-0 bottom-0 left-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-101'
+                  className='absolute top-0 right-0 bottom-0 left-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
                   fill
                   sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
                   src={renderImageUrl(actor.person.avatarPath)}
                 />
               </Link>
-              <div>
-                <h4 className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 text-sm leading-normal font-normal whitespace-nowrap text-white transition-all duration-200 ease-linear'>
-                  <Link href={`${route.person.path}/${actor.person.id}`}>
-                    {actor.person.otherName}
-                  </Link>
-                </h4>
-              </div>
+              <Link
+                href={`${route.person.path}/${actor.person.id}`}
+                className='hover:text-light-golden-yellow mb-1.5 text-sm leading-normal font-normal whitespace-normal text-white transition-all duration-200 ease-linear'
+                title={actor.person.otherName}
+              >
+                {actor.person.otherName}
+              </Link>
             </div>
           ))}
         </div>

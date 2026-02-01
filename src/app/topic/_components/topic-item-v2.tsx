@@ -16,7 +16,7 @@ export default function TopicItemV2({ topic }: { topic: CollectionResType }) {
   return (
     <Link
       href={`${route.topic.path}/${generateSlug(topic.name)}.${topic.id}`}
-      className='bg-background/50 sha relative top-0 flex overflow-hidden rounded-tl-[20px] rounded-tr-[40px] rounded-br-[20px] rounded-bl-[40px] px-6 py-5 transition-all duration-200 ease-linear after:absolute after:inset-0 after:z-3 after:rounded-tl-[64px] after:rounded-tr-[40px] after:rounded-br-[64px] after:rounded-bl-[40px] after:shadow-[inset_0_-10px_20px_0_#fff2] after:content-[""] hover:-translate-y-2'
+      className='bg-main-background/50 relative top-0 flex overflow-hidden rounded-tl-[20px] rounded-tr-[40px] rounded-br-[20px] rounded-bl-[40px] px-6 py-5 transition-all duration-200 ease-linear after:absolute after:inset-0 after:z-3 after:rounded-tl-[64px] after:rounded-tr-[40px] after:rounded-br-[64px] after:rounded-bl-[40px] after:shadow-[inset_0_-10px_20px_0_#fff2] after:content-[""] hover:-translate-y-2'
     >
       <div
         className='absolute top-0 right-0 bottom-0 left-0'

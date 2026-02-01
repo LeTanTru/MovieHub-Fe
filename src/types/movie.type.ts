@@ -3,7 +3,7 @@ import { CategoryResType } from '@/types/category.type';
 import { MovieItemResType } from '@/types/movie-item.type';
 import { BaseSearchType } from '@/types/search.type';
 import { VideoResType } from '@/types/video.type';
-import z from 'zod';
+import { z } from 'zod';
 
 export type SeasonResType = {
   createdDate: string;

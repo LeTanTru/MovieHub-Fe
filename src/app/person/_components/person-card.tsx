@@ -1,3 +1,4 @@
+import './person-list.css';
 import { route } from '@/routes';
 import { PersonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
@@ -11,7 +12,7 @@ export default function PersonCard({ person }: { person: PersonResType }) {
       <div className='flex flex-col items-center justify-center gap-0'>
         <Link
           href={`${route.person.path}/${person.id}`}
-          className='image-mask relative w-full shrink-0 overflow-hidden rounded-none bg-[#282b3a] pb-[calc(100%+40px)]'
+          className='image-mask relative w-full shrink-0 overflow-hidden rounded-none pb-[calc(100%+40px)]'
         >
           {person.avatarPath ? (
             <Image

@@ -1,8 +1,9 @@
 'use client';
 
-import './movie-detail.css';
-import MovieDetailSidebar from '@/app/movie/[slug]/_components/movie-detail-sidebar';
-import MovieDetailContent from '@/app/movie/[slug]/_components/movie-detail-content';
+import './movie.css';
+import MovieInfo from './movie-info';
+import MovieContent from './movie-content';
+import MovieSkeleton from './movie-skeleton';
 import {
   useMovieItemListQuery,
   useMoviePersonListQuery,
@@ -11,10 +12,9 @@ import {
 import { useEffect } from 'react';
 import { MovieItemResType, MoviePersonResType, MovieResType } from '@/types';
 import { renderImageUrl } from '@/utils';
-import MovieDetailSkeleton from '@/app/movie/[slug]/_components/movie-detail-skeleton';
 import { movieItemKinds } from '@/constants';
 
-export default function MovieDetail({ id }: { id: string }) {
+export default function Movie({ id }: { id: string }) {
   const { data: movieData, isLoading: movieLoading } = useMovieQuery({ id });
   const movie: MovieResType | undefined = movieData?.data;
 
@@ -52,7 +52,7 @@ export default function MovieDetail({ id }: { id: string }) {
   return (
     <>
       {movieLoading || movieItemLoading || personLoading || !movie ? (
-        <MovieDetailSkeleton />
+        <MovieSkeleton />
       ) : (
         <>
           <h1 style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
@@ -76,12 +76,12 @@ export default function MovieDetail({ id }: { id: string }) {
           </div>
           <div className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
             <div className='relative z-3 mx-auto -mt-50 mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
-              <MovieDetailSidebar
+              <MovieInfo
                 movie={movie}
                 movieItems={movieItems}
                 persons={persons}
               />
-              <MovieDetailContent movie={movie} />
+              <MovieContent movie={movie} />
             </div>
           </div>
         </>

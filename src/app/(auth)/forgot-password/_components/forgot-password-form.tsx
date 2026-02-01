@@ -255,7 +255,7 @@ export default function ForgotPasswordForm() {
     (resendData.count >= MAX_RESEND && countdown > 0) || cooldownRemaining > 0;
 
   return (
-    <section className='rounded-lg bg-slate-800/40 px-6 py-4'>
+    <section className='bg-auth-form rounded-lg px-6 py-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h2 className='text-xl font-semibold'>Quên mật khẩu</h2>
         <Activity visible={step == 1}>

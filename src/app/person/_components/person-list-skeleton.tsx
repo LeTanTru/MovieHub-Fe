@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 function PersonCardSkeleton() {
   return (
-    <Skeleton className='skeleton m-0 h-0 w-full shrink-0 animate-pulse overflow-hidden rounded-none bg-[#282b3a] pb-[calc(100%+40px)]' />
+    <Skeleton className='skeleton m-0 h-0 w-full shrink-0 animate-pulse overflow-hidden rounded-none pb-[calc(100%+40px)]' />
   );
 }
 
