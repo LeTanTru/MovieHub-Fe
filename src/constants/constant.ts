@@ -17,8 +17,8 @@ export const AGE_RATING_T13 = 3;
 export const AGE_RATING_T16 = 4;
 export const AGE_RATING_T18 = 5;
 
-export const MOVIE_KIND_SINGLE = 1;
-export const MOVIE_KIND_SERIES = 2;
+export const MOVIE_TYPE_SINGLE = 1;
+export const MOVIE_TYPE_SERIES = 2;
 
 export const MOVIE_ITEM_KIND_SEASON = 1;
 export const MOVIE_ITEM_KIND_EPISODE = 2;

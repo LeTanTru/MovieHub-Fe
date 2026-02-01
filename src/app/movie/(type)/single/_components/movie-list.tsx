@@ -4,7 +4,7 @@ import { Activity } from '@/components/activity';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import Pagination from '@/components/pagination';
-import { DEFAULT_PAGE_SIZE, movieKinds } from '@/constants';
+import { DEFAULT_PAGE_SIZE, movieTypes } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';
 import { MovieResType } from '@/types';
@@ -18,7 +18,7 @@ export default function MovieList() {
     useMovieListQuery({
       params: {
         page: page ? Number(page) - 1 : 0,
-        type: movieKinds.MOVIE_KIND_SINGLE,
+        type: movieTypes.MOVIE_TYPE_SINGLE,
         size: DEFAULT_PAGE_SIZE
       },
       enabled: true

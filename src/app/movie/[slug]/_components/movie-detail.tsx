@@ -3,15 +3,40 @@
 import './movie-detail.css';
 import MovieDetailSidebar from '@/app/movie/[slug]/_components/movie-detail-sidebar';
 import MovieDetailContent from '@/app/movie/[slug]/_components/movie-detail-content';
-import { useMovieQuery } from '@/queries';
+import {
+  useMovieItemListQuery,
+  useMoviePersonListQuery,
+  useMovieQuery
+} from '@/queries';
 import { useEffect } from 'react';
-import { MovieResType } from '@/types';
+import { MovieItemResType, MoviePersonResType, MovieResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import MovieDetailSkeleton from '@/app/movie/[slug]/_components/movie-detail-skeleton';
+import { movieItemKinds } from '@/constants';
 
 export default function MovieDetail({ id }: { id: string }) {
-  const { data: movieData } = useMovieQuery({ id });
+  const { data: movieData, isLoading: movieLoading } = useMovieQuery({ id });
   const movie: MovieResType | undefined = movieData?.data;
+
+  const { data: movieItemResData, isLoading: movieItemLoading } =
+    useMovieItemListQuery({
+      params: {
+        movieId: id,
+        kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
+      },
+      enabled: !!movie
+    });
+
+  const { data: personResData, isLoading: personLoading } =
+    useMoviePersonListQuery({
+      params: {
+        movieId: id
+      },
+      enabled: !!movie
+    });
+
+  const movieItems: MovieItemResType[] = movieItemResData?.data?.content || [];
+  const persons: MoviePersonResType[] = personResData?.data?.content || [];
 
   useEffect(() => {
     if (!movie) {
@@ -24,37 +49,43 @@ export default function MovieDetail({ id }: { id: string }) {
     };
   }, [movie]);
 
-  if (!movie) {
-    return <MovieDetailSkeleton />;
-  }
-
   return (
     <>
-      <h1 style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
-        {`${movie.title} - ${movie.originalTitle}`}
-      </h1>
-      <div className='movie-detail'>
-        <div
-          className='movie-detail-background'
-          style={{
-            backgroundImage: `url(${renderImageUrl(movie.thumbnailUrl)})`
-          }}
-        ></div>
-        <div className='cover-fade'>
-          <div
-            className='cover-image'
-            style={{
-              backgroundImage: `url(${renderImageUrl(movie.thumbnailUrl)})`
-            }}
-          />
-        </div>
-      </div>
-      {/* <div className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
-        <div className='relative z-3 mx-auto mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
-          <MovieDetailSidebar movie={movie} />
-          <MovieDetailContent movie={movie} />
-        </div>
-      </div> */}
+      {movieLoading || movieItemLoading || personLoading || !movie ? (
+        <MovieDetailSkeleton />
+      ) : (
+        <>
+          <h1 style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
+            {`${movie.title} - ${movie.originalTitle}`}
+          </h1>
+          <div className='movie-detail'>
+            <div
+              className='movie-detail-background'
+              style={{
+                backgroundImage: `url(${renderImageUrl(movie.thumbnailUrl)})`
+              }}
+            ></div>
+            <div className='cover-fade'>
+              <div
+                className='cover-image'
+                style={{
+                  backgroundImage: `url(${renderImageUrl(movie.thumbnailUrl)})`
+                }}
+              />
+            </div>
+          </div>
+          <div className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
+            <div className='relative z-3 mx-auto -mt-50 mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
+              <MovieDetailSidebar
+                movie={movie}
+                movieItems={movieItems}
+                persons={persons}
+              />
+              <MovieDetailContent movie={movie} />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

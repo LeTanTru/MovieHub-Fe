@@ -13,8 +13,8 @@ import {
   MOVIE_ITEM_KIND_EPISODE,
   MOVIE_ITEM_KIND_SEASON,
   MOVIE_ITEM_KIND_TRAILER,
-  MOVIE_KIND_SERIES,
-  MOVIE_KIND_SINGLE
+  MOVIE_TYPE_SERIES,
+  MOVIE_TYPE_SINGLE
 } from '@/constants/constant';
 import { route } from '@/routes';
 import {
@@ -120,7 +120,7 @@ export const breakPoints = {
   desktop: BREAKPOINT_DESKTOP
 };
 
-export const ageRatingOptions = [
+export const ageRatings = [
   {
     value: AGE_RATING_P,
     label: 'P',
@@ -154,9 +154,9 @@ export const movieItemKinds = {
   MOVIE_ITEM_KIND_SEASON
 };
 
-export const movieKinds = {
-  MOVIE_KIND_SINGLE,
-  MOVIE_KIND_SERIES
+export const movieTypes = {
+  MOVIE_TYPE_SINGLE,
+  MOVIE_TYPE_SERIES
 };
 
 export const queryKeys = {
@@ -179,7 +179,7 @@ export const queryKeys = {
   COLLECTION_ITEM: 'collection-item'
 };
 
-export const countryOptions = [
+export const countries = [
   {
     value: 'SA',
     label: 'Ả Rập Xê Út'
@@ -1026,7 +1026,7 @@ export const countryOptions = [
   }
 ];
 
-export const languageOptions = [
+export const languages = [
   {
     value: 'ar',
     label: 'Tiếng Ả Rập'

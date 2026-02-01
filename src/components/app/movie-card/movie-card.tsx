@@ -12,6 +12,7 @@ import { route } from '@/routes';
 import { renderImageUrl } from '@/utils';
 import MovieModal from './movie-modal';
 import { useIsMounted } from '@/hooks';
+import { cn } from '@/lib';
 
 type Dir = 'up' | 'down';
 
@@ -128,22 +129,29 @@ export default function MovieCard({
         </Link>
 
         <div className='min-h-10.5 text-center'>
-          <h4 className='hover:text-light-golden-yellow line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear'>
-            <Link
-              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-              title={movie.title}
+          <Link
+            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+            title={movie.title}
+          >
+            <h4
+              className={cn(
+                'hover:text-light-golden-yellow line-clamp-1 text-sm leading-6 font-normal text-white transition-all duration-200 ease-linear',
+                {
+                  'featured-title': movie.isFeatured
+                }
+              )}
             >
               {movie.title}
-            </Link>
-          </h4>
-          <h4 className='text-light-gray line-clamp-1 text-xs leading-6'>
-            <Link
-              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-              title={movie.originalTitle}
-            >
+            </h4>
+          </Link>
+          <Link
+            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+            title={movie.originalTitle}
+          >
+            <h4 className='text-light-gray line-clamp-1 text-xs leading-6'>
               {movie.originalTitle}
-            </Link>
-          </h4>
+            </h4>
+          </Link>
         </div>
       </motion.div>
 

@@ -94,3 +94,10 @@ export function timeAgo(dateStr: string) {
   const years = Math.floor(months / 12);
   return `${years} năm trước`;
 }
+
+export function getYearFromDate(dateStr: string) {
+  const [_, __, yearAndTime] = dateStr.split('/');
+  const [year] = yearAndTime.split(' ');
+
+  return year;
+}

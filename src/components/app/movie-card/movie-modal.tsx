@@ -1,14 +1,14 @@
 'use client';
 
 import './movie-modal.css';
-import { ageRatingOptions, DEFAULT_DATE_FORMAT } from '@/constants';
+import { ageRatings } from '@/constants';
 import { Button } from '@/components/form';
 import { FaHeart, FaPlay } from 'react-icons/fa6';
 import { FaInfoCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MovieResType } from '@/types';
 import Link from 'next/link';
-import { formatDate, renderImageUrl } from '@/utils';
+import { getYearFromDate, renderImageUrl } from '@/utils';
 import {
   TagAgeRating,
   TagCategory,
@@ -54,7 +54,14 @@ export default function MovieModal({
             </div>
             <div className='w-full bg-[linear-gradient(0deg,rgba(47,51,70,1),rgba(47,51,70,.7))] p-6 pt-2'>
               <div className='mb-4'>
-                <h3 className='font-semibold text-shadow-[0_0_3px_#00000030]'>
+                <h3
+                  className={cn(
+                    'font-semibold text-shadow-[0_0_3px_#00000030]',
+                    {
+                      'featured-title': movie.isFeatured
+                    }
+                  )}
+                >
                   {movie.title}
                 </h3>
                 <h3 className='text-light-golden-yellow mb-0 text-sm text-xs leading-normal font-normal'>
@@ -62,7 +69,10 @@ export default function MovieModal({
                 </h3>
               </div>
               <div className='mb-5 flex items-stretch justify-between gap-2.5'>
-                <Link href={'/'} className='block grow'>
+                <Link
+                  href={`${route.watch.path}/${movie.slug}.${movie.id}`}
+                  className='block grow'
+                >
                   <Button className='bg-light-golden-yellow color text-background border-light-golden-yellow hover:bg-light-golden-yellow w-full border'>
                     <FaPlay />
                     Xem ngay
@@ -86,18 +96,13 @@ export default function MovieModal({
                 <TagAgeRating
                   className='flex shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-5.5 font-medium text-black'
                   value={
-                    ageRatingOptions.find(
-                      (age) => age.value === movie.ageRating
-                    )?.label || 'U'
+                    ageRatings.find((age) => age.value === movie.ageRating)
+                      ?.label || 'U'
                   }
                 />
                 <TagNormal
                   className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                  value={
-                    formatDate(movie.releaseDate, DEFAULT_DATE_FORMAT).split(
-                      '/'
-                    )[2]
-                  }
+                  value={getYearFromDate(movie.releaseDate)}
                 />
               </TagWrapper>
               <TagWrapper className='mt-2 gap-1.25'>

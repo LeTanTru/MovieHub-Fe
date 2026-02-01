@@ -1,8 +1,18 @@
-import { movieApiRequest } from '@/api-requests';
+import {
+  movieApiRequest,
+  movieItemApiRequest,
+  moviePersonApiRequest
+} from '@/api-requests';
 import { MovieDetail } from '@/app/movie/[slug]/_components';
 import { getQueryClient } from '@/components/providers';
 import envConfig from '@/config';
-import { AppConstants, DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
+import {
+  AppConstants,
+  DEFAULT_PAGE_SIZE,
+  movieItemKinds,
+  queryKeys
+} from '@/constants';
+import { MovieItemSearchType, MoviePersonSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 
@@ -55,12 +65,30 @@ export default async function MovieDetailPage({
 }) {
   const { slug } = await params;
   const id = slug.split('.')[1];
+  const moviePersonFilters: MoviePersonSearchType = {
+    movieId: id
+  };
+
+  const movieItemFilters: MovieItemSearchType = {
+    movieId: id,
+    kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
+  };
 
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE, id],
     queryFn: () => movieApiRequest.getById({ id })
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: [`${queryKeys.MOVIE_PERSON}-list`, moviePersonFilters],
+    queryFn: () => moviePersonApiRequest.getList({ params: moviePersonFilters })
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: [`${queryKeys.MOVIE_ITEM}-list`, movieItemFilters],
+    queryFn: () => movieItemApiRequest.getList({ params: movieItemFilters })
   });
 
   return (
