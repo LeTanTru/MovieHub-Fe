@@ -66,7 +66,7 @@ export default function Header() {
                 <Link href={route.home.path} className='shrink-0'>
                   <Image
                     alt='Logo'
-                    className='max-1919:h-10 max-1359:h-9 h-auto'
+                    className='max-1919:h-10 max-1359:h-9 h-auto w-auto'
                     height={46}
                     src={logoWithText}
                     loading='eager'
