@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: 800px;
-  background: var(--background);
+  background: var(--color-main-background);
   overflow: hidden;
 }
 
@@ -17,7 +17,7 @@
   background-position: 50%;
   background-size: cover;
   filter: blur(50px);
-  -webkit-filter: blur(80px);
+  -webkit-filter: blur(50px);
   opacity: 0.2;
 }
 
@@ -40,10 +40,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 200px;
+  height: 80px;
   z-index: 3;
-  /* background: linear-gradient(0deg, rgba(25, 27, 36, 1), rgba(25, 27, 36, 0)); */
-  background: linear-gradient(0deg, var(--background), rgba(25, 27, 36, 0));
+  background: linear-gradient(
+    0deg,
+    var(--color-main-background),
+    rgba(25, 27, 36, 0)
+  );
 }
 
 .movie-detail .cover-fade {
@@ -57,15 +60,15 @@
   mask-image: linear-gradient(
     0deg,
     transparent 0,
-    var(--background) 20%,
-    var(--background) 80%,
+    var(--color-main-background) 20%,
+    var(--color-main-background) 80%,
     transparent
   );
   -webkit-mask-image: linear-gradient(
     0deg,
     transparent 0,
-    var(--background) 20%,
-    var(--background) 80%,
+    var(--color-main-background) 20%,
+    var(--color-main-background) 80%,
     transparent
   );
 }
@@ -82,15 +85,15 @@
   mask-image: linear-gradient(
     90deg,
     transparent 0,
-    var(--background) 30%,
-    var(--background) 70%,
+    var(--color-main-background) 30%,
+    var(--color-main-background) 70%,
     transparent
   );
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0,
-    var(--background) 30%,
-    var(--background) 70%,
+    var(--color-main-background) 30%,
+    var(--color-main-background) 70%,
     transparent
   );
 }

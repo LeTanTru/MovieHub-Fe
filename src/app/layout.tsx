@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <html suppressHydrationWarning lang='vi'>
       <body className={`${inter.variable} ${inter.className} antialiased`}>
-        {/* <BodyLoad /> */}
+        <BodyLoad />
         <QueryProvider>
           <AppProvider>
             <ThemeProvider

@@ -4,7 +4,7 @@ import { getQueryClient } from '@/components/providers';
 import {
   DEFALT_PAGE_START,
   DEFAULT_PAGE_SIZE,
-  MOVIE_KIND_SINGLE,
+  movieTypes,
   queryKeys
 } from '@/constants';
 import { MovieSearchType } from '@/types';
@@ -23,7 +23,7 @@ export default async function MovieSinglePage({
   const filters = await searchParams;
   const defaultFilters: MovieSearchType = {
     page: DEFALT_PAGE_START,
-    type: MOVIE_KIND_SINGLE,
+    type: movieTypes.MOVIE_TYPE_SINGLE,
     size: DEFAULT_PAGE_SIZE,
     ...filters
   };

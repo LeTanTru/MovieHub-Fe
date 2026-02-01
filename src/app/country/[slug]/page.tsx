@@ -1,5 +1,5 @@
 import {
-  countryOptions,
+  countries,
   DEFALT_PAGE_START,
   DEFAULT_PAGE_SIZE,
   queryKeys
@@ -13,7 +13,7 @@ import { movieApiRequest } from '@/api-requests';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 export async function generateStaticParams() {
-  return countryOptions.slice(0, DEFAULT_PAGE_SIZE).map((country) => ({
+  return countries.slice(0, DEFAULT_PAGE_SIZE).map((country) => ({
     slug: `${generateSlug(country.label)}.${country.value}`
   }));
 }
@@ -25,7 +25,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const countryCode = slug.split('.')[1];
-  const countryName = countryOptions.find(
+  const countryName = countries.find(
     (country) => country.value === countryCode
   )?.label;
 

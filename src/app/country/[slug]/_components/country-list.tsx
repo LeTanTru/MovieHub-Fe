@@ -4,7 +4,7 @@ import { MovieResType } from '@/types';
 import { NoData } from '@/components/no-data';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { useMovieListQuery } from '@/queries';
-import { countryOptions, DEFAULT_PAGE_SIZE } from '@/constants';
+import { countries, DEFAULT_PAGE_SIZE } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { Activity } from '@/components/activity';
 import Pagination from '@/components/pagination';
@@ -14,7 +14,7 @@ export default function CountryList({ countryCode }: { countryCode: string }) {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();
 
-  const countryName = countryOptions.find(
+  const countryName = countries.find(
     (country) => country.value === countryCode
   )?.label;
 

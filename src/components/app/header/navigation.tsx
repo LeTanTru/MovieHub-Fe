@@ -5,7 +5,7 @@ import NavigationDesktop from './navigation/navigation-desktop';
 import NavigationMobile from './navigation/navigation-mobile';
 import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
-import { countryOptions } from '@/constants';
+import { countries } from '@/constants';
 import { generateSlug } from '@/utils';
 
 export default function NavigationMenu() {
@@ -40,7 +40,7 @@ export default function NavigationMenu() {
     {
       label: 'Quốc gia',
       submenu: true,
-      subItems: countryOptions.map((country) => ({
+      subItems: countries.map((country) => ({
         href: `${route.country.path}/${generateSlug(country.label)}.${country.value}`,
         label: country.label
       })),
