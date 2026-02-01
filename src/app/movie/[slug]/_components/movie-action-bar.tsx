@@ -1,5 +1,3 @@
-'use client';
-
 import { MessageIcon } from '@/assets/icons';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Button, ToolTip } from '@/components/form';
@@ -8,7 +6,7 @@ import { MovieResType } from '@/types';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { FaHeart, FaPlus } from 'react-icons/fa6';
 
-export default function MovieActorBar({ movie }: { movie: MovieResType }) {
+export default function MovieActionBar({ movie }: { movie: MovieResType }) {
   return (
     <div className='relative z-3 p-7.5'>
       <div className='flex items-center justify-between gap-8'>

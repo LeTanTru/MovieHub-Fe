@@ -7,11 +7,13 @@ import { Suspense } from 'react';
 import ToastPortal from '@/components/toast-portal';
 import { AppProvider, QueryProvider } from '@/components/providers';
 import BodyLoad from '@/components/app/body-load';
+import { PerformanceMonitor } from '@/components/performance-monitor';
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
-  display: 'swap'
+  display: 'swap',
+  preload: false
 });
 
 export const metadata: Metadata = {
@@ -28,9 +30,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang='vi'>
+    <html suppressHydrationWarning lang='vi' data-scroll-behavior='smooth'>
       <body className={`${inter.variable} ${inter.className} antialiased`}>
-        <BodyLoad />
+        {/* <BodyLoad /> */}
         <QueryProvider>
           <AppProvider>
             <ThemeProvider
@@ -42,6 +44,7 @@ export default async function RootLayout({
               {/* <WebVitals /> */}
               <NextTopLoader showSpinner={false} />
               <Suspense>{children}</Suspense>
+              <PerformanceMonitor />
             </ThemeProvider>
             <ToastPortal />
           </AppProvider>
