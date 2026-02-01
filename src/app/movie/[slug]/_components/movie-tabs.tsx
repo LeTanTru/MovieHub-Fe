@@ -1,8 +1,7 @@
 'use client';
 
 import { cn } from '@/lib';
-import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 
 export default function MovieTabs() {
   const movieTabs = useMemo(
@@ -24,20 +23,18 @@ export default function MovieTabs() {
   );
 
   const [activeKey, setActiveKey] = useState<string>(movieTabs[0].key);
-  const [lineStyle, setLineStyle] = useState({ left: 0, width: 0 });
-  const tabRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const tabRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    const activeIndex = movieTabs.findIndex((tab) => tab.key === activeKey);
-    const activeTab = tabRefs.current[activeIndex];
-
+    const activeTab = tabRefs.current[activeKey];
     if (activeTab) {
-      setLineStyle({
+      setIndicatorStyle({
         left: activeTab.offsetLeft,
         width: activeTab.offsetWidth
       });
     }
-  }, [activeKey, movieTabs]);
+  }, [activeKey]);
 
   const handleClick = useCallback((key: string) => {
     setActiveKey(key);
@@ -46,18 +43,18 @@ export default function MovieTabs() {
   return (
     <div className='flex flex-col gap-5 px-10'>
       <div
-        className='relative flex flex-wrap gap-8 border-b border-solid border-gray-700'
+        className='relative flex flex-wrap gap-8 border-b border-solid'
         role='tablist'
       >
-        {movieTabs.map((tab, index) => (
-          <motion.div
+        {movieTabs.map((tab) => (
+          <div
             role='tab'
             key={tab.key}
             ref={(el) => {
-              tabRefs.current[index] = el;
+              tabRefs.current[tab.key] = el;
             }}
             className={cn(
-              'flex cursor-pointer items-center justify-center py-3 text-sm font-medium text-white opacity-90 transition-colors duration-200 ease-linear',
+              'flex cursor-pointer items-center justify-center py-3 text-sm font-medium text-white opacity-90 transition-opacity duration-200 ease-linear',
               {
                 'text-light-golden-yellow opacity-100': tab.key === activeKey
               }
@@ -65,20 +62,14 @@ export default function MovieTabs() {
             onClick={() => handleClick(tab.key)}
           >
             {tab.label}
-          </motion.div>
+          </div>
         ))}
 
-        <motion.div
-          className='bg-light-golden-yellow absolute bottom-0 h-0.5'
-          initial={false}
-          animate={{
-            left: lineStyle.left,
-            width: lineStyle.width
-          }}
-          transition={{
-            type: 'spring',
-            stiffness: 300,
-            damping: 30
+        <div
+          className='bg-light-golden-yellow absolute -bottom-px h-0.5 rounded transition-all duration-50 ease-linear'
+          style={{
+            left: `${indicatorStyle.left}px`,
+            width: `${indicatorStyle.width}px`
           }}
         />
       </div>

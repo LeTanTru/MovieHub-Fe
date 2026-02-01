@@ -19,7 +19,7 @@ export default function MovieActorBar({ movie }: { movie: MovieResType }) {
         {/* Left */}
         <div className='flex grow justify-start gap-4'>
           <ToolTip
-            className='bg-white text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
+            className='bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
             title='Thêm vào danh sách yêu thích để nhận thông báo cập nhật về phi nhé !'
             side='top'
           >
