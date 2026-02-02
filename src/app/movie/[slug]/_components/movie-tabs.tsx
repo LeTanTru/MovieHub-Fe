@@ -3,7 +3,6 @@
 import { caption } from '@/assets';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { PersonCard } from '@/components/app/person-card';
-import { NoData } from '@/components/no-data';
 import { PERSON_ACTOR, PERSON_DIRECTOR } from '@/constants';
 import { cn } from '@/lib';
 import { useSuggestionMovieListQuery } from '@/queries';
@@ -139,6 +138,7 @@ const MovieTabPerson = ({
               person={person}
               key={`tab-item-actor-${person.id}`}
               showFullName
+              willNavigate={kind === PERSON_ACTOR}
             />
           ))
         )}
