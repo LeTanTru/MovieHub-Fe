@@ -180,6 +180,13 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true,
       ignoreAuth: true
+    },
+    getSuggestionList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/suggestion/:id`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
     }
   },
   moviePerson: {

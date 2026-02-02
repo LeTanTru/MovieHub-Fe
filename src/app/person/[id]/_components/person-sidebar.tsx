@@ -8,9 +8,8 @@ import { Heart, X } from 'lucide-react';
 import { RiTelegram2Fill } from 'react-icons/ri';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib';
-import { FaArrowDown, FaArrowLeftLong } from 'react-icons/fa6';
-import { useDisclosure, useMobile, useNavigate } from '@/hooks';
-import { route } from '@/routes';
+import { FaArrowDown } from 'react-icons/fa6';
+import { useDisclosure, useMobile } from '@/hooks';
 import { usePersonQuery } from '@/queries';
 import PersonSidebarSkeleton from './person-sidebar-skeleton';
 
@@ -19,7 +18,6 @@ export default function PersonSidebar({ id }: { id: string }) {
   const [showScrollIcon, setShowScrollIcon] = useState<boolean>(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
   const isMobile = useMobile();
-  const navigate = useNavigate();
   const { data: personData, isLoading: personLoading } = usePersonQuery({ id });
   const person = personData?.data;
 
@@ -52,17 +50,6 @@ export default function PersonSidebar({ id }: { id: string }) {
     <PersonSidebarSkeleton isMobile={isMobile} />
   ) : (
     <div className='border-r-transparent-white max-1120:w-full max-1120:border-none max-1120:pr-0 max-1600:w-85 w-110 shrink-0 border-r pr-10'>
-      <Button
-        className={cn('top-0 left-0 ml-0 p-0! hover:bg-transparent!', {
-          hidden: isMobile
-        })}
-        variant='ghost'
-        onClick={() => {
-          navigate(route.person.path);
-        }}
-      >
-        <FaArrowLeftLong className='h-10! w-10!' />
-      </Button>
       <AvatarField
         className={cn('mx-auto mb-6 rounded-full border-none', {
           'rounded-full': !person?.avatarPath

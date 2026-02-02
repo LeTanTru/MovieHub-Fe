@@ -1,11 +1,10 @@
 import MovieTabs from './movie-tabs';
 import MovieActionBar from './movie-action-bar';
-import { MovieResType } from '@/types';
 
-export default function MovieContent({ movie }: { movie: MovieResType }) {
+export default function MovieContent() {
   return (
     <div className='bg-main-background/60 flex grow flex-col rounded-tl-[48px] rounded-tr-[20px] rounded-br-[20px] rounded-bl-[20px] backdrop-blur-[20px]'>
-      <MovieActionBar movie={movie} />
+      <MovieActionBar />
       <MovieTabs />
     </div>
   );

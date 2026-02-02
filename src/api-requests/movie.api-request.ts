@@ -17,6 +17,12 @@ const movieApiRequest = {
       pathParams: {
         id
       }
+    }),
+  getSuggestionList: ({ id }: { id: string }) =>
+    http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.getSuggestionList, {
+      pathParams: {
+        id
+      }
     })
 };
 

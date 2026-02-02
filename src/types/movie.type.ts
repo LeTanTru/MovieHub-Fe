@@ -1,6 +1,7 @@
 import { movieSearchSchema } from '@/schemaValidations';
 import { CategoryResType } from '@/types/category.type';
 import { MovieItemResType } from '@/types/movie-item.type';
+import { MoviePersonResType } from '@/types/movie-person.type';
 import { BaseSearchType } from '@/types/search.type';
 import { VideoResType } from '@/types/video.type';
 import { z } from 'zod';
@@ -88,3 +89,25 @@ export type MovieTopViewsResType = {
 
 export type MovieSearchType = z.infer<typeof movieSearchSchema> &
   BaseSearchType;
+
+type MovieStates = {
+  movie: MovieResType | null;
+  movieItem: MovieItemResType | null;
+  moviePerson: MoviePersonResType | null;
+
+  movies: MovieResType[];
+  movieItems: MovieItemResType[];
+  moviePersons: MoviePersonResType[];
+};
+
+type MovieAction = {
+  setMovie: (movie?: MovieResType | null) => void;
+  setMovieItem: (movieItem?: MovieItemResType | null) => void;
+  setMoviePerson: (moviePerson?: MoviePersonResType | null) => void;
+
+  setMovies: (movies: MovieResType[]) => void;
+  setMovieItems: (movieItems: MovieItemResType[]) => void;
+  setMoviePersons: (moviePersons: MoviePersonResType[]) => void;
+};
+
+export type MovieStoreType = MovieStates & MovieAction;

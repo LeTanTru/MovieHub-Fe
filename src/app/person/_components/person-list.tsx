@@ -1,7 +1,5 @@
 'use client';
 
-import './person-list.css';
-import PersonCard from './person-card';
 import Pagination from '@/components/pagination';
 import { usePersonListQuery } from '@/queries';
 import { cn } from '@/lib';
@@ -10,6 +8,7 @@ import { PersonResType } from '@/types';
 import { Activity } from '@/components/activity';
 import PersonListSkeleton from './person-list-skeleton';
 import { useQueryParams } from '@/hooks';
+import { PersonCard } from '@/components/app/person-card';
 
 export default function PersonList() {
   const {
