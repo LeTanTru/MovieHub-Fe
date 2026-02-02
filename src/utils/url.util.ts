@@ -1,4 +1,3 @@
-import DOMPurify from 'isomorphic-dompurify';
 import { AppConstants } from '@/constants';
 import { removeAccents } from '@/utils/text.util';
 
@@ -49,8 +48,4 @@ export const getIdFromSlug = (slug: string) => {
 
 export const generateSlug = (str: string) => {
   return removeAccents(str).toLowerCase().split(' ').join('-');
-};
-
-export const sanitizeText = (str: string) => {
-  return DOMPurify.sanitize(str);
 };
