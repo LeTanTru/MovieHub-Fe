@@ -33,25 +33,5 @@ export default function PerformanceMonitor() {
     measureFPS();
   }
 
-  // useEffect(() => {
-  //   if ('PerformanceObserver' in window) {
-  //     const observer = new PerformanceObserver((list) => {
-  //       for (const entry of list.getEntries()) {
-  //         if (entry.duration > 50) {
-  //           logger.warn('⚠️ Long Task detected:', {
-  //             duration: entry.duration.toFixed(2) + 'ms',
-  //             name: entry.name,
-  //             entry
-  //           });
-  //         }
-  //       }
-  //     });
-
-  //     observer.observe({ entryTypes: ['longtask', 'measure'] });
-
-  //     return () => observer.disconnect();
-  //   }
-  // }, []);
-
   return null;
 }

@@ -1,18 +1,24 @@
+'use client';
+
 import { MessageIcon } from '@/assets/icons';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Button, ToolTip } from '@/components/form';
 import { route } from '@/routes';
-import { MovieResType } from '@/types';
+import { useMovieStore } from '@/store';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { FaHeart, FaPlus } from 'react-icons/fa6';
 
-export default function MovieActionBar({ movie }: { movie: MovieResType }) {
+export default function MovieActionBar() {
+  const { movie } = useMovieStore();
+
+  if (!movie) return null;
+
   return (
     <div className='relative z-3 p-7.5'>
       <div className='flex items-center justify-between gap-8'>
         <ButtonWatchNow
           className='text-watch-now inline-flex min-h-15 shrink-0 items-center justify-center gap-4 rounded-4xl bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8! py-4! text-base font-semibold opacity-100 shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] transition-all duration-200 ease-linear hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]'
-          href={`${route.watch.path}/${movie?.slug}.${movie?.id}`}
+          href={`${route.watch.path}/${movie.slug}.${movie.id}`}
         />
         {/* Left */}
         <div className='flex grow justify-start gap-4'>

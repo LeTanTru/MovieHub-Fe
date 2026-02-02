@@ -26,3 +26,11 @@ export const useMovieQuery = ({ id }: { id: string }) => {
     enabled: !!id
   });
 };
+
+export const useSuggestionMovieListQuery = ({ id }: { id: string }) => {
+  return useQuery({
+    queryKey: [`suggestion-${queryKeys.MOVIE}-list`, id],
+    queryFn: () => movieApiRequest.getSuggestionList({ id }),
+    enabled: !!id
+  });
+};

@@ -8,13 +8,15 @@ import {
   useMoviePersonListQuery,
   useMovieQuery
 } from '@/queries';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { MovieItemResType, MoviePersonResType, MovieResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { movieItemKinds } from '@/constants';
 import MovieSkeleton from './movie-skeleton';
+import { useMovieStore } from '@/store';
 
 export default function Movie({ id }: { id: string }) {
+  const { setMovie, setMovieItems, setMoviePersons } = useMovieStore();
   const { data: movieData, isLoading: movieLoading } = useMovieQuery({ id });
   const movie: MovieResType | undefined = movieData?.data;
 
@@ -33,9 +35,14 @@ export default function Movie({ id }: { id: string }) {
     enabled: !!movie
   });
 
-  const movieItems: MovieItemResType[] = movieItemResData?.data?.content || [];
-  const moviePersons: MoviePersonResType[] =
-    moviePersonData?.data?.content || [];
+  const movieItems: MovieItemResType[] = useMemo(
+    () => movieItemResData?.data?.content || [],
+    [movieItemResData?.data?.content]
+  );
+  const moviePersons: MoviePersonResType[] = useMemo(
+    () => moviePersonData?.data?.content || [],
+    [moviePersonData?.data?.content]
+  );
 
   useEffect(() => {
     if (!movie) {
@@ -47,6 +54,19 @@ export default function Movie({ id }: { id: string }) {
       document.body.style.overflow = '';
     };
   }, [movie]);
+
+  useEffect(() => {
+    setMovie(movie);
+    setMovieItems(movieItems);
+    setMoviePersons(moviePersons);
+  }, [
+    movie,
+    movieItems,
+    moviePersons,
+    setMovie,
+    setMovieItems,
+    setMoviePersons
+  ]);
 
   if (movieLoading || !movie) return <MovieSkeleton />;
 
@@ -73,12 +93,8 @@ export default function Movie({ id }: { id: string }) {
       </div>
       <div className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
         <div className='relative z-3 mx-auto -mt-50 mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
-          <MovieInfo
-            movie={movie}
-            movieItems={movieItems}
-            moviePersons={moviePersons}
-          />
-          <MovieContent movie={movie} />
+          <MovieInfo />
+          <MovieContent />
         </div>
       </div>
     </>

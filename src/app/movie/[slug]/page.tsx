@@ -91,6 +91,11 @@ export default async function MoviePage({
     queryFn: () => movieItemApiRequest.getList({ params: movieItemFilters })
   });
 
+  await queryClient.prefetchQuery({
+    queryKey: [`suggestion-${queryKeys.MOVIE}-list`, id],
+    queryFn: () => movieApiRequest.getSuggestionList({ id })
+  });
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Movie id={id} />

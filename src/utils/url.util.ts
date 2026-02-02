@@ -40,3 +40,7 @@ export const renderFileUrl = (url: string | undefined | null) => {
   if (!url) return '';
   return url.startsWith('https') ? url : `${AppConstants.contentRootUrl}${url}`;
 };
+
+export const getIdFromSlug = (slug: string) => {
+  return slug.split('.')[1];
+};

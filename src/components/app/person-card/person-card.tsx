@@ -1,23 +1,31 @@
-import './person-list.css';
+import { cn } from '@/lib';
+import './person-card.css';
 import { route } from '@/routes';
 import { PersonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Activity } from '@/components/activity';
 
-export default function PersonCard({ person }: { person: PersonResType }) {
+export default function PersonCard({
+  person,
+  showFullName
+}: {
+  person: PersonResType;
+  showFullName?: boolean;
+}) {
   return (
     <div className='relative overflow-hidden rounded-lg p-0'>
       <div className='flex flex-col items-center justify-center gap-0'>
         <Link
           href={`${route.person.path}/${person.id}`}
-          className='image-mask relative w-full shrink-0 overflow-hidden rounded-none pb-[calc(100%+40px)]'
+          className='image-mask relative mb-2 w-full shrink-0 overflow-hidden rounded-none pb-[calc(100%+40px)]'
         >
           {person.avatarPath ? (
             <Image
               alt={person.name}
-              className='absolute top-0 right-0 bottom-0 left-0 object-cover transition-all duration-200 ease-linear hover:scale-105'
+              className='absolute top-0 right-0 bottom-0 left-0 rounded-lg object-cover transition-all duration-200 ease-linear hover:scale-105'
               fill
               sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
               src={renderImageUrl(person.avatarPath)}
@@ -29,8 +37,20 @@ export default function PersonCard({ person }: { person: PersonResType }) {
             </div>
           )}
         </Link>
-        <div className='relative z-2 -mt-10 px-2 py-3 max-sm:text-[13px]'>
-          <h3>{person.otherName}</h3>
+        <div className='relative z-2 -mt-10 px-2 py-3 text-center max-sm:text-[13px]'>
+          <h4
+            className={cn({
+              'mb-1.5': showFullName
+            })}
+            title={person.otherName}
+          >
+            {person.otherName}
+          </h4>
+          <Activity visible={!!showFullName}>
+            <span title={person.name} className='text-actor-name text-xs'>
+              {person.name}
+            </span>
+          </Activity>
         </div>
       </div>
     </div>
