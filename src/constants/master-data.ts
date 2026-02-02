@@ -161,7 +161,9 @@ export const movieTypes = {
 
 export const queryKeys = {
   CATEGORY: 'category',
+  COLLECTION_ITEM: 'collection-item',
   COLLECTION: 'collection',
+  COMMENT: 'comment',
   FILE: 'file',
   FORGOT_PASSWORD: 'forgot-password',
   LOGIN_GOOGLE: 'login_google',
@@ -175,8 +177,8 @@ export const queryKeys = {
   REGISTER: 'register',
   REQUEST_FORGOT_PASSSWORD: 'request-forgot-password',
   RESEND_OTP: 'resend-otp',
-  VERIFY_OTP: 'verify-otp',
-  COLLECTION_ITEM: 'collection-item'
+  REVIEW: 'review',
+  VERIFY_OTP: 'verify-otp'
 };
 
 export const countries = [

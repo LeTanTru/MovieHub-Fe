@@ -3,6 +3,7 @@ export { default as authApiRequest } from './auth.api-request';
 export { default as categoryApiRequest } from './category.api-request';
 export { default as collectionApiRequest } from './collection.api-request';
 export { default as collectionItemApiRequest } from './collection-item.request';
+export { default as commentApiRequest } from './comment.api-request';
 export { default as fileApiRequest } from './file.api-request';
 export { default as movieApiRequest } from './movie.api-request';
 export { default as movieItemApiRequest } from './movie-item.request';

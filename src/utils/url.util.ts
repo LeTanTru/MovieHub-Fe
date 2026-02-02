@@ -1,28 +1,30 @@
+import DOMPurify from 'isomorphic-dompurify';
 import { AppConstants } from '@/constants';
+import { removeAccents } from '@/utils/text.util';
 
-export function renderListPageUrl(path: string, queryString: string) {
+export const renderListPageUrl = (path: string, queryString: string) => {
   if (queryString) {
     return `${path}?${queryString}`;
   }
   return path;
-}
+};
 
-export function generatePath(
+export const generatePath = (
   template: string,
   params: Record<string, string | number>
-) {
+) => {
   return template.replace(/:([a-zA-Z0-9_]+)/g, (_, key) => {
     if (params[key] === undefined) {
       throw new Error(`Missing parameter "${key}" for path "${template}"`);
     }
     return encodeURIComponent(params[key]);
   });
-}
+};
 
-export function renderVideoUrl(url?: string) {
+export const renderVideoUrl = (url?: string) => {
   if (!url) return '';
   return url.startsWith('https') ? url : `${AppConstants.videoRootUrl}${url}`;
-}
+};
 
 export const renderImageUrl = (url: string | undefined | null) => {
   if (!url) return '';
@@ -43,4 +45,12 @@ export const renderFileUrl = (url: string | undefined | null) => {
 
 export const getIdFromSlug = (slug: string) => {
   return slug.split('.')[1];
+};
+
+export const generateSlug = (str: string) => {
+  return removeAccents(str).toLowerCase().split(' ').join('-');
+};
+
+export const sanitizeText = (str: string) => {
+  return DOMPurify.sanitize(str);
 };

@@ -1,5 +1,6 @@
 'use client';
 
+import { caption } from '@/assets';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { PersonCard } from '@/components/app/person-card';
 import { NoData } from '@/components/no-data';
@@ -69,12 +70,15 @@ const MovieTabEpisode = ({ direction }: { direction: number }) => {
                     fill
                     className='object-cover'
                     sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                    priority={false}
                   />
                 </div>
                 <div className='flex-start relative z-2 flex w-9/10 flex-col justify-center gap-4 p-6'>
                   <div className='inline-flex items-center gap-2'>
-                    {/* <div className=''></div> */}
+                    <Image
+                      src={caption}
+                      alt={'Phụ đề'}
+                      className='h-5 w-5 object-cover'
+                    />
                     <span>Phụ đề</span>
                   </div>
                   <div className='text-base leading-normal font-semibold'>
@@ -146,7 +150,7 @@ const MovieTabSuggestion = ({ direction }: { direction: number }) => {
 
   return (
     <MotionWrapper uniqueKey='suggestion' direction={direction}>
-      <h3 className='mb-8 text-lg font-semibold'>Phim đề xuất</h3>
+      <h3 className='mb-8 text-lg font-semibold'>Có thể bạn sẽ thích</h3>
       {suggestionMovieListLoading ? (
         <MovieGridSkeleton className='grid-cols-6' />
       ) : suggestionMovieList.length === 0 ? (

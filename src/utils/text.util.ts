@@ -1,4 +1,4 @@
-export function stripHtml(html: string) {
+export const stripHtml = (html: string) => {
   if (!html) return '';
 
   return html
@@ -10,16 +10,12 @@ export function stripHtml(html: string) {
     .replace(/&lt;/g, '<')
     .replace(/&gt;/g, '>')
     .trim();
-}
+};
 
-export function removeAccents(str: string) {
+export const removeAccents = (str: string) => {
   return str
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
     .replace(/Đ/g, 'D');
-}
-
-export function generateSlug(str: string) {
-  return removeAccents(str).toLowerCase().split(' ').join('-');
-}
+};

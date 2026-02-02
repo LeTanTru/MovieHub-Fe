@@ -14,9 +14,9 @@ import {
 } from '@/components/app/movie-grid';
 
 export default function MovieList({ id }: { id: string }) {
-  const actions: { key: string; text: string }[] = [
-    { key: 'all', text: 'Tất cả' },
-    { key: 'time', text: 'Thời gian' }
+  const actions: { key: string; label: string }[] = [
+    { key: 'all', label: 'Tất cả' },
+    { key: 'time', label: 'Thời gian' }
   ];
   const [activeKey, setActiveKey] = useState<string>(actions[0].key);
 
@@ -53,7 +53,7 @@ export default function MovieList({ id }: { id: string }) {
                 {actions.map((action) => (
                   <ActionButton
                     key={action.key}
-                    text={action.text}
+                    label={action.label}
                     action={action.key}
                     activeKey={activeKey}
                     setActiveKey={setActiveKey}
@@ -101,12 +101,12 @@ export default function MovieList({ id }: { id: string }) {
 
 function ActionButton({
   action,
-  text,
+  label,
   activeKey,
   setActiveKey
 }: {
   action: string;
-  text: string;
+  label: string;
   activeKey: string;
   setActiveKey: (key: string) => void;
 }) {
@@ -133,7 +133,7 @@ function ActionButton({
         )}
         onClick={() => setActiveKey(action)}
       >
-        <span className='relative z-10'>{text}</span>
+        <span className='relative z-10'>{label}</span>
       </Button>
     </div>
   );

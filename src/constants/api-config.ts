@@ -231,6 +231,24 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true,
       ignoreAuth: true
     }
+  },
+  comment: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/comment/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
+    }
+  },
+  review: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/review/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
+    }
   }
 });
 

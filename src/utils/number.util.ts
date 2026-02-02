@@ -1,16 +1,4 @@
-export function formatMoney(
-  value: string | number,
-  suffix: string = ' ₫'
-): string {
-  if (value === null || value === undefined) return '';
-
-  const num = Number(value);
-  if (isNaN(num)) return '';
-
-  return new Intl.NumberFormat('vi-VN').format(num) + suffix;
-}
-
-export function formatNumber(input: unknown, decimal = 2): string {
+export const formatNumber = (input: unknown, decimal = 2): string => {
   const value = Number(input);
 
   if (isNaN(value)) {
@@ -39,4 +27,4 @@ export function formatNumber(input: unknown, decimal = 2): string {
   }
 
   return fixed;
-}
+};

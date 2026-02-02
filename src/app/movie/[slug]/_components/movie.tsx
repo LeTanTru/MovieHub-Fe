@@ -1,8 +1,6 @@
 'use client';
 
 import './movie.css';
-import MovieInfo from './movie-info';
-import MovieContent from './movie-content';
 import {
   useMovieItemListQuery,
   useMoviePersonListQuery,
@@ -12,8 +10,10 @@ import { useEffect, useMemo } from 'react';
 import { MovieItemResType, MoviePersonResType, MovieResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { movieItemKinds } from '@/constants';
-import MovieSkeleton from './movie-skeleton';
 import { useMovieStore } from '@/store';
+import MovieContent from './movie-content';
+import MovieInfo from './movie-info';
+import MovieSkeleton from './movie-skeleton';
 
 export default function Movie({ id }: { id: string }) {
   const { setMovie, setMovieItems, setMoviePersons } = useMovieStore();

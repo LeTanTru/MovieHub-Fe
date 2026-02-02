@@ -65,7 +65,7 @@ export const convertUTCToLocal = (
   }
 };
 
-export function timeAgo(dateStr: string) {
+export const timeAgo = (dateStr: string) => {
   const [day, month, yearAndTime] = dateStr.split('/');
   const [year, time] = yearAndTime.split(' ');
 
@@ -93,13 +93,13 @@ export function timeAgo(dateStr: string) {
 
   const years = Math.floor(months / 12);
   return `${years} năm trước`;
-}
+};
 
-export function getYearFromDate(dateStr?: string) {
+export const getYearFromDate = (dateStr?: string) => {
   if (!dateStr) return 'N/A';
 
   const [_, __, yearAndTime] = dateStr.split('/');
   const [year] = yearAndTime.split(' ');
 
   return year;
-}
+};
