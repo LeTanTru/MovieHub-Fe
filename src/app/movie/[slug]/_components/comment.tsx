@@ -1,12 +1,10 @@
 'use client';
 
 import { CommentDotIcon } from '@/assets/icons';
-import { Button } from '@/components/form';
-import { cn } from '@/lib';
+import { ActionButton } from '@/components/app/action-button';
 import { useCommentListQuery, useReviewListQuery } from '@/queries';
 import { CommentResType, ReviewResType } from '@/types';
 import { getIdFromSlug } from '@/utils';
-import { motion } from 'framer-motion';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
@@ -68,46 +66,6 @@ export default function Comment() {
           ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-function ActionButton({
-  action,
-  label,
-  activeKey,
-  setActiveKey
-}: {
-  action: string;
-  label: string;
-  activeKey: string;
-  setActiveKey: (key: string) => void;
-}) {
-  const isActive = action === activeKey;
-
-  return (
-    <div className='relative flex-1'>
-      {isActive && (
-        <motion.div
-          layoutId='tab-bg'
-          className='absolute inset-0 rounded bg-white'
-          transition={{ duration: 0.1, ease: 'linear' }}
-        />
-      )}
-
-      <Button
-        variant='ghost'
-        className={cn(
-          'relative flex h-6.5 cursor-pointer items-center rounded-none! px-2 text-sm transition-all duration-200 ease-linear hover:bg-transparent!',
-          {
-            'text-gray-200 hover:opacity-80': !isActive,
-            'text-black hover:text-black': isActive
-          }
-        )}
-        onClick={() => setActiveKey(action)}
-      >
-        <span className='relative z-10'>{label}</span>
-      </Button>
     </div>
   );
 }
