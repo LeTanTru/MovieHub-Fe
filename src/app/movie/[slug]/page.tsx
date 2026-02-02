@@ -1,8 +1,10 @@
 import {
+  commentApiRequest,
   movieApiRequest,
   movieItemApiRequest,
   moviePersonApiRequest
 } from '@/api-requests';
+import reviewApiRequest from '@/api-requests/review.api-request';
 import { Movie } from '@/app/movie/[slug]/_components';
 import { getQueryClient } from '@/components/providers';
 import envConfig from '@/config';
@@ -12,7 +14,12 @@ import {
   movieItemKinds,
   queryKeys
 } from '@/constants';
-import { MovieItemSearchType, MoviePersonSearchType } from '@/types';
+import {
+  CommentSearchType,
+  MovieItemSearchType,
+  MoviePersonSearchType,
+  ReviewSearchType
+} from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 
@@ -74,6 +81,14 @@ export default async function MoviePage({
     kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
   };
 
+  const commentFilters: CommentSearchType = {
+    movieId: id
+  };
+
+  const reviewFilters: ReviewSearchType = {
+    movieId: id
+  };
+
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
@@ -94,6 +109,16 @@ export default async function MoviePage({
   await queryClient.prefetchQuery({
     queryKey: [`suggestion-${queryKeys.MOVIE}-list`, id],
     queryFn: () => movieApiRequest.getSuggestionList({ id })
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: [`${queryKeys.COMMENT}-list`, commentFilters],
+    queryFn: () => commentApiRequest.getList({ params: commentFilters })
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: [`${queryKeys.REVIEW}-list`, reviewFilters],
+    queryFn: () => reviewApiRequest.getList({ params: reviewFilters })
   });
 
   return (
