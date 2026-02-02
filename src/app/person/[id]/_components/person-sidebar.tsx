@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { AvatarField, Button } from '@/components/form';
 import { DEFAULT_DATE_FORMAT, genderOptions } from '@/constants';
-import { formatDate, renderImageUrl } from '@/utils';
+import { formatDate, renderImageUrl, sanitizeText } from '@/utils';
 import { Heart, X } from 'lucide-react';
 import { RiTelegram2Fill } from 'react-icons/ri';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -45,6 +45,11 @@ export default function PersonSidebar({ id }: { id: string }) {
       window.removeEventListener('resize', checkScroll);
     };
   }, [opened]);
+
+  const sanitizedBio = useMemo(
+    () => sanitizeText(person?.bio || 'Đang cập nhật'),
+    [person?.bio]
+  );
 
   return personLoading ? (
     <PersonSidebarSkeleton isMobile={isMobile} />
@@ -98,7 +103,7 @@ export default function PersonSidebar({ id }: { id: string }) {
         <div className='text-foreground/80 line-clamp-10 text-justify'>
           <div
             className='text-foreground/80'
-            dangerouslySetInnerHTML={{ __html: person?.bio || '' }}
+            dangerouslySetInnerHTML={{ __html: sanitizedBio }}
           />
         </div>
         {person?.bio && (
@@ -141,7 +146,7 @@ export default function PersonSidebar({ id }: { id: string }) {
               </h2>
               <div
                 className='text-foreground/80 text-justify'
-                dangerouslySetInnerHTML={{ __html: person?.bio || '' }}
+                dangerouslySetInnerHTML={{ __html: sanitizedBio }}
               />
               <motion.div
                 className='bg-accent absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce rounded-full p-2'

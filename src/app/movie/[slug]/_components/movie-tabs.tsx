@@ -39,7 +39,7 @@ const MotionWrapper = ({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: direction * -20 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className='py-10'
+      className='pt-10'
     >
       {children}
     </motion.div>
@@ -117,19 +117,31 @@ const MovieTabPerson = ({
     [PERSON_DIRECTOR]: 'Đạo diễn'
   };
 
+  const title = titleMaps[kind];
+
   return (
     <MotionWrapper uniqueKey={`person-${kind}`} direction={direction}>
       <h3 className='mb-8 text-lg leading-normal font-semibold text-white'>
-        {titleMaps[kind]}
+        {title}
       </h3>
-      <div className='grid grid-cols-6 gap-6'>
-        {personList.map((person) => (
-          <PersonCard
-            person={person}
-            key={`tab-item-actor-${person.id}`}
-            showFullName
-          />
-        ))}
+      <div
+        className={cn('grid gap-6', {
+          'grid-cols-6': personList.length > 0
+        })}
+      >
+        {personList.length === 0 ? (
+          <p className='text-gray-400'>
+            `Danh sách ${title.toLowerCase()} trống. Vui lòng chờ cập nhật.`
+          </p>
+        ) : (
+          personList.map((person) => (
+            <PersonCard
+              person={person}
+              key={`tab-item-actor-${person.id}`}
+              showFullName
+            />
+          ))
+        )}
       </div>
     </MotionWrapper>
   );
@@ -150,11 +162,13 @@ const MovieTabSuggestion = ({ direction }: { direction: number }) => {
 
   return (
     <MotionWrapper uniqueKey='suggestion' direction={direction}>
-      <h3 className='mb-8 text-lg font-semibold'>Có thể bạn sẽ thích</h3>
+      <h3 className='mb-8 text-lg font-semibold'>
+        {suggestionMovieList.length === 0 ? 'Đề xuất' : 'Có thể bạn sẽ thích'}
+      </h3>
       {suggestionMovieListLoading ? (
         <MovieGridSkeleton className='grid-cols-6' />
       ) : suggestionMovieList.length === 0 ? (
-        <NoData />
+        <p className='text-gray-400'>Danh sách đề xuất trống</p>
       ) : (
         <MovieGrid movieList={suggestionMovieList} className='grid-cols-6' />
       )}

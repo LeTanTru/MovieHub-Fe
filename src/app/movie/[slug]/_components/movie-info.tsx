@@ -21,12 +21,12 @@ import {
   formatDuration,
   generateSlug,
   getYearFromDate,
-  renderImageUrl
+  renderImageUrl,
+  sanitizeText
 } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import DOMPurify from 'isomorphic-dompurify';
 import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
 
@@ -91,7 +91,7 @@ export default function MovieInfo() {
     'Đang cập nhật';
 
   const sanitizedDescription = useMemo(
-    () => DOMPurify.sanitize(movie?.description || 'Đang cập nhật'),
+    () => sanitizeText(movie?.description || 'Đang cập nhật'),
     [movie?.description]
   );
 
