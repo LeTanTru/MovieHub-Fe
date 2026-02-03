@@ -15,7 +15,7 @@ import {
   useState
 } from 'react';
 import { defaultAvatar } from '@/assets';
-import { useImageStatus } from '@/hooks';
+import { useImageStatus, useIsMounted } from '@/hooks';
 import { createPortal } from 'react-dom';
 
 type AvatarFieldProps = {
@@ -52,6 +52,7 @@ export default function AvatarField({
   alt,
   ...props
 }: AvatarFieldProps) {
+  const isMounted = useIsMounted();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
 
@@ -91,6 +92,8 @@ export default function AvatarField({
 
     return () => node.removeEventListener('wheel', handleWheel);
   }, [handleWheel, isModalOpen]);
+
+  if (!isMounted) return null;
 
   return (
     <>

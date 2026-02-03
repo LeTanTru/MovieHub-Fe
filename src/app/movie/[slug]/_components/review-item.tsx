@@ -63,6 +63,7 @@ export default function ReviewItem({ review }: { review: ReviewResType }) {
                 alt={ratingInfo.label}
                 width={16}
                 height={16}
+                unoptimized
               />
               <span className='text-xs'>{ratingInfo.label}</span>
             </div>

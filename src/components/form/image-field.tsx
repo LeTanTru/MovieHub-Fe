@@ -16,7 +16,7 @@ import {
   useRef,
   useState
 } from 'react';
-import { useImageStatus } from '@/hooks';
+import { useImageStatus, useIsMounted } from '@/hooks';
 import { createPortal } from 'react-dom';
 
 type ImageFieldProps = {
@@ -55,6 +55,7 @@ export default function ImageField({
   zoomOnScroll = true,
   ...props
 }: ImageFieldProps) {
+  const isMounted = useIsMounted();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
 
@@ -94,6 +95,8 @@ export default function ImageField({
 
     return () => node.removeEventListener('wheel', handleWheel);
   }, [handleWheel, isOpen]);
+
+  if (!isMounted) return null;
 
   return (
     <>
