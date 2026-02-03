@@ -91,7 +91,7 @@ export default function Discussion() {
             </div>
           </div>
         ) : (
-          <div className='text-xs text-gray-400'>
+          <div className='mb-4 text-xs text-gray-400'>
             Vui lòng&nbsp;
             <Link
               className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
