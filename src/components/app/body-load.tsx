@@ -4,17 +4,12 @@ import { logoWithText } from '@/assets';
 import './body-load.css';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import envConfig from '@/config';
 
 const hidePathnames = ['/auth/google/callback'];
 
 export default function BodyLoad() {
   const pathname = usePathname();
-  if (
-    hidePathnames.includes(pathname) ||
-    envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
-  )
-    return null;
+  if (hidePathnames.includes(pathname)) return null;
 
   return (
     <div id='body-load'>
