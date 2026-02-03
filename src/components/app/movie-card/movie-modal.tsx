@@ -1,14 +1,14 @@
 'use client';
 
 import './movie-modal.css';
-import { ageRatings } from '@/constants';
+import { ageRatings, MOVIE_TYPE_SERIES, MOVIE_TYPE_SINGLE } from '@/constants';
 import { Button } from '@/components/form';
 import { FaHeart } from 'react-icons/fa6';
 import { FaInfoCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MovieResType } from '@/types';
 import Link from 'next/link';
-import { getYearFromDate, renderImageUrl } from '@/utils';
+import { formatDuration, getYearFromDate, renderImageUrl } from '@/utils';
 import {
   TagAgeRating,
   TagCategory,
@@ -18,6 +18,7 @@ import {
 import { route } from '@/routes';
 import { cn } from '@/lib';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
+import { Activity } from '@/components/activity';
 
 export default function MovieModal({
   movie,
@@ -100,6 +101,26 @@ export default function MovieModal({
                   className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
                   value={getYearFromDate(movie.releaseDate)}
                 />
+                <Activity visible={movie.type === MOVIE_TYPE_SINGLE}>
+                  <TagNormal
+                    className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                    value={`Phần ${movie.latestSeason}`}
+                  />
+                  <TagNormal
+                    className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                    value={formatDuration(movie.duration)}
+                  />
+                </Activity>
+                <Activity visible={movie.type === MOVIE_TYPE_SERIES}>
+                  <TagNormal
+                    className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                    value={`Phần ${movie.latestSeason}`}
+                  />
+                  <TagNormal
+                    className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                    value={`Tập ${movie.latestEpisode}`}
+                  />
+                </Activity>
               </TagWrapper>
               <TagWrapper className='mt-2 gap-1.25'>
                 {movie.categories.map((item, index) => (

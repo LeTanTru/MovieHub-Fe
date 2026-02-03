@@ -12,9 +12,12 @@ export type CollectionItemResType = {
   country: string;
   createdDate: string;
   description: string;
-  id: string;
+  duration: number;
+  id: number;
   isFeatured: boolean;
   language: string;
+  latestEpisode: string;
+  latestSeason: string;
   modifiedDate: string;
   originalTitle: string;
   posterUrl: string;
@@ -27,6 +30,7 @@ export type CollectionItemResType = {
   title: string;
   type: number;
   viewCount: number;
+  year: number;
 };
 
 export type CollectionItemSearchType = z.infer<typeof collectionSearchSchema> &

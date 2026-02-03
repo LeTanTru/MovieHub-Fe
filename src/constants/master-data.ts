@@ -14,6 +14,8 @@ import {
   BREAKPOINT_DESKTOP,
   BREAKPOINT_MOBILE,
   BREAKPOINT_TABLET,
+  DISCUSTSTION_TAB_COMMENT,
+  DISCUSTSTION_TAB_REVIEW,
   GENDER_FEMALE,
   GENDER_MALE,
   GENDER_OTHER,
@@ -23,6 +25,8 @@ import {
   MOVIE_ITEM_KIND_EPISODE,
   MOVIE_ITEM_KIND_SEASON,
   MOVIE_ITEM_KIND_TRAILER,
+  MOVIE_LIST_TAB_ALL,
+  MOVIE_LIST_TAB_TIME,
   MOVIE_TYPE_SERIES,
   MOVIE_TYPE_SINGLE,
   REVIEW_RATING_BAD,
@@ -1507,3 +1511,13 @@ export const reviewRatings: Record<
   [REVIEW_RATING_GOOD]: { label: 'Phim hay', icon: ratingGood },
   [REVIEW_RATING_WONDERFUL]: { label: 'Tuyệt vời', icon: ratingWonderful }
 };
+
+export const discussionActions: { key: string; label: string }[] = [
+  { key: DISCUSTSTION_TAB_COMMENT, label: 'Bình luận' },
+  { key: DISCUSTSTION_TAB_REVIEW, label: 'Đánh giá' }
+];
+
+export const movieListActions: { key: string; label: string }[] = [
+  { key: MOVIE_LIST_TAB_ALL, label: 'Tất cả' },
+  { key: MOVIE_LIST_TAB_TIME, label: 'Thời gian' }
+];

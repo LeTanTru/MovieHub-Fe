@@ -2,7 +2,12 @@
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
-import { MAX_PAGE_SIZE, PERSON_ACTOR } from '@/constants';
+import {
+  MAX_PAGE_SIZE,
+  MOVIE_LIST_TAB_ALL,
+  movieListActions,
+  PERSON_ACTOR
+} from '@/constants';
 import { MoviePersonResType, MovieResType } from '@/types';
 import {
   MovieGrid,
@@ -12,11 +17,7 @@ import {
 import { ActionButton } from '@/components/app/action-button';
 
 export default function MovieList({ id }: { id: string }) {
-  const actions: { key: string; label: string }[] = [
-    { key: 'all', label: 'Tất cả' },
-    { key: 'time', label: 'Thời gian' }
-  ];
-  const [activeKey, setActiveKey] = useState<string>(actions[0].key);
+  const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
 
   const { data: moviePersonListData, isLoading: movieListLoading } =
     useMoviePersonListQuery({
@@ -48,7 +49,7 @@ export default function MovieList({ id }: { id: string }) {
                 className='relative flex shrink-0 items-stretch overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
                 role='tablist'
               >
-                {actions.map((action) => (
+                {movieListActions.map((action) => (
                   <ActionButton
                     key={action.key}
                     label={action.label}
@@ -64,9 +65,15 @@ export default function MovieList({ id }: { id: string }) {
             <AnimatePresence mode='wait'>
               <motion.div
                 key={activeKey}
-                initial={{ opacity: 0, y: activeKey === 'all' ? -10 : 10 }}
+                initial={{
+                  opacity: 0,
+                  y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
+                }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: activeKey === 'all' ? -10 : 10 }}
+                exit={{
+                  opacity: 0,
+                  y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
+                }}
                 className='block'
               >
                 {movieListLoading ? (
@@ -76,7 +83,7 @@ export default function MovieList({ id }: { id: string }) {
                   />
                 ) : movieList.length == 0 ? (
                   'Không có phim nào'
-                ) : activeKey === 'all' ? (
+                ) : activeKey === MOVIE_LIST_TAB_ALL ? (
                   <MovieGrid
                     movieList={movieList}
                     dir='down'
