@@ -4,7 +4,6 @@ import { caption } from '@/assets';
 import { ButtonToggle } from '@/components/app/button-toggle';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { PersonCard } from '@/components/app/person-card';
-import { ImageField } from '@/components/form';
 import { MOVIE_TYPE_SINGLE, PERSON_ACTOR, PERSON_DIRECTOR } from '@/constants';
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
@@ -14,7 +13,6 @@ import { useMovieStore } from '@/store';
 import { MovieItemResType, MovieResType } from '@/types';
 import { getIdFromSlug, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { LucideCaptions } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -43,7 +41,7 @@ const MotionWrapper = ({
       initial={{ opacity: 0, x: direction * 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: direction * -20 }}
-      transition={{ duration: 0.3, ease: 'linear' }}
+      transition={{ duration: 0.2, ease: 'linear' }}
       className='py-10'
     >
       {children}
@@ -90,7 +88,7 @@ const MovieTabEpisodeSingle = ({
                 <div className='text-base leading-normal font-semibold'>
                   {movie?.title}
                 </div>
-                <div className='ease-linea inline-flex min-h-7.5 w-fit items-center justify-center rounded-sm bg-white px-3 py-2 text-xs font-medium text-black transition-all duration-200 hover:opacity-80'>
+                <div className='inline-flex min-h-7.5 w-fit items-center justify-center rounded-sm bg-white px-3 py-2 text-xs font-medium text-black transition-all duration-200 ease-linear hover:opacity-80'>
                   Xem bản này
                 </div>
               </div>
@@ -104,16 +102,13 @@ const MovieTabEpisodeSingle = ({
   );
 };
 
-const MovieTabEpisodeSeries = ({
-  movie,
-  movieItems
-}: {
-  movie: MovieResType;
-  movieItems: MovieItemResType[];
-}) => {
+const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
+  const ANIMATION_DURATION = 300;
+
   const [toggle, setToggle] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedSeason, setSelectedSeason] = useState<number>(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
   );
@@ -123,7 +118,14 @@ const MovieTabEpisodeSeries = ({
   };
 
   const handleToggle = () => {
+    if (isAnimating) return;
+
+    setIsAnimating(true);
     setToggle(!toggle);
+
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, ANIMATION_DURATION);
   };
 
   const seasons = movie.seasons;
@@ -164,56 +166,44 @@ const MovieTabEpisodeSeries = ({
             Phần {seasonCount}
             <FaCaretDown />
           </div>
-          <AnimatePresence mode='wait'>
-            {showDropdown && (
-              <motion.div
-                initial={{
-                  opacity: 0.5,
-                  scale: 0.8,
-                  transformOrigin: '40% -50%'
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1
-                }}
-                exit={{
-                  opacity: 0.5,
-                  scale: 0.8
-                }}
-                transition={{ duration: 0.1, ease: 'linear' }}
-                className='absolute top-10 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 pb-2 shadow-lg'
-              >
-                <h3 className='border-b border-gray-200 px-4 py-2 text-black'>
-                  Danh sách phần
-                </h3>
-                {Array.from({ length: seasonCount }).map((_, index) => (
-                  <div
-                    key={`season-${index}`}
-                    className={cn(
-                      'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
-                      {
-                        'bg-light-golden-yellow': index + 1 === selectedSeason
-                      }
-                    )}
-                    onClick={(e) => handleSelectSeason(e, index)}
-                  >
-                    Phần {index + 1}
-                  </div>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {showDropdown && (
+            <motion.div
+              initial={{
+                opacity: 0.5,
+                scale: 0.8,
+                transformOrigin: '40% -50%'
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1
+              }}
+              exit={{
+                opacity: 0.5,
+                scale: 0.8
+              }}
+              transition={{ duration: 0.1, ease: 'linear' }}
+              className='absolute top-10 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 pb-2 shadow-lg'
+            >
+              <h3 className='border-b border-gray-200 px-4 py-2 text-black'>
+                Danh sách phần
+              </h3>
+              {Array.from({ length: seasonCount }).map((_, index) => (
+                <div
+                  key={`season-${index}`}
+                  className={cn(
+                    'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
+                    {
+                      'bg-light-golden-yellow': index + 1 === selectedSeason
+                    }
+                  )}
+                  onClick={(e) => handleSelectSeason(e, index)}
+                >
+                  Phần {index + 1}
+                </div>
+              ))}
+            </motion.div>
+          )}
         </div>
-        {/* <div className='flex flex-wrap' role='tablist'>
-          <button
-            type='button'
-            role='tab'
-            className='flex items-center gap-1 rounded-sm border border-solid border-white px-1 py-px text-xs text-white'
-          >
-            <LucideCaptions />
-            Phụ đề
-          </button>
-        </div> */}
         <div className='grow'></div>
         <ButtonToggle
           toggle={toggle}
@@ -222,49 +212,71 @@ const MovieTabEpisodeSeries = ({
         />
       </div>
       {/* Body */}
-      <div
+      <motion.div
+        layout
         className={cn('grid', {
           'grid-cols-6 gap-x-2.5 gap-y-8': !toggle,
           'grid-cols-8 gap-2': toggle
         })}
+        transition={{
+          layout: { duration: 0.2, ease: 'linear' }
+        }}
       >
         {episodes.map((episode, index) => (
-          <Link
+          <motion.div
             key={episode.id}
-            href={`${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`}
-            className={cn({
-              'bg-episode-background1 flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
-                toggle
-            })}
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              layout: { duration: 0.2, ease: 'linear' }
+            }}
           >
-            <div
-              className={cn(
-                'bg-episode-background2 group relative mb-2.5 block h-0 w-full overflow-hidden rounded-md pb-[66%]',
-                {
-                  hidden: toggle
-                }
-              )}
+            <Link
+              href={`${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`}
+              className={cn('block', {
+                'bg-episode-background1 flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
+                  toggle
+              })}
             >
-              <div className='group-hover:text-light-golden-yellow border-light-golden-yellow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[3rem] border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
-                <FaPlay />
+              <motion.div
+                layout
+                className={cn(
+                  'bg-episode-background2 group relative mb-2.5 block w-full overflow-hidden rounded-md',
+                  {
+                    'h-0 pb-[66%]': !toggle,
+                    hidden: toggle
+                  }
+                )}
+                transition={{
+                  duration: 0.2,
+                  ease: 'linear'
+                }}
+              >
+                <div className='group-hover:text-light-golden-yellow border-light-golden-yellow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[3rem] border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
+                  <FaPlay />
+                </div>
+                <Image
+                  src={renderImageUrl(episode.thumbnailUrl)}
+                  className='h-full w-full border-none'
+                  alt={episode.title}
+                  fill
+                  sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                />
+              </motion.div>
+              <div className='hover:text-light-golden-yellow flex items-center gap-2.5 text-sm font-medium text-white transition-all duration-200 ease-linear'>
+                <div className='block shrink-0 text-xs'>
+                  <FaPlay />
+                </div>
+                <div className='line-clamp-1 block truncate'>
+                  Tập {index + 1}
+                </div>
               </div>
-              <Image
-                src={renderImageUrl(episode.thumbnailUrl)}
-                className='h-full w-full border-none'
-                alt={episode.title}
-                fill
-                sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-              />
-            </div>
-            <div className='hover:text-light-golden-yellow flex items-center gap-2.5 text-sm font-medium text-white transition-all duration-200 ease-linear'>
-              <div className='block shrink-0 text-xs'>
-                <FaPlay />
-              </div>
-              <div className='line-clamp-1 block truncate'>Tập {index + 1}</div>
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </>
   );
 };
