@@ -11,6 +11,7 @@ import envConfig from '@/config';
 import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
+  DEFAULT_TABLE_PAGE_START,
   movieItemKinds,
   queryKeys
 } from '@/constants';
@@ -82,11 +83,15 @@ export default async function MoviePage({
   };
 
   const commentFilters: CommentSearchType = {
-    movieId: id
+    movieId: id,
+    page: DEFAULT_TABLE_PAGE_START,
+    size: DEFAULT_PAGE_SIZE
   };
 
   const reviewFilters: ReviewSearchType = {
-    movieId: id
+    movieId: id,
+    page: DEFAULT_TABLE_PAGE_START,
+    size: DEFAULT_PAGE_SIZE
   };
 
   const queryClient = getQueryClient();

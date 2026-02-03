@@ -1,5 +1,5 @@
 import defaultAvatar from './avatar-default.webp';
-import emptyData from './empty-data.webp';
+import emptyData from './empty-data.svg';
 import googleIcon from './google.svg';
 import image404 from './404.svg';
 import logo from './logo.webp';
@@ -11,6 +11,7 @@ import ratingGood from './rating-good.webp';
 import ratingOk from './rating-ok.webp';
 import ratingBoring from './rating-boring.webp';
 import ratingBad from './rating-bad.webp';
+import emptyDiscussion from './empty-discussion.svg';
 
 export {
   defaultAvatar,
@@ -25,5 +26,6 @@ export {
   ratingGood,
   ratingOk,
   ratingBoring,
-  ratingBad
+  ratingBad,
+  emptyDiscussion
 };

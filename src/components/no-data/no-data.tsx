@@ -4,19 +4,32 @@ import Image from 'next/image';
 
 export default function NoData({
   className,
-  content = 'Không có dữ liệu'
+  content = 'Không có dữ liệu',
+  width = 200,
+  height = 80,
+  size,
+  src
 }: {
   className?: string;
   content?: string;
+  width?: number;
+  height?: number;
+  size?: number;
+  src?: string;
 }) {
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center gap-4 rounded-lg bg-white py-4 pt-50 dark:bg-transparent',
+        'flex flex-col items-center justify-center gap-4 rounded-lg py-4 pt-50 dark:bg-transparent dark:text-white',
         className
       )}
     >
-      <Image src={emptyData.src} width={200} height={80} alt={content} />
+      <Image
+        src={src || emptyData.src}
+        width={size || width}
+        height={size || height}
+        alt={content}
+      />
       <p>{content}</p>
     </div>
   );
