@@ -29,20 +29,20 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
+import { AvatarField } from '@/components/form';
 
-const ActoCell = ({ actor }: { actor: PersonResType }) => {
+const ActorCell = ({ actor }: { actor: PersonResType }) => {
   return (
     <div className='flex flex-col items-center gap-3 text-center'>
       <Link
         href={`${route.person.path}/${actor.id}`}
         className='bg-main-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
       >
-        <Image
-          alt={actor.otherName}
-          className='absolute top-0 right-0 bottom-0 left-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
-          fill
-          sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+        <AvatarField
           src={renderImageUrl(actor.avatarPath)}
+          size={80}
+          alt={actor.otherName}
+          showHoverIcon={false}
         />
       </Link>
       <Link
@@ -197,7 +197,7 @@ export default function MovieInfo() {
         </div>
         <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
           {actors.map((actor) => (
-            <ActoCell key={`info-actor-${actor.id}`} actor={actor} />
+            <ActorCell key={`info-actor-${actor.id}`} actor={actor} />
           ))}
         </div>
       </div>

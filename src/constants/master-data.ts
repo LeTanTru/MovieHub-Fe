@@ -1,4 +1,11 @@
 import {
+  ratingBad,
+  ratingBoring,
+  ratingGood,
+  ratingOk,
+  ratingWonderful
+} from '@/assets';
+import {
   AGE_RATING_K,
   AGE_RATING_P,
   AGE_RATING_T13,
@@ -10,11 +17,20 @@ import {
   GENDER_FEMALE,
   GENDER_MALE,
   GENDER_OTHER,
+  KIND_ADMIN,
+  KIND_MANAGER,
+  KIND_USER_VIP,
   MOVIE_ITEM_KIND_EPISODE,
   MOVIE_ITEM_KIND_SEASON,
   MOVIE_ITEM_KIND_TRAILER,
   MOVIE_TYPE_SERIES,
-  MOVIE_TYPE_SINGLE
+  MOVIE_TYPE_SINGLE,
+  REVIEW_RATING_BAD,
+  REVIEW_RATING_BORING,
+  REVIEW_RATING_GOOD,
+  REVIEW_RATING_OK,
+  REVIEW_RATING_WONDERFUL,
+  UPLOAD_AVATAR
 } from '@/constants/constant';
 import { route } from '@/routes';
 import {
@@ -22,17 +38,10 @@ import {
   OptionType,
   UserSidebarItemType
 } from '@/types';
-import {
-  BellIcon,
-  Heart,
-  History,
-  Infinity,
-  ListVideo,
-  LucideIcon,
-  Mars,
-  User2,
-  Venus
-} from 'lucide-react';
+import { BellIcon, Heart, History, ListVideo, User2 } from 'lucide-react';
+import type { StaticImageData } from 'next/image';
+import { FaInfinity, FaMars, FaVenus } from 'react-icons/fa6';
+import { IconType } from 'react-icons/lib';
 
 export const GENDER: number[] = [GENDER_MALE, GENDER_FEMALE, GENDER_OTHER];
 
@@ -42,16 +51,14 @@ export const genderOptions: OptionType[] = [
   { value: GENDER_OTHER, label: 'Khác' }
 ];
 
-const UPLOAD_AVATAR = 'AVATAR';
-
 export const uploadOptions = {
   AVATAR: UPLOAD_AVATAR
 };
 
-export const genderIconMaps: Record<number, LucideIcon> = {
-  [GENDER_MALE]: Mars,
-  [GENDER_FEMALE]: Venus,
-  [GENDER_OTHER]: Infinity
+export const genderIconMaps: Record<number, IconType> = {
+  [GENDER_MALE]: FaMars,
+  [GENDER_FEMALE]: FaVenus,
+  [GENDER_OTHER]: FaInfinity
 };
 
 export const dropdownAvatarList: DropdownAvatarItemType[] = [
@@ -1474,3 +1481,29 @@ export const languages = [
     label: 'Tiếng Zulu'
   }
 ];
+
+export const kindMaps: Record<number, { label: string; style: string }> = {
+  [KIND_ADMIN]: {
+    label: 'Super Admin',
+    style: 'border-red-500  text-red-600'
+  },
+  [KIND_MANAGER]: {
+    label: 'Admin',
+    style: 'border-orange-500  text-orange-600'
+  },
+  [KIND_USER_VIP]: {
+    label: 'VIP',
+    style: 'border-cyan-500  text-cyan-600'
+  }
+};
+
+export const reviewRatings: Record<
+  number,
+  { label: string; icon: StaticImageData }
+> = {
+  [REVIEW_RATING_BAD]: { label: 'Dở tệ', icon: ratingBad },
+  [REVIEW_RATING_BORING]: { label: 'Phim chán', icon: ratingBoring },
+  [REVIEW_RATING_OK]: { label: 'Phim ổn', icon: ratingOk },
+  [REVIEW_RATING_GOOD]: { label: 'Phim hay', icon: ratingGood },
+  [REVIEW_RATING_WONDERFUL]: { label: 'Tuyệt vời', icon: ratingWonderful }
+};

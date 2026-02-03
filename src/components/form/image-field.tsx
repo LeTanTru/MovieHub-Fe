@@ -16,6 +16,8 @@ import {
   useRef,
   useState
 } from 'react';
+import { useImageStatus } from '@/hooks';
+import { createPortal } from 'react-dom';
 
 type ImageFieldProps = {
   src?: string;
@@ -56,10 +58,14 @@ export default function ImageField({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
 
+  const { isError: imageError } = useImageStatus(src);
+
   const previewRef = useRef<HTMLDivElement | null>(null);
 
+  const shouldDisablePreview = disablePreview || !src || imageError;
+
   const openPreview = (e: MouseEvent) => {
-    if (disablePreview || !src) return;
+    if (shouldDisablePreview) return;
     e.preventDefault();
     e.stopPropagation();
     setIsOpen(true);
@@ -96,11 +102,11 @@ export default function ImageField({
         onClick={props?.onClick ?? openPreview}
         className={cn(
           'relative rounded border bg-gray-100 shadow-sm select-none',
-          { 'cursor-pointer': !!src },
+          !shouldDisablePreview && 'cursor-pointer',
           className
         )}
       >
-        {src ? (
+        {src && !imageError ? (
           aspect ? (
             <AspectRatio
               style={{ width, height }}
@@ -122,7 +128,7 @@ export default function ImageField({
               width={width}
               height={height}
               className={cn(
-                'object-cover',
+                'rounded object-cover',
                 {
                   'h-full w-full': !imageClassName && !width && !height
                 },
@@ -137,72 +143,75 @@ export default function ImageField({
           </div>
         )}
 
-        {src && showHoverIcon && (
-          <div className='absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-opacity hover:opacity-100'>
+        {!shouldDisablePreview && showHoverIcon && (
+          <div className='absolute inset-0 flex items-center justify-center rounded bg-black/30 opacity-0 transition-opacity hover:opacity-100'>
             <HoverIcon className='h-7 w-7 text-white' />
           </div>
         )}
       </div>
-      <LazyMotion features={domAnimation} strict>
-        <AnimatePresence>
-          {isOpen && (
-            <m.div
-              className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={(e) => {
-                setScale(1);
-                setIsOpen(false);
-                e.stopPropagation();
-              }}
-            >
+      {createPortal(
+        <LazyMotion features={domAnimation} strict>
+          <AnimatePresence>
+            {isOpen && !shouldDisablePreview && (
               <m.div
-                ref={previewRef}
-                className={cn(
-                  'relative cursor-zoom-in rounded',
-                  previewClassName
-                )}
-                style={{
-                  width: previewSize * previewAspect,
-                  height: previewSize
+                className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={(e) => {
+                  setScale(1);
+                  setIsOpen(false);
+                  e.stopPropagation();
                 }}
-                initial={{ scale: 0.85, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.85, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                onClick={(e) => e.stopPropagation()}
               >
-                {src && (
-                  <div
-                    className='relative'
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      overflow: 'visible'
-                    }}
-                  >
-                    <Image
-                      src={src}
-                      alt='Preview'
-                      fill
-                      className={cn(
-                        'rounded object-cover transition-transform duration-100',
-                        imagePreviewClassName
-                      )}
+                <m.div
+                  ref={previewRef}
+                  className={cn(
+                    'relative cursor-zoom-in rounded',
+                    previewClassName
+                  )}
+                  style={{
+                    width: previewSize * previewAspect,
+                    height: previewSize
+                  }}
+                  initial={{ scale: 0.85, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.85, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {src && (
+                    <div
+                      className='relative'
                       style={{
-                        transform: `scale(${scale})`,
-                        transformOrigin: 'center center'
+                        width: '100%',
+                        height: '100%',
+                        overflow: 'visible'
                       }}
-                      unoptimized
-                    />
-                  </div>
-                )}
+                    >
+                      <Image
+                        src={src}
+                        alt='Preview'
+                        fill
+                        className={cn(
+                          'rounded object-cover transition-transform duration-100',
+                          imagePreviewClassName
+                        )}
+                        style={{
+                          transform: `scale(${scale})`,
+                          transformOrigin: 'center center'
+                        }}
+                        unoptimized
+                      />
+                    </div>
+                  )}
+                </m.div>
               </m.div>
-            </m.div>
-          )}
-        </AnimatePresence>
-      </LazyMotion>
+            )}
+          </AnimatePresence>
+        </LazyMotion>,
+        document.body
+      )}
     </>
   );
 }

@@ -59,6 +59,9 @@
   --color-auth-form: #1d293d;
   --color-actor-name: #f0adb1;
   --color-episode-background: #5e6070;
+  --color-comment-form-background: #ffffff10;
+  --color-avatar-background: #282b3a;
+  --color-dislike-comment: #d33d25;
 
   --breakpoint-1120: 1120px;
   --breakpoint-1359: 1359px;

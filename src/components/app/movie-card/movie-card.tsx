@@ -125,6 +125,7 @@ export default function MovieCard({
             fill
             src={renderImageUrl(movie.posterUrl)}
             unoptimized
+            sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
           />
         </Link>
 

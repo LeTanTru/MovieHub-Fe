@@ -3,6 +3,15 @@ import { MovieItemResType } from '@/types/movie-item.type';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
+export type AuthorInfo = {
+  avatarPath: string;
+  email: string;
+  fullName: string;
+  id: string;
+  kind: number;
+  gender: number;
+};
+
 export type CommentResType = {
   authorId: string;
   authorInfo: string;

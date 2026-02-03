@@ -7,7 +7,6 @@ import { formatDate, renderImageUrl, sanitizeText } from '@/utils';
 import { Heart, X } from 'lucide-react';
 import { RiTelegram2Fill } from 'react-icons/ri';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '@/lib';
 import { FaArrowDown } from 'react-icons/fa6';
 import { useDisclosure, useMobile } from '@/hooks';
 import { usePersonQuery } from '@/queries';
@@ -56,16 +55,11 @@ export default function PersonSidebar({ id }: { id: string }) {
   ) : (
     <div className='border-r-transparent-white max-1120:w-full max-1120:border-none max-1120:pr-0 max-1600:w-85 w-110 shrink-0 border-r pr-10'>
       <AvatarField
-        className={cn('mx-auto mb-6 rounded-full border-none', {
-          'rounded-full': !person?.avatarPath
-        })}
-        previewClassName={cn({
-          rounded: person?.avatarPath
-        })}
         size={160}
         src={renderImageUrl(person?.avatarPath)}
+        alt={person?.otherName}
       />
-      <h2 className='mb-4 text-center text-2xl leading-1.5 font-semibold text-white'>
+      <h2 className='my-4 text-center text-2xl font-semibold text-white'>
         {person?.otherName}
       </h2>
       <p className='text-foreground/80 mb-4 text-center text-sm'>

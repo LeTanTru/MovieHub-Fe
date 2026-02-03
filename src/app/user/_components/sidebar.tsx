@@ -74,7 +74,7 @@ export default function Sidebar() {
 }
 
 const ProfileSection = ({ profile }: { profile: ProfileType }) => {
-  const GenderIcon = genderIconMaps[profile?.gender];
+  const GenderIcon = genderIconMaps[profile?.gender || GENDER_OTHER];
 
   return (
     <>
@@ -88,15 +88,13 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
 
       <div className='mt-5 flex items-center gap-x-1 text-sm'>
         <h1>{profile?.fullName}</h1>
-        {GenderIcon && (
-          <GenderIcon
-            className={cn('size-4.5', {
-              'stroke-cyan-500': profile?.gender === GENDER_MALE,
-              'stroke-pink-500': profile?.gender === GENDER_FEMALE,
-              'stroke-amber-400': profile?.gender === GENDER_OTHER
-            })}
-          />
-        )}
+        <GenderIcon
+          className={cn('size-4.5', {
+            'stroke-cyan-500': profile?.gender === GENDER_MALE,
+            'stroke-pink-500': profile?.gender === GENDER_FEMALE,
+            'stroke-amber-400': profile?.gender === GENDER_OTHER
+          })}
+        />
       </div>
       <p className='mt-0 text-xs text-slate-400'>{profile?.email}</p>
     </>
