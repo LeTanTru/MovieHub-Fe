@@ -57,5 +57,5 @@ export const REVIEW_RATING_WONDERFUL = 5;
 export const MOVIE_LIST_TAB_ALL = 'all';
 export const MOVIE_LIST_TAB_TIME = 'time';
 
-export const DISCUSTSTION_TAB_COMMENT = 'comment';
-export const DISCUSTSTION_TAB_REVIEW = 'review';
+export const DISCUSSION_TAB_COMMENT = 'comment';
+export const DISCUSSION_TAB_REVIEW = 'review';

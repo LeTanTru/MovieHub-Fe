@@ -6,10 +6,33 @@ import { BaseSearchType } from '@/types/search.type';
 import { VideoResType } from '@/types/video.type';
 import { z } from 'zod';
 
+type EpisodeResType = {
+  id: string;
+  title: string;
+  description: string;
+  kind: number;
+  label: string;
+  ordering: number;
+  parent: { id: string; kind: number; label: string };
+  video: {
+    id: string;
+    name: string;
+    sourceType: number;
+    content: string;
+    relativeContentPath: string;
+    spriteUrl: string;
+    vttUrl: string;
+    thumbnailUrl: string;
+    duration: number;
+  };
+  releaseDate: string;
+  thumbnailUrl: string;
+};
+
 export type SeasonResType = {
   createdDate: string;
   description: string;
-  episodes: any[];
+  episodes: EpisodeResType[];
   id: string;
   kind: number;
   label: string;

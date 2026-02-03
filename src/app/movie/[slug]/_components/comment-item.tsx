@@ -25,6 +25,8 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
   const kind = kindMaps[authorInfo.kind];
   const GenderIcon = genderIconMaps[gender];
 
+  const movieItem = comment.movieItem;
+
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
@@ -47,7 +49,7 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
             {kind && (
               <Badge
                 variant='outline'
-                className={cn(`border text-sm font-medium ${kind.style}`)}
+                className={cn('border text-sm font-medium', kind.style)}
               >
                 {kind.label}
               </Badge>
@@ -67,6 +69,14 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
           >
             {timeAgo(comment.createdDate)}
           </span>
+          {movieItem && (
+            <Badge
+              variant='outline'
+              className='border px-2 py-1 text-sm text-xs font-medium text-gray-400'
+            >
+              P. {movieItem.parent.label} - Tập {movieItem.label}
+            </Badge>
+          )}
         </div>
         <div className='text-gray-400'>{comment.content}</div>
         <div className='relative mt-2 flex items-center gap-4'>
@@ -116,14 +126,14 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
                 >
                   <div
                     className='flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
-                    onClick={() => setShowDropdown(false)}
+                    onClick={handleDropdownToggle}
                   >
                     <FaEye />
                     Thêm 1
                   </div>
                   <div
                     className='flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
-                    onClick={() => setShowDropdown(false)}
+                    onClick={handleDropdownToggle}
                   >
                     <FaFlag />
                     Thêm 2

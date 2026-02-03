@@ -19,6 +19,11 @@ export type MovieItemResType = {
   thumbnailUrl: string;
   title: string;
   video: VideoResType;
+  parent: {
+    id: string;
+    kind: number;
+    label: string;
+  };
 };
 
 export type MovieItemSearchType = z.infer<typeof movieItemSearchSchema> &

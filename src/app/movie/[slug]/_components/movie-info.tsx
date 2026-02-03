@@ -11,6 +11,8 @@ import {
   countries,
   DEFAULT_DATE_FORMAT,
   languages,
+  MOVIE_TYPE_SERIES,
+  MOVIE_TYPE_SINGLE,
   PERSON_ACTOR,
   PERSON_DIRECTOR
 } from '@/constants';
@@ -20,7 +22,6 @@ import {
   formatDate,
   formatDuration,
   generateSlug,
-  getYearFromDate,
   renderImageUrl,
   sanitizeText
 } from '@/utils';
@@ -30,6 +31,7 @@ import { useMemo } from 'react';
 import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
 import { AvatarField } from '@/components/form';
+import { Activity } from '@/components/activity';
 
 const ActorCell = ({ actor }: { actor: PersonResType }) => {
   return (
@@ -123,8 +125,15 @@ export default function MovieInfo() {
       </div>
       <TagWrapper className='mb-4'>
         {ageRating ? <TagAgeRating value={ageRating} /> : null}
-        <TagNormal value={getYearFromDate(movie.releaseDate)} />
-        {video && <TagNormal value={formatDuration(video.duration)} />}
+        <TagNormal value={movie.year} />
+        <Activity visible={movie.type === MOVIE_TYPE_SINGLE}>
+          <TagNormal value={`Phần ${movie.latestSeason}`} />
+          <TagNormal value={formatDuration(movie.duration)} />
+        </Activity>
+        <Activity visible={movie.type === MOVIE_TYPE_SERIES}>
+          <TagNormal value={`Phần ${movie.latestSeason}`} />
+          <TagNormal value={`Tập ${movie.latestEpisode}`} />
+        </Activity>
       </TagWrapper>
       <TagWrapper>
         {movie.categories.map((category) => (

@@ -97,7 +97,7 @@ export const TagCategoryLink = ({
   return (
     <Link
       href={href}
-      className='bg-transparent-white inline-flex h-6.5 items-center rounded px-0 px-2 text-xs text-white'
+      className='bg-transparent-white hover:text-light-golden-yellow transition-color inline-flex h-6.5 items-center rounded px-0 px-2 text-xs text-white duration-200 ease-linear'
     >
       {text}
     </Link>

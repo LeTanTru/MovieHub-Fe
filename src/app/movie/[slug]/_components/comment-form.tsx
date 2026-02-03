@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib';
+import { ButtonToggle } from '@/components/app/button-toggle';
 import { useState } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
 
@@ -27,26 +27,11 @@ export default function CommentForm() {
       </div>
       <div className='flex items-center gap-4'>
         <div className='flex items-center gap-2 select-none'>
-          <div
-            className={cn(
-              'relative h-5 w-7.5 shrink-0 cursor-pointer rounded-full border border-solid border-white opacity-30 transition-all duration-150 ease-linear',
-              {
-                'border-light-golden-yellow opacity-100': toggle
-              }
-            )}
-            onClick={handleToggle}
-          >
-            <div
-              className={cn(
-                'absolute top-1.25 h-2 w-2 rounded-full transition-all duration-150 ease-linear',
-                {
-                  'bg-light-golden-yellow left-3.75': toggle,
-                  'left-1.25 bg-white': !toggle
-                }
-              )}
-            ></div>
-          </div>
-          <div className='whitespace-nowrap text-white'>Tiết lộ?</div>
+          <ButtonToggle
+            toggle={toggle}
+            handleToggle={handleToggle}
+            text='Tiết lộ?'
+          />
         </div>
         <div className='grow'></div>
         <button

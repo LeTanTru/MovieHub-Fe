@@ -1,12 +1,11 @@
 import { MovieCard } from '@/components/app/movie-card';
 import { cn } from '@/lib';
 import { MovieResType } from '@/types';
-import { getYearFromDate } from '@/utils';
 import { AnimatePresence } from 'framer-motion';
 
 function groupByYear(list: MovieResType[]) {
   return list.reduce((acc: Record<string, MovieResType[]>, movie) => {
-    const year = getYearFromDate(movie.releaseDate);
+    const year = movie.year;
     if (!year) return acc;
     if (!acc[year]) acc[year] = [];
     acc[year].push(movie);
