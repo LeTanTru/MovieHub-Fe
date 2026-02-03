@@ -12,7 +12,11 @@ export default function ButtonToggle({
   text: string;
 }) {
   return (
-    <div className='flex items-center gap-x-2'>
+    <div
+      className='flex items-center gap-x-2'
+      role='switch'
+      aria-checked={toggle}
+    >
       <div
         className={cn(
           'relative h-5 w-7.5 shrink-0 cursor-pointer rounded-full border border-solid border-white opacity-30 transition-all duration-150 ease-linear',

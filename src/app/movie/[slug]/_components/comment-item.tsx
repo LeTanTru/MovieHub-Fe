@@ -72,7 +72,7 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
           {movieItem && (
             <Badge
               variant='outline'
-              className='border px-2 py-1 text-sm text-xs font-medium text-gray-400'
+              className='border px-2 py-1 text-xs font-medium text-gray-400'
             >
               P. {movieItem.parent.label} - Tập {movieItem.label}
             </Badge>

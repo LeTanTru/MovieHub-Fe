@@ -109,7 +109,7 @@ export default function Discussion() {
             >
               đăng nhập
             </Link>
-            &nbsp;để tham gia $
+            &nbsp;để tham gia
             {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
           </div>
         )}
