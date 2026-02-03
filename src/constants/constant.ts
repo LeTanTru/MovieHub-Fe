@@ -53,3 +53,9 @@ export const REVIEW_RATING_BORING = 2;
 export const REVIEW_RATING_OK = 3;
 export const REVIEW_RATING_GOOD = 4;
 export const REVIEW_RATING_WONDERFUL = 5;
+
+export const MOVIE_LIST_TAB_ALL = 'all';
+export const MOVIE_LIST_TAB_TIME = 'time';
+
+export const DISCUSTSTION_TAB_COMMENT = 'comment';
+export const DISCUSTSTION_TAB_REVIEW = 'review';

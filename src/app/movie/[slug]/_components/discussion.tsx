@@ -9,7 +9,13 @@ import { getIdFromSlug, renderImageUrl } from '@/utils';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import { DEFALT_PAGE_START, DEFAULT_PAGE_SIZE } from '@/constants';
+import {
+  DEFALT_PAGE_START,
+  DEFAULT_PAGE_SIZE,
+  discussionActions,
+  DISCUSTSTION_TAB_COMMENT,
+  DISCUSTSTION_TAB_REVIEW
+} from '@/constants';
 import { AvatarField } from '@/components/form';
 import CommentList from './comment-list';
 import CommentForm from './comment-form';
@@ -17,33 +23,28 @@ import ReviewList from './review-list';
 import { Activity } from '@/components/activity';
 
 export default function Discussion() {
-  const actions: { key: string; label: string }[] = [
-    { key: 'comment', label: 'Bình luận' },
-    { key: 'review', label: 'Đánh giá' }
-  ];
-
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
-  const [activeKey, setActiveKey] = useState<string>(actions[0].key);
+  const [activeKey, setActiveKey] = useState<string>(DISCUSTSTION_TAB_COMMENT);
   const { profile } = useAuthStore();
 
   const { data: commentListData } = useCommentListQuery({
     params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
-    enabled: !!id && activeKey === actions[0].key
+    enabled: !!id && activeKey === DISCUSTSTION_TAB_COMMENT
   });
 
   const { data: reviewListData } = useReviewListQuery({
     params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
-    enabled: !!id && activeKey === actions[1].key
+    enabled: !!id && activeKey === DISCUSTSTION_TAB_REVIEW
   });
 
   const commentList = commentListData?.data?.content || [];
   const reviewList = reviewListData?.data?.content || [];
 
   const totalMaps: Record<string, number> = {
-    [actions[0].key]: commentListData?.data?.totalElements || 0,
-    [actions[1].key]: reviewListData?.data?.totalElements || 0
+    [DISCUSTSTION_TAB_COMMENT]: commentListData?.data?.totalElements || 0,
+    [DISCUSTSTION_TAB_REVIEW]: reviewListData?.data?.totalElements || 0
   };
 
   return (
@@ -55,7 +56,10 @@ export default function Discussion() {
             <CommentDotIcon />
           </div>
           <span>
-            {actions.find((action) => action.key === activeKey)?.label}
+            {
+              discussionActions.find((action) => action.key === activeKey)
+                ?.label
+            }
             &nbsp;({totalMaps[activeKey]})
           </span>
         </div>
@@ -63,7 +67,7 @@ export default function Discussion() {
           className='relative flex shrink-0 items-center overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
           role='tablist'
         >
-          {actions.map((action) => (
+          {discussionActions.map((action) => (
             <ActionButton
               key={action.key}
               label={action.label}
@@ -100,14 +104,15 @@ export default function Discussion() {
             >
               đăng nhập
             </Link>
-            &nbsp;để tham gia bình luận.
+            &nbsp;để tham gia $
+            {activeKey === DISCUSTSTION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
           </div>
         )}
         <CommentForm />
-        <Activity visible={activeKey === actions[0].key}>
+        <Activity visible={activeKey === DISCUSTSTION_TAB_COMMENT}>
           <CommentList comments={commentList} />
         </Activity>
-        <Activity visible={activeKey === actions[1].key}>
+        <Activity visible={activeKey === DISCUSTSTION_TAB_REVIEW}>
           <ReviewList reviews={reviewList} />
         </Activity>
       </div>

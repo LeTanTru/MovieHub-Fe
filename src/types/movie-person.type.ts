@@ -7,7 +7,7 @@ import { z } from 'zod';
 export type MoviePersonResType = {
   characterName: string;
   createdDate: string;
-  id: string;
+  id: number;
   kind: number;
   modifiedDate: string;
   movie: MovieResType;
