@@ -46,16 +46,16 @@ export async function generateMetadata(
     : previousImages;
 
   return {
-    title: `Thông tin chi tiết phim ${res.data?.title} - ${res.data?.originalTitle}`,
+    title: `Phim ${res.data?.title} - ${res.data?.originalTitle}`,
     description: res.data?.description,
     openGraph: {
-      title: `Thông tin chi tiết phim ${res.data?.title} - ${res.data?.originalTitle}`,
+      title: `Phim ${res.data?.title} - ${res.data?.originalTitle}`,
       description: res.data?.description,
       images
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Thông tin chi tiết phim ${res.data?.title} - ${res.data?.originalTitle}`,
+      title: `Phim ${res.data?.title} - ${res.data?.originalTitle}`,
       description: res.data?.description,
       images
     },

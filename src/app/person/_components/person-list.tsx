@@ -35,7 +35,7 @@ export default function PersonList() {
           <PersonListSkeleton />
         ) : (
           personList.map((person) => (
-            <PersonCard person={person} key={person.id} />
+            <PersonCard person={person} key={person.id} willNavigate />
           ))
         )}
       </div>

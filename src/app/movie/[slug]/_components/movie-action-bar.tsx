@@ -1,6 +1,6 @@
 'use client';
 
-import { MessageIcon } from '@/assets/icons';
+import { MessageIcon } from '@/assets';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Button, ToolTip } from '@/components/form';
 import { route } from '@/routes';

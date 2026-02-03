@@ -39,3 +39,17 @@ export const INITIAL_AUTO_COMPLETE_SIZE = 10;
 
 export const DEFALT_PAGE_START = 0;
 export const DEFAULT_PAGE_SIZE = 24;
+
+export const UPLOAD_AVATAR = 'AVATAR';
+
+export const KIND_ADMIN = 1;
+export const KIND_MANAGER = 2;
+export const KIND_EMPLOYEE = 3;
+export const KIND_USER = 10;
+export const KIND_USER_VIP = 11;
+
+export const REVIEW_RATING_BAD = 1;
+export const REVIEW_RATING_BORING = 2;
+export const REVIEW_RATING_OK = 3;
+export const REVIEW_RATING_GOOD = 4;
+export const REVIEW_RATING_WONDERFUL = 5;

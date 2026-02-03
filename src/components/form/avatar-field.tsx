@@ -4,22 +4,24 @@ import { cn } from '@/lib/utils';
 import { EyeIcon } from 'lucide-react';
 import Image from 'next/image';
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { AiOutlineUser } from 'react-icons/ai';
 import {
   type HTMLAttributes,
   type MouseEvent,
-  type ReactNode,
   useCallback,
   useEffect,
   useRef,
   useState
 } from 'react';
+import { defaultAvatar } from '@/assets';
+import { useImageStatus } from '@/hooks';
+import { createPortal } from 'react-dom';
 
 type AvatarFieldProps = {
   size?: number;
-  icon?: ReactNode;
   src?: string;
+  fallbackSrc?: string;
   className?: string;
   previewClassName?: string;
   imagePreviewClassName?: string;
@@ -27,7 +29,6 @@ type AvatarFieldProps = {
   previewSize?: number;
   width?: number;
   height?: number;
-  aspect?: number;
   previewAspect?: number;
   alt?: string;
   zoomOnScroll?: boolean;
@@ -37,15 +38,14 @@ type AvatarFieldProps = {
 export default function AvatarField({
   size = 48,
   previewSize = 200,
-  icon,
   src,
+  fallbackSrc,
   className,
   previewClassName,
   imagePreviewClassName,
   disablePreview = false,
   width,
   height,
-  aspect = 1,
   previewAspect = 1,
   showHoverIcon = true,
   zoomOnScroll = true,
@@ -55,10 +55,14 @@ export default function AvatarField({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
 
+  const { isError: imageError } = useImageStatus(src);
+
   const previewRef = useRef<HTMLDivElement | null>(null);
 
+  const shouldDisablePreview = disablePreview || !src || imageError;
+
   const handleClick = (e: MouseEvent) => {
-    if (disablePreview || !src) return;
+    if (shouldDisablePreview) return;
     e.preventDefault();
     e.stopPropagation();
     setIsModalOpen(true);
@@ -94,102 +98,109 @@ export default function AvatarField({
         {...props}
         onClick={props?.onClick ?? handleClick}
         className={cn(
-          'relative flex cursor-pointer items-center justify-center overflow-hidden rounded-full shadow-sm',
+          'relative mx-auto',
+          { 'cursor-pointer': !shouldDisablePreview },
           className
         )}
         style={{ width: width || size, height: height || size }}
       >
-        {src ? (
-          <AspectRatio ratio={aspect} className='h-full w-full'>
-            {aspect ? (
+        <Avatar
+          className={cn('h-full w-full shadow-sm', {
+            'transition-all duration-200 ease-linear hover:scale-105 hover:opacity-90':
+              !shouldDisablePreview
+          })}
+        >
+          <AvatarImage
+            src={src}
+            alt={alt ?? 'Avatar'}
+            className='object-cover'
+          />
+          <AvatarFallback className='bg-muted'>
+            {fallbackSrc || defaultAvatar ? (
               <Image
-                src={src}
-                alt={alt ?? 'Avatar'}
-                fill
-                className='object-cover'
-                unoptimized
-              />
-            ) : (
-              <Image
-                src={src}
-                alt={alt ?? 'Avatar'}
-                width={width}
-                height={height}
+                src={fallbackSrc || defaultAvatar}
+                alt={alt || 'Avatar'}
+                width={width || size}
+                height={height || size}
                 className='h-full w-full object-cover'
                 unoptimized
               />
+            ) : (
+              <AiOutlineUser className='h-1/2 w-1/2' />
             )}
-          </AspectRatio>
-        ) : (
-          icon || <AiOutlineUser className='h-1/2 w-1/2 opacity-40' />
-        )}
-        {src && showHoverIcon && !disablePreview && (
-          <div className='absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 transition-all duration-200 ease-linear hover:opacity-100'>
+          </AvatarFallback>
+        </Avatar>
+
+        {!shouldDisablePreview && showHoverIcon && (
+          <div className='absolute inset-0 flex items-center justify-center rounded-full bg-black/30 opacity-0 transition-all duration-200 ease-linear hover:opacity-100'>
             <EyeIcon className='h-6 w-6 text-white' />
           </div>
         )}
       </div>
 
-      <LazyMotion features={domAnimation} strict>
-        <AnimatePresence>
-          {isModalOpen && (
-            <m.div
-              className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={(e) => {
-                e.stopPropagation();
-                setScale(1);
-                setIsModalOpen(false);
-              }}
-            >
+      {createPortal(
+        <LazyMotion features={domAnimation} strict>
+          <AnimatePresence>
+            {isModalOpen && !shouldDisablePreview && (
               <m.div
-                ref={previewRef}
-                className={cn(
-                  'relative cursor-zoom-in rounded',
-                  previewClassName
-                )}
-                style={{
-                  width: previewSize * previewAspect,
-                  height: previewSize
+                className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setScale(1);
+                  setIsModalOpen(false);
                 }}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                transition={{ duration: 0.25 }}
-                onClick={(e) => e.stopPropagation()}
               >
-                {src && (
-                  <div
-                    className='relative'
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      overflow: 'visible'
-                    }}
-                  >
-                    <Image
-                      src={src}
-                      alt='Preview'
-                      fill
-                      className={cn(
-                        'rounded-full object-cover transition-transform duration-100',
-                        imagePreviewClassName
-                      )}
+                <m.div
+                  ref={previewRef}
+                  className={cn(
+                    'relative cursor-zoom-in rounded',
+                    previewClassName
+                  )}
+                  style={{
+                    width: previewSize * previewAspect,
+                    height: previewSize
+                  }}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.8, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {src && (
+                    <div
+                      className='relative'
                       style={{
-                        transform: `scale(${scale})`,
-                        transformOrigin: 'center center'
+                        width: '100%',
+                        height: '100%',
+                        overflow: 'visible'
                       }}
-                      unoptimized
-                    />
-                  </div>
-                )}
+                    >
+                      <Image
+                        src={src}
+                        alt='Preview'
+                        fill
+                        className={cn(
+                          'rounded-full object-cover transition-transform duration-100',
+                          imagePreviewClassName
+                        )}
+                        style={{
+                          transform: `scale(${scale})`,
+                          transformOrigin: 'center center'
+                        }}
+                        unoptimized
+                      />
+                    </div>
+                  )}
+                </m.div>
               </m.div>
-            </m.div>
-          )}
-        </AnimatePresence>
-      </LazyMotion>
+            )}
+          </AnimatePresence>
+        </LazyMotion>,
+        document.body
+      )}
     </>
   );
 }

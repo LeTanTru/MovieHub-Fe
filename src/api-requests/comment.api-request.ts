@@ -4,7 +4,7 @@ import { http } from '@/utils';
 
 const commentApiRequest = {
   getList: ({ params }: { params?: CommentSearchType }) =>
-    http.get<ApiResponseList<CommentResType>>(apiConfig.review.getList, {
+    http.get<ApiResponseList<CommentResType>>(apiConfig.comment.getList, {
       params
     })
 };

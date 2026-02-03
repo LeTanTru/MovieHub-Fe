@@ -1,18 +1,18 @@
-import { commentApiRequest } from '@/api-requests';
+import { reviewApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { CommentSearchType } from '@/types';
+import { ReviewSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useReviewListQuery = ({
   params,
   enabled
 }: {
-  params?: CommentSearchType;
+  params?: ReviewSearchType;
   enabled?: boolean;
 } = {}) => {
   return useQuery({
-    queryKey: [`${queryKeys.COMMENT}-list`, params],
-    queryFn: () => commentApiRequest.getList({ params }),
+    queryKey: [`${queryKeys.REVIEW}-list`, params],
+    queryFn: () => reviewApiRequest.getList({ params }),
     enabled
   });
 };
