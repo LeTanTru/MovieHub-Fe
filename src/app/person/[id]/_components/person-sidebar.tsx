@@ -58,6 +58,7 @@ export default function PersonSidebar({ id }: { id: string }) {
         size={160}
         src={renderImageUrl(person?.avatarPath)}
         alt={person?.otherName}
+        className='mx-auto'
       />
       <h2 className='my-4 text-center text-2xl font-semibold text-white'>
         {person?.otherName}

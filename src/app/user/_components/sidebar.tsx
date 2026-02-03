@@ -19,6 +19,8 @@ import { Separator } from '@/components/ui/separator';
 import { route } from '@/routes';
 import { renderImageUrl } from '@/utils';
 import { List, ListItem } from '@/components/list';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { defaultAvatar } from '@/assets';
 
 export default function Sidebar() {
   const path = usePathname();
@@ -74,29 +76,37 @@ export default function Sidebar() {
 }
 
 const ProfileSection = ({ profile }: { profile: ProfileType }) => {
-  const GenderIcon = genderIconMaps[profile?.gender || GENDER_OTHER];
+  const GenderIcon = genderIconMaps[profile.gender || GENDER_OTHER];
 
   return (
     <>
       {profile?.avatarPath ? (
-        <AvatarField src={renderImageUrl(profile.avatarPath)} size={60} />
+        <Avatar className='h-15 w-15'>
+          <AvatarImage
+            src={renderImageUrl(profile.avatarPath)}
+            alt={profile.fullName}
+          />
+          <AvatarFallback>
+            <AvatarImage src={defaultAvatar.src} />
+          </AvatarFallback>
+        </Avatar>
       ) : (
         <div className='bg-muted flex h-15 w-15 items-center justify-center rounded-full text-3xl'>
-          {profile?.fullName?.charAt(0) ?? 'U'}
+          {profile.fullName.charAt(0) ?? 'U'}
         </div>
       )}
 
       <div className='mt-5 flex items-center gap-x-1 text-sm'>
-        <h1>{profile?.fullName}</h1>
+        <h1>{profile.fullName}</h1>
         <GenderIcon
-          className={cn('size-4.5', {
-            'stroke-cyan-500': profile?.gender === GENDER_MALE,
-            'stroke-pink-500': profile?.gender === GENDER_FEMALE,
-            'stroke-amber-400': profile?.gender === GENDER_OTHER
+          className={cn('ml-1 size-4.5', {
+            'text-cyan-500': profile.gender === GENDER_MALE,
+            'text-pink-500': profile.gender === GENDER_FEMALE,
+            'text-amber-400': profile.gender === GENDER_OTHER
           })}
         />
       </div>
-      <p className='mt-0 text-xs text-slate-400'>{profile?.email}</p>
+      <p className='mt-0 text-xs text-slate-400'>{profile.email}</p>
     </>
   );
 };

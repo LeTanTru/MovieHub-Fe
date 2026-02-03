@@ -1,6 +1,6 @@
 'use client';
 
-import { AvatarField, Button } from '@/components/form';
+import { Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
 import { dropdownAvatarList, dropdownAvatarMotion } from '@/constants';
 import { ProfileType } from '@/types';
@@ -11,6 +11,8 @@ import ButtonLogout from '@/components/button-logout';
 import { renderImageUrl } from '@/utils';
 import { List, ListItem } from '@/components/list';
 import { useDisclosure } from '@/hooks';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { defaultAvatar } from '@/assets';
 
 type DropdownAvatarProps = {
   profile?: ProfileType | null;
@@ -33,12 +35,15 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
         className='size-full rounded-full px-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
       >
         {profile?.avatarPath ? (
-          <AvatarField
-            disablePreview
-            src={renderImageUrl(profile.avatarPath)}
-            className='border-none'
-            size={40}
-          />
+          <Avatar className='h-11 w-11'>
+            <AvatarImage
+              src={renderImageUrl(profile.avatarPath)}
+              alt={profile.fullName}
+            />
+            <AvatarFallback>
+              <AvatarImage src={defaultAvatar.src} />
+            </AvatarFallback>
+          </Avatar>
         ) : (
           <div className='bg-muted flex size-10 items-center justify-center rounded-full text-xl'>
             {profile?.fullName?.charAt(0) ?? 'U'}
