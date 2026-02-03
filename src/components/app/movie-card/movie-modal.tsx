@@ -8,7 +8,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MovieResType } from '@/types';
 import Link from 'next/link';
-import { formatDuration, getYearFromDate, renderImageUrl } from '@/utils';
+import { formatDuration, renderImageUrl } from '@/utils';
 import {
   TagAgeRating,
   TagCategory,
@@ -99,7 +99,7 @@ export default function MovieModal({
                 />
                 <TagNormal
                   className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                  value={getYearFromDate(movie.releaseDate)}
+                  value={movie.year}
                 />
                 <Activity visible={movie.type === MOVIE_TYPE_SINGLE}>
                   <TagNormal

@@ -61,8 +61,9 @@ export default function MovieActionBar() {
         <div className='relative flex flex-col items-end gap-2 text-white'>
           <div className='bg-review-background flex cursor-pointer items-center rounded-[48px] px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'>
             <div className='h-6 w-6 bg-[url(/logo.png)] bg-cover bg-position-[50%]'></div>
-            <span className='mr-2 ml-1 text-base font-bold'>
-              {movie.averageRating}
+            <span className='mr-2 ml-1 font-bold'>
+              {Math.round(movie.averageRating * 100) / 100}
+              &nbsp;({movie.reviewCount})
             </span>
             <span className='text-xs underline'>Đánh giá</span>
           </div>

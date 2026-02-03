@@ -13,8 +13,8 @@ import {
   DEFALT_PAGE_START,
   DEFAULT_PAGE_SIZE,
   discussionActions,
-  DISCUSTSTION_TAB_COMMENT,
-  DISCUSTSTION_TAB_REVIEW
+  DISCUSSION_TAB_COMMENT,
+  DISCUSSION_TAB_REVIEW
 } from '@/constants';
 import { AvatarField } from '@/components/form';
 import CommentList from './comment-list';
@@ -26,25 +26,25 @@ export default function Discussion() {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
-  const [activeKey, setActiveKey] = useState<string>(DISCUSTSTION_TAB_COMMENT);
+  const [activeKey, setActiveKey] = useState<string>(DISCUSSION_TAB_COMMENT);
   const { profile } = useAuthStore();
 
   const { data: commentListData } = useCommentListQuery({
     params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
-    enabled: !!id && activeKey === DISCUSTSTION_TAB_COMMENT
+    enabled: !!id && activeKey === DISCUSSION_TAB_COMMENT
   });
 
   const { data: reviewListData } = useReviewListQuery({
     params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
-    enabled: !!id && activeKey === DISCUSTSTION_TAB_REVIEW
+    enabled: !!id && activeKey === DISCUSSION_TAB_REVIEW
   });
 
   const commentList = commentListData?.data?.content || [];
   const reviewList = reviewListData?.data?.content || [];
 
   const totalMaps: Record<string, number> = {
-    [DISCUSTSTION_TAB_COMMENT]: commentListData?.data?.totalElements || 0,
-    [DISCUSTSTION_TAB_REVIEW]: reviewListData?.data?.totalElements || 0
+    [DISCUSSION_TAB_COMMENT]: commentListData?.data?.totalElements || 0,
+    [DISCUSSION_TAB_REVIEW]: reviewListData?.data?.totalElements || 0
   };
 
   return (
@@ -89,7 +89,12 @@ export default function Discussion() {
               className='mx-0'
             />
             <div className='flex flex-col justify-between gap-1'>
-              <small className='text-gray-400'>Bình luận với tên</small>
+              <small className='text-gray-400'>
+                {activeKey === DISCUSSION_TAB_COMMENT
+                  ? 'Bình luận'
+                  : 'Đánh giá'}
+                &nbsp;với tên
+              </small>
               <span className='text font-medium text-white'>
                 {profile?.fullName}
               </span>
@@ -105,14 +110,14 @@ export default function Discussion() {
               đăng nhập
             </Link>
             &nbsp;để tham gia $
-            {activeKey === DISCUSTSTION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
+            {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
           </div>
         )}
         <CommentForm />
-        <Activity visible={activeKey === DISCUSTSTION_TAB_COMMENT}>
+        <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
           <CommentList comments={commentList} />
         </Activity>
-        <Activity visible={activeKey === DISCUSTSTION_TAB_REVIEW}>
+        <Activity visible={activeKey === DISCUSSION_TAB_REVIEW}>
           <ReviewList reviews={reviewList} />
         </Activity>
       </div>

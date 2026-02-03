@@ -14,8 +14,8 @@ import {
   BREAKPOINT_DESKTOP,
   BREAKPOINT_MOBILE,
   BREAKPOINT_TABLET,
-  DISCUSTSTION_TAB_COMMENT,
-  DISCUSTSTION_TAB_REVIEW,
+  DISCUSSION_TAB_COMMENT,
+  DISCUSSION_TAB_REVIEW,
   GENDER_FEMALE,
   GENDER_MALE,
   GENDER_OTHER,
@@ -1513,8 +1513,8 @@ export const reviewRatings: Record<
 };
 
 export const discussionActions: { key: string; label: string }[] = [
-  { key: DISCUSTSTION_TAB_COMMENT, label: 'Bình luận' },
-  { key: DISCUSTSTION_TAB_REVIEW, label: 'Đánh giá' }
+  { key: DISCUSSION_TAB_COMMENT, label: 'Bình luận' },
+  { key: DISCUSSION_TAB_REVIEW, label: 'Đánh giá' }
 ];
 
 export const movieListActions: { key: string; label: string }[] = [
