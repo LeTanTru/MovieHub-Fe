@@ -30,8 +30,9 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
-import { AvatarField } from '@/components/form';
 import { Activity } from '@/components/activity';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { defaultAvatar } from '@/assets';
 
 const ActorCell = ({ actor }: { actor: PersonResType }) => {
   return (
@@ -40,12 +41,15 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
         href={`${route.person.path}/${actor.id}`}
         className='bg-main-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
       >
-        <AvatarField
-          src={renderImageUrl(actor.avatarPath)}
-          size={80}
-          alt={actor.otherName}
-          showHoverIcon={false}
-        />
+        <Avatar className='h-full w-full transition-all duration-200 ease-linear hover:scale-105'>
+          <AvatarImage
+            src={renderImageUrl(actor.avatarPath)}
+            alt={actor.otherName}
+          />
+          <AvatarFallback>
+            <AvatarImage src={defaultAvatar.src} />
+          </AvatarFallback>
+        </Avatar>
       </Link>
       <Link
         href={`${route.person.path}/${actor.id}`}

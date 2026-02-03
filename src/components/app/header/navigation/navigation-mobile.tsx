@@ -111,6 +111,7 @@ export default function NavigationMobile({
                     <AvatarField
                       src={renderImageUrl(profile.avatarPath)}
                       size={40}
+                      className='mx-0'
                     />
                   </div>
                   <List className='grid grid-cols-2 gap-2 pt-2'>

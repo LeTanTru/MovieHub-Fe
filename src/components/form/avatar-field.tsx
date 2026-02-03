@@ -101,7 +101,7 @@ export default function AvatarField({
         {...props}
         onClick={props?.onClick ?? handleClick}
         className={cn(
-          'relative mx-auto',
+          'relative',
           { 'cursor-pointer': !shouldDisablePreview },
           className
         )}

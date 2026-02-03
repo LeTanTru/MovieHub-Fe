@@ -84,9 +84,8 @@ export default function Discussion() {
           <div className='mb-4 flex items-center gap-4'>
             <AvatarField
               src={renderImageUrl(profile?.avatarPath)}
-              size={44}
+              size={50}
               alt={profile?.fullName}
-              className='mx-0'
             />
             <div className='flex flex-col justify-between gap-1'>
               <small className='text-gray-400'>
