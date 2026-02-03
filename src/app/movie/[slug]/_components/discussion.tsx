@@ -14,6 +14,7 @@ import { AvatarField } from '@/components/form';
 import CommentList from './comment-list';
 import CommentForm from './comment-form';
 import ReviewList from './review-list';
+import { Activity } from '@/components/activity';
 
 export default function Discussion() {
   const actions: { key: string; label: string }[] = [
@@ -24,7 +25,7 @@ export default function Discussion() {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
-  const [activeKey, setActiveKey] = useState<string>(actions[1].key);
+  const [activeKey, setActiveKey] = useState<string>(actions[0].key);
   const { profile } = useAuthStore();
 
   const { data: commentListData } = useCommentListQuery({
@@ -103,8 +104,12 @@ export default function Discussion() {
           </div>
         )}
         <CommentForm />
-        {/* <CommentList comments={commentList} /> */}
-        <ReviewList reviews={reviewList} />
+        <Activity visible={activeKey === actions[0].key}>
+          <CommentList comments={commentList} />
+        </Activity>
+        <Activity visible={activeKey === actions[1].key}>
+          <ReviewList reviews={reviewList} />
+        </Activity>
       </div>
     </div>
   );
