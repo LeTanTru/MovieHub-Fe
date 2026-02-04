@@ -100,7 +100,7 @@ export default function Discussion() {
             </div>
           </div>
         ) : (
-          <div className='mb-4 text-xs text-gray-400'>
+          <div className='mb-4 text-gray-400'>
             Vui lòng&nbsp;
             <Link
               className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
@@ -108,7 +108,7 @@ export default function Discussion() {
             >
               đăng nhập
             </Link>
-            &nbsp;để tham gia
+            &nbsp;để tham gia&nbsp;
             {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
           </div>
         )}

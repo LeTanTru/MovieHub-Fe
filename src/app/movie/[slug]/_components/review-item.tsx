@@ -17,8 +17,8 @@ import { cn } from '@/lib';
 import { ReviewResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import Image from 'next/image';
-import { useState } from 'react';
+import Image, { StaticImageData } from 'next/image';
+import { useMemo, useState } from 'react';
 import { FaEllipsis, FaEye, FaFlag, FaReply } from 'react-icons/fa6';
 
 export default function ReviewItem({ review }: { review: ReviewResType }) {
@@ -28,7 +28,21 @@ export default function ReviewItem({ review }: { review: ReviewResType }) {
   const rate = review.rate;
 
   const GenderIcon = genderIconMaps[gender];
-  const ratingInfo = reviewRatings[rate];
+
+  const reviewRatingMaps: Record<
+    number,
+    { label: string; icon: StaticImageData }
+  > = useMemo(() => {
+    return reviewRatings.reduce(
+      (acc, curr) => {
+        acc[curr.value as number] = { label: curr.label, icon: curr.icon };
+        return acc;
+      },
+      {} as Record<number, { label: string; icon: StaticImageData }>
+    );
+  }, []);
+
+  const ratingInfo = reviewRatingMaps[rate];
 
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>

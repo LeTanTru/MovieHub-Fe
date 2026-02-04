@@ -28,3 +28,19 @@ export const formatNumber = (input: unknown, decimal = 2): string => {
 
   return fixed;
 };
+
+export const formatRating = (rating: number | string): string => {
+  const num = typeof rating === 'string' ? parseFloat(rating) : rating;
+
+  const rounded = Math.round(num * 100) / 100;
+
+  let result = rounded.toFixed(2);
+
+  if (result.endsWith('00')) {
+    result = rounded.toFixed(1);
+  } else if (result.endsWith('0')) {
+    result = result.slice(0, -1);
+  }
+
+  return result;
+};

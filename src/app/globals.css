@@ -58,12 +58,14 @@
   --color-review-background: #3556b6;
   --color-auth-form: #1d293d;
   --color-actor-name: #f0adb1;
-  --color-episode-background: #5e6070;
-  --color-comment-form-background: #ffffff10;
+  --color-episode: #5e6070;
+  --color-comment-form: #ffffff10;
   --color-avatar-background: #282b3a;
   --color-dislike-comment: #d33d25;
-  --color-episode-background1: #282b3a;
-  --color-episode-background2: #2f3346;
+  --color-episode-1: #282b3a;
+  --color-episode-2: #2f3346;
+  --color-review-modal: #2a314e;
+  --color-rating-active: #3556b6;
 
   --breakpoint-1120: 1120px;
   --breakpoint-1359: 1359px;
