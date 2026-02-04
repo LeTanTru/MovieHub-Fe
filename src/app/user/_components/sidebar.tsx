@@ -7,7 +7,6 @@ import {
   genderIconMaps,
   userSidebarList
 } from '@/constants';
-import { AvatarField } from '@/components/form';
 import { cn } from '@/lib';
 import { ProfileType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -87,7 +86,7 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
             alt={profile.fullName}
           />
           <AvatarFallback>
-            <AvatarImage src={defaultAvatar.src} />
+            <AvatarImage src={defaultAvatar.src} alt={profile.fullName} />
           </AvatarFallback>
         </Avatar>
       ) : (

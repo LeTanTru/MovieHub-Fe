@@ -38,7 +38,7 @@ export default function CommentForm() {
     <div className='bg-comment-form flex flex-col gap-2 rounded-[12px] p-2'>
       <div className='relative'>
         <textarea
-          className='block h-auto min-h-8.75 w-full resize-none rounded-md border border-solid border-transparent bg-[#191B24] px-5 py-4 leading-normal font-normal text-white'
+          className='bg-comment-input block h-auto min-h-8.75 w-full resize-none rounded-md border border-solid border-transparent px-5 py-4 leading-normal font-normal text-white'
           rows={4}
           cols={3}
           placeholder='Viết bình luận'

@@ -84,11 +84,11 @@ export default function MovieActionBar() {
             </Button>
           </div>
           {/* Right */}
-          <div
-            className='relative flex flex-col items-end gap-2 text-white'
-            onClick={handleOpenReviewModal}
-          >
-            <div className='bg-review-background flex cursor-pointer items-center rounded-[48px] px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'>
+          <div className='relative flex flex-col items-end gap-2 text-white'>
+            <div
+              className='bg-review flex cursor-pointer items-center rounded-[48px] px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'
+              onClick={handleOpenReviewModal}
+            >
               <div className='h-6 w-6 bg-[url(/logo.webp)] bg-cover bg-position-[50%]'></div>
               <span className='mr-2 ml-1 font-bold'>
                 {formatRating(movie?.averageRating || 0)}

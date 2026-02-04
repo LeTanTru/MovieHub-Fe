@@ -53,19 +53,20 @@
   --color-main-background: rgb(21, 20, 32);
   --color-navigation: rgba(21, 20, 32, 0.9);
   --color-navigation-mobile: rgb(15, 23, 43);
-  --color-auth-background: #1a1f32;
+  --color-auth: #1a1f32;
   --color-watch-now: #191b24;
-  --color-review-background: #3556b6;
+  --color-review: #3556b6;
   --color-auth-form: #1d293d;
   --color-actor-name: #f0adb1;
   --color-episode: #5e6070;
   --color-comment-form: #ffffff10;
-  --color-avatar-background: #282b3a;
+  --color-avatar: #282b3a;
   --color-dislike-comment: #d33d25;
   --color-episode-1: #282b3a;
   --color-episode-2: #2f3346;
   --color-review-modal: #2a314e;
   --color-rating-active: #3556b6;
+  --color-comment-input: #191b24;
 
   --breakpoint-1120: 1120px;
   --breakpoint-1359: 1359px;

@@ -28,8 +28,9 @@ export default function ReviewModal({
     <Modal
       open={opened}
       onClose={onClose}
-      contentClassName='dark:bg-review-modal h-auto min-h-auto max-w-160'
+      contentClassName='dark:bg-review-modal h-auto max-w-160'
       titleClassName='border-none'
+      closeOnBackdropClick
     >
       <div className='p-8 pt-0'>
         <div className='mb-2 text-center text-xl leading-normal font-semibold text-white'>

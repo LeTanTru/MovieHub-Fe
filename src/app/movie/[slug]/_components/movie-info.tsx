@@ -47,7 +47,7 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
             alt={actor.otherName}
           />
           <AvatarFallback>
-            <AvatarImage src={defaultAvatar.src} />
+            <AvatarImage src={defaultAvatar.src} alt={actor.otherName} />
           </AvatarFallback>
         </Avatar>
       </Link>

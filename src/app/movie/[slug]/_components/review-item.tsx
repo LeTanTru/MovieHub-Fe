@@ -71,7 +71,7 @@ export default function ReviewItem({ review }: { review: ReviewResType }) {
                 {kind.label}
               </Badge>
             )}
-            <div className='bg-review-background flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 text-white'>
+            <div className='bg-review flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 text-white'>
               <Image
                 src={ratingInfo.icon}
                 alt={ratingInfo.label}
