@@ -7,12 +7,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { cn } from '@/lib';
 import { List, ListItem } from '@/components/list';
+import { usePathname } from 'next/navigation';
 
 export default function NavigationDesktop({
   navigationList
 }: {
   navigationList: ItemProps[];
 }) {
+  const pathname = usePathname();
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
@@ -99,7 +101,14 @@ export default function NavigationDesktop({
               key={item.label}
               className='p-2 text-sm whitespace-nowrap text-gray-400 transition-all duration-200 ease-linear hover:text-white'
             >
-              <Link href={item.href!}>{item.label}</Link>
+              <Link
+                href={item.href!}
+                className={cn({
+                  'text-white': pathname === item.href
+                })}
+              >
+                {item.label}
+              </Link>
             </ListItem>
           )
         )}

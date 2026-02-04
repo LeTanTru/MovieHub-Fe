@@ -22,6 +22,8 @@ export type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
     animate: Record<string, any>;
     exit: Record<string, any>;
   };
+  contentClassName?: string;
+  titleClassName?: string;
 };
 
 export default function Modal({
@@ -43,6 +45,8 @@ export default function Modal({
     exit: { y: -100, opacity: 0, scale: 0.95 }
   },
   width,
+  contentClassName,
+  titleClassName,
   ...rest
 }: ModalProps) {
   const isMounted = useIsMounted();
@@ -103,7 +107,10 @@ export default function Modal({
           )}
 
           <motion.div
-            className='content relative h-[80vh] rounded-lg bg-white shadow-[0px_0px_10px_2px] shadow-black/40'
+            className={cn(
+              'content relative h-[80vh] min-h-[80vh] rounded-lg bg-white shadow-[0px_0px_10px_2px] shadow-black/40',
+              contentClassName
+            )}
             initial={variants.initial}
             animate={variants.animate}
             exit={variants.exit}
@@ -112,16 +119,21 @@ export default function Modal({
             style={{ width: width ?? 'auto' }}
           >
             {(title || showClose) && (
-              <div className='flex items-center justify-between border-b border-gray-200 px-4'>
+              <div
+                className={cn(
+                  'flex items-center justify-between border-b border-gray-200 px-4',
+                  titleClassName
+                )}
+              >
                 <div className='text-base font-semibold text-gray-800'>
                   {title}
                 </div>
 
                 {showClose && (
                   <Button
-                    className='p-0! text-gray-500 transition hover:text-black'
+                    className='p-0! text-gray-500 transition hover:text-black dark:hover:bg-transparent'
                     onClick={onClose}
-                    variant={'ghost'}
+                    variant='ghost'
                   >
                     <X className='size-5' />
                   </Button>

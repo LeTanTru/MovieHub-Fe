@@ -1501,16 +1501,15 @@ export const kindMaps: Record<number, { label: string; style: string }> = {
   }
 };
 
-export const reviewRatings: Record<
-  number,
-  { label: string; icon: StaticImageData }
-> = {
-  [REVIEW_RATING_BAD]: { label: 'Dở tệ', icon: ratingBad },
-  [REVIEW_RATING_BORING]: { label: 'Phim chán', icon: ratingBoring },
-  [REVIEW_RATING_OK]: { label: 'Phim ổn', icon: ratingOk },
-  [REVIEW_RATING_GOOD]: { label: 'Phim hay', icon: ratingGood },
-  [REVIEW_RATING_WONDERFUL]: { label: 'Tuyệt vời', icon: ratingWonderful }
-};
+export const reviewRatings: (Pick<OptionType, 'value' | 'label'> & {
+  icon: StaticImageData;
+})[] = [
+  { value: REVIEW_RATING_BAD, label: 'Dở tệ', icon: ratingBad },
+  { value: REVIEW_RATING_BORING, label: 'Phim chán', icon: ratingBoring },
+  { value: REVIEW_RATING_OK, label: 'Phim ổn', icon: ratingOk },
+  { value: REVIEW_RATING_GOOD, label: 'Phim hay', icon: ratingGood },
+  { value: REVIEW_RATING_WONDERFUL, label: 'Tuyệt vời', icon: ratingWonderful }
+];
 
 export const discussionActions: { key: string; label: string }[] = [
   { key: DISCUSSION_TAB_COMMENT, label: 'Bình luận' },

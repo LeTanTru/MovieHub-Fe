@@ -65,7 +65,7 @@ const MovieTabEpisodeSingle = ({
             <Link
               href={`${route.watch.path}/${movie?.slug}.${movie?.id}`}
               key={movieItem.id}
-              className='bg-episode-background relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1'
+              className='bg-episode relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1'
             >
               <div className='absolute top-0 right-0 bottom-0 w-2/5 max-w-32.5 mask-[linear-gradient(270deg,black_0,transparent_95%)]'>
                 <Image
@@ -236,14 +236,14 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
             <Link
               href={`${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`}
               className={cn('block', {
-                'bg-episode-background1 flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
+                'bg-episode-1 flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
                   toggle
               })}
             >
               <motion.div
                 layout
                 className={cn(
-                  'bg-episode-background2 group relative mb-2.5 block w-full overflow-hidden rounded-md',
+                  'bg-episode-2 group relative mb-2.5 block w-full overflow-hidden rounded-md',
                   {
                     'h-0 pb-[66%]': !toggle,
                     hidden: toggle
