@@ -34,13 +34,13 @@ export const formatRating = (rating: number | string): string => {
 
   const rounded = Math.round(num * 100) / 100;
 
-  let result = rounded.toFixed(2);
-
-  if (result.endsWith('00')) {
-    result = rounded.toFixed(1);
-  } else if (result.endsWith('0')) {
-    result = result.slice(0, -1);
+  const fixed = rounded.toFixed(2);
+  const [intPart, decimalPart] = fixed.split('.');
+  if (decimalPart === '00') {
+    return rounded.toFixed(1);
   }
-
-  return result;
+  if (decimalPart[1] === '0') {
+    return `${intPart}.${decimalPart[0]}`;
+  }
+  return fixed;
 };
