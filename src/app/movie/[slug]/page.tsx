@@ -1,7 +1,6 @@
 import {
   commentApiRequest,
   movieApiRequest,
-  movieItemApiRequest,
   moviePersonApiRequest
 } from '@/api-requests';
 import reviewApiRequest from '@/api-requests/review.api-request';
@@ -12,12 +11,10 @@ import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
   DEFAULT_TABLE_PAGE_START,
-  movieItemKinds,
   queryKeys
 } from '@/constants';
 import {
   CommentSearchType,
-  MovieItemSearchType,
   MoviePersonSearchType,
   ReviewSearchType
 } from '@/types';
@@ -77,11 +74,6 @@ export default async function MoviePage({
     movieId: id
   };
 
-  const movieItemFilters: MovieItemSearchType = {
-    movieId: id,
-    kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
-  };
-
   const commentFilters: CommentSearchType = {
     movieId: id,
     page: DEFAULT_TABLE_PAGE_START,
@@ -104,11 +96,6 @@ export default async function MoviePage({
   await queryClient.prefetchQuery({
     queryKey: [`${queryKeys.MOVIE_PERSON}-list`, moviePersonFilters],
     queryFn: () => moviePersonApiRequest.getList({ params: moviePersonFilters })
-  });
-
-  await queryClient.prefetchQuery({
-    queryKey: [`${queryKeys.MOVIE_ITEM}-list`, movieItemFilters],
-    queryFn: () => movieItemApiRequest.getList({ params: movieItemFilters })
   });
 
   await queryClient.prefetchQuery({

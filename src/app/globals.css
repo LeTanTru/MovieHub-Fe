@@ -225,6 +225,11 @@
   }
 }
 
+.vds-video-layout.dark .vds-kb-action {
+  opacity: 0 !important;
+  display: none !important;
+}
+
 @keyframes skeleton {
   0% {
     background-position-x: 150%;

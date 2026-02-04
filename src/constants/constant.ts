@@ -4,8 +4,8 @@ export const GENDER_MALE = 1;
 export const GENDER_FEMALE = 2;
 export const GENDER_OTHER = 3;
 
-export const PERSON_ACTOR = 1;
-export const PERSON_DIRECTOR = 2;
+export const PERSON_KIND_ACTOR = 1;
+export const PERSON_KIND_DIRECTOR = 2;
 
 export const BREAKPOINT_MOBILE = 0;
 export const BREAKPOINT_TABLET = 768;
@@ -59,3 +59,12 @@ export const MOVIE_LIST_TAB_TIME = 'time';
 
 export const DISCUSSION_TAB_COMMENT = 'comment';
 export const DISCUSSION_TAB_REVIEW = 'review';
+
+export const MOVIE_TAB_TRAILER = 'trailer';
+export const MOVIE_TAB_EPISODE = 'episode';
+export const MOVIE_TAB_ACTOR = 'actor';
+export const MOVIE_TAB_DIRECTOR = 'director';
+export const MOVIE_TAB_SUGGESTION = 'suggestion';
+
+export const VIDEO_SOURCE_TYPE_INTERNAL = 1;
+export const VIDEO_SOURCE_TYPE_EXTERNAL = 2;

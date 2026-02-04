@@ -13,8 +13,8 @@ import {
   languages,
   MOVIE_TYPE_SERIES,
   MOVIE_TYPE_SINGLE,
-  PERSON_ACTOR,
-  PERSON_DIRECTOR
+  PERSON_KIND_ACTOR,
+  PERSON_KIND_DIRECTOR
 } from '@/constants';
 import { route } from '@/routes';
 import { PersonResType } from '@/types';
@@ -33,6 +33,7 @@ import { useMovieStore } from '@/store';
 import { Activity } from '@/components/activity';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { defaultAvatar } from '@/assets';
+import { useShallow } from 'zustand/shallow';
 
 const ActorCell = ({ actor }: { actor: PersonResType }) => {
   return (
@@ -63,45 +64,83 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
 };
 
 export default function MovieInfo() {
-  const { movie, movieItems, moviePersons } = useMovieStore();
-
-  const movieItem = movieItems[0];
-  const actors = useMemo(
-    () =>
-      moviePersons
-        .filter((moviePerson) => moviePerson.kind === PERSON_ACTOR)
-        .map((moviePerson) => moviePerson.person),
-    [moviePersons]
+  const { movie, moviePersons, selectedSeason } = useMovieStore(
+    useShallow((s) => ({
+      movie: s.movie,
+      moviePersons: s.moviePersons,
+      selectedSeason: s.selectedSeason
+    }))
   );
+
+  const ageRating = useMemo(() => {
+    return ageRatings.find((age) => movie?.ageRating === age.value)?.label;
+  }, [movie?.ageRating]);
+
+  const categories = useMemo(() => {
+    return movie?.categories || [];
+  }, [movie?.categories]);
+
+  const countryName = useMemo(() => {
+    return (
+      countries.find((country) => country.value === movie?.country)?.label ||
+      'Đang cập nhật'
+    );
+  }, [movie?.country]);
+
+  const languageName = useMemo(() => {
+    return (
+      languages.find((language) => language.value === movie?.language)?.label ||
+      'Đang cập nhật'
+    );
+  }, [movie?.language]);
 
   const directors = useMemo(
     () =>
       moviePersons
-        .filter((moviePerson) => moviePerson.kind === PERSON_DIRECTOR)
+        .filter((moviePerson) => moviePerson.kind === PERSON_KIND_DIRECTOR)
         .map((moviePerson) => moviePerson.person),
     [moviePersons]
   );
 
-  const video = movieItem?.video;
-
-  const ageRating = ageRatings.find(
-    (age) => movie?.ageRating === age.value
-  )?.label;
-
-  const countryName =
-    countries.find((country) => country.value === movie?.country)?.label ||
-    'Đang cập nhật';
-
-  const languageName =
-    languages.find((language) => language.value === movie?.language)?.label ||
-    'Đang cập nhật';
-
-  const sanitizedDescription = useMemo(
-    () => sanitizeText(movie?.description || 'Đang cập nhật'),
-    [movie?.description]
+  const actors = useMemo(
+    () =>
+      moviePersons
+        .filter((moviePerson) => moviePerson.kind === PERSON_KIND_ACTOR)
+        .map((moviePerson) => moviePerson.person),
+    [moviePersons]
   );
 
-  if (!movie || !movieItems || !moviePersons) return null;
+  // For series movie
+  const latestSeason = selectedSeason || movie?.latestSeason;
+
+  const currentSeason = useMemo(() => {
+    return movie?.seasons?.find(
+      (season) => season.ordering + 1 === latestSeason
+    );
+  }, [latestSeason, movie?.seasons]);
+
+  const episodes = useMemo(() => {
+    return currentSeason?.episodes;
+  }, [currentSeason?.episodes]);
+
+  const latestEpisode = episodes ? episodes.length : movie?.latestEpisode;
+
+  const latestEpisodeVideo = episodes?.[episodes.length - 1]?.video;
+  // For series movie
+
+  const duration = movie?.duration || latestEpisodeVideo?.duration;
+
+  const sanitizedDescription = useMemo(
+    () =>
+      sanitizeText(
+        currentSeason?.description || movie?.description || 'Đang cập nhật'
+      ),
+    [currentSeason?.description, movie?.description]
+  );
+
+  const releaseDate = currentSeason?.releaseDate || movie?.releaseDate;
+
+  if (!movie || !moviePersons) return null;
 
   return (
     <div className='bg-main-background/60 flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
@@ -122,25 +161,26 @@ export default function MovieInfo() {
           'featured-title': movie.isFeatured
         })}
       >
-        {movie.title}
+        {movie.title} {selectedSeason > 1 ? selectedSeason : ''}
       </h2>
       <div className='text-light-golden-yellow mb-6 text-sm font-normal'>
-        {movie.originalTitle}
+        {movie.originalTitle} {selectedSeason > 1 ? selectedSeason : ''}
       </div>
       <TagWrapper className='mb-4'>
         {ageRating ? <TagAgeRating value={ageRating} /> : null}
         <TagNormal value={movie.year} />
+        {/* Single movie */}
         <Activity visible={movie.type === MOVIE_TYPE_SINGLE}>
-          <TagNormal value={`Phần ${movie.latestSeason}`} />
           <TagNormal value={formatDuration(movie.duration)} />
         </Activity>
+        {/* Series movie */}
         <Activity visible={movie.type === MOVIE_TYPE_SERIES}>
-          <TagNormal value={`Phần ${movie.latestSeason}`} />
-          <TagNormal value={`Tập ${movie.latestEpisode}`} />
+          <TagNormal value={`Phần ${latestSeason}`} />
+          <TagNormal value={`Tập ${latestEpisode}`} />
         </Activity>
       </TagWrapper>
       <TagWrapper>
-        {movie.categories.map((category) => (
+        {categories.map((category) => (
           <TagCategoryLink
             key={category.id}
             href={`${route.category.path}/${category.slug}.${category.id}`}
@@ -160,7 +200,7 @@ export default function MovieInfo() {
           Ngày phát hành:
         </div>
         <div className='text-foreground/80 font-light'>
-          {formatDate(movie.releaseDate, DEFAULT_DATE_FORMAT)}
+          {formatDate(releaseDate, DEFAULT_DATE_FORMAT)}
         </div>
       </div>
       <div className='mb-5 flex items-end gap-2 text-sm'>
@@ -168,7 +208,7 @@ export default function MovieInfo() {
           Thời lượng:
         </div>
         <div className='text-foreground/80 font-light'>
-          {video && formatDuration(video.duration)}
+          {duration ? formatDuration(duration) : 'Đang cập nhật'}
         </div>
       </div>
       <div className='mb-5 flex items-end gap-2 text-sm'>

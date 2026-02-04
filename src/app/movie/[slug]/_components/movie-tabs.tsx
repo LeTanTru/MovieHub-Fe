@@ -1,16 +1,28 @@
 'use client';
 
+import TrailerModal from './trailer-modal';
 import { caption } from '@/assets';
 import { ButtonToggle } from '@/components/app/button-toggle';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { PersonCard } from '@/components/app/person-card';
-import { MOVIE_TYPE_SINGLE, PERSON_ACTOR, PERSON_DIRECTOR } from '@/constants';
-import { useClickOutside } from '@/hooks';
+import {
+  MOVIE_TAB_ACTOR,
+  MOVIE_TAB_DIRECTOR,
+  MOVIE_TAB_EPISODE,
+  MOVIE_TAB_SUGGESTION,
+  MOVIE_TAB_TRAILER,
+  MOVIE_TYPE_SINGLE,
+  movieTabPersonTitles,
+  movieTabs,
+  PERSON_KIND_ACTOR,
+  PERSON_KIND_DIRECTOR
+} from '@/constants';
+import { useClickOutside, useDisclosure } from '@/hooks';
 import { cn } from '@/lib';
 import { useSuggestionMovieListQuery } from '@/queries';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { MovieItemResType, MovieResType } from '@/types';
+import { MovieResType } from '@/types';
 import { getIdFromSlug, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
@@ -25,6 +37,7 @@ import {
   ReactNode
 } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
+import { useShallow } from 'zustand/shallow';
 
 const MotionWrapper = ({
   children,
@@ -49,30 +62,127 @@ const MotionWrapper = ({
   );
 };
 
-const MovieTabEpisodeSingle = ({
-  movie,
-  movieItems
-}: {
-  movie: MovieResType;
-  movieItems: MovieItemResType[];
-}) => {
+const MovieTabTrailer = ({ direction }: { direction: number }) => {
+  const [toggle, setToggle] = useState(true);
+  const { opened, open, close } = useDisclosure();
+
+  const movie = useMovieStore((s) => s.movie);
+  const selectedSeason = useMovieStore((s) => s.selectedSeason);
+
+  const currentSeason = movie?.seasons?.find(
+    (season) => season.ordering + 1 === selectedSeason
+  );
+
+  const trailer = currentSeason?.trailer;
+
+  const handleToggle = () => {
+    setToggle((prev) => !prev);
+  };
+
+  const handlePlayTrailer = () => {
+    open();
+  };
+
+  const handleCloseTrailer = () => {
+    close();
+  };
+
+  if (!movie || !trailer) return null;
+
   return (
-    <div className='space-y-4'>
+    <>
+      <MotionWrapper uniqueKey={MOVIE_TAB_TRAILER} direction={direction}>
+        <div className='mb-8 flex items-center justify-between gap-8'>
+          <h3 className='text-lg leading-normal font-semibold text-white'>
+            Trailer phim {movie.title}
+          </h3>
+          <div className='grow'></div>
+          <ButtonToggle
+            toggle={toggle}
+            handleToggle={handleToggle}
+            text='Rút gọn'
+          />
+        </div>
+
+        <div
+          className={cn('grid', {
+            'grid-cols-6 gap-x-2.5 gap-y-8': !toggle,
+            'grid-cols-8 gap-2': toggle
+          })}
+        >
+          <motion.div
+            layout
+            transition={{
+              layout: { duration: 0.15, ease: 'linear' }
+            }}
+            className='cursor-pointer'
+            onClick={handlePlayTrailer}
+          >
+            <div
+              className={cn('block', {
+                'bg-episode-1 flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
+                  toggle
+              })}
+            >
+              <div
+                className={cn(
+                  'bg-episode-2 group relative mb-2.5 block w-full overflow-hidden rounded-md',
+                  {
+                    'h-0 pb-[66%]': !toggle,
+                    hidden: toggle
+                  }
+                )}
+              >
+                <div className='group-hover:text-light-golden-yellow border-light-golden-yellow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[3rem] border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
+                  <FaPlay />
+                </div>
+                <Image
+                  src={renderImageUrl(trailer.thumbnailUrl)}
+                  className='aspect-video h-full w-full border-none object-cover'
+                  alt={trailer.title}
+                  fill
+                  sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                  unoptimized
+                />
+                <div className='absolute inset-0 bg-[rgba(0,0,0,0.3)] transition-colors duration-200 ease-linear group-hover:bg-[rgba(0,0,0,0.5)]'></div>
+              </div>
+              <div className='hover:text-light-golden-yellow transition-color flex items-center gap-2.5 text-sm font-medium text-white duration-200 ease-linear'>
+                <div className='block shrink-0 text-xs'>
+                  <FaPlay />
+                </div>
+                <div className='line-clamp-1 block truncate'>Trailer</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </MotionWrapper>
+      <TrailerModal
+        opened={opened}
+        onClose={handleCloseTrailer}
+        video={trailer.video}
+      />
+    </>
+  );
+};
+
+const MovieTabEpisodeSingle = ({ movie }: { movie: MovieResType }) => {
+  return (
+    <>
       <h3 className='mb-8 text-2xl font-semibold text-white'>Các bản chiếu</h3>
-      {movieItems && movieItems.length > 0 ? (
+      {movie && movie.seasons && movie.seasons.length > 0 ? (
         <div className='grid grid-cols-3 gap-4'>
-          {movieItems.map((movieItem) => (
+          {movie.seasons.map((season) => (
             <Link
-              href={`${route.watch.path}/${movie?.slug}.${movie?.id}`}
-              key={movieItem.id}
+              href={`${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`}
+              key={season.id}
               className='bg-episode relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1'
             >
               <div className='absolute top-0 right-0 bottom-0 w-2/5 max-w-32.5 mask-[linear-gradient(270deg,black_0,transparent_95%)]'>
                 <Image
-                  src={renderImageUrl(movie?.thumbnailUrl)}
+                  src={renderImageUrl(season?.thumbnailUrl)}
                   alt={`${movie?.title} - ${movie?.originalTitle}`}
                   fill
-                  className='object-cover'
+                  className='aspect-video h-full w-full object-cover'
                   sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
                 />
               </div>
@@ -86,7 +196,7 @@ const MovieTabEpisodeSingle = ({
                   <span>Phụ đề</span>
                 </div>
                 <div className='text-base leading-normal font-semibold'>
-                  {movie?.title}
+                  {season?.title}
                 </div>
                 <div className='inline-flex min-h-7.5 w-fit items-center justify-center rounded-sm bg-white px-3 py-2 text-xs font-medium text-black transition-all duration-200 ease-linear hover:opacity-80'>
                   Xem bản này
@@ -98,7 +208,7 @@ const MovieTabEpisodeSingle = ({
       ) : (
         <p className='text-gray-400'>Chưa có tập phim nào</p>
       )}
-    </div>
+    </>
   );
 };
 
@@ -107,8 +217,26 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
 
   const [toggle, setToggle] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedSeason, setSelectedSeason] = useState<number>(0);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const { selectedSeason, setSelectedSeason } = useMovieStore(
+    useShallow((s) => ({
+      selectedSeason: s.selectedSeason,
+      setSelectedSeason: s.setSelectedSeason
+    }))
+  );
+
+  const seasons = movie.seasons;
+  const seasonCount = seasons.length;
+
+  const currentSeason = useMemo(() => {
+    return seasons.find((season) => season.ordering + 1 === selectedSeason);
+  }, [seasons, selectedSeason]);
+
+  const episodes = useMemo(() => {
+    return currentSeason?.episodes || [];
+  }, [currentSeason]);
+
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
   );
@@ -128,30 +256,17 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
     }, ANIMATION_DURATION);
   };
 
-  const seasons = movie.seasons;
-  const seasonCount = seasons.length;
+  const handleSelectSeason = (index: number) => {
+    // Plus one because index is zero-based
+    setSelectedSeason(index + 1);
+    setShowDropdown(false);
+  };
 
   useEffect(() => {
     if (movie.latestSeason) {
       setSelectedSeason(+movie.latestSeason);
     }
-  }, [movie.latestSeason]);
-
-  const handleSelectSeason = (
-    e: React.MouseEvent<HTMLDivElement>,
-    index: number
-  ) => {
-    setSelectedSeason(index + 1);
-    setShowDropdown(false);
-  };
-
-  const currentSeason = useMemo(() => {
-    return seasons.find((season) => season.ordering + 1 === selectedSeason);
-  }, [seasons, selectedSeason]);
-
-  const episodes = useMemo(() => {
-    return currentSeason?.episodes || [];
-  }, [currentSeason]);
+  }, [movie.latestSeason, setSelectedSeason]);
 
   return (
     <>
@@ -163,7 +278,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
             onClick={handleDropdownToggle}
           >
             <FaBarsStaggered className='text-light-golden-yellow' />
-            Phần {seasonCount}
+            Phần {selectedSeason}
             <FaCaretDown />
           </div>
           {showDropdown && (
@@ -196,7 +311,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
                       'bg-light-golden-yellow': index + 1 === selectedSeason
                     }
                   )}
-                  onClick={(e) => handleSelectSeason(e, index)}
+                  onClick={() => handleSelectSeason(index)}
                 >
                   Phần {index + 1}
                 </div>
@@ -219,18 +334,15 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
           'grid-cols-8 gap-2': toggle
         })}
         transition={{
-          layout: { duration: 0.2, ease: 'linear' }
+          layout: { duration: 0.15, ease: 'linear' }
         }}
       >
         {episodes.map((episode, index) => (
           <motion.div
             key={episode.id}
             layout
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
             transition={{
-              layout: { duration: 0.2, ease: 'linear' }
+              layout: { duration: 0.15, ease: 'linear' }
             }}
           >
             <Link
@@ -250,7 +362,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
                   }
                 )}
                 transition={{
-                  duration: 0.2,
+                  duration: 0.15,
                   ease: 'linear'
                 }}
               >
@@ -259,7 +371,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
                 </div>
                 <Image
                   src={renderImageUrl(episode.thumbnailUrl)}
-                  className='h-full w-full border-none'
+                  className='aspect-video h-full w-full border-none object-cover'
                   alt={episode.title}
                   fill
                   sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
@@ -282,7 +394,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
 };
 
 const MovieTabEpisode = ({ direction }: { direction: number }) => {
-  const { movie, movieItems } = useMovieStore();
+  const movie = useMovieStore((s) => s.movie);
 
   const Tab = movie
     ? movie.type === MOVIE_TYPE_SINGLE
@@ -293,8 +405,8 @@ const MovieTabEpisode = ({ direction }: { direction: number }) => {
   if (!movie) return null;
 
   return (
-    <MotionWrapper uniqueKey='episode' direction={direction}>
-      {Tab && <Tab movie={movie} movieItems={movieItems} />}
+    <MotionWrapper uniqueKey={MOVIE_TAB_EPISODE} direction={direction}>
+      {Tab && <Tab movie={movie} />}
     </MotionWrapper>
   );
 };
@@ -306,21 +418,23 @@ const MovieTabPerson = ({
   kind: number;
   direction: number;
 }) => {
-  const { moviePersons } = useMovieStore();
+  const moviePersons = useMovieStore((s) => s.moviePersons);
 
-  const personList = moviePersons
-    .filter((moviePerson) => moviePerson.kind === kind)
-    .map((moviePerson) => moviePerson.person);
+  const personList = useMemo(() => {
+    return moviePersons
+      .filter((moviePerson) => moviePerson.kind === kind)
+      .map((moviePerson) => moviePerson.person);
+  }, [kind, moviePersons]);
 
-  const titleMaps: Record<number, string> = {
-    [PERSON_ACTOR]: 'Diễn viên',
-    [PERSON_DIRECTOR]: 'Đạo diễn'
-  };
-
-  const title = titleMaps[kind];
+  const title = movieTabPersonTitles[kind];
 
   return (
-    <MotionWrapper uniqueKey={`person-${kind}`} direction={direction}>
+    <MotionWrapper
+      uniqueKey={
+        kind === PERSON_KIND_ACTOR ? MOVIE_TAB_ACTOR : MOVIE_TAB_DIRECTOR
+      }
+      direction={direction}
+    >
       <h3 className='mb-8 text-lg leading-normal font-semibold text-white'>
         {title}
       </h3>
@@ -339,7 +453,7 @@ const MovieTabPerson = ({
               person={person}
               key={`tab-item-actor-${person.id}`}
               showFullName
-              willNavigate={kind === PERSON_ACTOR}
+              willNavigate={kind === PERSON_KIND_ACTOR}
             />
           ))
         )}
@@ -362,7 +476,7 @@ const MovieTabSuggestion = ({ direction }: { direction: number }) => {
   const suggestionMovieList = suggestionMovieListData?.data || [];
 
   return (
-    <MotionWrapper uniqueKey='suggestion' direction={direction}>
+    <MotionWrapper uniqueKey={MOVIE_TAB_SUGGESTION} direction={direction}>
       <h3 className='mb-8 text-lg font-semibold'>
         {suggestionMovieList.length === 0 ? 'Đề xuất' : 'Có thể bạn sẽ thích'}
       </h3>
@@ -378,30 +492,8 @@ const MovieTabSuggestion = ({ direction }: { direction: number }) => {
 };
 
 export default function MovieTabs() {
-  const movieTabs = useMemo(
-    () => [
-      {
-        key: 'episode',
-        label: 'Tập phim'
-      },
-      {
-        key: 'actor',
-        label: 'Diễn viên'
-      },
-      {
-        key: 'director',
-        label: 'Đạo diễn'
-      },
-      {
-        key: 'suggestion',
-        label: 'Đề xuất'
-      }
-    ],
-    []
-  );
-
-  const [activeKey, setActiveKey] = useState<string>(movieTabs[0].key);
-  const [direction, setDirection] = useState<number>(1);
+  const [activeKey, setActiveKey] = useState<string>(MOVIE_TAB_EPISODE);
+  const [direction, setDirection] = useState<number>(0);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
   const tabRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -429,18 +521,24 @@ export default function MovieTabs() {
       setDirection(newIndex > currentIndex ? 1 : -1);
       setActiveKey(key);
     },
-    [activeKey, movieTabs]
+    [activeKey]
   );
 
   const activeTabContent = useMemo(() => {
     switch (activeKey) {
-      case 'episode':
+      case MOVIE_TAB_EPISODE:
         return <MovieTabEpisode direction={direction} />;
-      case 'actor':
-        return <MovieTabPerson kind={PERSON_ACTOR} direction={direction} />;
-      case 'director':
-        return <MovieTabPerson kind={PERSON_DIRECTOR} direction={direction} />;
-      case 'suggestion':
+      case MOVIE_TAB_TRAILER:
+        return <MovieTabTrailer direction={direction} />;
+      case MOVIE_TAB_ACTOR:
+        return (
+          <MovieTabPerson kind={PERSON_KIND_ACTOR} direction={direction} />
+        );
+      case MOVIE_TAB_DIRECTOR:
+        return (
+          <MovieTabPerson kind={PERSON_KIND_DIRECTOR} direction={direction} />
+        );
+      case MOVIE_TAB_SUGGESTION:
         return <MovieTabSuggestion direction={direction} />;
       default:
         return null;

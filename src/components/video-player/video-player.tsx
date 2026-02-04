@@ -8,6 +8,7 @@ import {
   FullscreenToggleButton,
   NextButton,
   PiPToggleButton,
+  PlayPauseIndicator,
   PlayToggleButton,
   PreviousButton,
   SeekBackwardButton,
@@ -108,13 +109,10 @@ export default function VideoPlayer({
       fullscreenOrientation={'none'}
       onProviderChange={auth ? onProviderChange : undefined}
       volume={0.5}
-      className='rounded! border-none!'
+      className='relative h-full rounded! border-none!'
       onTimeUpdate={handleTimeChange}
     >
-      <MediaProvider
-        slot='media'
-        className='h-[calc(100%+5px)]! cursor-pointer'
-      >
+      <MediaProvider slot='media' className='cursor-pointer'>
         <Poster className='vds-poster' src={thumbnailUrl} />
         {textTracks?.map((track) => (
           <Track {...(track as any)} key={track.src} />
@@ -161,6 +159,7 @@ export default function VideoPlayer({
               vttUrl={vttUrl}
             />
           ),
+          centerControlsGroupCenter: <PlayPauseIndicator />,
           ...slots
         }}
       />

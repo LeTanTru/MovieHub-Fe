@@ -27,8 +27,15 @@ import {
   MOVIE_ITEM_KIND_TRAILER,
   MOVIE_LIST_TAB_ALL,
   MOVIE_LIST_TAB_TIME,
+  MOVIE_TAB_ACTOR,
+  MOVIE_TAB_DIRECTOR,
+  MOVIE_TAB_EPISODE,
+  MOVIE_TAB_SUGGESTION,
+  MOVIE_TAB_TRAILER,
   MOVIE_TYPE_SERIES,
   MOVIE_TYPE_SINGLE,
+  PERSON_KIND_ACTOR,
+  PERSON_KIND_DIRECTOR,
   REVIEW_RATING_BAD,
   REVIEW_RATING_BORING,
   REVIEW_RATING_GOOD,
@@ -1519,4 +1526,32 @@ export const discussionActions: { key: string; label: string }[] = [
 export const movieListActions: { key: string; label: string }[] = [
   { key: MOVIE_LIST_TAB_ALL, label: 'Tất cả' },
   { key: MOVIE_LIST_TAB_TIME, label: 'Thời gian' }
+];
+
+export const movieTabPersonTitles: Record<number, string> = {
+  [PERSON_KIND_ACTOR]: 'Diễn viên',
+  [PERSON_KIND_DIRECTOR]: 'Đạo diễn'
+};
+
+export const movieTabs = [
+  {
+    key: MOVIE_TAB_EPISODE,
+    label: 'Tập phim'
+  },
+  {
+    key: MOVIE_TAB_TRAILER,
+    label: 'Trailer'
+  },
+  {
+    key: MOVIE_TAB_ACTOR,
+    label: 'Diễn viên'
+  },
+  {
+    key: MOVIE_TAB_DIRECTOR,
+    label: 'Đạo diễn'
+  },
+  {
+    key: MOVIE_TAB_SUGGESTION,
+    label: 'Đề xuất'
+  }
 ];

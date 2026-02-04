@@ -3,7 +3,7 @@
 import Pagination from '@/components/pagination';
 import { usePersonListQuery } from '@/queries';
 import { cn } from '@/lib';
-import { DEFAULT_PAGE_SIZE, PERSON_ACTOR } from '@/constants';
+import { DEFAULT_PAGE_SIZE, PERSON_KIND_ACTOR } from '@/constants';
 import { PersonResType } from '@/types';
 import { Activity } from '@/components/activity';
 import PersonListSkeleton from './person-list-skeleton';
@@ -20,7 +20,7 @@ export default function PersonList() {
       params: {
         page: page ? Number(page) - 1 : 0,
         size: DEFAULT_PAGE_SIZE,
-        kind: PERSON_ACTOR
+        kind: PERSON_KIND_ACTOR
       },
       enabled: true
     });

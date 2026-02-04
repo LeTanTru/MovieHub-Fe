@@ -23,7 +23,7 @@ import { defaultAvatar } from '@/assets';
 
 export default function Sidebar() {
   const path = usePathname();
-  const { profile } = useAuthStore();
+  const profile = useAuthStore((s) => s.profile);
 
   return (
     <div className='bg-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 w-75 shrink-0 rounded-lg p-10 pb-6'>

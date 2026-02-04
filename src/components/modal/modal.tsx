@@ -16,14 +16,15 @@ export type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   closeOnBackdropClick?: boolean;
   title?: string | ReactNode;
   showClose?: boolean;
-  width?: number;
   variants?: {
     initial: Record<string, any>;
     animate: Record<string, any>;
     exit: Record<string, any>;
   };
-  contentClassName?: string;
-  titleClassName?: string;
+  headerClassName?: string;
+  bodyClassName?: string;
+  bodyRef?: React.RefObject<HTMLDivElement | null>;
+  bodyStyle?: React.CSSProperties;
 };
 
 export default function Modal({
@@ -44,9 +45,10 @@ export default function Modal({
     animate: { y: 0, opacity: 1, scale: 1 },
     exit: { y: -100, opacity: 0, scale: 0.95 }
   },
-  width,
-  contentClassName,
-  titleClassName,
+  headerClassName,
+  bodyClassName,
+  bodyRef,
+  bodyStyle,
   ...rest
 }: ModalProps) {
   const isMounted = useIsMounted();
@@ -107,25 +109,23 @@ export default function Modal({
           )}
 
           <motion.div
-            className={cn(
-              'content relative h-[80vh] min-h-[80vh] rounded-lg bg-white shadow-[0px_0px_10px_2px] shadow-black/40',
-              contentClassName
-            )}
+            className={
+              'body-wrapper relative h-[80vh] min-h-[80vh] w-300 rounded-lg bg-white shadow-[0px_0px_10px_2px] shadow-black/40'
+            }
             initial={variants.initial}
             animate={variants.animate}
             exit={variants.exit}
             transition={{ duration: 0.15, ease: 'linear' }}
             onClick={(e) => e.stopPropagation()}
-            style={{ width: width ?? 'auto' }}
           >
             {(title || showClose) && (
               <div
                 className={cn(
-                  'flex items-center justify-between border-b border-gray-200 px-4',
-                  titleClassName
+                  'flex items-center justify-between border-b border-gray-200 px-4 dark:border-none',
+                  headerClassName
                 )}
               >
-                <div className='text-base font-semibold text-gray-800'>
+                <div className='text-base font-semibold text-gray-800 dark:text-white'>
                   {title}
                 </div>
 
@@ -141,10 +141,14 @@ export default function Modal({
               </div>
             )}
 
-            <div className='relative h-full'>
+            <div ref={bodyRef} className='body relative h-full'>
               <div
                 ref={scrollRef}
-                className='scrollbar-none h-full overflow-auto rounded-br-lg rounded-bl-lg'
+                className={cn(
+                  'scrollbar-none h-full overflow-auto rounded-br-lg rounded-bl-lg',
+                  bodyClassName
+                )}
+                style={bodyStyle}
               >
                 {children}
               </div>

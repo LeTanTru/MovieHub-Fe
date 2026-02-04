@@ -32,7 +32,7 @@ import { useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
 export default function ProfileForm() {
-  const { profile } = useAuthStore();
+  const profile = useAuthStore((s) => s.profile);
   const { mutateAsync: uploadImageMutate, isPending: uploadImageLoading } =
     useUploadImageMutation();
   const { mutateAsync: updateProfileMutate, isPending: updateProfileLoading } =
