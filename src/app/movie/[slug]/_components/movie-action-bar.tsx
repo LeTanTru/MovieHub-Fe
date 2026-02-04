@@ -13,7 +13,7 @@ import { FaTelegramPlane } from 'react-icons/fa';
 import { FaHeart, FaPlus } from 'react-icons/fa6';
 
 export default function MovieActionBar() {
-  const { movie } = useMovieStore();
+  const movie = useMovieStore((s) => s.movie);
   const { opened, open, close } = useDisclosure();
   const profile = useAuthStore((s) => s.profile);
 

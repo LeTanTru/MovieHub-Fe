@@ -1,32 +1,25 @@
 'use client';
 
 import './movie.css';
-import {
-  useMovieItemListQuery,
-  useMoviePersonListQuery,
-  useMovieQuery
-} from '@/queries';
+import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useEffect, useMemo } from 'react';
-import { MovieItemResType, MoviePersonResType, MovieResType } from '@/types';
+import { MoviePersonResType, MovieResType } from '@/types';
 import { renderImageUrl } from '@/utils';
-import { movieItemKinds } from '@/constants';
 import { useMovieStore } from '@/store';
 import MovieContent from './movie-content';
 import MovieInfo from './movie-info';
 import MovieSkeleton from './movie-skeleton';
+import { useShallow } from 'zustand/shallow';
 
 export default function Movie({ id }: { id: string }) {
-  const { setMovie, setMovieItems, setMoviePersons } = useMovieStore();
+  const { setMovie, setMoviePersons } = useMovieStore(
+    useShallow((s) => ({
+      setMovie: s.setMovie,
+      setMoviePersons: s.setMoviePersons
+    }))
+  );
   const { data: movieData, isLoading: movieLoading } = useMovieQuery({ id });
   const movie: MovieResType | undefined = movieData?.data;
-
-  const { data: movieItemResData } = useMovieItemListQuery({
-    params: {
-      movieId: id,
-      kind: movieItemKinds.MOVIE_ITEM_KIND_SEASON
-    },
-    enabled: !!movie
-  });
 
   const { data: moviePersonData } = useMoviePersonListQuery({
     params: {
@@ -35,10 +28,6 @@ export default function Movie({ id }: { id: string }) {
     enabled: !!movie
   });
 
-  const movieItems: MovieItemResType[] = useMemo(
-    () => movieItemResData?.data?.content || [],
-    [movieItemResData?.data?.content]
-  );
   const moviePersons: MoviePersonResType[] = useMemo(
     () => moviePersonData?.data?.content || [],
     [moviePersonData?.data?.content]
@@ -57,16 +46,8 @@ export default function Movie({ id }: { id: string }) {
 
   useEffect(() => {
     setMovie(movie);
-    setMovieItems(movieItems);
     setMoviePersons(moviePersons);
-  }, [
-    movie,
-    movieItems,
-    moviePersons,
-    setMovie,
-    setMovieItems,
-    setMoviePersons
-  ]);
+  }, [movie, moviePersons, setMovie, setMoviePersons]);
 
   if (movieLoading || !movie) return <MovieSkeleton />;
 

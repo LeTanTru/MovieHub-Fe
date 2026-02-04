@@ -9,7 +9,7 @@ import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { useCollectionQuery } from '@/queries';
 import { useCollectionItemListQuery } from '@/queries/collection-item.query';
-import { CollectionItemResType } from '@/types';
+import { CollectionItemResType, MovieResType } from '@/types';
 import Pagination from '@/components/pagination';
 
 export default function MovieList({ collectionId }: { collectionId: string }) {
@@ -54,7 +54,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
       ) : movieList.length === 0 ? (
         <NoData />
       ) : (
-        <MovieGrid movieList={movieList} />
+        <MovieGrid movieList={[...movieList] as unknown as MovieResType[]} />
       )}
       <Activity visible={!!totalPages}>
         <Pagination totalPages={totalPages} />

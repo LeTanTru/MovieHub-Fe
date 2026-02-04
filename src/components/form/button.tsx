@@ -11,7 +11,7 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-xs hover:bg-primary/80 disabled:bg-primary/80 disabled:hover:bg-primary/80 dark:bg-primary dark:hover:bg-primary/80 dark:disabled:bg-primary/80 dark:disabled:hover:bg-primary/80',
+          'bg-primary text-primary-foreground shadow-xs hover:bg-primary/80 disabled:bg-transparent disabled:hover:bg-transparent dark:bg-primary dark:hover:bg-primary/80 dark:disabled:bg-primary/80 dark:disabled:hover:bg-primary/80',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/80 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 hover:opacity-80 disabled:bg-destructive/80 disabled:hover:bg-destructive/80 dark:bg-destructive dark:disabled:bg-destructive/80 dark:disabled:hover:bg-destructive/80',
         outline:

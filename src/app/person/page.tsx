@@ -4,7 +4,7 @@ import { getQueryClient } from '@/components/providers';
 import {
   DEFALT_PAGE_START,
   DEFAULT_PAGE_SIZE,
-  PERSON_ACTOR,
+  PERSON_KIND_ACTOR,
   queryKeys
 } from '@/constants';
 import { PersonSearchType } from '@/types';
@@ -25,7 +25,7 @@ export default async function PersonPage({
   const defaultFilters: PersonSearchType = {
     page: DEFALT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
-    kind: PERSON_ACTOR,
+    kind: PERSON_KIND_ACTOR,
     ...filters
   };
   const queryClient = getQueryClient();

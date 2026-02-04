@@ -5,7 +5,7 @@ import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
   MAX_PAGE_SIZE,
-  PERSON_ACTOR,
+  PERSON_KIND_ACTOR,
   queryKeys
 } from '@/constants';
 import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
@@ -74,7 +74,7 @@ export default async function PersonDetailPage({
   const defaultFilters: MoviePersonSearchType = {
     personId: id,
     size: MAX_PAGE_SIZE,
-    kind: PERSON_ACTOR,
+    kind: PERSON_KIND_ACTOR,
     ...filters
   };
 

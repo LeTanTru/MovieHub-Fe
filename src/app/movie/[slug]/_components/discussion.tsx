@@ -27,7 +27,7 @@ export default function Discussion() {
   const id = getIdFromSlug(slug);
 
   const [activeKey, setActiveKey] = useState<string>(DISCUSSION_TAB_COMMENT);
-  const { profile } = useAuthStore();
+  const profile = useAuthStore((s) => s.profile);
 
   const { data: commentListData } = useCommentListQuery({
     params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },

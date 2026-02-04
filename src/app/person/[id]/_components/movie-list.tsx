@@ -6,7 +6,7 @@ import {
   MAX_PAGE_SIZE,
   MOVIE_LIST_TAB_ALL,
   movieListActions,
-  PERSON_ACTOR
+  PERSON_KIND_ACTOR
 } from '@/constants';
 import { MoviePersonResType, MovieResType } from '@/types';
 import {
@@ -23,7 +23,7 @@ export default function MovieList({ id }: { id: string }) {
     useMoviePersonListQuery({
       params: {
         personId: id,
-        kind: PERSON_ACTOR,
+        kind: PERSON_KIND_ACTOR,
         size: MAX_PAGE_SIZE
       },
       enabled: true

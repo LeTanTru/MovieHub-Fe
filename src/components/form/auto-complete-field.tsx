@@ -152,7 +152,7 @@ export default function AutoCompleteField<
     if (debouncedSearch !== '') {
       query.refetch();
     }
-  }, [debouncedSearch, query]);
+  }, [debouncedSearch]);
 
   const options: AutoCompleteOption<TOption>[] = (
     query.data?.data.content || []

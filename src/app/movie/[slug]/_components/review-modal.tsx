@@ -7,7 +7,7 @@ import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
 import { formatRating } from '@/utils';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function ReviewModal({
   opened,
@@ -18,18 +18,18 @@ export default function ReviewModal({
 }) {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
 
-  const { movie } = useMovieStore((state) => state);
+  const movie = useMovieStore((s) => s.movie);
 
-  const handleSelectRating = (rating: number) => {
+  const handleSelectRating = useCallback((rating: number) => {
     setSelectedRating(rating);
-  };
+  }, []);
 
   return (
     <Modal
       open={opened}
       onClose={onClose}
-      contentClassName='dark:bg-review-modal h-auto max-w-160'
-      titleClassName='border-none'
+      className='[&_.body-wrapper]:dark:bg-review-modal [&_.body-wrapper]:h-fit! [&_.body-wrapper]:min-h-fit! [&_.body-wrapper]:max-w-160'
+      headerClassName='border-none'
       closeOnBackdropClick
     >
       <div className='p-8 pt-0'>
@@ -66,6 +66,7 @@ export default function ReviewModal({
                       alt={rating.label}
                       width={60}
                       height={60}
+                      unoptimized
                     />
                   </div>
                   <span>{rating.label}</span>

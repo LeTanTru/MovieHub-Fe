@@ -43,6 +43,22 @@ export type SeasonResType = {
   thumbnailUrl: string;
   title: string;
   video: VideoResType;
+  trailer: {
+    id: string;
+    title: string;
+    description: string;
+    kind: number;
+    label: string;
+    ordering: number;
+    parent: {
+      id: string;
+      kind: number;
+      label: string;
+    };
+    video: VideoResType;
+    releaseDate: string;
+    thumbnailUrl: string;
+  };
 };
 
 export type MovieResType = {
@@ -54,7 +70,7 @@ export type MovieResType = {
   createdDate: string;
   description: string;
   duration: number;
-  id: number;
+  id: string;
   isFeatured: boolean;
   language: string;
   latestEpisode: string;
@@ -125,6 +141,8 @@ type MovieStates = {
   movies: MovieResType[];
   movieItems: MovieItemResType[];
   moviePersons: MoviePersonResType[];
+
+  selectedSeason: number;
 };
 
 type MovieAction = {
@@ -135,6 +153,8 @@ type MovieAction = {
   setMovies: (movies: MovieResType[]) => void;
   setMovieItems: (movieItems: MovieItemResType[]) => void;
   setMoviePersons: (moviePersons: MoviePersonResType[]) => void;
+
+  setSelectedSeason: (season: number) => void;
 };
 
 export type MovieStoreType = MovieStates & MovieAction;
