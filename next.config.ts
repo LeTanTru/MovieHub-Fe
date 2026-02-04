@@ -23,8 +23,8 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  outputFileTracingRoot: path.join(__dirname)
-  // reactCompiler: true
+  outputFileTracingRoot: path.join(__dirname),
+  reactCompiler: true
 };
 
 const withBundleAnalyzer = createBundleAnalyzer({

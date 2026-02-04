@@ -8,6 +8,7 @@ import {
   FullscreenToggleButton,
   NextButton,
   PiPToggleButton,
+  PlayPauseIndicator,
   PlayToggleButton,
   PreviousButton,
   SeekBackwardButton,
@@ -108,7 +109,7 @@ export default function VideoPlayer({
       fullscreenOrientation={'none'}
       onProviderChange={auth ? onProviderChange : undefined}
       volume={0.5}
-      className='h-full rounded! border-none!'
+      className='relative h-full rounded! border-none!'
       onTimeUpdate={handleTimeChange}
     >
       <MediaProvider slot='media' className='cursor-pointer'>
@@ -158,6 +159,7 @@ export default function VideoPlayer({
               vttUrl={vttUrl}
             />
           ),
+          centerControlsGroupCenter: <PlayPauseIndicator />,
           ...slots
         }}
       />

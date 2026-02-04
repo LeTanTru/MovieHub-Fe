@@ -60,7 +60,7 @@ export default function VideoPlayModal({
         }
       >
         <VideoPlayer
-          auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL ? true : false}
+          auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
           duration={video.duration}
           introEnd={video.introEnd}
           introStart={video.introStart}

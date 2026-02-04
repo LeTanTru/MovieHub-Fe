@@ -94,6 +94,7 @@ export { default as CaptionButton } from './caption-button';
 export { default as FullscreenToggleButton } from './full-screen-toggle-button';
 export { default as NextButton } from './next-button';
 export { default as PiPToggleButton } from './pip-toggle-button';
+export { default as PlayPauseIndicator } from './play-pause-indicatior';
 export { default as PlayToggleButton } from './play-toggle-button';
 export { default as PreviousButton } from './previous-button';
 export { default as SeekBackwardButton } from './seek-backward-button';
