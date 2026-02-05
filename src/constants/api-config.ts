@@ -12,22 +12,26 @@ const apiConfig = defineApiConfig({
       loginGoogle: {
         baseUrl: '/api/auth/login/google',
         method: 'POST',
-        headers: baseHeader
+        headers: baseHeader,
+        ignoreAuth: true
       },
       logout: {
         baseUrl: '/api/auth/logout',
         method: 'POST',
-        headers: baseHeader
+        headers: baseHeader,
+        ignoreAuth: true
       },
       login: {
         baseUrl: '/api/auth/login',
         method: 'POST',
-        headers: baseHeader
+        headers: baseHeader,
+        ignoreAuth: true
       },
-      refresh: {
+      refreshToken: {
         baseUrl: '/api/auth/refresh-token',
         method: 'POST',
-        headers: baseHeader
+        headers: baseHeader,
+        ignoreAuth: true
       }
     }
   },
@@ -113,8 +117,13 @@ const apiConfig = defineApiConfig({
     logout: {
       baseUrl: `${AppConstants.metaApiUrl}/v1/auth/logout`,
       method: 'POST',
+      headers: baseHeader
+    },
+    getAnonymousToken: {
+      baseUrl: `${AppConstants.metaApiUrl}/v1/auth/get-anonymous-token`,
+      method: 'POST',
       headers: baseHeader,
-      isRequiredTenantId: true
+      ignoreAuth: true
     }
   },
   file: {

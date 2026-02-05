@@ -1,7 +1,7 @@
 'use server';
 
 import { storageKeys } from '@/constants';
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { cookies } from 'next/headers';
 
 export async function setCookieData(
@@ -13,6 +13,16 @@ export async function setCookieData(
   cookieStore.set(key, value, cookie);
 }
 
+export async function setCookiesData(
+  cookiesData: Record<string, any>,
+  cookie?: Partial<ResponseCookie>
+) {
+  const cookieStore = await cookies();
+  for (const key in cookiesData) {
+    cookieStore.set(key, cookiesData[key], cookie);
+  }
+}
+
 export async function getCookieData(key: string) {
   const cookieStore = await cookies();
   return cookieStore.get(key);
@@ -21,6 +31,13 @@ export async function getCookieData(key: string) {
 export async function removeCookieData(key: string) {
   const cookieStore = await cookies();
   cookieStore.delete(key);
+}
+
+export async function removeCookiesData(keys: string[]) {
+  const cookieStore = await cookies();
+  keys.forEach((key) => {
+    cookieStore.delete(key);
+  });
 }
 
 export const setAccessTokenToCookie = async (

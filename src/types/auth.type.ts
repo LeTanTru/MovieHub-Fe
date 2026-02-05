@@ -21,7 +21,7 @@ export type RequestForgotPasswordBodyType = z.infer<
 export type ForgotPasswordBodyType = RequestForgotPasswordBodyType &
   z.infer<typeof forgotPasswordStep2Schema>;
 
-export type LoginResponseType = {
+export type LoginResType = {
   access_token: string;
   token_type: string;
   refresh_token: string;
@@ -49,8 +49,6 @@ export type RefreshTokenResType = {
   jti: string;
 };
 
-export type AuthType = 'login' | 'register';
-
 type AuthState = {
   profile: ProfileType | null;
 };
@@ -60,3 +58,11 @@ type AuthActions = {
 };
 
 export type AuthStoreType = AuthState & AuthActions;
+
+export type CookieServerBodyType = LoginResType;
+
+export type AnonymousResType = {
+  access_token: string;
+  token_type: string;
+  expires_in: string;
+};

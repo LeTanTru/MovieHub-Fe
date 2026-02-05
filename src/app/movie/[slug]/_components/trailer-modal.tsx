@@ -1,11 +1,14 @@
 'use client';
 
+import { getAnonymousToken } from '@/app/actions/guest-token';
+import './trailer-modal.css';
 import { Modal } from '@/components/modal';
 import { VideoPlayer } from '@/components/video-player';
-import { VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
+import { trailerMotionVariant, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
 import { VideoResType } from '@/types';
 import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
+import { logger } from '@/logger';
 
 export default function VideoPlayModal({
   opened,
@@ -18,6 +21,7 @@ export default function VideoPlayModal({
 }) {
   const bodyRef = useRef<HTMLDivElement>(null);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
+  const [token, setToken] = useState<string>('');
 
   useEffect(() => {
     if (!opened || !bodyRef.current) return;
@@ -40,15 +44,55 @@ export default function VideoPlayModal({
     };
   }, [opened]);
 
+  useEffect(() => {
+    if (opened && bodyRef.current) {
+      const timer = setTimeout(() => {
+        const videoPlayer = bodyRef.current?.querySelector('.video-player');
+        if (videoPlayer instanceof HTMLElement) {
+          videoPlayer.focus();
+        }
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [opened]);
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    const handleGetAnonymousToken = async () => {
+      try {
+        const res = await getAnonymousToken();
+        setToken(res.access_token);
+      } catch (err) {
+        logger.error('Failed to get guest token', err);
+      }
+    };
+
+    handleGetAnonymousToken();
+
+    intervalId = setInterval(handleGetAnonymousToken, 14 * 60 * 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <Modal
       title={video.name}
       open={opened}
       onClose={onClose}
-      className='[&_.body-wrapper]:dark:bg-review-modal [&_.body-wrapper]:-top-5 [&_.body-wrapper]:aspect-video [&_.body-wrapper]:min-h-[90vh] [&_.body-wrapper]:w-350 [&_.body-wrapper]:max-[1537px]:h-[92.5vh] [&_.body-wrapper]:max-[1537px]:min-h-[92.5vh] [&_.body-wrapper]:max-[1537px]:w-280'
+      className='trailer-modal overflow-hidden'
       aria-labelledby='video-modal-title'
       aria-label={`Phát video ${video.name}`}
       bodyRef={bodyRef}
+      variants={{
+        initial: trailerMotionVariant.initial,
+        animate: trailerMotionVariant.animate,
+        exit: trailerMotionVariant.exit
+      }}
+      closeOnBackdropClick
     >
       <div
         style={
@@ -68,6 +112,8 @@ export default function VideoPlayModal({
           thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
           vttUrl={renderVttUrl(video.vttUrl)}
           outroStart={video.outroStart}
+          className='rounded-br-lg! rounded-bl-lg!'
+          token={token}
         />
       </div>
     </Modal>

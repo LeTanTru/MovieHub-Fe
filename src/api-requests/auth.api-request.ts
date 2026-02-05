@@ -1,9 +1,11 @@
 import { apiConfig } from '@/constants';
 import {
+  AnonymousResType,
   ApiResponse,
+  CookieServerBodyType,
   ForgotPasswordBodyType,
   LoginBodyType,
-  LoginResponseType,
+  LoginResType,
   RegisterBodyType,
   RequestForgotPasswordBodyType,
   VerifyOtpBodyType
@@ -16,31 +18,28 @@ const authApiRequest = {
       params: { loginType }
     }),
   loginGoogle: (code: string) =>
-    http.post<ApiResponse<any> & LoginResponseType>(
-      apiConfig.api.auth.loginGoogle,
-      {
-        body: { code }
-      }
-    ),
+    http.post<ApiResponse<any> & LoginResType>(apiConfig.api.auth.loginGoogle, {
+      body: { code }
+    }),
   loginGoogleCallback: ({ code }: { code: string }) =>
-    http.post<LoginResponseType>(apiConfig.user.auth.webCallback, {
+    http.post<LoginResType>(apiConfig.user.auth.webCallback, {
       body: { code }
     }),
   login: (body: LoginBodyType) =>
-    http.post<ApiResponse<any> & LoginResponseType>(apiConfig.api.auth.login, {
+    http.post<ApiResponse<any> & LoginResType>(apiConfig.user.login, {
       body
     }),
-  loginFromNextServer: ({ body }: { body: LoginBodyType }) =>
-    http.post<ApiResponse<any> & LoginResponseType>(apiConfig.user.login, {
+  setCookieServer: ({ body }: { body: CookieServerBodyType }) =>
+    http.post<ApiResponse<any>>(apiConfig.api.auth.login, {
       body
     }),
   register: (body: RegisterBodyType) =>
     http.post<ApiResponse<any>>(apiConfig.user.register, {
       body: body
     }),
-  logout: () => http.post<ApiResponse<any>>(apiConfig.api.auth.logout),
-  logoutFromNextServer: () =>
-    http.post<ApiResponse<any>>(apiConfig.user.logout),
+  logout: () => http.post<ApiResponse<any>>(apiConfig.user.logout),
+  removeCookieServer: () =>
+    http.post<ApiResponse<any>>(apiConfig.api.auth.logout),
   requestForgotPassword: (body: RequestForgotPasswordBodyType) =>
     http.post<ApiResponse<any>>(apiConfig.user.requestForgotPassword, {
       body
@@ -56,7 +55,9 @@ const authApiRequest = {
   verifyOtp: (body: VerifyOtpBodyType) =>
     http.post<ApiResponse<any>>(apiConfig.user.verifyOtp, {
       body
-    })
+    }),
+  getAnonymousToken: () =>
+    http.post<AnonymousResType>(apiConfig.user.getAnonymousToken)
 };
 
 export default authApiRequest;

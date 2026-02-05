@@ -53,10 +53,10 @@
   --color-main-background: rgb(21, 20, 32);
   --color-navigation: rgba(21, 20, 32, 0.9);
   --color-navigation-mobile: rgb(15, 23, 43);
-  --color-auth: #1a1f32;
+  --color-auth-layout: #1a1f32;
   --color-watch-now: #191b24;
   --color-review: #3556b6;
-  --color-auth-form: #1d293d;
+  --color-auth-form: #333f59;
   --color-actor-name: #f0adb1;
   --color-episode: #5e6070;
   --color-comment-form: #ffffff10;

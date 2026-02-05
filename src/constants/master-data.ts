@@ -193,9 +193,11 @@ export const queryKeys = {
   PERSON: 'person',
   PROFILE: 'profile',
   REGISTER: 'register',
-  REQUEST_FORGOT_PASSSWORD: 'request-forgot-password',
+  REMOVE_COOKIE_SERVER: 'remove-cookie-server',
+  REQUEST_FORGOT_PASSWORD: 'request-forgot-password',
   RESEND_OTP: 'resend-otp',
   REVIEW: 'review',
+  SET_COOKIE_SERVER: 'set-cookie-server',
   VERIFY_OTP: 'verify-otp'
 };
 

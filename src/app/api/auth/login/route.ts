@@ -1,76 +1,63 @@
-import { authApiRequest } from '@/api-requests';
 import envConfig from '@/config';
 import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import { LoginBodyType } from '@/types';
-import {
-  isAxiosError,
-  setAccessTokenToCookie,
-  setCookieData,
-  setRefreshTokenToCookie
-} from '@/utils';
+import { CookieServerBodyType } from '@/types';
+import { setCookieData } from '@/utils';
 import { HttpStatusCode } from 'axios';
+import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-const maxAge = 60 * 60 * 24 * 7;
+const maxAgeAccessToken = 24 * 60 * 60; // 1 day
+const maxAgeRefreshToken = 60 * 60 * 24 * 7; // 7 days
 
 export async function POST(request: Request) {
-  const req: LoginBodyType = await request.json();
+  const req: CookieServerBodyType = await request.json();
   try {
-    const res = await authApiRequest.loginFromNextServer({ body: req });
+    const accessToken = req.access_token;
+    const refreshToken = req.refresh_token;
+    const userKind = String(req.user_kind);
 
-    if (res.access_token) {
-      const accessToken = res.access_token;
-      const refreshToken = res.refresh_token;
-      const userKind = res.user_kind;
+    const makeCookieOption = (maxAge: number): Partial<ResponseCookie> => ({
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
+      maxAge: maxAge
+    });
 
-      setAccessTokenToCookie(accessToken, {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
-        maxAge
-      });
+    await setCookieData(
+      storageKeys.ACCESS_TOKEN,
+      accessToken,
+      makeCookieOption(maxAgeAccessToken)
+    );
 
-      setRefreshTokenToCookie(refreshToken, {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
-        maxAge
-      });
+    await setCookieData(
+      storageKeys.REFRESH_TOKEN,
+      refreshToken,
+      makeCookieOption(maxAgeRefreshToken)
+    );
 
-      setCookieData(storageKeys.USER_KIND, String(userKind), {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
-        maxAge
-      });
-      return Response.json(
-        { ...res, result: true },
-        {
-          status: HttpStatusCode.Ok
-        }
-      );
-    }
+    await setCookieData(
+      storageKeys.USER_KIND,
+      userKind,
+      makeCookieOption(maxAgeRefreshToken)
+    );
+
     return Response.json(
-      { ...res },
       {
-        status: HttpStatusCode.BadRequest
+        status: HttpStatusCode.Ok
+      },
+      {
+        status: HttpStatusCode.Ok
       }
     );
   } catch (error) {
-    if (isAxiosError(error)) {
-      logger.error('Error while login', error?.response?.data);
-      return Response.json(error?.response?.data, {
-        status: error?.response?.status || HttpStatusCode.BadGateway
-      });
-    }
+    logger.error('Error in setting auth cookies', error);
     return Response.json(
-      { result: false, message: 'Invalid email or password' },
       {
-        status: HttpStatusCode.BadGateway
-      }
+        status: HttpStatusCode.BadRequest,
+        message: 'Setting auth cookies failed'
+      },
+      { status: HttpStatusCode.BadRequest }
     );
   }
 }
