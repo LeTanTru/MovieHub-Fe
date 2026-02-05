@@ -14,7 +14,6 @@ import {
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
 import { notify, setDatas } from '@/utils';
-import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect } from 'react';
 

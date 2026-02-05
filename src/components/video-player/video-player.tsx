@@ -19,7 +19,6 @@ import {
   VolumeIndicator,
   VolumeToggleButton
 } from './_components';
-import { getAccessTokenFromLocalStorage } from '@/utils';
 import {
   isHLSProvider,
   MediaPlayer,
@@ -114,7 +113,6 @@ export default function VideoPlayer({
           className
         )}
         onTimeUpdate={handleTimeChange}
-        tabIndex={0}
       >
         <MediaProvider slot='media' className='cursor-pointer'>
           <Poster className='vds-poster' src={thumbnailUrl} />
@@ -188,10 +186,7 @@ function onProviderChange(
   if (isHLSProvider(provider)) {
     provider.config = {
       xhrSetup(xhr) {
-        xhr.setRequestHeader(
-          'Authorization',
-          `Bearer ${token ?? getAccessTokenFromLocalStorage()}`
-        );
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       }
     };
   }
