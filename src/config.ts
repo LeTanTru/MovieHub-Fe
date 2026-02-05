@@ -13,7 +13,8 @@ const configSchema = z.object({
   NEXT_PUBLIC_APP_USERNAME: z.string(),
   NEXT_PUBLIC_APP_PASSWORD: z.string(),
   NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN: z.string(),
-  NEXT_PUBLIC_MEDIA_HOST: z.string()
+  NEXT_PUBLIC_MEDIA_HOST: z.string(),
+  NEXT_PUBLIC_ACCESS_KEY: z.string()
 });
 
 const configProject = configSchema.safeParse({
@@ -32,7 +33,8 @@ const configProject = configSchema.safeParse({
   NEXT_PUBLIC_APP_PASSWORD: process.env.NEXT_PUBLIC_APP_PASSWORD,
   NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN:
     process.env.NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN,
-  NEXT_PUBLIC_MEDIA_HOST: process.env.NEXT_PUBLIC_MEDIA_HOST
+  NEXT_PUBLIC_MEDIA_HOST: process.env.NEXT_PUBLIC_MEDIA_HOST,
+  NEXT_PUBLIC_ACCESS_KEY: process.env.NEXT_PUBLIC_ACCESS_KEY
 });
 
 if (!configProject.success) {
