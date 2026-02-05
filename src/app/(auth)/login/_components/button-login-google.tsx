@@ -8,16 +8,12 @@ import { logger } from '@/logger';
 import {
   useLoginGoogleMutation,
   useLoginGoogleQuery,
-  useProfileQuery
+  useProfileQuery,
+  useSetCookieServerMutation
 } from '@/queries';
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
-import {
-  notify,
-  setAccessTokenToLocalStorage,
-  setData,
-  setRefreshTokenToLocalStorage
-} from '@/utils';
+import { notify, setDatas } from '@/utils';
 import { LucideLoader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect } from 'react';
@@ -30,11 +26,17 @@ export default function ButtonLoginGoogle() {
     isLoading,
     isFetching
   } = useLoginGoogleQuery({ loginType: AppConstants.loginType });
+  const { refetch: getProfile } = useProfileQuery();
   const { mutateAsync: loginGoogleMutate, isPending: loginGoogleLoading } =
     useLoginGoogleMutation();
-  const { refetch: getProfile } = useProfileQuery();
 
-  const loading = isLoading || isFetching || loginGoogleLoading;
+  const {
+    mutateAsync: setCookieServerMutate,
+    isPending: setCookieServerLoading
+  } = useSetCookieServerMutation();
+
+  const loading =
+    isLoading || isFetching || loginGoogleLoading || setCookieServerLoading;
 
   const handleGetGoogleLoginUrl = async () => {
     try {
@@ -72,9 +74,12 @@ export default function ButtonLoginGoogle() {
       try {
         const res = await loginGoogleMutate(code);
         if (res.result) {
-          setAccessTokenToLocalStorage(res.access_token);
-          setRefreshTokenToLocalStorage(res.refresh_token);
-          setData(storageKeys.USER_KIND, String(res.user_kind));
+          setDatas({
+            [storageKeys.ACCESS_TOKEN]: res.access_token,
+            [storageKeys.REFRESH_TOKEN]: res.refresh_token,
+            [storageKeys.USER_KIND]: String(res.user_kind)
+          });
+          await setCookieServerMutate(res);
           notify.success('Đăng nhập thành công');
           const profile = await getProfile();
           if (profile.data?.data) {
@@ -98,7 +103,7 @@ export default function ButtonLoginGoogle() {
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [getProfile, loginGoogleMutate, setProfile]);
+  }, [getProfile, loginGoogleMutate, setCookieServerMutate, setProfile]);
 
   return (
     <Button
@@ -106,18 +111,12 @@ export default function ButtonLoginGoogle() {
       onClick={handleGetGoogleLoginUrl}
       className='flex w-full items-center justify-center gap-2 border-none'
       disabled={loading}
+      loading={loading}
     >
-      {loading ? (
-        <LucideLoader2
-          className='text-muted-foreground h-6! w-6! animate-spin'
-          strokeWidth={3}
-        />
-      ) : (
-        <>
-          <Image src={googleIcon} alt='Google Icon' width={20} height={20} />
-          Đăng nhập với Google
-        </>
-      )}
+      <>
+        <Image src={googleIcon} alt='Google Icon' width={20} height={20} />
+        Đăng nhập với Google
+      </>
     </Button>
   );
 }

@@ -8,7 +8,14 @@ import { useResendOtpMutation, useVerifyOtpMutation } from '@/queries';
 import { route } from '@/routes';
 import { otpSchema } from '@/schemaValidations';
 import { VerifyOtpBodyType } from '@/types';
-import { applyFormErrors, getData, notify, removeData, setData } from '@/utils';
+import {
+  applyFormErrors,
+  getData,
+  notify,
+  removeData,
+  removeDatas,
+  setData
+} from '@/utils';
 import { useEffect, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
@@ -148,16 +155,20 @@ export default function VerifyOtpForm() {
   };
 
   const handleBack = () => {
-    removeData(storageKeys.EMAIL);
-    removeData(storageKeys.RESEND_OTP_TIME);
-    removeData(storageKeys.LAST_RESEND_TIME);
+    removeDatas([
+      storageKeys.EMAIL,
+      storageKeys.RESEND_OTP_TIME,
+      storageKeys.LAST_RESEND_TIME
+    ]);
     navigate(route.register.path);
   };
 
   const handleClearData = () => {
-    removeData(storageKeys.EMAIL);
-    removeData(storageKeys.RESEND_OTP_TIME);
-    removeData(storageKeys.LAST_RESEND_TIME);
+    removeDatas([
+      storageKeys.EMAIL,
+      storageKeys.RESEND_OTP_TIME,
+      storageKeys.LAST_RESEND_TIME
+    ]);
   };
 
   const onSubmit = async (

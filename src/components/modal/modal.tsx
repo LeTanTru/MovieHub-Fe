@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom';
 import { useIsMounted } from '@/hooks';
 import { X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/form';
+import { Activity } from '@/components/activity';
 
 export type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   children: ReactNode;
@@ -25,6 +26,7 @@ export type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   bodyClassName?: string;
   bodyRef?: React.RefObject<HTMLDivElement | null>;
   bodyStyle?: React.CSSProperties;
+  scrollable?: boolean;
 };
 
 export default function Modal({
@@ -49,6 +51,7 @@ export default function Modal({
   bodyClassName,
   bodyRef,
   bodyStyle,
+  scrollable = false,
   ...rest
 }: ModalProps) {
   const isMounted = useIsMounted();
@@ -56,6 +59,8 @@ export default function Modal({
   const [showScrollArrow, setShowScrollArrow] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!scrollable) return;
+
     const checkOverflow = () => {
       if (scrollRef.current) {
         const { scrollHeight, clientHeight, scrollTop } = scrollRef.current;
@@ -74,7 +79,7 @@ export default function Modal({
       scrollElement?.removeEventListener('scroll', checkOverflow);
       window.removeEventListener('resize', checkOverflow);
     };
-  }, [open, children]);
+  }, [open, children, scrollable]);
 
   const handleScrollDown = () => {
     if (scrollRef.current) {
@@ -98,7 +103,7 @@ export default function Modal({
           exit={{ opacity: 0 }}
           {...rest}
         >
-          {backdrop && (
+          <Activity visible={backdrop}>
             <motion.div
               className='backdrop absolute inset-0 bg-black/50'
               initial={{ opacity: 0 }}
@@ -106,11 +111,11 @@ export default function Modal({
               exit={{ opacity: 0 }}
               onClick={closeOnBackdropClick ? onClose : undefined}
             />
-          )}
+          </Activity>
 
           <motion.div
             className={
-              'body-wrapper relative h-[80vh] min-h-[80vh] w-300 rounded-lg bg-white shadow-[0px_0px_10px_2px] shadow-black/40'
+              'body-wrapper absolute top-1/2 left-1/2 h-[80vh] min-h-[80vh] w-300 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white shadow-[0px_0px_10px_2px] shadow-black/40'
             }
             initial={variants.initial}
             animate={variants.animate}
@@ -118,7 +123,7 @@ export default function Modal({
             transition={{ duration: 0.15, ease: 'linear' }}
             onClick={(e) => e.stopPropagation()}
           >
-            {(title || showClose) && (
+            <Activity visible={!!title || !!showClose}>
               <div
                 className={cn(
                   'flex items-center justify-between border-b border-gray-200 px-4 dark:border-none',
@@ -129,7 +134,7 @@ export default function Modal({
                   {title}
                 </div>
 
-                {showClose && (
+                <Activity visible={showClose && onClose !== undefined}>
                   <Button
                     className='p-0! text-gray-500 transition hover:text-black dark:hover:bg-transparent'
                     onClick={onClose}
@@ -137,15 +142,16 @@ export default function Modal({
                   >
                     <X className='size-5' />
                   </Button>
-                )}
+                </Activity>
               </div>
-            )}
+            </Activity>
 
             <div ref={bodyRef} className='body relative h-full'>
               <div
                 ref={scrollRef}
                 className={cn(
-                  'scrollbar-none h-full overflow-auto rounded-br-lg rounded-bl-lg',
+                  'scrollbar-none h-full rounded-br-lg rounded-bl-lg',
+                  { 'overflow-auto': scrollable },
                   bodyClassName
                 )}
                 style={bodyStyle}
@@ -154,7 +160,7 @@ export default function Modal({
               </div>
 
               <AnimatePresence>
-                {showScrollArrow && (
+                {scrollable && showScrollArrow && (
                   <motion.button
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}

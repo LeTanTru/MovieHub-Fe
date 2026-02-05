@@ -3,20 +3,18 @@
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import {
-  notify,
-  removeData,
-  setAccessTokenToLocalStorage,
-  setData,
-  setRefreshTokenToLocalStorage
-} from '@/utils';
+import { notify, removeDatas, setDatas } from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import Link from 'next/link';
 import { useState } from 'react';
 import { logger } from '@/logger';
-import { useLoginMutation, useProfileQuery } from '@/queries';
+import {
+  useLoginMutation,
+  useProfileQuery,
+  useSetCookieServerMutation
+} from '@/queries';
 import ButtonLoginGoogle from './button-login-google';
 import { route } from '@/routes';
 
@@ -24,6 +22,12 @@ export default function LoginForm() {
   const { refetch: getProfile } = useProfileQuery();
   const { mutateAsync: loginMutate, isPending: loginLoading } =
     useLoginMutation();
+
+  const {
+    mutateAsync: setCookieServerMutate,
+    isPending: setCookieServerLoading
+  } = useSetCookieServerMutation();
+
   const setProfile = useAuthStore((s) => s.setProfile);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const defaultValues: LoginType = {
@@ -34,10 +38,13 @@ export default function LoginForm() {
   const onSubmit = async (values: LoginBodyType) => {
     try {
       const res = await loginMutate(values);
-      if (res.result) {
-        setAccessTokenToLocalStorage(res.access_token);
-        setRefreshTokenToLocalStorage(res.refresh_token);
-        setData(storageKeys.USER_KIND, String(res.user_kind));
+      if (res.access_token) {
+        setDatas({
+          [storageKeys.ACCESS_TOKEN]: res.access_token,
+          [storageKeys.REFRESH_TOKEN]: res.refresh_token,
+          [storageKeys.USER_KIND]: String(res.user_kind)
+        });
+        await setCookieServerMutate(res);
         notify.success('Đăng nhập thành công');
         const profile = await getProfile();
         if (profile.data?.data) {
@@ -53,9 +60,11 @@ export default function LoginForm() {
   };
 
   const handleClearForgotPasswordData = () => {
-    removeData(storageKeys.EMAIL);
-    removeData(storageKeys.RESEND_OTP_TIME);
-    removeData(storageKeys.LAST_RESEND_TIME);
+    removeDatas([
+      storageKeys.EMAIL,
+      storageKeys.RESEND_OTP_TIME,
+      storageKeys.LAST_RESEND_TIME
+    ]);
   };
 
   return (
@@ -115,8 +124,10 @@ export default function LoginForm() {
               type='submit'
               variant='primary'
               className='w-full'
-              disabled={!isFormChanged || loginLoading}
-              loading={loginLoading}
+              disabled={
+                !isFormChanged || loginLoading || setCookieServerLoading
+              }
+              loading={loginLoading || setCookieServerLoading}
             >
               Đăng nhập
             </Button>

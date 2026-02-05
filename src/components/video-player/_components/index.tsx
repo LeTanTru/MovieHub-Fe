@@ -102,4 +102,5 @@ export { default as SeekForwardButton } from './seek-forward-button';
 export { default as SettingMenu } from './setting-menu';
 export { default as SkipIntroButton } from './skip-intro-button';
 export { default as TimeSlider } from './time-slider';
+export { default as VolumeIndicator } from './volume-indicator';
 export { default as VolumeToggleButton } from './volume-toggle-button';
