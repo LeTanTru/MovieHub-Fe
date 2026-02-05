@@ -21,6 +21,7 @@ export default function ButtonToggle({
         'pointer-events-none relative cursor-not-allowed opacity-50 select-none':
           disabled
       })}
+      aria-disabled={disabled}
     >
       <div
         className={cn(

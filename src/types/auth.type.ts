@@ -1,4 +1,5 @@
 import {
+  changePasswordSchema,
   forgotPasswordStep1Schema,
   forgotPasswordStep2Schema,
   loginSchema,
@@ -66,3 +67,5 @@ export type AnonymousResType = {
   token_type: string;
   expires_in: string;
 };
+
+export type ChangePasswordBodyType = z.infer<typeof changePasswordSchema>;

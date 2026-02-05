@@ -2,7 +2,7 @@ import { ProfileForm } from '@/app/user/profile/_components';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Hồ sơ',
+  title: 'Tài khoản',
   description: 'Trang quản lý thông tin cá nhân'
 };
 

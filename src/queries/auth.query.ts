@@ -1,6 +1,7 @@
 import { authApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import {
+  ChangePasswordBodyType,
   CookieServerBodyType,
   ForgotPasswordBodyType,
   LoginBodyType,
@@ -92,5 +93,13 @@ export const useVerifyOtpMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.VERIFY_OTP],
     mutationFn: (body: VerifyOtpBodyType) => authApiRequest.verifyOtp(body)
+  });
+};
+
+export const useChangePasswordMutation = () => {
+  return useMutation({
+    mutationKey: [queryKeys.CHANGE_PASSWORD],
+    mutationFn: (body: ChangePasswordBodyType) =>
+      authApiRequest.changePassword(body)
   });
 };

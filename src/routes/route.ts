@@ -28,6 +28,9 @@ const route = defineRoute({
     },
     watchHistory: {
       path: '/user/watch-history'
+    },
+    changePassword: {
+      path: '/user/change-password'
     }
   },
   category: {

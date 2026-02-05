@@ -49,7 +49,14 @@ import {
   OptionType,
   UserSidebarItemType
 } from '@/types';
-import { BellIcon, Heart, History, ListVideo, User2 } from 'lucide-react';
+import {
+  BellIcon,
+  Heart,
+  History,
+  ListVideo,
+  LockKeyhole,
+  User2
+} from 'lucide-react';
 import type { StaticImageData } from 'next/image';
 import { FaInfinity, FaMars, FaVenus } from 'react-icons/fa6';
 import { IconType } from 'react-icons/lib';
@@ -95,7 +102,13 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
     link: route.user.profile.path,
     icon: User2,
     className: 'size-5',
-    title: 'Hồ sơ'
+    title: 'Tài khoản'
+  },
+  {
+    link: route.user.changePassword.path,
+    icon: LockKeyhole,
+    className: 'size-5',
+    title: 'Đổi mật khẩu'
   }
 ];
 
@@ -128,7 +141,13 @@ export const userSidebarList: UserSidebarItemType[] = [
     link: route.user.profile.path,
     icon: User2,
     className: 'size-5',
-    title: 'Hồ sơ'
+    title: 'Tài khoản'
+  },
+  {
+    link: route.user.changePassword.path,
+    icon: LockKeyhole,
+    className: 'size-5',
+    title: 'Đổi mật khẩu'
   }
 ];
 
@@ -198,7 +217,8 @@ export const queryKeys = {
   RESEND_OTP: 'resend-otp',
   REVIEW: 'review',
   SET_COOKIE_SERVER: 'set-cookie-server',
-  VERIFY_OTP: 'verify-otp'
+  VERIFY_OTP: 'verify-otp',
+  CHANGE_PASSWORD: 'change-password'
 };
 
 export const countries = [
