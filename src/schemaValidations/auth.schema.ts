@@ -76,3 +76,26 @@ export const forgotPasswordStep2Schema = z
       });
     }
   });
+
+export const changePasswordSchema = z
+  .object({
+    oldPassword: z.string().nonempty('Bắt buộc'),
+    newPassword: z
+      .string()
+      .nonempty('Bắt buộc')
+      .min(8, 'Mật khẩu tối thiểu 8 ký tự')
+      .regex(/[A-Z]/, 'Phải có ít nhất 1 chữ hoa')
+      .regex(/[a-z]/, 'Phải có ít nhất 1 chữ thường')
+      .regex(/[0-9]/, 'Phải có ít nhất 1 chữ số')
+      .regex(/[^A-Za-z0-9]/, 'Phải có ít nhất 1 ký tự đặc biệt'),
+    confirmNewPassword: z.string().nonempty('Bắt buộc')
+  })
+  .superRefine((data, ctx) => {
+    if (data.confirmNewPassword !== data.newPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Mật khẩu nhập lại không khớp',
+        path: ['confirmNewPassword']
+      });
+    }
+  });

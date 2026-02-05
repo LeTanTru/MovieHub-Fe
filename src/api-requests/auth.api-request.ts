@@ -2,6 +2,7 @@ import { apiConfig } from '@/constants';
 import {
   AnonymousResType,
   ApiResponse,
+  ChangePasswordBodyType,
   CookieServerBodyType,
   ForgotPasswordBodyType,
   LoginBodyType,
@@ -57,7 +58,9 @@ const authApiRequest = {
       body
     }),
   getAnonymousToken: () =>
-    http.post<AnonymousResType>(apiConfig.user.getAnonymousToken)
+    http.post<AnonymousResType>(apiConfig.user.getAnonymousToken),
+  changePassword: (body: ChangePasswordBodyType) =>
+    http.post<ApiResponse<any>>(apiConfig.user.changePassword, { body })
 };
 
 export default authApiRequest;

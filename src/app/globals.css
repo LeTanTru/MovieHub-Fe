@@ -223,11 +223,16 @@
     background-clip: text;
     animation: gradientShift 5s ease infinite;
   }
-}
 
-.vds-video-layout.dark .vds-kb-action {
-  opacity: 0 !important;
-  display: none !important;
+  .vds-video-layout.dark .vds-kb-action {
+    opacity: 0 !important;
+    display: none !important;
+  }
+
+  .Toastify__toast-theme--dark {
+    background: rgba(255, 255, 255, 0.059) !important;
+    backdrop-filter: blur(15px);
+  }
 }
 
 @keyframes skeleton {

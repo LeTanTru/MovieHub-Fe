@@ -25,7 +25,7 @@ import {
 } from '@/queries';
 import { updateProfileSchema } from '@/schemaValidations';
 import { useAuthStore } from '@/store';
-import { ProfileResType, ProfileType, UpdateProfileType } from '@/types';
+import { ProfileResType, UpdateProfileType } from '@/types';
 import { applyFormErrors, notify, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMemo } from 'react';
@@ -81,7 +81,7 @@ export default function ProfileForm() {
 
   const onSubmit = async (
     values: UpdateProfileType,
-    form: UseFormReturn<ProfileType>
+    form: UseFormReturn<UpdateProfileType>
   ) => {
     await imageManager.handleSubmit();
     try {
@@ -105,7 +105,7 @@ export default function ProfileForm() {
     }
   };
 
-  const handleCancel = async (form: UseFormReturn<ProfileType>) => {
+  const handleCancel = async (form: UseFormReturn<UpdateProfileType>) => {
     await imageManager.handleCancel(false);
     form.clearErrors();
     form.reset(initialValues);
@@ -120,8 +120,8 @@ export default function ProfileForm() {
         transition={{ duration: 0.25 }}
         className='bg-main-background max-1120:mx-auto max-1120:mt-8 max-1120:w-140 max-1368:w-5/6 max-600:w-full relative mx-auto rounded-lg'
       >
-        <h1 className='max-1120:text-center'>Tài khoản</h1>
-        <p className='max-1120:text-center mt-2 text-sm text-slate-400'>
+        <h1 className='text-xl font-medium'>Tài khoản</h1>
+        <p className='mt-2 text-sm text-slate-400'>
           Cập nhật thông tin tài khoản
         </p>
         <BaseForm
@@ -129,6 +129,7 @@ export default function ProfileForm() {
           initialValues={initialValues}
           defaultValues={defaultValues}
           onSubmit={onSubmit}
+          className='mt-4 p-0'
         >
           {(form) => {
             return (

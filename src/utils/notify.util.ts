@@ -9,7 +9,7 @@ const defaultOptions: ToastOptions = {
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-  theme: 'light',
+  theme: 'dark',
   transition: Bounce,
   className: `
     whitespace-nowrap
@@ -17,7 +17,6 @@ const defaultOptions: ToastOptions = {
     min-w-80!
     max-w-300!
     w-fit!
-    bg-[rgba(255,255,255,0.06)]!
     text-white!
   `
 };

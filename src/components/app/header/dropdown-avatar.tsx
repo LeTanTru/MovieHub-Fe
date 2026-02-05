@@ -13,6 +13,8 @@ import { List, ListItem } from '@/components/list';
 import { useDisclosure } from '@/hooks';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { defaultAvatar } from '@/assets';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib';
 
 type DropdownAvatarProps = {
   profile?: ProfileType | null;
@@ -20,6 +22,7 @@ type DropdownAvatarProps = {
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
   const { opened, open, close } = useDisclosure();
+  const pathname = usePathname();
 
   const handleOpen = () => open();
   const handleClose = () => close();
@@ -80,7 +83,10 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
                 <ListItem key={item.link} onClick={handleClose}>
                   <Link
                     href={item.link}
-                    className='hover:bg-accent hover:text-accent-foreground flex h-9 w-full cursor-pointer items-center justify-start gap-2 rounded-none px-4 text-sm transition-all duration-200 ease-linear focus:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50'
+                    className={cn(
+                      'hover:bg-accent hover:text-accent-foreground flex h-9 w-full cursor-pointer items-center justify-start gap-2 rounded-none px-4 text-sm opacity-70 transition-all duration-200 ease-linear hover:opacity-100 focus:outline-none focus-visible:ring-0',
+                      { 'opacity-100': pathname === item.link }
+                    )}
                   >
                     <item.icon size={16} className={item.className} />
                     <span>{item.title}</span>

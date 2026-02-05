@@ -57,8 +57,9 @@ const apiConfig = defineApiConfig({
     },
     changePassword: {
       baseUrl: `${AppConstants.apiUrl}/v1/user/change-password`,
-      method: 'POST',
-      headers: baseHeader
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredTenantId: true
     },
     forgotPassword: {
       baseUrl: `${AppConstants.apiUrl}/v1/user/forgot-password`,
