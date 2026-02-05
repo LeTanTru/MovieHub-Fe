@@ -6,6 +6,7 @@ import { BaseForm } from '@/components/form/base-form';
 import envConfig from '@/config';
 import { setData } from '@/utils';
 import Image from 'next/image';
+import { UseFormReturn } from 'react-hook-form';
 import z from 'zod';
 
 const introSchema = z.object({
@@ -17,7 +18,10 @@ export default function IntroForm() {
     key: ''
   };
 
-  const onSubmit = (data: z.infer<typeof introSchema>) => {
+  const onSubmit = (
+    data: z.infer<typeof introSchema>,
+    form: UseFormReturn<z.infer<typeof introSchema>>
+  ) => {
     if (data.key === envConfig.NEXT_PUBLIC_ACCESS_KEY) {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3);
@@ -25,6 +29,8 @@ export default function IntroForm() {
       setData('intro_access_granted', 'true');
       setData('intro_access_expiry', expiryDate.toISOString());
       window.location.href = '/';
+    } else {
+      form.setError('key', { message: 'Key không hợp lệ' });
     }
   };
 
