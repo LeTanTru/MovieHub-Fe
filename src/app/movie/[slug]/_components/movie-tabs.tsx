@@ -5,6 +5,7 @@ import { caption } from '@/assets';
 import { ButtonToggle } from '@/components/app/button-toggle';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { PersonCard } from '@/components/app/person-card';
+import { CircleLoading } from '@/components/loading';
 import {
   MOVIE_TAB_ACTOR,
   MOVIE_TAB_DIRECTOR,
@@ -65,6 +66,7 @@ const MotionWrapper = ({
 const MovieTabTrailer = ({ direction }: { direction: number }) => {
   const [toggle, setToggle] = useState(true);
   const { opened, open, close } = useDisclosure();
+  const [isFetching, setIsFetching] = useState(false);
 
   const movie = useMovieStore((s) => s.movie);
   const selectedSeason = useMovieStore((s) => s.selectedSeason);
@@ -101,6 +103,7 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
             toggle={toggle}
             handleToggle={handleToggle}
             text='Rút gọn'
+            disabled={isFetching}
           />
         </div>
 
@@ -115,7 +118,10 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
             transition={{
               layout: { duration: 0.15, ease: 'linear' }
             }}
-            className='cursor-pointer'
+            className={cn('cursor-pointer', {
+              'pointer-events-none relative cursor-not-allowed opacity-50 select-none':
+                isFetching
+            })}
             onClick={handlePlayTrailer}
           >
             <div
@@ -146,17 +152,26 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
                 />
                 <div className='absolute inset-0 bg-[rgba(0,0,0,0.3)] transition-colors duration-200 ease-linear group-hover:bg-[rgba(0,0,0,0.5)]'></div>
               </div>
-              <div className='hover:text-light-golden-yellow transition-color flex items-center gap-2.5 text-sm font-medium text-white duration-200 ease-linear'>
-                <div className='block shrink-0 text-xs'>
-                  <FaPlay />
+              {isFetching ? (
+                <CircleLoading />
+              ) : (
+                <div
+                  className={cn(
+                    'transition-color hover:text-light-golden-yellow flex items-center gap-2.5 text-sm font-medium text-white duration-200 ease-linear'
+                  )}
+                >
+                  <div className='block shrink-0 text-xs'>
+                    <FaPlay />
+                  </div>
+                  <div className='line-clamp-1 block truncate'>Trailer</div>
                 </div>
-                <div className='line-clamp-1 block truncate'>Trailer</div>
-              </div>
+              )}
             </div>
           </motion.div>
         </div>
       </MotionWrapper>
       <TrailerModal
+        setIsFetching={setIsFetching}
         opened={opened}
         onClose={handleCloseTrailer}
         video={trailer.video}
