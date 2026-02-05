@@ -13,17 +13,17 @@ import { logger } from '@/logger';
 export default function VideoPlayModal({
   opened,
   video,
-  onClose
+  onClose,
+  setIsFetching
 }: {
   video: VideoResType;
   opened: boolean;
   onClose: () => void;
+  setIsFetching?: (isFetching: boolean) => void;
 }) {
   const bodyRef = useRef<HTMLDivElement>(null);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
   const [token, setToken] = useState<string>('');
-  console.log('🚀 ~ VideoPlayModal ~ token:', token);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!opened || !bodyRef.current) return;
@@ -63,13 +63,14 @@ export default function VideoPlayModal({
     let intervalId: NodeJS.Timeout;
 
     const handleGetAnonymousToken = async () => {
+      setIsFetching?.(true);
       try {
         const res = await getAnonymousToken();
         setToken(res.access_token);
       } catch (err) {
         logger.error('Failed to get guest token', err);
       } finally {
-        setLoading(false);
+        setIsFetching?.(false);
       }
     };
 
@@ -80,9 +81,7 @@ export default function VideoPlayModal({
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
-
-  if (loading) return null;
+  }, [setIsFetching]);
 
   return (
     <Modal

@@ -5,17 +5,22 @@ import { cn } from '@/lib';
 export default function ButtonToggle({
   toggle,
   handleToggle,
-  text
+  text,
+  disabled
 }: {
   toggle: boolean;
   handleToggle: () => void;
   text: string;
+  disabled?: boolean;
 }) {
   return (
     <div
-      className='flex items-center gap-x-2'
       role='switch'
       aria-checked={toggle}
+      className={cn('flex items-center gap-x-2', {
+        'pointer-events-none relative cursor-not-allowed opacity-50 select-none':
+          disabled
+      })}
     >
       <div
         className={cn(
