@@ -11,7 +11,7 @@ export const useCollectionTopicListQuery = ({
   enabled?: boolean;
 } = {}) => {
   return useQuery({
-    queryKey: [`${queryKeys.COLLECTION}-topic-list`, params],
+    queryKey: [queryKeys.COLLECTION_TOPIC_LIST, params],
     queryFn: () => collectionApiRequest.getTopicList({ params }),
     enabled
   });

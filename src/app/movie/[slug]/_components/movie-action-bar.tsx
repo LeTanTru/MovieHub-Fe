@@ -11,11 +11,34 @@ import { formatRating, notify } from '@/utils';
 import Link from 'next/link';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { FaHeart, FaPlus } from 'react-icons/fa6';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default function MovieActionBar() {
+export default function MovieActionBar({
+  isLoading = false
+}: {
+  isLoading?: boolean;
+}) {
   const movie = useMovieStore((s) => s.movie);
   const { opened, open, close } = useDisclosure();
   const profile = useAuthStore((s) => s.profile);
+
+  if (isLoading)
+    return (
+      <div className='relative z-3 p-7.5'>
+        <div className='flex items-center justify-between gap-8'>
+          <Skeleton className='skeleton h-12 w-44 rounded-4xl' />
+          <div className='flex grow justify-start gap-4'>
+            {Array.from({ length: 4 }).map((_, index) => (
+              <Skeleton
+                key={`action-skeleton-${index}`}
+                className='skeleton h-12 w-20 rounded-lg'
+              />
+            ))}
+          </div>
+          <Skeleton className='skeleton h-10 w-28 rounded-4xl' />
+        </div>
+      </div>
+    );
 
   if (!movie) return null;
 

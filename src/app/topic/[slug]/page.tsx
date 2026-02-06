@@ -34,7 +34,7 @@ export default async function TopicDetailPage({
   };
 
   await queryClient.prefetchQuery({
-    queryKey: [`${queryKeys.COLLECTION_ITEM}-list`, defaultFilters],
+    queryKey: [queryKeys.COLLECTION_ITEM_LIST, defaultFilters],
     queryFn: () =>
       collectionItemApiRequest.getList({
         params: defaultFilters

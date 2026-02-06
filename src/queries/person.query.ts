@@ -13,7 +13,7 @@ export const usePersonListQuery = ({
   enabled?: boolean;
 } = {}) => {
   return useQuery({
-    queryKey: [`${queryKeys.PERSON}-list`, params],
+    queryKey: [queryKeys.PERSON_LIST, params],
     queryFn: () => personApiRequest.getList({ params }),
     enabled
   });

@@ -28,7 +28,7 @@ export default function TopicList() {
         Chủ đề
       </h3>
       <div
-        className={cn('grid', {
+        className={cn('grid max-[1537px]:grid-cols-6', {
           'grid-cols-7 gap-6': !switchToV2,
           'grid-cols-8 gap-4': switchToV2
         })}

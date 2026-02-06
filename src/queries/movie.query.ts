@@ -13,7 +13,7 @@ export const useMovieListQuery = ({
   enabled?: boolean;
 } = {}) => {
   return useQuery({
-    queryKey: [`${queryKeys.MOVIE}-list`, params],
+    queryKey: [queryKeys.MOVIE_LIST, params],
     queryFn: () => movieApiRequest.getList({ params }),
     enabled
   });
@@ -29,7 +29,7 @@ export const useMovieQuery = ({ id }: { id: string }) => {
 
 export const useSuggestionMovieListQuery = ({ id }: { id: string }) => {
   return useQuery({
-    queryKey: [`suggestion-${queryKeys.MOVIE}-list`, id],
+    queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
     queryFn: () => movieApiRequest.getSuggestionList({ id }),
     enabled: !!id
   });

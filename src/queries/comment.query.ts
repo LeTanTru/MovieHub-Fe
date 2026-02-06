@@ -11,7 +11,7 @@ export const useCommentListQuery = ({
   enabled?: boolean;
 } = {}) => {
   return useQuery({
-    queryKey: [`${queryKeys.COMMENT}-list`, params],
+    queryKey: [queryKeys.COMMENT_LIST, params],
     queryFn: () => commentApiRequest.getList({ params }),
     enabled
   });

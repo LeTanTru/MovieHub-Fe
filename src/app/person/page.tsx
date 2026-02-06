@@ -31,7 +31,7 @@ export default async function PersonPage({
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [`${queryKeys.PERSON}-list`, defaultFilters],
+    queryKey: [queryKeys.PERSON_LIST, defaultFilters],
     queryFn: () => personApiRequest.getList({ params: defaultFilters })
   });
 

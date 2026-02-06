@@ -84,7 +84,7 @@ export default async function PersonDetailPage({
   });
 
   await queryClient.prefetchQuery({
-    queryKey: [`${queryKeys.MOVIE_PERSON}-list`, defaultFilters],
+    queryKey: [queryKeys.MOVIE_PERSON_LIST, defaultFilters],
     queryFn: () => moviePersonApiRequest.getList({ params: defaultFilters })
   });
 

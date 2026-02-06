@@ -8,7 +8,7 @@ export const useCollectionItemListQuery = ({
   enabled
 }: { params?: CollectionItemSearchType; enabled?: boolean } = {}) => {
   return useQuery({
-    queryKey: [`${queryKeys.COLLECTION_ITEM}-list`, params],
+    queryKey: [queryKeys.COLLECTION_ITEM_LIST, params],
     queryFn: () => collectionItemApiRequest.getList({ params }),
     enabled
   });

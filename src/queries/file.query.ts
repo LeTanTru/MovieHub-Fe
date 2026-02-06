@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 
 export const useUploadImageMutation = () => {
   return useMutation({
-    mutationKey: [`upload-image-${queryKeys.FILE}`],
+    mutationKey: [queryKeys.FILE_UPLOAD_IMAGE],
     mutationFn: ({ file }: { file: Blob }) =>
       fileApiRequest.uploadImage({ file })
   });
@@ -12,7 +12,7 @@ export const useUploadImageMutation = () => {
 
 export const useDeleteFileMutation = () => {
   return useMutation({
-    mutationKey: [`delete-${queryKeys.FILE}`],
+    mutationKey: [queryKeys.FILE_DELETE],
     mutationFn: (body: { filePath: string }) => fileApiRequest.deleteFile(body)
   });
 };
