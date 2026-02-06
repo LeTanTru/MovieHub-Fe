@@ -21,23 +21,56 @@ import CommentList from './comment-list';
 import CommentForm from './comment-form';
 import ReviewList from './review-list';
 import { Activity } from '@/components/activity';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default function Discussion() {
+const DiscussionSkeleton = () => {
+  return (
+    <div className='relative block px-10 py-5'>
+      <div className='mb-4 flex items-center justify-between'>
+        <Skeleton className='skeleton h-5 w-40 rounded' />
+        <Skeleton className='skeleton h-8 w-32 rounded' />
+      </div>
+      <div className='mb-6'>
+        <Skeleton className='skeleton mb-4 h-16 w-full rounded' />
+        <div className='mt-12 flex flex-col gap-8'>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={`discussion-skeleton-${index}`} className='flex gap-4'>
+              <Skeleton className='skeleton h-12.5 w-12.5 rounded-full' />
+              <div className='flex grow flex-col gap-3'>
+                <Skeleton className='skeleton h-4 w-40 rounded' />
+                <Skeleton className='skeleton h-4 w-full rounded' />
+                <Skeleton className='skeleton h-4 w-3/4 rounded' />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function Discussion({
+  isLoading = false
+}: {
+  isLoading?: boolean;
+}) {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
   const [activeKey, setActiveKey] = useState<string>(DISCUSSION_TAB_COMMENT);
   const profile = useAuthStore((s) => s.profile);
 
-  const { data: commentListData } = useCommentListQuery({
-    params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
-    enabled: !!id && activeKey === DISCUSSION_TAB_COMMENT
-  });
+  const { data: commentListData, isLoading: commentListLoading } =
+    useCommentListQuery({
+      params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
+      enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_COMMENT
+    });
 
-  const { data: reviewListData } = useReviewListQuery({
-    params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
-    enabled: !!id && activeKey === DISCUSSION_TAB_REVIEW
-  });
+  const { data: reviewListData, isLoading: reviewListLoading } =
+    useReviewListQuery({
+      params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
+      enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_REVIEW
+    });
 
   const commentList = commentListData?.data?.content || [];
   const reviewList = reviewListData?.data?.content || [];
@@ -46,6 +79,13 @@ export default function Discussion() {
     [DISCUSSION_TAB_COMMENT]: commentListData?.data?.totalElements || 0,
     [DISCUSSION_TAB_REVIEW]: reviewListData?.data?.totalElements || 0
   };
+
+  const isActiveLoading =
+    activeKey === DISCUSSION_TAB_COMMENT
+      ? commentListLoading
+      : reviewListLoading;
+
+  if (isLoading) return <DiscussionSkeleton />;
 
   return (
     <div className='relative block px-10 py-5'>
@@ -60,7 +100,13 @@ export default function Discussion() {
               discussionActions.find((action) => action.key === activeKey)
                 ?.label
             }
-            &nbsp;({totalMaps[activeKey]})
+            &nbsp;(
+            {isActiveLoading ? (
+              <Skeleton className='skeleton inline-block h-4 w-8 align-middle' />
+            ) : (
+              totalMaps[activeKey]
+            )}
+            )
           </span>
         </div>
         <div
@@ -112,12 +158,12 @@ export default function Discussion() {
             {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
           </div>
         )}
-        <CommentForm />
+        <CommentForm isLoading={isActiveLoading} />
         <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
-          <CommentList comments={commentList} />
+          <CommentList comments={commentList} isLoading={commentListLoading} />
         </Activity>
         <Activity visible={activeKey === DISCUSSION_TAB_REVIEW}>
-          <ReviewList reviews={reviewList} />
+          <ReviewList reviews={reviewList} isLoading={reviewListLoading} />
         </Activity>
       </div>
     </div>

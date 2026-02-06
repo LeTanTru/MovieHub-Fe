@@ -1,9 +1,24 @@
 import { NoData } from '@/components/no-data';
-import ReviewItem from './review-item';
+import ReviewItem, { ReviewItemSkeleton } from './review-item';
 import { ReviewResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 
-export default function ReviewList({ reviews }: { reviews: ReviewResType[] }) {
+export default function ReviewList({
+  reviews,
+  isLoading = false
+}: {
+  reviews: ReviewResType[];
+  isLoading?: boolean;
+}) {
+  if (isLoading)
+    return (
+      <div className='mt-12 flex flex-col justify-between gap-8'>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <ReviewItemSkeleton key={`review-skeleton-${index}`} />
+        ))}
+      </div>
+    );
+
   if (!reviews.length)
     return (
       <NoData

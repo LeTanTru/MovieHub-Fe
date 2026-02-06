@@ -17,7 +17,7 @@ export const useLoginGoogleQuery = ({
   loginType: string | number;
 }) => {
   return useQuery({
-    queryKey: [`get-${queryKeys.LOGIN_GOOGLE}`, loginType],
+    queryKey: [queryKeys.GET_LOGIN_GOOGLE, loginType],
     queryFn: () => authApiRequest.getGoogleLoginUrl({ loginType }),
     enabled: false
   });

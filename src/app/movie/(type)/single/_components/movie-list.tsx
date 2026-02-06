@@ -33,7 +33,7 @@ export default function MovieList() {
         <h3 className='max-1600:text-2xl m-0 mb-6 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           Phim lẻ
         </h3>
-        {movieListLoading ? (
+        {!movieListLoading ? (
           <MovieGridSkeleton />
         ) : movieList.length === 0 ? (
           <NoData />

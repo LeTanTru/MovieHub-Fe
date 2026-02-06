@@ -8,8 +8,8 @@ import { renderImageUrl } from '@/utils';
 import { useMovieStore } from '@/store';
 import MovieContent from './movie-content';
 import MovieInfo from './movie-info';
-import MovieSkeleton from './movie-skeleton';
 import { useShallow } from 'zustand/shallow';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Movie({ id }: { id: string }) {
   const { setMovie, setMoviePersons } = useMovieStore(
@@ -49,7 +49,16 @@ export default function Movie({ id }: { id: string }) {
     setMoviePersons(moviePersons);
   }, [movie, moviePersons, setMovie, setMoviePersons]);
 
-  if (movieLoading || !movie) return <MovieSkeleton />;
+  if (movieLoading || !movie)
+    return (
+      <div className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
+        <Skeleton className='skeleton h-0 w-full rounded-b-2xl pt-[52.5%]' />
+        <div className='relative z-3 mx-auto -mt-50 mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
+          <MovieInfo isLoading />
+          <MovieContent isLoading />
+        </div>
+      </div>
+    );
 
   return (
     <>

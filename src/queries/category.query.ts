@@ -13,7 +13,7 @@ export const useCategoryListQuery = ({
   enabled?: boolean;
 } = {}) => {
   return useQuery({
-    queryKey: [`${queryKeys.CATEGORY}-list`, params],
+    queryKey: [queryKeys.CATEGORY_LIST, params],
     queryFn: () => categoryApiRequest.getList({ params }),
     enabled
   });

@@ -54,7 +54,7 @@ export default async function CountryPage({
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [`${queryKeys.MOVIE}-list`, defaultFilters],
+    queryKey: [queryKeys.MOVIE_LIST, defaultFilters],
     queryFn: () => movieApiRequest.getList({ params: defaultFilters })
   });
 

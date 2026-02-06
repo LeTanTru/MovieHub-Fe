@@ -16,7 +16,7 @@ export const useProfileQuery = ({
 
 export const useUpdateProfileMutation = () => {
   return useMutation({
-    mutationKey: [`update-${queryKeys.PROFILE}`],
+    mutationKey: [queryKeys.PROFILE_UPDATE],
     mutationFn: (body: UpdateProfileBodyType) =>
       accountApiRequest.updateProfile(body),
     onSuccess: async () => {

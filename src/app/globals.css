@@ -50,7 +50,7 @@
   --color-statuary: #9fa0a5;
   --color-main-color: var(--color-gray-300);
   --color-fixed-header: #070a18;
-  --color-main-background: rgb(21, 20, 32);
+  --color-main-background: #101820;
   --color-navigation: rgba(21, 20, 32, 0.9);
   --color-navigation-mobile: rgb(15, 23, 43);
   --color-auth-layout: #1a1f32;
@@ -192,13 +192,13 @@
   .skeleton {
     position: relative;
     overflow: hidden;
-    background-color: oklch(0.1807 0.0581 267.75);
+    background-color: #1c232b;
     will-change: background-position;
     background-image: linear-gradient(
       135deg,
       transparent 0%,
       transparent 40%,
-      oklch(0.3623 0.0154 259.81) 50%,
+      rgb(57, 62, 70) 50%,
       transparent 60%,
       transparent 100%
     );

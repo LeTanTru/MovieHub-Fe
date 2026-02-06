@@ -34,6 +34,7 @@ import { Activity } from '@/components/activity';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { defaultAvatar } from '@/assets';
 import { useShallow } from 'zustand/shallow';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ActorCell = ({ actor }: { actor: PersonResType }) => {
   return (
@@ -63,7 +64,42 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
   );
 };
 
-export default function MovieInfo() {
+const MovieInfoSkeleton = () => {
+  return (
+    <div className='bg-main-background/60 flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
+      <Skeleton className='skeleton mb-4 h-52 w-full rounded-md' />
+      <Skeleton className='skeleton mb-2 h-6 w-3/4 rounded' />
+      <Skeleton className='skeleton mb-6 h-4 w-1/2 rounded' />
+      <div className='mb-4 flex gap-2'>
+        <Skeleton className='skeleton h-6 w-16 rounded' />
+        <Skeleton className='skeleton h-6 w-16 rounded' />
+        <Skeleton className='skeleton h-6 w-16 rounded' />
+      </div>
+      <div className='mb-5 flex flex-col gap-2'>
+        <Skeleton className='skeleton h-4 w-full rounded' />
+        <Skeleton className='skeleton h-4 w-5/6 rounded' />
+        <Skeleton className='skeleton h-4 w-2/3 rounded' />
+      </div>
+      <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div
+            key={`actor-skeleton-${index}`}
+            className='flex flex-col items-center gap-3'
+          >
+            <Skeleton className='skeleton h-20 w-20 rounded-full' />
+            <Skeleton className='skeleton h-4 w-16 rounded' />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default function MovieInfo({
+  isLoading = false
+}: {
+  isLoading?: boolean;
+}) {
   const { movie, moviePersons, selectedSeason } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,
@@ -139,6 +175,10 @@ export default function MovieInfo() {
   );
 
   const releaseDate = currentSeason?.releaseDate || movie?.releaseDate;
+
+  if (isLoading) {
+    return <MovieInfoSkeleton />;
+  }
 
   if (!movie || !moviePersons) return null;
 

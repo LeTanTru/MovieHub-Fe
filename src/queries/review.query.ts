@@ -11,7 +11,7 @@ export const useReviewListQuery = ({
   enabled?: boolean;
 } = {}) => {
   return useQuery({
-    queryKey: [`${queryKeys.REVIEW}-list`, params],
+    queryKey: [queryKeys.REVIEW_LIST, params],
     queryFn: () => reviewApiRequest.getList({ params }),
     enabled
   });

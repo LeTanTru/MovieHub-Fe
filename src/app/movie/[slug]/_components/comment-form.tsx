@@ -7,10 +7,27 @@ import { notify } from '@/utils';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export default function CommentForm() {
+export default function CommentForm({
+  isLoading = false
+}: {
+  isLoading?: boolean;
+}) {
   const [toggle, setToggle] = useState<boolean>(false);
   const profile = useAuthStore((s) => s.profile);
+
+  if (isLoading)
+    return (
+      <div className='bg-comment-form flex flex-col gap-2 rounded-[12px] p-2'>
+        <Skeleton className='skeleton h-28 w-full rounded-md' />
+        <div className='flex items-center gap-4'>
+          <Skeleton className='skeleton h-8 w-24 rounded' />
+          <div className='grow'></div>
+          <Skeleton className='skeleton h-10 w-20 rounded' />
+        </div>
+      </div>
+    );
 
   const handleToggle = () => {
     setToggle((prev) => !prev);

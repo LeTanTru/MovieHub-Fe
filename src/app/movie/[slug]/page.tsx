@@ -94,22 +94,22 @@ export default async function MoviePage({
   });
 
   await queryClient.prefetchQuery({
-    queryKey: [`${queryKeys.MOVIE_PERSON}-list`, moviePersonFilters],
+    queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
     queryFn: () => moviePersonApiRequest.getList({ params: moviePersonFilters })
   });
 
   await queryClient.prefetchQuery({
-    queryKey: [`suggestion-${queryKeys.MOVIE}-list`, id],
+    queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
     queryFn: () => movieApiRequest.getSuggestionList({ id })
   });
 
   await queryClient.prefetchQuery({
-    queryKey: [`${queryKeys.COMMENT}-list`, commentFilters],
+    queryKey: [queryKeys.COMMENT_LIST, commentFilters],
     queryFn: () => commentApiRequest.getList({ params: commentFilters })
   });
 
   await queryClient.prefetchQuery({
-    queryKey: [`${queryKeys.REVIEW}-list`, reviewFilters],
+    queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
     queryFn: () => reviewApiRequest.getList({ params: reviewFilters })
   });
 

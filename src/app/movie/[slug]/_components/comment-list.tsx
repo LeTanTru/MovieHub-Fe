@@ -2,17 +2,50 @@ import { NoData } from '@/components/no-data';
 import CommentItem from './comment-item';
 import { CommentResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const CommentItemSkeleton = () => {
+  return (
+    <div className='flex-start flex gap-4'>
+      <Skeleton className='skeleton h-12.5 w-12.5 rounded-full' />
+      <div className='flex grow flex-col gap-3'>
+        <div className='flex items-center gap-2'>
+          <Skeleton className='skeleton h-4 w-24 rounded' />
+          <Skeleton className='skeleton h-4 w-16 rounded' />
+        </div>
+        <Skeleton className='skeleton h-4 w-full rounded' />
+        <Skeleton className='skeleton h-4 w-3/4 rounded' />
+        <div className='flex items-center gap-3'>
+          <Skeleton className='skeleton h-4 w-10 rounded' />
+          <Skeleton className='skeleton h-4 w-10 rounded' />
+          <Skeleton className='skeleton h-4 w-14 rounded' />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function CommentList({
-  comments
+  comments,
+  isLoading = false
 }: {
   comments: CommentResType[];
+  isLoading?: boolean;
 }) {
+  if (isLoading)
+    return (
+      <div className='mt-12 flex flex-col justify-between gap-8'>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <CommentItemSkeleton key={`comment-skeleton-${index}`} />
+        ))}
+      </div>
+    );
+
   if (!comments.length)
     return (
       <NoData
         className='dark:bg-background/30 mt-4 min-h-30 rounded-lg px-8 py-12 opacity-50'
-        content='Chưa có đánh giá nào'
+        content='Chưa có bình luận nào'
         size={50}
         src={emptyDiscussion.src}
       />
