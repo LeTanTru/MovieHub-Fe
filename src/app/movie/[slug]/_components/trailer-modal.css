@@ -1,15 +1,45 @@
 .trailer-modal {
+  overflow: hidden;
+
   & .body-wrapper {
     &:is(.dark *) {
-      background-color: var(--color-review-modal);
+      background-color: transparent;
     }
+
     width: 80vw;
-    height: unset;
-    min-height: unset;
+    height: auto;
+    max-height: 100vh;
+    min-height: auto;
+
+    & > div:first-child {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.8) 0%,
+        rgba(0, 0, 0, 0.4) 70%,
+        transparent 100%
+      );
+      padding: 0 16px;
+      border-radius: inherit;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
     & .body {
-      height: 100%;
+      height: auto;
+      max-height: 100vh;
       width: 100%;
       aspect-ratio: 16 / 9;
+      overflow: hidden;
+
+      & > div {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 }
