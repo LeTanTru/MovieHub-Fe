@@ -24,6 +24,20 @@ export default function VideoPlayModal({
   const bodyRef = useRef<HTMLDivElement>(null);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
   const [token, setToken] = useState<string>('');
+  const [isAnimationComplete, setIsAnimationComplete] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (opened) {
+      setIsAnimationComplete(false);
+      const timer = setTimeout(() => {
+        setIsAnimationComplete(true);
+      }, 200);
+      return () => clearTimeout(timer);
+    } else {
+      setIsAnimationComplete(false);
+    }
+  }, [opened]);
 
   useEffect(() => {
     if (!opened || !bodyRef.current) return;
@@ -35,7 +49,7 @@ export default function VideoPlayModal({
       }
     };
 
-    const timeoutId = setTimeout(updateHeight, 100);
+    const timeoutId = setTimeout(updateHeight, 200);
 
     const resizeObserver = new ResizeObserver(updateHeight);
     resizeObserver.observe(bodyRef.current);
@@ -83,6 +97,17 @@ export default function VideoPlayModal({
     };
   }, [setIsFetching]);
 
+  useEffect(() => {
+    if (opened) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  });
+
   return (
     <Modal
       title={video.name}
@@ -110,6 +135,7 @@ export default function VideoPlayModal({
       >
         <VideoPlayer
           auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
+          autoPlay={isAnimationComplete}
           duration={video.duration}
           introEnd={video.introEnd}
           introStart={video.introStart}

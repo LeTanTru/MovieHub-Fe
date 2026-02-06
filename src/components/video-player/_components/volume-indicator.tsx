@@ -39,11 +39,12 @@ export default function VolumeIndicator() {
           className={cn(
             'pointer-events-none absolute inset-0 top-25 z-50 flex h-full items-center justify-center',
             {
-              'top-100': currentAction === 'volume'
+              'top-100 max-[1537px]:top-75 max-[1200px]:top-55':
+                currentAction === 'volume'
             }
           )}
         >
-          <div className='rounded-lg bg-black/60 px-8 py-4 text-2xl font-semibold text-white backdrop-blur-sm'>
+          <div className='rounded-lg bg-black/60 px-8 py-4 text-2xl font-semibold text-white shadow-[0px_0px_10px_2px] shadow-zinc-800 backdrop-blur-sm'>
             {Math.round(volume * 100)}
             <span className='text-sm'>%</span>
           </div>

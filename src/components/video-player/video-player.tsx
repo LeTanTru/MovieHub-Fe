@@ -35,7 +35,7 @@ import {
   defaultLayoutIcons,
   DefaultVideoLayoutSlots
 } from '@vidstack/react/player/layouts/default';
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib';
 
 type IndicatorAction = 'initial' | 'play-pause' | 'volume' | 'none';
@@ -51,6 +51,7 @@ export const useIndicator = () => useContext(IndicatorContext);
 
 export default function VideoPlayer({
   auth,
+  autoPlay = true,
   duration,
   introEnd,
   introStart,
@@ -61,9 +62,12 @@ export default function VideoPlayer({
   thumbnailUrl,
   vttUrl,
   className,
-  token
+  token,
+  prev,
+  next
 }: {
   auth: boolean;
+  autoPlay?: boolean;
   duration: number;
   introEnd: number;
   introStart: number;
@@ -75,11 +79,19 @@ export default function VideoPlayer({
   vttUrl: string;
   className?: string;
   token?: string;
+  prev?: boolean;
+  next?: boolean;
 }) {
   const playerRef = useRef<MediaPlayerInstance>(null);
   const [showSkip, setShowSkip] = useState<boolean>(true);
   const [currentAction, setCurrentAction] =
     useState<IndicatorAction>('initial');
+
+  useEffect(() => {
+    if (autoPlay && playerRef.current) {
+      playerRef.current.play();
+    }
+  }, [autoPlay]);
 
   const handleTimeChange = (detail: MediaTimeUpdateEventDetail) => {
     const { currentTime } = detail;
@@ -98,7 +110,7 @@ export default function VideoPlayer({
         crossOrigin
         playsInline
         preferNativeHLS={false}
-        autoPlay
+        autoPlay={autoPlay}
         src={source}
         fullscreenOrientation={'none'}
         onProviderChange={
@@ -109,7 +121,7 @@ export default function VideoPlayer({
         onVolumeChange={() => setCurrentAction('volume')}
         volume={0}
         className={cn(
-          'video-player relative h-full rounded-none! border-none!',
+          'video-player relative h-full rounded-lg! border-none!',
           className
         )}
         onTimeUpdate={handleTimeChange}
@@ -134,8 +146,8 @@ export default function VideoPlayer({
             captionButton: <CaptionButton />,
             beforeSettingsMenu: (
               <>
-                <PreviousButton />
-                <NextButton />
+                {prev && <PreviousButton />}
+                {next && <NextButton />}
                 <SeekBackwardButton />
                 <SeekForwardButton />
               </>
