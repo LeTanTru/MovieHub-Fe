@@ -2,7 +2,7 @@
 
 import { useProfileQuery } from '@/queries';
 import { useAppLoadingStore, useAuthStore } from '@/store';
-import { getAccessTokenFromLocalStorage } from '@/utils';
+import { getAccessTokenFromLocalStorage, getData, removeDatas } from '@/utils';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -48,8 +48,8 @@ export default function AppProvider({
 }
 
 export const checkAccessExpiry = (): boolean => {
-  const accessGranted = localStorage.getItem('intro_access_granted');
-  const expiryDate = localStorage.getItem('intro_access_expiry');
+  const accessGranted = getData('intro_access_granted');
+  const expiryDate = getData('intro_access_expiry');
 
   if (!accessGranted || !expiryDate) {
     return false;
@@ -59,15 +59,9 @@ export const checkAccessExpiry = (): boolean => {
   const expiry = new Date(expiryDate);
 
   if (now > expiry) {
-    localStorage.removeItem('intro_access_granted');
-    localStorage.removeItem('intro_access_expiry');
+    removeDatas(['intro_access_granted', 'intro_access_expiry']);
     return false;
   }
 
   return true;
-};
-
-export const clearAccess = () => {
-  localStorage.removeItem('intro_access_granted');
-  localStorage.removeItem('intro_access_expiry');
 };

@@ -84,7 +84,9 @@ export default function ButtonLoginGoogle() {
           if (profile.data?.data) {
             setProfile(profile.data?.data);
           }
-          window.location.href = route.home.path;
+          setTimeout(() => {
+            window.location.href = route.home.path;
+          }, 500);
         }
       } catch (error) {
         logger.error('Error during Google login:', error);

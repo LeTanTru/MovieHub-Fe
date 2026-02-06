@@ -17,6 +17,7 @@ import {
 } from '@/queries';
 import ButtonLoginGoogle from './button-login-google';
 import { route } from '@/routes';
+import { Separator } from '@/components/ui/separator';
 
 export default function LoginForm() {
   const { refetch: getProfile } = useProfileQuery();
@@ -50,7 +51,9 @@ export default function LoginForm() {
         if (profile.data?.data) {
           setProfile(profile.data?.data);
         }
-        window.location.href = route.home.path;
+        setTimeout(() => {
+          window.location.href = route.home.path;
+        }, 500);
       } else {
         notify.error('Email hoặc mật khẩu không đúng');
       }
@@ -109,7 +112,7 @@ export default function LoginForm() {
             </Row>
             <Row>
               <Col span={24}>
-                <div className='text-muted-foreground text-right text-sm transition-all duration-200 ease-linear hover:text-white'>
+                <div className='text-muted-foreground hover:text-light-golden-yellow text-right text-sm transition-all duration-200 ease-linear'>
                   <Link
                     onClick={handleClearForgotPasswordData}
                     href={route.forgotPassword.path}
@@ -123,7 +126,7 @@ export default function LoginForm() {
             <Button
               type='submit'
               variant='primary'
-              className='w-full'
+              className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80 w-full'
               disabled={
                 !isFormChanged || loginLoading || setCookieServerLoading
               }
@@ -143,13 +146,16 @@ export default function LoginForm() {
 
       <ButtonLoginGoogle />
 
-      <div className='bg-accent mt-4 h-px w-full'></div>
+      <Separator
+        orientation='horizontal'
+        className='mt-4 h-[0.5px]! bg-gray-500'
+      />
 
       <div className='text-muted-foreground mt-4 text-center text-sm'>
         Chưa có tài khoản? &nbsp;
         <Link
           href={route.register.path}
-          className='transition-all duration-200 ease-linear hover:text-white'
+          className='hover:text-light-golden-yellow transition-all duration-200 ease-linear'
         >
           Đăng ký ngay
         </Link>

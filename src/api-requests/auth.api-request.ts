@@ -59,7 +59,7 @@ const authApiRequest = {
     }),
   getAnonymousToken: () =>
     http.post<AnonymousResType>(apiConfig.user.getAnonymousToken),
-  changePassword: (body: ChangePasswordBodyType) =>
+  changePassword: (body: Omit<ChangePasswordBodyType, 'confirmNewPassword'>) =>
     http.post<ApiResponse<any>>(apiConfig.user.changePassword, { body })
 };
 

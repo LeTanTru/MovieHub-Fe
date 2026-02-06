@@ -20,6 +20,7 @@ import { logger } from '@/logger';
 import { useRegisterMutation } from '@/queries';
 import { route } from '@/routes';
 import { useNavigate } from '@/hooks';
+import { Separator } from '@/components/ui/separator';
 
 export default function RegisterForm() {
   const navigate = useNavigate();
@@ -138,7 +139,7 @@ export default function RegisterForm() {
             <Button
               type='submit'
               variant='primary'
-              className='w-full'
+              className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/50 dark:disabled:hover:bg-light-golden-yellow/50 w-full'
               disabled={registerLoading || !isFormChanged}
               loading={registerLoading}
             >
@@ -148,13 +149,16 @@ export default function RegisterForm() {
         )}
       </BaseForm>
 
-      <div className='bg-accent mt-4 h-px w-full'></div>
+      <Separator
+        orientation='horizontal'
+        className='mt-4 h-[0.5px]! bg-gray-500'
+      />
 
       <div className='text-muted-foreground mt-4 text-center text-sm'>
         Đã có tài khoản? &nbsp;
         <Link
           href={route.login.path}
-          className='transition-all duration-200 ease-linear hover:text-white'
+          className='hover:text-light-golden-yellow transition-all duration-200 ease-linear'
         >
           Đăng nhập ngay
         </Link>

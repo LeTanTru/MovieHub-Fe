@@ -35,6 +35,7 @@ import { route } from '@/routes';
 import { ArrowLeft } from 'lucide-react';
 import { Activity } from '@/components/activity';
 import { useNavigate } from '@/hooks';
+import { Separator } from '@/components/ui/separator';
 
 type ForgotPasswordStepType = 1 | 2;
 
@@ -44,7 +45,7 @@ const COOLDOWN_TIME = 60 * 1000; // COOL DOWN BETWEEN EACH RESENDS
 
 export default function ForgotPasswordForm() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<ForgotPasswordStepType>(1);
+  const [step, setStep] = useState<ForgotPasswordStepType>(2);
   const [resendData, setResendData] = useState<{
     count: number;
     timestamp: number;
@@ -304,7 +305,7 @@ export default function ForgotPasswordForm() {
                 <Button
                   type='submit'
                   variant='primary'
-                  className='w-full'
+                  className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80 w-full'
                   disabled={requestForgotPasswordLoading || !isFormChanged}
                   loading={requestForgotPasswordLoading}
                 >
@@ -364,8 +365,10 @@ export default function ForgotPasswordForm() {
                     </span>
                   </Col>
                 </Row>
-
-                <div className='bg-accent mb-4 h-px w-full'></div>
+                <Separator
+                  orientation='horizontal'
+                  className='mb-4 h-[0.5px]! bg-gray-500'
+                />
                 <Row>
                   <Col span={24}>
                     <PasswordField
@@ -393,6 +396,7 @@ export default function ForgotPasswordForm() {
                     <Button
                       type='submit'
                       variant='primary'
+                      className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80'
                       disabled={
                         forgotPasswordLoading || !form.formState.isValid
                       }
@@ -419,12 +423,15 @@ export default function ForgotPasswordForm() {
         }}
       </BaseForm>
 
-      <div className='bg-accent mt-4 h-px w-full'></div>
+      <Separator
+        orientation='horizontal'
+        className='mt-4 h-[0.5px]! bg-gray-500'
+      />
 
       <div className='text-muted-foreground mt-4 text-center text-sm'>
         <Link
           href={route.login.path}
-          className='flex items-center justify-center gap-x-2 transition-all duration-200 ease-linear hover:text-white'
+          className='hover:text-light-golden-yellow flex items-center justify-center gap-x-2 transition-all duration-200 ease-linear'
           onClick={handleClearForgotPasswordData}
         >
           <ArrowLeft />

@@ -234,25 +234,33 @@ export default function MovieInfo() {
         <div className='font-medium whitespace-nowrap text-white'>
           Đạo diễn:
         </div>
-        {directors.map((director, index) => (
-          <span
-            key={`info-director-${director.id}`}
-            className='text-foreground/80 font-light'
-          >
-            {director.otherName}
-            {index < directors.length - 1 && ','}
-          </span>
-        ))}
+        <span className='text-foreground/80 font-light'>
+          {directors.length > 0
+            ? directors.map((director) => director.otherName).join(', ')
+            : 'Đang cập nhật'}
+        </span>
       </div>
-      <div className='relative mb-8 block border-none p-0'>
-        <div className='mb-4 min-h-10 text-xl leading-normal font-semibold text-white'>
+      <div
+        className={cn('mb-5 flex-wrap items-end gap-2 text-sm', {
+          flex: actors.length === 0
+        })}
+      >
+        <div
+          className={cn('font-medium whitespace-nowrap text-white', {
+            'mb-8 text-2xl': actors.length > 0
+          })}
+        >
           Diễn viên:
         </div>
-        <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
-          {actors.map((actor) => (
-            <ActorCell key={`info-actor-${actor.id}`} actor={actor} />
-          ))}
-        </div>
+        {actors.length > 0 ? (
+          <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
+            {actors.map((actor) => (
+              <ActorCell key={`info-actor-${actor.id}`} actor={actor} />
+            ))}
+          </div>
+        ) : (
+          <span className='text-foreground/80 font-light'>Đang cập nhật</span>
+        )}
       </div>
     </div>
   );

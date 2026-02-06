@@ -112,6 +112,21 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
   }
 ];
 
+export const dropdownAvatarAccountList: DropdownAvatarItemType[] = [
+  {
+    link: route.user.profile.path,
+    icon: User2,
+    className: 'size-5',
+    title: 'Tài khoản'
+  },
+  {
+    link: route.user.changePassword.path,
+    icon: LockKeyhole,
+    className: 'size-5',
+    title: 'Đổi mật khẩu'
+  }
+];
+
 export const userSidebarList: UserSidebarItemType[] = [
   {
     link: route.user.favorite.path,

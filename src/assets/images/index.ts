@@ -12,6 +12,7 @@ import ratingOk from './rating-ok.webp';
 import ratingBoring from './rating-boring.webp';
 import ratingBad from './rating-bad.webp';
 import emptyDiscussion from './empty-discussion.svg';
+import defaultMovie from './default-movie.webp';
 
 export {
   defaultAvatar,
@@ -27,5 +28,6 @@ export {
   ratingOk,
   ratingBoring,
   ratingBad,
-  emptyDiscussion
+  emptyDiscussion,
+  defaultMovie
 };

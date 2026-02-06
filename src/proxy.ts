@@ -1,8 +1,8 @@
 import { storageKeys } from '@/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
-const publicPaths = ['/login', '/register', '/forgot-password'];
-const privatePaths = ['/user'];
+const publicPaths = ['/login', '/register', '/forgot-password', '/verify-otp'];
+const privatePaths = ['/user', '/account'];
 
 export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -26,6 +26,8 @@ export const config = {
     '/user',
     '/login',
     '/register',
-    '/forgot-password'
+    '/forgot-password',
+    '/verify-otp',
+    '/account/:path*'
   ]
 };

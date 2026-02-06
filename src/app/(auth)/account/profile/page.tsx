@@ -1,4 +1,4 @@
-import { ProfileForm } from '@/app/user/profile/_components';
+import { ProfileForm } from '@/app/(auth)/account/profile/_components';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ProfilePage() {
   return (
-    <div className='1919:p-6 w-full p-0'>
+    <div className='mx-auto flex w-full max-w-200 flex-col text-sm text-white'>
       <ProfileForm />
     </div>
   );

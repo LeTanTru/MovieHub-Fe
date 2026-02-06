@@ -25,8 +25,11 @@ export const renderVideoUrl = (url?: string) => {
   return url.startsWith('https') ? url : `${AppConstants.videoRootUrl}${url}`;
 };
 
-export const renderImageUrl = (url: string | undefined | null) => {
-  if (!url) return '';
+export const renderImageUrl = (
+  url: string | undefined | null,
+  defaultUrl?: string
+) => {
+  if (!url) return defaultUrl || '';
   return url.startsWith('https') ? url : `${AppConstants.contentRootUrl}${url}`;
 };
 
