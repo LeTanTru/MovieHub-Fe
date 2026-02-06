@@ -1,4 +1,4 @@
-import { ChangePasswordForm } from '@/app/user/change-password/_components';
+import { ChangePasswordForm } from '@/app/(auth)/account/change-password/_components';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ChangePasswordPage() {
   return (
-    <div className='1919:p-6 w-full p-0'>
+    <div className='mx-auto flex w-full max-w-125 flex-col gap-8 text-sm text-white'>
       <ChangePasswordForm />
     </div>
   );

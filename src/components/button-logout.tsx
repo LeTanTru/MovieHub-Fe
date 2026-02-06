@@ -32,7 +32,9 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
         await removeCookieMutate();
         setProfile(null);
         notify.success('Đăng xuất thành công');
-        window.location.href = route.home.path;
+        setTimeout(() => {
+          window.location.href = route.home.path;
+        }, 500);
       }
     } catch (error) {
       logger.error('Logout failed:', error);

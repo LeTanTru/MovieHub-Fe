@@ -99,7 +99,7 @@ export const useVerifyOtpMutation = () => {
 export const useChangePasswordMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.CHANGE_PASSWORD],
-    mutationFn: (body: ChangePasswordBodyType) =>
+    mutationFn: (body: Omit<ChangePasswordBodyType, 'confirmNewPassword'>) =>
       authApiRequest.changePassword(body)
   });
 };

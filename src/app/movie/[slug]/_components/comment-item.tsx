@@ -83,11 +83,11 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
           <div className='flex items-center gap-4'>
             <LikeIcon
               size={16}
-              className='hover:text-light-golden-yellow transition-colors duration-200'
+              iconClassName='hover:text-light-golden-yellow transition-colors duration-200'
             />
             <DislikeIcon
               size={16}
-              className='hover:text-dislike-comment transition-colors duration-200'
+              iconClassName='hover:text-dislike-comment transition-colors duration-200'
             />
           </div>
           <button

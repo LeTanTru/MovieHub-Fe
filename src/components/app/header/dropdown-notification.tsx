@@ -61,7 +61,7 @@ export default function DropdownNotification() {
                     </TabsTrigger>
                   </TabsList>
                 </div>
-                <div className=''>
+                <div>
                   <Button
                     variant='ghost'
                     className='text-slate-400 hover:bg-transparent! hover:text-white'

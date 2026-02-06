@@ -1,7 +1,7 @@
 'use client';
 
 import { logo } from '@/assets';
-import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
+import { Button, Col, PasswordField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import envConfig from '@/config';
 import { setData } from '@/utils';
@@ -25,6 +25,7 @@ export default function IntroForm() {
     if (data.key === envConfig.NEXT_PUBLIC_ACCESS_KEY) {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 3);
+      // expiryDate.setSeconds(expiryDate.getSeconds() + 5);
 
       setData('intro_access_granted', 'true');
       setData('intro_access_expiry', expiryDate.toISOString());
@@ -33,17 +34,6 @@ export default function IntroForm() {
       form.setError('key', { message: 'Key không hợp lệ' });
     }
   };
-
-  // const onSubmit = (data: z.infer<typeof introSchema>) => {
-  //   if (data.key === envConfig.NEXT_PUBLIC_ACCESS_KEY) {
-  //     const expiryDate = new Date();
-  //     expiryDate.setSeconds(expiryDate.getSeconds() + 5);
-
-  //     setData('intro_access_granted', 'true');
-  //     setData('intro_access_expiry', expiryDate.toISOString());
-  //     window.location.href = '/';
-  //   }
-  // };
 
   return (
     <BaseForm

@@ -280,6 +280,7 @@ export default function VerifyOtpForm() {
                   <Button
                     type='submit'
                     variant='primary'
+                    className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80'
                     disabled={verifyOtpLoading || !isFormChanged}
                     loading={verifyOtpLoading}
                   >

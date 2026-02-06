@@ -14,10 +14,20 @@ type AnimatedIconProps = {
   className?: string;
   onClick?: () => void;
   color?: string;
+  iconClassName?: string;
 };
 
 const LikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
-  ({ size = 24, className = '', onClick, color = 'currentColor' }, ref) => {
+  (
+    {
+      size = 24,
+      className = '',
+      onClick,
+      color = 'currentColor',
+      iconClassName = 'icon'
+    },
+    ref
+  ) => {
     const [scope, animate] = useAnimate();
 
     const start = async () => {
@@ -64,7 +74,7 @@ const LikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           justifyContent: 'center'
         }}
       >
-        <FaCircleUp />
+        <FaCircleUp className={iconClassName} />
       </motion.div>
     );
   }

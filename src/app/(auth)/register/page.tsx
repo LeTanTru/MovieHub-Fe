@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function RegisterPage() {
   return (
-    <div className='mx-auto flex w-full max-w-125 flex-col gap-8 text-sm text-white'>
+    <div className='mx-auto flex w-full max-w-125 flex-col text-sm text-white'>
       <RegisterForm />
     </div>
   );
