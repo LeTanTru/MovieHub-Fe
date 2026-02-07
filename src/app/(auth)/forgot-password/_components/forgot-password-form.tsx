@@ -45,7 +45,7 @@ const COOLDOWN_TIME = 60 * 1000; // COOL DOWN BETWEEN EACH RESENDS
 
 export default function ForgotPasswordForm() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<ForgotPasswordStepType>(2);
+  const [step, setStep] = useState<ForgotPasswordStepType>(1);
   const [resendData, setResendData] = useState<{
     count: number;
     timestamp: number;

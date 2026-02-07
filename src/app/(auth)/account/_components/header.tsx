@@ -1,11 +1,9 @@
 'use client';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAuthStore } from '@/store';
 import DropdownAvatar from './dropdown-avatar';
-import { useEffect, useState } from 'react';
-import { cn } from '@/lib';
-import { Button } from '@/components/form';
-import { useAppLoading, useNavigate } from '@/hooks';
+import { useAppLoading } from '@/hooks';
 import { route } from '@/routes';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,42 +12,18 @@ import { logoWithText } from '@/assets';
 export default function Header() {
   const profile = useAuthStore((s) => s.profile);
   const loading = useAppLoading();
-  const navigate = useNavigate();
-  const [isFixed, setIsFixed] = useState<boolean>(false);
-
-  useEffect(() => {
-    const handleOnScroll = () => {
-      const scrollTop = window.scrollY;
-      setIsFixed(scrollTop > 0);
-    };
-
-    window.addEventListener('scroll', handleOnScroll);
-
-    return () => window.removeEventListener('scroll', handleOnScroll);
-  }, []);
-
-  const handleLogin = () => {
-    navigate(route.login.path);
-  };
 
   return (
     <header className='max-800:relative max-800:top-auto max-800:right-auto max-800:left-auto fixed top-0 right-0 left-0 z-10 block'>
       <div
-        className={cn(
-          '1368:pr-10 1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear',
-          {
-            'bg-fixed-header': isFixed
-          }
-        )}
+        className={
+          '1368:pr-10 1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear'
+        }
       >
         <div
-          className={cn(
-            'flex items-center justify-between gap-2 transition-all duration-200 ease-linear',
-            {
-              'h-fixed-header': isFixed,
-              'h-header': !isFixed
-            }
-          )}
+          className={
+            'h-header flex items-center justify-between gap-2 transition-all duration-200 ease-linear'
+          }
         >
           <div className='1368:gap-8 flex h-full flex-1 items-center gap-4'>
             <Link href={route.home.path} className='shrink-0'>
@@ -62,8 +36,7 @@ export default function Header() {
               />
             </Link>
           </div>
-          {/* Right side */}
-          <div className='h-header 1368:flex hidden items-center gap-2'>
+          <div className='h-header 1368:flex items-center gap-2'>
             <AnimatePresence mode='wait' initial={false}>
               {loading ? (
                 <motion.div
@@ -75,18 +48,6 @@ export default function Header() {
                   style={{ marginRight: 24 }}
                 >
                   <div className='skeleton h-10 w-10 rounded-full!' />
-                </motion.div>
-              ) : !profile ? (
-                <motion.div
-                  key='auth'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Button onClick={handleLogin} className='w-full rounded-full'>
-                    Đăng nhập
-                  </Button>
                 </motion.div>
               ) : (
                 <div className='flex h-full items-center gap-x-5'>

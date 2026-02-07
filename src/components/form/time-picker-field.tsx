@@ -56,25 +56,20 @@ export default function TimePickerField<T extends FieldValues>({
       name={name}
       control={control}
       render={({ field, fieldState }) => {
+        // Track whether the original value was a number
+        const isNumberValue = typeof field.value === 'number';
+
         let hour = 0,
           minute = 0,
           second = 0;
 
-        if (typeof field.value === 'number') {
+        if (isNumberValue) {
+          // Convert number (total seconds) to h:m:s for display
           hour = Math.floor(field.value / 3600);
           minute = Math.floor((field.value % 3600) / 60);
           second = field.value % 60;
-
-          // const hh = pad(Math.floor(field.value / 3600));
-          // const mm = pad(Math.floor((field.value % 3600) / 60));
-          // const ss = pad(field.value % 60);
-
-          // const formatted = `${hh}:${mm}:${ss}`;
-
-          // if (String(field.value) !== formatted) {
-          //   setTimeout(() => field.onChange(formatted), 0);
-          // }
         } else if (typeof field.value === 'string') {
+          // Parse string format for display
           const parts = field.value.split(':').map((v: string) => parseInt(v));
           hour = isNaN(parts[0]) ? 0 : parts[0];
           minute = isNaN(parts[1]) ? 0 : parts[1];
@@ -89,14 +84,21 @@ export default function TimePickerField<T extends FieldValues>({
           const mm = type === 'minute' ? val : minute;
           const ss = type === 'second' ? val : second;
 
-          let result = '';
-          if (timeFormat === 'HH:mm:ss')
-            result = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
-          else if (timeFormat === 'HH:mm') result = `${pad(hh)}:${pad(mm)}`;
-          else if (timeFormat === 'mm:ss') result = `${pad(mm)}:${pad(ss)}`;
-          field.onChange(result);
-          onChange?.(result);
-          // field.onChange(hh * 3600 + mm * 60 + ss);
+          if (isNumberValue) {
+            // Store as number (total seconds) if original value was a number
+            const totalSeconds = hh * 3600 + mm * 60 + ss;
+            field.onChange(totalSeconds);
+            onChange?.(String(totalSeconds));
+          } else {
+            // Store as string if original value was a string (or undefined/null)
+            let result = '';
+            if (timeFormat === 'HH:mm:ss')
+              result = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+            else if (timeFormat === 'HH:mm') result = `${pad(hh)}:${pad(mm)}`;
+            else if (timeFormat === 'mm:ss') result = `${pad(mm)}:${pad(ss)}`;
+            field.onChange(result);
+            onChange?.(result);
+          }
         };
 
         return (
