@@ -124,7 +124,7 @@ export default function ChangePasswordForm() {
                 </Col>
               </Row>
               <Row className='mb-0 justify-end'>
-                <Col span={8}>
+                <Col span={12}>
                   <Button
                     type='button'
                     variant='outline'
@@ -133,7 +133,7 @@ export default function ChangePasswordForm() {
                     Hủy
                   </Button>
                 </Col>
-                <Col span={8}>
+                <Col span={12}>
                   <Button
                     type='submit'
                     variant='primary'
