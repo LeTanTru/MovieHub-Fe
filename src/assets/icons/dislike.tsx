@@ -2,22 +2,10 @@
 
 import { forwardRef, useImperativeHandle } from 'react';
 import { motion, useAnimate } from 'framer-motion';
-import { FaCircleUp } from 'react-icons/fa6';
+import { FaCircleDown } from 'react-icons/fa6';
+import { AnimatedIconHandle, AnimatedIconProps } from '@/types';
 
-type AnimatedIconHandle = {
-  startAnimation: () => Promise<void>;
-  stopAnimation: () => void;
-};
-
-type AnimatedIconProps = {
-  size?: number;
-  className?: string;
-  onClick?: () => void;
-  color?: string;
-  iconClassName?: string;
-};
-
-const LikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
+const DislikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
   (
     {
       size = 24,
@@ -74,12 +62,12 @@ const LikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           justifyContent: 'center'
         }}
       >
-        <FaCircleUp className={iconClassName} />
+        <FaCircleDown className={iconClassName} />
       </motion.div>
     );
   }
 );
 
-LikeIcon.displayName = 'LikeIcon';
+DislikeIcon.displayName = 'DislikeIcon';
 
-export default LikeIcon;
+export default DislikeIcon;

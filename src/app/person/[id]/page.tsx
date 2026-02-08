@@ -4,15 +4,20 @@ import envConfig from '@/config';
 import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
+  FAVOURITE_TYPE_PERSON,
   MAX_PAGE_SIZE,
   PERSON_KIND_ACTOR,
   queryKeys
 } from '@/constants';
-import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
+import {
+  favouriteApiRequest,
+  moviePersonApiRequest,
+  personApiRequest
+} from '@/api-requests';
 import { MovieList, PersonSidebar } from '@/app/person/[id]/_components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/components/providers';
-import { MoviePersonSearchType } from '@/types';
+import { FavouriteGetType, MoviePersonSearchType } from '@/types';
 
 export async function generateStaticParams() {
   const persons = await personApiRequest.getList({
@@ -29,7 +34,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { id } = await params;
 
-  const res = await personApiRequest.getById({ id });
+  const res = await personApiRequest.getById(id);
   const plainDescription = stripHtml(
     res.data?.bio ?? 'Thông tin diễn viên'
   ).slice(0, 160);
@@ -42,16 +47,16 @@ export async function generateMetadata(
     : previousImages;
 
   return {
-    title: `Thông tin diễn viên ${res.data?.otherName}`,
+    title: `Diễn viên ${res.data?.otherName}`,
     description: plainDescription,
     openGraph: {
-      title: `Thông tin diễn viên ${res.data?.otherName}`,
+      title: `Diễn viên ${res.data?.otherName}`,
       description: plainDescription,
       images
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Thông tin diễn viên ${res.data?.otherName}`,
+      title: `Diễn viên ${res.data?.otherName}`,
       description: plainDescription,
       images
     },
@@ -78,9 +83,14 @@ export default async function PersonDetailPage({
     ...filters
   };
 
+  const favoriteFilters: FavouriteGetType = {
+    targetId: id,
+    type: FAVOURITE_TYPE_PERSON
+  };
+
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.PERSON, id],
-    queryFn: () => personApiRequest.getById({ id })
+    queryFn: () => personApiRequest.getById(id)
   });
 
   await queryClient.prefetchQuery({
@@ -88,11 +98,16 @@ export default async function PersonDetailPage({
     queryFn: () => moviePersonApiRequest.getList({ params: defaultFilters })
   });
 
+  // await queryClient.prefetchQuery({
+  //   queryKey: [queryKeys.FAVOURITE, favoriteFilters],
+  //   queryFn: () => favouriteApiRequest.get(favoriteFilters)
+  // });
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className='max-1120:flex-col max-1120:px-0 relative mx-auto flex w-full max-w-410 items-stretch justify-between gap-0 px-5 py-0'>
-        <PersonSidebar id={id} />
-        <MovieList id={id} />
+        <PersonSidebar />
+        <MovieList />
       </div>
     </HydrationBoundary>
   );

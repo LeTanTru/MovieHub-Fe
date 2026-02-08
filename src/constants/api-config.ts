@@ -259,6 +259,32 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true,
       ignoreAuth: true
     }
+  },
+  favourite: {
+    create: {
+      baseUrl: `${AppConstants.apiUrl}/v1/favourite/create`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    delete: {
+      baseUrl: `${AppConstants.apiUrl}/v1/favourite/delete/:id`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    get: {
+      baseUrl: `${AppConstants.apiUrl}/v1/favourite/get`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/favourite/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    }
   }
 });
 

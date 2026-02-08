@@ -14,8 +14,8 @@ const route = defineRoute({
     path: '/'
   },
   user: {
-    favorite: {
-      path: '/user/favorite'
+    favourite: {
+      path: '/user/favourite'
     },
     notification: {
       path: '/user/notification'

@@ -24,20 +24,6 @@ export default function VideoPlayModal({
   const bodyRef = useRef<HTMLDivElement>(null);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
   const [token, setToken] = useState<string>('');
-  const [isAnimationComplete, setIsAnimationComplete] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    if (opened) {
-      setIsAnimationComplete(false);
-      const timer = setTimeout(() => {
-        setIsAnimationComplete(true);
-      }, 200);
-      return () => clearTimeout(timer);
-    } else {
-      setIsAnimationComplete(false);
-    }
-  }, [opened]);
 
   useEffect(() => {
     if (!opened || !bodyRef.current) return;
@@ -135,7 +121,6 @@ export default function VideoPlayModal({
       >
         <VideoPlayer
           auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
-          autoPlay={isAnimationComplete}
           duration={video.duration}
           introEnd={video.introEnd}
           introStart={video.introStart}

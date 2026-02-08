@@ -19,10 +19,10 @@ export const usePersonListQuery = ({
   });
 };
 
-export const usePersonQuery = ({ id }: { id: string }) => {
+export const usePersonQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.PERSON, id],
-    queryFn: () => personApiRequest.getById({ id }),
+    queryFn: () => personApiRequest.getById(id),
     enabled: !!id
   });
 };

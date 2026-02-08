@@ -10,7 +10,6 @@ import {
 import { cn } from '@/lib';
 import { ProfileType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuthStore } from '@/store';
 import { usePathname } from 'next/navigation';
 import ButtonLogout from '@/components/button-logout';
 import Link from 'next/link';
@@ -20,10 +19,11 @@ import { renderImageUrl } from '@/utils';
 import { List, ListItem } from '@/components/list';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { defaultAvatar } from '@/assets';
+import { useAuth } from '@/hooks';
 
 export default function Sidebar() {
   const path = usePathname();
-  const profile = useAuthStore((s) => s.profile);
+  const { profile } = useAuth();
 
   return (
     <div className='bg-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 w-75 shrink-0 rounded-lg p-10 pb-6'>
@@ -47,11 +47,11 @@ export default function Sidebar() {
                   item.className,
                   {
                     'fill-white':
-                      path === route.user.favorite.path &&
-                      item.link === route.user.favorite.path,
+                      path === route.user.favourite.path &&
+                      item.link === route.user.favourite.path,
                     'fill-none stroke-2':
-                      path !== route.user.favorite.path &&
-                      item.link === route.user.favorite.path
+                      path !== route.user.favourite.path &&
+                      item.link === route.user.favourite.path
                   },
                   'max-800:size-4'
                 )}

@@ -81,7 +81,7 @@ export const genderIconMaps: Record<number, IconType> = {
 
 export const dropdownAvatarList: DropdownAvatarItemType[] = [
   {
-    link: route.user.favorite.path,
+    link: route.user.favourite.path,
     icon: Heart,
     className: 'fill-white stroke-0 size-5',
     title: 'Yêu thích'
@@ -129,7 +129,7 @@ export const dropdownAvatarAccountList: DropdownAvatarItemType[] = [
 
 export const userSidebarList: UserSidebarItemType[] = [
   {
-    link: route.user.favorite.path,
+    link: route.user.favourite.path,
     icon: Heart,
     className: 'fill-white stroke-0 size-5',
     title: 'Yêu thích'
@@ -212,42 +212,46 @@ export const movieTypes = {
 };
 
 export const queryKeys = {
-  CATEGORY: 'category',
   CATEGORY_LIST: 'category-list',
-  COLLECTION_ITEM: 'collection-item',
+  CATEGORY: 'category',
+  CHANGE_PASSWORD: 'change-password',
   COLLECTION_ITEM_LIST: 'collection-item-list',
-  COLLECTION: 'collection',
+  COLLECTION_ITEM: 'collection-item',
   COLLECTION_TOPIC_LIST: 'collection-topic-list',
-  COMMENT: 'comment',
+  COLLECTION: 'collection',
   COMMENT_LIST: 'comment-list',
-  FILE: 'file',
-  FILE_UPLOAD_IMAGE: 'upload-image-file',
+  COMMENT: 'comment',
+  CREATE_FAVOURITE: 'create-favourite',
+  DELETE_FAVOURITE: 'delete-favourite',
+  FAVOURITE_LIST: 'favourite-list',
+  FAVOURITE: 'favourite',
   FILE_DELETE: 'delete-file',
+  FILE_UPLOAD_IMAGE: 'upload-image-file',
+  FILE: 'file',
   FORGOT_PASSWORD: 'forgot-password',
   GET_LOGIN_GOOGLE: 'get-login-google',
   LOGIN_GOOGLE: 'login-google',
   LOGIN: 'login',
   LOGOUT: 'logout',
-  MOVIE_ITEM: 'movie-item',
   MOVIE_ITEM_LIST: 'movie-item-list',
-  MOVIE_PERSON: 'movie-person',
-  MOVIE_PERSON_LIST: 'movie-person-list',
-  MOVIE: 'movie',
+  MOVIE_ITEM: 'movie-item',
   MOVIE_LIST: 'movie-list',
+  MOVIE_PERSON_LIST: 'movie-person-list',
+  MOVIE_PERSON: 'movie-person',
   MOVIE_SUGGESTION_LIST: 'suggestion-movie-list',
-  PERSON: 'person',
+  MOVIE: 'movie',
   PERSON_LIST: 'person-list',
-  PROFILE: 'profile',
+  PERSON: 'person',
   PROFILE_UPDATE: 'update-profile',
+  PROFILE: 'profile',
   REGISTER: 'register',
   REMOVE_COOKIE_SERVER: 'remove-cookie-server',
   REQUEST_FORGOT_PASSWORD: 'request-forgot-password',
   RESEND_OTP: 'resend-otp',
-  REVIEW: 'review',
   REVIEW_LIST: 'review-list',
+  REVIEW: 'review',
   SET_COOKIE_SERVER: 'set-cookie-server',
-  VERIFY_OTP: 'verify-otp',
-  CHANGE_PASSWORD: 'change-password'
+  VERIFY_OTP: 'verify-otp'
 };
 
 export const countries = [

@@ -15,7 +15,7 @@ const collectionApiRequest = {
         params
       }
     ),
-  getById: ({ id }: { id: string }) =>
+  getById: (id: string) =>
     http.get<ApiResponse<CollectionResType>>(apiConfig.collection.getById, {
       pathParams: {
         id

@@ -14,9 +14,11 @@ import {
   MovieGridByYear,
   MovieGridSkeleton
 } from '@/components/app/movie-grid';
-import { ActionButton } from '@/components/app/action-button';
+import { ButtonAction } from '@/components/app/button-action';
+import { useParams } from 'next/navigation';
 
-export default function MovieList({ id }: { id: string }) {
+export default function MovieList() {
+  const { id } = useParams<{ id: string }>();
   const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
 
   const { data: moviePersonListData, isLoading: movieListLoading } =
@@ -50,7 +52,7 @@ export default function MovieList({ id }: { id: string }) {
                 role='tablist'
               >
                 {movieListActions.map((action) => (
-                  <ActionButton
+                  <ButtonAction
                     key={action.key}
                     label={action.label}
                     action={action.key}

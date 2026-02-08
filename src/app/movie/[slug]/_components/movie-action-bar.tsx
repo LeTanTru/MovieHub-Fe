@@ -3,24 +3,47 @@
 import ReviewModal from './review-modal';
 import { MessageIcon } from '@/assets';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
-import { Button, ToolTip } from '@/components/form';
-import { useDisclosure } from '@/hooks';
+import { Button } from '@/components/form';
+import { useAuth, useDisclosure } from '@/hooks';
 import { route } from '@/routes';
-import { useAuthStore, useMovieStore } from '@/store';
-import { formatRating, notify } from '@/utils';
+import { useMovieStore } from '@/store';
+import { formatRating, getIdFromSlug, notify } from '@/utils';
 import Link from 'next/link';
 import { FaTelegramPlane } from 'react-icons/fa';
-import { FaHeart, FaPlus } from 'react-icons/fa6';
+import { FaPlus } from 'react-icons/fa6';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ButtonLikeDetail } from '@/components/app/button-like';
+import { useParams } from 'next/navigation';
 
 export default function MovieActionBar({
   isLoading = false
 }: {
   isLoading?: boolean;
 }) {
-  const movie = useMovieStore((s) => s.movie);
+  const { slug } = useParams<{ slug: string }>();
+  const id = getIdFromSlug(slug);
   const { opened, open, close } = useDisclosure();
-  const profile = useAuthStore((s) => s.profile);
+  const { isAuthenticated } = useAuth();
+  const movie = useMovieStore((s) => s.movie);
+
+  const handleOpenReviewModal = () => {
+    if (!isAuthenticated) {
+      notify.error(
+        <span>
+          Vui lòng&nbsp;
+          <Link
+            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            href={route.login.path}
+          >
+            đăng nhập
+          </Link>
+          &nbsp;để đánh giá phim!
+        </span>
+      );
+      return;
+    }
+    open();
+  };
 
   if (isLoading)
     return (
@@ -42,48 +65,17 @@ export default function MovieActionBar({
 
   if (!movie) return null;
 
-  const handleOpenReviewModal = () => {
-    if (!profile) {
-      notify.error(
-        <span>
-          Vui lòng&nbsp;
-          <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
-          >
-            đăng nhập
-          </Link>
-          &nbsp;để đánh giá phim!
-        </span>
-      );
-      return;
-    }
-    open();
-  };
-
   return (
     <>
       <div className='relative z-3 p-7.5'>
         <div className='flex items-center justify-between gap-8'>
           <ButtonWatchNow
             className='text-watch-now inline-flex min-h-15 shrink-0 items-center justify-center gap-4 rounded-4xl bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8! py-4! text-base font-semibold opacity-100 shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] transition-all duration-200 ease-linear hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]'
-            href={`${route.watch.path}/${movie.slug}.${movie.id}`}
+            href={`${route.watch.path}/${slug}`}
           />
           {/* Left */}
           <div className='flex grow justify-start gap-4'>
-            <ToolTip
-              className='bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
-              title='Thêm vào danh sách yêu thích để nhận thông báo cập nhật về phi nhé !'
-              side='top'
-            >
-              <Button
-                className='group h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
-                variant='ghost'
-              >
-                <FaHeart className='group-hover:text-light-golden-yellow transition-all duration-200 ease-linear' />
-                Yêu thích
-              </Button>
-            </ToolTip>
+            <ButtonLikeDetail targetId={id} />
             <Button
               className='group h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
               variant='ghost'

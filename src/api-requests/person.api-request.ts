@@ -12,7 +12,7 @@ const personApiRequest = {
     http.get<ApiResponseList<PersonResType>>(apiConfig.person.getList, {
       params
     }),
-  getById: ({ id }: { id: string }) =>
+  getById: (id: string) =>
     http.get<ApiResponse<PersonResType>>(apiConfig.person.getById, {
       pathParams: {
         id: id

@@ -12,13 +12,13 @@ const movieApiRequest = {
     http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
       params
     }),
-  getById: ({ id }: { id: string }) =>
+  getById: (id: string) =>
     http.get<ApiResponse<MovieResType>>(apiConfig.movie.getById, {
       pathParams: {
         id
       }
     }),
-  getSuggestionList: ({ id }: { id: string }) =>
+  getSuggestionList: (id: string) =>
     http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.getSuggestionList, {
       pathParams: {
         id

@@ -68,3 +68,6 @@ export const MOVIE_TAB_SUGGESTION = 'suggestion';
 
 export const VIDEO_SOURCE_TYPE_INTERNAL = 1;
 export const VIDEO_SOURCE_TYPE_EXTERNAL = 2;
+
+export const FAVOURITE_TYPE_MOVIE = 1;
+export const FAVOURITE_TYPE_PERSON = 2;

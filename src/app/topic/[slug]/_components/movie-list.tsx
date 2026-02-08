@@ -18,7 +18,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
   } = useQueryParams<{ page: string }>();
 
   const { data: collectionData, isLoading: collectionLoading } =
-    useCollectionQuery({ id: collectionId });
+    useCollectionQuery(collectionId);
 
   const collection = collectionData?.data;
 

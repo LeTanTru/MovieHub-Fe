@@ -2,22 +2,10 @@
 
 import { forwardRef, useImperativeHandle } from 'react';
 import { motion, useAnimate } from 'framer-motion';
-import { FaCircleDown } from 'react-icons/fa6';
+import { AnimatedIconHandle, AnimatedIconProps } from '@/types';
+import { RiTelegram2Fill } from 'react-icons/ri';
 
-type AnimatedIconHandle = {
-  startAnimation: () => Promise<void>;
-  stopAnimation: () => void;
-};
-
-type AnimatedIconProps = {
-  size?: number;
-  className?: string;
-  onClick?: () => void;
-  color?: string;
-  iconClassName?: string;
-};
-
-const DislikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
+const TelegramIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
   (
     {
       size = 24,
@@ -34,19 +22,16 @@ const DislikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
       await animate(
         scope.current,
         {
-          scale: [1, 1.2, 1.2, 1],
-          rotate: [0, 45, -45, 0]
+          y: [0, -10, 10, 0],
+          x: [0, 10, -10, 0],
+          opacity: [1, 0, 0, 1]
         },
         { duration: 0.6, ease: 'linear' }
       );
     };
 
     const stop = () => {
-      animate(
-        scope.current,
-        { scale: 1, rotate: 0, y: 0 },
-        { duration: 0.2, ease: 'linear' }
-      );
+      animate(scope.current, { y: 0 }, { duration: 0.2, ease: 'linear' });
     };
 
     useImperativeHandle(ref, () => ({
@@ -74,12 +59,12 @@ const DislikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
           justifyContent: 'center'
         }}
       >
-        <FaCircleDown className={iconClassName} />
+        <RiTelegram2Fill className={iconClassName} />
       </motion.div>
     );
   }
 );
 
-DislikeIcon.displayName = 'DislikeIcon';
+TelegramIcon.displayName = 'TelegramIcon';
 
-export default DislikeIcon;
+export default TelegramIcon;

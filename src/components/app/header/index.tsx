@@ -1,7 +1,6 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAuthStore } from '@/store';
 import DropdownAvatar from './dropdown-avatar';
 import NavigationMenu from './navigation';
 import DropdownNotification from './dropdown-notification';
@@ -13,11 +12,11 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
 import { Button } from '@/components/form';
 import { Search, X } from 'lucide-react';
-import { useAppLoading, useNavigate } from '@/hooks';
+import { useAppLoading, useAuth, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 
 export default function Header() {
-  const profile = useAuthStore((s) => s.profile);
+  const { profile } = useAuth();
   const loading = useAppLoading();
   const navigate = useNavigate();
   const [isFixed, setIsFixed] = useState<boolean>(false);

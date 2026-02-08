@@ -17,10 +17,10 @@ export const useCollectionTopicListQuery = ({
   });
 };
 
-export const useCollectionQuery = ({ id }: { id: string }) => {
+export const useCollectionQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.COLLECTION, id],
-    queryFn: () => collectionApiRequest.getById({ id }),
+    queryFn: () => collectionApiRequest.getById(id),
     enabled: !!id
   });
 };

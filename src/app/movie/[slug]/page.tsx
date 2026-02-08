@@ -1,5 +1,6 @@
 import {
   commentApiRequest,
+  favouriteApiRequest,
   movieApiRequest,
   moviePersonApiRequest
 } from '@/api-requests';
@@ -11,10 +12,12 @@ import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
   DEFAULT_TABLE_PAGE_START,
+  FAVOURITE_TYPE_MOVIE,
   queryKeys
 } from '@/constants';
 import {
   CommentSearchType,
+  FavouriteGetType,
   MoviePersonSearchType,
   ReviewSearchType
 } from '@/types';
@@ -37,7 +40,7 @@ export async function generateMetadata(
   const { slug } = await params;
   const id = slug.split('.')[1];
 
-  const res = await movieApiRequest.getById({ id });
+  const res = await movieApiRequest.getById(id);
   const previousImages = (await parent).openGraph?.images || [];
   const images = res.data?.posterUrl
     ? [`${AppConstants.contentRootUrl}${res.data.posterUrl}`, ...previousImages]
@@ -70,6 +73,12 @@ export default async function MoviePage({
 }) {
   const { slug } = await params;
   const id = slug.split('.')[1];
+
+  const favoriteFilters: FavouriteGetType = {
+    targetId: id,
+    type: FAVOURITE_TYPE_MOVIE
+  };
+
   const moviePersonFilters: MoviePersonSearchType = {
     movieId: id
   };
@@ -90,8 +99,13 @@ export default async function MoviePage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE, id],
-    queryFn: () => movieApiRequest.getById({ id })
+    queryFn: () => movieApiRequest.getById(id)
   });
+
+  // await queryClient.prefetchQuery({
+  //   queryKey: [queryKeys.FAVOURITE, favoriteFilters],
+  //   queryFn: () => favouriteApiRequest.get(favoriteFilters)
+  // });
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
@@ -100,7 +114,7 @@ export default async function MoviePage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
-    queryFn: () => movieApiRequest.getSuggestionList({ id })
+    queryFn: () => movieApiRequest.getSuggestionList(id)
   });
 
   await queryClient.prefetchQuery({

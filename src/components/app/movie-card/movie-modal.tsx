@@ -3,7 +3,6 @@
 import './movie-modal.css';
 import { ageRatings, MOVIE_TYPE_SERIES, MOVIE_TYPE_SINGLE } from '@/constants';
 import { Button } from '@/components/form';
-import { FaHeart } from 'react-icons/fa6';
 import { FaInfoCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MovieResType } from '@/types';
@@ -19,6 +18,7 @@ import { route } from '@/routes';
 import { cn } from '@/lib';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Activity } from '@/components/activity';
+import { ButtonLikePopup } from '@/components/app/button-like';
 
 export default function MovieModal({
   movie,
@@ -75,10 +75,7 @@ export default function MovieModal({
                   href={`${route.watch.path}/${movie.slug}.${movie.id}`}
                   className='bg-light-golden-yellow! hover:bg-light-golden-yellow/80! w-full text-black!'
                 />
-                <Button className='border border-white/50 bg-transparent! text-white'>
-                  <FaHeart />
-                  Thích
-                </Button>
+                <ButtonLikePopup targetId={movie.id} refetch={!!pos} />
                 <Link
                   href={`${route.movie.path}/${movie.slug}.${movie.id}`}
                   className='block grow'

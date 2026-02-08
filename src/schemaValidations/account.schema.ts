@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const profileSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   avatarPath: z.string().optional(),
   email: z
     .string()

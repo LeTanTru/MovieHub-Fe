@@ -4,20 +4,22 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import { AvatarField, Button } from '@/components/form';
 import { DEFAULT_DATE_FORMAT, genderOptions } from '@/constants';
 import { formatDate, renderImageUrl, sanitizeText } from '@/utils';
-import { Heart, X } from 'lucide-react';
-import { RiTelegram2Fill } from 'react-icons/ri';
+import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaArrowDown } from 'react-icons/fa6';
-import { useDisclosure, useMobile } from '@/hooks';
+import { useDisclosure } from '@/hooks';
 import { usePersonQuery } from '@/queries';
 import PersonSidebarSkeleton from './person-sidebar-skeleton';
+import { ButtonLikePerson } from '@/components/app/button-like';
+import { ButtonSharePerson } from '@/components/app/button-share';
+import { useParams } from 'next/navigation';
 
-export default function PersonSidebar({ id }: { id: string }) {
+export default function PersonSidebar() {
+  const { id } = useParams<{ id: string }>();
   const { opened, open, close } = useDisclosure();
   const [showScrollIcon, setShowScrollIcon] = useState<boolean>(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
-  const isMobile = useMobile();
-  const { data: personData, isLoading: personLoading } = usePersonQuery({ id });
+  const { data: personData, isLoading: personLoading } = usePersonQuery(id);
   const person = personData?.data;
 
   const handleOpenModal = () => open();
@@ -51,7 +53,7 @@ export default function PersonSidebar({ id }: { id: string }) {
   );
 
   return personLoading ? (
-    <PersonSidebarSkeleton isMobile={isMobile} />
+    <PersonSidebarSkeleton />
   ) : (
     <div className='border-r-transparent-white max-1120:w-full max-1120:border-none max-1120:pr-0 max-1600:w-85 w-110 shrink-0 border-r pr-10'>
       <AvatarField
@@ -68,14 +70,8 @@ export default function PersonSidebar({ id }: { id: string }) {
       </p>
 
       <div className='mb-4 flex justify-center gap-2'>
-        <ActionButton
-          icon={<Heart className='h-4 w-4 fill-white stroke-transparent' />}
-          label='Yêu thích'
-        />
-        <ActionButton
-          icon={<RiTelegram2Fill className='h-4 w-4 fill-white' />}
-          label='Chia sẻ'
-        />
+        <ButtonLikePerson targetId={id} />
+        <ButtonSharePerson />
       </div>
 
       <div className='mb-2 flex'>
@@ -158,21 +154,6 @@ export default function PersonSidebar({ id }: { id: string }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  );
-}
-
-function ActionButton({
-  icon,
-  label
-}: {
-  icon: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <div className='flex cursor-pointer items-center gap-2 rounded-[48px] border border-white px-4 py-2 text-[13px] text-white hover:opacity-80'>
-      {icon}
-      <span>{label}</span>
     </div>
   );
 }

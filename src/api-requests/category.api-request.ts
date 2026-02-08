@@ -15,7 +15,7 @@ const categoryApiRequest = {
         ...params
       }
     }),
-  getById: ({ id }: { id: string }) =>
+  getById: (id: string) =>
     http.get<ApiResponse<CategoryResType>>(apiConfig.category.getById, {
       pathParams: {
         id

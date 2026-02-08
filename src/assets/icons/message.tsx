@@ -1,4 +1,4 @@
-export default function MessageIcon({ className }: { className?: string }) {
+const MessageIcon = ({ className }: { className?: string }) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -16,4 +16,8 @@ export default function MessageIcon({ className }: { className?: string }) {
       </g>
     </svg>
   );
-}
+};
+
+MessageIcon.displayName = 'MessageIcon';
+
+export default MessageIcon;

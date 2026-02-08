@@ -2,7 +2,7 @@ import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { motion } from 'framer-motion';
 
-export default function ActionButton({
+export default function ButtonAction({
   action,
   label,
   activeKey,
