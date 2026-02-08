@@ -34,6 +34,7 @@ export default async function MovieSinglePage({
     queryKey: [queryKeys.MOVIE_LIST, defaultFilters],
     queryFn: () => movieApiRequest.getList({ params: defaultFilters })
   });
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <MovieList />

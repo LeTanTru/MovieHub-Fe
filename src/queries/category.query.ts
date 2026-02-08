@@ -19,10 +19,10 @@ export const useCategoryListQuery = ({
   });
 };
 
-export const useCategoryQuery = ({ id }: { id: string }) => {
+export const useCategoryQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.CATEGORY, id],
-    queryFn: () => categoryApiRequest.getById({ id }),
+    queryFn: () => categoryApiRequest.getById(id),
     enabled: !!id
   });
 };

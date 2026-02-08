@@ -506,14 +506,12 @@ const MovieTabPerson = ({
 
 const MovieTabSuggestion = ({ direction }: { direction: number }) => {
   const { slug } = useParams<{ slug: string }>();
-  const movieId = getIdFromSlug(slug as string);
+  const movieId = getIdFromSlug(slug);
 
   const {
     data: suggestionMovieListData,
     isLoading: suggestionMovieListLoading
-  } = useSuggestionMovieListQuery({
-    id: movieId
-  });
+  } = useSuggestionMovieListQuery(movieId);
 
   const suggestionMovieList = suggestionMovieListData?.data || [];
 

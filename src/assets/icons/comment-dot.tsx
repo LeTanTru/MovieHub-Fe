@@ -1,4 +1,4 @@
-export default function CommentDotIcon() {
+const CommentDotIcon = () => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -15,4 +15,8 @@ export default function CommentDotIcon() {
       </g>
     </svg>
   );
-}
+};
+
+CommentDotIcon.displayName = 'CommentDotIcon';
+
+export default CommentDotIcon;

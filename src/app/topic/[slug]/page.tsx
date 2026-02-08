@@ -43,7 +43,7 @@ export default async function TopicDetailPage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.COLLECTION, collectionId],
-    queryFn: () => collectionApiRequest.getById({ id: collectionId })
+    queryFn: () => collectionApiRequest.getById(collectionId)
   });
 
   return (

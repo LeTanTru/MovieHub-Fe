@@ -15,7 +15,7 @@ import {
   genderOptions,
   profileErrorMaps
 } from '@/constants';
-import { useFileUploadManager } from '@/hooks';
+import { useAuth, useFileUploadManager } from '@/hooks';
 import { logger } from '@/logger';
 import {
   useDeleteFileMutation,
@@ -23,14 +23,13 @@ import {
   useUploadImageMutation
 } from '@/queries';
 import { updateProfileSchema } from '@/schemaValidations';
-import { useAuthStore } from '@/store';
 import { ProfileResType, UpdateProfileType } from '@/types';
 import { applyFormErrors, notify, renderImageUrl } from '@/utils';
 import { useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
 export default function ProfileForm() {
-  const profile = useAuthStore((s) => s.profile);
+  const { profile } = useAuth();
   const { mutateAsync: uploadImageMutate, isPending: uploadImageLoading } =
     useUploadImageMutation();
   const { mutateAsync: updateProfileMutate, isPending: updateProfileLoading } =
@@ -45,7 +44,7 @@ export default function ProfileForm() {
   });
 
   const defaultValues: ProfileResType = {
-    id: 0,
+    id: '',
     fullName: '',
     email: '',
     phone: '',
@@ -56,7 +55,7 @@ export default function ProfileForm() {
 
   const initialValues = useMemo<ProfileResType>(
     () => ({
-      id: profile?.id || 0,
+      id: profile?.id || '',
       fullName: profile?.fullName || '',
       email: profile?.email || '',
       phone: profile?.phone || '',

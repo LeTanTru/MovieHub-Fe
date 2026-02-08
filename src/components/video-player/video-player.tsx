@@ -4,6 +4,7 @@ import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
 import {
+  BufferingIndicator,
   CaptionButton,
   FullscreenToggleButton,
   NextButton,
@@ -35,7 +36,7 @@ import {
   defaultLayoutIcons,
   DefaultVideoLayoutSlots
 } from '@vidstack/react/player/layouts/default';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import { cn } from '@/lib';
 
 type IndicatorAction = 'initial' | 'play-pause' | 'volume' | 'none';
@@ -86,12 +87,6 @@ export default function VideoPlayer({
   const [showSkip, setShowSkip] = useState<boolean>(true);
   const [currentAction, setCurrentAction] =
     useState<IndicatorAction>('initial');
-
-  useEffect(() => {
-    if (autoPlay && playerRef.current) {
-      playerRef.current.play();
-    }
-  }, [autoPlay]);
 
   const handleTimeChange = (detail: MediaTimeUpdateEventDetail) => {
     const { currentTime } = detail;
@@ -183,6 +178,7 @@ export default function VideoPlayer({
                 <VolumeIndicator />
               </>
             ),
+            bufferingIndicator: <BufferingIndicator />,
             ...slots
           }}
         />

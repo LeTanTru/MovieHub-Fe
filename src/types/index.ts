@@ -1,4 +1,5 @@
 export * from './account.type';
+export * from './animation.type';
 export * from './api.type';
 export * from './app-loading.type';
 export * from './auth.type';
@@ -7,6 +8,7 @@ export * from './category.type';
 export * from './collection-item.type';
 export * from './collection.type';
 export * from './comment.type';
+export * from './favourite.type';
 export * from './form-error.type';
 export * from './master-data.type';
 export * from './movie-item.type';

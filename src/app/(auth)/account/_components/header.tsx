@@ -1,16 +1,15 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAuthStore } from '@/store';
 import DropdownAvatar from './dropdown-avatar';
-import { useAppLoading } from '@/hooks';
+import { useAppLoading, useAuth } from '@/hooks';
 import { route } from '@/routes';
 import Link from 'next/link';
 import Image from 'next/image';
 import { logoWithText } from '@/assets';
 
 export default function Header() {
-  const profile = useAuthStore((s) => s.profile);
+  const { profile } = useAuth();
   const loading = useAppLoading();
 
   return (

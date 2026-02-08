@@ -1,10 +1,8 @@
 'use client';
 
 import { CommentDotIcon } from '@/assets';
-import { ActionButton } from '@/components/app/action-button';
 import { useCommentListQuery, useReviewListQuery } from '@/queries';
 import { route } from '@/routes';
-import { useAuthStore } from '@/store';
 import { getIdFromSlug, renderImageUrl } from '@/utils';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
@@ -22,6 +20,8 @@ import CommentForm from './comment-form';
 import ReviewList from './review-list';
 import { Activity } from '@/components/activity';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ButtonAction } from '@/components/app/button-action';
+import { useAuth } from '@/hooks';
 
 const DiscussionSkeleton = () => {
   return (
@@ -58,7 +58,7 @@ export default function Discussion({
   const id = getIdFromSlug(slug);
 
   const [activeKey, setActiveKey] = useState<string>(DISCUSSION_TAB_COMMENT);
-  const profile = useAuthStore((s) => s.profile);
+  const { profile } = useAuth();
 
   const { data: commentListData, isLoading: commentListLoading } =
     useCommentListQuery({
@@ -114,7 +114,7 @@ export default function Discussion({
           role='tablist'
         >
           {discussionActions.map((action) => (
-            <ActionButton
+            <ButtonAction
               key={action.key}
               label={action.label}
               action={action.key}
@@ -129,9 +129,9 @@ export default function Discussion({
         {profile ? (
           <div className='mb-4 flex items-center gap-4'>
             <AvatarField
-              src={renderImageUrl(profile?.avatarPath)}
+              src={renderImageUrl(profile.avatarPath)}
               size={50}
-              alt={profile?.fullName}
+              alt={profile.fullName}
             />
             <div className='flex flex-col justify-between gap-1'>
               <small className='text-gray-400'>
@@ -141,7 +141,7 @@ export default function Discussion({
                 &nbsp;với tên
               </small>
               <span className='text font-medium text-white'>
-                {profile?.fullName}
+                {profile.fullName}
               </span>
             </div>
           </div>

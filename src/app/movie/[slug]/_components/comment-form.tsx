@@ -2,12 +2,12 @@
 
 import { ButtonToggle } from '@/components/app/button-toggle';
 import { route } from '@/routes';
-import { useAuthStore } from '@/store';
 import { notify } from '@/utils';
 import Link from 'next/link';
 import { useState } from 'react';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAuth } from '@/hooks';
 
 export default function CommentForm({
   isLoading = false
@@ -15,7 +15,7 @@ export default function CommentForm({
   isLoading?: boolean;
 }) {
   const [toggle, setToggle] = useState<boolean>(false);
-  const profile = useAuthStore((s) => s.profile);
+  const { isAuthenticated } = useAuth();
 
   if (isLoading)
     return (
@@ -34,7 +34,7 @@ export default function CommentForm({
   };
 
   const handleSubmit = () => {
-    if (!profile) {
+    if (!isAuthenticated) {
       notify.error(
         <span>
           Vui lòng&nbsp;

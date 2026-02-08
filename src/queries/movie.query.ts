@@ -19,18 +19,18 @@ export const useMovieListQuery = ({
   });
 };
 
-export const useMovieQuery = ({ id }: { id: string }) => {
+export const useMovieQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE, id],
-    queryFn: () => movieApiRequest.getById({ id }),
+    queryFn: () => movieApiRequest.getById(id),
     enabled: !!id
   });
 };
 
-export const useSuggestionMovieListQuery = ({ id }: { id: string }) => {
+export const useSuggestionMovieListQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
-    queryFn: () => movieApiRequest.getSuggestionList({ id }),
+    queryFn: () => movieApiRequest.getSuggestionList(id),
     enabled: !!id
   });
 };

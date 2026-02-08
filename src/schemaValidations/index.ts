@@ -4,6 +4,7 @@ export * from './category.schema';
 export * from './collection-item.schema';
 export * from './collection.schema';
 export * from './comment.schema';
+export * from './favourite.schema';
 export * from './movie-item.schema';
 export * from './movie-person.schema';
 export * from './movie.schema';

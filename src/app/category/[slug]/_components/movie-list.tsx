@@ -13,9 +13,8 @@ export default function MovieList({ id }: { id: string }) {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();
 
-  const { data: categoryData, isLoading: categoryLoading } = useCategoryQuery({
-    id
-  });
+  const { data: categoryData, isLoading: categoryLoading } =
+    useCategoryQuery(id);
 
   const { data: movieListData, isLoading: movieListLoading } =
     useMovieListQuery({

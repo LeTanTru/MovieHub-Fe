@@ -11,11 +11,9 @@ import {
   genderIconMaps,
   userSidebarList
 } from '@/constants';
-
-import { useClickOutside } from '@/hooks';
+import { useAuth, useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
-import { useAuthStore } from '@/store';
 import { ItemProps } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -29,7 +27,7 @@ export default function NavigationMobile({
   navigationList: ItemProps[];
 }) {
   const [open, setOpen] = useState<boolean>(false);
-  const profile = useAuthStore((s) => s.profile);
+  const { profile } = useAuth();
   const [openSub, setOpenSub] = useState<string | null>(null);
   const menuRef = useClickOutside<HTMLDivElement>(() => {
     setOpenSub(null);

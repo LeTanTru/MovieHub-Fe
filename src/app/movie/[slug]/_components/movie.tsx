@@ -18,7 +18,7 @@ export default function Movie({ id }: { id: string }) {
       setMoviePersons: s.setMoviePersons
     }))
   );
-  const { data: movieData, isLoading: movieLoading } = useMovieQuery({ id });
+  const { data: movieData, isLoading: movieLoading } = useMovieQuery(id);
   const movie: MovieResType | undefined = movieData?.data;
 
   const { data: moviePersonData } = useMoviePersonListQuery({

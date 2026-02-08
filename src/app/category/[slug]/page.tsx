@@ -22,7 +22,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const id = slug.split('.')[1];
-  const res = await categoryApiRequest.getById({ id });
+  const res = await categoryApiRequest.getById(id);
 
   return {
     title: res.data?.name
@@ -49,7 +49,7 @@ export default async function CategoryPage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.CATEGORY, id],
-    queryFn: () => categoryApiRequest.getById({ id })
+    queryFn: () => categoryApiRequest.getById(id)
   });
 
   await queryClient.prefetchQuery({
