@@ -1,4 +1,5 @@
 'use client';
+
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,7 +9,7 @@ import {
   movieListActions,
   PERSON_KIND_ACTOR
 } from '@/constants';
-import { MoviePersonResType, MovieResType } from '@/types';
+import { MoviePersonResType, MovieResType, PersonSearchType } from '@/types';
 import {
   MovieGrid,
   MovieGridByYear,
@@ -17,16 +18,18 @@ import {
 import { ButtonAction } from '@/components/app/button-action';
 import { useParams } from 'next/navigation';
 import { NoData } from '@/components/no-data';
+import { useQueryParams } from '@/hooks';
 
 export default function MovieList() {
   const { id } = useParams<{ id: string }>();
   const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
+  const { searchParams } = useQueryParams<PersonSearchType>();
 
   const { data: moviePersonListData, isLoading: movieListLoading } =
     useMoviePersonListQuery({
       params: {
         personId: id,
-        kind: PERSON_KIND_ACTOR,
+        kind: searchParams.kind || PERSON_KIND_ACTOR,
         size: MAX_PAGE_SIZE
       },
       enabled: true
@@ -81,7 +84,7 @@ export default function MovieList() {
               {movieListLoading ? (
                 <MovieGridSkeleton className='grid-cols-6' skeletonCount={12} />
               ) : movieList.length == 0 ? (
-                <NoData content='Không có phim nào' />
+                <NoData className='py-20' content='Không có phim nào' />
               ) : activeKey === MOVIE_LIST_TAB_ALL ? (
                 <MovieGrid
                   movieList={movieList}

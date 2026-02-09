@@ -285,6 +285,62 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true
     }
+  },
+  playlist: {
+    getListMovies: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/:id/movies`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    create: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/create`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    delete: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/delete/:id`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    getById: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/get/:id`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    getListByMovie: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/list-by-movie/:movieId`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    removeItem: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/remove-item`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    update: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/update`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    updateItem: {
+      baseUrl: `${AppConstants.apiUrl}/v1/playlist/update-item`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    }
   }
 });
 

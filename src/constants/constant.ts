@@ -71,3 +71,8 @@ export const VIDEO_SOURCE_TYPE_EXTERNAL = 2;
 
 export const FAVOURITE_TYPE_MOVIE = 1;
 export const FAVOURITE_TYPE_PERSON = 2;
+
+export const ACTION_DELETE_FROM_PLAYLIST = 0;
+export const ACTION_ADD_TO_PLAYLIST = 1;
+
+export const MAX_PLAYLIST_COUNT = 5;

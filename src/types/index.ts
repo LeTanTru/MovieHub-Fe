@@ -16,6 +16,7 @@ export * from './movie-person.type';
 export * from './movie.type';
 export * from './navigation-menu.type';
 export * from './person.type';
+export * from './playlist.type';
 export * from './review.type';
 export * from './search.type';
 export * from './style.type';

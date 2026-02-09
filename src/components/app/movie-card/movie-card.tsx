@@ -109,7 +109,7 @@ export default function MovieCard({
         className='group relative flex flex-col gap-3'
       >
         <Link
-          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-xs pb-[150%]'
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-lg pb-[150%]'
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}

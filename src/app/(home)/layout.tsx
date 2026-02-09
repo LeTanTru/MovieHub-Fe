@@ -1,6 +1,5 @@
 import { Footer } from '@/components/app/footer';
 import { Header } from '@/components/app/header';
-import { Container } from '@/components/layout';
 
 export default function HomeLayout({
   children
@@ -10,7 +9,7 @@ export default function HomeLayout({
   return (
     <>
       <Header />
-      <Container>{children}</Container>
+      <>{children}</>
       <Footer />
     </>
   );
