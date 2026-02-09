@@ -113,6 +113,7 @@ export default function PersonCard({
         <div
           className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
           onClick={() => onDelete(person.id)}
+          aria-label='Remove from favourite'
         >
           <X className='size-4' />
         </div>

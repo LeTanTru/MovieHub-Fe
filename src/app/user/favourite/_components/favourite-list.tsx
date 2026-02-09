@@ -5,8 +5,9 @@ import { MovieCard } from '@/components/app/movie-card';
 import { MovieGridSkeleton } from '@/components/app/movie-grid';
 import { PersonCard } from '@/components/app/person-card';
 import { PersonGridSkeleton } from '@/components/app/person-grid';
+import { Button } from '@/components/form';
 import { NoData } from '@/components/no-data';
-import Pagination from '@/components/pagination';
+import { Pagination } from '@/components/pagination';
 import {
   FAVOURITE_TYPE_MOVIE,
   FAVOURITE_TYPE_PERSON,
@@ -34,7 +35,7 @@ export default function FavouriteList() {
       page: page - 1,
       size: pageSize
     },
-    enabled: false
+    enabled: true
   });
 
   const { mutateAsync: deleteFavouriteMutate } = useDeleteFavouriteMutation();
@@ -92,10 +93,6 @@ export default function FavouriteList() {
   };
 
   useEffect(() => {
-    getFavouriteList();
-  }, [activeTab, page, getFavouriteList]);
-
-  useEffect(() => {
     setPage(1);
   }, [activeTab]);
 
@@ -107,23 +104,25 @@ export default function FavouriteList() {
         </h3>
         <div className='flex flex-wrap gap-2' role='tablist'>
           {favouriteTabs.map((tab) => (
-            <div
+            <Button
               key={tab.key}
               className={cn(
                 'min-w-25 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear',
                 {
-                  'bg-white text-black': activeTab === tab.key,
+                  'bg-white text-black hover:bg-white hover:text-black':
+                    activeTab === tab.key,
                   'bg-gunmetal-blue text-white': activeTab !== tab.key
                 }
               )}
-              role='tab-content'
+              role='tab'
               onClick={() => handleTabChange(tab.key)}
+              variant='ghost'
             >
               {tab.label}
-            </div>
+            </Button>
           ))}
         </div>
-        <AnimatePresence mode='popLayout' initial={false}>
+        <AnimatePresence mode='popLayout'>
           <motion.div
             key={activeTab}
             initial={{

@@ -1,7 +1,7 @@
 'use client';
 
-import { logoWithText } from '@/assets';
 import './body-load.css';
+import { logoWithText } from '@/assets';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 

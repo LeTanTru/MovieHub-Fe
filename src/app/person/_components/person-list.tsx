@@ -1,6 +1,6 @@
 'use client';
 
-import Pagination from '@/components/pagination';
+import { Pagination } from '@/components/pagination';
 import { usePersonListQuery } from '@/queries';
 import { DEFAULT_PAGE_SIZE, PERSON_KIND_ACTOR } from '@/constants';
 import { PersonResType } from '@/types';

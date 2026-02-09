@@ -158,12 +158,13 @@ export default function MovieCard({
         </div>
 
         {onDelete && (
-          <div
+          <button
+            aria-label='Remove from favourite'
             className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
             onClick={() => onDelete(movie.id)}
           >
             <X className='size-4' />
-          </div>
+          </button>
         )}
       </motion.div>
 
