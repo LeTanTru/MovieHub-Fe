@@ -26,7 +26,7 @@ export default function Sidebar() {
   const { profile } = useAuth();
 
   return (
-    <div className='bg-user-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 w-75 shrink-0 rounded-lg p-10 pb-6'>
+    <div className='bg-user-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 h-fit w-75 shrink-0 rounded-lg p-10 pb-6'>
       <h1 className='max-1120:mb-2 max-1120:text-center mb-8 text-xl font-bold'>
         Quản lý tài khoản
       </h1>

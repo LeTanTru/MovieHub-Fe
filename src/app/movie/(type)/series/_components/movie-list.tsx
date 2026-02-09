@@ -3,7 +3,7 @@
 import { Activity } from '@/components/activity';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
-import Pagination from '@/components/pagination';
+import { Pagination } from '@/components/pagination';
 import { DEFAULT_PAGE_SIZE, movieTypes } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';

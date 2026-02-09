@@ -1,7 +1,7 @@
 'use client';
 
-import { getAnonymousToken } from '@/app/actions/guest-token';
 import './trailer-modal.css';
+import { getAnonymousToken } from '@/app/actions/guest-token';
 import { Modal } from '@/components/modal';
 import { VideoPlayer } from '@/components/video-player';
 import { trailerMotionVariant, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';

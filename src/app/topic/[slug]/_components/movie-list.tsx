@@ -1,7 +1,7 @@
 'use client';
 
-import { Activity } from '@/components/activity';
 import './topic-detail.css';
+import { Activity } from '@/components/activity';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -10,7 +10,7 @@ import { useQueryParams } from '@/hooks';
 import { useCollectionQuery } from '@/queries';
 import { useCollectionItemListQuery } from '@/queries/collection-item.query';
 import { CollectionItemResType, MovieResType } from '@/types';
-import Pagination from '@/components/pagination';
+import { Pagination } from '@/components/pagination';
 
 export default function MovieList({ collectionId }: { collectionId: string }) {
   const {

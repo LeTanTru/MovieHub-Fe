@@ -7,7 +7,7 @@ import { useMovieListQuery } from '@/queries';
 import { countries, DEFAULT_PAGE_SIZE } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { Activity } from '@/components/activity';
-import Pagination from '@/components/pagination';
+import { Pagination } from '@/components/pagination';
 
 export default function CountryList({ countryCode }: { countryCode: string }) {
   const {

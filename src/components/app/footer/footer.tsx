@@ -124,6 +124,8 @@ export default function Footer() {
                     key={index}
                     href={url}
                     className='bg-footer-icon flex size-10 items-center justify-center rounded-full'
+                    target='_blank'
+                    rel='noreferrer'
                   >
                     <Icon className='size-3.5 shrink-0' />
                   </Link>
