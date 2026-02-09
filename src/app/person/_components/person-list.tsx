@@ -2,13 +2,12 @@
 
 import Pagination from '@/components/pagination';
 import { usePersonListQuery } from '@/queries';
-import { cn } from '@/lib';
 import { DEFAULT_PAGE_SIZE, PERSON_KIND_ACTOR } from '@/constants';
 import { PersonResType } from '@/types';
 import { Activity } from '@/components/activity';
-import PersonListSkeleton from './person-list-skeleton';
 import { useQueryParams } from '@/hooks';
-import { PersonCard } from '@/components/app/person-card';
+import { PersonGrid, PersonGridSkeleton } from '@/components/app/person-grid';
+import { NoData } from '@/components/no-data';
 
 export default function PersonList() {
   const {
@@ -30,15 +29,13 @@ export default function PersonList() {
 
   return (
     <>
-      <div className={cn('grid grid-cols-8 gap-6')}>
-        {personListLoading ? (
-          <PersonListSkeleton />
-        ) : (
-          personList.map((person) => (
-            <PersonCard person={person} key={person.id} willNavigate />
-          ))
-        )}
-      </div>
+      {personListLoading ? (
+        <PersonGridSkeleton />
+      ) : personList.length == 0 ? (
+        <NoData />
+      ) : (
+        <PersonGrid personList={personList} />
+      )}
       <Activity visible={!!totalPages}>
         <Pagination totalPages={totalPages} />
       </Activity>

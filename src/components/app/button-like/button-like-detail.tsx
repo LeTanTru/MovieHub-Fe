@@ -12,7 +12,7 @@ import {
 } from '@/queries';
 import { AnimatedIconHandle } from '@/types';
 import { notify } from '@/utils';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ButtonLikeDetail({
   targetId,
@@ -45,7 +45,7 @@ export default function ButtonLikeDetail({
     setFavouriteId(favouriteData?.data?.id ?? '');
   }, [favouriteData, isAuthenticated]);
 
-  const handleLike = useCallback(async () => {
+  const handleLike = async () => {
     heartIconRef.current?.startAnimation();
 
     if (!isAuthenticated) {
@@ -67,9 +67,9 @@ export default function ButtonLikeDetail({
         }
       }
     );
-  }, [addFavourite, targetId, isAuthenticated]);
+  };
 
-  const handleUnlike = useCallback(async () => {
+  const handleUnlike = async () => {
     if (!isAuthenticated) {
       notify.error('Vui lòng đăng nhập để sử dụng chức năng này!');
       return;
@@ -89,7 +89,7 @@ export default function ButtonLikeDetail({
         }
       });
     }
-  }, [favouriteId, removeFavourite, isAuthenticated]);
+  };
 
   return (
     <ToolTip

@@ -45,11 +45,11 @@ export default function ButtonLikePopup({
   const hasFetched = useRef(false);
 
   useEffect(() => {
-    if (refetch && !hasFetched.current) {
+    if (refetch && !hasFetched.current && isAuthenticated) {
       hasFetched.current = true;
       getFavourite();
     }
-  }, [getFavourite, refetch]);
+  }, [getFavourite, refetch, isAuthenticated]);
 
   useEffect(() => {
     setIsLiked(!!favouriteData?.result);
@@ -81,11 +81,6 @@ export default function ButtonLikePopup({
   };
 
   const handleUnlike = async () => {
-    if (!isAuthenticated) {
-      notify.error('Vui lòng đăng nhập để sử dụng chức năng này!');
-      return;
-    }
-
     if (favouriteId) {
       heartIconRef.current?.startAnimation();
 

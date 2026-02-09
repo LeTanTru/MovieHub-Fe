@@ -26,7 +26,7 @@ export default function Sidebar() {
   const { profile } = useAuth();
 
   return (
-    <div className='bg-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 w-75 shrink-0 rounded-lg p-10 pb-6'>
+    <div className='bg-user-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 w-75 shrink-0 rounded-lg p-10 pb-6'>
       <h1 className='max-1120:mb-2 max-1120:text-center mb-8 text-xl font-bold'>
         Quản lý tài khoản
       </h1>
@@ -34,8 +34,8 @@ export default function Sidebar() {
         {userSidebarList.map((item) => (
           <ListItem
             key={item.link}
-            className={cn('text-slate-400', {
-              'text-slate-100': path === item.link
+            className={cn('opacity-50', {
+              'opacity-100': path === item.link
             })}
           >
             <Link

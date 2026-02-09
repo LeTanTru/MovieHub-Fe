@@ -13,21 +13,21 @@ type UserResType = {
   group: {
     createdDate: string;
     description: string;
-    id: number;
+    id: string;
     isSystemRole: boolean;
     kind: number;
     modifiedDate: string;
     name: string;
     permissions: {
       createdDate: string;
-      id: number;
+      id: string;
       modifiedDate: string;
       permissionCode: string;
       status: number;
     }[];
     status: number;
   };
-  id: number;
+  id: string;
   kind: number;
   modifiedDate: string;
   phone: string;
@@ -37,7 +37,7 @@ type UserResType = {
 
 export type FavouriteResType = {
   createdDate: string;
-  id: number;
+  id: string;
   modifiedDate: string;
   movie: MovieResType;
   person: PersonResType;

@@ -4,20 +4,16 @@ import envConfig from '@/config';
 import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
-  FAVOURITE_TYPE_PERSON,
   MAX_PAGE_SIZE,
   PERSON_KIND_ACTOR,
   queryKeys
 } from '@/constants';
-import {
-  favouriteApiRequest,
-  moviePersonApiRequest,
-  personApiRequest
-} from '@/api-requests';
+import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
 import { MovieList, PersonSidebar } from '@/app/person/[id]/_components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/components/providers';
-import { FavouriteGetType, MoviePersonSearchType } from '@/types';
+import { ApiResponse, MoviePersonSearchType } from '@/types';
+import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const persons = await personApiRequest.getList({
@@ -47,16 +43,22 @@ export async function generateMetadata(
     : previousImages;
 
   return {
-    title: `Diễn viên ${res.data?.otherName}`,
+    title: res.data
+      ? `Diễn viên ${res.data?.otherName}`
+      : 'Không tìm thấy diễn viên',
     description: plainDescription,
     openGraph: {
-      title: `Diễn viên ${res.data?.otherName}`,
+      title: res.data
+        ? `Diễn viên ${res.data?.otherName}`
+        : 'Không tìm thấy diễn viên',
       description: plainDescription,
       images
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Diễn viên ${res.data?.otherName}`,
+      title: res.data
+        ? `Diễn viên ${res.data?.otherName}`
+        : 'Không tìm thấy diễn viên',
       description: plainDescription,
       images
     },
@@ -83,25 +85,28 @@ export default async function PersonDetailPage({
     ...filters
   };
 
-  const favoriteFilters: FavouriteGetType = {
-    targetId: id,
-    type: FAVOURITE_TYPE_PERSON
-  };
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: [queryKeys.PERSON, id],
+      queryFn: () => personApiRequest.getById(id)
+    });
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.PERSON, id],
-    queryFn: () => personApiRequest.getById(id)
-  });
+    const personData: ApiResponse<any> | undefined = queryClient.getQueryData([
+      queryKeys.PERSON,
+      id
+    ]);
+
+    if (!personData?.result) {
+      notFound();
+    }
+  } catch (_) {
+    notFound();
+  }
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_PERSON_LIST, defaultFilters],
     queryFn: () => moviePersonApiRequest.getList({ params: defaultFilters })
   });
-
-  // await queryClient.prefetchQuery({
-  //   queryKey: [queryKeys.FAVOURITE, favoriteFilters],
-  //   queryFn: () => favouriteApiRequest.get(favoriteFilters)
-  // });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

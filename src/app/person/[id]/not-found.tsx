@@ -20,15 +20,15 @@ export default function NotFound() {
               alt='404'
               width={200}
               height={200}
-              className='mx-auto h-auto w-full max-w-75'
+              className='mx-auto h-auto w-full max-w-75 opacity-50'
             />
           </div>
           <div className='mb-4 text-3xl leading-normal font-bold text-white'>
-            Lỗi 404 - Không tìm thấy trang
+            Lỗi 404 - Không tìm thấy diễn viên
           </div>
           <div className='text-statuary mb-12 text-sm'>
-            Trang bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra đường dẫn
-            hoặc quay về trang chủ.
+            Diễn viên bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra đường
+            dẫn hoặc quay về trang chủ.
           </div>
           <Link className='block w-full' href={route.home.path}>
             <Button

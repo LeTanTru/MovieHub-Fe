@@ -1,7 +1,7 @@
 'use client';
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
-import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   MAX_PAGE_SIZE,
   MOVIE_LIST_TAB_ALL,
@@ -16,6 +16,7 @@ import {
 } from '@/components/app/movie-grid';
 import { ButtonAction } from '@/components/app/button-action';
 import { useParams } from 'next/navigation';
+import { NoData } from '@/components/no-data';
 
 export default function MovieList() {
   const { id } = useParams<{ id: string }>();
@@ -63,43 +64,38 @@ export default function MovieList() {
               </div>
             )}
           </div>
-          <LayoutGroup>
-            <AnimatePresence mode='wait'>
-              <motion.div
-                key={activeKey}
-                initial={{
-                  opacity: 0,
-                  y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
-                }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{
-                  opacity: 0,
-                  y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
-                }}
-                className='block'
-              >
-                {movieListLoading ? (
-                  <MovieGridSkeleton
-                    className='grid-cols-6'
-                    skeletonCount={12}
-                  />
-                ) : movieList.length == 0 ? (
-                  'Không có phim nào'
-                ) : activeKey === MOVIE_LIST_TAB_ALL ? (
-                  <MovieGrid
-                    movieList={movieList}
-                    dir='down'
-                    className='grid-cols-6'
-                  />
-                ) : (
-                  <MovieGridByYear
-                    movieList={movieList}
-                    className='grid-cols-6'
-                  />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </LayoutGroup>
+          <AnimatePresence mode='wait'>
+            <motion.div
+              key={activeKey}
+              initial={{
+                opacity: 0,
+                y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
+              }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{
+                opacity: 0,
+                y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
+              }}
+              className='block'
+            >
+              {movieListLoading ? (
+                <MovieGridSkeleton className='grid-cols-6' skeletonCount={12} />
+              ) : movieList.length == 0 ? (
+                <NoData content='Không có phim nào' />
+              ) : activeKey === MOVIE_LIST_TAB_ALL ? (
+                <MovieGrid
+                  movieList={movieList}
+                  dir='down'
+                  className='grid-cols-6'
+                />
+              ) : (
+                <MovieGridByYear
+                  movieList={movieList}
+                  className='grid-cols-6'
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </div>

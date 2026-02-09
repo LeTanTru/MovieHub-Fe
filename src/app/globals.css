@@ -50,7 +50,7 @@
   --color-statuary: #9fa0a5;
   --color-main-color: var(--color-gray-300);
   --color-fixed-header: #070a18;
-  --color-main-background: #101820;
+  --color-main-background: #1d1d27;
   --color-navigation: rgba(21, 20, 32, 0.9);
   --color-navigation-mobile: rgb(15, 23, 43);
   --color-auth-layout: #1a1f32;
@@ -67,6 +67,10 @@
   --color-review-modal: #2a314e;
   --color-rating-active: #3556b6;
   --color-comment-input: #191b24;
+  --color-user-sidebar: #21212e;
+  --color-footer: #0f111a;
+  --color-vn-flag: #78140f;
+  --color-footer-icon: #282b3a;
 
   --breakpoint-1120: 1120px;
   --breakpoint-1359: 1359px;

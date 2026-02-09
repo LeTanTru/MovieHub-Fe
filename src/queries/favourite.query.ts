@@ -41,7 +41,7 @@ export const useFavouriteListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.FAVOURITE_LIST, params],
-    queryFn: () => favouriteApiRequest.getList(),
+    queryFn: () => favouriteApiRequest.getList({ params }),
     enabled
   });
 };

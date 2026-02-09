@@ -1,24 +1,59 @@
-import { cn } from '@/lib';
+'use client';
+
 import './person-card.css';
+import { cn } from '@/lib';
 import { route } from '@/routes';
 import { PersonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
-import { User } from 'lucide-react';
+import { User, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Activity } from '@/components/activity';
+import { motion, Transition, Variants } from 'framer-motion';
+
+type Dir = 'up' | 'down';
+
+const makeItemVariants = (dir: Dir): Variants => {
+  const delta = 10;
+  const from = dir === 'down' ? -delta : delta;
+  const toExit = dir === 'down' ? delta : -delta;
+
+  return {
+    initial: { opacity: 0, y: from, scale: 0.98, filter: 'blur(6px)' },
+    animate: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
+    exit: { opacity: 0, y: toExit, scale: 0.98, filter: 'blur(6px)' }
+  };
+};
+
+const itemTransition: Transition = {
+  opacity: { duration: 0.2, ease: [0.0, 0.0, 0.2, 1] },
+  default: { duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }
+};
 
 export default function PersonCard({
   person,
   showFullName,
-  willNavigate
+  willNavigate,
+  dir = 'up',
+  onDelete
 }: {
   person: PersonResType;
   showFullName?: boolean;
   willNavigate?: boolean;
+  dir?: Dir;
+  onDelete?: (id: string) => void;
 }) {
+  const itemVariants = makeItemVariants(dir);
   return (
-    <div className='relative overflow-hidden rounded-lg p-0'>
+    <motion.div
+      key={person.id}
+      variants={itemVariants}
+      initial='initial'
+      animate='animate'
+      exit='exit'
+      transition={itemTransition}
+      className='group relative overflow-hidden rounded-lg p-0'
+    >
       <div className='flex flex-col items-center justify-center gap-0'>
         {willNavigate ? (
           <Link
@@ -74,6 +109,14 @@ export default function PersonCard({
           </Activity>
         </div>
       </div>
-    </div>
+      {onDelete && (
+        <div
+          className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
+          onClick={() => onDelete(person.id)}
+        >
+          <X className='size-4' />
+        </div>
+      )}
+    </motion.div>
   );
 }

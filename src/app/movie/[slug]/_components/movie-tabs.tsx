@@ -495,7 +495,7 @@ const MovieTabPerson = ({
               person={person}
               key={`tab-item-actor-${person.id}`}
               showFullName
-              willNavigate={kind === PERSON_KIND_ACTOR}
+              willNavigate
             />
           ))
         )}
