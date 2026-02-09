@@ -13,6 +13,7 @@ import { renderImageUrl } from '@/utils';
 import MovieModal from './movie-modal';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
+import { X } from 'lucide-react';
 
 type Dir = 'up' | 'down';
 
@@ -29,8 +30,8 @@ const makeItemVariants = (dir: Dir): Variants => {
 };
 
 const itemTransition: Transition = {
-  opacity: { duration: 0.25, ease: [0.0, 0.0, 0.2, 1] },
-  default: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }
+  opacity: { duration: 0.2, ease: [0.0, 0.0, 0.2, 1] },
+  default: { duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }
 };
 
 const MODAL_WIDTH = 400;
@@ -38,10 +39,12 @@ const EDGE_PADDING = 20;
 
 export default function MovieCard({
   movie,
-  dir = 'up'
+  dir = 'up',
+  onDelete
 }: {
   movie: MovieResType;
   dir?: Dir;
+  onDelete?: (id: string) => void;
 }) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
@@ -98,16 +101,15 @@ export default function MovieCard({
       <motion.div
         key={movie.id}
         ref={cardRef}
-        layout
         variants={itemVariants}
         initial='initial'
         animate='animate'
         exit='exit'
         transition={itemTransition}
-        className='relative flex flex-col gap-3'
+        className='group relative flex flex-col gap-3'
       >
         <Link
-          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-xl pb-[150%]'
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-xs pb-[150%]'
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -154,6 +156,15 @@ export default function MovieCard({
             </h4>
           </Link>
         </div>
+
+        {onDelete && (
+          <div
+            className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
+            onClick={() => onDelete(movie.id)}
+          >
+            <X className='size-4' />
+          </div>
+        )}
       </motion.div>
 
       {isMounted &&

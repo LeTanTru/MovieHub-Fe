@@ -6,12 +6,21 @@ import { usePathname, useSearchParams } from 'next/navigation';
 
 type PaginationProps = {
   totalPages: number;
+  page?: number;
+  onPageChange?: (page: number) => void;
 };
 
-export default function Pagination({ totalPages }: PaginationProps) {
+export default function Pagination({
+  totalPages,
+  page,
+  onPageChange
+}: PaginationProps) {
   const pathname = usePathname();
   const params = useSearchParams();
-  const currentPage = Number(params.get('page') ?? 1);
+  const isControlled = typeof onPageChange === 'function';
+  const currentPage = isControlled
+    ? (page ?? 1)
+    : Number(params.get('page') ?? 1);
 
   const createPageLink = (page: number) => {
     if (page === 1) return pathname;
@@ -22,17 +31,33 @@ export default function Pagination({ totalPages }: PaginationProps) {
 
   if (totalPages <= 1) return null;
 
+  const handlePageClick = (nextPage: number) => {
+    if (!isControlled || nextPage === currentPage) return;
+    onPageChange?.(nextPage);
+  };
+
   const renderPage = (page: number) => {
     const isActive = page === currentPage;
     return isActive ? (
       <span
         key={page}
         className={cn(
-          'bg-background flex h-8 w-8 items-center justify-center rounded font-medium'
+          'bg-background flex h-10 w-10 items-center justify-center rounded font-medium'
         )}
       >
         {page}
       </span>
+    ) : isControlled ? (
+      <button
+        key={page}
+        type='button'
+        onClick={() => handlePageClick(page)}
+        className={cn(
+          'bg-sidebar hover:bg-muted flex h-10 w-10 items-center justify-center rounded'
+        )}
+      >
+        {page}
+      </button>
     ) : (
       <Link
         key={page}
@@ -83,12 +108,22 @@ export default function Pagination({ totalPages }: PaginationProps) {
   return (
     <div className='mx-auto mt-5 flex w-full items-center justify-center gap-2'>
       {currentPage > 1 ? (
-        <Link
-          href={createPageLink(currentPage - 1)}
-          className='bg-sidebar hover:bg-muted flex h-10 w-10 items-center justify-center rounded'
-        >
-          ‹
-        </Link>
+        isControlled ? (
+          <button
+            type='button'
+            onClick={() => handlePageClick(currentPage - 1)}
+            className='bg-sidebar hover:bg-muted flex h-10 w-10 items-center justify-center rounded'
+          >
+            ‹
+          </button>
+        ) : (
+          <Link
+            href={createPageLink(currentPage - 1)}
+            className='bg-sidebar hover:bg-muted flex h-10 w-10 items-center justify-center rounded'
+          >
+            ‹
+          </Link>
+        )
       ) : (
         <span className='flex h-10 w-10 items-center justify-center rounded opacity-50'>
           ‹
@@ -109,12 +144,22 @@ export default function Pagination({ totalPages }: PaginationProps) {
       )}
 
       {currentPage < totalPages ? (
-        <Link
-          href={createPageLink(currentPage + 1)}
-          className='bg-sidebar hover:bg-muted flex h-10 w-10 items-center justify-center rounded'
-        >
-          ›
-        </Link>
+        isControlled ? (
+          <button
+            type='button'
+            onClick={() => handlePageClick(currentPage + 1)}
+            className='bg-sidebar hover:bg-muted flex h-10 w-10 items-center justify-center rounded'
+          >
+            ›
+          </button>
+        ) : (
+          <Link
+            href={createPageLink(currentPage + 1)}
+            className='bg-sidebar hover:bg-muted flex h-10 w-10 items-center justify-center rounded'
+          >
+            ›
+          </Link>
+        )
       ) : (
         <span className='flex h-10 w-10 items-center justify-center rounded opacity-50'>
           ›

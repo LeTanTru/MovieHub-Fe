@@ -16,6 +16,8 @@ import {
   BREAKPOINT_TABLET,
   DISCUSSION_TAB_COMMENT,
   DISCUSSION_TAB_REVIEW,
+  FAVOURITE_TYPE_MOVIE,
+  FAVOURITE_TYPE_PERSON,
   GENDER_FEMALE,
   GENDER_MALE,
   GENDER_OTHER,
@@ -1608,5 +1610,16 @@ export const movieTabs = [
   {
     key: MOVIE_TAB_SUGGESTION,
     label: 'Đề xuất'
+  }
+];
+
+export const favouriteTabs = [
+  {
+    key: FAVOURITE_TYPE_MOVIE,
+    label: 'Phim'
+  },
+  {
+    key: FAVOURITE_TYPE_PERSON,
+    label: 'Diễn viên'
   }
 ];

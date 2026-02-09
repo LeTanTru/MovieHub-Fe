@@ -2,7 +2,11 @@
 
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { AvatarField, Button } from '@/components/form';
-import { DEFAULT_DATE_FORMAT, genderOptions } from '@/constants';
+import {
+  DEFAULT_DATE_FORMAT,
+  genderOptions,
+  movieTabPersonTitles
+} from '@/constants';
 import { formatDate, renderImageUrl, sanitizeText } from '@/utils';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -52,6 +56,12 @@ export default function PersonSidebar() {
     [person?.bio]
   );
 
+  const role =
+    person?.kinds
+      ?.map((kind) => movieTabPersonTitles[kind])
+      ?.sort((a, b) => a.localeCompare(b))
+      .join(', ') || '';
+
   return personLoading ? (
     <PersonSidebarSkeleton />
   ) : (
@@ -62,10 +72,10 @@ export default function PersonSidebar() {
         alt={person?.otherName}
         className='mx-auto'
       />
-      <h2 className='my-4 text-center text-2xl font-semibold text-white'>
+      <h2 className='mt-4 mb-2 text-center text-2xl font-semibold text-white'>
         {person?.otherName}
       </h2>
-      <p className='text-foreground/80 mb-4 text-center text-sm'>
+      <p className='text-foreground/80 mb-2 text-center text-sm'>
         {person?.name}
       </p>
 
@@ -88,7 +98,13 @@ export default function PersonSidebar() {
             'Đang cập nhật'}
         </p>
       </div>
-
+      <div className='mb-2 flex'>
+        Vai trò:&nbsp;
+        <p className='text-foreground/80'>
+          {role?.charAt(0).toUpperCase() + role?.slice(1)?.toLowerCase() ||
+            'Đang cập nhật'}
+        </p>
+      </div>
       <div>
         Giới thiệu:
         <div className='text-foreground/80 line-clamp-10 text-justify'>

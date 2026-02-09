@@ -1,7 +1,6 @@
 import { MovieCard } from '@/components/app/movie-card';
 import { cn } from '@/lib';
 import { MovieResType } from '@/types';
-import { AnimatePresence } from 'framer-motion';
 
 function groupByYear(list: MovieResType[]) {
   return list.reduce((acc: Record<string, MovieResType[]>, movie) => {
@@ -38,11 +37,9 @@ export default function MovieGridByYear({
         </div>
 
         <div className={cn('grid grow grid-cols-6 gap-6', className)}>
-          <AnimatePresence mode='popLayout' initial={false}>
-            {grouped[year].map((movie) => (
-              <MovieCard key={movie.id} movie={movie} dir='up' />
-            ))}
-          </AnimatePresence>
+          {grouped[year].map((movie) => (
+            <MovieCard key={movie.id} movie={movie} dir='up' />
+          ))}
         </div>
       </div>
     ));

@@ -24,11 +24,11 @@ export default function NavigationDesktop({
           item.submenu ? (
             <ListItem
               key={item.label}
-              className='relative flex cursor-pointer items-center gap-1 p-2 text-sm text-gray-400 transition-all duration-200 ease-linear'
+              className='relative flex cursor-pointer items-center gap-1 p-2 text-sm transition-all duration-200 ease-linear'
               onMouseEnter={() => setHovered(item.label)}
               onMouseLeave={() => setHovered(null)}
             >
-              <div className='flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear hover:text-white'>
+              <div className='hover:text-light-golden-yellow flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear'>
                 {item.label}
                 <ChevronDown
                   className={cn(
@@ -82,7 +82,7 @@ export default function NavigationDesktop({
                       <ListItem
                         key={sub.label}
                         title={sub.label}
-                        className='hover:bg-accent rounded transition-all duration-200 ease-linear hover:text-white'
+                        className='hover:bg-accent hover:text-light-golden-yellow rounded transition-all duration-200 ease-linear'
                       >
                         <Link
                           className='line-clamp-1 block truncate px-4 py-2'
@@ -99,7 +99,7 @@ export default function NavigationDesktop({
           ) : (
             <ListItem
               key={item.label}
-              className='p-2 text-sm whitespace-nowrap text-gray-400 transition-all duration-200 ease-linear hover:text-white'
+              className='hover:text-light-golden-yellow p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear'
             >
               <Link
                 href={item.href!}

@@ -1,6 +1,5 @@
 import {
   commentApiRequest,
-  favouriteApiRequest,
   movieApiRequest,
   moviePersonApiRequest
 } from '@/api-requests';
@@ -12,17 +11,17 @@ import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
   DEFAULT_TABLE_PAGE_START,
-  FAVOURITE_TYPE_MOVIE,
   queryKeys
 } from '@/constants';
 import {
+  ApiResponse,
   CommentSearchType,
-  FavouriteGetType,
   MoviePersonSearchType,
   ReviewSearchType
 } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
+import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const movies = await movieApiRequest.getList({
@@ -47,16 +46,22 @@ export async function generateMetadata(
     : previousImages;
 
   return {
-    title: `Phim ${res.data?.title} - ${res.data?.originalTitle}`,
+    title: res.data
+      ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
+      : 'Không tìm thấy phim',
     description: res.data?.description,
     openGraph: {
-      title: `Phim ${res.data?.title} - ${res.data?.originalTitle}`,
+      title: res.data
+        ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
+        : 'Không tìm thấy phim',
       description: res.data?.description,
       images
     },
     twitter: {
       card: 'summary_large_image',
-      title: `Phim ${res.data?.title} - ${res.data?.originalTitle}`,
+      title: res.data
+        ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
+        : 'Không tìm thấy phim',
       description: res.data?.description,
       images
     },
@@ -73,11 +78,6 @@ export default async function MoviePage({
 }) {
   const { slug } = await params;
   const id = slug.split('.')[1];
-
-  const favoriteFilters: FavouriteGetType = {
-    targetId: id,
-    type: FAVOURITE_TYPE_MOVIE
-  };
 
   const moviePersonFilters: MoviePersonSearchType = {
     movieId: id
@@ -97,15 +97,23 @@ export default async function MoviePage({
 
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.MOVIE, id],
-    queryFn: () => movieApiRequest.getById(id)
-  });
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE, id],
+      queryFn: () => movieApiRequest.getById(id)
+    });
 
-  // await queryClient.prefetchQuery({
-  //   queryKey: [queryKeys.FAVOURITE, favoriteFilters],
-  //   queryFn: () => favouriteApiRequest.get(favoriteFilters)
-  // });
+    const movieData: ApiResponse<any> | undefined = queryClient.getQueryData([
+      queryKeys.MOVIE,
+      id
+    ]);
+
+    if (!movieData?.result) {
+      notFound();
+    }
+  } catch (_) {
+    notFound();
+  }
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
