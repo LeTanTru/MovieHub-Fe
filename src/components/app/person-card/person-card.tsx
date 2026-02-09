@@ -3,13 +3,14 @@
 import './person-card.css';
 import { cn } from '@/lib';
 import { route } from '@/routes';
-import { PersonResType } from '@/types';
+import { PersonResType, PersonSearchType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { User, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Activity } from '@/components/activity';
 import { motion, Transition, Variants } from 'framer-motion';
+import { useQueryParams } from '@/hooks';
 
 type Dir = 'up' | 'down';
 
@@ -35,15 +36,24 @@ export default function PersonCard({
   showFullName,
   willNavigate,
   dir = 'up',
-  onDelete
+  onDelete,
+  params = {}
 }: {
   person: PersonResType;
   showFullName?: boolean;
   willNavigate?: boolean;
   dir?: Dir;
   onDelete?: (id: string) => void;
+  params?: PersonSearchType;
 }) {
   const itemVariants = makeItemVariants(dir);
+  const { serializeParams } = useQueryParams();
+  let link = `${route.person.path}/${person.id}`;
+
+  if (Object.keys(params).length > 0) {
+    link = `${link}?${serializeParams(params)}`;
+  }
+
   return (
     <motion.div
       key={person.id}
@@ -57,7 +67,7 @@ export default function PersonCard({
       <div className='flex flex-col items-center justify-center gap-0'>
         {willNavigate ? (
           <Link
-            href={`${route.person.path}/${person.id}`}
+            href={link}
             className='image-mask relative mb-2 w-full shrink-0 overflow-hidden rounded-none pb-[calc(100%+40px)]'
           >
             {person.avatarPath ? (

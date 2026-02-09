@@ -244,6 +244,12 @@ export const queryKeys = {
   MOVIE: 'movie',
   PERSON_LIST: 'person-list',
   PERSON: 'person',
+  PLAYLIST_BY_MOVIES: 'playlist-by-movies',
+  PLAYLIST_CREATE: 'playlist-create',
+  PLAYLIST_DELETE: 'playlist-delete',
+  PLAYLIST_ITEM: 'playlist-item',
+  PLAYLIST_MOVIES: 'playlist-movies',
+  PLAYLIST: 'playlist',
   PROFILE_UPDATE: 'update-profile',
   PROFILE: 'profile',
   REGISTER: 'register',
@@ -253,7 +259,8 @@ export const queryKeys = {
   REVIEW_LIST: 'review-list',
   REVIEW: 'review',
   SET_COOKIE_SERVER: 'set-cookie-server',
-  VERIFY_OTP: 'verify-otp'
+  VERIFY_OTP: 'verify-otp',
+  PLAYLIST_LIST: 'playlist-list'
 };
 
 export const countries = [

@@ -5,24 +5,27 @@ import { AvatarField, Button } from '@/components/form';
 import {
   DEFAULT_DATE_FORMAT,
   genderOptions,
-  movieTabPersonTitles
+  movieTabPersonTitles,
+  PERSON_KIND_ACTOR
 } from '@/constants';
 import { formatDate, renderImageUrl, sanitizeText } from '@/utils';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaArrowDown } from 'react-icons/fa6';
-import { useDisclosure } from '@/hooks';
+import { useDisclosure, useQueryParams } from '@/hooks';
 import { usePersonQuery } from '@/queries';
 import PersonSidebarSkeleton from './person-sidebar-skeleton';
 import { ButtonLikePerson } from '@/components/app/button-like';
 import { ButtonSharePerson } from '@/components/app/button-share';
 import { useParams } from 'next/navigation';
+import { PersonSearchType } from '@/types';
 
 export default function PersonSidebar() {
   const { id } = useParams<{ id: string }>();
   const { opened, open, close } = useDisclosure();
   const [showScrollIcon, setShowScrollIcon] = useState<boolean>(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
+  const { searchParams } = useQueryParams<PersonSearchType>();
   const { data: personData, isLoading: personLoading } = usePersonQuery(id);
   const person = personData?.data;
 
@@ -80,7 +83,9 @@ export default function PersonSidebar() {
       </p>
 
       <div className='mb-4 flex justify-center gap-2'>
-        <ButtonLikePerson targetId={id} />
+        {searchParams.kind === PERSON_KIND_ACTOR && (
+          <ButtonLikePerson targetId={id} />
+        )}
         <ButtonSharePerson />
       </div>
 
@@ -135,7 +140,7 @@ export default function PersonSidebar() {
           >
             <motion.div
               ref={modalContentRef}
-              className='bg-background scrollbar-none relative max-h-[80vh] w-[90%] max-w-2xl overflow-y-auto rounded-lg p-6'
+              className='scrollbar-none relative max-h-[80vh] w-[90%] max-w-2xl overflow-y-auto rounded-lg bg-[#0d1117] p-6'
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}

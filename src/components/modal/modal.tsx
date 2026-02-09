@@ -27,6 +27,7 @@ export type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   bodyRef?: React.RefObject<HTMLDivElement | null>;
   bodyStyle?: React.CSSProperties;
   scrollable?: boolean;
+  bodyWrapperClassName?: string;
 };
 
 export default function Modal({
@@ -52,6 +53,7 @@ export default function Modal({
   bodyRef,
   bodyStyle,
   scrollable = false,
+  bodyWrapperClassName,
   ...rest
 }: ModalProps) {
   const isMounted = useIsMounted();
@@ -114,9 +116,10 @@ export default function Modal({
           </Activity>
 
           <motion.div
-            className={
-              'body-wrapper absolute top-1/2 left-1/2 h-[80vh] min-h-[80vh] w-300 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white shadow-[0px_0px_10px_2px] shadow-black/40'
-            }
+            className={cn(
+              'body-wrapper absolute top-1/2 left-1/2 h-[80vh] min-h-[80vh] w-300 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white shadow-[0px_0px_10px_2px] shadow-black/40',
+              bodyWrapperClassName
+            )}
             initial={variants.initial}
             animate={variants.animate}
             exit={variants.exit}
@@ -126,17 +129,17 @@ export default function Modal({
             <Activity visible={!!title || !!showClose}>
               <div
                 className={cn(
-                  'flex items-center justify-between border-b border-gray-200 px-4 dark:border-none',
+                  'flex items-center justify-between border-b border-gray-200 py-2 pr-2 pl-4 dark:border-none',
                   headerClassName
                 )}
               >
-                <div className='text-base font-semibold text-gray-800 dark:text-white'>
+                <div className='font-semibold text-gray-800 dark:text-white'>
                   {title}
                 </div>
 
                 <Activity visible={showClose && onClose !== undefined}>
                   <Button
-                    className='p-0! text-gray-500 transition hover:text-black dark:hover:bg-transparent'
+                    className='h-fit! p-0! text-gray-500 transition hover:text-black dark:text-white dark:hover:bg-transparent dark:hover:text-gray-400'
                     onClick={onClose}
                     variant='ghost'
                   >

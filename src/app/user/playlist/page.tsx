@@ -1,3 +1,7 @@
+'use client';
+
+import { Playlist } from '@/app/user/playlist/_components';
+
 export default function PlaylistPage() {
-  return <div>Playlist Page</div>;
+  return <Playlist />;
 }

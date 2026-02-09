@@ -9,6 +9,7 @@ export * from './movie-item.schema';
 export * from './movie-person.schema';
 export * from './movie.schema';
 export * from './person.schema';
+export * from './playlist.schema';
 export * from './review.schema';
 export * from './search.schema';
 export * from './style.schema';
