@@ -50,7 +50,7 @@ export default function Playlist() {
         {isLoading ? (
           <PlaylistSkeleton />
         ) : playlistList.length == 0 ? (
-          <NoData className='pt-20' content='Bạn có chưa danh sách phát nào' />
+          <NoData className='pt-20' content='Bạn chưa có danh sách phát nào' />
         ) : (
           playlistList.map((playlist) => (
             <PlaylistCard playlist={playlist} key={playlist.id} />

@@ -56,7 +56,7 @@ const playlistApiRequest = {
       body
     }),
   updateItem: (body: PlaylistItemBodyType) =>
-    http.put<ApiResponseList<any>>(apiConfig.playlist.updateItem, {
+    http.post<ApiResponseList<any>>(apiConfig.playlist.updateItem, {
       body
     })
 };

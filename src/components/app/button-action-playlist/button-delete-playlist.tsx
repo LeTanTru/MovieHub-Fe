@@ -56,7 +56,7 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
         }
       },
       onError: (error) => {
-        logger.error('Error while deleting playlist error', error);
+        logger.error('Error while deleting playlist', error);
         notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
       }
     });

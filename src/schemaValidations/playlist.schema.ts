@@ -9,7 +9,7 @@ export const playlistItemSchema = z.object({
   actions: z.array(
     z.object({
       action: z.number(),
-      playlistId: z.string()
+      playlistId: z.string().nonempty('Bắt buộc')
     })
   ),
   movieId: z.string().nonempty('Bắt buộc')

@@ -52,11 +52,17 @@ export const usePlaylistListQuery = ({ enabled }: { enabled?: boolean }) => {
   });
 };
 
-export const usePlaylistByMovieQuery = (movieId: string) => {
+export const usePlaylistByMovieQuery = ({
+  movieId,
+  enabled
+}: {
+  movieId: string;
+  enabled?: boolean;
+}) => {
   return useQuery({
     queryKey: [queryKeys.PLAYLIST_BY_MOVIES, movieId],
     queryFn: () => playlistApiRequest.getListByMovie(movieId),
-    enabled: !!movieId
+    enabled
   });
 };
 

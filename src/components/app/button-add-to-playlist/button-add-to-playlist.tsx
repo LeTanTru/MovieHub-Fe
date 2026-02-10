@@ -27,10 +27,12 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
   const { mutateAsync: updatePlaylistItemMutate } =
     useUpdatePlaylistItemMutation();
 
-  const { data: playlistListData } = usePlaylistListQuery({ enabled: true });
+  const { data: playlistListData } = usePlaylistListQuery({
+    enabled: opened
+  });
 
   const { data: playlistByMovieData, refetch: getPlaylistByMovie } =
-    usePlaylistByMovieQuery(movieId);
+    usePlaylistByMovieQuery({ movieId, enabled: opened });
 
   const playlistList = playlistListData?.data || [];
   const playlistByMovie = playlistByMovieData?.data || [];
@@ -58,15 +60,24 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
     await updatePlaylistItemMutate(payload, {
       onSuccess: (res) => {
         if (res.result) {
-          notify.success('Thêm vào danh sách phát thành công');
+          notify.success(
+            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} danh sách phát thành công`
+          );
           getPlaylistByMovie();
         } else {
-          notify.error('Thêm vào danh sách phát thất bại');
+          notify.error(
+            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} danh sách phát thất bại`
+          );
         }
       },
       onError: (error) => {
-        logger.error('Error adding to playlist:', error);
-        notify.error('Đã xảy ra lỗi khi thêm vào danh sách phát');
+        logger.error(
+          `Error ${isInPlaylist ? 'removing from' : 'adding to'} playlist`,
+          error
+        );
+        notify.error(
+          `Đã xảy ra lỗi khi ${isInPlaylist ? 'xóa khỏi' : 'thêm vào'} danh sách phát`
+        );
       }
     });
   };
