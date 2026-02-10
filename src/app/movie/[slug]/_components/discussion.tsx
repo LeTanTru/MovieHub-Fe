@@ -57,7 +57,7 @@ export default function Discussion({
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
-  const [activeKey, setActiveKey] = useState<string>(DISCUSSION_TAB_COMMENT);
+  const [activeKey, setActiveKey] = useState<string>(DISCUSSION_TAB_REVIEW);
   const { profile } = useAuth();
 
   const { data: commentListData, isLoading: commentListLoading } =
@@ -125,47 +125,43 @@ export default function Discussion({
         </div>
       </div>
       {/* Body */}
-      <div className='mb-6'>
-        {profile ? (
-          <div className='mb-4 flex items-center gap-4'>
-            <AvatarField
-              src={renderImageUrl(profile.avatarPath)}
-              size={50}
-              alt={profile.fullName}
-            />
-            <div className='flex flex-col justify-between gap-1'>
-              <small className='text-gray-400'>
-                {activeKey === DISCUSSION_TAB_COMMENT
-                  ? 'Bình luận'
-                  : 'Đánh giá'}
-                &nbsp;với tên
-              </small>
-              <span className='text font-medium text-white'>
-                {profile.fullName}
-              </span>
-            </div>
+      {profile ? (
+        <div className='mb-4 flex items-center gap-4'>
+          <AvatarField
+            src={renderImageUrl(profile.avatarPath)}
+            size={50}
+            alt={profile.fullName}
+          />
+          <div className='flex flex-col justify-between gap-1'>
+            <small className='text-gray-400'>
+              {activeKey === DISCUSSION_TAB_COMMENT ? 'Bình luận' : 'Đánh giá'}
+              &nbsp;với tên
+            </small>
+            <span className='text font-medium text-white'>
+              {profile.fullName}
+            </span>
           </div>
-        ) : (
-          <div className='mb-4 text-gray-400'>
-            Vui lòng&nbsp;
-            <Link
-              className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
-              href={route.login.path}
-            >
-              đăng nhập
-            </Link>
-            &nbsp;để tham gia&nbsp;
-            {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
-          </div>
-        )}
-        <CommentForm isLoading={isActiveLoading} />
-        <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
-          <CommentList comments={commentList} isLoading={commentListLoading} />
-        </Activity>
-        <Activity visible={activeKey === DISCUSSION_TAB_REVIEW}>
-          <ReviewList reviews={reviewList} isLoading={reviewListLoading} />
-        </Activity>
-      </div>
+        </div>
+      ) : (
+        <div className='mb-4 text-gray-400'>
+          Vui lòng&nbsp;
+          <Link
+            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            href={route.login.path}
+          >
+            đăng nhập
+          </Link>
+          &nbsp;để tham gia&nbsp;
+          {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
+        </div>
+      )}
+      <CommentForm isLoading={isActiveLoading} />
+      <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
+        <CommentList comments={commentList} isLoading={commentListLoading} />
+      </Activity>
+      <Activity visible={activeKey === DISCUSSION_TAB_REVIEW}>
+        <ReviewList reviews={reviewList} isLoading={reviewListLoading} />
+      </Activity>
     </div>
   );
 }

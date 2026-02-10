@@ -1,4 +1,8 @@
-import { reviewSearchSchema } from '@/schemaValidations';
+import {
+  reviewSchema,
+  reviewSearchSchema,
+  reviewVoteSchema
+} from '@/schemaValidations';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
@@ -12,21 +16,21 @@ export type ReviewResType = {
     group: {
       createdDate: string;
       description: string;
-      id: number;
+      id: string;
       isSystemRole: boolean;
       kind: number;
       modifiedDate: string;
       name: string;
       permissions: {
         createdDate: string;
-        id: number;
+        id: string;
         modifiedDate: string;
         permissionCode: string;
         status: number;
       }[];
       status: number;
     };
-    id: number;
+    id: string;
     kind: number;
     modifiedDate: string;
     phone: string;
@@ -35,9 +39,9 @@ export type ReviewResType = {
   };
   content: string;
   createdDate: string;
-  id: number;
+  id: string;
   modifiedDate: string;
-  movieId: number;
+  movieId: string;
   rate: number;
   statistics: {
     averageRating: number;
@@ -48,5 +52,23 @@ export type ReviewResType = {
   totalLike: number;
 };
 
+export type ReviewVoteResType = {
+  id: string;
+  type: number;
+};
+
+export type ReviewBodyType = z.infer<typeof reviewSchema>;
+export type ReviewVoteBodyType = z.infer<typeof reviewVoteSchema>;
+
 export type ReviewSearchType = z.infer<typeof reviewSearchSchema> &
   BaseSearchType;
+
+type ReviewState = {
+  selectedReview: ReviewResType | null;
+};
+
+type ReviewActions = {
+  setSelectedReview: (review: ReviewResType | null) => void;
+};
+
+export type ReviewStoreType = ReviewState & ReviewActions;

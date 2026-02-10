@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/form';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useClickOutside, useDisclosure } from '@/hooks';
+import { useAuth, useClickOutside, useDisclosure } from '@/hooks';
 import {
   usePlaylistByMovieQuery,
   usePlaylistListQuery,
@@ -22,6 +22,8 @@ import { logger } from '@/logger';
 import { useEffect, useMemo, useState } from 'react';
 import { debounce } from 'lodash';
 import { cn } from '@/lib';
+import Link from 'next/link';
+import { route } from '@/routes';
 
 type PlaylistItemProps = {
   playlist: PlaylistResType;
@@ -96,6 +98,7 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
   const containerRef = useClickOutside<HTMLDivElement>(close);
   const [checkedPlaylist, setCheckedPlaylist] = useState<string[]>([]);
   const [playlistId, setPlaylistId] = useState<string>('');
+  const { isAuthenticated } = useAuth();
 
   const { data: playlistListData, isLoading: playlistListLoading } =
     usePlaylistListQuery({
@@ -104,7 +107,7 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
 
   const { data: playlistByMovieData } = usePlaylistByMovieQuery({
     movieId,
-    enabled: opened
+    enabled: opened && isAuthenticated
   });
 
   const {
@@ -123,6 +126,21 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
   );
 
   const handleOpen = () => {
+    if (!isAuthenticated) {
+      notify.error(
+        <span>
+          Vui lòng&nbsp;
+          <Link
+            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            href={route.login.path}
+          >
+            đăng nhập
+          </Link>
+          &nbsp;để thêm vào danh sách phát
+        </span>
+      );
+      return;
+    }
     toggle();
   };
 

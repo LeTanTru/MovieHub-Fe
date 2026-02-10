@@ -13,7 +13,7 @@ export type CollectionItemResType = {
   createdDate: string;
   description: string;
   duration: number;
-  id: number;
+  id: string;
   isFeatured: boolean;
   language: string;
   latestEpisode: string;

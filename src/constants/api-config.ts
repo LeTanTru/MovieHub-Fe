@@ -252,12 +252,48 @@ const apiConfig = defineApiConfig({
     }
   },
   review: {
+    checkMovie: {
+      baseUrl: `${AppConstants.apiUrl}/v1/review/check/:movieId`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    create: {
+      baseUrl: `${AppConstants.apiUrl}/v1/review/create`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    delete: {
+      baseUrl: `${AppConstants.apiUrl}/v1/review/delete/:id`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
     getList: {
       baseUrl: `${AppConstants.apiUrl}/v1/review/list`,
       method: 'GET',
       headers: baseHeader,
       isRequiredTenantId: true,
       ignoreAuth: true
+    },
+    update: {
+      baseUrl: `${AppConstants.apiUrl}/v1/review/update/:id`,
+      method: 'PATCH',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    vote: {
+      baseUrl: `${AppConstants.apiUrl}/v1/review/vote`,
+      method: 'PATCH',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    getVoteList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/review/vote-list/:movieId`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
     }
   },
   favourite: {

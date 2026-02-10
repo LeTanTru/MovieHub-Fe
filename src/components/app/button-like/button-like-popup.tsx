@@ -10,8 +10,10 @@ import {
   useFavouriteMutation,
   useFavouriteQuery
 } from '@/queries';
+import { route } from '@/routes';
 import { AnimatedIconHandle } from '@/types';
 import { notify } from '@/utils';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 export default function ButtonLikePopup({
@@ -60,7 +62,18 @@ export default function ButtonLikePopup({
     heartIconRef.current?.startAnimation();
 
     if (!isAuthenticated) {
-      notify.error('Vui lòng đăng nhập để sử dụng chức năng này!');
+      notify.error(
+        <span>
+          Vui lòng&nbsp;
+          <Link
+            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            href={route.login.path}
+          >
+            đăng nhập
+          </Link>
+          &nbsp;để thêm phim vào danh sách yêu thích
+        </span>
+      );
       return;
     }
 
@@ -69,11 +82,11 @@ export default function ButtonLikePopup({
       {
         onSuccess: (res) => {
           if (res.result) {
-            notify.success('Thêm vào danh sách yêu thích thành công!');
+            notify.success('Thêm vào danh sách yêu thích thành công');
             setIsLiked(true);
             setFavouriteId(res.data ?? '');
           } else {
-            notify.error('Thêm vào danh sách yêu thích thất bại!');
+            notify.error('Thêm vào danh sách yêu thích thất bại');
           }
         }
       }
@@ -81,6 +94,22 @@ export default function ButtonLikePopup({
   };
 
   const handleUnlike = async () => {
+    if (!isAuthenticated) {
+      notify.error(
+        <span>
+          Vui lòng&nbsp;
+          <Link
+            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            href={route.login.path}
+          >
+            đăng nhập
+          </Link>
+          &nbsp;để thêm phim vào danh sách yêu thích
+        </span>
+      );
+      return;
+    }
+
     if (favouriteId) {
       heartIconRef.current?.startAnimation();
 
@@ -88,9 +117,9 @@ export default function ButtonLikePopup({
         onSuccess: (res) => {
           if (res.result) {
             setIsLiked(false);
-            notify.success('Xóa khỏi danh sách yêu thích thành công!');
+            notify.success('Xóa khỏi danh sách yêu thích thành công');
           } else {
-            notify.error('Xóa khỏi danh sách yêu thích thất bại!');
+            notify.error('Xóa khỏi danh sách yêu thích thất bại');
           }
         }
       });
