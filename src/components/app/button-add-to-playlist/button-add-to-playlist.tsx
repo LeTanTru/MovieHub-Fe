@@ -16,9 +16,52 @@ import {
   ACTION_DELETE_FROM_PLAYLIST,
   MAX_PLAYLIST_COUNT
 } from '@/constants';
-import { PlaylistItemBodyType } from '@/types';
+import { PlaylistItemBodyType, PlaylistResType } from '@/types';
 import { notify } from '@/utils';
 import { logger } from '@/logger';
+
+type PlaylistItemProps = {
+  playlist: PlaylistResType;
+  checked: boolean;
+  onToggle: (playlistId: string) => void;
+};
+
+function PlaylistItem({ playlist, checked, onToggle }: PlaylistItemProps) {
+  return (
+    <div
+      className='flex items-center gap-2 text-black'
+      onClick={() => onToggle(playlist.id)}
+    >
+      <Checkbox
+        id={playlist.id}
+        className='mb-0! cursor-pointer border-black transition-all transition-colors duration-50 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white data-[state=indeterminate]:bg-transparent [&>span[data-state=indeterminate]]:m-auto [&>span[data-state=indeterminate]]:h-1/2 [&>span[data-state=indeterminate]]:w-1/2 [&>span[data-state=indeterminate]]:bg-blue-700! [&>span[data-state=indeterminate]>svg]:hidden'
+        checked={checked}
+      />
+      <span className='w-full grow cursor-pointer select-none'>
+        {playlist.name}
+      </span>
+    </div>
+  );
+}
+
+function PlaylistItemSkeleton() {
+  return (
+    <div className='flex items-center gap-2'>
+      <div className='skeleton h-4 w-4 rounded-sm!' />
+      <div className='skeleton h-4 w-32 grow rounded' />
+    </div>
+  );
+}
+
+function PlaylistItemListSkeleton() {
+  return (
+    <div className='flex flex-col gap-4'>
+      {Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, index) => (
+        <PlaylistItemSkeleton key={index} />
+      ))}
+    </div>
+  );
+}
 
 export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
   const { opened, toggle, close } = useDisclosure();
@@ -27,9 +70,10 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
   const { mutateAsync: updatePlaylistItemMutate } =
     useUpdatePlaylistItemMutation();
 
-  const { data: playlistListData } = usePlaylistListQuery({
-    enabled: opened
-  });
+  const { data: playlistListData, isLoading: playlistListLoading } =
+    usePlaylistListQuery({
+      enabled: opened
+    });
 
   const { data: playlistByMovieData, refetch: getPlaylistByMovie } =
     usePlaylistByMovieQuery({ movieId, enabled: opened });
@@ -99,8 +143,8 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
             transition={{ duration: 0.05, ease: 'linear' }}
-            style={{ transformOrigin: '25px 0%' }}
-            className='absolute top-full left-0 z-10 flex w-50 flex-col gap-4 rounded bg-white p-4 shadow-lg shadow-black/50'
+            style={{ transformOrigin: '50% 0%' }}
+            className='absolute top-full left-1/2 z-10 flex w-50 -translate-x-1/2 flex-col gap-4 rounded bg-white p-4 shadow-lg shadow-black/50'
           >
             <div className='flex justify-between text-black'>
               <span>Danh sách phát</span>
@@ -108,26 +152,18 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
                 {playlistList.length}/{MAX_PLAYLIST_COUNT}
               </span>
             </div>
-            {playlistList.map((playlist) => (
-              <div
-                className='flex items-center gap-2 text-black'
-                key={playlist.id}
-                onClick={() => handleAddToPlaylist(playlist.id)}
-              >
-                <Checkbox
-                  id={playlist.id}
-                  aria-labelledby={`playlist-label-${playlist.id}`}
-                  className='mb-0! cursor-pointer border-black transition-all transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white data-[state=indeterminate]:bg-transparent [&>span[data-state=indeterminate]]:m-auto [&>span[data-state=indeterminate]]:h-1/2 [&>span[data-state=indeterminate]]:w-1/2 [&>span[data-state=indeterminate]]:bg-blue-700! [&>span[data-state=indeterminate]>svg]:hidden'
+            {playlistListLoading ? (
+              <PlaylistItemListSkeleton />
+            ) : (
+              playlistList.map((playlist) => (
+                <PlaylistItem
+                  key={playlist.id}
+                  playlist={playlist}
                   checked={playlistByMovie.includes(playlist.id)}
+                  onToggle={handleAddToPlaylist}
                 />
-                <span
-                  id={`playlist-label-${playlist.id}`}
-                  className='block w-full cursor-pointer select-none'
-                >
-                  {playlist.name}
-                </span>
-              </div>
-            ))}
+              ))
+            )}
             {playlistList.length < MAX_PLAYLIST_COUNT && (
               <ButtonAddPlayList
                 className='bg-light-golden-yellow! border-light-golden-yellow hover:bg-light-golden-yellow/80! rounded text-black hover:text-black/80!'
