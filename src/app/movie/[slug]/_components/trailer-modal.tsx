@@ -19,7 +19,7 @@ export default function VideoPlayModal({
   video: VideoResType;
   opened: boolean;
   onClose: () => void;
-  setIsFetching?: (isFetching: boolean) => void;
+  setIsFetching: (isFetching: boolean) => void;
 }) {
   const bodyRef = useRef<HTMLDivElement>(null);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
@@ -63,14 +63,14 @@ export default function VideoPlayModal({
     let intervalId: NodeJS.Timeout;
 
     const handleGetAnonymousToken = async () => {
-      setIsFetching?.(true);
+      setIsFetching(true);
       try {
         const res = await getAnonymousToken();
         setToken(res.access_token);
       } catch (err) {
         logger.error('Failed to get guest token', err);
       } finally {
-        setIsFetching?.(false);
+        setIsFetching(false);
       }
     };
 
@@ -92,7 +92,7 @@ export default function VideoPlayModal({
     return () => {
       document.body.style.overflow = 'auto';
     };
-  });
+  }, [opened]);
 
   return (
     <Modal

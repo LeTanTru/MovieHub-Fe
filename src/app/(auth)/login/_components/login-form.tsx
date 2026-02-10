@@ -58,7 +58,8 @@ export default function LoginForm() {
         notify.error('Email hoặc mật khẩu không đúng');
       }
     } catch (error) {
-      logger.error('Login failed', error);
+      logger.error('Error while logging in', error);
+      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
     }
   };
 

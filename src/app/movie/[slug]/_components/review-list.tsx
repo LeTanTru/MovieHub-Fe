@@ -6,14 +6,25 @@ import { ApiResponse, MovieResType, ReviewResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { StaticImageData } from 'next/image';
 import { useMemo } from 'react';
-import { queryKeys, reviewRatings } from '@/constants';
+import {
+  queryKeys,
+  reviewRatings,
+  REACTION_TYPE_DISLIKE,
+  REACTION_TYPE_LIKE
+} from '@/constants';
 import { useAuth } from '@/hooks';
-import { useDeleteReviewMutation } from '@/queries';
+import {
+  useDeleteReviewMutation,
+  useVoteReviewListQuery,
+  useVoteReviewMutation
+} from '@/queries';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
 import { getQueryClient } from '@/components/providers';
 import { useMovieStore } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
+import Link from 'next/link';
+import { route } from '@/routes';
 
 const ReviewItemSkeleton = () => {
   return (
@@ -43,7 +54,7 @@ export default function ReviewList({
   reviews: ReviewResType[];
   isLoading?: boolean;
 }) {
-  const { profile } = useAuth();
+  const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
   const movie = useMovieStore((s) => s.movie);
   const setMovie = useMovieStore((s) => s.setMovie);
@@ -61,7 +72,27 @@ export default function ReviewList({
     );
   }, []);
 
+  const { data: voteReviewListData } = useVoteReviewListQuery({
+    movieId: movie?.id?.toString() || '',
+    enabled: isAuthenticated
+  });
+
+  const voteReviewList = useMemo(
+    () => voteReviewListData?.data || [],
+    [voteReviewListData?.data]
+  );
+
+  const voteMaps = useMemo(() => {
+    const maps: Record<string, number> = {};
+    voteReviewList.forEach((vote) => {
+      maps[vote.id] = vote.type;
+    });
+    return maps;
+  }, [voteReviewList]);
+
   const { mutateAsync: deleteReviewMutate } = useDeleteReviewMutation();
+  const { mutateAsync: voteReviewMutate, isPending: voteReviewLoading } =
+    useVoteReviewMutation();
 
   const handleDeleteReview = async (id: string) => {
     await deleteReviewMutate(id, {
@@ -91,8 +122,87 @@ export default function ReviewList({
       },
       onError: (error) => {
         logger.error('Error while deleting review', error);
+        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
       }
     });
+  };
+
+  const handleLikeReview = async (id: string) => {
+    if (!isAuthenticated) {
+      notify.error(
+        <span>
+          Vui lòng&nbsp;
+          <Link
+            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            href={route.login.path}
+          >
+            đăng nhập
+          </Link>
+          &nbsp;để thích đánh giá này
+        </span>
+      );
+      return;
+    }
+
+    if (voteReviewLoading) return;
+
+    await voteReviewMutate(
+      { id, type: REACTION_TYPE_LIKE },
+      {
+        onSuccess: async (res) => {
+          if (res.result) {
+            await queryClient.invalidateQueries({
+              queryKey: [queryKeys.REVIEW_LIST]
+            });
+          } else {
+            notify.error('Thích đánh giá thất bại');
+          }
+        },
+        onError: (error) => {
+          logger.error('Error while liking review', error);
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+        }
+      }
+    );
+  };
+
+  const handleDislikeReview = async (id: string) => {
+    if (!isAuthenticated) {
+      notify.error(
+        <span>
+          Vui lòng&nbsp;
+          <Link
+            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            href={route.login.path}
+          >
+            đăng nhập
+          </Link>
+          &nbsp;để không thích đánh giá này
+        </span>
+      );
+      return;
+    }
+
+    if (voteReviewLoading) return;
+
+    await voteReviewMutate(
+      { id, type: REACTION_TYPE_DISLIKE },
+      {
+        onSuccess: async (res) => {
+          if (res.result) {
+            await queryClient.invalidateQueries({
+              queryKey: [queryKeys.REVIEW_LIST]
+            });
+          } else {
+            notify.error('Không thích đánh giá thất bại');
+          }
+        },
+        onError: (error) => {
+          logger.error('Error while disliking review', error);
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+        }
+      }
+    );
   };
 
   if (isLoading)
@@ -122,7 +232,12 @@ export default function ReviewList({
           review={review}
           reviewRatingMaps={reviewRatingMaps}
           isAuthor={profile?.id === review.author.id}
+          isAuthenticated={isAuthenticated}
+          isVoteLoading={voteReviewLoading}
+          onLike={handleLikeReview}
+          onDislike={handleDislikeReview}
           onDelete={handleDeleteReview}
+          voteType={voteMaps[review.id]}
         />
       ))}
     </div>

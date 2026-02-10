@@ -43,7 +43,6 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
           await queryClient.invalidateQueries({
             queryKey: [queryKeys.PLAYLIST_LIST]
           });
-          handleClose();
           const playlistData = queryClient.getQueryData<
             ApiResponse<PlaylistResType[]>
           >([queryKeys.PLAYLIST_LIST]);
@@ -51,6 +50,7 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
           if (playlist.findIndex((p) => p.id === selectedPlaylist?.id) === -1) {
             setSelectedPlaylist(playlist[0] || null);
           }
+          handleClose();
         } else {
           notify.error('Xóa danh sách phát thất bại');
         }

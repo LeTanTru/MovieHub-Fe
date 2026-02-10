@@ -28,12 +28,12 @@ const reviewApiRequest = {
       pathParams: { id }
     }),
   vote: (body: ReviewVoteBodyType) =>
-    http.patch<ApiResponse<any>>(apiConfig.review.vote, {
+    http.put<ApiResponse<any>>(apiConfig.review.vote, {
       body
     }),
   getVoteList: (movieId: string) =>
-    http.get<ApiResponseList<ReviewVoteResType>>(apiConfig.review.getVoteList, {
-      params: { movieId }
+    http.get<ApiResponse<ReviewVoteResType[]>>(apiConfig.review.getVoteList, {
+      pathParams: { movieId }
     })
 };
 

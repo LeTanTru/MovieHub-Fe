@@ -53,11 +53,11 @@ export default function MovieList() {
         movieId
       },
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           if (res.result) {
             notify.success('Xóa phim khỏi danh sách phát thành công');
-            getPlaylistMovies();
-            queryClient.invalidateQueries({
+            await getPlaylistMovies();
+            await queryClient.invalidateQueries({
               queryKey: [queryKeys.PLAYLIST_LIST]
             });
           } else {
@@ -66,7 +66,7 @@ export default function MovieList() {
         },
         onError: (error) => {
           logger.error('Error while removing movie from playlist', error);
-          notify.error('Có lỗi xảy ra khi xóa phim khỏi danh sách phát');
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
       }
     );

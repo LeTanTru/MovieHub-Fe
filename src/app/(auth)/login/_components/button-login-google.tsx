@@ -87,10 +87,12 @@ export default function ButtonLoginGoogle() {
           setTimeout(() => {
             window.location.href = route.home.path;
           }, 500);
+        } else {
+          notify.error('Đăng nhập thất bại');
         }
       } catch (error) {
         logger.error('Error during Google login:', error);
-        notify.error('Đăng nhập thất bại');
+        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
       }
     };
 

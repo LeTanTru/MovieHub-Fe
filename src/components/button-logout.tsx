@@ -35,10 +35,12 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
         setTimeout(() => {
           window.location.href = route.home.path;
         }, 500);
+      } else {
+        notify.error('Đăng xuất thất bại');
       }
     } catch (error) {
-      logger.error('Logout failed:', error);
-      notify.error('Đăng xuất thất bại');
+      logger.error('Error while logging out', error);
+      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
     }
   };
   return (

@@ -137,11 +137,13 @@ export default function VerifyOtpForm() {
             setResendData({ count, timestamp });
             setLastResendTime(now);
             setData(storageKeys.LAST_RESEND_TIME, now.toString());
+          } else {
+            notify.error('Gửi lại OTP thất bại');
           }
         },
         onError: (error) => {
           logger.error('Error while resending OTP', error);
-          notify.error('Có lỗi xảy ra');
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
       }
     );

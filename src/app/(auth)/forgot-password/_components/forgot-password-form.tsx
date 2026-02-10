@@ -167,11 +167,13 @@ export default function ForgotPasswordForm() {
             setResendData({ count, timestamp });
             setLastResendTime(now);
             setData(storageKeys.LAST_RESEND_TIME, now.toString());
+          } else {
+            notify.error('Gửi lại OTP thất bại');
           }
         },
         onError: (error) => {
           logger.error('Error while resending OTP', error);
-          notify.error('Có lỗi xảy ra');
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
       }
     );
@@ -220,13 +222,13 @@ export default function ForgotPasswordForm() {
                 applyFormErrors(form, errorCode, forgotPasswordErrorMaps);
               }
             } else {
-              notify.error('Có lỗi xảy ra khi gửi OTP');
+              notify.error('Gửi yêu cầu quên mật khẩu thất bại');
             }
           }
         },
         onError: (error) => {
           logger.error('Error while sending otp: ', error);
-          notify.error('Có lỗi xảy ra khi gửi OTP');
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
       });
     } else if (step === 2) {
@@ -247,12 +249,14 @@ export default function ForgotPasswordForm() {
                 const message = forgotPasswordErrorMaps[errorCode];
                 if (message) notify.error(message[0][1].message);
                 applyFormErrors(form, errorCode, forgotPasswordErrorMaps);
+              } else {
+                notify.error('Đặt lại mật khẩu thất bại');
               }
             }
           },
           onError: (error) => {
             logger.error('Error while reseting password: ', error);
-            notify.error('Có lỗi xảy ra khi đặt lại mật khẩu');
+            notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
           }
         }
       );

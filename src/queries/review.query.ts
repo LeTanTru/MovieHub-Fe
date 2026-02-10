@@ -52,7 +52,7 @@ export const useVoteReviewMutation = () => {
   });
 };
 
-export const useReviewVoteListQuery = ({
+export const useVoteReviewListQuery = ({
   movieId,
   enabled
 }: {
