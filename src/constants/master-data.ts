@@ -260,7 +260,13 @@ export const queryKeys = {
   REVIEW: 'review',
   SET_COOKIE_SERVER: 'set-cookie-server',
   VERIFY_OTP: 'verify-otp',
-  PLAYLIST_LIST: 'playlist-list'
+  PLAYLIST_LIST: 'playlist-list',
+  CHECK_MOVIE: 'check-movie',
+  CREATE_REVIEW: 'create-review',
+  DELETE_REVIEW: 'delete-review',
+  UPDATE_REVIEW: 'update-review',
+  VOTE_REVIEW: 'vote-review',
+  REVIEW_VOTE_LIST: 'review-vote-list'
 };
 
 export const countries = [

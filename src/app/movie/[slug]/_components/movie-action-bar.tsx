@@ -14,6 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ButtonLikeDetail } from '@/components/app/button-like';
 import { useParams } from 'next/navigation';
 import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
+import { useCheckMovieQuery } from '@/queries';
 
 export default function MovieActionBar({
   isLoading = false
@@ -22,9 +23,17 @@ export default function MovieActionBar({
 }) {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
+
   const { opened, open, close } = useDisclosure();
   const { isAuthenticated } = useAuth();
   const movie = useMovieStore((s) => s.movie);
+
+  const { data: checkMovieData } = useCheckMovieQuery({
+    movieId: id,
+    enabled: !!id && isAuthenticated
+  });
+
+  const isReviewed = checkMovieData?.result && checkMovieData.data;
 
   const handleOpenReviewModal = () => {
     if (!isAuthenticated) {
@@ -37,11 +46,17 @@ export default function MovieActionBar({
           >
             đăng nhập
           </Link>
-          &nbsp;để đánh giá phim!
+          &nbsp;để đánh giá phim
         </span>
       );
       return;
     }
+
+    if (isReviewed) {
+      notify.info('Bạn đã đánh giá phim này rồi');
+      return;
+    }
+
     open();
   };
 
@@ -103,7 +118,9 @@ export default function MovieActionBar({
                 {formatRating(movie?.averageRating || 0)}
                 &nbsp;({movie.reviewCount})
               </span>
-              <span className='text-xs underline'>Đánh giá</span>
+              {!isReviewed && (
+                <span className='text-xs underline'>Đánh giá</span>
+              )}
             </div>
           </div>
         </div>

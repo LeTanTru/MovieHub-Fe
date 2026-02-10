@@ -19,7 +19,7 @@ export default function CommentForm({
 
   if (isLoading)
     return (
-      <div className='bg-comment-form flex flex-col gap-2 rounded-[12px] p-2'>
+      <div className='bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2'>
         <Skeleton className='skeleton h-28 w-full rounded-md' />
         <div className='flex items-center gap-4'>
           <Skeleton className='skeleton h-8 w-24 rounded' />
@@ -44,7 +44,7 @@ export default function CommentForm({
           >
             đăng nhập
           </Link>
-          &nbsp;để tham gia bình luận!
+          &nbsp;để tham gia bình luận
         </span>
       );
       return;
@@ -52,10 +52,10 @@ export default function CommentForm({
   };
 
   return (
-    <div className='bg-comment-form flex flex-col gap-2 rounded-[12px] p-2'>
+    <div className='bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2'>
       <div className='relative'>
         <textarea
-          className='bg-comment-input block h-auto min-h-8.75 w-full resize-none rounded-md border border-solid border-transparent px-5 py-4 leading-normal font-normal text-white'
+          className='bg-discussion-input block h-auto min-h-8.75 w-full resize-none rounded-md border border-solid border-transparent px-5 py-4 leading-normal font-normal text-white'
           rows={4}
           cols={3}
           placeholder='Viết bình luận'

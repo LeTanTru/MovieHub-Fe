@@ -1,8 +1,8 @@
-export type AppLoadingState = {
+type AppLoadingState = {
   loading: boolean;
 };
 
-export type AppLoadingActions = {
+type AppLoadingActions = {
   setLoading: (loading: boolean) => void;
 };
 

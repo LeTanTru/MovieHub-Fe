@@ -53,7 +53,7 @@ export default function ChangePasswordForm() {
           storageKeys.REFRESH_TOKEN,
           storageKeys.USER_KIND
         ]);
-        notify.success('Đổi mật khẩu thành công. Vui lòng đăng nhập lại!');
+        notify.success('Đổi mật khẩu thành công. Vui lòng đăng nhập lại');
         setTimeout(() => {
           window.location.href = route.login.path;
         }, 500);

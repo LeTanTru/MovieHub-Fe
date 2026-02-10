@@ -19,7 +19,7 @@ export default function ButtonSharePerson() {
   const handleCopyLink = async () => {
     telegramIconRef.current?.startAnimation();
     await navigator.clipboard.writeText(link);
-    notify.success('Đã sao chép liên kết!');
+    notify.success('Đã sao chép liên kết');
   };
 
   return (
