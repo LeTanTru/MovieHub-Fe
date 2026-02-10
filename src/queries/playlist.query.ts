@@ -3,15 +3,22 @@ import { queryKeys } from '@/constants';
 import {
   PlaylistBodyType,
   PlaylistItemBodyType,
-  PlaylistSearchType
+  PlaylistSearchType,
+  RemoveItemSearchType
 } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useListMoviesQuery = (movieId: string) => {
+export const usePlaylistMoviesQuery = ({
+  playlistId,
+  params
+}: {
+  playlistId: string;
+  params?: PlaylistSearchType;
+}) => {
   return useQuery({
-    queryKey: [queryKeys.PLAYLIST_MOVIES, movieId],
-    queryFn: () => playlistApiRequest.getListMovies(movieId),
-    enabled: !!movieId
+    queryKey: [queryKeys.PLAYLIST_MOVIES, playlistId, params],
+    queryFn: () => playlistApiRequest.getListMovies({ playlistId, params }),
+    enabled: !!playlistId
   });
 };
 
@@ -45,7 +52,7 @@ export const usePlaylistListQuery = ({ enabled }: { enabled?: boolean }) => {
   });
 };
 
-export const useListByMovieQuery = (movieId: string) => {
+export const usePlaylistByMovieQuery = (movieId: string) => {
   return useQuery({
     queryKey: [queryKeys.PLAYLIST_BY_MOVIES, movieId],
     queryFn: () => playlistApiRequest.getListByMovie(movieId),
@@ -53,10 +60,10 @@ export const useListByMovieQuery = (movieId: string) => {
   });
 };
 
-export const useRemoveItemMutation = () => {
+export const useRemovePlaylistItemMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.PLAYLIST],
-    mutationFn: (params: PlaylistSearchType) =>
+    mutationFn: (params: RemoveItemSearchType) =>
       playlistApiRequest.removeItem(params)
   });
 };

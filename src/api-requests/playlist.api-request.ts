@@ -6,16 +6,24 @@ import {
   PlaylistItemBodyType,
   PlaylistMovieResType,
   PlaylistResType,
-  PlaylistSearchType
+  PlaylistSearchType,
+  RemoveItemSearchType
 } from '@/types';
 import { http } from '@/utils';
 
 const playlistApiRequest = {
-  getListMovies: (movieId: string) =>
+  getListMovies: ({
+    playlistId,
+    params
+  }: {
+    playlistId: string;
+    params?: PlaylistSearchType;
+  }) =>
     http.get<ApiResponseList<PlaylistMovieResType>>(
       apiConfig.playlist.getListMovies,
       {
-        pathParams: { movieId }
+        pathParams: { id: playlistId },
+        params
       }
     ),
   create: (body: PlaylistBodyType) =>
@@ -23,12 +31,9 @@ const playlistApiRequest = {
       body
     }),
   delete: (id: string) =>
-    http.delete<ApiResponseList<PlaylistMovieResType>>(
-      apiConfig.playlist.delete,
-      {
-        pathParams: { id }
-      }
-    ),
+    http.delete<ApiResponseList<any>>(apiConfig.playlist.delete, {
+      pathParams: { id }
+    }),
   getById: (id: string) =>
     http.get<ApiResponseList<PlaylistMovieResType>>(
       apiConfig.playlist.getById,
@@ -39,27 +44,21 @@ const playlistApiRequest = {
   getList: () =>
     http.get<ApiResponse<PlaylistResType[]>>(apiConfig.playlist.getList),
   getListByMovie: (movieId: string) =>
-    http.get<ApiResponseList<number[]>>(apiConfig.playlist.getListByMovie, {
-      pathParams: { id: movieId }
+    http.get<ApiResponse<string[]>>(apiConfig.playlist.getListByMovie, {
+      pathParams: { movieId }
     }),
-  removeItem: (params: PlaylistSearchType) =>
-    http.delete<ApiResponseList<PlaylistMovieResType>>(
-      apiConfig.playlist.removeItem,
-      {
-        params
-      }
-    ),
+  removeItem: (params: RemoveItemSearchType) =>
+    http.delete<ApiResponseList<any>>(apiConfig.playlist.removeItem, {
+      params
+    }),
   update: (body: PlaylistBodyType) =>
-    http.put<ApiResponseList<PlaylistMovieResType>>(apiConfig.playlist.update, {
+    http.put<ApiResponseList<any>>(apiConfig.playlist.update, {
       body
     }),
   updateItem: (body: PlaylistItemBodyType) =>
-    http.put<ApiResponseList<PlaylistMovieResType>>(
-      apiConfig.playlist.updateItem,
-      {
-        body
-      }
-    )
+    http.put<ApiResponseList<any>>(apiConfig.playlist.updateItem, {
+      body
+    })
 };
 
 export default playlistApiRequest;

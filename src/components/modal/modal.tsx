@@ -96,6 +96,7 @@ export default function Modal({
       {open && (
         <motion.div
           onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
           className={cn(
             'fixed inset-0 z-20 flex items-center justify-center',
             className
@@ -125,6 +126,7 @@ export default function Modal({
             exit={variants.exit}
             transition={{ duration: 0.15, ease: 'linear' }}
             onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
           >
             <Activity visible={!!title || !!showClose}>
               <div

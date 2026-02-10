@@ -5,18 +5,29 @@ import { Modal } from '@/components/modal';
 import { getQueryClient } from '@/components/providers';
 import { queryKeys } from '@/constants';
 import { useDisclosure } from '@/hooks';
+import { logger } from '@/logger';
 import { useDeletePlaylistMutation } from '@/queries';
+import { usePlaylistStore } from '@/store';
+import { ApiResponse, PlaylistResType } from '@/types';
 import { notify } from '@/utils';
 import { FaTrash } from 'react-icons/fa6';
+import { useShallow } from 'zustand/shallow';
 
 export default function ButtonDeletePlaylist({ id }: { id: string }) {
+  const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
+    useShallow((s) => ({
+      selectedPlaylist: s.selectedPlaylist,
+      setSelectedPlaylist: s.setSelectedPlaylist
+    }))
+  );
   const { opened, open, close } = useDisclosure();
   const queryClient = getQueryClient();
 
   const { mutateAsync: deletePlaylistMutate, isPending } =
     useDeletePlaylistMutation();
 
-  const handleOpen = () => {
+  const handleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     open();
   };
 
@@ -26,14 +37,27 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
 
   const handleDelete = async () => {
     await deletePlaylistMutate(id, {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa danh sách phát thành công');
-          queryClient.invalidateQueries({
+          await queryClient.invalidateQueries({
             queryKey: [queryKeys.PLAYLIST_LIST]
           });
           handleClose();
+          const playlistData = queryClient.getQueryData<
+            ApiResponse<PlaylistResType[]>
+          >([queryKeys.PLAYLIST_LIST]);
+          const playlist = playlistData?.data || [];
+          if (playlist.findIndex((p) => p.id === selectedPlaylist?.id) === -1) {
+            setSelectedPlaylist(playlist[0] || null);
+          }
+        } else {
+          notify.error('Xóa danh sách phát thất bại');
         }
+      },
+      onError: (error) => {
+        logger.error('Error while deleting playlist error', error);
+        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
       }
     });
   };
