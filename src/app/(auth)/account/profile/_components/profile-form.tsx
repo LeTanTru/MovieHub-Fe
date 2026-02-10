@@ -87,18 +87,18 @@ export default function ProfileForm() {
         avatarPath: imageManager.currentUrl
       });
       if (res.result) {
-        notify.success('Cập nhật thành công');
+        notify.success('Cập nhật tài khoản thành công');
       } else {
         const errorCode = res.code;
         if (errorCode) {
           applyFormErrors(form, errorCode, profileErrorMaps);
         } else {
-          notify.error('Có lỗi xảy ra');
+          notify.error('Cập nhật tài khoản thất bại');
         }
       }
     } catch (error) {
       logger.error('Error while updating profile: ', error);
-      notify.error('Cập nhật thất bại');
+      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
     }
   };
 

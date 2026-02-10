@@ -9,7 +9,9 @@ import {
   GENDER_MALE,
   GENDER_OTHER,
   genderIconMaps,
-  kindMaps
+  kindMaps,
+  REACTION_TYPE_DISLIKE,
+  REACTION_TYPE_LIKE
 } from '@/constants';
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
@@ -17,7 +19,7 @@ import { ReviewResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image, { StaticImageData } from 'next/image';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FaEllipsis, FaTrash } from 'react-icons/fa6';
 import { Activity } from '@/components/activity';
 
@@ -25,30 +27,38 @@ export default function ReviewItem({
   review,
   reviewRatingMaps,
   isAuthor,
+  isAuthenticated,
+  isVoteLoading,
+  voteType,
+  onLike,
+  onDislike,
   onDelete
 }: {
   review: ReviewResType;
   reviewRatingMaps: Record<number, { label: string; icon: StaticImageData }>;
-  isAuthor?: boolean;
-  onDelete?: (id: string) => void;
+  isAuthor: boolean;
+  isAuthenticated: boolean;
+  isVoteLoading: boolean;
+  voteType: number;
+  onLike: (id: string) => void;
+  onDislike: (id: string) => void;
+  onDelete: (id: string) => void;
 }) {
   const author = review.author;
   const gender = author.gender || GENDER_OTHER;
   const kind = kindMaps[author.kind];
   const rate = review.rate;
-
-  const GenderIcon = genderIconMaps[gender];
-
   const ratingInfo = reviewRatingMaps[rate];
+  const GenderIcon = genderIconMaps[gender];
 
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
   );
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = useCallback(() => {
     setShowDropdown((prev) => !prev);
-  };
+  }, []);
 
   return (
     <div className='flex-start relative flex gap-4'>
@@ -103,14 +113,34 @@ export default function ReviewItem({
         <div className='text-gray-400'>{review.content}</div>
         <div className='relative mt-2 flex items-center gap-4'>
           <div className='flex items-center gap-4'>
-            <LikeIcon
-              size={16}
-              className='hover:text-light-golden-yellow transition-colors duration-200'
-            />
-            <DislikeIcon
-              size={16}
-              className='hover:text-dislike-comment transition-colors duration-200'
-            />
+            <div className='flex items-center gap-2'>
+              <LikeIcon
+                size={16}
+                onClick={() => onLike(review.id)}
+                iconClassName={cn('transition-colors duration-200', {
+                  'cursor-not-allowed opacity-60':
+                    !isAuthenticated || isVoteLoading,
+                  'hover:text-light-golden-yellow':
+                    isAuthenticated && !isVoteLoading,
+                  'text-light-golden-yellow': voteType === REACTION_TYPE_LIKE
+                })}
+              />
+              {review.totalLike}
+            </div>
+            <div className='flex items-center gap-2'>
+              <DislikeIcon
+                size={16}
+                onClick={() => onDislike(review.id)}
+                iconClassName={cn('transition-colors duration-200', {
+                  'cursor-not-allowed opacity-60':
+                    !isAuthenticated || isVoteLoading,
+                  'hover:text-dislike-comment':
+                    isAuthenticated && !isVoteLoading,
+                  'text-dislike-comment': voteType === REACTION_TYPE_DISLIKE
+                })}
+              />
+              {review.totalDislike}
+            </div>
           </div>
           <Activity visible={!!isAuthor}>
             <div className='relative' ref={dropdownRef}>
@@ -144,7 +174,7 @@ export default function ReviewItem({
                       className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
                       onClick={() => {
                         setShowDropdown(false);
-                        onDelete?.(review.id);
+                        onDelete(review.id);
                       }}
                     >
                       <FaTrash />

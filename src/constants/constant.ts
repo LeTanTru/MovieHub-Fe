@@ -76,3 +76,6 @@ export const ACTION_DELETE_FROM_PLAYLIST = 0;
 export const ACTION_ADD_TO_PLAYLIST = 1;
 
 export const MAX_PLAYLIST_COUNT = 5;
+
+export const REACTION_TYPE_LIKE = 1;
+export const REACTION_TYPE_DISLIKE = 2;

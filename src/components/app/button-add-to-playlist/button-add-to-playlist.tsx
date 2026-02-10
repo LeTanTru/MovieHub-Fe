@@ -168,15 +168,17 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
       movieId: movieId
     };
 
+    if (playlistListLoading) return;
+
     await updatePlaylistItemMutate(payload, {
       onSuccess: (res) => {
         if (res.result) {
           notify.success(
-            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} danh sách phát thành công`
+            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} phim danh sách phát thành công`
           );
         } else {
           notify.error(
-            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} danh sách phát thất bại`
+            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} phim danh sách phát thất bại`
           );
         }
       },
@@ -185,9 +187,7 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
           `Error ${isInPlaylist ? 'removing from' : 'adding to'} playlist`,
           error
         );
-        notify.error(
-          `Đã xảy ra lỗi khi ${isInPlaylist ? 'xóa khỏi' : 'thêm vào'} danh sách phát`
-        );
+        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
       }
     });
   });

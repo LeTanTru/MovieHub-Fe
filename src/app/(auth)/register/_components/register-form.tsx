@@ -51,10 +51,13 @@ export default function RegisterForm() {
           const message = registerErrorMaps[errorCode];
           if (message) notify.error(message[0][1].message);
           applyFormErrors(form, errorCode, registerErrorMaps);
+        } else {
+          notify.error('Đăng ký thất bại');
         }
       }
     } catch (error) {
       logger.error('Error while registering', error);
+      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
     }
   };
 

@@ -51,12 +51,12 @@ export default function ReviewModal({
 
   const handleSubmit = async (values: ReviewBodyType) => {
     if (selectedRating === null) {
-      notify.error('Vui lòng chọn đánh giá sao');
+      notify.error('Bạn chưa chọn mức độ hài lòng');
       return;
     }
 
     if (values.content?.trim().length === 0) {
-      notify.error('Vui lòng nhập nội dung đánh giá');
+      notify.error('Bạn chưa nhập nội dung đánh giá');
       return;
     }
 
@@ -97,7 +97,7 @@ export default function ReviewModal({
         },
         onError: (error) => {
           logger.error('Error while creating/updating review', error);
-          notify.error('Đánh giá phim thất bại');
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
       }
     );

@@ -5,6 +5,7 @@ import { Button, ToolTip } from '@/components/form';
 import { FAVOURITE_TYPE_PERSON } from '@/constants';
 import { useAuth } from '@/hooks';
 import { cn } from '@/lib';
+import { logger } from '@/logger';
 import {
   useDeleteFavouriteMutation,
   useFavouriteMutation,
@@ -66,23 +67,51 @@ export default function ButtonLikePerson({
       return;
     }
 
+    if (addFavouriteLoading) return;
+
     await addFavourite(
       { targetId, type: FAVOURITE_TYPE_PERSON },
       {
         onSuccess: (res) => {
           if (res.result) {
-            notify.success('Thêm vào danh sách yêu thích thành công');
+            notify.success(
+              'Thêm diễn viên, đạo diễn vào danh sách yêu thích thành công'
+            );
             setIsLiked(true);
             setFavouriteId(res.data ?? '');
           } else {
-            notify.error('Thêm vào danh sách yêu thích thất bại');
+            notify.error(
+              'Thêm diễn viên, đạo diễn vào danh sách yêu thích thất bại'
+            );
           }
+        },
+        onError: (error) => {
+          logger.error('Error while adding favourite', error);
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
       }
     );
   };
 
-  const handleUnlike = async () => {
+  const handleRemoveLike = async () => {
+    if (!isAuthenticated) {
+      notify.error(
+        <span>
+          Vui lòng&nbsp;
+          <Link
+            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            href={route.login.path}
+          >
+            đăng nhập
+          </Link>
+          &nbsp;để xóa diễn viên, đạo diễn khỏi danh sách yêu thích
+        </span>
+      );
+      return;
+    }
+
+    if (removeFavouriteLoading) return;
+
     if (favouriteId) {
       heartIconRef.current?.startAnimation();
 
@@ -90,10 +119,18 @@ export default function ButtonLikePerson({
         onSuccess: (res) => {
           if (res.result) {
             setIsLiked(false);
-            notify.success('Xóa khỏi danh sách yêu thích thành công');
+            notify.success(
+              'Xóa diễn viên, đạo diễn khỏi danh sách yêu thích thành công'
+            );
           } else {
-            notify.error('Xóa khỏi danh sách yêu thích thất bại');
+            notify.error(
+              'Xóa diễn viên, đạo diễn khỏi danh sách yêu thích thất bại'
+            );
           }
+        },
+        onError: (error) => {
+          logger.error('Error while removing favourite', error);
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
       });
     }
@@ -115,7 +152,7 @@ export default function ButtonLikePerson({
           className
         )}
         variant='outline'
-        onClick={isLiked ? handleUnlike : handleLike}
+        onClick={isLiked ? handleRemoveLike : handleLike}
         disabled={addFavouriteLoading || removeFavouriteLoading}
       >
         <HeartIcon ref={heartIconRef} />

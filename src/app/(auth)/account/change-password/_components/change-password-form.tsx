@@ -62,12 +62,12 @@ export default function ChangePasswordForm() {
         if (errorCode) {
           applyFormErrors(form, errorCode, changePasswordErrorMaps);
         } else {
-          notify.error('Có lỗi xảy ra');
+          notify.error('Đổi mật khẩu thất bại');
         }
       }
     } catch (error) {
       logger.error('Error while changing password: ', error);
-      notify.error('Đổi mật khẩu thất bại');
+      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
     }
   };
 

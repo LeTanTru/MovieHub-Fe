@@ -57,12 +57,12 @@ export default function PlaylistModal({
         ...values
       },
       {
-        onSuccess: (res) => {
+        onSuccess: async (res) => {
           if (res.result) {
             notify.success(
               `${isEditing ? 'Cập nhật' : 'Thêm'} danh sách phát thành công`
             );
-            queryClient.invalidateQueries({
+            await queryClient.invalidateQueries({
               queryKey: [queryKeys.PLAYLIST_LIST]
             });
             handleClose();
@@ -74,15 +74,10 @@ export default function PlaylistModal({
         },
         onError: (error) => {
           logger.error('Error while creating/updating playlist:', error);
-          notify.error(
-            `Đã có lỗi xảy ra khi ${
-              isEditing ? 'cập nhật' : 'thêm'
-            } danh sách phát`
-          );
+          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
       }
     );
-    onClose();
   };
 
   return (
