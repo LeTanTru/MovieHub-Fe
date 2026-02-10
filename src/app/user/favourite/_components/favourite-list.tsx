@@ -97,7 +97,7 @@ export default function FavouriteList() {
   }, [activeTab]);
 
   return (
-    <div className='grow p-10'>
+    <div className='grow'>
       <div className='mb-8 flex flex-col items-start justify-between gap-4'>
         <h3 className='text-xl leading-normal font-semibold text-white'>
           Yêu thích
@@ -137,14 +137,14 @@ export default function FavouriteList() {
           >
             <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
               {isLoading ? (
-                <MovieGridSkeleton className='grid-cols-6' skeletonCount={12} />
+                <MovieGridSkeleton className='grid-cols-8' skeletonCount={16} />
               ) : movieList.length === 0 ? (
                 <NoData
                   className='pt-20'
                   content='Bạn chưa có phim yêu thích nào'
                 />
               ) : (
-                <div className='grid w-full grow grid-cols-6 gap-6'>
+                <div className='grid w-full grow grid-cols-8 gap-6'>
                   {movieList.map((movie) => (
                     <MovieCard
                       key={movie.id}

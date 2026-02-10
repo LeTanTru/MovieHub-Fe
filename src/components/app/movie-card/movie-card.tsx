@@ -30,8 +30,8 @@ const makeItemVariants = (dir: Dir): Variants => {
 };
 
 const itemTransition: Transition = {
-  opacity: { duration: 0.2, ease: [0.0, 0.0, 0.2, 1] },
-  default: { duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }
+  opacity: { duration: 0.25, ease: [0.0, 0.0, 0.2, 1] },
+  default: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }
 };
 
 const MODAL_WIDTH = 400;

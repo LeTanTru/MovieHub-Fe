@@ -9,13 +9,13 @@ export const playlistItemSchema = z.object({
   actions: z.array(
     z.object({
       action: z.number(),
-      playlistId: z.number()
+      playlistId: z.string()
     })
   ),
   movieId: z.string().nonempty('Bắt buộc')
 });
 
-export const playlistSearchSchema = z.object({
+export const removeItemSearchSchema = z.object({
   movieId: z.string().nonempty('Bắt buộc'),
   playlistId: z.string().nonempty('Bắt buộc')
 });

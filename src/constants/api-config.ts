@@ -337,7 +337,7 @@ const apiConfig = defineApiConfig({
     },
     updateItem: {
       baseUrl: `${AppConstants.apiUrl}/v1/playlist/update-item`,
-      method: 'PUT',
+      method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true
     }

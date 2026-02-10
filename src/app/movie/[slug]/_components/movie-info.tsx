@@ -176,7 +176,7 @@ export default function MovieInfo({
 
   const releaseDate = currentSeason?.releaseDate || movie?.releaseDate;
 
-  if (isLoading) {
+  if (isLoading && !movie) {
     return <MovieInfoSkeleton />;
   }
 

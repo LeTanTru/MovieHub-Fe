@@ -13,7 +13,8 @@ export default function ButtonEditPlaylist({
 }) {
   const { opened, open, close } = useDisclosure();
 
-  const handleOpen = () => {
+  const handleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     open();
   };
 

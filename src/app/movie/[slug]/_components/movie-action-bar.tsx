@@ -10,10 +10,10 @@ import { useMovieStore } from '@/store';
 import { formatRating, getIdFromSlug, notify } from '@/utils';
 import Link from 'next/link';
 import { FaTelegramPlane } from 'react-icons/fa';
-import { FaPlus } from 'react-icons/fa6';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ButtonLikeDetail } from '@/components/app/button-like';
 import { useParams } from 'next/navigation';
+import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
 
 export default function MovieActionBar({
   isLoading = false
@@ -76,13 +76,7 @@ export default function MovieActionBar({
           {/* Left */}
           <div className='flex grow justify-start gap-4'>
             <ButtonLikeDetail targetId={id} />
-            <Button
-              className='group h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
-              variant='ghost'
-            >
-              <FaPlus className='group-hover:text-light-golden-yellow transition-all duration-200 ease-linear' />
-              Thêm vào
-            </Button>
+            <ButtonAddToPlaylist movieId={id} />
             <Button
               className='group h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
               variant='ghost'
