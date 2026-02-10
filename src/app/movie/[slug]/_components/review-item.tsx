@@ -118,8 +118,7 @@ export default function ReviewItem({
                 size={16}
                 onClick={() => onLike(review.id)}
                 iconClassName={cn('transition-colors duration-200', {
-                  'cursor-not-allowed opacity-60':
-                    !isAuthenticated || isVoteLoading,
+                  'cursor-not-allowed opacity-60': isVoteLoading,
                   'hover:text-light-golden-yellow':
                     isAuthenticated && !isVoteLoading,
                   'text-light-golden-yellow': voteType === REACTION_TYPE_LIKE
@@ -132,8 +131,7 @@ export default function ReviewItem({
                 size={16}
                 onClick={() => onDislike(review.id)}
                 iconClassName={cn('transition-colors duration-200', {
-                  'cursor-not-allowed opacity-60':
-                    !isAuthenticated || isVoteLoading,
+                  'cursor-not-allowed opacity-60': isVoteLoading,
                   'hover:text-dislike-comment':
                     isAuthenticated && !isVoteLoading,
                   'text-dislike-comment': voteType === REACTION_TYPE_DISLIKE
