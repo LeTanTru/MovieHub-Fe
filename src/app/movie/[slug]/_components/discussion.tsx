@@ -125,37 +125,41 @@ export default function Discussion({
         </div>
       </div>
       {/* Body */}
-      {profile ? (
-        <div className='mb-4 flex items-center gap-4'>
-          <AvatarField
-            src={renderImageUrl(profile.avatarPath)}
-            size={50}
-            alt={profile.fullName}
-          />
-          <div className='flex flex-col justify-between gap-1'>
-            <small className='text-gray-400'>
-              {activeKey === DISCUSSION_TAB_COMMENT ? 'Bình luận' : 'Đánh giá'}
-              &nbsp;với tên
-            </small>
-            <span className='text font-medium text-white'>
-              {profile.fullName}
-            </span>
+      <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
+        {profile ? (
+          <div className='mb-4 flex items-center gap-4'>
+            <AvatarField
+              src={renderImageUrl(profile.avatarPath)}
+              size={50}
+              alt={profile.fullName}
+            />
+            <div className='flex flex-col justify-between gap-1'>
+              <small className='text-gray-400'>
+                {activeKey === DISCUSSION_TAB_COMMENT
+                  ? 'Bình luận'
+                  : 'Đánh giá'}
+                &nbsp;với tên
+              </small>
+              <span className='text font-medium text-white'>
+                {profile.fullName}
+              </span>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className='mb-4 text-gray-400'>
-          Vui lòng&nbsp;
-          <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
-          >
-            đăng nhập
-          </Link>
-          &nbsp;để tham gia&nbsp;
-          {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
-        </div>
-      )}
-      <CommentForm isLoading={isActiveLoading} />
+        ) : (
+          <div className='mb-4 text-gray-400'>
+            Vui lòng&nbsp;
+            <Link
+              className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+              href={route.login.path}
+            >
+              đăng nhập
+            </Link>
+            &nbsp;để tham gia&nbsp;
+            {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
+          </div>
+        )}
+        <CommentForm isLoading={isActiveLoading} />
+      </Activity>
       <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
         <CommentList comments={commentList} isLoading={commentListLoading} />
       </Activity>

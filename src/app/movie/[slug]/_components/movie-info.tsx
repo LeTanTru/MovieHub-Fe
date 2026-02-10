@@ -180,7 +180,10 @@ export default function MovieInfo({
     return <MovieInfoSkeleton />;
   }
 
-  if (!movie) return null;
+  if (!movie)
+    return (
+      <div className='bg-main-background/60 flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'></div>
+    );
 
   return (
     <div className='bg-main-background/60 flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>

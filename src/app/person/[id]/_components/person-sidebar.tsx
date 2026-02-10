@@ -28,6 +28,7 @@ export default function PersonSidebar() {
   const { searchParams } = useQueryParams<PersonSearchType>();
   const { data: personData, isLoading: personLoading } = usePersonQuery(id);
   const person = personData?.data;
+  const kind = searchParams.kind;
 
   const handleOpenModal = () => open();
   const handleCloseModal = () => close();
@@ -83,9 +84,10 @@ export default function PersonSidebar() {
       </p>
 
       <div className='mb-4 flex justify-center gap-2'>
-        {searchParams.kind === PERSON_KIND_ACTOR && (
+        {kind === PERSON_KIND_ACTOR ||
+        person?.kinds.includes(PERSON_KIND_ACTOR) ? (
           <ButtonLikePerson targetId={id} />
-        )}
+        ) : null}
         <ButtonSharePerson />
       </div>
 
