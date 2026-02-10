@@ -174,11 +174,11 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
       onSuccess: (res) => {
         if (res.result) {
           notify.success(
-            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} phim danh sách phát thành công`
+            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} phim vào danh sách phát thành công`
           );
         } else {
           notify.error(
-            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} phim danh sách phát thất bại`
+            `${isInPlaylist ? 'Xóa khỏi' : 'Thêm vào'} phim vào danh sách phát thất bại`
           );
         }
       },

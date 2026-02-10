@@ -74,7 +74,7 @@ export default function ReviewList({
 
   const { data: voteReviewListData } = useVoteReviewListQuery({
     movieId: movie?.id?.toString() || '',
-    enabled: isAuthenticated
+    enabled: isAuthenticated && !!movie?.id
   });
 
   const voteReviewList = useMemo(
@@ -151,9 +151,14 @@ export default function ReviewList({
       {
         onSuccess: async (res) => {
           if (res.result) {
-            await queryClient.invalidateQueries({
-              queryKey: [queryKeys.REVIEW_LIST]
-            });
+            await Promise.all([
+              queryClient.invalidateQueries({
+                queryKey: [queryKeys.REVIEW_LIST]
+              }),
+              queryClient.invalidateQueries({
+                queryKey: [queryKeys.REVIEW_VOTE_LIST, movie?.id?.toString()]
+              })
+            ]);
           } else {
             notify.error('Thích đánh giá thất bại');
           }
@@ -190,9 +195,14 @@ export default function ReviewList({
       {
         onSuccess: async (res) => {
           if (res.result) {
-            await queryClient.invalidateQueries({
-              queryKey: [queryKeys.REVIEW_LIST]
-            });
+            await Promise.all([
+              queryClient.invalidateQueries({
+                queryKey: [queryKeys.REVIEW_LIST]
+              }),
+              queryClient.invalidateQueries({
+                queryKey: [queryKeys.REVIEW_VOTE_LIST, movie?.id?.toString()]
+              })
+            ]);
           } else {
             notify.error('Không thích đánh giá thất bại');
           }
