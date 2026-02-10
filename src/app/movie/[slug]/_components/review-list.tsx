@@ -235,7 +235,7 @@ export default function ReviewList({
     );
 
   return (
-    <div className='mt-12 flex flex-col justify-between gap-8'>
+    <div className='mt-8 flex flex-col justify-between gap-8'>
       {reviews.map((review) => (
         <ReviewItem
           key={review.id}

@@ -15,6 +15,7 @@ import { ButtonLikeDetail } from '@/components/app/button-like';
 import { useParams } from 'next/navigation';
 import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
 import { useCheckMovieQuery } from '@/queries';
+import { ButtonShareMovie } from '@/components/app/button-share';
 
 export default function MovieActionBar({
   isLoading = false
@@ -92,13 +93,7 @@ export default function MovieActionBar({
           <div className='flex grow justify-start gap-4'>
             <ButtonLikeDetail targetId={id} />
             <ButtonAddToPlaylist movieId={id} />
-            <Button
-              className='group h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
-              variant='ghost'
-            >
-              <FaTelegramPlane className='group-hover:text-light-golden-yellow transition-all duration-200 ease-linear' />
-              Chia sẻ
-            </Button>
+            <ButtonShareMovie />
             <Button
               className='group h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
               variant='ghost'

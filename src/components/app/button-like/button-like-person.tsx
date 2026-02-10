@@ -61,7 +61,7 @@ export default function ButtonLikePerson({
           >
             đăng nhập
           </Link>
-          &nbsp;để thêm diễn viên, đạo diễn vào danh sách yêu thích
+          &nbsp;để thêm diễn viên vào danh sách yêu thích
         </span>
       );
       return;
@@ -74,15 +74,11 @@ export default function ButtonLikePerson({
       {
         onSuccess: (res) => {
           if (res.result) {
-            notify.success(
-              'Thêm diễn viên, đạo diễn vào danh sách yêu thích thành công'
-            );
+            notify.success('Thêm diễn viên vào danh sách yêu thích thành công');
             setIsLiked(true);
             setFavouriteId(res.data ?? '');
           } else {
-            notify.error(
-              'Thêm diễn viên, đạo diễn vào danh sách yêu thích thất bại'
-            );
+            notify.error('Thêm diễn viên vào danh sách yêu thích thất bại');
           }
         },
         onError: (error) => {
@@ -104,7 +100,7 @@ export default function ButtonLikePerson({
           >
             đăng nhập
           </Link>
-          &nbsp;để xóa diễn viên, đạo diễn khỏi danh sách yêu thích
+          &nbsp;để xóa diễn viên khỏi danh sách yêu thích
         </span>
       );
       return;
@@ -119,13 +115,9 @@ export default function ButtonLikePerson({
         onSuccess: (res) => {
           if (res.result) {
             setIsLiked(false);
-            notify.success(
-              'Xóa diễn viên, đạo diễn khỏi danh sách yêu thích thành công'
-            );
+            notify.success('Xóa diễn viên khỏi danh sách yêu thích thành công');
           } else {
-            notify.error(
-              'Xóa diễn viên, đạo diễn khỏi danh sách yêu thích thất bại'
-            );
+            notify.error('Xóa diễn viên khỏi danh sách yêu thích thất bại');
           }
         },
         onError: (error) => {
@@ -139,7 +131,7 @@ export default function ButtonLikePerson({
   return (
     <ToolTip
       className='w-fit bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
-      title='Thêm vào danh sách yêu thích để nhận thông báo cập nhật về diễn viên, đạo diễn nhé'
+      title='Thêm vào danh sách yêu thích để nhận thông báo cập nhật về phim nhé'
       side='top'
     >
       <Button
