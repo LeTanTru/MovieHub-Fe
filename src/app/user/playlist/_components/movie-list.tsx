@@ -1,5 +1,4 @@
 'use client';
-
 import { Activity } from '@/components/activity';
 import { MovieCard } from '@/components/app/movie-card';
 import { MovieGridSkeleton } from '@/components/app/movie-grid';
@@ -19,7 +18,7 @@ import { useState } from 'react';
 export default function MovieList() {
   const [page, setPage] = useState(1);
 
-  const pageSize = 12;
+  const pageSize = 16;
   const playlist = usePlaylistStore((s) => s.selectedPlaylist);
   const queryClient = getQueryClient();
 
