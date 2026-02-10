@@ -17,18 +17,6 @@ export default function CommentForm({
   const [toggle, setToggle] = useState<boolean>(false);
   const { isAuthenticated } = useAuth();
 
-  if (isLoading)
-    return (
-      <div className='bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2'>
-        <Skeleton className='skeleton h-28 w-full rounded-md' />
-        <div className='flex items-center gap-4'>
-          <Skeleton className='skeleton h-8 w-24 rounded' />
-          <div className='grow'></div>
-          <Skeleton className='skeleton h-10 w-20 rounded' />
-        </div>
-      </div>
-    );
-
   const handleToggle = () => {
     setToggle((prev) => !prev);
   };
@@ -50,6 +38,18 @@ export default function CommentForm({
       return;
     }
   };
+
+  if (isLoading)
+    return (
+      <div className='bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2'>
+        <Skeleton className='skeleton h-28 w-full rounded-md' />
+        <div className='flex items-center gap-4'>
+          <Skeleton className='skeleton h-8 w-24 rounded' />
+          <div className='grow'></div>
+          <Skeleton className='skeleton h-10 w-20 rounded' />
+        </div>
+      </div>
+    );
 
   return (
     <div className='bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2'>

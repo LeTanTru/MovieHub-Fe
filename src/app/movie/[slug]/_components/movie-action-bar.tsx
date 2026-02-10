@@ -60,7 +60,7 @@ export default function MovieActionBar({
     open();
   };
 
-  if (isLoading)
+  if (isLoading && !movie)
     return (
       <div className='relative z-3 p-7.5'>
         <div className='flex items-center justify-between gap-8'>

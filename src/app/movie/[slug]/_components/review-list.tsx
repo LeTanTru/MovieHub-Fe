@@ -1,7 +1,7 @@
 'use client';
 
 import { NoData } from '@/components/no-data';
-import ReviewItem, { ReviewItemSkeleton } from './review-item';
+import ReviewItem from './review-item';
 import { ApiResponse, MovieResType, ReviewResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { StaticImageData } from 'next/image';
@@ -13,6 +13,28 @@ import { logger } from '@/logger';
 import { notify } from '@/utils';
 import { getQueryClient } from '@/components/providers';
 import { useMovieStore } from '@/store';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const ReviewItemSkeleton = () => {
+  return (
+    <div className='flex-start flex gap-4'>
+      <Skeleton className='skeleton h-12.5 w-12.5 rounded-full' />
+      <div className='flex grow flex-col gap-3'>
+        <div className='flex items-center gap-2'>
+          <Skeleton className='skeleton h-4 w-20 rounded' />
+          <Skeleton className='skeleton h-4 w-24 rounded' />
+        </div>
+        <Skeleton className='skeleton h-4 w-full rounded' />
+        <Skeleton className='skeleton h-4 w-3/4 rounded' />
+        <div className='flex items-center gap-3'>
+          <Skeleton className='skeleton h-4 w-10 rounded' />
+          <Skeleton className='skeleton h-4 w-10 rounded' />
+          <Skeleton className='skeleton h-4 w-14 rounded' />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function ReviewList({
   reviews,
