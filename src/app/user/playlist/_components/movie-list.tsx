@@ -79,7 +79,15 @@ export default function MovieList() {
       {isLoading ? (
         <MovieGridSkeleton className='grid-cols-8' skeletonCount={16} />
       ) : movieList.length === 0 ? (
-        <NoData className='pt-20' content='Bạn chưa có phim yêu thích nào' />
+        <NoData
+          className='pt-20'
+          content={
+            <>
+              Danh sách <span className='font-semibold'>{playlist.name}</span>
+              &nbsp;trống
+            </>
+          }
+        />
       ) : (
         <div className='grid w-full grow grid-cols-8 gap-6'>
           {movieList.map((movie) => (

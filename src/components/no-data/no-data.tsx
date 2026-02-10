@@ -11,7 +11,7 @@ export default function NoData({
   src
 }: {
   className?: string;
-  content?: string;
+  content?: string | React.ReactNode;
   width?: number;
   height?: number;
   size?: number;
@@ -28,7 +28,7 @@ export default function NoData({
         src={src || emptyData.src}
         width={size || width}
         height={size || height}
-        alt={content}
+        alt={'No data'}
       />
       <p>{content}</p>
     </div>
