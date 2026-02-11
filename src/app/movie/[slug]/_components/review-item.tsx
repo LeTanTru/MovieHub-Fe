@@ -45,10 +45,10 @@ export default function ReviewItem({
   onDelete: (id: string) => void;
 }) {
   const author = review.author;
-  const gender = author.gender || GENDER_OTHER;
-  const kind = kindMaps[author.kind];
+  const gender = author?.gender || GENDER_OTHER;
+  const kind = author?.kind !== undefined ? kindMaps[author.kind] : undefined;
   const rate = review.rate;
-  const ratingInfo = reviewRatingMaps[rate];
+  const ratingInfo = rate !== undefined ? reviewRatingMaps[rate] : null;
   const GenderIcon = genderIconMaps[gender];
 
   const [showDropdown, setShowDropdown] = useState(false);
@@ -63,9 +63,9 @@ export default function ReviewItem({
   return (
     <div className='flex-start relative flex gap-4'>
       <AvatarField
-        src={renderImageUrl(author.avatarPath)}
+        src={renderImageUrl(author?.avatarPath)}
         size={50}
-        alt={author.fullName}
+        alt={author?.fullName || 'User'}
       />
       <div className='grow'>
         <div className='flex-start relative mb-2 flex items-center gap-2.5'>
@@ -78,22 +78,24 @@ export default function ReviewItem({
                 {kind.label}
               </Badge>
             )}
-            <div className='bg-review flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 text-white'>
-              <Image
-                src={ratingInfo.icon}
-                alt={ratingInfo.label}
-                width={16}
-                height={16}
-                unoptimized
-              />
-              <span className='text-xs'>{ratingInfo.label}</span>
-            </div>
+            {ratingInfo && (
+              <div className='bg-review flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 text-white'>
+                <Image
+                  src={ratingInfo.icon}
+                  alt={ratingInfo.label}
+                  width={16}
+                  height={16}
+                  unoptimized
+                />
+                <span className='text-xs'>{ratingInfo.label}</span>
+              </div>
+            )}
             <span
               className={cn({
                 'text-light-golden-yellow font-semibold': isAuthor
               })}
             >
-              {author.fullName} {isAuthor && '(Bạn)'}
+              {author?.fullName || 'User'} {isAuthor && '(Bạn)'}
             </span>
             <GenderIcon
               className={cn('size-4', {
@@ -117,12 +119,14 @@ export default function ReviewItem({
               <LikeIcon
                 size={16}
                 onClick={() => onLike(review.id)}
-                iconClassName={cn('transition-colors duration-200', {
-                  'cursor-not-allowed opacity-60': isVoteLoading,
-                  'hover:text-light-golden-yellow':
-                    isAuthenticated && !isVoteLoading,
-                  'text-light-golden-yellow': voteType === REACTION_TYPE_LIKE
-                })}
+                iconClassName={cn(
+                  'transition-colors duration-200 ease-linear',
+                  {
+                    'hover:text-light-golden-yellow':
+                      isAuthenticated && !isVoteLoading,
+                    'text-light-golden-yellow': voteType === REACTION_TYPE_LIKE
+                  }
+                )}
               />
               {review.totalLike}
             </div>
@@ -130,12 +134,14 @@ export default function ReviewItem({
               <DislikeIcon
                 size={16}
                 onClick={() => onDislike(review.id)}
-                iconClassName={cn('transition-colors duration-200', {
-                  'cursor-not-allowed opacity-60': isVoteLoading,
-                  'hover:text-dislike-comment':
-                    isAuthenticated && !isVoteLoading,
-                  'text-dislike-comment': voteType === REACTION_TYPE_DISLIKE
-                })}
+                iconClassName={cn(
+                  'transition-colors duration-200 ease-linear',
+                  {
+                    'hover:text-dislike-comment':
+                      isAuthenticated && !isVoteLoading,
+                    'text-dislike-comment': voteType === REACTION_TYPE_DISLIKE
+                  }
+                )}
               />
               {review.totalDislike}
             </div>

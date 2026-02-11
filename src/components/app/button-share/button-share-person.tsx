@@ -23,7 +23,11 @@ export default function ButtonSharePerson() {
   };
 
   return (
-    <Button className='rounded-full' variant='outline' onClick={handleCopyLink}>
+    <Button
+      className='hover:text-light-golden-yellow! hover:border-light-golden-yellow! rounded-full'
+      variant='outline'
+      onClick={handleCopyLink}
+    >
       <TelegramIcon ref={telegramIconRef} />
       Chia sẻ
     </Button>

@@ -42,9 +42,10 @@ export default function CommentItem({
   onDelete: (id: string) => void;
 }) {
   const authorInfo: AuthorInfo = JSON.parse(comment.authorInfo || '{}');
-  const isAuthor = userId === authorInfo.id;
+  const isAuthor = userId && authorInfo.id ? userId === authorInfo.id : false;
   const gender = authorInfo.gender || GENDER_OTHER;
-  const kind = kindMaps[authorInfo.kind];
+  const kind =
+    authorInfo.kind !== undefined ? kindMaps[authorInfo.kind] : undefined;
   const GenderIcon = genderIconMaps[gender];
 
   const movieItem = comment.movieItem;
@@ -113,12 +114,14 @@ export default function CommentItem({
               <LikeIcon
                 size={16}
                 onClick={() => onLike(comment.id)}
-                iconClassName={cn('transition-colors duration-200', {
-                  'cursor-not-allowed opacity-60': isVoteLoading,
-                  'hover:text-light-golden-yellow':
-                    isAuthenticated && !isVoteLoading,
-                  'text-light-golden-yellow': voteType === REACTION_TYPE_LIKE
-                })}
+                iconClassName={cn(
+                  'transition-colors duration-200 ease-linear',
+                  {
+                    'hover:text-light-golden-yellow':
+                      isAuthenticated && !isVoteLoading,
+                    'text-light-golden-yellow': voteType === REACTION_TYPE_LIKE
+                  }
+                )}
               />
               {comment.totalLike}
             </div>
@@ -126,12 +129,14 @@ export default function CommentItem({
               <DislikeIcon
                 size={16}
                 onClick={() => onDislike(comment.id)}
-                iconClassName={cn('transition-colors duration-200', {
-                  'cursor-not-allowed opacity-60': isVoteLoading,
-                  'hover:text-dislike-comment':
-                    isAuthenticated && !isVoteLoading,
-                  'text-dislike-comment': voteType === REACTION_TYPE_DISLIKE
-                })}
+                iconClassName={cn(
+                  'transition-colors duration-200 ease-linear',
+                  {
+                    'hover:text-dislike-comment':
+                      isAuthenticated && !isVoteLoading,
+                    'text-dislike-comment': voteType === REACTION_TYPE_DISLIKE
+                  }
+                )}
               />
               {comment.totalDislike}
             </div>

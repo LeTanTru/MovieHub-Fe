@@ -85,7 +85,9 @@ export default function CommentList({
   const voteMaps = useMemo(() => {
     const maps: Record<string, number> = {};
     voteCommentList.forEach((vote) => {
-      maps[vote.id] = vote.type;
+      if (vote?.id && vote?.type !== undefined) {
+        maps[vote.id] = vote.type;
+      }
     });
     return maps;
   }, [voteCommentList]);
@@ -233,19 +235,21 @@ export default function CommentList({
 
   return (
     <div className='mt-8 flex flex-col justify-between gap-8'>
-      {comments.map((comment) => (
-        <CommentItem
-          key={comment.id}
-          comment={comment}
-          userId={profile?.id || ''}
-          isAuthenticated={isAuthenticated}
-          isVoteLoading={voteCommentLoading}
-          onLike={handleLikeComment}
-          onDislike={handleDislikeComment}
-          onDelete={handleDeleteComment}
-          voteType={voteMaps[comment.id]}
-        />
-      ))}
+      {comments
+        .filter((comment) => comment?.id)
+        .map((comment) => (
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            userId={profile?.id || ''}
+            isAuthenticated={isAuthenticated}
+            isVoteLoading={voteCommentLoading}
+            onLike={handleLikeComment}
+            onDislike={handleDislikeComment}
+            onDelete={handleDeleteComment}
+            voteType={voteMaps[comment.id]}
+          />
+        ))}
       {hasMore && (
         <div className='flex justify-center'>
           <Button

@@ -95,7 +95,9 @@ export default function ReviewList({
   const voteMaps = useMemo(() => {
     const maps: Record<string, number> = {};
     voteReviewList.forEach((vote) => {
-      maps[vote.id] = vote.type;
+      if (vote?.id && vote?.type !== undefined) {
+        maps[vote.id] = vote.type;
+      }
     });
     return maps;
   }, [voteReviewList]);
@@ -246,20 +248,22 @@ export default function ReviewList({
 
   return (
     <div className='mt-8 flex flex-col justify-between gap-8'>
-      {reviews.map((review) => (
-        <ReviewItem
-          key={review.id}
-          review={review}
-          reviewRatingMaps={reviewRatingMaps}
-          isAuthor={profile?.id === review.author.id}
-          isAuthenticated={isAuthenticated}
-          isVoteLoading={voteReviewLoading}
-          onLike={handleLikeReview}
-          onDislike={handleDislikeReview}
-          onDelete={handleDeleteReview}
-          voteType={voteMaps[review.id]}
-        />
-      ))}
+      {reviews
+        .filter((review) => review?.id)
+        .map((review) => (
+          <ReviewItem
+            key={review.id}
+            review={review}
+            reviewRatingMaps={reviewRatingMaps}
+            isAuthor={profile?.id === review.author?.id}
+            isAuthenticated={isAuthenticated}
+            isVoteLoading={voteReviewLoading}
+            onLike={handleLikeReview}
+            onDislike={handleDislikeReview}
+            onDelete={handleDeleteReview}
+            voteType={voteMaps[review.id]}
+          />
+        ))}
       {hasMore && (
         <div className='flex justify-center'>
           <Button
