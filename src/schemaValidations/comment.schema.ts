@@ -11,11 +11,6 @@ export const commentSchema = z.object({
   validTarget: z.boolean().default(false).optional()
 });
 
-export const pinCommentSchema = z.object({
-  id: z.string().nonempty('Bắt buộc'),
-  isPinned: z.boolean()
-});
-
 export const voteCommentSchema = z.object({
   id: z.string().nonempty('Bắt buộc'),
   type: z.number()

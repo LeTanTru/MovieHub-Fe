@@ -6,7 +6,6 @@ import {
   CommentSearchType,
   CommentVoteResType,
   CreateCommentBodyType,
-  PinCommentBodyType,
   UpdateCommentBodyType,
   VoteCommentBodyType
 } from '@/types';
@@ -25,16 +24,12 @@ const commentApiRequest = {
     http.delete<ApiResponse<any>>(apiConfig.comment.delete, {
       pathParams: { id }
     }),
-  pin: (body: PinCommentBodyType) =>
-    http.post<ApiResponse<any>>(apiConfig.comment.pin, {
-      body
-    }),
   update: (body: UpdateCommentBodyType) =>
     http.put<ApiResponse<any>>(apiConfig.comment.update, {
       body
     }),
   vote: (body: VoteCommentBodyType) =>
-    http.post<ApiResponse<any>>(apiConfig.comment.vote, {
+    http.put<ApiResponse<any>>(apiConfig.comment.vote, {
       body
     }),
   getVoteList: (movieId: string) =>

@@ -82,7 +82,7 @@ export default function Discussion({
     isFetchingNextPage: reviewLoadMoreLoading
   } = useInfiniteReviewListQuery({
     movieId: id,
-    size: 1,
+    size: DEFAULT_PAGE_SIZE,
     enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_REVIEW
   });
 

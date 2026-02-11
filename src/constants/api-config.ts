@@ -262,14 +262,8 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true
     },
-    pin: {
-      baseUrl: `${AppConstants.apiUrl}/v1/comment/pin/:id`,
-      method: 'PUT',
-      headers: baseHeader,
-      isRequiredTenantId: true
-    },
     update: {
-      baseUrl: `${AppConstants.apiUrl}/v1/comment/update/:id`,
+      baseUrl: `${AppConstants.apiUrl}/v1/comment/update`,
       method: 'PUT',
       headers: baseHeader,
       isRequiredTenantId: true

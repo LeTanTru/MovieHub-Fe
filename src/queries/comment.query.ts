@@ -3,7 +3,6 @@ import { DEFALT_PAGE_START, DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import {
   CommentSearchType,
   CreateCommentBodyType,
-  PinCommentBodyType,
   UpdateCommentBodyType,
   VoteCommentBodyType
 } from '@/types';
@@ -60,13 +59,6 @@ export const useDeleteCommentMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.DELETE_COMMENT],
     mutationFn: (id: string) => commentApiRequest.delete(id)
-  });
-};
-
-export const usePinCommentMutation = () => {
-  return useMutation({
-    mutationKey: [queryKeys.PIN_COMMENT],
-    mutationFn: (body: PinCommentBodyType) => commentApiRequest.pin(body)
   });
 };
 

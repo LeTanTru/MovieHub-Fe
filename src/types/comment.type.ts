@@ -1,7 +1,6 @@
 import {
   commentSchema,
   commentSearchSchema,
-  pinCommentSchema,
   voteCommentSchema
 } from '@/schemaValidations';
 import { MovieItemResType } from '@/types/movie-item.type';
@@ -46,8 +45,6 @@ export type UpdateCommentBodyType = Pick<
   CreateCommentBodyType,
   'id' | 'content'
 >;
-
-export type PinCommentBodyType = z.infer<typeof pinCommentSchema>;
 
 export type VoteCommentBodyType = z.infer<typeof voteCommentSchema>;
 
