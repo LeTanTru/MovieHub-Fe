@@ -78,6 +78,8 @@ export default function ButtonLikePopup({
       return;
     }
 
+    if (addFavouriteLoading) return;
+
     await addFavourite(
       { targetId, type: FAVOURITE_TYPE_MOVIE },
       {
@@ -115,6 +117,8 @@ export default function ButtonLikePopup({
       return;
     }
 
+    if (removeFavouriteLoading) return;
+
     if (favouriteId) {
       heartIconRef.current?.startAnimation();
 
@@ -146,7 +150,6 @@ export default function ButtonLikePopup({
         className
       )}
       onClick={isLiked ? handleRemoveLike : handleLike}
-      disabled={addFavouriteLoading || removeFavouriteLoading}
     >
       <HeartIcon ref={heartIconRef} />
       Thích

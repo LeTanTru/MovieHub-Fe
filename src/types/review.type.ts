@@ -62,13 +62,3 @@ export type ReviewVoteBodyType = z.infer<typeof reviewVoteSchema>;
 
 export type ReviewSearchType = z.infer<typeof reviewSearchSchema> &
   BaseSearchType;
-
-type ReviewState = {
-  selectedReview: ReviewResType | null;
-};
-
-type ReviewActions = {
-  setSelectedReview: (review: ReviewResType | null) => void;
-};
-
-export type ReviewStoreType = ReviewState & ReviewActions;

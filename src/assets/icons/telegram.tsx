@@ -40,7 +40,7 @@ const TelegramIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     }));
 
     const handleClick = async () => {
-      await start();
+      start();
       onClick?.();
     };
 

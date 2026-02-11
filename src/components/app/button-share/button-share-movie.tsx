@@ -24,7 +24,7 @@ export default function ButtonShareMovie() {
 
   return (
     <Button
-      className='group h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
+      className='hover:text-light-golden-yellow h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
       variant='ghost'
       onClick={handleCopyLink}
     >

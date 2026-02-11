@@ -144,7 +144,6 @@ export default function ButtonLikeDetail({
         )}
         variant='ghost'
         onClick={isLiked ? handleRemoveLike : handleLike}
-        disabled={addFavouriteLoading || removeFavouriteLoading}
       >
         <HeartIcon ref={heartIconRef} />
         Yêu thích

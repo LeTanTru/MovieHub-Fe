@@ -9,7 +9,6 @@ import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { formatRating, getIdFromSlug, notify } from '@/utils';
 import Link from 'next/link';
-import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ButtonLikeDetail } from '@/components/app/button-like';
 import { useParams } from 'next/navigation';
@@ -95,10 +94,10 @@ export default function MovieActionBar({
             <ButtonAddToPlaylist movieId={id} />
             <ButtonShareMovie />
             <Button
-              className='group h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
+              className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
               variant='ghost'
             >
-              <MessageIcon className='group-hover:text-light-golden-yellow transition-all duration-200 ease-linear' />
+              <MessageIcon />
               Bình luận
             </Button>
           </div>

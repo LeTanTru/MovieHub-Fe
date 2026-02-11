@@ -25,6 +25,8 @@ import { useMovieStore } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
 import { route } from '@/routes';
+import { Button } from '@/components/form';
+import { DotLoading } from '@/components/loading';
 
 const ReviewItemSkeleton = () => {
   return (
@@ -49,10 +51,18 @@ const ReviewItemSkeleton = () => {
 
 export default function ReviewList({
   reviews,
-  isLoading = false
+  isLoading = false,
+  hasMore = false,
+  remainingCount = 0,
+  isLoadMoreLoading = false,
+  onLoadMore
 }: {
   reviews: ReviewResType[];
   isLoading?: boolean;
+  hasMore?: boolean;
+  remainingCount?: number;
+  isLoadMoreLoading?: boolean;
+  onLoadMore?: () => void;
 }) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
@@ -85,7 +95,9 @@ export default function ReviewList({
   const voteMaps = useMemo(() => {
     const maps: Record<string, number> = {};
     voteReviewList.forEach((vote) => {
-      maps[vote.id] = vote.type;
+      if (vote?.id && vote?.type !== undefined) {
+        maps[vote.id] = vote.type;
+      }
     });
     return maps;
   }, [voteReviewList]);
@@ -236,20 +248,37 @@ export default function ReviewList({
 
   return (
     <div className='mt-8 flex flex-col justify-between gap-8'>
-      {reviews.map((review) => (
-        <ReviewItem
-          key={review.id}
-          review={review}
-          reviewRatingMaps={reviewRatingMaps}
-          isAuthor={profile?.id === review.author.id}
-          isAuthenticated={isAuthenticated}
-          isVoteLoading={voteReviewLoading}
-          onLike={handleLikeReview}
-          onDislike={handleDislikeReview}
-          onDelete={handleDeleteReview}
-          voteType={voteMaps[review.id]}
-        />
-      ))}
+      {reviews
+        .filter((review) => review?.id)
+        .map((review) => (
+          <ReviewItem
+            key={review.id}
+            review={review}
+            reviewRatingMaps={reviewRatingMaps}
+            isAuthor={profile?.id === review.author?.id}
+            isAuthenticated={isAuthenticated}
+            isVoteLoading={voteReviewLoading}
+            onLike={handleLikeReview}
+            onDislike={handleDislikeReview}
+            onDelete={handleDeleteReview}
+            voteType={voteMaps[review.id]}
+          />
+        ))}
+      {hasMore && (
+        <div className='flex justify-center'>
+          <Button
+            className='hover:text-light-golden-yellow min-w-45 text-sm hover:bg-transparent'
+            variant='ghost'
+            onClick={onLoadMore}
+          >
+            {isLoadMoreLoading ? (
+              <DotLoading />
+            ) : (
+              remainingCount > 0 && `Xem thêm (${remainingCount}) đánh giá`
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

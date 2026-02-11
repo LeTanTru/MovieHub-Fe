@@ -15,10 +15,12 @@ import {
 } from '@/constants';
 import {
   ApiResponse,
-  CommentSearchType,
+  ApiResponseList,
+  CommentResType,
   MoviePersonSearchType,
-  ReviewSearchType
+  ReviewResType
 } from '@/types';
+import { stripHtml } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -49,12 +51,12 @@ export async function generateMetadata(
     title: res.data
       ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
       : 'Không tìm thấy phim',
-    description: res.data?.description,
+    description: stripHtml(res.data?.description || 'Thông tin phim'),
     openGraph: {
       title: res.data
         ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
         : 'Không tìm thấy phim',
-      description: res.data?.description,
+      description: stripHtml(res.data?.description || 'Thông tin phim'),
       images
     },
     twitter: {
@@ -62,7 +64,7 @@ export async function generateMetadata(
       title: res.data
         ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
         : 'Không tìm thấy phim',
-      description: res.data?.description,
+      description: stripHtml(res.data?.description || 'Thông tin phim'),
       images
     },
     alternates: {
@@ -81,18 +83,6 @@ export default async function MoviePage({
 
   const moviePersonFilters: MoviePersonSearchType = {
     movieId: id
-  };
-
-  const commentFilters: CommentSearchType = {
-    movieId: id,
-    page: DEFAULT_TABLE_PAGE_START,
-    size: DEFAULT_PAGE_SIZE
-  };
-
-  const reviewFilters: ReviewSearchType = {
-    movieId: id,
-    page: DEFAULT_TABLE_PAGE_START,
-    size: DEFAULT_PAGE_SIZE
   };
 
   const queryClient = getQueryClient();
@@ -125,14 +115,38 @@ export default async function MoviePage({
     queryFn: () => movieApiRequest.getSuggestionList(id)
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.COMMENT_LIST, commentFilters],
-    queryFn: () => commentApiRequest.getList({ params: commentFilters })
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [queryKeys.COMMENT_LIST, id, DEFAULT_PAGE_SIZE],
+    queryFn: ({ pageParam }) =>
+      commentApiRequest.getList({
+        params: {
+          movieId: id,
+          page: pageParam,
+          size: DEFAULT_PAGE_SIZE
+        }
+      }),
+    initialPageParam: DEFAULT_TABLE_PAGE_START,
+    getNextPageParam: (
+      lastPage: ApiResponseList<CommentResType>,
+      pages: ApiResponseList<CommentResType>[]
+    ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
-    queryFn: () => reviewApiRequest.getList({ params: reviewFilters })
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: [queryKeys.REVIEW_LIST, id, DEFAULT_PAGE_SIZE],
+    queryFn: ({ pageParam }) =>
+      reviewApiRequest.getList({
+        params: {
+          movieId: id,
+          page: pageParam,
+          size: DEFAULT_PAGE_SIZE
+        }
+      }),
+    initialPageParam: DEFAULT_TABLE_PAGE_START,
+    getNextPageParam: (
+      lastPage: ApiResponseList<ReviewResType>,
+      pages: ApiResponseList<ReviewResType>[]
+    ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
   });
 
   return (

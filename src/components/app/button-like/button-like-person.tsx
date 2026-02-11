@@ -145,7 +145,6 @@ export default function ButtonLikePerson({
         )}
         variant='outline'
         onClick={isLiked ? handleRemoveLike : handleLike}
-        disabled={addFavouriteLoading || removeFavouriteLoading}
       >
         <HeartIcon ref={heartIconRef} />
         Thích

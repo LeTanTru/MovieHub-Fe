@@ -1,7 +1,7 @@
 import { reviewApiRequest } from '@/api-requests';
-import { queryKeys } from '@/constants';
+import { DEFALT_PAGE_START, DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import { ReviewBodyType, ReviewSearchType, ReviewVoteBodyType } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export const useReviewListQuery = ({
   params,
@@ -14,6 +14,32 @@ export const useReviewListQuery = ({
     queryKey: [queryKeys.REVIEW_LIST, params],
     queryFn: () => reviewApiRequest.getList({ params }),
     enabled
+  });
+};
+
+export const useInfiniteReviewListQuery = ({
+  movieId,
+  size = DEFAULT_PAGE_SIZE,
+  enabled
+}: {
+  movieId: string;
+  size?: number;
+  enabled?: boolean;
+}) => {
+  return useInfiniteQuery({
+    queryKey: [queryKeys.REVIEW_LIST, movieId, size],
+    queryFn: ({ pageParam }) =>
+      reviewApiRequest.getList({
+        params: { movieId, page: pageParam, size }
+      }),
+    initialPageParam: DEFALT_PAGE_START,
+    getNextPageParam: (lastPage, pages) => {
+      const totalPages = lastPage?.data?.totalPages || 0;
+      const nextPage = pages.length;
+
+      return nextPage < totalPages ? nextPage : undefined;
+    },
+    enabled: enabled && !!movieId
   });
 };
 

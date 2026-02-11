@@ -1,4 +1,8 @@
-import { commentSearchSchema } from '@/schemaValidations';
+import {
+  commentSchema,
+  commentSearchSchema,
+  voteCommentSchema
+} from '@/schemaValidations';
 import { MovieItemResType } from '@/types/movie-item.type';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
@@ -29,6 +33,20 @@ export type CommentResType = {
   totalDislike: number;
   totalLike: number;
 };
+
+export type CommentVoteResType = {
+  id: string;
+  type: number;
+};
+
+export type CreateCommentBodyType = z.infer<typeof commentSchema>;
+
+export type UpdateCommentBodyType = Pick<
+  CreateCommentBodyType,
+  'id' | 'content'
+>;
+
+export type VoteCommentBodyType = z.infer<typeof voteCommentSchema>;
 
 export type CommentSearchType = z.infer<typeof commentSearchSchema> &
   BaseSearchType;
