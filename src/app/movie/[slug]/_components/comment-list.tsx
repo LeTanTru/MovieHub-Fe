@@ -71,7 +71,7 @@ export default function CommentList({
   const queryClient = getQueryClient();
   const movie = useMovieStore((s) => s.movie);
   const setMovie = useMovieStore((s) => s.setMovie);
-  const setComment = useCommentStore((s) => s.setComment);
+  const setEditingComment = useCommentStore((s) => s.setEditingComment);
 
   const { data: voteCommentListData } = useVoteCommentListQuery({
     movieId: movie?.id?.toString() || '',
@@ -98,7 +98,7 @@ export default function CommentList({
     useVoteCommentMutation();
 
   const handleEdit = async (comment: CommentResType) => {
-    setComment(comment);
+    setEditingComment(comment);
   };
 
   const handleDeleteComment = async (id: string) => {

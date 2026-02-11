@@ -17,6 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
 import { Button, TextAreaField } from '@/components/form';
 import { useShallow } from 'zustand/shallow';
+import { useMemo } from 'react';
 
 export default function CommentForm({
   isLoading = false
@@ -28,10 +29,10 @@ export default function CommentForm({
   const id = getIdFromSlug(slug);
   const movie = useMovieStore((s) => s.movie);
   const queryClient = getQueryClient();
-  const { comment, setComment } = useCommentStore(
+  const { editingComment, setEditingComment } = useCommentStore(
     useShallow((s) => ({
-      comment: s.comment,
-      setComment: s.setComment
+      editingComment: s.editingComment,
+      setEditingComment: s.setEditingComment
     }))
   );
 
@@ -40,7 +41,7 @@ export default function CommentForm({
   const { mutateAsync: updateCommentMutate, isPending: updateCommentLoading } =
     useUpdateCommentMutation();
 
-  const isEditing = !!comment?.id;
+  const isEditing = !!editingComment?.id;
 
   const defaultValues: CreateCommentBodyType = {
     id: '',
@@ -52,11 +53,13 @@ export default function CommentForm({
     replyToKind: null
   };
 
-  const initialValues: CreateCommentBodyType = {
-    ...defaultValues,
-    id: comment?.id?.toString() || '',
-    content: comment?.content || ''
-  };
+  const initialValues: CreateCommentBodyType = useMemo(
+    () => ({
+      id: editingComment?.id?.toString() || '',
+      content: editingComment?.content || ''
+    }),
+    [editingComment?.content, editingComment?.id]
+  );
 
   const handleSubmit = async (values: CreateCommentBodyType, form?: any) => {
     if (!isAuthenticated) {
@@ -99,7 +102,7 @@ export default function CommentForm({
             });
           }
           if (isEditing) {
-            setComment(null);
+            setEditingComment(null);
           }
           form?.reset(defaultValues);
         } else {
@@ -119,7 +122,7 @@ export default function CommentForm({
   };
 
   const handleCancel = () => {
-    setComment(null);
+    setEditingComment(null);
   };
 
   if (isLoading)

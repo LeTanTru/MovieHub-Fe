@@ -90,13 +90,18 @@ export default function ReviewItem({
                 <span className='text-xs'>{ratingInfo.label}</span>
               </div>
             )}
-            <span
-              className={cn({
-                'text-light-golden-yellow font-semibold': isAuthor
-              })}
-            >
-              {author?.fullName || 'User'} {isAuthor && '(Bạn)'}
+            <span>
+              {review.author.fullName}
+              &nbsp;
+              <span
+                className={cn({
+                  'text-light-golden-yellow -ml font-semibold': isAuthor
+                })}
+              >
+                {isAuthor && '(Bạn)'}
+              </span>
             </span>
+
             <GenderIcon
               className={cn('size-4', {
                 'text-cyan-500': gender === GENDER_MALE,
@@ -150,7 +155,7 @@ export default function ReviewItem({
             <div className='relative' ref={dropdownRef}>
               <button
                 type='button'
-                className='flex gap-2 text-xs font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+                className='flex items-center gap-1 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
                 onClick={handleDropdownToggle}
               >
                 <FaEllipsis /> <span>Thêm</span>

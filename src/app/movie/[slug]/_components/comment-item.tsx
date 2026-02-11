@@ -178,7 +178,7 @@ export default function CommentItem({
             <div className='relative' ref={dropdownRef}>
               <button
                 type='button'
-                className='flex gap-2 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+                className='flex items-center gap-1 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
                 onClick={handleDropdownToggle}
               >
                 <FaEllipsis /> <span>Thêm</span>
