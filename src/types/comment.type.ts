@@ -51,12 +51,18 @@ export type VoteCommentBodyType = z.infer<typeof voteCommentSchema>;
 export type CommentSearchType = z.infer<typeof commentSearchSchema> &
   BaseSearchType;
 
-type CommentState = {
-  comment: CommentResType | null;
+type CommentStoreState = {
+  replyingComment: CommentResType | null;
+  editingComment: CommentResType | null;
+  openParentIds: string[];
 };
 
-type CommentActions = {
-  setComment: (comment: CommentResType | null) => void;
+type CommentStoreActions = {
+  openReply: (replyingComment: CommentResType | null) => void;
+  closeReply: () => void;
+
+  setEditingComment: (editingComment: CommentResType | null) => void;
+  setOpenParentIds: (ids: string[] | ((prev: string[]) => string[])) => void;
 };
 
-export type CommentStoreType = CommentState & CommentActions;
+export type CommentStoreType = CommentStoreState & CommentStoreActions;
