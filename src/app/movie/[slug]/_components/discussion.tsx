@@ -1,14 +1,16 @@
 'use client';
 
 import { CommentDotIcon } from '@/assets';
-import { useCommentListQuery, useReviewListQuery } from '@/queries';
+import {
+  useInfiniteCommentListQuery,
+  useInfiniteReviewListQuery
+} from '@/queries';
 import { route } from '@/routes';
 import { getIdFromSlug, renderImageUrl } from '@/utils';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
-  DEFALT_PAGE_START,
   DEFAULT_PAGE_SIZE,
   discussionActions,
   DISCUSSION_TAB_COMMENT,
@@ -57,33 +59,74 @@ export default function Discussion({
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
-  const [activeKey, setActiveKey] = useState<string>(DISCUSSION_TAB_REVIEW);
+  const [activeKey, setActiveKey] = useState<string>(DISCUSSION_TAB_COMMENT);
   const { profile } = useAuth();
 
-  const { data: commentListData, isLoading: commentListLoading } =
-    useCommentListQuery({
-      params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
-      enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_COMMENT
-    });
+  const {
+    data: commentListData,
+    isLoading: commentListLoading,
+    hasNextPage: hasMoreComments,
+    fetchNextPage: fetchMoreComments,
+    isFetchingNextPage: commentLoadMoreLoading
+  } = useInfiniteCommentListQuery({
+    movieId: id,
+    size: DEFAULT_PAGE_SIZE,
+    enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_COMMENT
+  });
 
-  const { data: reviewListData, isLoading: reviewListLoading } =
-    useReviewListQuery({
-      params: { movieId: id, page: DEFALT_PAGE_START, size: DEFAULT_PAGE_SIZE },
-      enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_REVIEW
-    });
+  const {
+    data: reviewListData,
+    isLoading: reviewListLoading,
+    hasNextPage: hasMoreReviews,
+    fetchNextPage: fetchMoreReviews,
+    isFetchingNextPage: reviewLoadMoreLoading
+  } = useInfiniteReviewListQuery({
+    movieId: id,
+    size: 1,
+    enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_REVIEW
+  });
 
-  const commentList = commentListData?.data?.content || [];
-  const reviewList = reviewListData?.data?.content || [];
+  const commentList = useMemo(
+    () =>
+      commentListData?.pages?.flatMap((pageData) => pageData.data.content) ||
+      [],
+    [commentListData?.pages]
+  );
+  const reviewList = useMemo(
+    () =>
+      reviewListData?.pages?.flatMap((pageData) => pageData.data.content) || [],
+    [reviewListData?.pages]
+  );
 
   const totalMaps: Record<string, number> = {
-    [DISCUSSION_TAB_COMMENT]: commentListData?.data?.totalElements || 0,
-    [DISCUSSION_TAB_REVIEW]: reviewListData?.data?.totalElements || 0
+    [DISCUSSION_TAB_COMMENT]:
+      commentListData?.pages?.[0]?.data?.totalElements || 0,
+    [DISCUSSION_TAB_REVIEW]:
+      reviewListData?.pages?.[0]?.data?.totalElements || 0
   };
+  const remainingComments = Math.max(
+    totalMaps[DISCUSSION_TAB_COMMENT] - commentList.length,
+    0
+  );
+  const remainingReviews = Math.max(
+    totalMaps[DISCUSSION_TAB_REVIEW] - reviewList.length,
+    0
+  );
 
   const isActiveLoading =
     activeKey === DISCUSSION_TAB_COMMENT
       ? commentListLoading
       : reviewListLoading;
+
+  const handleLoadMoreComments = () => {
+    if (!hasMoreComments || commentLoadMoreLoading) return;
+    fetchMoreComments();
+  };
+
+  const handleLoadMoreReviews = () => {
+    if (!hasMoreReviews || reviewLoadMoreLoading) return;
+    fetchMoreReviews();
+  };
 
   if (isLoading) return <DiscussionSkeleton />;
 
@@ -161,10 +204,24 @@ export default function Discussion({
         <CommentForm isLoading={isActiveLoading} />
       </Activity>
       <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
-        <CommentList comments={commentList} isLoading={commentListLoading} />
+        <CommentList
+          comments={commentList}
+          isLoading={commentListLoading}
+          hasMore={!!hasMoreComments}
+          remainingCount={remainingComments}
+          isLoadMoreLoading={commentLoadMoreLoading}
+          onLoadMore={handleLoadMoreComments}
+        />
       </Activity>
       <Activity visible={activeKey === DISCUSSION_TAB_REVIEW}>
-        <ReviewList reviews={reviewList} isLoading={reviewListLoading} />
+        <ReviewList
+          reviews={reviewList}
+          isLoading={reviewListLoading}
+          hasMore={!!hasMoreReviews}
+          remainingCount={remainingReviews}
+          isLoadMoreLoading={reviewLoadMoreLoading}
+          onLoadMore={handleLoadMoreReviews}
+        />
       </Activity>
     </div>
   );

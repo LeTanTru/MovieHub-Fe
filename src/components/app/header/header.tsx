@@ -41,9 +41,10 @@ export default function Header() {
     <header className='max-800:relative max-800:top-auto max-800:right-auto max-800:left-auto fixed top-0 right-0 left-0 z-10 block'>
       <div
         className={cn(
-          '1368:pr-10 1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear',
+          '1368:pr-10 1368:pl-8 pl-4 transition-all duration-200 ease-linear',
           {
-            'bg-fixed-header': isFixed
+            'bg-fixed-header': isFixed,
+            'bg-transparent': !isFixed
           }
         )}
       >

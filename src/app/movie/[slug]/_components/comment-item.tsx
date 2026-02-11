@@ -9,18 +9,40 @@ import {
   GENDER_MALE,
   GENDER_OTHER,
   genderIconMaps,
-  kindMaps
+  kindMaps,
+  REACTION_TYPE_DISLIKE,
+  REACTION_TYPE_LIKE
 } from '@/constants';
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
 import { AuthorInfo, CommentResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
-import { FaEllipsis, FaEye, FaFlag, FaReply } from 'react-icons/fa6';
+import { useCallback, useState } from 'react';
+import { FaEllipsis, FaReply, FaTrash } from 'react-icons/fa6';
+import { Activity } from '@/components/activity';
 
-export default function CommentItem({ comment }: { comment: CommentResType }) {
+export default function CommentItem({
+  comment,
+  userId,
+  isAuthenticated,
+  isVoteLoading,
+  voteType,
+  onLike,
+  onDislike,
+  onDelete
+}: {
+  comment: CommentResType;
+  userId: string;
+  isAuthenticated: boolean;
+  isVoteLoading: boolean;
+  voteType: number;
+  onLike: (id: string) => void;
+  onDislike: (id: string) => void;
+  onDelete: (id: string) => void;
+}) {
   const authorInfo: AuthorInfo = JSON.parse(comment.authorInfo || '{}');
+  const isAuthor = userId === authorInfo.id;
   const gender = authorInfo.gender || GENDER_OTHER;
   const kind = kindMaps[authorInfo.kind];
   const GenderIcon = genderIconMaps[gender];
@@ -32,9 +54,9 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
     setShowDropdown(false)
   );
 
-  const handleDropdownToggle = () => {
+  const handleDropdownToggle = useCallback(() => {
     setShowDropdown((prev) => !prev);
-  };
+  }, []);
 
   return (
     <div className='flex-start relative flex gap-4'>
@@ -54,7 +76,13 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
                 {kind.label}
               </Badge>
             )}
-            <span>{authorInfo.fullName}</span>
+            <span
+              className={cn({
+                'text-light-golden-yellow font-semibold': isAuthor
+              })}
+            >
+              {authorInfo.fullName} {isAuthor && '(Bạn)'}
+            </span>
             <GenderIcon
               className={cn('size-4', {
                 'text-cyan-500': gender === GENDER_MALE,
@@ -81,67 +109,83 @@ export default function CommentItem({ comment }: { comment: CommentResType }) {
         <div className='text-gray-400'>{comment.content}</div>
         <div className='relative mt-2 flex items-center gap-4'>
           <div className='flex items-center gap-4'>
-            <LikeIcon
-              size={16}
-              iconClassName='hover:text-light-golden-yellow transition-colors duration-200'
-            />
-            <DislikeIcon
-              size={16}
-              iconClassName='hover:text-dislike-comment transition-colors duration-200'
-            />
+            <div className='flex items-center gap-2'>
+              <LikeIcon
+                size={16}
+                onClick={() => onLike(comment.id)}
+                iconClassName={cn('transition-colors duration-200', {
+                  'cursor-not-allowed opacity-60': isVoteLoading,
+                  'hover:text-light-golden-yellow':
+                    isAuthenticated && !isVoteLoading,
+                  'text-light-golden-yellow': voteType === REACTION_TYPE_LIKE
+                })}
+              />
+              {comment.totalLike}
+            </div>
+            <div className='flex items-center gap-2'>
+              <DislikeIcon
+                size={16}
+                onClick={() => onDislike(comment.id)}
+                iconClassName={cn('transition-colors duration-200', {
+                  'cursor-not-allowed opacity-60': isVoteLoading,
+                  'hover:text-dislike-comment':
+                    isAuthenticated && !isVoteLoading,
+                  'text-dislike-comment': voteType === REACTION_TYPE_DISLIKE
+                })}
+              />
+              {comment.totalDislike}
+            </div>
           </div>
           <button
             type='button'
-            className='flex gap-2 text-xs font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+            className='flex gap-2 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
           >
             <FaReply />
             <span>Trả lời</span>
           </button>
-          <div className='relative' ref={dropdownRef}>
-            <button
-              type='button'
-              className='flex gap-2 text-xs font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
-              onClick={handleDropdownToggle}
-            >
-              <FaEllipsis /> <span>Thêm</span>
-            </button>
-            <AnimatePresence>
-              {showDropdown && (
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    scale: 0.8,
-                    transformOrigin: '0% -50%'
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0.8
-                  }}
-                  transition={{ duration: 0.1, ease: 'linear' }}
-                  className='absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 shadow-lg'
-                >
-                  <div
-                    className='flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
-                    onClick={handleDropdownToggle}
+          <Activity visible={!!isAuthor}>
+            <div className='relative' ref={dropdownRef}>
+              <button
+                type='button'
+                className='flex gap-2 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+                onClick={handleDropdownToggle}
+              >
+                <FaEllipsis /> <span>Thêm</span>
+              </button>
+              <AnimatePresence>
+                {showDropdown && (
+                  <motion.div
+                    initial={{
+                      opacity: 0,
+                      scale: 0.8,
+                      transformOrigin: '0% -50%'
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.8
+                    }}
+                    transition={{ duration: 0.1, ease: 'linear' }}
+                    className='absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
                   >
-                    <FaEye />
-                    Thêm 1
-                  </div>
-                  <div
-                    className='flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
-                    onClick={handleDropdownToggle}
-                  >
-                    <FaFlag />
-                    Thêm 2
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                    <button
+                      className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                      onClick={() => {
+                        setShowDropdown(false);
+                        onDelete(comment.id);
+                      }}
+                    >
+                      <FaTrash />
+                      Xoá bình luận
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </Activity>
         </div>
       </div>
     </div>

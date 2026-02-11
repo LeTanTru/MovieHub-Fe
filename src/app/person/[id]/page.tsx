@@ -31,9 +31,6 @@ export async function generateMetadata(
   const { id } = await params;
 
   const res = await personApiRequest.getById(id);
-  const plainDescription = stripHtml(
-    res.data?.bio ?? 'Thông tin diễn viên'
-  ).slice(0, 160);
   const previousImages = (await parent).openGraph?.images || [];
   const images = res.data?.avatarPath
     ? [
@@ -46,12 +43,12 @@ export async function generateMetadata(
     title: res.data
       ? `Diễn viên ${res.data?.otherName}`
       : 'Không tìm thấy diễn viên',
-    description: plainDescription,
+    description: stripHtml(res.data?.bio ?? 'Thông tin diễn viên'),
     openGraph: {
       title: res.data
         ? `Diễn viên ${res.data?.otherName}`
         : 'Không tìm thấy diễn viên',
-      description: plainDescription,
+      description: stripHtml(res.data?.bio ?? 'Thông tin diễn viên'),
       images
     },
     twitter: {
@@ -59,7 +56,7 @@ export async function generateMetadata(
       title: res.data
         ? `Diễn viên ${res.data?.otherName}`
         : 'Không tìm thấy diễn viên',
-      description: plainDescription,
+      description: stripHtml(res.data?.bio ?? 'Thông tin diễn viên'),
       images
     },
     alternates: {

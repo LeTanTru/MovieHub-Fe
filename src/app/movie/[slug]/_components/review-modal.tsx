@@ -9,7 +9,7 @@ import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useCreateReviewMutation } from '@/queries';
 import { reviewSchema } from '@/schemaValidations';
-import { useMovieStore, useReviewStore } from '@/store';
+import { useMovieStore } from '@/store';
 import { ApiResponse, MovieResType, ReviewBodyType } from '@/types';
 import { formatRating, notify } from '@/utils';
 import Image from 'next/image';
@@ -23,7 +23,6 @@ export default function ReviewModal({
   onClose: () => void;
 }) {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
-  const selectedReview = useReviewStore((s) => s.selectedReview);
   const movie = useMovieStore((s) => s.movie);
   const setMovie = useMovieStore((s) => s.setMovie);
   const queryClient = getQueryClient();
@@ -36,13 +35,6 @@ export default function ReviewModal({
     content: '',
     movieId: movie?.id?.toString() || '',
     rate: 0 // no selection
-  };
-
-  const initialValues: ReviewBodyType = {
-    id: selectedReview?.id || '',
-    content: selectedReview?.content || '',
-    movieId: movie?.id?.toString() || '',
-    rate: selectedReview?.rate || 0
   };
 
   const handleSelectRating = (rating: number) => {
@@ -68,11 +60,7 @@ export default function ReviewModal({
       {
         onSuccess: async (res) => {
           if (res.result) {
-            notify.success(
-              selectedReview
-                ? 'Cập nhật đánh giá phim thành công!'
-                : 'Đánh giá phim thành công!'
-            );
+            notify.success('Đánh giá phim thành công!');
             await Promise.all([
               queryClient.invalidateQueries({
                 queryKey: [queryKeys.REVIEW_LIST]
@@ -113,7 +101,6 @@ export default function ReviewModal({
     >
       <BaseForm
         defaultValues={defaultValues}
-        initialValues={initialValues}
         schema={reviewSchema}
         onSubmit={handleSubmit}
         className='p-8 pt-0'

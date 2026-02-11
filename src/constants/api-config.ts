@@ -249,6 +249,42 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true,
       ignoreAuth: true
+    },
+    create: {
+      baseUrl: `${AppConstants.apiUrl}/v1/comment/create`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    delete: {
+      baseUrl: `${AppConstants.apiUrl}/v1/comment/delete/:id`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    pin: {
+      baseUrl: `${AppConstants.apiUrl}/v1/comment/pin/:id`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    update: {
+      baseUrl: `${AppConstants.apiUrl}/v1/comment/update/:id`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    vote: {
+      baseUrl: `${AppConstants.apiUrl}/v1/comment/vote`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    getVoteList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/comment/vote-list/:movieId`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
     }
   },
   review: {

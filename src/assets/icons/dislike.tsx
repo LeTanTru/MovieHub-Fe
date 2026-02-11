@@ -43,7 +43,7 @@ const DislikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     }));
 
     const handleClick = async () => {
-      await start();
+      start();
       onClick?.();
     };
 

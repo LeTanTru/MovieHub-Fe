@@ -143,7 +143,7 @@ axiosInstance.interceptors.response.use(
             storageKeys.USER_KIND
           ]);
           await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
-          // window.location.href = route.login.path;
+          window.location.href = route.login.path;
         }
         processQueue(error, null);
         isRefreshing = false;

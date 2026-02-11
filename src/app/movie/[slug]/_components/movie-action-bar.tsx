@@ -9,7 +9,6 @@ import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { formatRating, getIdFromSlug, notify } from '@/utils';
 import Link from 'next/link';
-import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ButtonLikeDetail } from '@/components/app/button-like';
 import { useParams } from 'next/navigation';

@@ -25,6 +25,8 @@ import { useMovieStore } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
 import { route } from '@/routes';
+import { Button } from '@/components/form';
+import { DotLoading } from '@/components/loading';
 
 const ReviewItemSkeleton = () => {
   return (
@@ -49,10 +51,18 @@ const ReviewItemSkeleton = () => {
 
 export default function ReviewList({
   reviews,
-  isLoading = false
+  isLoading = false,
+  hasMore = false,
+  remainingCount = 0,
+  isLoadMoreLoading = false,
+  onLoadMore
 }: {
   reviews: ReviewResType[];
   isLoading?: boolean;
+  hasMore?: boolean;
+  remainingCount?: number;
+  isLoadMoreLoading?: boolean;
+  onLoadMore?: () => void;
 }) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
@@ -250,6 +260,21 @@ export default function ReviewList({
           voteType={voteMaps[review.id]}
         />
       ))}
+      {hasMore && (
+        <div className='flex justify-center'>
+          <Button
+            className='hover:text-light-golden-yellow min-w-45 text-sm hover:bg-transparent'
+            variant='ghost'
+            onClick={onLoadMore}
+          >
+            {isLoadMoreLoading ? (
+              <DotLoading />
+            ) : (
+              remainingCount > 0 && `Xem thêm (${remainingCount}) đánh giá`
+            )}
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
