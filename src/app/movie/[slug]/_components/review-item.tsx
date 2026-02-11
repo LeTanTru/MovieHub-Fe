@@ -117,7 +117,7 @@ export default function ReviewItem({
             {timeAgo(review.createdDate)}
           </span>
         </div>
-        <div className='text-gray-400'>{review.content}</div>
+        <div className='break-all text-gray-400'>{review.content}</div>
         <div className='relative mt-2 flex items-center gap-4'>
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-2'>
