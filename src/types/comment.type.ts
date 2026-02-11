@@ -50,3 +50,13 @@ export type VoteCommentBodyType = z.infer<typeof voteCommentSchema>;
 
 export type CommentSearchType = z.infer<typeof commentSearchSchema> &
   BaseSearchType;
+
+type CommentState = {
+  comment: CommentResType | null;
+};
+
+type CommentActions = {
+  setComment: (comment: CommentResType | null) => void;
+};
+
+export type CommentStoreType = CommentState & CommentActions;

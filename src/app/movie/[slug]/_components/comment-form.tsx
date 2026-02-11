@@ -4,10 +4,10 @@ import { BaseForm } from '@/components/form/base-form';
 import { getQueryClient } from '@/components/providers';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
-import { useCreateCommentMutation } from '@/queries';
+import { useCreateCommentMutation, useUpdateCommentMutation } from '@/queries';
 import { route } from '@/routes';
 import { commentSchema } from '@/schemaValidations';
-import { useMovieStore } from '@/store';
+import { useCommentStore, useMovieStore } from '@/store';
 import { CreateCommentBodyType } from '@/types';
 import { getIdFromSlug, notify } from '@/utils';
 import { useParams } from 'next/navigation';
@@ -15,6 +15,8 @@ import Link from 'next/link';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
+import { Button, TextAreaField } from '@/components/form';
+import { useShallow } from 'zustand/shallow';
 
 export default function CommentForm({
   isLoading = false
@@ -26,9 +28,19 @@ export default function CommentForm({
   const id = getIdFromSlug(slug);
   const movie = useMovieStore((s) => s.movie);
   const queryClient = getQueryClient();
+  const { comment, setComment } = useCommentStore(
+    useShallow((s) => ({
+      comment: s.comment,
+      setComment: s.setComment
+    }))
+  );
 
   const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =
     useCreateCommentMutation();
+  const { mutateAsync: updateCommentMutate, isPending: updateCommentLoading } =
+    useUpdateCommentMutation();
+
+  const isEditing = !!comment?.id;
 
   const defaultValues: CreateCommentBodyType = {
     id: '',
@@ -38,6 +50,12 @@ export default function CommentForm({
     parentId: null,
     replyToId: null,
     replyToKind: null
+  };
+
+  const initialValues: CreateCommentBodyType = {
+    ...defaultValues,
+    id: comment?.id?.toString() || '',
+    content: comment?.content || ''
   };
 
   const handleSubmit = async (values: CreateCommentBodyType, form?: any) => {
@@ -62,33 +80,46 @@ export default function CommentForm({
       return;
     }
 
-    await createCommentMutate(
-      {
-        ...values
-      },
-      {
-        onSuccess: async (res) => {
-          if (res.result) {
-            notify.success('Bình luận thành công!');
-            await Promise.all([
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.COMMENT_LIST]
-              }),
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.MOVIE, movie?.id?.toString()]
-              })
-            ]);
-            form?.reset();
-          } else {
-            notify.error('Bình luận thất bại');
+    const mutate = isEditing ? updateCommentMutate : createCommentMutate;
+
+    await mutate(values, {
+      onSuccess: async (res) => {
+        if (res.result) {
+          notify.success(
+            isEditing
+              ? 'Cập nhật bình luận thành công!'
+              : 'Bình luận thành công!'
+          );
+          await queryClient.invalidateQueries({
+            queryKey: [queryKeys.COMMENT_LIST]
+          });
+          if (!isEditing) {
+            await queryClient.invalidateQueries({
+              queryKey: [queryKeys.MOVIE, movie?.id?.toString()]
+            });
           }
-        },
-        onError: (error) => {
-          logger.error('Error while creating comment', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          if (isEditing) {
+            setComment(null);
+          }
+          form?.reset(defaultValues);
+        } else {
+          notify.error(
+            isEditing ? 'Cập nhật bình luận thất bại' : 'Bình luận thất bại'
+          );
         }
+      },
+      onError: (error) => {
+        logger.error(
+          `Error while ${isEditing ? 'updating' : 'creating'} comment`,
+          error
+        );
+        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
       }
-    );
+    });
+  };
+
+  const handleCancel = () => {
+    setComment(null);
   };
 
   if (isLoading)
@@ -106,35 +137,47 @@ export default function CommentForm({
   return (
     <BaseForm
       defaultValues={defaultValues}
+      initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='dark:bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2'
+      className='dark:bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2.5'
     >
       {(form) => (
         <>
           <div className='relative'>
-            <textarea
-              {...form.register('content')}
-              className='bg-discussion-input block h-auto min-h-20 w-full resize-none rounded-md border border-solid border-transparent px-5 py-4 leading-normal font-normal text-white'
-              rows={6}
-              cols={3}
+            <TextAreaField
+              control={form.control}
+              name='content'
+              className='dark:bg-discussion-input block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
             />
-            <div className='absolute top-2 right-2.5 leading-none text-gray-400'>
-              {form.watch('content')?.length || 0}/1000
-            </div>
           </div>
-          <div className='flex items-center gap-4'>
+          <div className='flex items-center gap-2'>
             <div className='grow'></div>
-            <button
-              className='text-light-golden-yellow flex min-h-7.5 cursor-pointer items-center justify-center gap-2 bg-transparent px-4.5 py-2 font-medium transition-all duration-200 ease-linear hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50'
-              type='submit'
-              disabled={createCommentLoading}
+            <Button
+              className='text-light-golden-yellow hover:text-light-golden-yellow min-h-7.5 gap-2 bg-transparent px-4.5 py-2 font-medium hover:bg-transparent hover:opacity-80'
+              disabled={createCommentLoading || updateCommentLoading}
+              onClick={handleCancel}
+              type='button'
+              variant='ghost'
             >
-              <span>{createCommentLoading ? 'Đang gửi...' : 'Gửi'}</span>
+              {isEditing && 'Hủy'}
+            </Button>
+            <Button
+              className='text-light-golden-yellow hover:text-light-golden-yellow min-h-7.5 gap-2 bg-transparent px-4.5 py-2 font-medium hover:bg-transparent hover:opacity-80'
+              disabled={
+                createCommentLoading ||
+                updateCommentLoading ||
+                !form.formState.isDirty
+              }
+              loading={createCommentLoading || updateCommentLoading}
+              type='submit'
+              variant='ghost'
+            >
+              {isEditing ? 'Cập nhật' : 'Gửi'}
               <FaTelegramPlane />
-            </button>
+            </Button>
           </div>
         </>
       )}

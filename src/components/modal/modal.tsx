@@ -131,7 +131,7 @@ export default function Modal({
             <Activity visible={!!title || !!showClose}>
               <div
                 className={cn(
-                  'flex items-center justify-between border-b border-gray-200 py-2 pr-2 pl-4 dark:border-none',
+                  'header-title flex items-center justify-between border-b border-gray-200 py-2 pr-2 pl-4 dark:border-none',
                   headerClassName
                 )}
               >

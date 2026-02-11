@@ -15,6 +15,7 @@ import { useParams } from 'next/navigation';
 import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
 import { useCheckMovieQuery } from '@/queries';
 import { ButtonShareMovie } from '@/components/app/button-share';
+import { scroller } from 'react-scroll';
 
 export default function MovieActionBar({
   isLoading = false
@@ -96,6 +97,14 @@ export default function MovieActionBar({
             <Button
               className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
               variant='ghost'
+              onClick={() => {
+                scroller.scrollTo('discussion', {
+                  duration: 200,
+                  delay: 0,
+                  smooth: true,
+                  offset: -100
+                });
+              }}
             >
               <MessageIcon />
               Bình luận
