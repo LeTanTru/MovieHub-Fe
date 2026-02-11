@@ -1,11 +1,13 @@
 'use client';
 
 import TrailerModal from './trailer-modal';
+import { getAnonymousToken } from '@/app/actions/anonymous';
 import { caption } from '@/assets';
 import { ButtonToggle } from '@/components/app/button-toggle';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { PersonCard } from '@/components/app/person-card';
 import { CircleLoading } from '@/components/loading';
+import { logger } from '@/logger';
 import {
   MOVIE_TAB_ACTOR,
   MOVIE_TAB_DIRECTOR,
@@ -340,6 +342,7 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
   const [toggle, setToggle] = useState(true);
   const { opened, open, close } = useDisclosure();
   const [isFetching, setIsFetching] = useState(false);
+  const [token, setToken] = useState<string>('');
 
   const movie = useMovieStore((s) => s.movie);
   const selectedSeason = useMovieStore((s) => s.selectedSeason);
@@ -355,12 +358,39 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
   };
 
   const handlePlayTrailer = () => {
+    if (isFetching) return;
     open();
   };
 
   const handleCloseTrailer = () => {
     close();
   };
+
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    const handleGetAnonymousToken = async () => {
+      setIsFetching(true);
+      try {
+        const res = await getAnonymousToken();
+        setToken(res.access_token);
+      } catch (err) {
+        logger.error('Failed to get guest token', err);
+      } finally {
+        setIsFetching(false);
+      }
+    };
+
+    if (opened) {
+      handleGetAnonymousToken();
+
+      intervalId = setInterval(handleGetAnonymousToken, 14 * 60 * 1000);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [opened]);
 
   if (!movie || !trailer) return null;
 
@@ -392,7 +422,7 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
               layout: { duration: 0.15, ease: 'linear' }
             }}
             className={cn('cursor-pointer', {
-              'pointer-events-none relative cursor-not-allowed opacity-50 select-none':
+              'pointer-events-none cursor-not-allowed opacity-50 select-none':
                 isFetching
             })}
             onClick={handlePlayTrailer}
@@ -424,30 +454,37 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
                   unoptimized
                 />
                 <div className='absolute inset-0 bg-[rgba(0,0,0,0.3)] transition-colors duration-200 ease-linear group-hover:bg-[rgba(0,0,0,0.5)]'></div>
+                {isFetching && (
+                  <div className='absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2'>
+                    <CircleLoading />
+                  </div>
+                )}
               </div>
-              {isFetching ? (
+              {isFetching && toggle ? (
                 <CircleLoading />
               ) : (
-                <div
-                  className={cn(
-                    'transition-color hover:text-light-golden-yellow flex items-center gap-2.5 text-sm font-medium text-white duration-200 ease-linear'
-                  )}
-                >
-                  <div className='block shrink-0 text-xs'>
-                    <FaPlay />
+                <>
+                  <div
+                    className={cn(
+                      'transition-color hover:text-light-golden-yellow flex items-center gap-2.5 text-sm font-medium text-white duration-200 ease-linear'
+                    )}
+                  >
+                    <div className='block shrink-0 text-xs'>
+                      <FaPlay />
+                    </div>
+                    <div className='line-clamp-1 block truncate'>Trailer</div>
                   </div>
-                  <div className='line-clamp-1 block truncate'>Trailer</div>
-                </div>
+                </>
               )}
             </div>
           </motion.div>
         </div>
       </MotionWrapper>
       <TrailerModal
-        setIsFetching={setIsFetching}
         opened={opened}
         onClose={handleCloseTrailer}
         video={trailer.video}
+        token={token}
       />
     </>
   );

@@ -24,6 +24,7 @@ import { Activity } from '@/components/activity';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ButtonAction } from '@/components/app/button-action';
 import { useAuth } from '@/hooks';
+import { Element } from 'react-scroll';
 
 const DiscussionSkeleton = () => {
   return (
@@ -131,98 +132,95 @@ export default function Discussion({
   if (isLoading) return <DiscussionSkeleton />;
 
   return (
-    <div className='relative block px-10 py-5'>
-      {/* Header */}
-      <div className='mb-4 flex items-center font-semibold text-white'>
-        <div className='flex grow gap-2'>
-          <div className='h-6 w-6'>
-            <CommentDotIcon />
-          </div>
-          <span>
-            {
-              discussionActions.find((action) => action.key === activeKey)
-                ?.label
-            }
-            &nbsp;(
-            {isActiveLoading ? (
-              <Skeleton className='skeleton inline-block h-4 w-8 align-middle' />
-            ) : (
-              totalMaps[activeKey]
-            )}
-            )
-          </span>
-        </div>
-        <div
-          className='relative flex shrink-0 items-center overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
-          role='tablist'
-        >
-          {discussionActions.map((action) => (
-            <ButtonAction
-              key={action.key}
-              label={action.label}
-              action={action.key}
-              activeKey={activeKey}
-              setActiveKey={setActiveKey}
-            />
-          ))}
-        </div>
-      </div>
-      {/* Body */}
-      <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
-        {profile ? (
-          <div className='mb-4 flex items-center gap-4'>
-            <AvatarField
-              src={renderImageUrl(profile.avatarPath)}
-              size={50}
-              alt={profile.fullName}
-            />
-            <div className='flex flex-col justify-between gap-1'>
-              <small className='text-gray-400'>
-                {activeKey === DISCUSSION_TAB_COMMENT
-                  ? 'Bình luận'
-                  : 'Đánh giá'}
-                &nbsp;với tên
-              </small>
-              <span className='text font-medium text-white'>
-                {profile.fullName}
-              </span>
+    <Element name='discussion'>
+      <div className='relative block px-10 py-5'>
+        {/* Header */}
+        <div className='mb-4 flex items-center font-semibold text-white'>
+          <div className='flex grow gap-2'>
+            <div className='h-6 w-6'>
+              <CommentDotIcon />
             </div>
+            <span>
+              {
+                discussionActions.find((action) => action.key === activeKey)
+                  ?.label
+              }
+              &nbsp;(
+              {isActiveLoading ? (
+                <Skeleton className='skeleton inline-block h-4 w-8 align-middle' />
+              ) : (
+                totalMaps[activeKey]
+              )}
+              )
+            </span>
           </div>
-        ) : (
-          <div className='mb-4 text-gray-400'>
-            Vui lòng&nbsp;
-            <Link
-              className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
-              href={route.login.path}
-            >
-              đăng nhập
-            </Link>
-            &nbsp;để tham gia&nbsp;
-            {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
+          <div
+            className='relative flex shrink-0 items-center overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
+            role='tablist'
+          >
+            {discussionActions.map((action) => (
+              <ButtonAction
+                key={action.key}
+                label={action.label}
+                action={action.key}
+                activeKey={activeKey}
+                setActiveKey={setActiveKey}
+              />
+            ))}
           </div>
-        )}
-        <CommentForm isLoading={isActiveLoading} />
-      </Activity>
-      <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
-        <CommentList
-          comments={commentList}
-          isLoading={commentListLoading}
-          hasMore={!!hasMoreComments}
-          remainingCount={remainingComments}
-          isLoadMoreLoading={commentLoadMoreLoading}
-          onLoadMore={handleLoadMoreComments}
-        />
-      </Activity>
-      <Activity visible={activeKey === DISCUSSION_TAB_REVIEW}>
-        <ReviewList
-          reviews={reviewList}
-          isLoading={reviewListLoading}
-          hasMore={!!hasMoreReviews}
-          remainingCount={remainingReviews}
-          isLoadMoreLoading={reviewLoadMoreLoading}
-          onLoadMore={handleLoadMoreReviews}
-        />
-      </Activity>
-    </div>
+        </div>
+        {/* Body */}
+        <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
+          {profile ? (
+            <div className='mb-4 flex items-center gap-4'>
+              <AvatarField
+                src={renderImageUrl(profile.avatarPath)}
+                size={50}
+                alt={profile.fullName}
+              />
+              <div className='flex flex-col justify-between gap-1'>
+                <span className='text-gray-400'>Bình luận với tên</span>
+                <span className='text font-medium text-white'>
+                  {profile.fullName}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className='mb-4 text-gray-400'>
+              Vui lòng&nbsp;
+              <Link
+                className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+                href={route.login.path}
+              >
+                đăng nhập
+              </Link>
+              &nbsp;để tham gia&nbsp;
+              {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
+            </div>
+          )}
+          <CommentForm isLoading={isActiveLoading} />
+        </Activity>
+        <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
+          <CommentList
+            comments={commentList}
+            isLoading={commentListLoading}
+            hasMore={!!hasMoreComments}
+            remainingCount={remainingComments}
+            isLoadMoreLoading={commentLoadMoreLoading}
+            onLoadMore={handleLoadMoreComments}
+          />
+        </Activity>
+        <Activity visible={activeKey === DISCUSSION_TAB_REVIEW}>
+          <ReviewList
+            reviews={reviewList}
+            isLoading={reviewListLoading}
+            hasMore={!!hasMoreReviews}
+            remainingCount={remainingReviews}
+            isLoadMoreLoading={reviewLoadMoreLoading}
+            onLoadMore={handleLoadMoreReviews}
+          />
+        </Activity>
+      </div>
+    </Element>
   );
 }

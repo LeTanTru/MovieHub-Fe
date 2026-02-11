@@ -1,29 +1,26 @@
 'use client';
 
 import './trailer-modal.css';
-import { getAnonymousToken } from '@/app/actions/guest-token';
 import { Modal } from '@/components/modal';
 import { VideoPlayer } from '@/components/video-player';
 import { trailerMotionVariant, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
 import { VideoResType } from '@/types';
 import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
-import { logger } from '@/logger';
 
-export default function VideoPlayModal({
+export default function TrailerModal({
   opened,
   video,
   onClose,
-  setIsFetching
+  token
 }: {
   video: VideoResType;
   opened: boolean;
   onClose: () => void;
-  setIsFetching: (isFetching: boolean) => void;
+  token: string;
 }) {
   const bodyRef = useRef<HTMLDivElement>(null);
   const [bodyHeight, setBodyHeight] = useState<number>(0);
-  const [token, setToken] = useState<string>('');
 
   useEffect(() => {
     if (!opened || !bodyRef.current) return;
@@ -60,30 +57,6 @@ export default function VideoPlayModal({
   }, [opened]);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
-    const handleGetAnonymousToken = async () => {
-      setIsFetching(true);
-      try {
-        const res = await getAnonymousToken();
-        setToken(res.access_token);
-      } catch (err) {
-        logger.error('Failed to get guest token', err);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-
-    handleGetAnonymousToken();
-
-    intervalId = setInterval(handleGetAnonymousToken, 14 * 60 * 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [setIsFetching]);
-
-  useEffect(() => {
     if (opened) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -100,6 +73,7 @@ export default function VideoPlayModal({
       open={opened}
       onClose={onClose}
       className='trailer-modal overflow-hidden'
+      headerClassName='pt-10'
       aria-labelledby='video-modal-title'
       aria-label={`Phát video ${video.name}`}
       bodyRef={bodyRef}

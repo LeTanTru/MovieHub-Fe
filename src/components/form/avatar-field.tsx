@@ -108,13 +108,14 @@ export default function AvatarField({
         style={{ width: width || size, height: height || size }}
       >
         <Avatar
-          className={cn('h-full w-full shadow-sm', {
+          className={cn('bg-avatar shadow-sm', {
             'transition-all duration-200 ease-linear hover:scale-105 hover:opacity-90':
               !shouldDisablePreview
           })}
+          style={{ width: width || size, height: height || size }}
         >
           <AvatarImage
-            src={src}
+            src={src || defaultAvatar.src}
             alt={alt ?? 'Avatar'}
             className='object-cover'
           />

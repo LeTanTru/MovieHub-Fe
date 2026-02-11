@@ -5,7 +5,6 @@ import {
   useEffect,
   useId,
   useRef,
-  useState,
   type ForwardedRef,
   useImperativeHandle,
   type ReactNode,
@@ -20,7 +19,12 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import {
+  type Control,
+  type FieldPath,
+  type FieldValues,
+  useWatch
+} from 'react-hook-form';
 import { cn } from '@/lib/utils';
 
 type TextAreaFieldProps<T extends FieldValues> = {
@@ -60,9 +64,10 @@ const TextAreaField = <T extends FieldValues>(
 ) => {
   const id = useId();
   const internalRef = useRef<HTMLTextAreaElement | null>(null);
-  const [charCount, setCharCount] = useState<number>(0);
 
-  // expose internal ref ra ngoài
+  const fieldValue = useWatch({ control, name });
+  const charCount = String(fieldValue || '').length;
+
   useImperativeHandle(ref, () => internalRef.current!);
 
   const resizeTextarea = () => {
@@ -78,7 +83,7 @@ const TextAreaField = <T extends FieldValues>(
 
   useEffect(() => {
     resizeTextarea();
-  }, [charCount]);
+  }, [fieldValue]);
 
   return (
     <FormField
@@ -114,7 +119,7 @@ const TextAreaField = <T extends FieldValues>(
                 rows={rows ?? 4}
                 className={cn(
                   floatLabel && 'bg-background pt-6',
-                  'focus-visible:ring-main-color min-h-40 shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 aria-invalid:ring-transparent dark:disabled:border-slate-800',
+                  'focus-visible:ring-main-color min-h-40 w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 aria-invalid:ring-transparent dark:disabled:border-slate-800',
                   {
                     'focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-red-500!':
                       !!fieldState.error
@@ -126,16 +131,15 @@ const TextAreaField = <T extends FieldValues>(
                 ref={internalRef}
                 onChange={(e) => {
                   field.onChange(e);
-                  setCharCount(e.target.value.length);
                   resizeTextarea();
                   rest.onChange?.(e);
                 }}
               />
             </FormControl>
 
-            {maxLength !== undefined && (
-              <div className='text-muted-foreground mt-1 text-right text-xs'>
-                {maxLength - charCount} còn lại
+            {maxLength && (
+              <div className='text-muted-foreground absolute top-1 right-1.5 text-xs leading-none'>
+                {charCount}/{maxLength}
               </div>
             )}
           </div>

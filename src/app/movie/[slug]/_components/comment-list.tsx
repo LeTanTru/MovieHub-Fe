@@ -25,7 +25,7 @@ import {
 import { logger } from '@/logger';
 import { notify } from '@/utils';
 import { getQueryClient } from '@/components/providers';
-import { useMovieStore } from '@/store';
+import { useCommentStore, useMovieStore } from '@/store';
 import Link from 'next/link';
 import { route } from '@/routes';
 import { Button } from '@/components/form';
@@ -71,6 +71,7 @@ export default function CommentList({
   const queryClient = getQueryClient();
   const movie = useMovieStore((s) => s.movie);
   const setMovie = useMovieStore((s) => s.setMovie);
+  const setComment = useCommentStore((s) => s.setComment);
 
   const { data: voteCommentListData } = useVoteCommentListQuery({
     movieId: movie?.id?.toString() || '',
@@ -95,6 +96,10 @@ export default function CommentList({
   const { mutateAsync: deleteCommentMutate } = useDeleteCommentMutation();
   const { mutateAsync: voteCommentMutate, isPending: voteCommentLoading } =
     useVoteCommentMutation();
+
+  const handleEdit = async (comment: CommentResType) => {
+    setComment(comment);
+  };
 
   const handleDeleteComment = async (id: string) => {
     await deleteCommentMutate(id, {
@@ -246,6 +251,7 @@ export default function CommentList({
             isVoteLoading={voteCommentLoading}
             onLike={handleLikeComment}
             onDislike={handleDislikeComment}
+            onEdit={handleEdit}
             onDelete={handleDeleteComment}
             voteType={voteMaps[comment.id]}
           />

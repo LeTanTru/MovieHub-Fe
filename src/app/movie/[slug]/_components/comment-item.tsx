@@ -18,9 +18,10 @@ import { cn } from '@/lib';
 import { AuthorInfo, CommentResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FaEllipsis, FaReply, FaTrash } from 'react-icons/fa6';
 import { Activity } from '@/components/activity';
+import { AiOutlineEdit } from 'react-icons/ai';
 
 export default function CommentItem({
   comment,
@@ -30,6 +31,7 @@ export default function CommentItem({
   voteType,
   onLike,
   onDislike,
+  onEdit,
   onDelete
 }: {
   comment: CommentResType;
@@ -39,13 +41,18 @@ export default function CommentItem({
   voteType: number;
   onLike: (id: string) => void;
   onDislike: (id: string) => void;
+  onEdit: (comment: CommentResType) => void;
   onDelete: (id: string) => void;
 }) {
-  const authorInfo: AuthorInfo = JSON.parse(comment.authorInfo || '{}');
+  const authorInfo = useMemo(
+    () => JSON.parse(comment.authorInfo || '{}') as AuthorInfo,
+    [comment.authorInfo]
+  );
   const isAuthor = userId && authorInfo.id ? userId === authorInfo.id : false;
-  const gender = authorInfo.gender || GENDER_OTHER;
   const kind =
     authorInfo.kind !== undefined ? kindMaps[authorInfo.kind] : undefined;
+
+  const gender = authorInfo.gender || GENDER_OTHER;
   const GenderIcon = genderIconMaps[gender];
 
   const movieItem = comment.movieItem;
@@ -77,12 +84,13 @@ export default function CommentItem({
                 {kind.label}
               </Badge>
             )}
+            <span>{authorInfo.fullName}</span>
             <span
               className={cn({
                 'text-light-golden-yellow font-semibold': isAuthor
               })}
             >
-              {authorInfo.fullName} {isAuthor && '(Bạn)'}
+              {isAuthor && '(Bạn)'}
             </span>
             <GenderIcon
               className={cn('size-4', {
@@ -98,6 +106,14 @@ export default function CommentItem({
           >
             {timeAgo(comment.createdDate)}
           </span>
+          <Activity visible={comment.createdDate !== comment.modifiedDate}>
+            <span
+              title={convertUTCToLocal(comment.modifiedDate, DATE_TIME_FORMAT)}
+              className='-ml-1.5 text-xs text-gray-400'
+            >
+              (đã chỉnh sửa)
+            </span>
+          </Activity>
           {movieItem && (
             <Badge
               variant='outline'
@@ -107,7 +123,7 @@ export default function CommentItem({
             </Badge>
           )}
         </div>
-        <div className='text-gray-400'>{comment.content}</div>
+        <div className='break-all text-gray-400'>{comment.content}</div>
         <div className='relative mt-2 flex items-center gap-4'>
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-2'>
@@ -143,11 +159,21 @@ export default function CommentItem({
           </div>
           <button
             type='button'
-            className='flex gap-2 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+            className='flex items-center gap-2 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
           >
             <FaReply />
             <span>Trả lời</span>
           </button>
+          {isAuthor && (
+            <button
+              type='button'
+              className='flex items-center gap-2 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+              onClick={() => onEdit(comment)}
+            >
+              <AiOutlineEdit />
+              <span>Chỉnh sửa</span>
+            </button>
+          )}
           <Activity visible={!!isAuthor}>
             <div className='relative' ref={dropdownRef}>
               <button

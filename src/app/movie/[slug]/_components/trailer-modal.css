@@ -11,18 +11,12 @@
     max-height: 100vh;
     min-height: auto;
 
-    & > div:first-child {
+    & .header-title {
       position: absolute;
-      top: 0;
+      top: 12px;
       left: 0;
       right: 0;
       z-index: 10;
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.8) 0%,
-        rgba(0, 0, 0, 0.4) 70%,
-        transparent 100%
-      );
       padding: 0 16px;
       border-radius: inherit;
       border-bottom-left-radius: 0;
