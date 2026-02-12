@@ -21,11 +21,12 @@ import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
 import { getQueryClient } from '@/components/providers';
-import { useMovieStore } from '@/store';
+import { useCommentStore, useMovieStore } from '@/store';
 import Link from 'next/link';
 import { route } from '@/routes';
 import { Button } from '@/components/form';
 import { DotLoading } from '@/components/loading';
+import { useShallow } from 'zustand/shallow';
 
 const CommentItemSkeleton = () => {
   return (
@@ -68,6 +69,29 @@ export default function CommentList({
   const movie = useMovieStore((s) => s.movie);
   const setMovie = useMovieStore((s) => s.setMovie);
 
+  const {
+    openParentIds,
+    replyingComment,
+    editingComment,
+    setOpenParentIds,
+    openReply,
+    closeReply,
+    setEditingComment
+  } = useCommentStore(
+    useShallow((s) => ({
+      openParentIds: s.openParentIds,
+      replyingComment: s.replyingComment,
+      editingComment: s.editingComment,
+      setOpenParentIds: s.setOpenParentIds,
+      openReply: s.openReply,
+      closeReply: s.closeReply,
+      setEditingComment: s.setEditingComment
+    }))
+  );
+
+  const { mutateAsync: deleteCommentMutate } = useDeleteCommentMutation();
+  const { mutateAsync: voteCommentMutate, isPending: voteCommentLoading } =
+    useVoteCommentMutation();
   const { data: voteCommentListData } = useVoteCommentListQuery({
     movieId: movie?.id?.toString() || '',
     enabled: isAuthenticated && !!movie?.id
@@ -88,16 +112,11 @@ export default function CommentList({
     return maps;
   }, [voteCommentList]);
 
-  const { mutateAsync: deleteCommentMutate } = useDeleteCommentMutation();
-  const { mutateAsync: voteCommentMutate, isPending: voteCommentLoading } =
-    useVoteCommentMutation();
-
   const handleDeleteComment = async (comment: CommentResType) => {
     await deleteCommentMutate(comment.id, {
       onSuccess: async (res) => {
         if (res.result) {
-          notify.success('Xoá bình luận thành công');
-
+          // Invalidate comment list and movie data for updating total comments
           await Promise.all([
             queryClient.invalidateQueries({
               queryKey: [queryKeys.COMMENT_LIST]
@@ -107,6 +126,7 @@ export default function CommentList({
             })
           ]);
 
+          // Invalidate replies list if comment is a reply
           if (comment.parent) {
             await queryClient.invalidateQueries({
               queryKey: [
@@ -115,6 +135,7 @@ export default function CommentList({
             });
           }
 
+          // Update movie store data
           const newMovieData = queryClient.getQueryData<
             ApiResponse<MovieResType>
           >([queryKeys.MOVIE, movie?.id?.toString()]);
@@ -189,15 +210,22 @@ export default function CommentList({
       <CommentItem
         key={comment.id}
         comment={comment}
+        editingComment={editingComment}
         isAuthenticated={isAuthenticated}
         isVoteLoading={voteCommentLoading}
         level={level}
+        openParentIds={openParentIds}
+        replyingComment={replyingComment}
         rootId={rootId ?? comment.id}
         userId={profile?.id || ''}
         voteMap={voteMap}
+        closeReply={closeReply}
         onDelete={() => handleDeleteComment(comment)}
         onVote={handleVote}
+        openReply={openReply}
         renderChildren={renderChildren}
+        setEditingComment={setEditingComment}
+        setOpenParentIds={setOpenParentIds}
       />
     ));
   };

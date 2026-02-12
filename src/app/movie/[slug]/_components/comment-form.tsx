@@ -34,9 +34,13 @@ export default function CommentForm({
       }))
     );
 
-  const authorInfo = replyingComment
-    ? (JSON.parse(replyingComment?.authorInfo) as AuthorInfoType)
-    : null;
+  const authorInfo = useMemo(
+    () =>
+      replyingComment
+        ? (JSON.parse(replyingComment?.authorInfo) as AuthorInfoType)
+        : null,
+    [replyingComment]
+  );
 
   const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =
     useCreateCommentMutation();
@@ -109,7 +113,7 @@ export default function CommentForm({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='dark:bg-discussion-form mt-4 flex h-full flex-col gap-2 rounded-[12px] p-2.5'
+      className='dark:bg-discussion-form mt-4 flex h-full flex-col gap-2.5 rounded-[12px] p-2.5'
     >
       {(form) => (
         <>
@@ -117,7 +121,7 @@ export default function CommentForm({
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-discussion-input block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-discussion-input block h-30! min-h-30! w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
               label={
@@ -135,12 +139,12 @@ export default function CommentForm({
               type='button'
               variant='ghost'
               onClick={onCancel}
-              className='hover:text-destructive hover:bg-transparent!'
+              className='hover:text-destructive h-fit py-0 hover:bg-transparent!'
             >
               Hủy
             </Button>
             <Button
-              className='text-light-golden-yellow hover:text-light-golden-yellow min-h-7.5 gap-2 bg-transparent px-4.5 py-2 font-medium hover:bg-transparent hover:opacity-80'
+              className='text-light-golden-yellow hover:text-light-golden-yellow h-fit gap-2 bg-transparent px-4.5 py-0 font-medium hover:bg-transparent hover:opacity-80'
               disabled={
                 createCommentLoading ||
                 updateCommentLoading ||

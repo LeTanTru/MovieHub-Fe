@@ -103,7 +103,7 @@ export default function Footer() {
                     loading='lazy'
                   />
                 </div>
-                <span>Hoàng Sa &amp; Trường Sa là của Việt Nam!</span>
+                <span>Hoàng Sa &amp; Trường Sa là của Việt Nam !</span>
               </div>
             </div>
             <div className='mb-8 inline-flex items-center gap-12'>

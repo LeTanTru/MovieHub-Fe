@@ -25,38 +25,50 @@ import { FaEllipsis, FaReply, FaTrash } from 'react-icons/fa6';
 import { Activity } from '@/components/activity';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { useInfiniteCommentListQuery } from '@/queries';
-import { useCommentStore } from '@/store';
-import { useShallow } from 'zustand/shallow';
 import CommentForm from './comment-form';
 import { DotLoading } from '@/components/loading';
 import { getQueryClient } from '@/components/providers';
 
 export default function CommentItem({
   comment,
-  level,
-  voteMap,
-  rootId,
+  editingComment,
   isAuthenticated,
   isVoteLoading,
+  level,
+  openParentIds,
+  replyingComment,
+  rootId,
   userId,
+  voteMap,
+  closeReply,
   onDelete,
   onVote,
-  renderChildren
+  openReply,
+  renderChildren,
+  setEditingComment,
+  setOpenParentIds
 }: {
   comment: CommentResType & { children?: CommentResType[] };
+  editingComment: CommentResType | null;
   isAuthenticated: boolean;
   isVoteLoading: boolean;
   level: number;
+  openParentIds: string[];
+  replyingComment: CommentResType | null;
   rootId: string;
   userId: string;
   voteMap: Record<string, number>;
+  closeReply: () => void;
   onDelete: (id: string) => void;
   onVote: (id: string, type: number, onSuccess?: () => void) => void;
+  openReply: (replyingComment: CommentResType | null) => void;
   renderChildren: (
     list: CommentResType[],
     level: number,
     rootId?: string
   ) => ReactNode;
+  setEditingComment: (editingComment: CommentResType | null) => void;
+  setOpenParentIds: (ids: string[] | ((prev: string[]) => string[])) => void;
 }) {
   const authorInfo = useMemo(
     () => JSON.parse(comment.authorInfo || '{}') as AuthorInfoType,
@@ -80,25 +92,6 @@ export default function CommentItem({
     setShowDropdown(false)
   );
 
-  const {
-    openParentIds,
-    replyingComment,
-    editingComment,
-    setOpenParentIds,
-    openReply,
-    closeReply,
-    setEditingComment
-  } = useCommentStore(
-    useShallow((s) => ({
-      openParentIds: s.openParentIds,
-      replyingComment: s.replyingComment,
-      editingComment: s.editingComment,
-      setOpenParentIds: s.setOpenParentIds,
-      openReply: s.openReply,
-      closeReply: s.closeReply,
-      setEditingComment: s.setEditingComment
-    }))
-  );
   const isActiveParent = openParentIds.includes(comment.id);
 
   const {
@@ -224,14 +217,17 @@ export default function CommentItem({
                 {kind.label}
               </Badge>
             )}
-            <span>{authorInfo.fullName}</span>
-            <span
-              className={cn({
-                'text-light-golden-yellow font-semibold': isAuthor
-              })}
-            >
-              {isAuthor && '(Bạn)'}
+            <span>
+              {authorInfo.fullName}
+              <span
+                className={cn({
+                  'text-light-golden-yellow font-semibold': isAuthor
+                })}
+              >
+                {isAuthor && ' (Bạn)'}
+              </span>
             </span>
+
             <GenderIcon
               className={cn('size-4', {
                 'text-cyan-500': gender === GENDER_MALE,
@@ -248,7 +244,7 @@ export default function CommentItem({
           </span>
           <Activity visible={comment.createdDate !== comment.modifiedDate}>
             <span
-              title={convertUTCToLocal(comment.modifiedDate, DATE_TIME_FORMAT)}
+              title='Đã chỉnh sửa'
               className='-ml-1.5 text-xs text-gray-400'
             >
               (đã chỉnh sửa)
@@ -366,52 +362,6 @@ export default function CommentItem({
             </div>
           </Activity>
         </div>
-        {isActiveParent && commentListSize > 0 && (
-          <>
-            {renderChildren(commentList, level + 1, rootId)}
-            {commentLoadMoreLoading && (
-              <DotLoading className='mt-4 justify-start bg-transparent' />
-            )}
-          </>
-        )}
-
-        <Activity visible={comment.totalChildren > 0}>
-          <>
-            {!isActiveParent ? (
-              <button
-                className='hover:text-light-golden-yellow mt-2 transition-colors duration-200 ease-linear'
-                onClick={() => handleViewReplies(comment.id)}
-              >
-                Xem tất cả ({comment.totalChildren}) trả lời
-              </button>
-            ) : commentListLoading ? (
-              <DotLoading className='mt-4 justify-start bg-transparent' />
-            ) : (
-              <div
-                className='mt-4 flex items-center gap-x-4'
-                style={{ marginLeft: level * 40 }}
-              >
-                {hasMoreComments && (
-                  <Button
-                    variant='ghost'
-                    className='h-5! p-0! font-medium hover:opacity-70'
-                    onClick={() => handleFetchNextPage()}
-                  >
-                    Xem thêm ({comment.totalChildren - commentListSize})
-                  </Button>
-                )}
-
-                <Button
-                  variant='ghost'
-                  className='h-5! p-0! font-medium text-red-500 hover:opacity-70'
-                  onClick={() => handleHideReplies(comment.id)}
-                >
-                  Ẩn trả lời
-                </Button>
-              </div>
-            )}
-          </>
-        </Activity>
         <AnimatePresence initial={false}>
           {(replyingComment?.id === comment.id ||
             editingComment?.id === comment.id) && (
@@ -420,7 +370,7 @@ export default function CommentItem({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.15, ease: 'linear' }}
+              transition={{ duration: 0.1, ease: 'linear' }}
             >
               <CommentForm
                 parentId={rootId.toString()}
@@ -432,6 +382,49 @@ export default function CommentItem({
             </motion.div>
           )}
         </AnimatePresence>
+        {isActiveParent && commentListSize > 0 && (
+          <>
+            {renderChildren(commentList, level + 1, rootId)}
+            {commentLoadMoreLoading && (
+              <DotLoading className='mt-4 justify-start bg-transparent' />
+            )}
+          </>
+        )}
+
+        <Activity visible={comment.totalChildren > 0}>
+          {!isActiveParent ? (
+            <button
+              className='hover:text-light-golden-yellow mt-2 transition-colors duration-200 ease-linear'
+              onClick={() => handleViewReplies(comment.id)}
+            >
+              Xem tất cả ({comment.totalChildren}) trả lời
+            </button>
+          ) : commentListLoading ? (
+            <DotLoading className='mt-4 justify-start bg-transparent' />
+          ) : (
+            <div
+              className='mt-4 flex items-center gap-x-4'
+              style={{ marginLeft: level * 40 }}
+            >
+              {hasMoreComments && (
+                <Button
+                  variant='ghost'
+                  className='h-5! p-0! font-medium hover:opacity-70'
+                  onClick={() => handleFetchNextPage()}
+                >
+                  Xem thêm ({comment.totalChildren - commentListSize})
+                </Button>
+              )}
+              <Button
+                variant='ghost'
+                className='h-5! p-0! font-medium text-red-500 hover:opacity-70'
+                onClick={() => handleHideReplies(comment.id)}
+              >
+                Ẩn trả lời
+              </Button>
+            </div>
+          )}
+        </Activity>
       </div>
     </div>
   );

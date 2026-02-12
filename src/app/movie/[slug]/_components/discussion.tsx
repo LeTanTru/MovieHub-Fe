@@ -86,20 +86,29 @@ export default function Discussion({
     fetchNextPage: fetchMoreReviews,
     isFetchingNextPage: reviewLoadMoreLoading
   } = useInfiniteReviewListQuery({
-    movieId: id,
-    size: DEFAULT_PAGE_SIZE,
+    params: {
+      movieId: id,
+      size: DEFAULT_PAGE_SIZE
+    },
     enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_REVIEW
   });
 
   const commentList = useMemo(
     () =>
-      commentListData?.pages?.flatMap((pageData) => pageData.data.content) ||
-      [],
+      (
+        commentListData?.pages?.flatMap(
+          (pageData) => pageData.data.content || []
+        ) || []
+      ).filter((comment) => Boolean(comment?.id)),
     [commentListData?.pages]
   );
   const reviewList = useMemo(
     () =>
-      reviewListData?.pages?.flatMap((pageData) => pageData.data.content) || [],
+      (
+        reviewListData?.pages?.flatMap(
+          (pageData) => pageData.data.content || []
+        ) || []
+      ).filter((review) => Boolean(review?.id)),
     [reviewListData?.pages]
   );
 
