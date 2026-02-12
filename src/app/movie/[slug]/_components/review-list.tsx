@@ -50,14 +50,14 @@ const ReviewItemSkeleton = () => {
 };
 
 export default function ReviewList({
-  reviews,
+  reviewList,
   isLoading = false,
   hasMore = false,
   remainingCount = 0,
   isLoadMoreLoading = false,
   onLoadMore
 }: {
-  reviews: ReviewResType[];
+  reviewList: ReviewResType[];
   isLoading?: boolean;
   hasMore?: boolean;
   remainingCount?: number;
@@ -236,7 +236,7 @@ export default function ReviewList({
       </div>
     );
 
-  if (!reviews.length)
+  if (!reviewList.length)
     return (
       <NoData
         className='dark:bg-background/30 mt-4 min-h-30 rounded-lg px-8 py-12 opacity-50 dark:text-transparent'
@@ -248,7 +248,7 @@ export default function ReviewList({
 
   return (
     <div className='mt-8 flex flex-col justify-between gap-8'>
-      {reviews
+      {reviewList
         .filter((review) => review?.id)
         .map((review) => (
           <ReviewItem

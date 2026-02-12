@@ -7,7 +7,7 @@ import { MovieItemResType } from '@/types/movie-item.type';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
-export type AuthorInfo = {
+export type AuthorInfoType = {
   avatarPath: string;
   email: string;
   fullName: string;
@@ -32,6 +32,10 @@ export type CommentResType = {
   totalChildren: number;
   totalDislike: number;
   totalLike: number;
+  parent: {
+    id: string;
+    authorInfo: string;
+  };
 };
 
 export type CommentVoteResType = {

@@ -1,5 +1,5 @@
 import { commentApiRequest } from '@/api-requests';
-import { DEFALT_PAGE_START, DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
+import { DEFALT_PAGE_START, queryKeys } from '@/constants';
 import {
   CommentSearchType,
   CreateCommentBodyType,
@@ -23,19 +23,19 @@ export const useCommentListQuery = ({
 };
 
 export const useInfiniteCommentListQuery = ({
-  movieId,
-  size = DEFAULT_PAGE_SIZE,
+  params,
+  queryKey,
   enabled
 }: {
-  movieId: string;
-  size?: number;
+  params: CommentSearchType;
+  queryKey: string;
   enabled?: boolean;
 }) => {
   return useInfiniteQuery({
-    queryKey: [queryKeys.COMMENT_LIST, movieId, size],
+    queryKey: [queryKey, params],
     queryFn: ({ pageParam }) =>
       commentApiRequest.getList({
-        params: { movieId, page: pageParam, size }
+        params: { ...params, page: pageParam }
       }),
     initialPageParam: DEFALT_PAGE_START,
     getNextPageParam: (lastPage, pages) => {
@@ -44,7 +44,7 @@ export const useInfiniteCommentListQuery = ({
 
       return nextPage < totalPages ? nextPage : undefined;
     },
-    enabled: enabled && !!movieId
+    enabled: enabled
   });
 };
 

@@ -1,141 +1,107 @@
 'use client';
 
 import { BaseForm } from '@/components/form/base-form';
-import { getQueryClient } from '@/components/providers';
-import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateCommentMutation, useUpdateCommentMutation } from '@/queries';
-import { route } from '@/routes';
 import { commentSchema } from '@/schemaValidations';
-import { useCommentStore, useMovieStore } from '@/store';
-import { CreateCommentBodyType } from '@/types';
-import { getIdFromSlug, notify } from '@/utils';
-import { useParams } from 'next/navigation';
-import Link from 'next/link';
+import { useCommentStore } from '@/store';
+import { AuthorInfoType, CreateCommentBodyType } from '@/types';
+import { notify } from '@/utils';
 import { FaTelegramPlane } from 'react-icons/fa';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from '@/hooks';
 import { Button, TextAreaField } from '@/components/form';
-import { useShallow } from 'zustand/shallow';
 import { useMemo } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 export default function CommentForm({
-  isLoading = false
+  parentId,
+  movieId,
+  defaultMention,
+  onSubmitted,
+  onCancel
 }: {
-  isLoading?: boolean;
+  parentId: string;
+  movieId: string;
+  defaultMention?: string;
+  onSubmitted?: () => void;
+  onCancel?: () => void;
 }) {
-  const { isAuthenticated } = useAuth();
-  const { slug } = useParams<{ slug: string }>();
-  const id = getIdFromSlug(slug);
-  const movie = useMovieStore((s) => s.movie);
-  const queryClient = getQueryClient();
-  const { editingComment, setEditingComment } = useCommentStore(
-    useShallow((s) => ({
-      editingComment: s.editingComment,
-      setEditingComment: s.setEditingComment
-    }))
-  );
+  const { editingComment, replyingComment, setEditingComment } =
+    useCommentStore(
+      useShallow((s) => ({
+        editingComment: s.editingComment,
+        replyingComment: s.replyingComment,
+        setEditingComment: s.setEditingComment
+      }))
+    );
+
+  const authorInfo = replyingComment
+    ? (JSON.parse(replyingComment?.authorInfo) as AuthorInfoType)
+    : null;
 
   const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =
     useCreateCommentMutation();
   const { mutateAsync: updateCommentMutate, isPending: updateCommentLoading } =
     useUpdateCommentMutation();
 
-  const isEditing = !!editingComment?.id;
-
   const defaultValues: CreateCommentBodyType = {
-    id: '',
     content: '',
-    movieId: id || '',
-    movieItemId: null,
-    parentId: null,
-    replyToId: null,
-    replyToKind: null
+    movieId,
+    movieItemId: '',
+    parentId: parentId,
+    replyToId: '',
+    replyToKind: 0
   };
 
   const initialValues: CreateCommentBodyType = useMemo(
     () => ({
-      id: editingComment?.id?.toString() || '',
-      content: editingComment?.content || ''
+      content: editingComment?.content || '',
+      movieId: editingComment?.movieId?.toString() || movieId,
+      movieItemId: editingComment?.movieItem?.id?.toString() || '',
+      parentId: editingComment?.parent?.id?.toString() || parentId,
+      replyToId: authorInfo?.id?.toString() || '',
+      replyToKind: authorInfo?.kind || 0
     }),
-    [editingComment?.content, editingComment?.id]
+    [
+      authorInfo?.id,
+      authorInfo?.kind,
+      editingComment?.content,
+      editingComment?.movieId,
+      editingComment?.movieItem?.id,
+      editingComment?.parent?.id,
+      movieId,
+      parentId
+    ]
   );
 
   const handleSubmit = async (values: CreateCommentBodyType, form?: any) => {
-    if (!isAuthenticated) {
-      notify.error(
-        <span>
-          Vui lòng&nbsp;
-          <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
-          >
-            đăng nhập
-          </Link>
-          &nbsp;để tham gia bình luận
-        </span>
-      );
-      return;
-    }
-
     if (values.content?.trim().length === 0) {
       notify.error('Bạn chưa nhập nội dung bình luận');
       return;
     }
 
-    const mutate = isEditing ? updateCommentMutate : createCommentMutate;
+    const mutate = editingComment ? updateCommentMutate : createCommentMutate;
+    const payload = editingComment
+      ? { ...values, id: editingComment.id }
+      : values;
 
-    await mutate(values, {
+    await mutate(payload, {
       onSuccess: async (res) => {
         if (res.result) {
-          notify.success(
-            isEditing
-              ? 'Cập nhật bình luận thành công!'
-              : 'Bình luận thành công!'
-          );
-          await queryClient.invalidateQueries({
-            queryKey: [queryKeys.COMMENT_LIST]
-          });
-          if (!isEditing) {
-            await queryClient.invalidateQueries({
-              queryKey: [queryKeys.MOVIE, movie?.id?.toString()]
-            });
-          }
-          if (isEditing) {
-            setEditingComment(null);
-          }
-          form?.reset(defaultValues);
+          setEditingComment(null);
+          onSubmitted?.();
+          form?.reset(initialValues);
         } else {
           notify.error(
-            isEditing ? 'Cập nhật bình luận thất bại' : 'Bình luận thất bại'
+            `${editingComment ? 'Chỉnh sửa' : 'Trả lời'} bình luận thất bại`
           );
         }
       },
       onError: (error) => {
-        logger.error(
-          `Error while ${isEditing ? 'updating' : 'creating'} comment`,
-          error
-        );
+        logger.error(`Error while updating comment`, error);
         notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
       }
     });
   };
-
-  const handleCancel = () => {
-    setEditingComment(null);
-  };
-
-  if (isLoading)
-    return (
-      <div className='bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2'>
-        <Skeleton className='skeleton h-40 w-full rounded-md' />
-        <div className='flex items-center gap-4'>
-          <Skeleton className='skeleton h-8 w-24 rounded' />
-          <div className='grow'></div>
-          <Skeleton className='skeleton h-10 w-20 rounded' />
-        </div>
-      </div>
-    );
 
   return (
     <BaseForm
@@ -143,7 +109,7 @@ export default function CommentForm({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='dark:bg-discussion-form flex flex-col gap-2 rounded-[12px] p-2.5'
+      className='dark:bg-discussion-form mt-4 flex h-full flex-col gap-2 rounded-[12px] p-2.5'
     >
       {(form) => (
         <>
@@ -154,18 +120,24 @@ export default function CommentForm({
               className='dark:bg-discussion-input block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
+              label={
+                !editingComment && (
+                  <span className='bg-light-golden-yellow rounded px-1.5 py-1 font-semibold text-black'>
+                    {defaultMention}
+                  </span>
+                )
+              }
             />
           </div>
           <div className='flex items-center gap-2'>
             <div className='grow'></div>
             <Button
-              className='text-light-golden-yellow hover:text-light-golden-yellow min-h-7.5 gap-2 bg-transparent px-4.5 py-2 font-medium hover:bg-transparent hover:opacity-80'
-              disabled={createCommentLoading || updateCommentLoading}
-              onClick={handleCancel}
               type='button'
               variant='ghost'
+              onClick={onCancel}
+              className='hover:text-destructive hover:bg-transparent!'
             >
-              {isEditing && 'Hủy'}
+              Hủy
             </Button>
             <Button
               className='text-light-golden-yellow hover:text-light-golden-yellow min-h-7.5 gap-2 bg-transparent px-4.5 py-2 font-medium hover:bg-transparent hover:opacity-80'
@@ -178,7 +150,7 @@ export default function CommentForm({
               type='submit'
               variant='ghost'
             >
-              {isEditing ? 'Cập nhật' : 'Gửi'}
+              Gửi
               <FaTelegramPlane />
             </Button>
           </div>

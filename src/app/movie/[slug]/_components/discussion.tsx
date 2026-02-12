@@ -14,11 +14,12 @@ import {
   DEFAULT_PAGE_SIZE,
   discussionActions,
   DISCUSSION_TAB_COMMENT,
-  DISCUSSION_TAB_REVIEW
+  DISCUSSION_TAB_REVIEW,
+  queryKeys
 } from '@/constants';
 import { AvatarField } from '@/components/form';
 import CommentList from './comment-list';
-import CommentForm from './comment-form';
+import CommentInput from './comment-input';
 import ReviewList from './review-list';
 import { Activity } from '@/components/activity';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -70,8 +71,11 @@ export default function Discussion({
     fetchNextPage: fetchMoreComments,
     isFetchingNextPage: commentLoadMoreLoading
   } = useInfiniteCommentListQuery({
-    movieId: id,
-    size: DEFAULT_PAGE_SIZE,
+    params: {
+      movieId: id,
+      size: DEFAULT_PAGE_SIZE
+    },
+    queryKey: queryKeys.COMMENT_LIST,
     enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_COMMENT
   });
 
@@ -198,11 +202,11 @@ export default function Discussion({
               {activeKey === DISCUSSION_TAB_COMMENT ? 'bình luận' : 'đánh giá'}.
             </div>
           )}
-          <CommentForm isLoading={isActiveLoading} />
+          <CommentInput isLoading={isActiveLoading} />
         </Activity>
         <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
           <CommentList
-            comments={commentList}
+            commentList={commentList}
             isLoading={commentListLoading}
             hasMore={!!hasMoreComments}
             remainingCount={remainingComments}
@@ -212,7 +216,7 @@ export default function Discussion({
         </Activity>
         <Activity visible={activeKey === DISCUSSION_TAB_REVIEW}>
           <ReviewList
-            reviews={reviewList}
+            reviewList={reviewList}
             isLoading={reviewListLoading}
             hasMore={!!hasMoreReviews}
             remainingCount={remainingReviews}
