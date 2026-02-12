@@ -247,7 +247,7 @@ export default function ReviewList({
     );
 
   return (
-    <div className='mt-8 flex flex-col justify-between gap-8'>
+    <div className='flex flex-col justify-between'>
       {reviewList
         .filter((review) => review?.id)
         .map((review) => (
@@ -274,7 +274,7 @@ export default function ReviewList({
             {isLoadMoreLoading ? (
               <DotLoading />
             ) : (
-              remainingCount > 0 && `Xem thêm (${remainingCount}) đánh giá`
+              remainingCount > 0 && `Xem thêm ${remainingCount} đánh giá`
             )}
           </Button>
         </div>

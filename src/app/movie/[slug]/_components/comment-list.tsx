@@ -12,12 +12,11 @@ import { emptyDiscussion } from '@/assets';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
 import {
-  useCommentRepliesQueries,
   useDeleteCommentMutation,
   useVoteCommentListQuery,
   useVoteCommentMutation
 } from '@/queries';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
@@ -97,51 +96,6 @@ export default function CommentList({
     movieId: movie?.id?.toString() || '',
     enabled: isAuthenticated && !!movie?.id
   });
-
-  // Track pagination for each parent comment's replies
-  const [replyPageMap, setReplyPageMap] = useState<Record<string, number>>({});
-  const [loadingMoreAt, setLoadingMoreAt] = useState<Record<string, number>>(
-    {}
-  );
-
-  // Batch fetch replies for all expanded parent comments using useQueries
-  const { repliesMap } = useCommentRepliesQueries({
-    movieId: movie?.id?.toString() || '',
-    parentIds: openParentIds,
-    pageMap: replyPageMap,
-    enabled: !!movie?.id && openParentIds.length > 0
-  });
-
-  const handleFetchMoreReplies = useCallback(
-    (parentId: string) => {
-      const currentPage = replyPageMap[parentId] || 0;
-      const loadStart = Date.now();
-      setLoadingMoreAt((prev) => ({ ...prev, [parentId]: loadStart }));
-      setReplyPageMap((prev) => ({ ...prev, [parentId]: currentPage + 1 }));
-    },
-    [replyPageMap]
-  );
-
-  useEffect(() => {
-    setLoadingMoreAt((prev) => {
-      const next = { ...prev };
-      let changed = false;
-
-      Object.keys(next).forEach((parentId) => {
-        const startAt = next[parentId];
-        const replyState = repliesMap[parentId];
-
-        if (!startAt || !replyState) return;
-
-        if (!replyState.isFetching && replyState.dataUpdatedAt >= startAt) {
-          delete next[parentId];
-          changed = true;
-        }
-      });
-
-      return changed ? next : prev;
-    });
-  }, [repliesMap]);
 
   const voteCommentList: CommentVoteResType[] = useMemo(
     () => voteCommentListData?.data || [],
@@ -248,35 +202,34 @@ export default function CommentList({
   };
 
   const renderChildren = (
-    list: CommentResType[],
+    commentList: CommentResType[],
     level: number,
     rootId?: string
   ) => {
-    return list.map((comment) => (
-      <CommentItem
-        key={comment.id}
-        comment={comment}
-        editingComment={editingComment}
-        isAuthenticated={isAuthenticated}
-        isVoteLoading={voteCommentLoading}
-        level={level}
-        openParentIds={openParentIds}
-        replyingComment={replyingComment}
-        repliesData={repliesMap[comment.id]}
-        isLoadingMore={Boolean(loadingMoreAt[comment.id])}
-        rootId={rootId ?? comment.id}
-        userId={profile?.id || ''}
-        voteMap={voteMap}
-        closeReply={closeReply}
-        onDelete={() => handleDeleteComment(comment)}
-        onFetchMoreReplies={handleFetchMoreReplies}
-        onVote={handleVote}
-        openReply={openReply}
-        renderChildren={renderChildren}
-        setEditingComment={setEditingComment}
-        setOpenParentIds={setOpenParentIds}
-      />
-    ));
+    return commentList
+      .filter((comment) => comment?.id)
+      .map((comment) => (
+        <CommentItem
+          key={comment.id}
+          comment={comment}
+          editingComment={editingComment}
+          isAuthenticated={isAuthenticated}
+          isVoteLoading={voteCommentLoading}
+          level={level}
+          openParentIds={openParentIds}
+          replyingComment={replyingComment}
+          rootId={rootId ?? comment.id}
+          userId={profile?.id || ''}
+          voteMap={voteMap}
+          closeReply={closeReply}
+          onDelete={() => handleDeleteComment(comment)}
+          onVote={handleVote}
+          openReply={openReply}
+          renderChildren={renderChildren}
+          setEditingComment={setEditingComment}
+          setOpenParentIds={setOpenParentIds}
+        />
+      ));
   };
 
   if (isLoading)
@@ -299,7 +252,7 @@ export default function CommentList({
     );
 
   return (
-    <div className='mt-8 flex flex-col justify-between gap-2'>
+    <div className='mt-4 flex flex-col justify-between gap-2'>
       {renderChildren(commentList, 0)}
       {hasMore && (
         <div className='flex justify-center'>
@@ -311,7 +264,7 @@ export default function CommentList({
             {isLoadMoreLoading ? (
               <DotLoading />
             ) : (
-              remainingCount > 0 && `Xem thêm (${remainingCount}) bình luận`
+              remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`
             )}
           </Button>
         </div>

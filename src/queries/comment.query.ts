@@ -1,19 +1,12 @@
 import { commentApiRequest } from '@/api-requests';
-import { DEFALT_PAGE_START, DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
+import { DEFALT_PAGE_START, queryKeys } from '@/constants';
 import {
-  ApiResponseList,
-  CommentResType,
   CommentSearchType,
   CreateCommentBodyType,
   UpdateCommentBodyType,
   VoteCommentBodyType
 } from '@/types';
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQueries,
-  useQuery
-} from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export const useCommentListQuery = ({
   params,
@@ -95,72 +88,4 @@ export const useVoteCommentListQuery = ({
     queryFn: () => commentApiRequest.getVoteList(movieId),
     enabled
   });
-};
-
-export type CommentRepliesData = {
-  parentId: string;
-  replies: CommentResType[];
-  isLoading: boolean;
-  isFetching: boolean;
-  hasNextPage: boolean;
-  totalPages: number;
-  currentPage: number;
-  dataUpdatedAt: number;
-};
-
-export const useCommentRepliesQueries = ({
-  movieId,
-  parentIds,
-  pageMap = {},
-  enabled = true
-}: {
-  movieId: string;
-  parentIds: string[];
-  pageMap?: Record<string, number>;
-  enabled?: boolean;
-}) => {
-  const queries = useQueries({
-    queries: parentIds.map((parentId) => ({
-      queryKey: [
-        `${queryKeys.COMMENT_LIST}-replies-${parentId}`,
-        { movieId, parentId, page: pageMap[parentId] || DEFALT_PAGE_START }
-      ],
-      queryFn: () =>
-        commentApiRequest.getList({
-          params: {
-            movieId,
-            parentId,
-            page: pageMap[parentId] || DEFALT_PAGE_START,
-            size: DEFAULT_PAGE_SIZE
-          }
-        }),
-      enabled: enabled && Boolean(parentId) && Boolean(movieId)
-    }))
-  });
-
-  const repliesMap: Record<string, CommentRepliesData> = {};
-
-  parentIds.forEach((parentId, index) => {
-    const query = queries[index];
-    const data = query?.data as ApiResponseList<CommentResType> | undefined;
-    repliesMap[parentId] = {
-      parentId,
-      replies: (data?.data?.content || []).filter((item) => Boolean(item?.id)),
-      isLoading: query?.isLoading ?? false,
-      isFetching: query?.isFetching ?? false,
-      hasNextPage:
-        (data?.data?.totalPages || 0) >
-        (pageMap[parentId] || DEFALT_PAGE_START) + 1,
-      totalPages: data?.data?.totalPages || 0,
-      currentPage: pageMap[parentId] || DEFALT_PAGE_START,
-      dataUpdatedAt: query?.dataUpdatedAt ?? 0
-    };
-  });
-
-  return {
-    repliesMap,
-    queries,
-    isLoading: queries.some((q) => q.isLoading),
-    isFetching: queries.some((q) => q.isFetching)
-  };
 };

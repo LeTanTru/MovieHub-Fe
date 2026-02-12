@@ -61,7 +61,7 @@ export default function ReviewItem({
   }, []);
 
   return (
-    <div className='flex-start relative flex gap-4'>
+    <div className='flex-start relative flex gap-4 pt-4'>
       <AvatarField
         src={renderImageUrl(author?.avatarPath)}
         size={50}
@@ -92,13 +92,12 @@ export default function ReviewItem({
             )}
             <span>
               {review.author.fullName}
-              &nbsp;
               <span
                 className={cn({
-                  'text-light-golden-yellow -ml font-semibold': isAuthor
+                  'text-light-golden-yellow font-semibold': isAuthor
                 })}
               >
-                {isAuthor && '(Bạn)'}
+                {isAuthor && ' (Bạn)'}
               </span>
             </span>
 
@@ -117,7 +116,7 @@ export default function ReviewItem({
             {timeAgo(review.createdDate)}
           </span>
         </div>
-        <div className='break-all text-gray-400'>{review.content}</div>
+        <div className='break-all text-white'>{review.content}</div>
         <div className='relative mt-2 flex items-center gap-4'>
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-2'>

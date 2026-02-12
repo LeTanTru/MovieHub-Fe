@@ -5,6 +5,7 @@ import { AvatarField, Button } from '@/components/form';
 import { Badge } from '@/components/ui/badge';
 import {
   DATE_TIME_FORMAT,
+  DEFAULT_PAGE_SIZE,
   GENDER_FEMALE,
   GENDER_MALE,
   GENDER_OTHER,
@@ -20,10 +21,16 @@ import { AuthorInfoType, CommentResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReactNode, useCallback, useMemo, useState } from 'react';
-import { FaEllipsis, FaReply, FaTrash } from 'react-icons/fa6';
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaEllipsis,
+  FaReply,
+  FaTrash
+} from 'react-icons/fa6';
 import { Activity } from '@/components/activity';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { CommentRepliesData } from '@/queries';
+import { useInfiniteCommentListQuery } from '@/queries';
 import CommentForm from './comment-form';
 import { DotLoading } from '@/components/loading';
 import { getQueryClient } from '@/components/providers';
@@ -36,14 +43,11 @@ export default function CommentItem({
   level,
   openParentIds,
   replyingComment,
-  repliesData,
-  isLoadingMore,
   rootId,
   userId,
   voteMap,
   closeReply,
   onDelete,
-  onFetchMoreReplies,
   onVote,
   openReply,
   renderChildren,
@@ -57,14 +61,11 @@ export default function CommentItem({
   level: number;
   openParentIds: string[];
   replyingComment: CommentResType | null;
-  repliesData?: CommentRepliesData;
-  isLoadingMore?: boolean;
   rootId: string;
   userId: string;
   voteMap: Record<string, number>;
   closeReply: () => void;
   onDelete: (id: string) => void;
-  onFetchMoreReplies: (parentId: string) => void;
   onVote: (id: string, type: number, onSuccess?: () => void) => void;
   openReply: (replyingComment: CommentResType | null) => void;
   renderChildren: (
@@ -99,11 +100,30 @@ export default function CommentItem({
 
   const isActiveParent = openParentIds.includes(comment.id);
 
-  // Use reply data from props (batched via useQueries in parent)
-  const commentList = repliesData?.replies || [];
-  const commentListLoading = repliesData?.isLoading ?? false;
-  const hasMoreComments = repliesData?.hasNextPage ?? false;
-  const commentLoadMoreLoading = Boolean(isLoadingMore);
+  const {
+    data: commentListData,
+    isLoading: commentListLoading,
+    hasNextPage: hasMoreComments,
+    fetchNextPage: fetchMoreComments,
+    isFetchingNextPage: commentLoadMoreLoading
+  } = useInfiniteCommentListQuery({
+    params: {
+      movieId: comment.movieId,
+      parentId: comment.id,
+      size: DEFAULT_PAGE_SIZE
+    },
+    queryKey: `${queryKeys.COMMENT_LIST}-replies-${comment.id}`,
+    enabled: isActiveParent
+  });
+
+  const commentList = useMemo(
+    () =>
+      commentListData?.pages?.flatMap(
+        (pageData) => pageData.data.content || []
+      ) || [],
+    [commentListData?.pages]
+  );
+
   const commentListSize = commentList.length;
 
   const handleDropdownToggle = useCallback(() => {
@@ -152,7 +172,7 @@ export default function CommentItem({
 
     return (
       <>
-        <span className='bg-light-golden-yellow rounded px-1.5 py-0.5 font-semibold text-black'>
+        <span className='rounded bg-slate-700 px-1.25 py-0.75 font-medium text-gray-200'>
           {mention}
         </span>
         &nbsp;
@@ -165,7 +185,7 @@ export default function CommentItem({
   };
 
   const handleFetchNextPage = () => {
-    onFetchMoreReplies(comment.id);
+    fetchMoreComments();
   };
 
   const handleHideReplies = (parentId: string) => {
@@ -186,7 +206,7 @@ export default function CommentItem({
   };
 
   return (
-    <div className='flex-start relative flex gap-2.5 pt-4'>
+    <div className='flex-start relative flex gap-4 pt-4'>
       <AvatarField
         src={renderImageUrl(authorInfo.avatarPath)}
         size={50}
@@ -210,7 +230,7 @@ export default function CommentItem({
                   'text-light-golden-yellow font-semibold': isAuthor
                 })}
               >
-                {isAuthor && ' (Bạn)'}
+                {isAuthor && <>&nbsp;(Bạn)</>}
               </span>
             </span>
 
@@ -245,11 +265,13 @@ export default function CommentItem({
             </Badge>
           )}
         </div>
-        <div className='mt-2 break-all text-gray-400'>
+
+        <div className='mt-2 break-all text-white'>
           {renderMention()}
           {comment.content}
         </div>
-        <div className='relative mt-2 flex items-center gap-4'>
+
+        <div className='relative mt-4 flex items-center gap-4'>
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-2'>
               <LikeIcon
@@ -287,7 +309,7 @@ export default function CommentItem({
           <Activity visible={isAuthenticated}>
             <button
               type='button'
-              className='flex items-center gap-2 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+              className='hover:text-light-golden-yellow flex items-center gap-2 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
               onClick={handleReplyComment}
             >
               <FaReply />
@@ -297,7 +319,7 @@ export default function CommentItem({
           <Activity visible={isAuthor && isAuthenticated}>
             <button
               type='button'
-              className='flex items-center gap-2 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+              className='hover:text-light-golden-yellow flex items-center gap-2 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
               onClick={() => handleEditComment(comment)}
             >
               <AiOutlineEdit />
@@ -308,7 +330,7 @@ export default function CommentItem({
             <div className='relative' ref={dropdownRef}>
               <button
                 type='button'
-                className='flex items-center gap-1 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+                className='hover:text-light-golden-yellow flex items-center gap-1 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
                 onClick={handleDropdownToggle}
               >
                 <FaEllipsis /> <span>Thêm</span>
@@ -333,7 +355,7 @@ export default function CommentItem({
                     className='absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
                   >
                     <button
-                      className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                      className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
                       onClick={() => {
                         setShowDropdown(false);
                         onDelete(comment.id);
@@ -348,6 +370,7 @@ export default function CommentItem({
             </div>
           </Activity>
         </div>
+
         <AnimatePresence initial={false}>
           {(replyingComment?.id === comment.id ||
             editingComment?.id === comment.id) && (
@@ -368,45 +391,45 @@ export default function CommentItem({
             </motion.div>
           )}
         </AnimatePresence>
-        {isActiveParent && commentListSize > 0 && (
-          <>
-            {renderChildren(commentList, level + 1, rootId)}
-            {commentLoadMoreLoading && (
-              <DotLoading className='mt-4 justify-start bg-transparent' />
-            )}
-          </>
-        )}
+
+        <Activity visible={isActiveParent && commentListSize > 0}>
+          {renderChildren(commentList, level + 1, rootId)}
+          {commentLoadMoreLoading && (
+            <DotLoading className='mt-4 justify-start bg-transparent' />
+          )}
+        </Activity>
 
         <Activity visible={comment.totalChildren > 0}>
           {!isActiveParent ? (
             <button
-              className='hover:text-light-golden-yellow mt-2 transition-colors duration-200 ease-linear'
+              className='hover:text-light-golden-yellow mt-4 flex items-center gap-2 transition-colors duration-200 ease-linear'
               onClick={() => handleViewReplies(comment.id)}
             >
-              Xem tất cả ({comment.totalChildren}) trả lời
+              <FaChevronDown /> Xem tất cả&nbsp;{comment.totalChildren} trả lời
             </button>
           ) : commentListLoading ? (
             <DotLoading className='mt-4 justify-start bg-transparent' />
           ) : (
             <div
-              className='mt-4 flex items-center gap-x-4'
+              className='mt-4 flex items-center gap-4'
               style={{ marginLeft: level * 40 }}
             >
               {hasMoreComments && (
                 <Button
                   variant='ghost'
-                  className='h-5! p-0! font-medium hover:opacity-70'
+                  className='hover:text-light-golden-yellow flex h-5! items-center p-0! font-medium hover:bg-transparent!'
                   onClick={() => handleFetchNextPage()}
                 >
-                  Xem thêm ({comment.totalChildren - commentListSize})
+                  <FaChevronDown /> Xem thêm&nbsp;
+                  {comment.totalChildren - commentListSize} trả lời
                 </Button>
               )}
               <Button
                 variant='ghost'
-                className='h-5! p-0! font-medium text-red-500 hover:opacity-70'
+                className='h-5! p-0! font-medium hover:bg-transparent! hover:text-red-500'
                 onClick={() => handleHideReplies(comment.id)}
               >
-                Ẩn trả lời
+                <FaChevronUp /> Ẩn trả lời
               </Button>
             </div>
           )}
