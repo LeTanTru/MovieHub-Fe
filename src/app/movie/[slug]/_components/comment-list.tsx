@@ -12,11 +12,12 @@ import { emptyDiscussion } from '@/assets';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
 import {
+  useCommentRepliesQueries,
   useDeleteCommentMutation,
   useVoteCommentListQuery,
   useVoteCommentMutation
 } from '@/queries';
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
@@ -96,6 +97,51 @@ export default function CommentList({
     movieId: movie?.id?.toString() || '',
     enabled: isAuthenticated && !!movie?.id
   });
+
+  // Track pagination for each parent comment's replies
+  const [replyPageMap, setReplyPageMap] = useState<Record<string, number>>({});
+  const [loadingMoreAt, setLoadingMoreAt] = useState<Record<string, number>>(
+    {}
+  );
+
+  // Batch fetch replies for all expanded parent comments using useQueries
+  const { repliesMap } = useCommentRepliesQueries({
+    movieId: movie?.id?.toString() || '',
+    parentIds: openParentIds,
+    pageMap: replyPageMap,
+    enabled: !!movie?.id && openParentIds.length > 0
+  });
+
+  const handleFetchMoreReplies = useCallback(
+    (parentId: string) => {
+      const currentPage = replyPageMap[parentId] || 0;
+      const loadStart = Date.now();
+      setLoadingMoreAt((prev) => ({ ...prev, [parentId]: loadStart }));
+      setReplyPageMap((prev) => ({ ...prev, [parentId]: currentPage + 1 }));
+    },
+    [replyPageMap]
+  );
+
+  useEffect(() => {
+    setLoadingMoreAt((prev) => {
+      const next = { ...prev };
+      let changed = false;
+
+      Object.keys(next).forEach((parentId) => {
+        const startAt = next[parentId];
+        const replyState = repliesMap[parentId];
+
+        if (!startAt || !replyState) return;
+
+        if (!replyState.isFetching && replyState.dataUpdatedAt >= startAt) {
+          delete next[parentId];
+          changed = true;
+        }
+      });
+
+      return changed ? next : prev;
+    });
+  }, [repliesMap]);
 
   const voteCommentList: CommentVoteResType[] = useMemo(
     () => voteCommentListData?.data || [],
@@ -216,11 +262,14 @@ export default function CommentList({
         level={level}
         openParentIds={openParentIds}
         replyingComment={replyingComment}
+        repliesData={repliesMap[comment.id]}
+        isLoadingMore={Boolean(loadingMoreAt[comment.id])}
         rootId={rootId ?? comment.id}
         userId={profile?.id || ''}
         voteMap={voteMap}
         closeReply={closeReply}
         onDelete={() => handleDeleteComment(comment)}
+        onFetchMoreReplies={handleFetchMoreReplies}
         onVote={handleVote}
         openReply={openReply}
         renderChildren={renderChildren}

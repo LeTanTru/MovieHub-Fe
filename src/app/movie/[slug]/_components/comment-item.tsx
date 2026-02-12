@@ -5,7 +5,6 @@ import { AvatarField, Button } from '@/components/form';
 import { Badge } from '@/components/ui/badge';
 import {
   DATE_TIME_FORMAT,
-  DEFAULT_PAGE_SIZE,
   GENDER_FEMALE,
   GENDER_MALE,
   GENDER_OTHER,
@@ -24,7 +23,7 @@ import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { FaEllipsis, FaReply, FaTrash } from 'react-icons/fa6';
 import { Activity } from '@/components/activity';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { useInfiniteCommentListQuery } from '@/queries';
+import { CommentRepliesData } from '@/queries';
 import CommentForm from './comment-form';
 import { DotLoading } from '@/components/loading';
 import { getQueryClient } from '@/components/providers';
@@ -37,11 +36,14 @@ export default function CommentItem({
   level,
   openParentIds,
   replyingComment,
+  repliesData,
+  isLoadingMore,
   rootId,
   userId,
   voteMap,
   closeReply,
   onDelete,
+  onFetchMoreReplies,
   onVote,
   openReply,
   renderChildren,
@@ -55,11 +57,14 @@ export default function CommentItem({
   level: number;
   openParentIds: string[];
   replyingComment: CommentResType | null;
+  repliesData?: CommentRepliesData;
+  isLoadingMore?: boolean;
   rootId: string;
   userId: string;
   voteMap: Record<string, number>;
   closeReply: () => void;
   onDelete: (id: string) => void;
+  onFetchMoreReplies: (parentId: string) => void;
   onVote: (id: string, type: number, onSuccess?: () => void) => void;
   openReply: (replyingComment: CommentResType | null) => void;
   renderChildren: (
@@ -94,30 +99,11 @@ export default function CommentItem({
 
   const isActiveParent = openParentIds.includes(comment.id);
 
-  const {
-    data: commentListData,
-    isLoading: commentListLoading,
-    hasNextPage: hasMoreComments,
-    fetchNextPage: fetchMoreComments,
-    isFetchingNextPage: commentLoadMoreLoading
-  } = useInfiniteCommentListQuery({
-    params: {
-      movieId: comment.movieId,
-      parentId: comment.id,
-      size: DEFAULT_PAGE_SIZE
-    },
-    queryKey: `${queryKeys.COMMENT_LIST}-replies-${comment.id}`,
-    enabled: isActiveParent
-  });
-
-  const commentList = useMemo(
-    () =>
-      commentListData?.pages?.flatMap(
-        (pageData) => pageData.data.content || []
-      ) || [],
-    [commentListData?.pages]
-  );
-
+  // Use reply data from props (batched via useQueries in parent)
+  const commentList = repliesData?.replies || [];
+  const commentListLoading = repliesData?.isLoading ?? false;
+  const hasMoreComments = repliesData?.hasNextPage ?? false;
+  const commentLoadMoreLoading = Boolean(isLoadingMore);
   const commentListSize = commentList.length;
 
   const handleDropdownToggle = useCallback(() => {
@@ -179,7 +165,7 @@ export default function CommentItem({
   };
 
   const handleFetchNextPage = () => {
-    fetchMoreComments();
+    onFetchMoreReplies(comment.id);
   };
 
   const handleHideReplies = (parentId: string) => {
