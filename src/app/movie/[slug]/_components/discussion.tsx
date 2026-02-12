@@ -148,7 +148,7 @@ export default function Discussion({
     <Element name='discussion'>
       <div className='relative block px-10 py-5'>
         {/* Header */}
-        <div className='mb-4 flex items-center font-semibold text-white'>
+        <div className='flex items-center font-semibold text-white'>
           <div className='flex grow gap-2'>
             <div className='h-6 w-6'>
               <CommentDotIcon />
@@ -185,7 +185,7 @@ export default function Discussion({
         {/* Body */}
         <Activity visible={activeKey === DISCUSSION_TAB_COMMENT}>
           {profile ? (
-            <div className='mb-4 flex items-center gap-4'>
+            <div className='my-4 flex items-center gap-4'>
               <AvatarField
                 src={renderImageUrl(profile.avatarPath)}
                 size={50}
