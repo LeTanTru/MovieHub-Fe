@@ -11,7 +11,8 @@ import {
   genderIconMaps,
   kindMaps,
   REACTION_TYPE_DISLIKE,
-  REACTION_TYPE_LIKE
+  REACTION_TYPE_LIKE,
+  STATUS_HIDE
 } from '@/constants';
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
@@ -20,7 +21,7 @@ import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image, { StaticImageData } from 'next/image';
 import { useCallback, useState } from 'react';
-import { FaEllipsis, FaTrash } from 'react-icons/fa6';
+import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';
 import { Activity } from '@/components/activity';
 
 export default function ReviewItem({
@@ -51,7 +52,10 @@ export default function ReviewItem({
   const ratingInfo = rate !== undefined ? reviewRatingMaps[rate] : null;
   const GenderIcon = genderIconMaps[gender];
 
+  const isHiddenReview = review.status === STATUS_HIDE;
+
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showBlurredContent, setShowBlurredContent] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
   );
@@ -59,6 +63,11 @@ export default function ReviewItem({
   const handleDropdownToggle = useCallback(() => {
     setShowDropdown((prev) => !prev);
   }, []);
+
+  const handleToggleBlurredContent = () => {
+    setShowBlurredContent((prev) => !prev);
+    setShowDropdown(false);
+  };
 
   return (
     <div className='flex-start relative flex gap-4 pt-4'>
@@ -116,7 +125,24 @@ export default function ReviewItem({
             {timeAgo(review.createdDate)}
           </span>
         </div>
-        <div className='break-all text-white'>{review.content}</div>
+        <div
+          className={cn('relative mt-2 break-all text-white', {
+            'cursor-pointer': isHiddenReview && !showBlurredContent
+          })}
+          onClick={
+            isHiddenReview && !showBlurredContent
+              ? handleToggleBlurredContent
+              : undefined
+          }
+        >
+          <div
+            className={cn({
+              'blur-xs select-none': isHiddenReview && !showBlurredContent
+            })}
+          >
+            {review.content}
+          </div>
+        </div>
         <div className='relative mt-2 flex items-center gap-4'>
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-2'>
@@ -150,8 +176,8 @@ export default function ReviewItem({
               {review.totalDislike}
             </div>
           </div>
-          <Activity visible={!!isAuthor}>
-            <div className='relative' ref={dropdownRef}>
+          <div className='relative' ref={dropdownRef}>
+            {(isAuthor || isHiddenReview) && (
               <button
                 type='button'
                 className='flex items-center gap-1 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
@@ -159,25 +185,45 @@ export default function ReviewItem({
               >
                 <FaEllipsis /> <span>Thêm</span>
               </button>
-              <AnimatePresence>
-                {showDropdown && (
-                  <motion.div
-                    initial={{
-                      opacity: 0,
-                      scale: 0.8,
-                      transformOrigin: '0% -50%'
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1
-                    }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.8
-                    }}
-                    transition={{ duration: 0.1, ease: 'linear' }}
-                    className='absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
-                  >
+            )}
+            <AnimatePresence>
+              {showDropdown && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    scale: 0.8,
+                    transformOrigin: '0% -50%'
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.8
+                  }}
+                  transition={{ duration: 0.1, ease: 'linear' }}
+                  className='absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
+                >
+                  {isHiddenReview && (
+                    <button
+                      className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                      onClick={handleToggleBlurredContent}
+                    >
+                      {showBlurredContent ? (
+                        <>
+                          <FaEyeSlash />
+                          Ẩn nội dung
+                        </>
+                      ) : (
+                        <>
+                          <FaEye />
+                          Xem nội dung
+                        </>
+                      )}
+                    </button>
+                  )}
+                  {isAuthor && (
                     <button
                       className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
                       onClick={() => {
@@ -188,11 +234,11 @@ export default function ReviewItem({
                       <FaTrash />
                       Xoá đánh giá
                     </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </Activity>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>

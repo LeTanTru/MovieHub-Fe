@@ -13,7 +13,8 @@ import {
   kindMaps,
   queryKeys,
   REACTION_TYPE_DISLIKE,
-  REACTION_TYPE_LIKE
+  REACTION_TYPE_LIKE,
+  STATUS_HIDE
 } from '@/constants';
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
@@ -25,6 +26,8 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaEllipsis,
+  FaEye,
+  FaEyeSlash,
   FaReply,
   FaTrash
 } from 'react-icons/fa6';
@@ -34,6 +37,7 @@ import { useInfiniteCommentListQuery } from '@/queries';
 import CommentForm from './comment-form';
 import { DotLoading } from '@/components/loading';
 import { getQueryClient } from '@/components/providers';
+import { Pin } from 'lucide-react';
 
 export default function CommentItem({
   comment,
@@ -94,9 +98,12 @@ export default function CommentItem({
 
   const queryClient = getQueryClient();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showBlurredContent, setShowBlurredContent] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
   );
+
+  const isHiddenComment = comment.status === STATUS_HIDE;
 
   const isActiveParent = openParentIds.includes(comment.id);
 
@@ -192,6 +199,11 @@ export default function CommentItem({
     setOpenParentIds((prev) => prev.filter((value) => value !== parentId));
   };
 
+  const handleToggleBlurredContent = () => {
+    setShowBlurredContent((prev) => !prev);
+    setShowDropdown(false);
+  };
+
   const handleVote = (id: string, type: number) => {
     onVote(id, type, async () => {
       if (comment.parent)
@@ -264,11 +276,31 @@ export default function CommentItem({
               P. {movieItem.parent.label} - Tập {movieItem.label}
             </Badge>
           )}
+          <Activity visible={comment.isPinned}>
+            <span title='Đã ghim' className='ml-auto'>
+              <Pin className='text-light-golden-yellow fill-light-golden-yellow size-5 rotate-45' />
+            </span>
+          </Activity>
         </div>
 
-        <div className='mt-2 break-all text-white'>
-          {renderMention()}
-          {comment.content}
+        <div
+          className={cn('relative mt-2 break-all text-white', {
+            'cursor-pointer': isHiddenComment && !showBlurredContent
+          })}
+          onClick={
+            isHiddenComment && !showBlurredContent
+              ? handleToggleBlurredContent
+              : undefined
+          }
+        >
+          <div
+            className={cn({
+              'blur-xs select-none': isHiddenComment && !showBlurredContent
+            })}
+          >
+            {renderMention()}
+            {comment.content}
+          </div>
         </div>
 
         <div className='relative mt-4 flex items-center gap-4'>
@@ -326,8 +358,8 @@ export default function CommentItem({
               <span>Chỉnh sửa</span>
             </button>
           </Activity>
-          <Activity visible={isAuthor && isAuthenticated}>
-            <div className='relative' ref={dropdownRef}>
+          <div className='relative' ref={dropdownRef}>
+            {(isHiddenComment || isAuthor) && (
               <button
                 type='button'
                 className='hover:text-light-golden-yellow flex items-center gap-1 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
@@ -335,25 +367,46 @@ export default function CommentItem({
               >
                 <FaEllipsis /> <span>Thêm</span>
               </button>
-              <AnimatePresence>
-                {showDropdown && (
-                  <motion.div
-                    initial={{
-                      opacity: 0,
-                      scale: 0.8,
-                      transformOrigin: '0% -50%'
-                    }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1
-                    }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.8
-                    }}
-                    transition={{ duration: 0.1, ease: 'linear' }}
-                    className='absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
-                  >
+            )}
+
+            <AnimatePresence>
+              {showDropdown && (
+                <motion.div
+                  initial={{
+                    opacity: 0,
+                    scale: 0.8,
+                    transformOrigin: '0% -50%'
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.8
+                  }}
+                  transition={{ duration: 0.1, ease: 'linear' }}
+                  className='absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
+                >
+                  {isHiddenComment && (
+                    <button
+                      className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                      onClick={handleToggleBlurredContent}
+                    >
+                      {showBlurredContent ? (
+                        <>
+                          <FaEyeSlash />
+                          Ẩn nội dung
+                        </>
+                      ) : (
+                        <>
+                          <FaEye />
+                          Xem nội dung
+                        </>
+                      )}
+                    </button>
+                  )}
+                  {isAuthor && (
                     <button
                       className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
                       onClick={() => {
@@ -364,11 +417,11 @@ export default function CommentItem({
                       <FaTrash />
                       Xoá bình luận
                     </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </Activity>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         <AnimatePresence initial={false}>
