@@ -91,6 +91,11 @@ export default async function MoviePage({
     size: DEFAULT_PAGE_SIZE
   };
 
+  const reviewFilters: CommentSearchType = {
+    movieId: id,
+    size: DEFAULT_PAGE_SIZE
+  };
+
   const queryClient = getQueryClient();
 
   try {
@@ -139,7 +144,7 @@ export default async function MoviePage({
   });
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: [queryKeys.REVIEW_LIST, id, DEFAULT_PAGE_SIZE],
+    queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
     queryFn: ({ pageParam }) =>
       reviewApiRequest.getList({
         params: {
