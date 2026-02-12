@@ -26,7 +26,7 @@ import { useSuggestionMovieListQuery } from '@/queries';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { MovieResType } from '@/types';
-import { getIdFromSlug, renderImageUrl } from '@/utils';
+import { getIdFromSlug, notify, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -357,40 +357,46 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
     setToggle((prev) => !prev);
   };
 
-  const handlePlayTrailer = () => {
+  const handlePlayTrailer = async () => {
     if (isFetching) return;
-    open();
+
+    setIsFetching(true);
+    try {
+      const res = await getAnonymousToken();
+      setToken(res.access_token);
+      open();
+    } catch (err) {
+      logger.error('Failed to get guest token', err);
+      notify.error('Không thể tải trailer, vui lòng thử lại');
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   const handleCloseTrailer = () => {
     close();
+    setToken('');
   };
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
+    if (!opened || !token) return;
 
-    const handleGetAnonymousToken = async () => {
-      setIsFetching(true);
-      try {
-        const res = await getAnonymousToken();
-        setToken(res.access_token);
-      } catch (err) {
-        logger.error('Failed to get guest token', err);
-      } finally {
-        setIsFetching(false);
-      }
-    };
-
-    if (opened) {
-      handleGetAnonymousToken();
-
-      intervalId = setInterval(handleGetAnonymousToken, 14 * 60 * 1000);
-    }
+    const intervalId = setInterval(
+      async () => {
+        try {
+          const res = await getAnonymousToken();
+          setToken(res.access_token);
+        } catch (err) {
+          logger.error('Failed to refresh guest token', err);
+        }
+      },
+      14 * 60 * 1000
+    );
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [opened]);
+  }, [opened, token]);
 
   if (!movie || !trailer) return null;
 
@@ -480,6 +486,7 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
           </motion.div>
         </div>
       </MotionWrapper>
+
       <TrailerModal
         opened={opened}
         onClose={handleCloseTrailer}
