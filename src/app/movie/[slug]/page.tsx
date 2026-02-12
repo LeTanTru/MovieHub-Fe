@@ -17,6 +17,7 @@ import {
   ApiResponse,
   ApiResponseList,
   CommentResType,
+  CommentSearchType,
   MoviePersonSearchType,
   ReviewResType
 } from '@/types';
@@ -85,6 +86,11 @@ export default async function MoviePage({
     movieId: id
   };
 
+  const commentFilters: CommentSearchType = {
+    movieId: id,
+    size: DEFAULT_PAGE_SIZE
+  };
+
   const queryClient = getQueryClient();
 
   try {
@@ -116,7 +122,7 @@ export default async function MoviePage({
   });
 
   await queryClient.prefetchInfiniteQuery({
-    queryKey: [queryKeys.COMMENT_LIST, id, DEFAULT_PAGE_SIZE],
+    queryKey: [queryKeys.COMMENT_LIST, commentFilters],
     queryFn: ({ pageParam }) =>
       commentApiRequest.getList({
         params: {

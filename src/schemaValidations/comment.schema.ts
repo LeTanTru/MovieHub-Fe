@@ -2,13 +2,12 @@ import { z } from 'zod';
 
 export const commentSchema = z.object({
   id: z.string().optional().nullable(),
-  content: z.string(),
+  content: z.string().optional().nullable(),
   movieId: z.string().optional().nullable(),
   movieItemId: z.string().optional().nullable(),
   parentId: z.string().optional().nullable(),
   replyToId: z.string().optional().nullable(),
-  replyToKind: z.number().optional().nullable(),
-  validTarget: z.boolean().default(false).optional()
+  replyToKind: z.number().optional().nullable()
 });
 
 export const voteCommentSchema = z.object({
