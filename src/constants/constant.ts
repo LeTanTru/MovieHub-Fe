@@ -79,3 +79,5 @@ export const MAX_PLAYLIST_COUNT = 5;
 
 export const REACTION_TYPE_LIKE = 1;
 export const REACTION_TYPE_DISLIKE = 2;
+
+export const STATUS_HIDE = -1;
