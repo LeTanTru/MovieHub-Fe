@@ -65,7 +65,10 @@ export default function VideoPlayer({
   className,
   token,
   prev,
-  next
+  next,
+  title,
+  onPrevClick,
+  onNextClick
 }: {
   auth: boolean;
   autoPlay?: boolean;
@@ -82,6 +85,9 @@ export default function VideoPlayer({
   token?: string;
   prev?: boolean;
   next?: boolean;
+  title?: string;
+  onPrevClick?: () => void;
+  onNextClick?: () => void;
 }) {
   const playerRef = useRef<MediaPlayerInstance>(null);
   const [showSkip, setShowSkip] = useState<boolean>(true);
@@ -116,10 +122,11 @@ export default function VideoPlayer({
         onVolumeChange={() => setCurrentAction('volume')}
         volume={0}
         className={cn(
-          'video-player relative h-full rounded-lg! border-none!',
+          'video-player relative h-full rounded-none! border-none!',
           className
         )}
         onTimeUpdate={handleTimeChange}
+        title={title}
       >
         <MediaProvider slot='media' className='cursor-pointer'>
           <Poster className='vds-poster' src={thumbnailUrl} />
@@ -141,8 +148,10 @@ export default function VideoPlayer({
             captionButton: <CaptionButton />,
             beforeSettingsMenu: (
               <>
-                {prev && <PreviousButton />}
-                {next && <NextButton />}
+                {prev && onPrevClick && (
+                  <PreviousButton onClick={onPrevClick} />
+                )}
+                {next && onNextClick && <NextButton onClick={onNextClick} />}
                 <SeekBackwardButton />
                 <SeekForwardButton />
               </>
@@ -171,13 +180,10 @@ export default function VideoPlayer({
             centerControlsGroupCenter: (
               <>
                 <PlayPauseIndicator />
-              </>
-            ),
-            topControlsGroupCenter: (
-              <>
                 <VolumeIndicator />
               </>
             ),
+            topControlsGroupCenter: <></>,
             bufferingIndicator: <BufferingIndicator />,
             ...slots
           }}

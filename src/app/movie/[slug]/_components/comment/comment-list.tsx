@@ -66,8 +66,13 @@ export default function CommentList({
 }) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
-  const movie = useMovieStore((s) => s.movie);
-  const setMovie = useMovieStore((s) => s.setMovie);
+
+  const { movie, setMovie } = useMovieStore(
+    useShallow((s) => ({
+      movie: s.movie,
+      setMovie: s.setMovie
+    }))
+  );
 
   const {
     openParentIds,

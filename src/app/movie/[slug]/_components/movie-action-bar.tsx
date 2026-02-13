@@ -3,6 +3,7 @@
 import { MessageIcon } from '@/assets';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Button } from '@/components/form';
+import { MOVIE_TYPE_SERIES } from '@/constants';
 import { useAuth, useDisclosure } from '@/hooks';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
@@ -16,6 +17,7 @@ import { useCheckMovieQuery } from '@/queries';
 import { ButtonShareMovie } from '@/components/app/button-share';
 import { scroller } from 'react-scroll';
 import { ReviewModal } from '@/app/movie/[slug]/_components/review';
+import { useShallow } from 'zustand/shallow';
 
 export default function MovieActionBar({
   isLoading = false
@@ -27,7 +29,12 @@ export default function MovieActionBar({
 
   const { opened, open, close } = useDisclosure();
   const { isAuthenticated } = useAuth();
-  const movie = useMovieStore((s) => s.movie);
+  const { movie, selectedSeason } = useMovieStore(
+    useShallow((s) => ({
+      movie: s.movie,
+      selectedSeason: s.selectedSeason
+    }))
+  );
 
   const { data: checkMovieData } = useCheckMovieQuery({
     movieId: id,
@@ -81,13 +88,27 @@ export default function MovieActionBar({
 
   if (!movie) return null;
 
+  const currentSeasonObj = movie.seasons.find(
+    (season) => season.ordering + 1 === selectedSeason
+  );
+  const latestSeason = movie.seasons[movie.seasons.length - 1];
+  const targetSeason = currentSeasonObj || latestSeason;
+  const isSeries = movie.type === MOVIE_TYPE_SERIES;
+  const latestEpisode = isSeries
+    ? targetSeason.episodes[targetSeason.episodes.length - 1]
+    : null;
+
+  const watchHref = isSeries
+    ? `${route.watch.path}/${slug}?season=${targetSeason.label}&episode=${latestEpisode?.label}`
+    : `${route.watch.path}/${slug}?season=${targetSeason.label}`;
+
   return (
     <>
       <div className='relative z-3 p-7.5'>
         <div className='flex items-center justify-between gap-8'>
           <ButtonWatchNow
             className='text-watch-now inline-flex min-h-15 shrink-0 items-center justify-center gap-4 rounded-4xl bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8! py-4! text-base font-semibold opacity-100 shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] transition-all duration-200 ease-linear hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]'
-            href={`${route.watch.path}/${slug}?season=${movie.seasons?.[0]?.label}`}
+            href={watchHref}
           />
           {/* Left */}
           <div className='flex grow justify-start gap-4'>

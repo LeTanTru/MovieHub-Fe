@@ -344,8 +344,12 @@ const MovieTabTrailer = ({ direction }: { direction: number }) => {
   const [isFetching, setIsFetching] = useState(false);
   const [token, setToken] = useState<string>('');
 
-  const movie = useMovieStore((s) => s.movie);
-  const selectedSeason = useMovieStore((s) => s.selectedSeason);
+  const { movie, selectedSeason } = useMovieStore(
+    useShallow((s) => ({
+      movie: s.movie,
+      selectedSeason: s.selectedSeason
+    }))
+  );
 
   const currentSeason = movie?.seasons?.find(
     (season) => season.ordering + 1 === selectedSeason
