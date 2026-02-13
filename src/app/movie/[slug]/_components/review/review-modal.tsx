@@ -14,6 +14,7 @@ import { ApiResponse, MovieResType, ReviewBodyType } from '@/types';
 import { formatRating, notify } from '@/utils';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 export default function ReviewModal({
   opened,
@@ -23,8 +24,9 @@ export default function ReviewModal({
   onClose: () => void;
 }) {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
-  const movie = useMovieStore((s) => s.movie);
-  const setMovie = useMovieStore((s) => s.setMovie);
+  const { movie, setMovie } = useMovieStore(
+    useShallow((s) => ({ movie: s.movie, setMovie: s.setMovie }))
+  );
   const queryClient = getQueryClient();
 
   const { mutateAsync: createReviewMutate, isPending: createReviewLoading } =

@@ -27,6 +27,7 @@ import Link from 'next/link';
 import { route } from '@/routes';
 import { Button } from '@/components/form';
 import { DotLoading } from '@/components/loading';
+import { useShallow } from 'zustand/shallow';
 
 const ReviewItemSkeleton = () => {
   return (
@@ -66,8 +67,9 @@ export default function ReviewList({
 }) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
-  const movie = useMovieStore((s) => s.movie);
-  const setMovie = useMovieStore((s) => s.setMovie);
+  const { movie, setMovie } = useMovieStore(
+    useShallow((s) => ({ movie: s.movie, setMovie: s.setMovie }))
+  );
 
   const reviewRatingMaps: Record<
     number,

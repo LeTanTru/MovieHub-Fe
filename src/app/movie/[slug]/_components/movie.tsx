@@ -19,7 +19,7 @@ export default function Movie({ id }: { id: string }) {
     }))
   );
   const { data: movieData, isLoading: movieLoading } = useMovieQuery(id);
-  const movie: MovieResType | undefined = movieData?.data;
+  const movie = movieData?.data;
 
   const { data: moviePersonData } = useMoviePersonListQuery({
     params: {
