@@ -18,14 +18,16 @@ import {
   queryKeys
 } from '@/constants';
 import { AvatarField } from '@/components/form';
-import CommentList from './comment-list';
-import CommentInput from './comment-input';
-import ReviewList from './review-list';
 import { Activity } from '@/components/activity';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ButtonAction } from '@/components/app/button-action';
 import { useAuth } from '@/hooks';
 import { Element } from 'react-scroll';
+import { ReviewList } from '@/app/movie/[slug]/_components/review';
+import {
+  CommentInput,
+  CommentList
+} from '@/app/movie/[slug]/_components/comment';
 
 const DiscussionSkeleton = () => {
   return (

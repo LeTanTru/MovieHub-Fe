@@ -14,17 +14,7 @@ type EpisodeResType = {
   label: string;
   ordering: number;
   parent: { id: string; kind: number; label: string };
-  video: {
-    id: string;
-    name: string;
-    sourceType: number;
-    content: string;
-    relativeContentPath: string;
-    spriteUrl: string;
-    vttUrl: string;
-    thumbnailUrl: string;
-    duration: number;
-  };
+  video: VideoResType;
   releaseDate: string;
   thumbnailUrl: string;
 };
