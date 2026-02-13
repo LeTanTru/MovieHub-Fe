@@ -51,6 +51,7 @@
   --color-main-color: var(--color-gray-300);
   --color-fixed-header: #070a18;
   --color-main-background: #1d1d27;
+  /* --color-main-background: #2b2b35; */
   --color-navigation: rgba(21, 20, 32, 0.9);
   --color-navigation-mobile: rgb(15, 23, 43);
   --color-auth-layout: #1a1f32;

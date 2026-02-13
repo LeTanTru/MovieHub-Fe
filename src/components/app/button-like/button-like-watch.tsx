@@ -19,10 +19,12 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function ButtonLikeWatch({
   targetId,
-  className
+  className,
+  text
 }: {
   targetId: string;
   className?: string;
+  text?: string;
 }) {
   const heartIconRef = useRef<AnimatedIconHandle>(null);
   const [isLiked, setIsLiked] = useState(false);
@@ -140,7 +142,7 @@ export default function ButtonLikeWatch({
       onClick={isLiked ? handleRemoveLike : handleLike}
     >
       <HeartIcon ref={heartIconRef} />
-      Thích
+      {text || 'Thích'}
     </Button>
   );
 }

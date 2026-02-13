@@ -87,7 +87,7 @@ export default function MovieActionBar({
         <div className='flex items-center justify-between gap-8'>
           <ButtonWatchNow
             className='text-watch-now inline-flex min-h-15 shrink-0 items-center justify-center gap-4 rounded-4xl bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8! py-4! text-base font-semibold opacity-100 shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] transition-all duration-200 ease-linear hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]'
-            href={`${route.watch.path}/${slug}?season=${movie.seasons?.[0]?.label}`}
+            href={`${route.watch.path}/${slug}?season=${movie.seasons[0].label}`}
           />
           {/* Left */}
           <div className='flex grow justify-start gap-4'>

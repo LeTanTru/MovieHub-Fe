@@ -4,9 +4,10 @@ import './trailer-modal.css';
 import { Modal } from '@/components/modal';
 import { VideoPlayer } from '@/components/video-player';
 import { trailerMotionVariant, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
+import { useBodyHeight } from '@/hooks';
 import { VideoResType } from '@/types';
 import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function TrailerModal({
   opened,
@@ -20,28 +21,7 @@ export default function TrailerModal({
   token: string;
 }) {
   const bodyRef = useRef<HTMLDivElement>(null);
-  const [bodyHeight, setBodyHeight] = useState<number>(0);
-
-  useEffect(() => {
-    if (!opened || !bodyRef.current) return;
-
-    const updateHeight = () => {
-      if (bodyRef.current) {
-        const height = bodyRef.current.clientHeight;
-        setBodyHeight(height);
-      }
-    };
-
-    const timeoutId = setTimeout(updateHeight, 200);
-
-    const resizeObserver = new ResizeObserver(updateHeight);
-    resizeObserver.observe(bodyRef.current);
-
-    return () => {
-      clearTimeout(timeoutId);
-      resizeObserver.disconnect();
-    };
-  }, [opened]);
+  const bodyHeight = useBodyHeight<HTMLDivElement>(bodyRef, [opened]);
 
   useEffect(() => {
     if (opened && bodyRef.current) {
@@ -102,7 +82,7 @@ export default function TrailerModal({
           thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
           vttUrl={renderVttUrl(video.vttUrl)}
           outroStart={video.outroStart}
-          className='rounded-br-lg! rounded-bl-lg!'
+          className='rounded-md!'
           token={token}
         />
       </div>
