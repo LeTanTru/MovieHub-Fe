@@ -93,7 +93,13 @@ function PlaylistItemListSkeleton() {
   );
 }
 
-export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
+export default function ButtonAddToPlaylist({
+  movieId,
+  className
+}: {
+  movieId: string;
+  className?: string;
+}) {
   const { opened, toggle, close } = useDisclosure();
   const containerRef = useClickOutside<HTMLDivElement>(close);
   const [checkedPlaylist, setCheckedPlaylist] = useState<string[]>([]);
@@ -199,7 +205,10 @@ export default function ButtonAddToPlaylist({ movieId }: { movieId: string }) {
   return (
     <div className='relative' ref={containerRef}>
       <Button
-        className='hover:text-light-golden-yellow h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
+        className={cn(
+          'hover:text-light-golden-yellow h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10',
+          className
+        )}
         variant='ghost'
         onClick={handleOpen}
       >

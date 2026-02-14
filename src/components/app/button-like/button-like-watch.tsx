@@ -1,7 +1,7 @@
 'use client';
 
 import { HeartIcon } from '@/assets';
-import { Button } from '@/components/form';
+import { Button, ToolTip } from '@/components/form';
 import { FAVOURITE_TYPE_MOVIE } from '@/constants';
 import { useAuth } from '@/hooks';
 import { cn } from '@/lib';
@@ -131,18 +131,24 @@ export default function ButtonLikeWatch({
   };
 
   return (
-    <Button
-      className={cn(
-        'hover:text-light-golden-yellow border-none bg-transparent! text-white',
-        {
-          'text-light-golden-yellow dark:disabled:opacity-80': isLiked
-        },
-        className
-      )}
-      onClick={isLiked ? handleRemoveLike : handleLike}
+    <ToolTip
+      className='bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
+      title='Thêm vào danh sách yêu thích để nhận thông báo cập nhật về phim nhé'
+      side='top'
     >
-      <HeartIcon ref={heartIconRef} />
-      {text || 'Thích'}
-    </Button>
+      <Button
+        className={cn(
+          'hover:text-light-golden-yellow border-none bg-transparent! text-white',
+          {
+            'text-light-golden-yellow dark:disabled:opacity-80': isLiked
+          },
+          className
+        )}
+        onClick={isLiked ? handleRemoveLike : handleLike}
+      >
+        <HeartIcon ref={heartIconRef} />
+        {text || 'Thích'}
+      </Button>
+    </ToolTip>
   );
 }
