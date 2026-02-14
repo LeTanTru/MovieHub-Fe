@@ -132,7 +132,7 @@ export default function ButtonLikePerson({
     <ToolTip
       className='w-fit bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
       title='Thêm vào danh sách yêu thích để nhận thông báo cập nhật về phim nhé'
-      side='top'
+      side='bottom'
     >
       <Button
         className={cn(

@@ -10,4 +10,9 @@
   :where(.vds-poster) {
     background: transparent !important;
   }
+
+  .vds-video-layout .vds-controls-group:first-child {
+    padding-top: 12px;
+    padding-inline: 12px;
+  }
 }

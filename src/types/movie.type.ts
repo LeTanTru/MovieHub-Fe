@@ -6,7 +6,7 @@ import { BaseSearchType } from '@/types/search.type';
 import { VideoResType } from '@/types/video.type';
 import { z } from 'zod';
 
-type EpisodeResType = {
+export type EpisodeResType = {
   id: string;
   title: string;
   description: string;

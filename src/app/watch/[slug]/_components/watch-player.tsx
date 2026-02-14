@@ -9,19 +9,29 @@ import {
   MOVIE_TYPE_SINGLE,
   VIDEO_SOURCE_TYPE_INTERNAL
 } from '@/constants';
-import { useQueryParams } from '@/hooks';
+import { useDisclosure, useQueryParams } from '@/hooks';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
 import Link from 'next/link';
 import { useMemo, useState, useEffect } from 'react';
-import { FaChevronLeft, FaFlag, FaPlus } from 'react-icons/fa6';
+import { FaChevronLeft, FaFlag } from 'react-icons/fa6';
 import { CiStreamOn } from 'react-icons/ci';
 import { Button } from '@/components/form';
 import { getAnonymousToken } from '@/app/actions/anonymous';
+import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
+import EpisodeList from './episode-list';
+import { PlaylistIcon } from '@/assets';
+import { cn } from '@/lib';
+import { useShallow } from 'zustand/shallow';
 
 export default function WatchPlayer() {
-  const movie = useMovieStore((s) => s.movie);
+  const { movie } = useMovieStore(
+    useShallow((s) => ({
+      movie: s.movie
+    }))
+  );
+
   const { searchParams } = useQueryParams<{
     season: string;
     episode: string;
@@ -30,6 +40,12 @@ export default function WatchPlayer() {
   const [token, setToken] = useState<string>('');
   const [isLoadingToken, setIsLoadingToken] = useState<boolean>(true);
 
+  const {
+    opened: isEpisodeListOpen,
+    open: openEpisodeList,
+    close: closeEpisodeList
+  } = useDisclosure();
+
   const currentSeason = searchParams.season;
   const currentEpisode = searchParams.episode;
   const isSingle = movie?.type === MOVIE_TYPE_SINGLE;
@@ -37,8 +53,10 @@ export default function WatchPlayer() {
 
   const season = useMemo(() => {
     if (!movie?.seasons?.length) return null;
+    // If not season in search params, default to last season
     if (!currentSeason) return movie.seasons[movie.seasons.length - 1];
 
+    // If not season and episode in search params, default to lastest episode of the season
     return (
       movie.seasons.find((item) => item.label === currentSeason) ||
       movie.seasons[movie.seasons.length - 1]
@@ -49,22 +67,27 @@ export default function WatchPlayer() {
     if (!isSeries) return null;
     const episodes = season?.episodes || [];
     if (!episodes.length) return null;
+    // If not episode in search params, default to lastest episode
     if (!currentEpisode) return episodes[episodes.length - 1];
 
+    // Find episode by label, if not found, default to lastest episode
     return (
       episodes.find((item) => item.label === currentEpisode) ||
       episodes[episodes.length - 1]
     );
   }, [currentEpisode, isSeries, season?.episodes]);
 
+  // Episodes of current season, if not season, return empty array
   const episodes = useMemo(() => season?.episodes || [], [season?.episodes]);
+
+  // Find index of current episode in episodes array, if not found, return -1
   const currentEpisodeIndex = useMemo(() => {
     if (!selectedEpisode || !episodes.length) return -1;
     return episodes.findIndex((ep) => ep.label === selectedEpisode.label);
   }, [selectedEpisode, episodes]);
 
-  const isFirstEpisode = currentEpisodeIndex === 0;
-  const isLastEpisode = currentEpisodeIndex === episodes.length - 1;
+  const isFirstEpisode = currentEpisodeIndex === 0; // To show prev button
+  const isLastEpisode = currentEpisodeIndex === episodes.length - 1; // To show next button
 
   const video = useMemo(() => {
     if (isSeries) return selectedEpisode?.video;
@@ -75,9 +98,9 @@ export default function WatchPlayer() {
   const videoTitle = useMemo(() => {
     if (!movie) return '';
     if (isSeries && season && selectedEpisode) {
-      return `${movie.title} - Phần ${season.label} - Tập ${selectedEpisode.label}`;
+      return `${season.title} - Phần ${season.label} - Tập ${selectedEpisode.label}. ${selectedEpisode.title}`;
     }
-    return `${movie.title}`;
+    return `${movie.title} - ${movie.originalTitle}`;
   }, [movie, isSeries, season, selectedEpisode]);
 
   useEffect(() => {
@@ -86,7 +109,12 @@ export default function WatchPlayer() {
       setToken(anonymousToken?.access_token || '');
       setIsLoadingToken(false);
     };
+
     handleGetToken();
+
+    const interval = setInterval(handleGetToken, 14 * 60 * 1000); // Refresh token every 14 minutes
+
+    return () => clearInterval(interval);
   }, []);
 
   if (!movie) return null;
@@ -100,12 +128,10 @@ export default function WatchPlayer() {
         >
           <FaChevronLeft />
         </Link>
-        <h3 className='text-xl font-bold'>
-          Xem phim {movie.title} - {movie.originalTitle}
-        </h3>
+        <h3 className='text-xl font-bold'>Xem phim {videoTitle}</h3>
       </div>
       {video ? (
-        <div className='aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px]'>
+        <div className='relative aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px]'>
           {isLoadingToken ? (
             <div className='flex h-full w-full items-center justify-center bg-black'>
               <div className='h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
@@ -125,15 +151,36 @@ export default function WatchPlayer() {
               className='w-full'
               slots={{
                 topControlsGroupStart: (
-                  <div className='mt-2 ml-4 text-base font-medium'>
-                    {videoTitle}
-                  </div>
-                )
+                  <span className='text-base font-medium'>{videoTitle}</span>
+                ),
+                topControlsGroupEnd: isSeries ? (
+                  <Button
+                    variant='ghost'
+                    className={cn(
+                      `hover:text-light-golden-yellow font-medium! hover:bg-transparent!`,
+                      {
+                        'text-light-golden-yellow': isEpisodeListOpen
+                      }
+                    )}
+                    onClick={openEpisodeList}
+                  >
+                    <PlaylistIcon className='h-6! w-6!' />
+                    Danh sách tập
+                  </Button>
+                ) : null
               }}
               prev={isSeries && !isFirstEpisode}
               next={isSeries && !isLastEpisode}
               onPrevClick={() => console.log('prev')}
               onNextClick={() => console.log('next')}
+              autoPlay={false}
+            />
+          )}
+          {isSeries && (
+            <EpisodeList
+              seasons={movie.seasons}
+              isOpen={isEpisodeListOpen}
+              onToggle={closeEpisodeList}
             />
           )}
         </div>
@@ -151,12 +198,10 @@ export default function WatchPlayer() {
             className='h-10! hover:bg-white/10!'
             text='Yêu thích'
           />
-          <Button
-            variant='ghost'
-            className='hover:text-light-golden-yellow flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
-          >
-            <FaPlus /> Thêm vào
-          </Button>
+          <ButtonAddToPlaylist
+            movieId={movie.id}
+            className='hover:text-light-golden-yellow flex h-10! flex-row items-center justify-center gap-2 px-4! py-2.5 text-sm whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+          />
           <Button
             variant='ghost'
             className='hover:text-light-golden-yellow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
