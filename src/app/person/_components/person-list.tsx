@@ -3,7 +3,6 @@
 import { Pagination } from '@/components/pagination';
 import { usePersonListQuery } from '@/queries';
 import { DEFAULT_PAGE_SIZE, PERSON_KIND_ACTOR } from '@/constants';
-import { PersonResType } from '@/types';
 import { Activity } from '@/components/activity';
 import { useQueryParams } from '@/hooks';
 import { PersonGrid, PersonGridSkeleton } from '@/components/app/person-grid';
@@ -24,7 +23,7 @@ export default function PersonList() {
       enabled: true
     });
 
-  const personList: PersonResType[] = personListData?.data?.content || [];
+  const personList = personListData?.data?.content || [];
   const totalPages = personListData?.data?.totalPages || 0;
 
   return (

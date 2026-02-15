@@ -14,7 +14,7 @@ import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
 import Link from 'next/link';
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaChevronLeft, FaFlag } from 'react-icons/fa6';
 import { CiStreamOn } from 'react-icons/ci';
 import { Button } from '@/components/form';
@@ -51,7 +51,7 @@ export default function WatchPlayer() {
   const isSingle = movie?.type === MOVIE_TYPE_SINGLE;
   const isSeries = movie?.type === MOVIE_TYPE_SERIES;
 
-  const season = useMemo(() => {
+  const season = (() => {
     if (!movie?.seasons?.length) return null;
     // If not season in search params, default to last season
     if (!currentSeason) return movie.seasons[movie.seasons.length - 1];
@@ -61,9 +61,9 @@ export default function WatchPlayer() {
       movie.seasons.find((item) => item.label === currentSeason) ||
       movie.seasons[movie.seasons.length - 1]
     );
-  }, [currentSeason, movie?.seasons]);
+  })();
 
-  const selectedEpisode = useMemo(() => {
+  const selectedEpisode = (() => {
     if (!isSeries) return null;
     const episodes = season?.episodes || [];
     if (!episodes.length) return null;
@@ -75,33 +75,33 @@ export default function WatchPlayer() {
       episodes.find((item) => item.label === currentEpisode) ||
       episodes[episodes.length - 1]
     );
-  }, [currentEpisode, isSeries, season?.episodes]);
+  })();
 
   // Episodes of current season, if not season, return empty array
-  const episodes = useMemo(() => season?.episodes || [], [season?.episodes]);
+  const episodes = season?.episodes || [];
 
   // Find index of current episode in episodes array, if not found, return -1
-  const currentEpisodeIndex = useMemo(() => {
+  const currentEpisodeIndex = (() => {
     if (!selectedEpisode || !episodes.length) return -1;
     return episodes.findIndex((ep) => ep.label === selectedEpisode.label);
-  }, [selectedEpisode, episodes]);
+  })();
 
   const isFirstEpisode = currentEpisodeIndex === 0; // To show prev button
   const isLastEpisode = currentEpisodeIndex === episodes.length - 1; // To show next button
 
-  const video = useMemo(() => {
+  const video = (() => {
     if (isSeries) return selectedEpisode?.video;
     if (isSingle) return season?.video;
     return season?.video || selectedEpisode?.video || null;
-  }, [isSeries, isSingle, season?.video, selectedEpisode?.video]);
+  })();
 
-  const videoTitle = useMemo(() => {
+  const videoTitle = (() => {
     if (!movie) return '';
     if (isSeries && season && selectedEpisode) {
       return `${season.title} - Phần ${season.label} - Tập ${selectedEpisode.label}. ${selectedEpisode.title}`;
     }
     return `${movie.title} - ${movie.originalTitle}`;
-  }, [movie, isSeries, season, selectedEpisode]);
+  })();
 
   useEffect(() => {
     const handleGetToken = async () => {

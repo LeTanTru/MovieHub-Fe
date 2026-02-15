@@ -15,7 +15,6 @@ import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
 import { Button, TextAreaField } from '@/components/form';
-import { useMemo } from 'react';
 
 export default function CommentInput({
   isLoading = false
@@ -35,10 +34,11 @@ export default function CommentInput({
     movieId: ''
   };
 
-  const initialValues: CreateCommentBodyType = useMemo(
-    () => ({ id: '', content: '', movieId: String(movie?.id || '') }),
-    [movie?.id]
-  );
+  const initialValues: CreateCommentBodyType = {
+    id: '',
+    content: '',
+    movieId: String(movie?.id || '')
+  };
 
   const handleSubmit = async (values: CreateCommentBodyType, form?: any) => {
     if (!isAuthenticated) {
@@ -65,7 +65,7 @@ export default function CommentInput({
     await createCommentMutate(values, {
       onSuccess: async (res) => {
         if (res.result) {
-          notify.success('Bình luận thành công!');
+          notify.success('Bình luận thành công !');
           await queryClient.invalidateQueries({
             queryKey: [queryKeys.COMMENT_LIST]
           });

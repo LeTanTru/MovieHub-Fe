@@ -1,6 +1,6 @@
-import MovieTabs from './movie-tabs';
-import MovieActionBar from './movie-action-bar';
-import Discussion from './discussion';
+import { Discussion } from '@/components/app/discussion';
+import { MovieActionBar } from '@/components/app/movie-action-bar';
+import { MovieTabs } from '@/components/app/movie-tabs';
 
 export default function MovieContent({
   isLoading = false

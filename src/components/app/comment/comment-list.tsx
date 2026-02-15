@@ -16,7 +16,6 @@ import {
   useVoteCommentListQuery,
   useVoteCommentMutation
 } from '@/queries';
-import { useMemo } from 'react';
 import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
@@ -102,25 +101,21 @@ export default function CommentList({
     enabled: isAuthenticated && !!movie?.id
   });
 
-  const voteCommentList: CommentVoteResType[] = useMemo(
-    () => voteCommentListData?.data || [],
-    [voteCommentListData?.data]
-  );
+  const voteCommentList: CommentVoteResType[] = voteCommentListData?.data || [];
 
-  const voteMap = useMemo(() => {
-    const maps: Record<string, number> = {};
-    voteCommentList.forEach((vote) => {
-      if (vote?.id && vote?.type !== undefined) {
-        maps[vote.id] = vote.type;
-      }
-    });
-    return maps;
-  }, [voteCommentList]);
+  const voteMap: Record<string, number> = {};
+  voteCommentList.forEach((vote) => {
+    if (vote.id) {
+      voteMap[vote.id] = vote.type;
+    }
+  });
 
   const handleDeleteComment = async (comment: CommentResType) => {
     await deleteCommentMutate(comment.id, {
       onSuccess: async (res) => {
         if (res.result) {
+          notify.success('Xoá bình luận thành công');
+
           // Invalidate comment list and movie data for updating total comments
           await Promise.all([
             queryClient.invalidateQueries({

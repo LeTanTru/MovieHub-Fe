@@ -27,7 +27,6 @@ import {
 } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
 import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
 import { Activity } from '@/components/activity';
@@ -141,56 +140,36 @@ export default function MovieInfo({
     }))
   );
 
-  const ageRating = useMemo(() => {
-    return ageRatings.find((age) => movie?.ageRating === age.value)?.label;
-  }, [movie?.ageRating]);
+  const ageRating = ageRatings.find(
+    (age) => movie?.ageRating === age.value
+  )?.label;
 
-  const categories = useMemo(() => {
-    return movie?.categories || [];
-  }, [movie?.categories]);
+  const categories = movie?.categories || [];
 
-  const countryName = useMemo(() => {
-    return (
-      countries.find((country) => country.value === movie?.country)?.label ||
-      'Đang cập nhật'
-    );
-  }, [movie?.country]);
+  const countryName =
+    countries.find((country) => country.value === movie?.country)?.label ||
+    'Đang cập nhật';
 
-  const languageName = useMemo(() => {
-    return (
-      languages.find((language) => language.value === movie?.language)?.label ||
-      'Đang cập nhật'
-    );
-  }, [movie?.language]);
+  const languageName =
+    languages.find((language) => language.value === movie?.language)?.label ||
+    'Đang cập nhật';
 
-  const directors = useMemo(
-    () =>
-      moviePersons
-        .filter((moviePerson) => moviePerson.kind === PERSON_KIND_DIRECTOR)
-        .map((moviePerson) => moviePerson.person),
-    [moviePersons]
-  );
+  const directors = moviePersons
+    .filter((moviePerson) => moviePerson.kind === PERSON_KIND_DIRECTOR)
+    .map((moviePerson) => moviePerson.person);
 
-  const actors = useMemo(
-    () =>
-      moviePersons
-        .filter((moviePerson) => moviePerson.kind === PERSON_KIND_ACTOR)
-        .map((moviePerson) => moviePerson.person),
-    [moviePersons]
-  );
+  const actors = moviePersons
+    .filter((moviePerson) => moviePerson.kind === PERSON_KIND_ACTOR)
+    .map((moviePerson) => moviePerson.person);
 
   // For series movie
   const latestSeason = selectedSeason || movie?.latestSeason;
 
-  const currentSeason = useMemo(() => {
-    return movie?.seasons?.find(
-      (season) => season.ordering + 1 === latestSeason
-    );
-  }, [latestSeason, movie?.seasons]);
+  const currentSeason = movie?.seasons?.find(
+    (season) => season.ordering + 1 === latestSeason
+  );
 
-  const episodes = useMemo(() => {
-    return currentSeason?.episodes || [];
-  }, [currentSeason?.episodes]);
+  const episodes = currentSeason?.episodes || [];
 
   const latestEpisode = episodes ? episodes.length : movie?.latestEpisode;
 
@@ -199,18 +178,17 @@ export default function MovieInfo({
 
   const duration = movie?.duration || latestEpisodeVideo?.duration;
 
-  const sanitizedDescription = useMemo(
-    () =>
-      sanitizeText(
-        currentSeason?.description || movie?.description || 'Đang cập nhật'
-      ),
-    [currentSeason?.description, movie?.description]
+  const sanitizedDescription = sanitizeText(
+    currentSeason?.description || movie?.description || 'Đang cập nhật'
   );
 
   const releaseDate = currentSeason?.releaseDate || movie?.releaseDate;
 
   const isComplete =
     episodes.length > 0 && currentSeason?.totalEpisode === episodes.length;
+
+  const isSingle = movie?.type === MOVIE_TYPE_SINGLE;
+  const isSeries = movie?.type === MOVIE_TYPE_SERIES;
 
   if (isLoading) {
     return <MovieInfoSkeleton />;
@@ -249,11 +227,11 @@ export default function MovieInfo({
         {ageRating ? <TagAgeRating value={ageRating} /> : null}
         <TagNormal value={movie.year} />
         {/* Single movie */}
-        <Activity visible={movie.type === MOVIE_TYPE_SINGLE}>
+        <Activity visible={isSingle}>
           <TagNormal value={formatDuration(movie.duration)} />
         </Activity>
         {/* Series movie */}
-        <Activity visible={movie.type === MOVIE_TYPE_SERIES}>
+        <Activity visible={isSeries}>
           <TagNormal value={`Phần ${latestSeason}`} />
           <TagNormal value={`Tập ${latestEpisode}`} />
         </Activity>
@@ -267,28 +245,30 @@ export default function MovieInfo({
           />
         ))}
       </TagWrapper>
-      <div className='mb-5'>
-        <div
-          className={cn(
-            'inline-flex items-center gap-2 rounded-4xl px-3.5 py-2',
-            {
-              'bg-complete-episode/30 text-complete-episode': isComplete,
-              'bg-on-going-episode/30 text-on-going-episode': !isComplete
-            }
-          )}
-        >
-          {isComplete ? (
-            <FaCheckCircle className='fill-complete-episode stroke-complete-episode/30 size-4' />
-          ) : (
-            <CircleLoading className='stroke-on-going-episode size-4 animate-spin stroke-3' />
-          )}
-          <span>
-            {isComplete ? 'Đã hoàn thành' : 'Đã chiếu'}: {episodes?.length}
-            &nbsp;/&nbsp;
-            {currentSeason?.totalEpisode ?? '?'} Tập
-          </span>
+      {isSeries && (
+        <div className='mb-5'>
+          <div
+            className={cn(
+              'inline-flex items-center gap-2 rounded-4xl px-3.5 py-2',
+              {
+                'bg-complete-episode/30 text-complete-episode': isComplete,
+                'bg-on-going-episode/30 text-on-going-episode': !isComplete
+              }
+            )}
+          >
+            {isComplete ? (
+              <FaCheckCircle className='fill-complete-episode stroke-complete-episode/30 size-4' />
+            ) : (
+              <CircleLoading className='stroke-on-going-episode size-4 animate-spin stroke-3' />
+            )}
+            <span>
+              {isComplete ? 'Đã hoàn thành' : 'Đã chiếu'}: {episodes?.length}
+              &nbsp;/&nbsp;
+              {currentSeason?.totalEpisode ?? '?'} Tập
+            </span>
+          </div>
         </div>
-      </div>
+      )}
       <div className='mb-5'>
         <div className='mb-2 block font-medium text-white'>Giới thiệu:</div>
         <div

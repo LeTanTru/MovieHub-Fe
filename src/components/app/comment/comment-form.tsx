@@ -9,7 +9,6 @@ import { AuthorInfoType, CreateCommentBodyType } from '@/types';
 import { notify } from '@/utils';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { Button, TextAreaField } from '@/components/form';
-import { useMemo } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 export default function CommentForm({
@@ -34,13 +33,9 @@ export default function CommentForm({
       }))
     );
 
-  const authorInfo = useMemo(
-    () =>
-      replyingComment
-        ? (JSON.parse(replyingComment?.authorInfo) as AuthorInfoType)
-        : null,
-    [replyingComment]
-  );
+  const authorInfo = replyingComment
+    ? (JSON.parse(replyingComment?.authorInfo) as AuthorInfoType)
+    : null;
 
   const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =
     useCreateCommentMutation();
@@ -56,26 +51,14 @@ export default function CommentForm({
     replyToKind: 0
   };
 
-  const initialValues: CreateCommentBodyType = useMemo(
-    () => ({
-      content: editingComment?.content || '',
-      movieId: editingComment?.movieId?.toString() || movieId,
-      movieItemId: editingComment?.movieItem?.id?.toString() || '',
-      parentId: editingComment?.parent?.id?.toString() || parentId,
-      replyToId: authorInfo?.id?.toString() || '',
-      replyToKind: authorInfo?.kind || 0
-    }),
-    [
-      authorInfo?.id,
-      authorInfo?.kind,
-      editingComment?.content,
-      editingComment?.movieId,
-      editingComment?.movieItem?.id,
-      editingComment?.parent?.id,
-      movieId,
-      parentId
-    ]
-  );
+  const initialValues: CreateCommentBodyType = {
+    content: editingComment?.content || '',
+    movieId: editingComment?.movieId?.toString() || movieId,
+    movieItemId: editingComment?.movieItem?.id?.toString() || '',
+    parentId: editingComment?.parent?.id?.toString() || parentId,
+    replyToId: authorInfo?.id?.toString() || '',
+    replyToKind: authorInfo?.kind || 0
+  };
 
   const handleSubmit = async (values: CreateCommentBodyType, form?: any) => {
     if (values.content?.trim().length === 0) {

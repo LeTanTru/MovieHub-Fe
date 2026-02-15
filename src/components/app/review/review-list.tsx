@@ -5,7 +5,6 @@ import ReviewItem from './review-item';
 import { ApiResponse, MovieResType, ReviewResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { StaticImageData } from 'next/image';
-import { useMemo } from 'react';
 import {
   queryKeys,
   reviewRatings,
@@ -74,35 +73,27 @@ export default function ReviewList({
   const reviewRatingMaps: Record<
     number,
     { label: string; icon: StaticImageData }
-  > = useMemo(() => {
-    return reviewRatings.reduce(
-      (acc, curr) => {
-        acc[curr.value as number] = { label: curr.label, icon: curr.icon };
-        return acc;
-      },
-      {} as Record<number, { label: string; icon: StaticImageData }>
-    );
-  }, []);
+  > = reviewRatings.reduce(
+    (acc, curr) => {
+      acc[curr.value as number] = { label: curr.label, icon: curr.icon };
+      return acc;
+    },
+    {} as Record<number, { label: string; icon: StaticImageData }>
+  );
 
   const { data: voteReviewListData } = useVoteReviewListQuery({
     movieId: movie?.id?.toString() || '',
     enabled: isAuthenticated && !!movie?.id
   });
 
-  const voteReviewList = useMemo(
-    () => voteReviewListData?.data || [],
-    [voteReviewListData?.data]
-  );
+  const voteReviewList = voteReviewListData?.data || [];
 
-  const voteMaps = useMemo(() => {
-    const maps: Record<string, number> = {};
-    voteReviewList.forEach((vote) => {
-      if (vote?.id && vote?.type !== undefined) {
-        maps[vote.id] = vote.type;
-      }
-    });
-    return maps;
-  }, [voteReviewList]);
+  const voteMaps: Record<string, number> = {};
+  voteReviewList.forEach((vote) => {
+    if (vote.id) {
+      voteMaps[vote.id] = vote.type;
+    }
+  });
 
   const { mutateAsync: deleteReviewMutate } = useDeleteReviewMutation();
   const { mutateAsync: voteReviewMutate, isPending: voteReviewLoading } =

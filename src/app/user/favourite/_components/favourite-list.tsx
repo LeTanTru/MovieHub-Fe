@@ -17,7 +17,7 @@ import { cn } from '@/lib';
 import { useDeleteFavouriteMutation, useFavouriteListQuery } from '@/queries';
 import { notify } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function FavouriteList() {
   const [activeTab, setActiveTab] = useState(FAVOURITE_TYPE_MOVIE);
@@ -41,20 +41,15 @@ export default function FavouriteList() {
   const { mutateAsync: deleteFavouriteMutate } = useDeleteFavouriteMutation();
 
   const isLoading = favouriteListLoading;
-  const favouriteList = useMemo(
-    () => favouriteListData?.data?.content || [],
-    [favouriteListData]
-  );
+  const favouriteList = favouriteListData?.data?.content || [];
 
-  const movieList = useMemo(
-    () => favouriteList.map((favourite) => favourite.movie).filter(Boolean),
-    [favouriteList]
-  );
+  const movieList = favouriteList
+    .map((favourite) => favourite.movie)
+    .filter(Boolean);
 
-  const personList = useMemo(
-    () => favouriteList.map((favourite) => favourite.person).filter(Boolean),
-    [favouriteList]
-  );
+  const personList = favouriteList
+    .map((favourite) => favourite.person)
+    .filter(Boolean);
 
   const totalPages = favouriteListData?.data?.totalPages || 0;
 

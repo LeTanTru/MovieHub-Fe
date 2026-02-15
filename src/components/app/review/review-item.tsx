@@ -20,9 +20,8 @@ import { ReviewResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image, { StaticImageData } from 'next/image';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';
-import { Activity } from '@/components/activity';
 
 export default function ReviewItem({
   review,
@@ -60,9 +59,9 @@ export default function ReviewItem({
     setShowDropdown(false)
   );
 
-  const handleDropdownToggle = useCallback(() => {
+  const handleDropdownToggle = () => {
     setShowDropdown((prev) => !prev);
-  }, []);
+  };
 
   const handleToggleBlurredContent = () => {
     setShowBlurredContent((prev) => !prev);

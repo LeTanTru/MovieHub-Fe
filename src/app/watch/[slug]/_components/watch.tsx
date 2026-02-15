@@ -2,11 +2,10 @@
 
 import { useMovieStore } from '@/store';
 import WatchPlayer from './watch-player';
-import WatchInfo from './watch-info';
+import WatchInfo from './watch-container';
 import { useShallow } from 'zustand/shallow';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useEffect, useMemo } from 'react';
-import { MoviePersonResType, MovieResType } from '@/types';
 
 export default function Watch({ id }: { id: string }) {
   const { setMovie, setMoviePersons } = useMovieStore(
@@ -16,7 +15,7 @@ export default function Watch({ id }: { id: string }) {
     }))
   );
   const { data: movieData, isLoading: movieLoading } = useMovieQuery(id);
-  const movie: MovieResType | undefined = movieData?.data;
+  const movie = movieData?.data;
 
   const { data: moviePersonData } = useMoviePersonListQuery({
     params: {
@@ -25,7 +24,7 @@ export default function Watch({ id }: { id: string }) {
     enabled: !!movie
   });
 
-  const moviePersons: MoviePersonResType[] = useMemo(
+  const moviePersons = useMemo(
     () => moviePersonData?.data?.content || [],
     [moviePersonData?.data?.content]
   );

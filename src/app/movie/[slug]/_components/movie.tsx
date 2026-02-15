@@ -3,13 +3,12 @@
 import './movie.css';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useEffect, useMemo } from 'react';
-import { MoviePersonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { useMovieStore } from '@/store';
-import MovieContent from './movie-content';
-import MovieInfo from './movie-info';
 import { useShallow } from 'zustand/shallow';
 import { Skeleton } from '@/components/ui/skeleton';
+import { MovieContent } from '@/components/app/movie-content';
+import { MovieInfo } from '@/components/app/movie-info';
 
 export default function Movie({ id }: { id: string }) {
   const { setMovie, setMoviePersons } = useMovieStore(
@@ -28,7 +27,7 @@ export default function Movie({ id }: { id: string }) {
     enabled: !!movie
   });
 
-  const moviePersons: MoviePersonResType[] = useMemo(
+  const moviePersons = useMemo(
     () => moviePersonData?.data?.content || [],
     [moviePersonData?.data?.content]
   );

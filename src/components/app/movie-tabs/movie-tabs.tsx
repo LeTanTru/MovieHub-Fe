@@ -1,6 +1,5 @@
 'use client';
 
-import TrailerModal from './trailer-modal';
 import { getAnonymousToken } from '@/app/actions/anonymous';
 import { caption } from '@/assets';
 import { ButtonToggle } from '@/components/app/button-toggle';
@@ -31,17 +30,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import {
-  useMemo,
-  useRef,
-  useState,
-  useEffect,
-  useCallback,
-  ReactNode
-} from 'react';
+import { useRef, useState, useEffect, ReactNode } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TrailerModal } from '@/components/app/trailer-modal';
 
 const MotionWrapper = ({
   children,
@@ -156,13 +149,11 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
   const seasons = movie.seasons;
   const seasonCount = seasons.length;
 
-  const currentSeason = useMemo(() => {
-    return seasons.find((season) => season.ordering + 1 === selectedSeason);
-  }, [seasons, selectedSeason]);
+  const currentSeason = seasons.find(
+    (season) => season.ordering + 1 === selectedSeason
+  );
 
-  const episodes = useMemo(() => {
-    return currentSeason?.episodes || [];
-  }, [currentSeason]);
+  const episodes = currentSeason?.episodes || [];
 
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
@@ -208,43 +199,45 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
             Phần {selectedSeason}
             <FaCaretDown />
           </div>
-          {showDropdown && (
-            <motion.div
-              initial={{
-                opacity: 0.5,
-                scale: 0.8,
-                transformOrigin: '40% -50%'
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1
-              }}
-              exit={{
-                opacity: 0.5,
-                scale: 0.8
-              }}
-              transition={{ duration: 0.1, ease: 'linear' }}
-              className='absolute top-10 z-10 min-w-40 overflow-hidden rounded-md bg-gray-100 pb-2 shadow-lg'
-            >
-              <h3 className='border-b border-gray-200 px-4 py-2 text-black'>
-                Danh sách phần
-              </h3>
-              {Array.from({ length: seasonCount }).map((_, index) => (
-                <div
-                  key={`season-${index}`}
-                  className={cn(
-                    'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
-                    {
-                      'bg-light-golden-yellow': index + 1 === selectedSeason
-                    }
-                  )}
-                  onClick={() => handleSelectSeason(index)}
-                >
-                  Phần {index + 1}
-                </div>
-              ))}
-            </motion.div>
-          )}
+          <AnimatePresence>
+            {showDropdown && (
+              <motion.div
+                initial={{
+                  opacity: 0.5,
+                  scale: 0.8,
+                  transformOrigin: '40% -50%'
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1
+                }}
+                exit={{
+                  opacity: 0.5,
+                  scale: 0.8
+                }}
+                transition={{ duration: 0.1, ease: 'linear' }}
+                className='absolute top-10 z-10 min-w-40 overflow-hidden rounded-md bg-gray-100 pb-2 shadow-lg'
+              >
+                <h3 className='border-b border-gray-200 px-4 py-2 text-black'>
+                  Danh sách phần
+                </h3>
+                {Array.from({ length: seasonCount }).map((_, index) => (
+                  <div
+                    key={`season-${index}`}
+                    className={cn(
+                      'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
+                      {
+                        'bg-light-golden-yellow': index + 1 === selectedSeason
+                      }
+                    )}
+                    onClick={() => handleSelectSeason(index)}
+                  >
+                    Phần {index + 1}
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         <div className='grow'></div>
         <ButtonToggle
@@ -510,11 +503,9 @@ const MovieTabPerson = ({
 }) => {
   const moviePersons = useMovieStore((s) => s.moviePersons);
 
-  const personList = useMemo(() => {
-    return moviePersons
-      .filter((moviePerson) => moviePerson.kind === kind)
-      .map((moviePerson) => moviePerson.person);
-  }, [kind, moviePersons]);
+  const personList = moviePersons
+    .filter((moviePerson) => moviePerson.kind === kind)
+    .map((moviePerson) => moviePerson.person);
 
   const title = movieTabPersonTitles[kind];
 
@@ -606,18 +597,15 @@ export default function MovieTabs({
     }
   }, [activeKey]);
 
-  const handleClick = useCallback(
-    (key: string) => {
-      const currentIndex = movieTabs.findIndex((tab) => tab.key === activeKey);
-      const newIndex = movieTabs.findIndex((tab) => tab.key === key);
+  const handleClick = (key: string) => {
+    const currentIndex = movieTabs.findIndex((tab) => tab.key === activeKey);
+    const newIndex = movieTabs.findIndex((tab) => tab.key === key);
 
-      setDirection(newIndex > currentIndex ? 1 : -1);
-      setActiveKey(key);
-    },
-    [activeKey]
-  );
+    setDirection(newIndex > currentIndex ? 1 : -1);
+    setActiveKey(key);
+  };
 
-  const activeTabContent = useMemo(() => {
+  const activeTabContent = (() => {
     switch (activeKey) {
       case MOVIE_TAB_EPISODE:
         return <MovieTabEpisode direction={direction} />;
@@ -636,7 +624,7 @@ export default function MovieTabs({
       default:
         return null;
     }
-  }, [activeKey, direction]);
+  })();
 
   if (isLoading) return <MovieTabsSkeleton />;
 
