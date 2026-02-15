@@ -140,7 +140,7 @@ export default function FavouriteList() {
                 <MovieGridSkeleton className='grid-cols-8' skeletonCount={16} />
               ) : movieList.length === 0 ? (
                 <NoData
-                  className='pt-20'
+                  className='pt-25'
                   content='Bạn chưa có phim yêu thích nào'
                 />
               ) : (
@@ -163,7 +163,7 @@ export default function FavouriteList() {
                 />
               ) : personList.length === 0 ? (
                 <NoData
-                  className='pt-20'
+                  className='pt-25'
                   content='Bạn chưa có diễn viên yêu thích nào'
                 />
               ) : (

@@ -41,7 +41,15 @@ export default function MovieList({ id }: { id: string }) {
       {movieListLoading ? (
         <MovieGridSkeleton />
       ) : movieList.length === 0 ? (
-        <NoData />
+        <NoData
+          className='pt-20 pb-40'
+          content={
+            <>
+              Không có phim nào trong danh mục&nbsp;
+              <span className='font-medium'>{category?.name}</span>
+            </>
+          }
+        />
       ) : (
         <MovieGrid movieList={movieList} />
       )}

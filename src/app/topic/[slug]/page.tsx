@@ -3,6 +3,7 @@ import { MovieList } from '@/app/topic/[slug]/_components';
 import { getQueryClient } from '@/components/providers';
 import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import { CollectionItemSearchType } from '@/types';
+import { getIdFromSlug } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 export async function generateStaticParams() {
@@ -23,7 +24,7 @@ export default async function TopicDetailPage({
 }) {
   const { slug } = await params;
   const filters = await searchParams;
-  const collectionId = slug.split('.')[1];
+  const collectionId = getIdFromSlug(slug);
   const queryClient = getQueryClient();
 
   const defaultFilters: CollectionItemSearchType = {

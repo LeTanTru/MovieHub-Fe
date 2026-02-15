@@ -83,8 +83,11 @@ export default function MovieList() {
             >
               {movieListLoading ? (
                 <MovieGridSkeleton className='grid-cols-6' skeletonCount={12} />
-              ) : movieList.length == 0 ? (
-                <NoData className='py-20' content='Không có phim nào' />
+              ) : movieList.length === 0 ? (
+                <NoData
+                  className='pt-20 pb-40'
+                  content='Diễn viên này chưa tham gia phim nào'
+                />
               ) : activeKey === MOVIE_LIST_TAB_ALL ? (
                 <MovieGrid
                   movieList={movieList}

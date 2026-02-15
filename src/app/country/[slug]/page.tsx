@@ -6,7 +6,7 @@ import {
 } from '@/constants';
 import CountryList from './_components/country-list';
 import { Metadata } from 'next';
-import { generateSlug } from '@/utils';
+import { generateSlug, getIdFromSlug } from '@/utils';
 import { MovieSearchType } from '@/types';
 import { getQueryClient } from '@/components/providers';
 import { movieApiRequest } from '@/api-requests';
@@ -24,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const countryCode = slug.split('.')[1];
+  const countryCode = getIdFromSlug(slug);
   const countryName = countries.find(
     (country) => country.value === countryCode
   )?.label;
@@ -42,7 +42,7 @@ export default async function CountryPage({
   searchParams: Promise<MovieSearchType>;
 }) {
   const { slug } = await params;
-  const countryCode = slug.split('.')[1];
+  const countryCode = getIdFromSlug(slug);
   const filters = await searchParams;
   const defaultFilters: MovieSearchType = {
     page: DEFALT_PAGE_START,

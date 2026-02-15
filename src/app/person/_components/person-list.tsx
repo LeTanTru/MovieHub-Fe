@@ -31,8 +31,16 @@ export default function PersonList() {
     <>
       {personListLoading ? (
         <PersonGridSkeleton />
-      ) : personList.length == 0 ? (
-        <NoData />
+      ) : personList.length === 0 ? (
+        <NoData
+          className='pt-20 pb-40'
+          content={
+            <>
+              Không có diễn viên nào trong danh mục&nbsp;
+              <span className='font-medium'>diễn viên</span>
+            </>
+          }
+        />
       ) : (
         <PersonGrid personList={personList} />
       )}

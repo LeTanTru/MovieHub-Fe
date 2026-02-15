@@ -52,7 +52,15 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
       {collectionItemListLoading ? (
         <MovieGridSkeleton />
       ) : movieList.length === 0 ? (
-        <NoData />
+        <NoData
+          className='pt-25 pb-40'
+          content={
+            <>
+              Không có phim nào trong chủ đề&nbsp;
+              <span className='font-medium'>{collection?.name}</span>
+            </>
+          }
+        />
       ) : (
         <MovieGrid movieList={[...movieList] as unknown as MovieResType[]} />
       )}
