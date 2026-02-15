@@ -132,14 +132,14 @@ export default function FavouriteList() {
           >
             <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
               {isLoading ? (
-                <MovieGridSkeleton className='grid-cols-8' skeletonCount={16} />
+                <MovieGridSkeleton className='grid-cols-6' skeletonCount={16} />
               ) : movieList.length === 0 ? (
                 <NoData
                   className='pt-25'
                   content='Bạn chưa có phim yêu thích nào'
                 />
               ) : (
-                <div className='grid w-full grow grid-cols-8 gap-6'>
+                <div className='grid w-full grow grid-cols-6 gap-6'>
                   {movieList.map((movie) => (
                     <MovieCard
                       key={movie.id}
