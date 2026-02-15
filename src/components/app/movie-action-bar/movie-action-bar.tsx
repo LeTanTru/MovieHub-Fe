@@ -61,38 +61,36 @@ export default function MovieActionBar({
     : `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}`;
 
   return (
-    <>
-      <div className='relative z-3 p-7.5'>
-        <div className='flex items-center justify-between gap-8'>
-          <ButtonWatchNow
-            className='text-watch-now inline-flex min-h-15 shrink-0 items-center justify-center gap-4 rounded-4xl bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8! py-4! text-base font-semibold opacity-100 shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] transition-all duration-200 ease-linear hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]'
-            href={watchHref}
-          />
-          {/* Left */}
-          <div className='flex grow justify-start gap-4'>
-            <ButtonLikeDetail targetId={movie.id} />
-            <ButtonAddToPlaylist movieId={movie.id} />
-            <ButtonShareMovie />
-            <Button
-              className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
-              variant='ghost'
-              onClick={() => {
-                scroller.scrollTo('discussion', {
-                  duration: 200,
-                  delay: 0,
-                  smooth: true,
-                  offset: -100
-                });
-              }}
-            >
-              <MessageIcon />
-              Bình luận
-            </Button>
-          </div>
-          {/* Right */}
-          <ButtonReview movieId={movie.id} />
+    <div className='relative z-3 p-7.5'>
+      <div className='flex items-center justify-between gap-8'>
+        <ButtonWatchNow
+          className='text-watch-now inline-flex min-h-15 shrink-0 items-center justify-center gap-4 rounded-4xl bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8! py-4! text-base font-semibold opacity-100 shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] transition-all duration-200 ease-linear hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]'
+          href={watchHref}
+        />
+        {/* Left */}
+        <div className='flex grow justify-start gap-4'>
+          <ButtonLikeDetail targetId={movie.id} />
+          <ButtonAddToPlaylist movieId={movie.id} />
+          <ButtonShareMovie />
+          <Button
+            className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
+            variant='ghost'
+            onClick={() => {
+              scroller.scrollTo('discussion', {
+                duration: 200,
+                delay: 0,
+                smooth: true,
+                offset: -100
+              });
+            }}
+          >
+            <MessageIcon />
+            Bình luận
+          </Button>
         </div>
+        {/* Right */}
+        <ButtonReview movieId={movie.id} />
       </div>
-    </>
+    </div>
   );
 }

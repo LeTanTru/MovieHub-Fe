@@ -9,7 +9,7 @@ import { route } from '@/routes';
 import { getIdFromSlug, renderImageUrl } from '@/utils';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
   DEFAULT_PAGE_SIZE,
   discussionActions,
@@ -23,11 +23,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ButtonAction } from '@/components/app/button-action';
 import { useAuth } from '@/hooks';
 import { Element } from 'react-scroll';
-import { ReviewList } from '@/app/movie/[slug]/_components/review';
-import {
-  CommentInput,
-  CommentList
-} from '@/app/movie/[slug]/_components/comment';
+import { CommentInput, CommentList } from '@/components/app/comment';
+import { ReviewList } from '@/components/app/review';
 
 const DiscussionSkeleton = () => {
   return (
@@ -95,24 +92,16 @@ export default function Discussion({
     enabled: !isLoading && !!id && activeKey === DISCUSSION_TAB_REVIEW
   });
 
-  const commentList = useMemo(
-    () =>
-      (
-        commentListData?.pages?.flatMap(
-          (pageData) => pageData.data.content || []
-        ) || []
-      ).filter((comment) => Boolean(comment?.id)),
-    [commentListData?.pages]
-  );
-  const reviewList = useMemo(
-    () =>
-      (
-        reviewListData?.pages?.flatMap(
-          (pageData) => pageData.data.content || []
-        ) || []
-      ).filter((review) => Boolean(review?.id)),
-    [reviewListData?.pages]
-  );
+  const commentList = (
+    commentListData?.pages?.flatMap(
+      (pageData) => pageData.data.content || []
+    ) || []
+  ).filter((comment) => Boolean(comment?.id));
+
+  const reviewList = (
+    reviewListData?.pages?.flatMap((pageData) => pageData.data.content || []) ||
+    []
+  ).filter((review) => Boolean(review?.id));
 
   const totalMaps: Record<string, number> = {
     [DISCUSSION_TAB_COMMENT]:

@@ -1,6 +1,5 @@
 'use client';
 
-import { MovieResType } from '@/types';
 import { NoData } from '@/components/no-data';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { useMovieListQuery } from '@/queries';
@@ -28,7 +27,7 @@ export default function CountryList({ countryCode }: { countryCode: string }) {
       enabled: !!countryCode
     });
 
-  const movieList: MovieResType[] = movieListData?.data?.content || [];
+  const movieList = movieListData?.data?.content || [];
   const totalPages = movieListData?.data?.totalPages || 0;
 
   return (

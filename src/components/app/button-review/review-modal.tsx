@@ -13,7 +13,7 @@ import { useMovieStore } from '@/store';
 import { ApiResponse, MovieResType, ReviewBodyType } from '@/types';
 import { formatRating, notify } from '@/utils';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 export default function ReviewModal({
@@ -39,15 +39,12 @@ export default function ReviewModal({
     rate: 0 // no selection
   };
 
-  const initialValues: ReviewBodyType = useMemo(
-    () => ({
-      id: '',
-      content: '',
-      movieId: movie?.id?.toString() || '',
-      rate: 0
-    }),
-    [movie?.id]
-  );
+  const initialValues: ReviewBodyType = {
+    id: '',
+    content: '',
+    movieId: movie?.id?.toString() || '',
+    rate: 0
+  };
 
   const handleSelectRating = (rating: number) => {
     setSelectedRating(rating);

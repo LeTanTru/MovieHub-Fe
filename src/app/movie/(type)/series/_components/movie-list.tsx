@@ -7,7 +7,6 @@ import { Pagination } from '@/components/pagination';
 import { DEFAULT_PAGE_SIZE, movieTypes } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';
-import { MovieResType } from '@/types';
 
 export default function MovieList() {
   const {
@@ -24,7 +23,7 @@ export default function MovieList() {
       enabled: true
     });
 
-  const movieList: MovieResType[] = movieListData?.data?.content || [];
+  const movieList = movieListData?.data?.content || [];
   const totalPages: number = movieListData?.data?.totalPages || 0;
 
   return (

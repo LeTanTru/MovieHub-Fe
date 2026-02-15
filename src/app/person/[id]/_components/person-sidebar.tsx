@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { AvatarField, Button } from '@/components/form';
 import {
   DEFAULT_DATE_FORMAT,
@@ -55,10 +55,7 @@ export default function PersonSidebar() {
     };
   }, [opened]);
 
-  const sanitizedBio = useMemo(
-    () => sanitizeText(person?.bio || 'Đang cập nhật'),
-    [person?.bio]
-  );
+  const sanitizedBio = sanitizeText(person?.bio || 'Đang cập nhật');
 
   const role =
     person?.kinds

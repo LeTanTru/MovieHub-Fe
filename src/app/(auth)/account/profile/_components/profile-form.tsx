@@ -25,7 +25,6 @@ import {
 import { updateProfileSchema } from '@/schemaValidations';
 import { ProfileResType, UpdateProfileType } from '@/types';
 import { applyFormErrors, notify, renderImageUrl } from '@/utils';
-import { useMemo } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
 export default function ProfileForm() {
@@ -53,28 +52,15 @@ export default function ProfileForm() {
     avatarPath: ''
   };
 
-  const initialValues = useMemo<ProfileResType>(
-    () => ({
-      id: profile?.id || '',
-      fullName: profile?.fullName || '',
-      email: profile?.email || '',
-      phone: profile?.phone || '',
-      username: profile?.username || '',
-      gender: GENDER.includes(profile?.gender!)
-        ? profile?.gender!
-        : GENDER_MALE,
-      avatarPath: profile?.avatarPath || ''
-    }),
-    [
-      profile?.avatarPath,
-      profile?.email,
-      profile?.fullName,
-      profile?.gender,
-      profile?.id,
-      profile?.phone,
-      profile?.username
-    ]
-  );
+  const initialValues = {
+    id: profile?.id || '',
+    fullName: profile?.fullName || '',
+    email: profile?.email || '',
+    phone: profile?.phone || '',
+    username: profile?.username || '',
+    gender: GENDER.includes(profile?.gender!) ? profile?.gender! : GENDER_MALE,
+    avatarPath: profile?.avatarPath || ''
+  };
 
   const onSubmit = async (
     values: UpdateProfileType,

@@ -1,7 +1,6 @@
 'use client';
 
 import { useCategoryQuery, useMovieListQuery } from '@/queries';
-import { CategoryResType, MovieResType } from '@/types';
 import { NoData } from '@/components/no-data';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -26,8 +25,8 @@ export default function MovieList({ id }: { id: string }) {
       enabled: true
     });
 
-  const category: CategoryResType | undefined = categoryData?.data;
-  const movieList: MovieResType[] = movieListData?.data?.content || [];
+  const category = categoryData?.data;
+  const movieList = movieListData?.data?.content || [];
 
   return (
     <div className='max-989:mb-2.5 mb-5'>

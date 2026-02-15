@@ -9,7 +9,7 @@ import {
   movieListActions,
   PERSON_KIND_ACTOR
 } from '@/constants';
-import { MoviePersonResType, MovieResType, PersonSearchType } from '@/types';
+import { PersonSearchType } from '@/types';
 import {
   MovieGrid,
   MovieGridByYear,
@@ -35,12 +35,9 @@ export default function MovieList() {
       enabled: true
     });
 
-  const moviePersonList: MoviePersonResType[] =
-    moviePersonListData?.data?.content || [];
+  const moviePersonList = moviePersonListData?.data?.content || [];
 
-  const movieList: MovieResType[] = moviePersonList.map(
-    (moviePerson) => moviePerson.movie
-  );
+  const movieList = moviePersonList.map((moviePerson) => moviePerson.movie);
 
   return (
     <div className='grow'>

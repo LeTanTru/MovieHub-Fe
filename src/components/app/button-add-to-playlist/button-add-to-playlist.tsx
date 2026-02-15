@@ -25,19 +25,17 @@ import { cn } from '@/lib';
 import Link from 'next/link';
 import { route } from '@/routes';
 
-type PlaylistItemProps = {
-  playlist: PlaylistResType;
-  checked: boolean;
-  disabled?: boolean;
-  onToggle: (playlistId: string) => void;
-};
-
 function PlaylistItem({
   playlist,
   checked,
   disabled = false,
   onToggle
-}: PlaylistItemProps) {
+}: {
+  playlist: PlaylistResType;
+  checked: boolean;
+  disabled?: boolean;
+  onToggle: (playlistId: string) => void;
+}) {
   const handleToggle = () => {
     if (disabled) {
       return;
@@ -121,10 +119,7 @@ export default function ButtonAddToPlaylist({
     isPending: updatePlaylistItemLoading
   } = useUpdatePlaylistItemMutation();
 
-  const playlistList = useMemo(
-    () => playlistListData?.data || [],
-    [playlistListData]
-  );
+  const playlistList = playlistListData?.data || [];
 
   const playlistByMovie = useMemo(
     () => playlistByMovieData?.data || [],

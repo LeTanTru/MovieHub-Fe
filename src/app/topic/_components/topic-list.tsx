@@ -4,7 +4,6 @@ import { NoData } from '@/components/no-data';
 import TopicItemV1 from './topic-item-v1';
 import { cn } from '@/lib';
 import { useCollectionTopicListQuery } from '@/queries';
-import { CollectionResType } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 import TopicListSkeleton from './topic-skeleton';
 import { MAX_PAGE_SIZE } from '@/constants';
@@ -17,7 +16,7 @@ export default function TopicList() {
       params: { size: MAX_PAGE_SIZE }
     });
 
-  const topicList: CollectionResType[] = topicListData?.data?.content || [];
+  const topicList = topicListData?.data?.content || [];
 
   const switchToV2 = Math.random() < 0.5;
   const TopicItem = switchToV2 ? TopicItemV2 : TopicItemV1;

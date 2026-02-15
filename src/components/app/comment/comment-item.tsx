@@ -21,7 +21,7 @@ import { cn } from '@/lib';
 import { AuthorInfoType, CommentResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import {
   FaChevronDown,
   FaChevronUp,
@@ -80,10 +80,7 @@ export default function CommentItem({
   setEditingComment: (editingComment: CommentResType | null) => void;
   setOpenParentIds: (ids: string[] | ((prev: string[]) => string[])) => void;
 }) {
-  const authorInfo = useMemo(
-    () => JSON.parse(comment.authorInfo || '{}') as AuthorInfoType,
-    [comment.authorInfo]
-  );
+  const authorInfo = JSON.parse(comment.authorInfo || '{}') as AuthorInfoType;
   const isAuthor = userId && authorInfo.id ? userId === authorInfo.id : false;
   const kind =
     authorInfo.kind !== undefined ? kindMaps[authorInfo.kind] : undefined;
@@ -123,19 +120,16 @@ export default function CommentItem({
     enabled: isActiveParent
   });
 
-  const commentList = useMemo(
-    () =>
-      commentListData?.pages?.flatMap(
-        (pageData) => pageData.data.content || []
-      ) || [],
-    [commentListData?.pages]
-  );
+  const commentList =
+    commentListData?.pages?.flatMap(
+      (pageData) => pageData.data.content || []
+    ) || [];
 
   const commentListSize = commentList.length;
 
-  const handleDropdownToggle = useCallback(() => {
+  const handleDropdownToggle = () => {
     setShowDropdown((prev) => !prev);
-  }, []);
+  };
 
   const handleReplySubmit = async () => {
     closeReply();

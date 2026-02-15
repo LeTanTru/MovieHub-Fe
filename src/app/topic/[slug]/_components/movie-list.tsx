@@ -9,8 +9,8 @@ import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { useCollectionQuery } from '@/queries';
 import { useCollectionItemListQuery } from '@/queries/collection-item.query';
-import { CollectionItemResType, MovieResType } from '@/types';
 import { Pagination } from '@/components/pagination';
+import { MovieResType } from '@/types';
 
 export default function MovieList({ collectionId }: { collectionId: string }) {
   const {
@@ -31,7 +31,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
       }
     });
 
-  const movieList: CollectionItemResType[] = movieListData?.data?.content || [];
+  const movieList = movieListData?.data?.content || [];
   const totalPages = movieListData?.data?.totalPages || 0;
   const colors = JSON.parse(collection?.color || '[]');
 
