@@ -19,8 +19,14 @@ import {
   MoviePersonSearchType,
   ReviewResType
 } from '@/types';
+import { getIdFromSlug } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+
+export const metadata: Metadata = {
+  title: 'Xem phim'
+};
 
 export default async function WatchPage({
   params
@@ -28,7 +34,7 @@ export default async function WatchPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const id = slug.split('.')[1];
+  const id = getIdFromSlug(slug);
 
   const moviePersonFilters: MoviePersonSearchType = {
     movieId: id

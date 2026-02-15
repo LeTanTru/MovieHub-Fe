@@ -28,18 +28,20 @@ export default function TopicList() {
         Chủ đề
       </h3>
       <div
-        className={cn('grid max-[1537px]:grid-cols-6', {
-          'grid-cols-7 gap-6': !switchToV2,
-          'grid-cols-8 gap-4': switchToV2
+        className={cn('grid grid-cols-7 gap-4 max-[1537px]:grid-cols-6', {
+          'grid-cols-1': topicListLoading || topicList.length === 0
         })}
       >
         <AnimatePresence mode='popLayout' initial={false}>
           {topicListLoading ? (
             <TopicListSkeleton />
-          ) : topicList.length ? (
+          ) : topicList.length > 0 ? (
             topicList.map((topic) => <TopicItem key={topic.id} topic={topic} />)
           ) : (
-            <NoData />
+            <NoData
+              className='pt-20 pb-40'
+              content={<>Không có chủ đề nào</>}
+            />
           )}
         </AnimatePresence>
       </div>

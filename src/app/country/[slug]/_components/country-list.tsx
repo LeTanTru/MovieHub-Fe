@@ -39,7 +39,15 @@ export default function CountryList({ countryCode }: { countryCode: string }) {
       {movieListLoading ? (
         <MovieGridSkeleton />
       ) : movieList.length === 0 ? (
-        <NoData content={`Không có phim nào từ ${countryName}`} />
+        <NoData
+          className='pt-20 pb-40'
+          content={
+            <>
+              Không có phim nào trong từ quốc gia&nbsp;
+              <span className='font-medium'>{countryName}</span>
+            </>
+          }
+        />
       ) : (
         <MovieGrid movieList={movieList} />
       )}

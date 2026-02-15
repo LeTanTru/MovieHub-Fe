@@ -21,7 +21,7 @@ import {
   MoviePersonSearchType,
   ReviewResType
 } from '@/types';
-import { stripHtml } from '@/utils';
+import { getIdFromSlug, stripHtml } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -40,7 +40,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
-  const id = slug.split('.')[1];
+  const id = getIdFromSlug(slug);
 
   const res = await movieApiRequest.getById(id);
   const previousImages = (await parent).openGraph?.images || [];
@@ -80,7 +80,7 @@ export default async function MoviePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const id = slug.split('.')[1];
+  const id = getIdFromSlug(slug);
 
   const moviePersonFilters: MoviePersonSearchType = {
     movieId: id

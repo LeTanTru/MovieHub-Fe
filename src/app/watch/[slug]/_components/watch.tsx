@@ -2,6 +2,7 @@
 
 import { useMovieStore } from '@/store';
 import WatchPlayer from './watch-player';
+import WatchInfo from './watch-info';
 import { useShallow } from 'zustand/shallow';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useEffect, useMemo } from 'react';
@@ -53,6 +54,7 @@ export default function Watch({ id }: { id: string }) {
         {`${movie.title} - ${movie.originalTitle}`}
       </h1>
       <WatchPlayer />
+      <WatchInfo />
     </>
   );
 }

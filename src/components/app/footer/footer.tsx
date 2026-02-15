@@ -76,8 +76,8 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer>
-      <div className='bg-footer w-full max-w-475 px-12.5'>
+    <footer className='bg-footer'>
+      <div className='max-w-475 px-12.5'>
         <div className='relative flex min-h-100 items-center justify-between py-8'>
           <div className='absolute top-1/2 left-1/2 z-10 h-full w-150 -translate-x-1/2 -translate-y-1/2'>
             <Image

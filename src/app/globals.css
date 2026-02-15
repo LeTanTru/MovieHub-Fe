@@ -40,7 +40,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --spacing-header: 80px;
+  --spacing-header: 90px;
   --spacing-fixed-header: 70px;
   --spacing-search-form: 44.8px;
   --color-transparent-white: #ffffff10;

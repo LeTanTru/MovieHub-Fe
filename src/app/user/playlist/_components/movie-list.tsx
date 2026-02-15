@@ -80,7 +80,7 @@ export default function MovieList() {
         <MovieGridSkeleton className='grid-cols-8' skeletonCount={16} />
       ) : movieList.length === 0 ? (
         <NoData
-          className='pt-20'
+          className='pt-25'
           content={
             <>
               Danh sách <span className='font-semibold'>{playlist.name}</span>
