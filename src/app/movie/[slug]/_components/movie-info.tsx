@@ -35,6 +35,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { defaultAvatar } from '@/assets';
 import { useShallow } from 'zustand/shallow';
 import { Skeleton } from '@/components/ui/skeleton';
+import { CircleLoading } from '@/components/loading';
+import { FaCheckCircle } from 'react-icons/fa';
 
 const ActorCell = ({ actor }: { actor: PersonResType }) => {
   return (
@@ -55,7 +57,7 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
       </Link>
       <Link
         href={`${route.person.path}/${actor.id}`}
-        className='hover:text-light-golden-yellow mb-1.5 text-sm leading-normal font-normal whitespace-normal text-white transition-all duration-200 ease-linear'
+        className='hover:text-light-golden-yellow mb-1.5 leading-normal font-normal whitespace-normal text-white transition-all duration-200 ease-linear'
         title={actor.otherName}
       >
         {actor.otherName}
@@ -67,27 +69,58 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
 const MovieInfoSkeleton = () => {
   return (
     <div className='bg-main-background/60 flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
-      <Skeleton className='skeleton mb-4 h-52 w-full rounded-md' />
-      <Skeleton className='skeleton mb-2 h-6 w-3/4 rounded' />
-      <Skeleton className='skeleton mb-6 h-4 w-1/2 rounded' />
-      <div className='mb-4 flex gap-2'>
+      <Skeleton className='skeleton mb-4 h-52 w-40 rounded-md' />
+      <Skeleton className='skeleton mb-2 h-6 w-1/2 rounded' />
+      <Skeleton className='skeleton mb-5 h-4 w-1/2 rounded' />
+      <div className='mb-5 flex gap-2'>
         <Skeleton className='skeleton h-6 w-16 rounded' />
         <Skeleton className='skeleton h-6 w-16 rounded' />
         <Skeleton className='skeleton h-6 w-16 rounded' />
+        <Skeleton className='skeleton h-6 w-16 rounded' />
+      </div>
+      <div className='mb-5 flex gap-2'>
+        <Skeleton className='skeleton h-6 w-16 rounded' />
+        <Skeleton className='skeleton h-6 w-16 rounded' />
+        <Skeleton className='skeleton h-6 w-16 rounded' />
+        <Skeleton className='skeleton h-6 w-16 rounded' />
+      </div>
+      <div className='mb-5'>
+        <Skeleton className='skeleton h-8 w-3/4 rounded-full!' />
       </div>
       <div className='mb-5 flex flex-col gap-2'>
         <Skeleton className='skeleton h-4 w-full rounded' />
-        <Skeleton className='skeleton h-4 w-5/6 rounded' />
-        <Skeleton className='skeleton h-4 w-2/3 rounded' />
+        <Skeleton className='skeleton h-4 w-full rounded' />
+        <Skeleton className='skeleton h-4 w-full rounded' />
+        <Skeleton className='skeleton h-4 w-full rounded' />
       </div>
-      <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
+      <div className='mb-5 flex gap-2'>
+        <Skeleton className='skeleton h-4 w-1/4 rounded' />
+        <Skeleton className='skeleton h-4 w-1/2 rounded' />
+      </div>
+      <div className='mb-5 flex gap-2'>
+        <Skeleton className='skeleton h-4 w-1/4 rounded' />
+        <Skeleton className='skeleton h-4 w-1/2 rounded' />
+      </div>
+      <div className='mb-5 flex gap-2'>
+        <Skeleton className='skeleton h-4 w-1/4 rounded' />
+        <Skeleton className='skeleton h-4 w-1/2 rounded' />
+      </div>
+      <div className='mb-5 flex gap-2'>
+        <Skeleton className='skeleton h-4 w-1/4 rounded' />
+        <Skeleton className='skeleton h-4 w-1/2 rounded' />
+      </div>
+      <div className='mb-5 flex gap-2'>
+        <Skeleton className='skeleton h-4 w-1/4 rounded' />
+        <Skeleton className='skeleton h-4 w-1/2 rounded' />
+      </div>
+      <div className='mb-5 grid grid-cols-3 gap-x-2.5 gap-y-6'>
         {Array.from({ length: 6 }).map((_, index) => (
           <div
             key={`actor-skeleton-${index}`}
             className='flex flex-col items-center gap-3'
           >
-            <Skeleton className='skeleton h-20 w-20 rounded-full' />
-            <Skeleton className='skeleton h-4 w-16 rounded' />
+            <Skeleton className='skeleton h-20 w-20 rounded-full!' />
+            <Skeleton className='skeleton h-4 w-16' />
           </div>
         ))}
       </div>
@@ -156,7 +189,7 @@ export default function MovieInfo({
   }, [latestSeason, movie?.seasons]);
 
   const episodes = useMemo(() => {
-    return currentSeason?.episodes;
+    return currentSeason?.episodes || [];
   }, [currentSeason?.episodes]);
 
   const latestEpisode = episodes ? episodes.length : movie?.latestEpisode;
@@ -175,6 +208,9 @@ export default function MovieInfo({
   );
 
   const releaseDate = currentSeason?.releaseDate || movie?.releaseDate;
+
+  const isComplete =
+    episodes.length > 0 && currentSeason?.totalEpisode === episodes.length;
 
   if (isLoading) {
     return <MovieInfoSkeleton />;
@@ -206,10 +242,10 @@ export default function MovieInfo({
       >
         {movie.title} {selectedSeason > 1 ? selectedSeason : ''}
       </h2>
-      <div className='text-light-golden-yellow mb-6 text-sm font-normal'>
+      <div className='text-light-golden-yellow mb-5 font-normal'>
         {movie.originalTitle} {selectedSeason > 1 ? selectedSeason : ''}
       </div>
-      <TagWrapper className='mb-4'>
+      <TagWrapper className='mb-5'>
         {ageRating ? <TagAgeRating value={ageRating} /> : null}
         <TagNormal value={movie.year} />
         {/* Single movie */}
@@ -222,7 +258,7 @@ export default function MovieInfo({
           <TagNormal value={`Tập ${latestEpisode}`} />
         </Activity>
       </TagWrapper>
-      <TagWrapper>
+      <TagWrapper className='mb-5'>
         {categories.map((category) => (
           <TagCategoryLink
             key={category.id}
@@ -231,14 +267,36 @@ export default function MovieInfo({
           />
         ))}
       </TagWrapper>
-      <div className='mt-5 mb-5 text-sm'>
+      <div className='mb-5'>
+        <div
+          className={cn(
+            'inline-flex items-center gap-2 rounded-4xl px-3.5 py-2',
+            {
+              'bg-complete-episode/30 text-complete-episode': isComplete,
+              'bg-on-going-episode/30 text-on-going-episode': !isComplete
+            }
+          )}
+        >
+          {isComplete ? (
+            <FaCheckCircle className='fill-complete-episode stroke-complete-episode/30 size-4' />
+          ) : (
+            <CircleLoading className='stroke-on-going-episode size-4 animate-spin stroke-3' />
+          )}
+          <span>
+            {isComplete ? 'Đã hoàn thành' : 'Đã chiếu'}: {episodes?.length}
+            &nbsp;/&nbsp;
+            {currentSeason?.totalEpisode ?? '?'} Tập
+          </span>
+        </div>
+      </div>
+      <div className='mb-5'>
         <div className='mb-2 block font-medium text-white'>Giới thiệu:</div>
         <div
-          className='text-foreground/80! text-sm font-light'
+          className='text-foreground/80! font-light'
           dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
         />
       </div>
-      <div className='mb-5 flex items-end gap-2 text-sm'>
+      <div className='mb-5 flex items-end gap-2'>
         <div className='font-medium whitespace-nowrap text-white'>
           Ngày phát hành:
         </div>
@@ -246,7 +304,7 @@ export default function MovieInfo({
           {formatDate(releaseDate, DEFAULT_DATE_FORMAT)}
         </div>
       </div>
-      <div className='mb-5 flex items-end gap-2 text-sm'>
+      <div className='mb-5 flex items-end gap-2'>
         <div className='font-medium whitespace-nowrap text-white'>
           Thời lượng:
         </div>
@@ -254,7 +312,7 @@ export default function MovieInfo({
           {duration ? formatDuration(duration) : 'Đang cập nhật'}
         </div>
       </div>
-      <div className='mb-5 flex items-end gap-2 text-sm'>
+      <div className='mb-5 flex items-end gap-2'>
         <div className='font-medium whitespace-nowrap text-white'>
           Quốc gia:
         </div>
@@ -267,13 +325,13 @@ export default function MovieInfo({
           {countryName}
         </Link>
       </div>
-      <div className='mb-5 flex items-end gap-2 text-sm'>
+      <div className='mb-5 flex items-end gap-2'>
         <div className='font-medium whitespace-nowrap text-white'>
           Ngôn ngữ:
         </div>
         <div className='text-foreground/80 font-light'>{languageName}</div>
       </div>
-      <div className='mb-5 flex flex-wrap items-end gap-2 text-sm'>
+      <div className='mb-5 flex flex-wrap items-end gap-2'>
         <div className='font-medium whitespace-nowrap text-white'>
           Đạo diễn:
         </div>
@@ -284,17 +342,17 @@ export default function MovieInfo({
         </span>
       </div>
       <div
-        className={cn('mb-5 flex-wrap items-end gap-2 text-sm', {
+        className={cn('mb-5 flex-wrap items-end gap-2', {
           flex: actors.length === 0
         })}
       >
-        <div
+        <h3
           className={cn('font-medium whitespace-nowrap text-white', {
             'mb-8 text-2xl': actors.length > 0
           })}
         >
           Diễn viên:
-        </div>
+        </h3>
         {actors.length > 0 ? (
           <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
             {actors.map((actor) => (

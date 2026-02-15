@@ -49,6 +49,7 @@ export type SeasonResType = {
     releaseDate: string;
     thumbnailUrl: string;
   };
+  totalEpisode: number;
 };
 
 export type MovieResType = {

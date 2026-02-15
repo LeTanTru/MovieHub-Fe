@@ -24,6 +24,7 @@ export type MovieItemResType = {
     kind: number;
     label: string;
   };
+  totalEpisode: number;
 };
 
 export type MovieItemSearchType = z.infer<typeof movieItemSearchSchema> &
