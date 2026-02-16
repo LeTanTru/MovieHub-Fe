@@ -161,7 +161,7 @@ export default function MovieInfo({
       <div className='text-light-golden-yellow mb-5 font-normal'>
         {movie.originalTitle} {selectedSeason > 1 ? selectedSeason : ''}
       </div>
-      <TagWrapper className='mb-2.5'>
+      <TagWrapper className='mb-3'>
         {ageRating ? <TagAgeRating value={ageRating} /> : null}
         <TagNormal value={movie.year} />
         {/* Single movie */}
@@ -179,7 +179,7 @@ export default function MovieInfo({
           />
         )}
       </TagWrapper>
-      <TagWrapper className='mb-2.5'>
+      <TagWrapper className='mb-3'>
         {categories.map((category) => (
           <TagCategoryLink
             key={category.id}

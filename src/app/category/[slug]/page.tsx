@@ -3,9 +3,10 @@ import type { Metadata } from 'next';
 import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import { getQueryClient } from '@/components/providers';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { MovieSearchType } from '@/types';
+import { ApiResponse, MovieSearchType } from '@/types';
 import { MovieList } from '@/app/category/[slug]/_components';
 import { getIdFromSlug } from '@/utils';
+import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const categories = await categoryApiRequest.getList({
@@ -48,10 +49,23 @@ export default async function CategoryPage({
   };
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.CATEGORY, id],
-    queryFn: () => categoryApiRequest.getById(id)
-  });
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: [queryKeys.CATEGORY, id],
+      queryFn: () => categoryApiRequest.getById(id)
+    });
+
+    const movieData: ApiResponse<any> | undefined = queryClient.getQueryData([
+      queryKeys.CATEGORY,
+      id
+    ]);
+
+    if (!movieData?.result) {
+      notFound();
+    }
+  } catch (_) {
+    notFound();
+  }
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_LIST, defaultFilters],

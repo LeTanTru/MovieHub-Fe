@@ -3,7 +3,11 @@
 import { MessageIcon } from '@/assets';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Button } from '@/components/form';
-import { MOVIE_TYPE_SERIES } from '@/constants';
+import {
+  DISCUSSION_TAB_COMMENT,
+  DISCUSSION_TAB_REVIEW,
+  MOVIE_TYPE_SERIES
+} from '@/constants';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -13,16 +17,19 @@ import { ButtonShareMovie } from '@/components/app/button-share';
 import { scroller } from 'react-scroll';
 import { useShallow } from 'zustand/shallow';
 import { ButtonReview } from '@/components/app/button-review';
+import { FaStar } from 'react-icons/fa6';
 
 export default function MovieActionBar({
   isLoading = false
 }: {
   isLoading?: boolean;
 }) {
-  const { movie, selectedSeason } = useMovieStore(
+  const { movie, selectedSeason, setDiscussionTab } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,
-      selectedSeason: s.selectedSeason
+      selectedSeason: s.selectedSeason,
+      discussionTab: s.discussionTab,
+      setDiscussionTab: s.setDiscussionTab
     }))
   );
 
@@ -60,6 +67,17 @@ export default function MovieActionBar({
     ? `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}&episode=${latestEpisode?.label}`
     : `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}`;
 
+  const handleSelectDiscussionTab = (tab: string) => {
+    setDiscussionTab(tab);
+    scroller.scrollTo('discussion-detail', {
+      duration: 0,
+      delay: 0,
+      smooth: true,
+      offset: -100,
+      isDynamic: true
+    });
+  };
+
   return (
     <div className='relative z-3 p-7.5'>
       <div className='flex items-center justify-between gap-8'>
@@ -75,20 +93,18 @@ export default function MovieActionBar({
           <Button
             className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
             variant='ghost'
-            onClick={() => {
-              setTimeout(() => {
-                scroller.scrollTo('discussion-detail', {
-                  duration: 0,
-                  delay: 0,
-                  smooth: true,
-                  offset: -100,
-                  isDynamic: true
-                });
-              }, 50);
-            }}
+            onClick={() => handleSelectDiscussionTab(DISCUSSION_TAB_COMMENT)}
           >
             <MessageIcon />
             Bình luận
+          </Button>
+          <Button
+            className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
+            variant='ghost'
+            onClick={() => handleSelectDiscussionTab(DISCUSSION_TAB_REVIEW)}
+          >
+            <FaStar />
+            Đánh giá
           </Button>
         </div>
         {/* Right */}

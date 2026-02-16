@@ -1,14 +1,10 @@
 'use client';
 
-import { caption } from '@/assets';
 import { ButtonToggle } from '@/components/app/button-toggle';
-import MotionWrapper from './motion-wrapper';
-import { MOVIE_TAB_EPISODE, MOVIE_TYPE_SINGLE } from '@/constants';
-import { useClickOutside } from '@/hooks';
+import { useClickOutside, useQueryParams } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { MovieResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
@@ -17,72 +13,30 @@ import { useEffect, useState } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
-const MovieTabEpisodeSingle = ({ movie }: { movie: MovieResType }) => {
-  return (
-    <>
-      <h3 className='mb-8 text-2xl font-semibold text-white'>Các bản chiếu</h3>
-      {movie && movie.seasons && movie.seasons.length > 0 ? (
-        <div className='grid grid-cols-3 gap-4'>
-          {movie.seasons.map((season) => (
-            <Link
-              href={`${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`}
-              key={season.id}
-              className='bg-episode relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1'
-            >
-              <div className='absolute top-0 right-0 bottom-0 w-2/5 max-w-32.5 mask-[linear-gradient(270deg,black_0,transparent_95%)]'>
-                <Image
-                  src={renderImageUrl(season?.thumbnailUrl)}
-                  alt={`${movie?.title} - ${movie?.originalTitle}`}
-                  fill
-                  className='aspect-video h-full w-full object-cover'
-                  sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                />
-              </div>
-              <div className='flex-start relative z-2 flex w-9/10 flex-col justify-center gap-4 p-6'>
-                <div className='inline-flex items-center gap-2'>
-                  <Image
-                    src={caption}
-                    alt='Caption'
-                    className='h-5 w-5 object-cover'
-                  />
-                  <span>Phụ đề</span>
-                </div>
-                <div className='text-base leading-normal font-semibold'>
-                  {season?.title}
-                </div>
-                <div className='inline-flex min-h-7.5 w-fit items-center justify-center rounded-sm bg-white px-3 py-2 text-xs font-medium text-black transition-all duration-200 ease-linear hover:opacity-80'>
-                  Xem bản này
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <p className='text-gray-400'>Chưa có tập phim nào</p>
-      )}
-    </>
-  );
-};
-
-const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
+export default function WatchEpisodeSeries() {
   const ANIMATION_DURATION = 300;
 
   const [toggle, setToggle] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { searchParams } = useQueryParams<{
+    season: string;
+    episode: string;
+  }>();
 
-  const { selectedSeason, setSelectedSeason } = useMovieStore(
+  const { movie, selectedSeason, setSelectedSeason } = useMovieStore(
     useShallow((s) => ({
+      movie: s.movie,
       selectedSeason: s.selectedSeason,
       setSelectedSeason: s.setSelectedSeason
     }))
   );
 
-  const seasons = movie.seasons;
+  const seasons = movie?.seasons || [];
   const seasonCount = seasons.length;
 
   const currentSeason = seasons.find(
-    (season) => season.ordering + 1 === selectedSeason
+    (season) => season.label === selectedSeason.toString()
   );
 
   const episodes = currentSeason?.episodes || [];
@@ -113,10 +67,14 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
   };
 
   useEffect(() => {
-    if (movie.latestSeason) {
-      setSelectedSeason(+movie.latestSeason);
+    if (searchParams.season) {
+      setSelectedSeason(+searchParams.season);
+    } else {
+      setSelectedSeason(movie?.latestSeason ? +movie.latestSeason : 1);
     }
-  }, [movie.latestSeason, setSelectedSeason]);
+  }, [movie?.latestSeason, searchParams.season, setSelectedSeason]);
+
+  if (!movie) return null;
 
   return (
     <>
@@ -199,9 +157,12 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
           >
             <Link
               href={`${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`}
-              className={cn('block', {
-                'bg-episode-1 hover:text-light-golden-yellow flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
-                  toggle
+              className={cn('block transition-all duration-200 ease-linear', {
+                'bg-episode-1 hover:text-light-golden-yellow flex h-12.5 items-center justify-center gap-2 rounded-sm':
+                  toggle,
+                'bg-light-golden-yellow hover:bg-light-golden-yellow/85 text-black hover:text-black/80':
+                  episode.label === searchParams.episode &&
+                  currentSeason?.label === searchParams.season
               })}
             >
               <motion.div
@@ -242,33 +203,5 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
         ))}
       </motion.div>
     </>
-  );
-};
-
-export default function MovieTabEpisode({
-  direction = 0,
-  className
-}: {
-  direction?: number;
-  className?: string;
-}) {
-  const movie = useMovieStore((s) => s.movie);
-
-  const Tab = movie
-    ? movie.type === MOVIE_TYPE_SINGLE
-      ? MovieTabEpisodeSingle
-      : MovieTabEpisodeSeries
-    : null;
-
-  if (!movie) return null;
-
-  return (
-    <MotionWrapper
-      uniqueKey={MOVIE_TAB_EPISODE}
-      direction={direction}
-      className={className}
-    >
-      {Tab && <Tab movie={movie} />}
-    </MotionWrapper>
   );
 }

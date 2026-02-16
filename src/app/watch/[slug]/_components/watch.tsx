@@ -52,7 +52,7 @@ export default function Watch({ id }: { id: string }) {
       <h1 style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
         {`${movie.title} - ${movie.originalTitle}`}
       </h1>
-      {/* <WatchPlayer /> */}
+      <WatchPlayer />
       <WatchInfo />
     </>
   );

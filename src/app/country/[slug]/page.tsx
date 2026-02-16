@@ -11,6 +11,7 @@ import { getQueryClient } from '@/components/providers';
 import { movieApiRequest } from '@/api-requests';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { MovieList } from '@/app/country/[slug]/_components';
+import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   return countries.slice(0, DEFAULT_PAGE_SIZE).map((country) => ({
@@ -53,6 +54,10 @@ export default async function CountryPage({
   };
 
   const queryClient = getQueryClient();
+
+  if (!countries.find((country) => country.value === countryCode)) {
+    notFound();
+  }
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_LIST, defaultFilters],

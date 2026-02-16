@@ -24,11 +24,11 @@ import { Element } from 'react-scroll';
 import { ReviewList } from '@/components/app/review';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
-import DiscussionSkeleton from './discussion-skeleton';
+import WatchDiscussionSkeleton from './watch-discussion-skeleton';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 
-export default function Discussion({
+export default function WatchDiscussion({
   isLoading = false
 }: {
   isLoading?: boolean;
@@ -104,9 +104,6 @@ export default function Discussion({
       ? commentListLoading
       : reviewListLoading;
 
-  const isCommentTab = discussionTab === DISCUSSION_TAB_COMMENT;
-  const isReviewTab = discussionTab === DISCUSSION_TAB_REVIEW;
-
   const handleLoadMoreComments = () => {
     if (!hasMoreComments || commentLoadMoreLoading) return;
     fetchMoreComments();
@@ -117,11 +114,11 @@ export default function Discussion({
     fetchMoreReviews();
   };
 
-  if (isLoading) return <DiscussionSkeleton />;
+  if (isLoading) return <WatchDiscussionSkeleton />;
 
   return (
-    <Element name='discussion-detail' id='discussion-detail'>
-      <div className='relative block px-10 py-5'>
+    <Element name='discussion-watch' id='discussion-watch'>
+      <div className='relative block pt-5'>
         {/* Header */}
         <div className='mb-2 flex items-center font-semibold text-white'>
           <div className='flex grow items-center gap-4'>
@@ -158,7 +155,7 @@ export default function Discussion({
           </div>
         </div>
         {/* Body */}
-        <Activity visible={isCommentTab}>
+        <Activity visible={discussionTab === DISCUSSION_TAB_COMMENT}>
           {profile ? (
             <div className='my-4 flex items-center gap-4'>
               <AvatarField
@@ -183,12 +180,15 @@ export default function Discussion({
                 đăng nhập
               </Link>
               &nbsp;để tham gia&nbsp;
-              {isCommentTab ? 'bình luận' : 'đánh giá'}.
+              {discussionTab === DISCUSSION_TAB_COMMENT
+                ? 'bình luận'
+                : 'đánh giá'}
+              .
             </div>
           )}
           <CommentInput isLoading={isActiveLoading} />
         </Activity>
-        <Activity visible={isCommentTab}>
+        <Activity visible={discussionTab === DISCUSSION_TAB_COMMENT}>
           <CommentList
             commentList={commentList}
             isLoading={commentListLoading}
@@ -198,7 +198,7 @@ export default function Discussion({
             onLoadMore={handleLoadMoreComments}
           />
         </Activity>
-        <Activity visible={isReviewTab}>
+        <Activity visible={discussionTab === DISCUSSION_TAB_REVIEW}>
           <ReviewList
             reviewList={reviewList}
             isLoading={reviewListLoading}

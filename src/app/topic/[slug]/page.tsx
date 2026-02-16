@@ -2,9 +2,10 @@ import { collectionApiRequest, collectionItemApiRequest } from '@/api-requests';
 import { MovieList } from '@/app/topic/[slug]/_components';
 import { getQueryClient } from '@/components/providers';
 import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
-import { CollectionItemSearchType } from '@/types';
+import { ApiResponse, CollectionItemSearchType } from '@/types';
 import { getIdFromSlug } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const topicList = await collectionApiRequest.getTopicList({
@@ -42,10 +43,23 @@ export default async function TopicDetailPage({
       })
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.COLLECTION, collectionId],
-    queryFn: () => collectionApiRequest.getById(collectionId)
-  });
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: [queryKeys.COLLECTION, collectionId],
+      queryFn: () => collectionApiRequest.getById(collectionId)
+    });
+
+    const movieData: ApiResponse<any> | undefined = queryClient.getQueryData([
+      queryKeys.COLLECTION,
+      collectionId
+    ]);
+
+    if (!movieData?.result) {
+      notFound();
+    }
+  } catch (_) {
+    notFound();
+  }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
