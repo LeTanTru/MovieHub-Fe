@@ -262,14 +262,24 @@ export default function CommentItem({
               (đã chỉnh sửa)
             </span>
           </Activity>
-          {movieItem && (
-            <Badge
-              variant='outline'
-              className='border px-2 py-1 text-xs font-medium text-gray-400'
-            >
-              P. {movieItem.parent.label} - Tập {movieItem.label}
-            </Badge>
-          )}
+          {movieItem &&
+            (movieItem.parent ? (
+              <Badge
+                variant='outline'
+                className='border px-2 py-1 text-xs font-medium text-gray-400'
+                title={`Phần ${movieItem.parent.label} - Tập ${movieItem.label}`}
+              >
+                P. {movieItem.parent.label} - Tập {movieItem.label}
+              </Badge>
+            ) : (
+              <Badge
+                variant='outline'
+                className='border px-2 py-1 text-xs font-medium text-gray-400'
+                title={`Phần ${movieItem.label}`}
+              >
+                P. {movieItem.label}
+              </Badge>
+            ))}
           <Activity visible={comment.isPinned}>
             <span title='Đã ghim' className='ml-auto'>
               <Pin className='text-light-golden-yellow fill-light-golden-yellow size-5 rotate-45' />

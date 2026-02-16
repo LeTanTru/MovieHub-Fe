@@ -6,7 +6,9 @@ import {
 } from '@/api-requests';
 import { Watch } from '@/app/watch/[slug]/_components';
 import { getQueryClient } from '@/components/providers';
+import envConfig from '@/config';
 import {
+  AppConstants,
   DEFAULT_PAGE_SIZE,
   DEFAULT_TABLE_PAGE_START,
   queryKeys
@@ -19,14 +21,58 @@ import {
   MoviePersonSearchType,
   ReviewResType
 } from '@/types';
-import { getIdFromSlug } from '@/utils';
+import { getIdFromSlug, stripHtml } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 
-export const metadata: Metadata = {
-  title: 'Xem phim'
-};
+export async function generateStaticParams() {
+  const movies = await movieApiRequest.getList({
+    params: { size: DEFAULT_PAGE_SIZE }
+  });
+  return movies.data.content.map((movie) => ({
+    slug: `${movie.slug}.${movie.id}`
+  }));
+}
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const { slug } = await params;
+  const id = getIdFromSlug(slug);
+
+  const res = await movieApiRequest.getById(id);
+  const previousImages = (await parent).openGraph?.images || [];
+  const images = res.data?.posterUrl
+    ? [`${AppConstants.contentRootUrl}${res.data.posterUrl}`, ...previousImages]
+    : previousImages;
+
+  return {
+    title: res.data
+      ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
+      : 'Không tìm thấy phim',
+    description: stripHtml(res.data?.description || 'Thông tin phim'),
+    openGraph: {
+      title: res.data
+        ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
+        : 'Không tìm thấy phim',
+      description: stripHtml(res.data?.description || 'Thông tin phim'),
+      images
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: res.data
+        ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
+        : 'Không tìm thấy phim',
+      description: stripHtml(res.data?.description || 'Thông tin phim'),
+      images
+    },
+    alternates: {
+      canonical: `${envConfig.NEXT_PUBLIC_URL}/movie/${slug}`
+    }
+  };
+}
 
 export default async function WatchPage({
   params

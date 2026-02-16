@@ -49,12 +49,10 @@ export default async function TopicDetailPage({
       queryFn: () => collectionApiRequest.getById(collectionId)
     });
 
-    const movieData: ApiResponse<any> | undefined = queryClient.getQueryData([
-      queryKeys.COLLECTION,
-      collectionId
-    ]);
+    const collectionData: ApiResponse<any> | undefined =
+      queryClient.getQueryData([queryKeys.COLLECTION, collectionId]);
 
-    if (!movieData?.result) {
+    if (!collectionData?.result) {
       notFound();
     }
   } catch (_) {

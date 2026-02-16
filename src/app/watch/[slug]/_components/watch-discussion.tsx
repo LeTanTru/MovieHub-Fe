@@ -104,6 +104,9 @@ export default function WatchDiscussion({
       ? commentListLoading
       : reviewListLoading;
 
+  const isCommentTab = discussionTab === DISCUSSION_TAB_COMMENT;
+  const isReviewTab = discussionTab === DISCUSSION_TAB_REVIEW;
+
   const handleLoadMoreComments = () => {
     if (!hasMoreComments || commentLoadMoreLoading) return;
     fetchMoreComments();
@@ -155,7 +158,7 @@ export default function WatchDiscussion({
           </div>
         </div>
         {/* Body */}
-        <Activity visible={discussionTab === DISCUSSION_TAB_COMMENT}>
+        <Activity visible={isCommentTab}>
           {profile ? (
             <div className='my-4 flex items-center gap-4'>
               <AvatarField
@@ -180,15 +183,12 @@ export default function WatchDiscussion({
                 đăng nhập
               </Link>
               &nbsp;để tham gia&nbsp;
-              {discussionTab === DISCUSSION_TAB_COMMENT
-                ? 'bình luận'
-                : 'đánh giá'}
-              .
+              {isCommentTab ? 'bình luận' : 'đánh giá'}.
             </div>
           )}
           <CommentInput isLoading={isActiveLoading} />
         </Activity>
-        <Activity visible={discussionTab === DISCUSSION_TAB_COMMENT}>
+        <Activity visible={isCommentTab}>
           <CommentList
             commentList={commentList}
             isLoading={commentListLoading}
@@ -198,7 +198,7 @@ export default function WatchDiscussion({
             onLoadMore={handleLoadMoreComments}
           />
         </Activity>
-        <Activity visible={discussionTab === DISCUSSION_TAB_REVIEW}>
+        <Activity visible={isReviewTab}>
           <ReviewList
             reviewList={reviewList}
             isLoading={reviewListLoading}
