@@ -3,7 +3,7 @@
 import {
   ButtonDeletePlaylist,
   ButtonEditPlaylist
-} from '@/components/app/button-action-playlist';
+} from '@/components/app/button-playlist';
 import { cn } from '@/lib';
 import { usePlaylistStore } from '@/store';
 import { PlaylistResType } from '@/types';
