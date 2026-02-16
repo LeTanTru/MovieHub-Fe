@@ -407,6 +407,20 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true
     }
+  },
+  watchHistory: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/watch-history/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    tracking: {
+      baseUrl: `${AppConstants.apiUrl}/v1/watch-history/tracking`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    }
   }
 });
 

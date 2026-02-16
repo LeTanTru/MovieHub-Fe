@@ -31,7 +31,7 @@ export async function generateStaticParams() {
     params: { size: DEFAULT_PAGE_SIZE }
   });
   return movies.data.content.map((movie) => ({
-    slug: `${movie?.slug}.${movie?.id}`
+    slug: `${movie.slug}.${movie.id}`
   }));
 }
 

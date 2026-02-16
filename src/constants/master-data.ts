@@ -272,7 +272,9 @@ export const queryKeys = {
   UPDATE_REVIEW: 'update-review',
   VERIFY_OTP: 'verify-otp',
   VOTE_COMMENT: 'vote-comment',
-  VOTE_REVIEW: 'vote-review'
+  VOTE_REVIEW: 'vote-review',
+  WATCH_HISTORY_LIST: 'watch-history-list',
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
 };
 
 export const countries = [

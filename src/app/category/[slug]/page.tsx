@@ -55,12 +55,11 @@ export default async function CategoryPage({
       queryFn: () => categoryApiRequest.getById(id)
     });
 
-    const movieData: ApiResponse<any> | undefined = queryClient.getQueryData([
-      queryKeys.CATEGORY,
-      id
-    ]);
+    const categoryData: ApiResponse<any> | undefined = queryClient.getQueryData(
+      [queryKeys.CATEGORY, id]
+    );
 
-    if (!movieData?.result) {
+    if (!categoryData?.result) {
       notFound();
     }
   } catch (_) {

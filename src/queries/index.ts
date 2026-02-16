@@ -11,3 +11,4 @@ export * from './movie.query';
 export * from './person.query';
 export * from './playlist.query';
 export * from './review.query';
+export * from './watch-history.query';

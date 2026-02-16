@@ -2,7 +2,7 @@
 
 import { BaseForm } from '@/components/form/base-form';
 import { getQueryClient } from '@/components/providers';
-import { queryKeys } from '@/constants';
+import { MOVIE_TYPE_SINGLE, queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateCommentMutation } from '@/queries';
 import { route } from '@/routes';
@@ -13,8 +13,10 @@ import { notify } from '@/utils';
 import Link from 'next/link';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from '@/hooks';
+import { useAuth, useQueryParams } from '@/hooks';
 import { Button, TextAreaField } from '@/components/form';
+import { useShallow } from 'zustand/shallow';
+import { UseFormReturn } from 'react-hook-form';
 
 export default function CommentInput({
   isLoading = false
@@ -22,25 +24,48 @@ export default function CommentInput({
   isLoading?: boolean;
 }) {
   const { isAuthenticated } = useAuth();
-  const movie = useMovieStore((s) => s.movie);
   const queryClient = getQueryClient();
+  const { searchParams } = useQueryParams<{ episode: string }>();
+
+  const { movie, selectedSeason } = useMovieStore(
+    useShallow((s) => ({
+      movie: s.movie,
+      selectedSeason: s.selectedSeason
+    }))
+  );
 
   const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =
     useCreateCommentMutation();
 
+  const seasons = movie?.seasons || [];
+  const episode = searchParams.episode;
+  const currentSeason = seasons.find(
+    (season) => season.label === selectedSeason.toString()
+  );
+
+  const currentEpisode = currentSeason?.episodes?.find(
+    (epi) => epi.label === episode
+  );
+
   const defaultValues: CreateCommentBodyType = {
-    id: '',
     content: '',
-    movieId: ''
+    movieId: '',
+    movieItemId: ''
   };
 
   const initialValues: CreateCommentBodyType = {
-    id: '',
     content: '',
-    movieId: String(movie?.id || '')
+    movieId: String(movie?.id || ''),
+    movieItemId:
+      movie?.type === MOVIE_TYPE_SINGLE
+        ? String(currentSeason?.id || '')
+        : String(currentEpisode?.id || '')
   };
 
-  const handleSubmit = async (values: CreateCommentBodyType, form?: any) => {
+  const handleSubmit = async (
+    values: CreateCommentBodyType,
+    form?: UseFormReturn<CreateCommentBodyType>
+  ) => {
     if (!isAuthenticated) {
       notify.error(
         <span>

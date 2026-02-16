@@ -53,7 +53,7 @@ export default function ProfileForm() {
   };
 
   const initialValues = {
-    id: profile?.id || '',
+    id: profile?.id?.toString() || '',
     fullName: profile?.fullName || '',
     email: profile?.email || '',
     phone: profile?.phone || '',

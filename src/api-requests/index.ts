@@ -12,3 +12,4 @@ export { default as moviePersonApiRequest } from './movie-person.api-request';
 export { default as personApiRequest } from './person.api-request';
 export { default as playlistApiRequest } from './playlist.api-request';
 export { default as reviewApiRequest } from './review.api-request';
+export { default as watchHistoryApiRequest } from './watch-history';
