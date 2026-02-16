@@ -160,8 +160,7 @@ export default function WatchMain() {
                   <CircleLoading className='stroke-on-going-episode size-4 animate-spin stroke-3' />
                 )}
                 <span>
-                  {isComplete ? 'Đã hoàn thành' : 'Đã chiếu'}:{' '}
-                  {episodes?.length}
+                  {isComplete ? 'Đã hoàn thành' : 'Đã chiếu'}: {episodes.length}
                   &nbsp;/&nbsp;
                   {currentSeason?.totalEpisode ?? '?'} Tập
                 </span>

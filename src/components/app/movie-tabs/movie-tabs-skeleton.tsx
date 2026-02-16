@@ -7,7 +7,7 @@ export default function MovieTabsSkeleton() {
         {Array.from({ length: 5 }).map((_, index) => (
           <Skeleton
             key={`tab-skeleton-${index}`}
-            className='skeleton h-8 w-24 rounded'
+            className='skeleton h-8 w-24'
           />
         ))}
       </div>
