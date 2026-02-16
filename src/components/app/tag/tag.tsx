@@ -59,7 +59,7 @@ export const TagNormal = ({
   return (
     <div
       className={cn(
-        'bg-transparent-white inline-flex h-6.5 items-center rounded border border-solid border-white px-2 py-0 text-sm text-xs text-white',
+        'bg-transparent-white inline-flex h-6.5 items-center rounded border border-solid border-white px-2 py-0 text-xs text-white',
         className
       )}
     >

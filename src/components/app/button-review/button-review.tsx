@@ -2,6 +2,7 @@
 
 import ReviewModal from './review-modal';
 import { useAuth, useDisclosure } from '@/hooks';
+import { cn } from '@/lib';
 import { useCheckMovieQuery } from '@/queries';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
@@ -9,14 +10,19 @@ import { formatRating, notify } from '@/utils';
 import Link from 'next/link';
 import { useShallow } from 'zustand/shallow';
 
-export default function ButtonReview({ movieId }: { movieId: string }) {
+export default function ButtonReview({
+  movieId,
+  className
+}: {
+  movieId: string;
+  className?: string;
+}) {
   const { opened, open, close } = useDisclosure();
   const { isAuthenticated } = useAuth();
 
   const { movie } = useMovieStore(
     useShallow((s) => ({
-      movie: s.movie,
-      selectedSeason: s.selectedSeason
+      movie: s.movie
     }))
   );
 
@@ -56,9 +62,14 @@ export default function ButtonReview({ movieId }: { movieId: string }) {
 
   return (
     <>
-      <div className='relative flex flex-col items-end gap-2 text-white'>
+      <div
+        className={cn(
+          'relative flex flex-col items-end gap-2 text-white',
+          className
+        )}
+      >
         <div
-          className='bg-review flex cursor-pointer items-center rounded-[48px] px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'
+          className='bg-review flex cursor-pointer items-center rounded-full px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'
           onClick={handleOpenReviewModal}
         >
           <div className='h-6 w-6 bg-[url(/logo.webp)] bg-cover bg-position-[50%]'></div>

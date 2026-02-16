@@ -1,9 +1,9 @@
 import {
   commentApiRequest,
   movieApiRequest,
-  moviePersonApiRequest
+  moviePersonApiRequest,
+  reviewApiRequest
 } from '@/api-requests';
-import reviewApiRequest from '@/api-requests/review.api-request';
 import { Movie } from '@/app/movie/[slug]/_components';
 import { getQueryClient } from '@/components/providers';
 import envConfig from '@/config';

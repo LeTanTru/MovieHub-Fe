@@ -136,7 +136,7 @@ export default function ReviewModal({
                     <div
                       onClick={() => handleSelectRating(+rating.value)}
                       className={cn(
-                        'jucenter flex cursor-pointer flex-col items-center gap-2.5 rounded-[12px] px-2.5 py-4 text-white grayscale-100 transition-all duration-200 ease-linear select-none hover:grayscale-0',
+                        'jucenter flex cursor-pointer flex-col items-center gap-2.5 rounded-lg px-2.5 py-4 text-white grayscale-100 transition-all duration-200 ease-linear select-none hover:grayscale-0',
                         {
                           'bg-rating-active grayscale-0':
                             selectedRating === rating.value

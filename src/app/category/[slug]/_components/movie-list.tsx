@@ -22,7 +22,7 @@ export default function MovieList({ id }: { id: string }) {
         categoryIds: id,
         size: DEFAULT_PAGE_SIZE
       },
-      enabled: true
+      enabled: !!id
     });
 
   const category = categoryData?.data;

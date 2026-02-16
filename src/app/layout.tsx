@@ -1,5 +1,5 @@
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Be_Vietnam_Pro } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
@@ -9,9 +9,10 @@ import { AppProvider, QueryProvider } from '@/components/providers';
 import BodyLoad from '@/components/app/body-load';
 import { PerformanceMonitor } from '@/components/performance-monitor';
 
-const inter = Inter({
+const inter = Be_Vietnam_Pro({
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-be-vietnam-pro',
   display: 'swap',
   preload: false
 });

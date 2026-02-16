@@ -4,13 +4,13 @@ import {
   DEFAULT_PAGE_SIZE,
   queryKeys
 } from '@/constants';
-import CountryList from './_components/country-list';
 import { Metadata } from 'next';
 import { generateSlug, getIdFromSlug } from '@/utils';
 import { MovieSearchType } from '@/types';
 import { getQueryClient } from '@/components/providers';
 import { movieApiRequest } from '@/api-requests';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { MovieList } from '@/app/country/[slug]/_components';
 
 export async function generateStaticParams() {
   return countries.slice(0, DEFAULT_PAGE_SIZE).map((country) => ({
@@ -43,6 +43,7 @@ export default async function CountryPage({
 }) {
   const { slug } = await params;
   const countryCode = getIdFromSlug(slug);
+
   const filters = await searchParams;
   const defaultFilters: MovieSearchType = {
     page: DEFALT_PAGE_START,
@@ -60,7 +61,7 @@ export default async function CountryPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CountryList countryCode={countryCode} />
+      <MovieList countryCode={countryCode} />
     </HydrationBoundary>
   );
 }

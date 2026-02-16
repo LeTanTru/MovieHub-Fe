@@ -7,7 +7,7 @@ import { generateSlug } from '@/utils';
 import Link from 'next/link';
 import { FaAngleRight } from 'react-icons/fa6';
 
-export default function TopicItem({ topic }: { topic: CollectionResType }) {
+export default function TopicItemV1({ topic }: { topic: CollectionResType }) {
   const colors = JSON.parse(topic.color);
 
   const gradientStyle = {
@@ -17,7 +17,7 @@ export default function TopicItem({ topic }: { topic: CollectionResType }) {
   return (
     <Link
       href={`${route.topic.path}/${generateSlug(topic.name)}.${topic.id}`}
-      className='topic bg-background/50 group relative top-0 justify-between overflow-hidden rounded-xl pt-5 pr-10 pb-5 pl-6 transition-all duration-200 ease-linear hover:-translate-y-2'
+      className='topic bg-background/50 group relative top-0 justify-between overflow-hidden rounded-md pt-5 pr-10 pb-5 pl-6 transition-all duration-200 ease-linear hover:-translate-y-2'
     >
       <div
         className='mask absolute top-0 right-0 bottom-0 left-0'

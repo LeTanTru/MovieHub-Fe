@@ -17,40 +17,15 @@ import {
   DISCUSSION_TAB_REVIEW,
   queryKeys
 } from '@/constants';
-import { AvatarField } from '@/components/form';
 import { Activity } from '@/components/activity';
-import { Skeleton } from '@/components/ui/skeleton';
+import { AvatarField } from '@/components/form';
 import { ButtonAction } from '@/components/app/button-action';
-import { useAuth } from '@/hooks';
-import { Element } from 'react-scroll';
 import { CommentInput, CommentList } from '@/components/app/comment';
+import { Element } from 'react-scroll';
 import { ReviewList } from '@/components/app/review';
-
-const DiscussionSkeleton = () => {
-  return (
-    <div className='relative block px-10 py-5'>
-      <div className='mb-4 flex items-center justify-between'>
-        <Skeleton className='skeleton h-5 w-40 rounded' />
-        <Skeleton className='skeleton h-8 w-32 rounded' />
-      </div>
-      <div className='mb-6'>
-        <Skeleton className='skeleton mb-4 h-16 w-full rounded' />
-        <div className='mt-12 flex flex-col gap-8'>
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div key={`discussion-skeleton-${index}`} className='flex gap-4'>
-              <Skeleton className='skeleton h-12.5 w-12.5 rounded-full' />
-              <div className='flex grow flex-col gap-3'>
-                <Skeleton className='skeleton h-4 w-40 rounded' />
-                <Skeleton className='skeleton h-4 w-full rounded' />
-                <Skeleton className='skeleton h-4 w-3/4 rounded' />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAuth } from '@/hooks';
+import DiscussionSkeleton from './discussion-skeleton';
 
 export default function Discussion({
   isLoading = false
@@ -136,7 +111,7 @@ export default function Discussion({
   if (isLoading) return <DiscussionSkeleton />;
 
   return (
-    <Element name='discussion'>
+    <Element name='discussion-detail' id='discussion-detail'>
       <div className='relative block px-10 py-5'>
         {/* Header */}
         <div className='flex items-center font-semibold text-white'>
