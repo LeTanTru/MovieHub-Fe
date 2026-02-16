@@ -241,6 +241,7 @@ export const queryKeys = {
   LOGIN_GOOGLE: 'login-google',
   LOGIN: 'login',
   LOGOUT: 'logout',
+  MOVIE_HISTORY: 'movie-history',
   MOVIE_ITEM_LIST: 'movie-item-list',
   MOVIE_ITEM: 'movie-item',
   MOVIE_LIST: 'movie-list',
