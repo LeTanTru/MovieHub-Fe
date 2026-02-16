@@ -19,20 +19,17 @@ export default function Playlist() {
     }))
   );
 
-  const { data: playlistListData, isLoading } = usePlaylistListQuery({
+  const { data: playlistData, isLoading } = usePlaylistListQuery({
     enabled: true
   });
 
-  const playlistList = useMemo(
-    () => playlistListData?.data || [],
-    [playlistListData]
-  );
+  const playlist = useMemo(() => playlistData?.data || [], [playlistData]);
 
   useEffect(() => {
-    if (!selectedPlaylist && playlistList.length > 0) {
-      setSelectedPlaylist(playlistList[0]);
+    if (!selectedPlaylist && playlist.length > 0) {
+      setSelectedPlaylist(playlist[0]);
     }
-  }, [playlistList, selectedPlaylist, setSelectedPlaylist]);
+  }, [playlist, selectedPlaylist, setSelectedPlaylist]);
 
   return (
     <div className='mb-6'>
@@ -40,19 +37,19 @@ export default function Playlist() {
         <h3 className='text-xl leading-normal font-semibold text-white'>
           Danh sách phát
         </h3>
-        {playlistList.length < MAX_PLAYLIST_COUNT && <ButtonAddPlayList />}
+        {playlist.length < MAX_PLAYLIST_COUNT && <ButtonAddPlayList />}
       </div>
       <div
         className={cn('grid grid-cols-5 gap-6', {
-          'grid-cols-1': playlistList.length === 0
+          'grid-cols-1': playlist.length === 0
         })}
       >
         {isLoading ? (
           <PlaylistSkeleton />
-        ) : playlistList.length === 0 ? (
+        ) : playlist.length === 0 ? (
           <NoData className='pt-25' content='Bạn chưa có danh sách phát nào' />
         ) : (
-          playlistList.map((playlist) => (
+          playlist.map((playlist) => (
             <PlaylistCard playlist={playlist} key={playlist.id} />
           ))
         )}

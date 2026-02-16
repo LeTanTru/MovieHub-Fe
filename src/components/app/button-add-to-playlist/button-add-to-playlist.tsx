@@ -39,7 +39,7 @@ export default function ButtonAddToPlaylist({
   const [playlistId, setPlaylistId] = useState<string>('');
   const { isAuthenticated } = useAuth();
 
-  const { data: playlistListData, isLoading: playlistListLoading } =
+  const { data: playlistData, isLoading: playlistLoading } =
     usePlaylistListQuery({
       enabled: opened
     });
@@ -54,7 +54,7 @@ export default function ButtonAddToPlaylist({
     isPending: updatePlaylistItemLoading
   } = useUpdatePlaylistItemMutation();
 
-  const playlistList = playlistListData?.data || [];
+  const playlist = playlistData?.data || [];
 
   const playlistByMovie = useMemo(
     () => playlistByMovieData?.data || [],
@@ -104,7 +104,7 @@ export default function ButtonAddToPlaylist({
       movieId: movieId
     };
 
-    if (playlistListLoading) return;
+    if (playlistLoading) return;
 
     await updatePlaylistItemMutate(payload, {
       onSuccess: (res) => {
@@ -158,13 +158,13 @@ export default function ButtonAddToPlaylist({
             <div className='flex justify-between text-black'>
               <span>Danh sách phát</span>
               <span>
-                {playlistList.length}/{MAX_PLAYLIST_COUNT}
+                {playlist.length}/{MAX_PLAYLIST_COUNT}
               </span>
             </div>
-            {playlistListLoading ? (
+            {playlistLoading ? (
               <PlaylistItemListSkeleton />
             ) : (
-              playlistList.map((playlist) => (
+              playlist.map((playlist) => (
                 <PlaylistItem
                   key={playlist.id}
                   playlist={playlist}
@@ -176,7 +176,7 @@ export default function ButtonAddToPlaylist({
                 />
               ))
             )}
-            {playlistList.length < MAX_PLAYLIST_COUNT && (
+            {playlist.length < MAX_PLAYLIST_COUNT && (
               <ButtonAddPlayList
                 className='bg-light-golden-yellow! border-light-golden-yellow hover:bg-light-golden-yellow/80! rounded text-black hover:text-black/80!'
                 text='Thêm mới'
