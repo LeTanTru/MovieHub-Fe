@@ -5,7 +5,11 @@ import { defaultAvatar, MessageIcon } from '@/assets';
 import { ButtonReview } from '@/components/app/button-review';
 import { Button } from '@/components/form';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PERSON_KIND_ACTOR } from '@/constants';
+import {
+  DISCUSSION_TAB_COMMENT,
+  DISCUSSION_TAB_REVIEW,
+  PERSON_KIND_ACTOR
+} from '@/constants';
 import { cn } from '@/lib';
 import { useSuggestionMovieListQuery } from '@/queries';
 import { route } from '@/routes';
@@ -50,10 +54,11 @@ export default function WatchSide() {
   const { slug } = useParams<{ slug: string }>();
   const movieId = getIdFromSlug(slug);
 
-  const { movie, moviePersons } = useMovieStore(
+  const { movie, moviePersons, setDiscussionTab } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,
-      moviePersons: s.moviePersons
+      moviePersons: s.moviePersons,
+      setDiscussionTab: s.setDiscussionTab
     }))
   );
 
@@ -66,6 +71,17 @@ export default function WatchSide() {
 
   const suggestionMovieList = suggestionMovieListData?.data || [];
 
+  const handleSelectDiscussionTab = (tab: string) => {
+    setDiscussionTab(tab);
+    scroller.scrollTo('discussion-watch', {
+      duration: 0,
+      delay: 0,
+      smooth: true,
+      offset: -100,
+      isDynamic: true
+    });
+  };
+
   if (!movie) return null;
 
   return (
@@ -74,17 +90,7 @@ export default function WatchSide() {
         <Button
           className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! hover:bg-white/10'
           variant='ghost'
-          onClick={() => {
-            setTimeout(() => {
-              scroller.scrollTo('discussion-detail', {
-                duration: 0,
-                delay: 0,
-                smooth: true,
-                offset: -100,
-                isDynamic: true
-              });
-            }, 50);
-          }}
+          onClick={() => handleSelectDiscussionTab(DISCUSSION_TAB_COMMENT)}
         >
           <MessageIcon />
           Bình luận
@@ -92,6 +98,7 @@ export default function WatchSide() {
         <Button
           className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! hover:bg-white/10'
           variant='ghost'
+          onClick={() => handleSelectDiscussionTab(DISCUSSION_TAB_REVIEW)}
         >
           <FaStar />
           Đánh giá

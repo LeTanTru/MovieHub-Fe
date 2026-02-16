@@ -134,6 +134,8 @@ type MovieStates = {
   moviePersons: MoviePersonResType[];
 
   selectedSeason: number;
+
+  discussionTab: string;
 };
 
 type MovieAction = {
@@ -146,6 +148,10 @@ type MovieAction = {
   setMoviePersons: (moviePersons: MoviePersonResType[]) => void;
 
   setSelectedSeason: (season: number) => void;
+
+  setDiscussionTab: (tab: string) => void;
+
+  reset: () => void;
 };
 
 export type MovieStoreType = MovieStates & MovieAction;
