@@ -2,7 +2,7 @@
 
 import PlaylistSkeleton from './playlist-skeleton';
 import PlaylistCard from './playlist-card';
-import { ButtonAddPlayList } from '@/components/app/button-action-playlist';
+import { ButtonAddPlayList } from '@/components/app/button-playlist';
 import { NoData } from '@/components/no-data';
 import { usePlaylistListQuery } from '@/queries';
 import { cn } from '@/lib';

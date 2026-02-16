@@ -9,7 +9,7 @@ import {
 } from '@/queries';
 import { FaPlus } from 'react-icons/fa6';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ButtonAddPlayList } from '@/components/app/button-action-playlist';
+import { ButtonAddPlayList } from '@/components/app/button-playlist';
 import {
   ACTION_ADD_TO_PLAYLIST,
   ACTION_DELETE_FROM_PLAYLIST,
