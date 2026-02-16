@@ -30,16 +30,16 @@ export default function MovieActionBar({
     return (
       <div className='relative z-3 p-7.5'>
         <div className='flex items-center justify-between gap-8'>
-          <Skeleton className='skeleton h-12 w-44 rounded-4xl' />
+          <Skeleton className='skeleton h-15 w-44 rounded-4xl!' />
           <div className='flex grow justify-start gap-4'>
             {Array.from({ length: 4 }).map((_, index) => (
               <Skeleton
                 key={`action-skeleton-${index}`}
-                className='skeleton h-12 w-20 rounded-lg'
+                className='skeleton h-15 w-15 rounded-lg!'
               />
             ))}
           </div>
-          <Skeleton className='skeleton h-10 w-28 rounded-4xl' />
+          <Skeleton className='skeleton h-12 w-45 rounded-4xl!' />
         </div>
       </div>
     );
@@ -76,12 +76,15 @@ export default function MovieActionBar({
             className='hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10'
             variant='ghost'
             onClick={() => {
-              scroller.scrollTo('discussion', {
-                duration: 200,
-                delay: 0,
-                smooth: true,
-                offset: -100
-              });
+              setTimeout(() => {
+                scroller.scrollTo('discussion-detail', {
+                  duration: 0,
+                  delay: 0,
+                  smooth: true,
+                  offset: -100,
+                  isDynamic: true
+                });
+              }, 50);
             }}
           >
             <MessageIcon />

@@ -66,7 +66,7 @@ export default function MovieModal({
                 >
                   {movie.title}
                 </h3>
-                <h3 className='text-light-golden-yellow mb-0 text-sm text-xs leading-normal font-normal'>
+                <h3 className='text-light-golden-yellow mb-0 text-xs leading-normal font-normal'>
                   {movie.originalTitle}
                 </h3>
               </div>

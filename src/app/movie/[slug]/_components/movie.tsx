@@ -51,7 +51,7 @@ export default function Movie({ id }: { id: string }) {
   if (movieLoading || !movie)
     return (
       <div className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
-        <Skeleton className='skeleton h-0 w-full rounded-b-2xl pt-[40%]' />
+        <Skeleton className='skeleton h-0 w-full pt-[40%]' />
         <div className='relative z-3 mx-auto -mt-50 mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
           <MovieInfo isLoading />
           <MovieContent isLoading />

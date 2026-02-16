@@ -1,6 +1,6 @@
 'use client';
 
-import WatchSide from '@/app/watch/[slug]/_components/watch-side';
+import WatchSide from './watch-side';
 import WatchMain from './watch-main';
 
 export default function WatchContainer() {

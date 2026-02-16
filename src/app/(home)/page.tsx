@@ -1,4 +1,4 @@
-import Slider from '@/app/(home)/_components/slider/slider';
+import { Slider } from '@/app/(home)/_components/slider';
 
 export default async function HomePage() {
   return (

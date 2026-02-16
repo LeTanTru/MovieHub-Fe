@@ -1,7 +1,6 @@
 'use client';
 
 import { Button } from '@/components/form';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth, useClickOutside, useDisclosure } from '@/hooks';
 import {
   usePlaylistByMovieQuery,
@@ -16,80 +15,16 @@ import {
   ACTION_DELETE_FROM_PLAYLIST,
   MAX_PLAYLIST_COUNT
 } from '@/constants';
-import { PlaylistItemBodyType, PlaylistResType } from '@/types';
-import { notify } from '@/utils';
-import { logger } from '@/logger';
-import { useEffect, useMemo, useState } from 'react';
-import { debounce } from 'lodash';
 import { cn } from '@/lib';
-import Link from 'next/link';
+import { debounce } from 'lodash';
+import { logger } from '@/logger';
+import { notify } from '@/utils';
+import { PlaylistItemBodyType } from '@/types';
 import { route } from '@/routes';
-
-function PlaylistItem({
-  playlist,
-  checked,
-  disabled = false,
-  onToggle
-}: {
-  playlist: PlaylistResType;
-  checked: boolean;
-  disabled?: boolean;
-  onToggle: (playlistId: string) => void;
-}) {
-  const handleToggle = () => {
-    if (disabled) {
-      return;
-    }
-    onToggle(playlist.id);
-  };
-
-  return (
-    <label
-      className={cn(`flex items-center gap-2 text-black`, {
-        'opacity-60': disabled,
-        'transtion-opacity duration-200 ease-linear hover:opacity-80': !disabled
-      })}
-      aria-disabled={disabled}
-      htmlFor={playlist.id}
-    >
-      <Checkbox
-        id={playlist.id}
-        className='mb-0! cursor-pointer border-black transition-colors duration-25 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
-        checked={checked}
-        disabled={disabled}
-        aria-labelledby={`playlist-label-${playlist.id}`}
-        onCheckedChange={handleToggle}
-      />
-      <span
-        className={cn('w-full grow cursor-pointer select-none', {
-          'cursor-not-allowed': disabled
-        })}
-        aria-labelledby={`playlist-label-${playlist.id}`}
-      >
-        {playlist.name}
-      </span>
-    </label>
-  );
-}
-
-function PlaylistItemSkeleton() {
-  return (
-    <div className='flex items-center gap-2'>
-      <div className='skeleton h-4 w-4 rounded-sm! bg-gray-500!' />
-      <div className='skeleton h-4 w-32 grow rounded bg-gray-500!' />
-    </div>
-  );
-}
-
-function PlaylistItemListSkeleton() {
-  return (
-    <div className='flex flex-col gap-4'>
-      {Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, index) => (
-        <PlaylistItemSkeleton key={index} />
-      ))}
-    </div>
-  );
-}
+import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import PlaylistItem from './playlist-item';
+import PlaylistItemListSkeleton from './playlist-item-list-skeleton';
 
 export default function ButtonAddToPlaylist({
   movieId,
