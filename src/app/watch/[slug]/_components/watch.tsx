@@ -30,17 +30,6 @@ export default function Watch({ id }: { id: string }) {
   );
 
   useEffect(() => {
-    if (!movie) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [movie]);
-
-  useEffect(() => {
     setMovie(movie);
     setMoviePersons(moviePersons);
   }, [movie, moviePersons, setMovie, setMoviePersons]);

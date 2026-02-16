@@ -2,6 +2,7 @@ import { apiConfig } from '@/constants';
 import {
   ApiResponse,
   ApiResponseList,
+  MovieHistoryResType,
   MovieResType,
   MovieSearchType
 } from '@/types';
@@ -23,7 +24,9 @@ const movieApiRequest = {
       pathParams: {
         id
       }
-    })
+    }),
+  getHistoryList: () =>
+    http.get<ApiResponse<MovieHistoryResType>>(apiConfig.movie.getHistoryList)
 };
 
 export default movieApiRequest;

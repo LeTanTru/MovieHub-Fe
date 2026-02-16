@@ -2,7 +2,7 @@ import z from 'zod';
 
 export const watchHistorySchema = z.object({
   lastWatchSeconds: z.number(),
-  movieItemid: z.string()
+  movieItemId: z.string()
 });
 
 export const watchHistorySearchSchema = z.object({

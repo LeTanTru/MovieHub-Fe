@@ -83,6 +83,17 @@ export default function Modal({
     };
   }, [open, children, scrollable]);
 
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (open) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [open]);
+
   const handleScrollDown = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ top: 200, behavior: 'smooth' });

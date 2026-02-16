@@ -36,7 +36,7 @@ import {
   defaultLayoutIcons,
   DefaultVideoLayoutSlots
 } from '@vidstack/react/player/layouts/default';
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useRef, useState, forwardRef } from 'react';
 import { cn } from '@/lib';
 
 type IndicatorAction = 'initial' | 'play-pause' | 'volume' | 'none';
@@ -50,55 +50,71 @@ const IndicatorContext = createContext<{
 
 export const useIndicator = () => useContext(IndicatorContext);
 
-export default function VideoPlayer({
-  auth,
-  autoPlay = true,
-  duration,
-  introEnd,
-  introStart,
-  outroStart,
-  slots,
-  source,
-  textTracks,
-  thumbnailUrl,
-  vttUrl,
-  className,
-  token,
-  prev,
-  next,
-  title,
-  onPrevClick,
-  onNextClick
-}: {
-  auth: boolean;
-  autoPlay?: boolean;
-  duration: number;
-  introEnd: number;
-  introStart: number;
-  outroStart: number;
-  slots?: DefaultVideoLayoutSlots;
-  source: string;
-  textTracks?: TrackProps[];
-  thumbnailUrl: string;
-  vttUrl: string;
-  className?: string;
-  token?: string;
-  prev?: boolean;
-  next?: boolean;
-  title?: string;
-  onPrevClick?: () => void;
-  onNextClick?: () => void;
-}) {
+const VideoPlayer = forwardRef<
+  MediaPlayerInstance,
+  {
+    auth: boolean;
+    autoPlay?: boolean;
+    duration: number;
+    introEnd: number;
+    introStart: number;
+    outroStart: number;
+    slots?: DefaultVideoLayoutSlots;
+    source: string;
+    textTracks?: TrackProps[];
+    thumbnailUrl: string;
+    vttUrl: string;
+    className?: string;
+    token?: string;
+    prev?: boolean;
+    next?: boolean;
+    title?: string;
+    onPrevClick?: () => void;
+    onNextClick?: () => void;
+    onTimeUpdate?: (detail: MediaTimeUpdateEventDetail) => void;
+  }
+>(function VideoPlayer(
+  {
+    auth,
+    autoPlay = true,
+    duration,
+    introEnd,
+    introStart,
+    outroStart,
+    slots,
+    source,
+    textTracks,
+    thumbnailUrl,
+    vttUrl,
+    className,
+    token,
+    prev,
+    next,
+    title,
+    onPrevClick,
+    onNextClick,
+    onTimeUpdate
+  },
+  ref
+) {
   const playerRef = useRef<MediaPlayerInstance>(null);
   const [showSkip, setShowSkip] = useState<boolean>(true);
   const [currentAction, setCurrentAction] =
     useState<IndicatorAction>('initial');
+
+  // Expose internal ref to parent
+  if (typeof ref === 'function') {
+    ref(playerRef.current);
+  } else if (ref) {
+    ref.current = playerRef.current;
+  }
 
   const handleTimeChange = (detail: MediaTimeUpdateEventDetail) => {
     const { currentTime } = detail;
     const shouldShowSkip = currentTime >= introStart && currentTime < introEnd;
 
     setShowSkip((prev) => (prev !== shouldShowSkip ? shouldShowSkip : prev));
+    onTimeUpdate?.(detail);
   };
 
   return (
@@ -191,7 +207,11 @@ export default function VideoPlayer({
       </MediaPlayer>
     </IndicatorContext.Provider>
   );
-}
+});
+
+VideoPlayer.displayName = 'VideoPlayer';
+
+export default VideoPlayer;
 
 function onProviderChange(
   provider: MediaProviderAdapter | null,

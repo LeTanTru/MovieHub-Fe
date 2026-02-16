@@ -197,6 +197,12 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true,
       ignoreAuth: true
+    },
+    getHistoryList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/history`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
     }
   },
   moviePerson: {

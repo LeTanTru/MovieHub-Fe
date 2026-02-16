@@ -34,3 +34,10 @@ export const useSuggestionMovieListQuery = (id: string) => {
     enabled: !!id
   });
 };
+
+export const useMovieHistoryListQuery = () => {
+  return useQuery({
+    queryKey: [queryKeys.MOVIE_HISTORY],
+    queryFn: () => movieApiRequest.getHistoryList()
+  });
+};
