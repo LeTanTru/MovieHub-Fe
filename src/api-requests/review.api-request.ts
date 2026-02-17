@@ -11,7 +11,7 @@ import {
 import { http } from '@/utils';
 
 const reviewApiRequest = {
-  getList: ({ params }: { params?: ReviewSearchType }) =>
+  getList: (params?: ReviewSearchType) =>
     http.get<ApiResponseList<ReviewResType>>(apiConfig.review.getList, {
       params
     }),

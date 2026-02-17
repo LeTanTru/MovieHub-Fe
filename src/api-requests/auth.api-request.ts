@@ -14,7 +14,7 @@ import {
 import { http } from '@/utils';
 
 const authApiRequest = {
-  getGoogleLoginUrl: ({ loginType }: { loginType: string | number }) =>
+  getGoogleLoginUrl: (loginType: string | number) =>
     http.get<ApiResponse<any>>(apiConfig.user.auth.socialLogin, {
       params: { loginType }
     }),
@@ -22,7 +22,7 @@ const authApiRequest = {
     http.post<ApiResponse<any> & LoginResType>(apiConfig.api.auth.loginGoogle, {
       body: { code }
     }),
-  loginGoogleCallback: ({ code }: { code: string }) =>
+  loginGoogleCallback: (code: string) =>
     http.post<LoginResType>(apiConfig.user.auth.webCallback, {
       body: { code }
     }),
@@ -30,7 +30,7 @@ const authApiRequest = {
     http.post<ApiResponse<any> & LoginResType>(apiConfig.user.login, {
       body
     }),
-  setCookieServer: ({ body }: { body: CookieServerBodyType }) =>
+  setCookieServer: (body: CookieServerBodyType) =>
     http.post<ApiResponse<any>>(apiConfig.api.auth.login, {
       body
     }),

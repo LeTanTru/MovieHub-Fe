@@ -2,7 +2,7 @@ import { movieApiRequest } from '@/api-requests';
 import { MovieList } from '@/app/movie/(type)/series/_components';
 import { getQueryClient } from '@/components/providers';
 import {
-  DEFALT_PAGE_START,
+  DEFAULT_PAGE_START,
   DEFAULT_PAGE_SIZE,
   movieTypes,
   queryKeys
@@ -22,7 +22,7 @@ export default async function MovieSeriesPage({
 }) {
   const filters = await searchParams;
   const defaultFilters: MovieSearchType = {
-    page: DEFALT_PAGE_START,
+    page: DEFAULT_PAGE_START,
     type: movieTypes.MOVIE_TYPE_SERIES,
     size: DEFAULT_PAGE_SIZE,
     ...filters
@@ -32,7 +32,7 @@ export default async function MovieSeriesPage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_LIST, defaultFilters],
-    queryFn: () => movieApiRequest.getList({ params: defaultFilters })
+    queryFn: () => movieApiRequest.getList(defaultFilters)
   });
 
   return (

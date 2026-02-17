@@ -17,7 +17,7 @@ import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const persons = await personApiRequest.getList({
-    params: { size: DEFAULT_PAGE_SIZE }
+    size: DEFAULT_PAGE_SIZE
   });
   return persons.data.content.map((person) => ({
     id: `${person?.id}`
@@ -102,7 +102,7 @@ export default async function PersonDetailPage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_PERSON_LIST, defaultFilters],
-    queryFn: () => moviePersonApiRequest.getList({ params: defaultFilters })
+    queryFn: () => moviePersonApiRequest.getList(defaultFilters)
   });
 
   return (

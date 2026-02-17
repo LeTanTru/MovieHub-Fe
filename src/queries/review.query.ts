@@ -1,5 +1,5 @@
 import { reviewApiRequest } from '@/api-requests';
-import { DEFALT_PAGE_START, queryKeys } from '@/constants';
+import { DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import {
   CommentSearchType,
   ReviewBodyType,
@@ -9,7 +9,7 @@ import {
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export const useReviewListQuery = ({
-  params,
+  params = {},
   enabled
 }: {
   params?: ReviewSearchType;
@@ -17,7 +17,7 @@ export const useReviewListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.REVIEW_LIST, params],
-    queryFn: () => reviewApiRequest.getList({ params }),
+    queryFn: () => reviewApiRequest.getList(params),
     enabled
   });
 };
@@ -32,10 +32,8 @@ export const useInfiniteReviewListQuery = ({
   return useInfiniteQuery({
     queryKey: [queryKeys.REVIEW_LIST, params],
     queryFn: ({ pageParam }) =>
-      reviewApiRequest.getList({
-        params: { ...params, page: pageParam }
-      }),
-    initialPageParam: DEFALT_PAGE_START,
+      reviewApiRequest.getList({ ...params, page: pageParam }),
+    initialPageParam: DEFAULT_PAGE_START,
     getNextPageParam: (lastPage, pages) => {
       const totalPages = lastPage?.data?.totalPages || 0;
       const nextPage = pages.length;

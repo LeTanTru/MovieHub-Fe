@@ -1,5 +1,5 @@
 import { commentApiRequest } from '@/api-requests';
-import { DEFALT_PAGE_START, queryKeys } from '@/constants';
+import { DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import {
   CommentSearchType,
   CreateCommentBodyType,
@@ -9,7 +9,7 @@ import {
 import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 export const useCommentListQuery = ({
-  params,
+  params = {},
   enabled
 }: {
   params?: CommentSearchType;
@@ -17,7 +17,7 @@ export const useCommentListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.COMMENT_LIST, params],
-    queryFn: () => commentApiRequest.getList({ params }),
+    queryFn: () => commentApiRequest.getList(params),
     enabled
   });
 };
@@ -34,10 +34,8 @@ export const useInfiniteCommentListQuery = ({
   return useInfiniteQuery({
     queryKey: [queryKey, params],
     queryFn: ({ pageParam }) =>
-      commentApiRequest.getList({
-        params: { ...params, page: pageParam }
-      }),
-    initialPageParam: DEFALT_PAGE_START,
+      commentApiRequest.getList({ ...params, page: pageParam }),
+    initialPageParam: DEFAULT_PAGE_START,
     getNextPageParam: (lastPage, pages) => {
       const totalPages = lastPage?.data?.totalPages || 0;
       const nextPage = pages.length;

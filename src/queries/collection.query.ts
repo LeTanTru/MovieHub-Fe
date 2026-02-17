@@ -4,7 +4,7 @@ import { CollectionSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useCollectionTopicListQuery = ({
-  params,
+  params = {},
   enabled
 }: {
   params?: CollectionSearchType;
@@ -12,7 +12,7 @@ export const useCollectionTopicListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.COLLECTION_TOPIC_LIST, params],
-    queryFn: () => collectionApiRequest.getTopicList({ params }),
+    queryFn: () => collectionApiRequest.getTopicList(params),
     enabled
   });
 };

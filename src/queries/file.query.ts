@@ -5,8 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 export const useUploadImageMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.FILE_UPLOAD_IMAGE],
-    mutationFn: ({ file }: { file: Blob }) =>
-      fileApiRequest.uploadImage({ file })
+    mutationFn: ({ file }: { file: Blob }) => fileApiRequest.uploadImage(file)
   });
 };
 

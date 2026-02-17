@@ -10,7 +10,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const usePlaylistMoviesQuery = ({
   playlistId,
-  params
+  params = {}
 }: {
   playlistId: string;
   params?: PlaylistSearchType;

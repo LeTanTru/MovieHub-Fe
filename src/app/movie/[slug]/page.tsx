@@ -10,8 +10,8 @@ import envConfig from '@/config';
 import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
-  DEFAULT_TABLE_PAGE_START,
-  queryKeys
+  queryKeys,
+  DEFAULT_PAGE_START
 } from '@/constants';
 import {
   ApiResponse,
@@ -28,7 +28,7 @@ import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const movies = await movieApiRequest.getList({
-    params: { size: DEFAULT_PAGE_SIZE }
+    size: DEFAULT_PAGE_SIZE
   });
   return movies.data.content.map((movie) => ({
     slug: `${movie.slug}.${movie.id}`
@@ -118,7 +118,7 @@ export default async function MoviePage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
-    queryFn: () => moviePersonApiRequest.getList({ params: moviePersonFilters })
+    queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
   });
 
   await queryClient.prefetchQuery({
@@ -130,13 +130,11 @@ export default async function MoviePage({
     queryKey: [queryKeys.COMMENT_LIST, commentFilters],
     queryFn: ({ pageParam }) =>
       commentApiRequest.getList({
-        params: {
-          movieId: id,
-          page: pageParam,
-          size: DEFAULT_PAGE_SIZE
-        }
+        movieId: id,
+        page: pageParam,
+        size: DEFAULT_PAGE_SIZE
       }),
-    initialPageParam: DEFAULT_TABLE_PAGE_START,
+    initialPageParam: DEFAULT_PAGE_START,
     getNextPageParam: (
       lastPage: ApiResponseList<CommentResType>,
       pages: ApiResponseList<CommentResType>[]
@@ -147,13 +145,11 @@ export default async function MoviePage({
     queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
     queryFn: ({ pageParam }) =>
       reviewApiRequest.getList({
-        params: {
-          movieId: id,
-          page: pageParam,
-          size: DEFAULT_PAGE_SIZE
-        }
+        movieId: id,
+        page: pageParam,
+        size: DEFAULT_PAGE_SIZE
       }),
-    initialPageParam: DEFAULT_TABLE_PAGE_START,
+    initialPageParam: DEFAULT_PAGE_START,
     getNextPageParam: (
       lastPage: ApiResponseList<ReviewResType>,
       pages: ApiResponseList<ReviewResType>[]

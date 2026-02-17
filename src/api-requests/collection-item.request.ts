@@ -7,7 +7,7 @@ import {
 import { http } from '@/utils';
 
 const collectionItemApiRequest = {
-  getList: ({ params }: { params?: CollectionItemSearchType }) =>
+  getList: (params?: CollectionItemSearchType) =>
     http.get<ApiResponseList<CollectionItemResType>>(
       apiConfig.collectionItem.getList,
       {

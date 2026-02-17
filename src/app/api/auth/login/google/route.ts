@@ -16,7 +16,7 @@ export async function POST(request: Request) {
   const req = await request.json();
   const code: string = req.code;
   try {
-    const res = await authApiRequest.loginGoogleCallback({ code });
+    const res = await authApiRequest.loginGoogleCallback(code);
     if (res.access_token) {
       const accessToken = res.access_token;
       const refreshToken = res.refresh_token;

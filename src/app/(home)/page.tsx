@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const queryClient = getQueryClient();
 
-  const sidebarParams: SidebarSearchType = {};
+  const sidebarFilters: SidebarSearchType = {};
 
   await queryClient.prefetchQuery({
-    queryKey: [queryKeys.SIDEBAR_LIST, sidebarParams],
-    queryFn: () => sidebarApiRequest.getList(sidebarParams)
+    queryKey: [queryKeys.SIDEBAR_LIST, sidebarFilters],
+    queryFn: () => sidebarApiRequest.getList(sidebarFilters)
   });
 
   return (
