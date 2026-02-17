@@ -6,7 +6,7 @@ import { MovieSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useMovieListQuery = ({
-  params,
+  params = {},
   enabled = false
 }: {
   params?: MovieSearchType;
@@ -14,7 +14,7 @@ export const useMovieListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_LIST, params],
-    queryFn: () => movieApiRequest.getList({ params }),
+    queryFn: () => movieApiRequest.getList(params),
     enabled
   });
 };

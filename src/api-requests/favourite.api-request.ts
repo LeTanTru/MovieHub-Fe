@@ -3,17 +3,18 @@ import {
   ApiResponse,
   ApiResponseList,
   FavouriteBodyType,
+  FavouriteGetType,
   FavouriteResType,
   FavouriteSearchType
 } from '@/types';
 import { http } from '@/utils';
 
 const favouriteApiRequest = {
-  getList: ({ params }: { params?: FavouriteSearchType } = {}) =>
+  getList: (params?: FavouriteSearchType) =>
     http.get<ApiResponseList<FavouriteResType>>(apiConfig.favourite.getList, {
       params
     }),
-  get: (params: { targetId: string; type: number }) =>
+  get: (params: FavouriteGetType) =>
     http.get<ApiResponse<{ id: string }>>(apiConfig.favourite.get, {
       params
     }),

@@ -6,7 +6,7 @@ import { PersonSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const usePersonListQuery = ({
-  params,
+  params = {},
   enabled
 }: {
   params?: PersonSearchType;
@@ -14,7 +14,7 @@ export const usePersonListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.PERSON_LIST, params],
-    queryFn: () => personApiRequest.getList({ params }),
+    queryFn: () => personApiRequest.getList(params),
     enabled
   });
 };

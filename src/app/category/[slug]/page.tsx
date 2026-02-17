@@ -1,6 +1,6 @@
 import { categoryApiRequest, movieApiRequest } from '@/api-requests';
 import type { Metadata } from 'next';
-import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import { getQueryClient } from '@/components/providers';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { ApiResponse, MovieSearchType } from '@/types';
@@ -10,7 +10,7 @@ import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const categories = await categoryApiRequest.getList({
-    params: { size: DEFAULT_PAGE_SIZE }
+    size: DEFAULT_PAGE_SIZE
   });
   return categories.data.content.map((category) => ({
     slug: `${category?.slug}.${category?.id}`
@@ -42,7 +42,7 @@ export default async function CategoryPage({
   const filters = await searchParams;
   const id = getIdFromSlug(slug);
   const defaultFilters: MovieSearchType = {
-    page: 0,
+    page: DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
     categoryIds: id,
     ...filters
@@ -68,10 +68,7 @@ export default async function CategoryPage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_LIST, defaultFilters],
-    queryFn: () =>
-      movieApiRequest.getList({
-        params: defaultFilters
-      })
+    queryFn: () => movieApiRequest.getList(defaultFilters)
   });
 
   return (

@@ -36,7 +36,7 @@ export const useFavouriteQuery = ({
 };
 
 export const useFavouriteListQuery = ({
-  params,
+  params = {},
   enabled
 }: {
   params?: FavouriteSearchType;
@@ -44,7 +44,7 @@ export const useFavouriteListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.FAVOURITE_LIST, params],
-    queryFn: () => favouriteApiRequest.getList({ params }),
+    queryFn: () => favouriteApiRequest.getList(params),
     enabled
   });
 };

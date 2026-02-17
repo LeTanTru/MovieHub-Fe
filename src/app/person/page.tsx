@@ -2,7 +2,7 @@ import { personApiRequest } from '@/api-requests';
 import { PersonList } from '@/app/person/_components';
 import { getQueryClient } from '@/components/providers';
 import {
-  DEFALT_PAGE_START,
+  DEFAULT_PAGE_START,
   DEFAULT_PAGE_SIZE,
   PERSON_KIND_ACTOR,
   queryKeys
@@ -23,7 +23,7 @@ export default async function PersonPage({
 }) {
   const filters = await searchParams;
   const defaultFilters: PersonSearchType = {
-    page: DEFALT_PAGE_START,
+    page: DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
     kind: PERSON_KIND_ACTOR,
     ...filters
@@ -32,7 +32,7 @@ export default async function PersonPage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.PERSON_LIST, defaultFilters],
-    queryFn: () => personApiRequest.getList({ params: defaultFilters })
+    queryFn: () => personApiRequest.getList(defaultFilters)
   });
 
   return (

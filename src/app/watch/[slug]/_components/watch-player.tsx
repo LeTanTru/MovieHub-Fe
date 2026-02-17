@@ -56,6 +56,7 @@ export default function WatchPlayer() {
   const [autoPlay, setAutoPlay] = useState<boolean>(false);
   const currentSecondsRef = useRef<number>(0);
   const playerRef = useRef<MediaPlayerInstance>(null);
+  const hasFetchedTokenRef = useRef<boolean>(false);
 
   const {
     opened: isEpisodeListOpen,
@@ -225,6 +226,9 @@ export default function WatchPlayer() {
   };
 
   useEffect(() => {
+    if (hasFetchedTokenRef.current) return;
+    hasFetchedTokenRef.current = true;
+
     const handleGetToken = async () => {
       const anonymousToken = await getAnonymousToken();
       setToken(anonymousToken?.access_token || '');

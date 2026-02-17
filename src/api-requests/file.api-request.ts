@@ -3,7 +3,7 @@ import { ApiResponse, UploadImageResponseType } from '@/types';
 import { http } from '@/utils';
 
 const fileApiRequest = {
-  uploadImage: ({ file }: { file: Blob }) =>
+  uploadImage: (file: Blob) =>
     http.post<ApiResponse<UploadImageResponseType>>(apiConfig.file.upload, {
       body: {
         file: file,

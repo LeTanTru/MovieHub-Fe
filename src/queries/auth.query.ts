@@ -18,7 +18,7 @@ export const useLoginGoogleQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.GET_LOGIN_GOOGLE, loginType],
-    queryFn: () => authApiRequest.getGoogleLoginUrl({ loginType }),
+    queryFn: () => authApiRequest.getGoogleLoginUrl(loginType),
     enabled: false
   });
 };
@@ -41,7 +41,7 @@ export const useSetCookieServerMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.SET_COOKIE_SERVER],
     mutationFn: (body: CookieServerBodyType) =>
-      authApiRequest.setCookieServer({ body })
+      authApiRequest.setCookieServer(body)
   });
 };
 

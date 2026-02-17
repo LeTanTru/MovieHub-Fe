@@ -12,7 +12,7 @@ import { route } from '@/routes';
 import { ageRatings, FAVOURITE_TYPE_MOVIE } from '@/constants';
 import { useAuth } from '@/hooks';
 import Link from 'next/link';
-import { HeartIcon, InfoIcon } from '@/assets';
+import { HeartIcon, InfoIcon, PlayIcon } from '@/assets';
 import { AnimatedIconHandle, SidebarResType } from '@/types';
 import { logger } from '@/logger';
 
@@ -242,7 +242,7 @@ export default function SliderItem({
                 className='button-play'
                 href={`${route.watch.path}/${slider.movie.slug}.${slider.movie.id}`}
               >
-                <Play />
+                <PlayIcon />
               </a>
               <div className='touch-group transition-all duration-200 ease-linear hover:border-white!'>
                 <button className='item group' onClick={handleFavouriteClick}>

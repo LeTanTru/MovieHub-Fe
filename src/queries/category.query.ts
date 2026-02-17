@@ -14,7 +14,7 @@ export const useCategoryListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.CATEGORY_LIST, params],
-    queryFn: () => categoryApiRequest.getList({ params }),
+    queryFn: () => categoryApiRequest.getList(params),
     enabled
   });
 };

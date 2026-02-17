@@ -4,5 +4,6 @@ export { default as HeartIcon } from './heart';
 export { default as InfoIcon } from './info';
 export { default as LikeIcon } from './like';
 export { default as MessageIcon } from './message';
+export { default as PlayIcon } from './play';
 export { default as PlaylistIcon } from './playlist';
 export { default as TelegramIcon } from './telegram';

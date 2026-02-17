@@ -9,7 +9,7 @@ import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
   const topicList = await collectionApiRequest.getTopicList({
-    params: { size: DEFAULT_PAGE_SIZE }
+    size: DEFAULT_PAGE_SIZE
   });
   return topicList.data.content.map((topic) => ({
     slug: `${topic.name}.${topic.id}`
@@ -37,10 +37,7 @@ export default async function TopicDetailPage({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.COLLECTION_ITEM_LIST, defaultFilters],
-    queryFn: () =>
-      collectionItemApiRequest.getList({
-        params: defaultFilters
-      })
+    queryFn: () => collectionItemApiRequest.getList(defaultFilters)
   });
 
   try {
