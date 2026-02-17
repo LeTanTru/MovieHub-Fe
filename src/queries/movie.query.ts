@@ -35,9 +35,14 @@ export const useSuggestionMovieListQuery = (id: string) => {
   });
 };
 
-export const useMovieHistoryListQuery = () => {
+export const useMovieHistoryListQuery = ({
+  enabled
+}: {
+  enabled?: boolean;
+}) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_HISTORY],
-    queryFn: () => movieApiRequest.getHistoryList()
+    queryFn: () => movieApiRequest.getHistoryList(),
+    enabled
   });
 };

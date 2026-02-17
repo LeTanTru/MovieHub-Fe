@@ -18,7 +18,7 @@ import { useState } from 'react';
 export default function MovieList() {
   const [page, setPage] = useState(1);
 
-  const pageSize = 16;
+  const pageSize = 12;
   const playlist = usePlaylistStore((s) => s.selectedPlaylist);
   const queryClient = getQueryClient();
 
@@ -77,7 +77,7 @@ export default function MovieList() {
   return (
     <>
       {isLoading ? (
-        <MovieGridSkeleton className='grid-cols-8' skeletonCount={16} />
+        <MovieGridSkeleton className='grid-cols-6' skeletonCount={12} />
       ) : movieList.length === 0 ? (
         <NoData
           className='pt-25'
@@ -89,7 +89,7 @@ export default function MovieList() {
           }
         />
       ) : (
-        <div className='grid w-full grow grid-cols-8 gap-6'>
+        <div className='grid w-full grow grid-cols-6 gap-6'>
           {movieList.map((movie) => (
             <MovieCard
               key={movie.id}

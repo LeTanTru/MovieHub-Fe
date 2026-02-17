@@ -85,7 +85,10 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
                     href={item.link}
                     className={cn(
                       'hover:bg-accent hover:text-accent-foreground flex h-9 w-full cursor-pointer items-center justify-start gap-2 rounded-none px-4 text-sm opacity-70 transition-all duration-200 ease-linear hover:opacity-100 focus:outline-none focus-visible:ring-0',
-                      { 'opacity-100': pathname === item.link }
+                      {
+                        'text-light-golden-yellow opacity-100':
+                          pathname === item.link
+                      }
                     )}
                   >
                     <item.icon size={16} className={item.className} />

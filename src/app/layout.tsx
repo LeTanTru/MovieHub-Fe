@@ -21,8 +21,7 @@ export const metadata: Metadata = {
   title: {
     template: '%s | MovieHub',
     default: 'MovieHub'
-  },
-  description: 'Trang chủ MovieHub'
+  }
 };
 
 export default async function RootLayout({

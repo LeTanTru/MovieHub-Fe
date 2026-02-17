@@ -60,3 +60,12 @@ export const formatDuration = (second: number): string => {
 
   return time;
 };
+
+export const formatSecondsToMinutes = (totalSeconds: number): string => {
+  if (!totalSeconds || isNaN(totalSeconds)) return '0m';
+
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
+};

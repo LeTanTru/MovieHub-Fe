@@ -1,0 +1,8 @@
+.image-modal-mask {
+  mask-image: linear-gradient(0deg, transparent 0, black 30px);
+  -webkit-mask-image: linear-gradient(0deg, transparent 0, black 30px);
+}
+
+.ratio-16x9 {
+  --bs-aspect-ratio: 56.25%;
+}
