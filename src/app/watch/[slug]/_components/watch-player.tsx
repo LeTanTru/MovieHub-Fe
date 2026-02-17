@@ -9,7 +9,7 @@ import {
   MOVIE_TYPE_SINGLE,
   VIDEO_SOURCE_TYPE_INTERNAL
 } from '@/constants';
-import { useDisclosure, useQueryParams } from '@/hooks';
+import { useAuth, useDisclosure, useQueryParams } from '@/hooks';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
@@ -36,6 +36,8 @@ import {
 import WatchContinueModal from './watch-continue-modal';
 
 export default function WatchPlayer() {
+  const { isAuthenticated } = useAuth();
+
   const { movie } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie
@@ -72,7 +74,7 @@ export default function WatchPlayer() {
   // Fetch watch history for current movie
   const { data: watchHistoryData } = useWatchHistoryListQuery({
     params: { movieId: movie?.id || '' },
-    enabled: !!movie?.id
+    enabled: !!movie?.id && isAuthenticated
   });
 
   const watchHistories = useMemo(
@@ -159,8 +161,10 @@ export default function WatchPlayer() {
       movieItemId: movieItemId
     };
 
+    if (!isAuthenticated) return;
+
     await trackWatchHistory(payload);
-  }, [movieItemId, trackWatchHistory]);
+  }, [isAuthenticated, movieItemId, trackWatchHistory]);
 
   // Track when user leaves page (beforeunload, navigation, etc)
   useEffect(() => {
@@ -197,6 +201,10 @@ export default function WatchPlayer() {
       showContinueModal();
     }
   }, [movieItemId, showContinueModal, watchHistories]);
+
+  useEffect(() => {
+    setAutoPlay(!isAuthenticated || lastWatchedSeconds === 0);
+  }, [isAuthenticated, lastWatchedSeconds]);
 
   const handleContinueWatching = () => {
     if (playerRef.current && lastWatchedSeconds > 0) {

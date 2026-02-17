@@ -1,4 +1,10 @@
 import { Slider } from '@/app/(home)/_components/slider';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  description:
+    'Xem phim trực tuyến miễn phí với chất lượng cao tại MovieHub. Khám phá kho phim đa dạng, từ hành động, hài hước đến lãng mạn. Trải nghiệm xem phim mượt mà trên mọi thiết bị, không quảng cáo phiền phức. Cập nhật phim mới hàng ngày, đảm bảo bạn luôn có những lựa chọn giải trí tốt nhất. Thưởng thức thế giới điện ảnh tại MovieHub ngay hôm nay !'
+};
 
 export default async function HomePage() {
   return (

@@ -1,7 +1,7 @@
 'use client';
 
-import { breakPoints } from '@/constants';
-import { MovieResType } from '@/types';
+import { breakPoints, MOVIE_TYPE_SINGLE } from '@/constants';
+import { MovieHistoryResType } from '@/types';
 import { useMediaQuery } from 'react-responsive';
 import { motion, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { route } from '@/routes';
-import { renderImageUrl } from '@/utils';
+import { formatSecondsToMinutes, renderImageUrl } from '@/utils';
 import MovieModal from './movie-modal';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
@@ -38,11 +38,11 @@ const MODAL_WIDTH = 400;
 const EDGE_PADDING = 20;
 
 export default function MovieCard({
-  movie,
+  movieHistory,
   dir = 'up',
   onDelete
 }: {
-  movie: MovieResType;
+  movieHistory: MovieHistoryResType;
   dir?: Dir;
   onDelete?: (id: string) => void;
 }) {
@@ -96,6 +96,15 @@ export default function MovieCard({
     }, 200);
   };
 
+  const movie = movieHistory.movie;
+
+  const movieItem = movieHistory.movieItem;
+
+  const percentWatched =
+    (movieHistory.lastWatchSeconds * 100) / movieItem.video.duration;
+
+  const isSingle = movie.type === MOVIE_TYPE_SINGLE;
+
   return (
     <>
       <motion.div
@@ -132,6 +141,40 @@ export default function MovieCard({
         </Link>
 
         <div className='min-h-10.5 text-center'>
+          <div
+            className='relative mb-2 h-1 w-full overflow-hidden rounded-lg bg-white/10'
+            title={`Bạn đã xem ${Math.floor(percentWatched)}% phim này`}
+          >
+            <div
+              className='absolute top-0 bottom-0 left-0 h-1 rounded-lg bg-white'
+              style={{ width: `${percentWatched}%` }}
+            ></div>
+          </div>
+          <div className='flex items-center justify-center gap-2 text-xs [&_div]:leading-5'>
+            <div>
+              {isSingle ? (
+                'Tập full'
+              ) : (
+                <>
+                  P. {movieItem.parent.label} - Tập {movieItem.label}
+                </>
+              )}
+            </div>
+            <div className='relative pl-2.5 before:absolute before:top-1/2 before:left-0 before:h-1 before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-white before:content-[""]'>
+              <span
+                title={formatSecondsToMinutes(movieHistory.lastWatchSeconds)}
+              >
+                {Math.floor(movieHistory.lastWatchSeconds / 60)}m
+              </span>
+              &nbsp;/&nbsp;
+              <span
+                className='text-white/50'
+                title={formatSecondsToMinutes(movieItem.video.duration)}
+              >
+                {Math.floor(movieItem.video.duration / 60)}m
+              </span>
+            </div>
+          </div>
           <Link
             href={`${route.movie.path}/${movie.slug}.${movie.id}`}
             title={movie.title}

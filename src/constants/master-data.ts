@@ -51,16 +51,18 @@ import {
   OptionType,
   UserSidebarItemType
 } from '@/types';
-import {
-  BellIcon,
-  Heart,
-  History,
-  ListVideo,
-  LockKeyhole,
-  User2
-} from 'lucide-react';
+import { LockKeyhole } from 'lucide-react';
 import type { StaticImageData } from 'next/image';
-import { FaInfinity, FaMars, FaVenus } from 'react-icons/fa6';
+import { FaHistory } from 'react-icons/fa';
+import {
+  FaBell,
+  FaHeart,
+  FaInfinity,
+  FaList,
+  FaMars,
+  FaUser,
+  FaVenus
+} from 'react-icons/fa6';
 import { IconType } from 'react-icons/lib';
 
 export const GENDER: number[] = [GENDER_MALE, GENDER_FEMALE, GENDER_OTHER];
@@ -84,32 +86,32 @@ export const genderIconMaps: Record<number, IconType> = {
 export const dropdownAvatarList: DropdownAvatarItemType[] = [
   {
     link: route.user.favourite.path,
-    icon: Heart,
-    className: 'fill-white stroke-0 size-5',
+    icon: FaHeart,
+    className: 'fill-white stroke-0 size-4',
     title: 'Yêu thích'
   },
   {
     link: route.user.playlist.path,
-    icon: ListVideo,
-    className: 'size-5',
+    icon: FaList,
+    className: 'size-4',
     title: 'Danh sách phát'
   },
   {
     link: route.user.watchHistory.path,
-    icon: History,
-    className: 'size-5',
+    icon: FaHistory,
+    className: 'size-4',
     title: 'Xem tiếp'
   },
   {
     link: route.user.profile.path,
-    icon: User2,
-    className: 'size-5',
+    icon: FaUser,
+    className: 'size-4',
     title: 'Tài khoản'
   },
   {
     link: route.user.changePassword.path,
     icon: LockKeyhole,
-    className: 'size-5',
+    className: 'size-4',
     title: 'Đổi mật khẩu'
   }
 ];
@@ -117,14 +119,14 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
 export const dropdownAvatarAccountList: DropdownAvatarItemType[] = [
   {
     link: route.user.profile.path,
-    icon: User2,
-    className: 'size-5',
+    icon: FaUser,
+    className: 'size-4',
     title: 'Tài khoản'
   },
   {
     link: route.user.changePassword.path,
     icon: LockKeyhole,
-    className: 'size-5',
+    className: 'size-4',
     title: 'Đổi mật khẩu'
   }
 ];
@@ -132,38 +134,38 @@ export const dropdownAvatarAccountList: DropdownAvatarItemType[] = [
 export const userSidebarList: UserSidebarItemType[] = [
   {
     link: route.user.favourite.path,
-    icon: Heart,
-    className: 'fill-white stroke-0 size-5',
+    icon: FaHeart,
+    className: 'size-4',
     title: 'Yêu thích'
   },
   {
     link: route.user.playlist.path,
-    icon: ListVideo,
-    className: 'size-5',
+    icon: FaList,
+    className: 'size-4',
     title: 'Danh sách phát'
   },
   {
     link: route.user.watchHistory.path,
-    icon: History,
-    className: 'size-5',
+    icon: FaHistory,
+    className: 'size-4',
     title: 'Xem tiếp'
   },
   {
     link: route.user.notification.path,
-    icon: BellIcon,
-    className: 'size-5',
+    icon: FaBell,
+    className: 'size-4',
     title: 'Thông báo'
   },
   {
     link: route.user.profile.path,
-    icon: User2,
-    className: 'size-5',
+    icon: FaUser,
+    className: 'size-4',
     title: 'Tài khoản'
   },
   {
     link: route.user.changePassword.path,
     icon: LockKeyhole,
-    className: 'size-5',
+    className: 'size-4',
     title: 'Đổi mật khẩu'
   }
 ];

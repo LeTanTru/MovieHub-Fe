@@ -14,7 +14,6 @@ import { usePathname } from 'next/navigation';
 import ButtonLogout from '@/components/button-logout';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
-import { route } from '@/routes';
 import { renderImageUrl } from '@/utils';
 import { List, ListItem } from '@/components/list';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -34,28 +33,15 @@ export default function Sidebar() {
         {userSidebarList.map((item) => (
           <ListItem
             key={item.link}
-            className={cn('opacity-50', {
-              'opacity-100': path === item.link
+            className={cn('opacity-70', {
+              'text-light-golden-yellow opacity-100': path === item.link
             })}
           >
             <Link
               href={item.link}
               className='max-1120:px-4 max-800:flex-col max-800:text-xs max-500:px-2 flex items-center gap-2 py-4 text-sm'
             >
-              <item.icon
-                className={cn(
-                  item.className,
-                  {
-                    'fill-white':
-                      path === route.user.favourite.path &&
-                      item.link === route.user.favourite.path,
-                    'fill-none stroke-2':
-                      path !== route.user.favourite.path &&
-                      item.link === route.user.favourite.path
-                  },
-                  'max-800:size-4'
-                )}
-              />
+              <item.icon className={item.className} />
               {item.title}
             </Link>
             <Separator className='max-1120:hidden' />
