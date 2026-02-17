@@ -3,7 +3,7 @@
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import { notify, removeDatas, setDatas } from '@/utils';
+import { notify, removeDatas, setMultipleData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
@@ -40,7 +40,7 @@ export default function LoginForm() {
     try {
       const res = await loginMutate(values);
       if (res.access_token) {
-        setDatas({
+        setMultipleData({
           [storageKeys.ACCESS_TOKEN]: res.access_token,
           [storageKeys.REFRESH_TOKEN]: res.refresh_token,
           [storageKeys.USER_KIND]: String(res.user_kind)
@@ -73,8 +73,8 @@ export default function LoginForm() {
 
   return (
     <section className='bg-auth-form rounded-lg px-6 py-4'>
-      <div className='mb-5 flex flex-col items-center gap-2'>
-        <h2 className='text-xl font-semibold'>Đăng nhập</h2>
+      <div className='mb-4 flex flex-col items-center gap-2'>
+        <h3 className='text-xl font-semibold'>Đăng nhập</h3>
         <p className='text-muted-foreground text-center text-sm'>
           Đăng nhập để có trải nghiệm tốt nhất với MovieHub
         </p>

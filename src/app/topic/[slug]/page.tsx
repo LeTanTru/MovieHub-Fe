@@ -35,11 +35,6 @@ export default async function TopicDetailPage({
     ...filters
   };
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.COLLECTION_ITEM_LIST, defaultFilters],
-    queryFn: () => collectionItemApiRequest.getList(defaultFilters)
-  });
-
   try {
     await queryClient.prefetchQuery({
       queryKey: [queryKeys.COLLECTION, collectionId],
@@ -55,6 +50,11 @@ export default async function TopicDetailPage({
   } catch (_) {
     notFound();
   }
+
+  await queryClient.prefetchQuery({
+    queryKey: [queryKeys.COLLECTION_ITEM_LIST, defaultFilters],
+    queryFn: () => collectionItemApiRequest.getList(defaultFilters)
+  });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

@@ -1,6 +1,6 @@
 'use client';
 
-import MovieCard from './movie-card';
+import { MovieCardHistory } from '@/components/app/movie-card';
 import { MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import { useMovieHistoryListQuery } from '@/queries';
@@ -31,7 +31,7 @@ export default function WatchHistory() {
       ) : (
         <div className='grid w-full grow grid-cols-6 gap-6'>
           {movieHistories.map((movieHistory) => (
-            <MovieCard
+            <MovieCardHistory
               key={movieHistory.id}
               movieHistory={movieHistory}
               dir='down'

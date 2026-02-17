@@ -12,7 +12,8 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Phim bộ'
+  title: 'Phim bộ',
+  description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.'
 };
 
 export default async function MovieSeriesPage({

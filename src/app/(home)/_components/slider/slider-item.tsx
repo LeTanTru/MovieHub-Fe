@@ -1,6 +1,5 @@
 'use client';
 
-import { Play } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import {
   useDeleteFavouriteMutation,
@@ -176,7 +175,7 @@ export default function SliderItem({
               <a
                 title={slider.movie.title}
                 href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-                className='text-4xl font-bold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'
+                className='hover:text-light-golden-yellow text-4xl font-bold text-white transition-colors duration-200 ease-linear text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'
               >
                 {slider.movie.title}
               </a>

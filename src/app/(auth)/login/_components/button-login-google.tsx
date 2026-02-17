@@ -13,7 +13,7 @@ import {
 } from '@/queries';
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
-import { notify, setDatas } from '@/utils';
+import { notify, setMultipleData } from '@/utils';
 import Image from 'next/image';
 import { useEffect } from 'react';
 
@@ -73,7 +73,7 @@ export default function ButtonLoginGoogle() {
       try {
         const res = await loginGoogleMutate(code);
         if (res.result) {
-          setDatas({
+          setMultipleData({
             [storageKeys.ACCESS_TOKEN]: res.access_token,
             [storageKeys.REFRESH_TOKEN]: res.refresh_token,
             [storageKeys.USER_KIND]: String(res.user_kind)

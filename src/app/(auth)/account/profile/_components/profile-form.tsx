@@ -96,8 +96,8 @@ export default function ProfileForm() {
 
   return (
     <section className='bg-auth-form rounded-lg px-6 py-4'>
-      <h2 className='text-center text-xl font-semibold'>Tài khoản</h2>
-      <p className='text-muted-foreground text-center text-sm'>
+      <h3 className='text-center text-xl font-semibold'>Tài khoản</h3>
+      <p className='text-muted-foreground mt-2 text-center text-sm'>
         Cập nhật thông tin tài khoản
       </p>
       <BaseForm
