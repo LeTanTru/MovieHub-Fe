@@ -42,7 +42,7 @@ export default function NavigationDesktop({
 
               <AnimatePresence>
                 {hovered === item.label && (
-                  <motion.ul
+                  <motion.div
                     initial={{
                       opacity: 0,
                       rotateX: -10,
@@ -64,36 +64,37 @@ export default function NavigationDesktop({
                     style={{
                       transformStyle: 'preserve-3d'
                     }}
-                    className={cn(
-                      'bg-navigation scrollbar-none absolute top-12 -left-50 z-50 max-h-120 w-48 grid-cols-1 overflow-y-auto rounded shadow-[0px_0px_6px_2px_var(--color-main-background)]',
-                      {
-                        // 'p-0': item.subItems!.length <= 4 && item.isGrid,
-                        'w-160 grid-cols-4 p-2':
-                          item.subItems!.length > 4 && item.isGrid,
-                        grid: item.isGrid,
-                        'w-48 p-1': !item.isGrid
-                      }
-                    )}
+                    className='absolute top-12.5 left-1/2 z-50 -translate-x-1/2'
                   >
-                    <div className='absolute -top-2 left-20 z-[-1]'>
-                      <div className='bg-navigation h-4 w-4 rotate-45 shadow-[-3px_-3px_6px_0px_var(--color-main-background)]' />
-                    </div>
-                    {item.subItems?.map((sub) => (
-                      <ListItem
-                        key={sub.label}
-                        title={sub.label}
-                        className='hover:bg-accent hover:text-light-golden-yellow rounded transition-all duration-100 ease-linear'
-                      >
-                        <Link
-                          className='line-clamp-1 block truncate px-4 py-2'
-                          href={sub.href!}
-                          onClick={() => setHovered(null)}
+                    <div className='absolute -top-5 left-0 z-10 h-10 w-full bg-transparent'></div>
+                    <List
+                      className={cn(
+                        'bg-navigation scrollbar-none max-h-[80vh] grid-cols-1 overflow-y-auto rounded shadow-[0px_0px_6px_2px_var(--color-main-background)]',
+                        {
+                          'w-160 grid-cols-4 p-2':
+                            item.subItems!.length > 4 && item.isGrid,
+                          grid: item.isGrid,
+                          'w-48 p-1': !item.isGrid
+                        }
+                      )}
+                    >
+                      {item.subItems?.map((sub) => (
+                        <ListItem
+                          key={sub.label}
+                          title={sub.label}
+                          className='hover:bg-accent hover:text-light-golden-yellow rounded transition-all duration-100 ease-linear'
                         >
-                          {sub.label}
-                        </Link>
-                      </ListItem>
-                    ))}
-                  </motion.ul>
+                          <Link
+                            className='line-clamp-1 block truncate px-5 py-2.5'
+                            href={sub.href!}
+                            onClick={() => setHovered(null)}
+                          >
+                            {sub.label}
+                          </Link>
+                        </ListItem>
+                      ))}
+                    </List>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </ListItem>
