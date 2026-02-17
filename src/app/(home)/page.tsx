@@ -1,4 +1,9 @@
+import { sidebarApiRequest } from '@/api-requests';
 import { Slider } from '@/app/(home)/_components/slider';
+import { getQueryClient } from '@/components/providers';
+import { queryKeys } from '@/constants';
+import { SidebarSearchType } from '@/types';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,10 +12,19 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
+  const queryClient = getQueryClient();
+
+  const sidebarParams: SidebarSearchType = {};
+
+  await queryClient.prefetchQuery({
+    queryKey: [queryKeys.SIDEBAR_LIST, sidebarParams],
+    queryFn: () => sidebarApiRequest.getList(sidebarParams)
+  });
+
   return (
-    <>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <Slider />
       <div className='max-1919:px-5 max-1600:pt-28 max-1360:pt-20 max-990:pb-24 max-800:pt-8 min-h-[calc(100vh-400px)] px-12.5 pt-40 pb-40 max-sm:px-4'></div>
-    </>
+    </HydrationBoundary>
   );
 }

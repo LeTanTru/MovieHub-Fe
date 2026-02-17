@@ -277,7 +277,8 @@ export const queryKeys = {
   VOTE_COMMENT: 'vote-comment',
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
+  SIDEBAR_LIST: 'sidebar-list'
 };
 
 export const countries = [

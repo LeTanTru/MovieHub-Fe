@@ -19,6 +19,7 @@ export * from './person.type';
 export * from './playlist.type';
 export * from './review.type';
 export * from './search.type';
+export * from './sidebar.type';
 export * from './style.type';
 export * from './upload.type';
 export * from './video.type';

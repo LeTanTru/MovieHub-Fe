@@ -35,13 +35,13 @@ export default function ButtonLikeDetail({
   const { mutateAsync: removeFavourite, isPending: removeFavouriteLoading } =
     useDeleteFavouriteMutation();
 
-  const { data: favouriteData } = useFavouriteQuery(
-    {
+  const { data: favouriteData } = useFavouriteQuery({
+    params: {
       targetId,
       type: FAVOURITE_TYPE_MOVIE
     },
-    !!targetId && isAuthenticated
-  );
+    enabled: !!targetId && isAuthenticated
+  });
 
   useEffect(() => {
     setIsLiked(!!favouriteData?.result && isAuthenticated);
