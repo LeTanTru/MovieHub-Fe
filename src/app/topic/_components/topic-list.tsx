@@ -1,13 +1,12 @@
 'use client';
 
 import { NoData } from '@/components/no-data';
-import TopicItemV1 from './topic-item-v1';
 import { cn } from '@/lib';
 import { useCollectionTopicListQuery } from '@/queries';
 import { AnimatePresence } from 'framer-motion';
 import TopicListSkeleton from './topic-skeleton';
 import { MAX_PAGE_SIZE } from '@/constants';
-import TopicItemV2 from './topic-item-v2';
+import { TopicItemV1, TopicItemV2 } from '@/components/app/topic-item';
 
 export default function TopicList() {
   const { data: topicListData, isLoading: topicListLoading } =

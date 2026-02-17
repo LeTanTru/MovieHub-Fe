@@ -37,7 +37,7 @@ const itemTransition: Transition = {
 const MODAL_WIDTH = 400;
 const EDGE_PADDING = 20;
 
-export default function MovieCard({
+export default function MovieCardHistory({
   movieHistory,
   dir = 'up',
   onDelete
@@ -150,7 +150,7 @@ export default function MovieCard({
               style={{ width: `${percentWatched}%` }}
             ></div>
           </div>
-          <div className='flex items-center justify-center gap-2 text-xs [&_div]:leading-5'>
+          <div className='flex items-center justify-center gap-2 text-xs text-white/80 [&_div]:leading-5'>
             <div>
               {isSingle ? (
                 'Tập full'

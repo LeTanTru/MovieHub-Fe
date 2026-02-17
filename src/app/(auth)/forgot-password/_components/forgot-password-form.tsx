@@ -269,7 +269,7 @@ export default function ForgotPasswordForm() {
   return (
     <section className='bg-auth-form rounded-lg px-6 py-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
-        <h2 className='text-xl font-semibold'>Quên mật khẩu</h2>
+        <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>
         <Activity visible={step == 1}>
           <p className='text-muted-foreground text-center text-sm'>
             Nhập email tài khoản để yêu cầu mật khẩu mới

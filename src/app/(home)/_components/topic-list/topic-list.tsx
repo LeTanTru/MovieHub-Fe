@@ -1,0 +1,60 @@
+'use client';
+
+import { NoData } from '@/components/no-data';
+import { cn } from '@/lib';
+import { useCollectionTopicListQuery } from '@/queries';
+import TopicListSkeleton from './topic-skeleton';
+import { MAX_PAGE_SIZE } from '@/constants';
+import {
+  TopicItemMoreV1,
+  TopicItemMoreV2,
+  TopicItemV1,
+  TopicItemV2
+} from '@/components/app/topic-item';
+
+export default function TopicList() {
+  const { data: topicListData, isLoading: topicListLoading } =
+    useCollectionTopicListQuery({
+      enabled: true,
+      params: { size: MAX_PAGE_SIZE }
+    });
+
+  const topicList = topicListData?.data?.content?.slice(0, 6) || [];
+  const totalElements = topicListData?.data?.totalElements || 0;
+
+  const switchToV2 = Math.random() < 0.5;
+  const TopicItem = switchToV2 ? TopicItemV2 : TopicItemV1;
+  const TopicItemMore = switchToV2 ? TopicItemMoreV2 : TopicItemMoreV1;
+
+  const moreCount = totalElements - topicList.length;
+
+  if (!topicList.length) return null;
+
+  return (
+    <div className='mx-auto w-full max-w-475 px-12.5'>
+      <div className='flex-start relative mb-5 flex min-h-11 items-center gap-4'>
+        <h3 className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+          Bạn đang quan tâm chủ đề gì ?
+        </h3>
+      </div>
+      <div
+        className={cn('grid grid-cols-7 justify-between gap-4', {
+          'grid-cols-1': topicList.length === 0
+        })}
+      >
+        {topicListLoading ? (
+          <TopicListSkeleton skeletonCount={7} />
+        ) : topicList.length > 0 ? (
+          <>
+            {topicList.map((topic) => (
+              <TopicItem key={topic.id} topic={topic} />
+            ))}
+            <TopicItemMore moreCount={moreCount} />
+          </>
+        ) : (
+          <NoData className='pt-20 pb-40' content={<>Không có chủ đề nào</>} />
+        )}
+      </div>
+    </div>
+  );
+}

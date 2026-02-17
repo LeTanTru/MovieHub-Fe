@@ -1,9 +1,11 @@
-import { sidebarApiRequest } from '@/api-requests';
-import { Slider } from '@/app/(home)/_components/slider';
-import { getQueryClient } from '@/components/providers';
-import { queryKeys } from '@/constants';
-import { SidebarSearchType } from '@/types';
+import { collectionApiRequest, sidebarApiRequest } from '@/api-requests';
+import { CollectionSearchType, SidebarSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { getQueryClient } from '@/components/providers';
+import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
+import { Slider } from '@/app/(home)/_components/slider';
+import { TopicList } from '@/app/(home)/_components/topic-list';
+import { WatchContinue } from '@/app/(home)/_components/watch-continue';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -16,15 +18,30 @@ export default async function HomePage() {
 
   const sidebarFilters: SidebarSearchType = {};
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.SIDEBAR_LIST, sidebarFilters],
-    queryFn: () => sidebarApiRequest.getList(sidebarFilters)
-  });
+  const defaultFilters: CollectionSearchType = {
+    size: MAX_PAGE_SIZE
+  };
+
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.SIDEBAR_LIST, sidebarFilters],
+      queryFn: () => sidebarApiRequest.getList(sidebarFilters)
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.COLLECTION_TOPIC_LIST, defaultFilters],
+      queryFn: () => collectionApiRequest.getTopicList(defaultFilters)
+    })
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Slider />
-      <div className='max-1919:px-5 max-1600:pt-28 max-1360:pt-20 max-990:pb-24 max-800:pt-8 min-h-[calc(100vh-400px)] px-12.5 pt-40 pb-40 max-sm:px-4'></div>
+      <div className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
+        <div className='flex flex-col gap-12.5'>
+          <TopicList />
+          <WatchContinue />
+        </div>
+      </div>
     </HydrationBoundary>
   );
 }

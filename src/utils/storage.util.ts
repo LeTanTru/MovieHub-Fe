@@ -12,7 +12,7 @@ export const getData = (key: string): string | null => {
   return isBrowser() ? localStorage.getItem(key) : null;
 };
 
-export const setDatas = (data: Record<string, string>): void => {
+export const setMultipleData = (data: Record<string, string>): void => {
   if (isBrowser()) {
     Object.entries(data).forEach(([key, value]) => {
       setData(key, value);

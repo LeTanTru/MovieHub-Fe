@@ -116,45 +116,84 @@ export default async function WatchPage({
     notFound();
   }
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
-    queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
-  });
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
+      queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
+      queryFn: () => movieApiRequest.getSuggestionList(id)
+    }),
+    queryClient.prefetchInfiniteQuery({
+      queryKey: [queryKeys.COMMENT_LIST, commentFilters],
+      queryFn: ({ pageParam }) =>
+        commentApiRequest.getList({
+          movieId: id,
+          page: pageParam,
+          size: DEFAULT_PAGE_SIZE
+        }),
+      initialPageParam: DEFAULT_TABLE_PAGE_START,
+      getNextPageParam: (
+        lastPage: ApiResponseList<CommentResType>,
+        pages: ApiResponseList<CommentResType>[]
+      ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
+    }),
+    queryClient.prefetchInfiniteQuery({
+      queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
+      queryFn: ({ pageParam }) =>
+        reviewApiRequest.getList({
+          movieId: id,
+          page: pageParam,
+          size: DEFAULT_PAGE_SIZE
+        }),
+      initialPageParam: DEFAULT_TABLE_PAGE_START,
+      getNextPageParam: (
+        lastPage: ApiResponseList<ReviewResType>,
+        pages: ApiResponseList<ReviewResType>[]
+      ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
+    })
+  ]);
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
-    queryFn: () => movieApiRequest.getSuggestionList(id)
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
+  //   queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
+  // });
 
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: [queryKeys.COMMENT_LIST, commentFilters],
-    queryFn: ({ pageParam }) =>
-      commentApiRequest.getList({
-        movieId: id,
-        page: pageParam,
-        size: DEFAULT_PAGE_SIZE
-      }),
-    initialPageParam: DEFAULT_TABLE_PAGE_START,
-    getNextPageParam: (
-      lastPage: ApiResponseList<CommentResType>,
-      pages: ApiResponseList<CommentResType>[]
-    ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
+  //   queryFn: () => movieApiRequest.getSuggestionList(id)
+  // });
 
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
-    queryFn: ({ pageParam }) =>
-      reviewApiRequest.getList({
-        movieId: id,
-        page: pageParam,
-        size: DEFAULT_PAGE_SIZE
-      }),
-    initialPageParam: DEFAULT_TABLE_PAGE_START,
-    getNextPageParam: (
-      lastPage: ApiResponseList<ReviewResType>,
-      pages: ApiResponseList<ReviewResType>[]
-    ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
-  });
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: [queryKeys.COMMENT_LIST, commentFilters],
+  //   queryFn: ({ pageParam }) =>
+  //     commentApiRequest.getList({
+  //       movieId: id,
+  //       page: pageParam,
+  //       size: DEFAULT_PAGE_SIZE
+  //     }),
+  //   initialPageParam: DEFAULT_TABLE_PAGE_START,
+  //   getNextPageParam: (
+  //     lastPage: ApiResponseList<CommentResType>,
+  //     pages: ApiResponseList<CommentResType>[]
+  //   ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
+  // });
+
+  // await queryClient.prefetchInfiniteQuery({
+  //   queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
+  //   queryFn: ({ pageParam }) =>
+  //     reviewApiRequest.getList({
+  //       movieId: id,
+  //       page: pageParam,
+  //       size: DEFAULT_PAGE_SIZE
+  //     }),
+  //   initialPageParam: DEFAULT_TABLE_PAGE_START,
+  //   getNextPageParam: (
+  //     lastPage: ApiResponseList<ReviewResType>,
+  //     pages: ApiResponseList<ReviewResType>[]
+  //   ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
+  // });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
