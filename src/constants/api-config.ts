@@ -427,6 +427,15 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true
     }
+  },
+  sidebar: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/sidebar/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
+    }
   }
 });
 

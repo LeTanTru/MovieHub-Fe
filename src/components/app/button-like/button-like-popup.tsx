@@ -37,13 +37,13 @@ export default function ButtonLikePopup({
   const { mutateAsync: removeFavourite, isPending: removeFavouriteLoading } =
     useDeleteFavouriteMutation();
 
-  const { data: favouriteData, refetch: getFavourite } = useFavouriteQuery(
-    {
+  const { data: favouriteData, refetch: getFavourite } = useFavouriteQuery({
+    params: {
       targetId,
       type: FAVOURITE_TYPE_MOVIE
     },
-    false
-  );
+    enabled: false
+  });
 
   const hasFetched = useRef(false);
 

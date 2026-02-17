@@ -21,10 +21,13 @@ export const useDeleteFavouriteMutation = () => {
   });
 };
 
-export const useFavouriteQuery = (
-  params: FavouriteGetType,
-  enabled?: boolean
-) => {
+export const useFavouriteQuery = ({
+  params,
+  enabled
+}: {
+  params: FavouriteGetType;
+  enabled?: boolean;
+}) => {
   return useQuery({
     queryKey: [queryKeys.FAVOURITE, params],
     queryFn: () => favouriteApiRequest.get(params),

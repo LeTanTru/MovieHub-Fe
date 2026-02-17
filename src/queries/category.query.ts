@@ -6,7 +6,7 @@ import { CategorySearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useCategoryListQuery = ({
-  params,
+  params = {},
   enabled
 }: {
   params?: CategorySearchType;
