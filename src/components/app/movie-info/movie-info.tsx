@@ -123,7 +123,7 @@ export default function MovieInfo({
       </div>
       <h2
         className={cn('mb-2 text-2xl leading-normal font-semibold text-white', {
-          'featured-title': movie.isFeatured
+          'featured-title font-bold': movie.isFeatured
         })}
       >
         {movie.title} {selectedSeason > 1 ? selectedSeason : ''}

@@ -105,15 +105,16 @@ export default function WatchInfo() {
         </div>
       </div>
       <div className='w-110 shrink-0'>
-        <h2
-          className={cn(
-            'hover:text-light-golden-yellow mb-2 text-xl leading-normal font-semibold text-white transition-all duration-200 ease-linear',
-            {
-              'featured-title': movie.isFeatured
-            }
-          )}
-        >
-          <Link href={`${route.movie.path}/${movie.slug}.${movie.id}`}>
+        <h2 className='mb-2 text-xl leading-normal text-white'>
+          <Link
+            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+            className={cn(
+              'hover:text-light-golden-yellow font-normal transition-all duration-200 ease-linear',
+              {
+                'featured-title font-bold': movie.isFeatured
+              }
+            )}
+          >
             {movie.title}
           </Link>
         </h2>
