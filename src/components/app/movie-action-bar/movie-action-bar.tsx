@@ -1,16 +1,16 @@
 'use client';
 
+import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
+import { ButtonLikeDetail } from '@/components/app/button-like';
+import { ButtonReview, ButtonViewReview } from '@/components/app/button-review';
+import { ButtonShareMovie } from '@/components/app/button-share';
+import { ButtonViewComment } from '@/components/app/button-comment';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { MOVIE_TYPE_SERIES } from '@/constants';
 import { route } from '@/routes';
-import { useMovieStore } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ButtonLikeDetail } from '@/components/app/button-like';
-import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
-import { ButtonShareMovie } from '@/components/app/button-share';
+import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import { ButtonReview, ButtonViewReview } from '@/components/app/button-review';
-import { ButtonViewComment } from '@/components/app/button-comment';
 
 export default function MovieActionBar({
   isLoading = false
@@ -51,7 +51,7 @@ export default function MovieActionBar({
     ? targetSeason.episodes[targetSeason.episodes.length - 1]
     : null;
 
-  const watchHref = isSeries
+  const watchLink = isSeries
     ? `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}&episode=${latestEpisode?.label}`
     : `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}`;
 
@@ -60,7 +60,7 @@ export default function MovieActionBar({
       <div className='flex items-center justify-between gap-8'>
         <ButtonWatchNow
           className='text-watch-now inline-flex min-h-15 shrink-0 items-center justify-center gap-4 rounded-4xl bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8! py-4! text-base font-semibold opacity-100 shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] transition-all duration-200 ease-linear hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]'
-          href={watchHref}
+          href={watchLink}
         />
         {/* Left */}
         <div className='flex grow justify-start gap-4'>

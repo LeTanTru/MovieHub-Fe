@@ -1,15 +1,14 @@
 'use client';
 
-import PlaylistSkeleton from './playlist-skeleton';
-import PlaylistCard from './playlist-card';
 import { ButtonAddPlayList } from '@/components/app/button-playlist';
+import { MAX_PLAYLIST_COUNT } from '@/constants';
 import { NoData } from '@/components/no-data';
+import { useEffect, useMemo } from 'react';
 import { usePlaylistListQuery } from '@/queries';
-import { cn } from '@/lib';
 import { usePlaylistStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import { useEffect, useMemo } from 'react';
-import { MAX_PLAYLIST_COUNT } from '@/constants';
+import PlaylistCard from './playlist-card';
+import PlaylistCardSkeleton from './playlist-skeleton';
 
 export default function Playlist() {
   const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
@@ -39,21 +38,21 @@ export default function Playlist() {
         </h3>
         {playlist.length < MAX_PLAYLIST_COUNT && <ButtonAddPlayList />}
       </div>
-      <div
-        className={cn('grid grid-cols-5 gap-6', {
-          'grid-cols-1': playlist.length === 0
-        })}
-      >
-        {isLoading ? (
-          <PlaylistSkeleton />
-        ) : playlist.length === 0 ? (
-          <NoData className='pt-25' content='Bạn chưa có danh sách phát nào' />
-        ) : (
-          playlist.map((playlist) => (
+      {isLoading ? (
+        <div className='grid grid-cols-5 gap-6'>
+          {Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, i) => (
+            <PlaylistCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : playlist.length === 0 ? (
+        <NoData className='pt-25' content='Bạn chưa có danh sách phát nào' />
+      ) : (
+        <div className='grid grid-cols-5 gap-6'>
+          {playlist.map((playlist) => (
             <PlaylistCard playlist={playlist} key={playlist.id} />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

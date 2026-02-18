@@ -12,13 +12,7 @@ import {
 import { http } from '@/utils';
 
 const playlistApiRequest = {
-  getListMovies: ({
-    playlistId,
-    params
-  }: {
-    playlistId: string;
-    params?: PlaylistSearchType;
-  }) =>
+  getListMovies: (playlistId: string, params?: PlaylistSearchType) =>
     http.get<ApiResponseList<PlaylistMovieResType>>(
       apiConfig.playlist.getListMovies,
       {

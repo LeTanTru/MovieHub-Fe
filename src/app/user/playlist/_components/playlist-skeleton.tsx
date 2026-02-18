@@ -1,8 +1,6 @@
-import { MAX_PLAYLIST_COUNT } from '@/constants';
-
-function PlaylistCardSkeleton() {
+export default function PlaylistCardSkeleton() {
   return (
-    <div className='rounded-md border p-4'>
+    <div className='rounded-md border-2 p-4'>
       <h3 className='skeleton mb-4 h-5 w-20 rounded'></h3>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-x-2'>
@@ -13,10 +11,4 @@ function PlaylistCardSkeleton() {
       </div>
     </div>
   );
-}
-
-export default function PlaylistSkeleton() {
-  return Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, i) => (
-    <PlaylistCardSkeleton key={i} />
-  ));
 }

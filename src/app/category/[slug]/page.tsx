@@ -26,9 +26,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const id = getIdFromSlug(slug);
   const res = await categoryApiRequest.getById(id);
+  const category = res.data;
 
   return {
-    title: res.data?.name
+    title: category?.name || 'Danh mục'
   };
 }
 
@@ -40,13 +41,13 @@ export default async function CategoryPage({
   searchParams: Promise<MovieSearchType>;
 }) {
   const { slug } = await params;
-  const filters = await searchParams;
+  const { page, ...rest } = await searchParams;
   const id = getIdFromSlug(slug);
   const defaultFilters: MovieSearchType = {
-    page: DEFAULT_PAGE_START,
+    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
     categoryIds: id,
-    ...filters
+    ...rest
   };
   const queryClient = getQueryClient();
 

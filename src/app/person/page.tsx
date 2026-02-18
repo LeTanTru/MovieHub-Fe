@@ -22,12 +22,12 @@ export default async function PersonPage({
 }: {
   searchParams: Promise<PersonSearchType>;
 }) {
-  const filters = await searchParams;
+  const { page, ...rest } = await searchParams;
   const defaultFilters: PersonSearchType = {
-    page: DEFAULT_PAGE_START,
+    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
     kind: PERSON_KIND_ACTOR,
-    ...filters
+    ...rest
   };
   const queryClient = getQueryClient();
 
