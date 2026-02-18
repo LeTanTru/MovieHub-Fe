@@ -6,7 +6,7 @@ import { getYearFromDate } from '@/utils';
 function groupByYear(list: MovieResType[]) {
   return list.reduce((acc: Record<string, MovieResType[]>, movie) => {
     const year = getYearFromDate(movie.releaseDate);
-    if (!year) return acc;
+    if (!year || !/^\d+$/.test(year)) return acc;
     if (!acc[year]) acc[year] = [];
     acc[year].push(movie);
     return acc;
