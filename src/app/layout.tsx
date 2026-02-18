@@ -1,13 +1,16 @@
 import './globals.css';
 import { Be_Vietnam_Pro } from 'next/font/google';
-import { ThemeProvider } from '@/components/theme-provider';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import ToastPortal from '@/components/toast-portal';
-import { AppProvider, QueryProvider } from '@/components/providers';
-import BodyLoad from '@/components/app/body-load';
+import {
+  AppProvider,
+  QueryProvider,
+  ThemeProvider
+} from '@/components/providers';
 import { PerformanceMonitor } from '@/components/performance-monitor';
+import { BodyLoad } from '@/components/app/body-load';
+import { ToastContainer } from 'react-toastify';
 
 const inter = Be_Vietnam_Pro({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
@@ -46,7 +49,7 @@ export default async function RootLayout({
               <Suspense>{children}</Suspense>
               <PerformanceMonitor />
             </ThemeProvider>
-            <ToastPortal />
+            <ToastContainer />
           </AppProvider>
         </QueryProvider>
       </body>

@@ -28,10 +28,7 @@ export default function CommentInput({
   const { searchParams } = useQueryParams<{ episode: string }>();
 
   const { movie, selectedSeason } = useMovieStore(
-    useShallow((s) => ({
-      movie: s.movie,
-      selectedSeason: s.selectedSeason
-    }))
+    useShallow((s) => ({ movie: s.movie, selectedSeason: s.selectedSeason }))
   );
 
   const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =

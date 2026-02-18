@@ -2,22 +2,22 @@
 
 import { TelegramIcon } from '@/assets';
 import { Button } from '@/components/form';
-import { AnimatedIconHandle } from '@/types';
+import { useClickAnimation } from '@/hooks';
 import { notify } from '@/utils';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ButtonSharePerson() {
   const pathname = usePathname();
   const [link, setLink] = useState('');
-  const telegramIconRef = useRef<AnimatedIconHandle>(null);
+  const { iconRef, startAnimation } = useClickAnimation();
 
   useEffect(() => {
     setLink(`${window.location.origin}${pathname}`);
   }, [pathname]);
 
   const handleCopyLink = async () => {
-    telegramIconRef.current?.startAnimation();
+    startAnimation();
     await navigator.clipboard.writeText(link);
     notify.success('Đã sao chép liên kết');
   };
@@ -28,7 +28,7 @@ export default function ButtonSharePerson() {
       variant='outline'
       onClick={handleCopyLink}
     >
-      <TelegramIcon ref={telegramIconRef} />
+      <TelegramIcon ref={iconRef} />
       Chia sẻ
     </Button>
   );

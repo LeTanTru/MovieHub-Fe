@@ -1,6 +1,6 @@
 'use client';
 
-import ButtonLogout from '@/components/button-logout';
+import { ButtonLogout } from '@/components/app/button-logout';
 import { AvatarField, Button } from '@/components/form';
 import { List, ListItem } from '@/components/list';
 import { Separator } from '@/components/ui/separator';
@@ -38,7 +38,7 @@ export default function NavigationMobile({
   );
 
   return (
-    <div className='1368:hidden'>
+    <div className='hidden'>
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}

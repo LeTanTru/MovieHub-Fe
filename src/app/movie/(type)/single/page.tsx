@@ -1,5 +1,6 @@
 import { movieApiRequest } from '@/api-requests';
 import { MovieList } from '@/app/movie/(type)/single/_components';
+import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers';
 import {
   DEFAULT_PAGE_START,
@@ -38,7 +39,11 @@ export default async function MovieSinglePage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <MovieList />
+      <Container className='relative min-h-[calc(100dvh-400px)] py-40'>
+        <div className='flex flex-col gap-12.5'>
+          <MovieList />
+        </div>
+      </Container>
     </HydrationBoundary>
   );
 }

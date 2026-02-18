@@ -3,7 +3,7 @@
 import { HeartIcon } from '@/assets';
 import { Button, ToolTip } from '@/components/form';
 import { FAVOURITE_TYPE_PERSON } from '@/constants';
-import { useAuth } from '@/hooks';
+import { useAuth, useClickAnimation } from '@/hooks';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import {
@@ -12,10 +12,9 @@ import {
   useFavouriteQuery
 } from '@/queries';
 import { route } from '@/routes';
-import { AnimatedIconHandle } from '@/types';
 import { notify } from '@/utils';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ButtonLikePerson({
   targetId,
@@ -24,7 +23,7 @@ export default function ButtonLikePerson({
   targetId: string;
   className?: string;
 }) {
-  const heartIconRef = useRef<AnimatedIconHandle>(null);
+  const { iconRef, startAnimation } = useClickAnimation();
   const [isLiked, setIsLiked] = useState(false);
   const [favouriteId, setFavouriteId] = useState<string>('');
   const { isAuthenticated } = useAuth();
@@ -49,7 +48,7 @@ export default function ButtonLikePerson({
   }, [favouriteData, isAuthenticated]);
 
   const handleLike = async () => {
-    heartIconRef.current?.startAnimation();
+    startAnimation();
 
     if (!isAuthenticated) {
       notify.error(
@@ -109,7 +108,7 @@ export default function ButtonLikePerson({
     if (removeFavouriteLoading) return;
 
     if (favouriteId) {
-      heartIconRef.current?.startAnimation();
+      startAnimation();
 
       await removeFavourite(favouriteId, {
         onSuccess: (res) => {
@@ -146,7 +145,7 @@ export default function ButtonLikePerson({
         variant='outline'
         onClick={isLiked ? handleRemoveLike : handleLike}
       >
-        <HeartIcon ref={heartIconRef} />
+        <HeartIcon ref={iconRef} />
         Thích
       </Button>
     </ToolTip>

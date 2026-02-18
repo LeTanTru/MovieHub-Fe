@@ -14,6 +14,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/components/providers';
 import { ApiResponse, MoviePersonSearchType } from '@/types';
 import { notFound } from 'next/navigation';
+import { Container } from '@/components/layout';
 
 export async function generateStaticParams() {
   const persons = await personApiRequest.getList({
@@ -107,10 +108,12 @@ export default async function PersonDetailPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className='max-1120:flex-col max-1120:px-0 relative mx-auto flex w-full max-w-410 items-stretch justify-between gap-0 px-5 py-0'>
-        <PersonSidebar />
-        <MovieList />
-      </div>
+      <Container className='relative min-h-[calc(100dvh-400px)] py-40'>
+        <div className='relative mx-auto flex w-full max-w-410 justify-between px-5'>
+          <PersonSidebar />
+          <MovieList />
+        </div>
+      </Container>
     </HydrationBoundary>
   );
 }

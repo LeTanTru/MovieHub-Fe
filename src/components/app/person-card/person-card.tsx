@@ -103,7 +103,7 @@ export default function PersonCard({
             )}
           </div>
         )}
-        <div className='relative z-2 -mt-10 px-2 py-3 text-center max-sm:text-[13px]'>
+        <div className='relative z-2 -mt-10 px-2 py-3 text-center'>
           <h4
             className={cn({
               'mb-1.5': showFullName

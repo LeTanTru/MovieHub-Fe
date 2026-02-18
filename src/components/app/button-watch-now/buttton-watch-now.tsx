@@ -2,10 +2,9 @@
 
 import { PlayIcon } from '@/assets';
 import { Button } from '@/components/form';
+import { useClickAnimation } from '@/hooks';
 import { cn } from '@/lib';
-import { AnimatedIconHandle } from '@/types';
 import Link from 'next/link';
-import { useRef } from 'react';
 
 export default function ButtonWatchNow({
   href,
@@ -14,16 +13,16 @@ export default function ButtonWatchNow({
   href: string;
   className?: string;
 }) {
-  const playIconRef = useRef<AnimatedIconHandle>(null);
+  const { iconRef, startAnimation } = useClickAnimation();
 
   const handleClick = () => {
-    playIconRef.current?.startAnimation();
+    startAnimation();
   };
 
   return (
     <Link href={href}>
       <Button className={cn('gap-2!', className)} onClick={handleClick}>
-        <PlayIcon iconClassName='size-5' ref={playIconRef} />
+        <PlayIcon iconClassName='size-5' ref={iconRef} />
         Xem ngay
       </Button>
     </Link>

@@ -46,10 +46,7 @@ export default function CommentList({
   const queryClient = getQueryClient();
 
   const { movie, setMovie } = useMovieStore(
-    useShallow((s) => ({
-      movie: s.movie,
-      setMovie: s.setMovie
-    }))
+    useShallow((s) => ({ movie: s.movie, setMovie: s.setMovie }))
   );
 
   const {

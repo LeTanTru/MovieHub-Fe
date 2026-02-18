@@ -10,6 +10,7 @@ import {
 } from '@/constants';
 import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
+import { useShallow } from 'zustand/shallow';
 
 export default function MovieTabPerson({
   kind,
@@ -18,7 +19,9 @@ export default function MovieTabPerson({
   kind: number;
   direction: number;
 }) {
-  const moviePersons = useMovieStore((s) => s.moviePersons);
+  const { moviePersons } = useMovieStore(
+    useShallow((s) => ({ moviePersons: s.moviePersons }))
+  );
 
   const personList = moviePersons
     .filter((moviePerson) => moviePerson.kind === kind)

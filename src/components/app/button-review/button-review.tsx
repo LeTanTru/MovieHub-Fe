@@ -20,11 +20,7 @@ export default function ButtonReview({
   const { opened, open, close } = useDisclosure();
   const { isAuthenticated } = useAuth();
 
-  const { movie } = useMovieStore(
-    useShallow((s) => ({
-      movie: s.movie
-    }))
-  );
+  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
   const { data: checkMovieData } = useCheckMovieQuery({
     movieId: movieId,

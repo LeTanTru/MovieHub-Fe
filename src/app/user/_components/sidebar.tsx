@@ -7,29 +7,27 @@ import {
   genderIconMaps,
   userSidebarList
 } from '@/constants';
-import { cn } from '@/lib';
-import { ProfileType } from '@/types';
-import { Skeleton } from '@/components/ui/skeleton';
-import { usePathname } from 'next/navigation';
-import ButtonLogout from '@/components/button-logout';
-import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
-import { renderImageUrl } from '@/utils';
-import { List, ListItem } from '@/components/list';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ButtonLogout } from '@/components/app/button-logout';
+import { cn } from '@/lib';
 import { defaultAvatar } from '@/assets';
+import { List, ListItem } from '@/components/list';
+import { ProfileType } from '@/types';
+import { renderImageUrl } from '@/utils';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Sidebar() {
   const path = usePathname();
   const { profile } = useAuth();
 
   return (
-    <div className='bg-user-sidebar max-1120:w-full max-1120:pt-6 max-1120:pb-0 max-1537:ml-4 max-600:px-0 h-fit w-75 shrink-0 rounded-lg p-10 pb-6'>
-      <h1 className='max-1120:mb-2 max-1120:text-center mb-8 text-xl font-bold'>
-        Quản lý tài khoản
-      </h1>
-      <List className='max-1120:mt-4 max-1120:flex-row max-1120:justify-center max-1120:gap-4 flex flex-col max-sm:gap-0'>
+    <div className='bg-user-sidebar h-fit w-75 shrink-0 rounded-lg p-10 pb-6'>
+      <h1 className='mb-8 text-xl font-bold'>Quản lý tài khoản</h1>
+      <List className='flex flex-col'>
         {userSidebarList.map((item) => (
           <ListItem
             key={item.link}
@@ -39,23 +37,23 @@ export default function Sidebar() {
           >
             <Link
               href={item.link}
-              className='max-1120:px-4 max-800:flex-col max-800:text-xs max-500:px-2 flex items-center gap-2 py-4 text-sm'
+              className='flex items-center gap-2 py-4 text-sm'
             >
               <item.icon className={item.className} />
               {item.title}
             </Link>
-            <Separator className='max-1120:hidden' />
+            <Separator />
           </ListItem>
         ))}
       </List>
-      <div className='max-1120:hidden mt-20'>
+      <div className='mt-20'>
         {!!profile ? (
           <ProfileSection profile={profile} />
         ) : (
           <ProfileSectionSkeleton />
         )}
       </div>
-      <ButtonLogout className='max-1120:hidden mt-4 w-full justify-center p-0! text-slate-400 transition-all duration-200 ease-linear hover:bg-transparent! hover:text-white' />
+      <ButtonLogout className='mt-4 w-full justify-center p-0! text-slate-400 transition-all duration-200 ease-linear hover:bg-transparent! hover:text-white' />
     </div>
   );
 }

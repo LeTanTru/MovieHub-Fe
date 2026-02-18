@@ -27,7 +27,12 @@ export default function PersonList() {
   const totalPages = personListData?.data?.totalPages || 0;
 
   return (
-    <>
+    <div className='mx-auto w-full max-w-475 px-12.5'>
+      <div className='flex-start relative mb-5 flex min-h-11 items-center gap-4'>
+        <h3 className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+          Diễn viên
+        </h3>
+      </div>
       {personListLoading ? (
         <PersonGridSkeleton />
       ) : personList.length === 0 ? (
@@ -46,6 +51,6 @@ export default function PersonList() {
       <Activity visible={!!totalPages}>
         <Pagination totalPages={totalPages} />
       </Activity>
-    </>
+    </div>
   );
 }

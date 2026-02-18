@@ -6,6 +6,8 @@ import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { useQueryParams } from '@/hooks';
+import { Activity } from '@/components/activity';
+import { Pagination } from '@/components/pagination';
 
 export default function MovieList({ id }: { id: string }) {
   const {
@@ -27,15 +29,18 @@ export default function MovieList({ id }: { id: string }) {
 
   const category = categoryData?.data;
   const movieList = movieListData?.data?.content || [];
+  const totalPages = movieListData?.data?.totalPages || 0;
 
   return (
-    <div className='max-989:mb-2.5 mb-5'>
+    <div className='mx-auto w-full max-w-475 px-12.5'>
       {categoryLoading ? (
-        <Skeleton className='skeleton m-0 mb-6 h-10 w-50' />
+        <Skeleton className='skeleton mb-6 h-10 w-50' />
       ) : (
-        <h3 className='max-1600:text-2xl m-0 mb-6 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
-          {category?.name}
-        </h3>
+        <div className='flex-start relative mb-5 flex min-h-11 items-center gap-4'>
+          <h3 className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+            {category?.name}
+          </h3>
+        </div>
       )}
       {movieListLoading ? (
         <MovieGridSkeleton />
@@ -52,6 +57,9 @@ export default function MovieList({ id }: { id: string }) {
       ) : (
         <MovieGrid movieList={movieList} />
       )}
+      <Activity visible={!!totalPages}>
+        <Pagination totalPages={totalPages} />
+      </Activity>
     </div>
   );
 }

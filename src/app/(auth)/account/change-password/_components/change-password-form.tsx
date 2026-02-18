@@ -123,7 +123,7 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='mb-0 justify-end'>
+              <Row className='mb-2 justify-end'>
                 <Col span={12}>
                   <Button
                     type='button'

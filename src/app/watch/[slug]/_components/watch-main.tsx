@@ -1,8 +1,10 @@
 'use client';
 
-import WatchEpisode from './watch-episode';
-import WatchInfo from './watch-info';
-import WatchDiscussion from './watch-discussion';
+import {
+  WatchDiscussion,
+  WatchEpisode,
+  WatchInfo
+} from '@/components/app/watch';
 
 export default function WatchMain() {
   return (

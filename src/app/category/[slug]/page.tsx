@@ -7,6 +7,7 @@ import { ApiResponse, MovieSearchType } from '@/types';
 import { MovieList } from '@/app/category/[slug]/_components';
 import { getIdFromSlug } from '@/utils';
 import { notFound } from 'next/navigation';
+import { Container } from '@/components/layout';
 
 export async function generateStaticParams() {
   const categories = await categoryApiRequest.getList({
@@ -73,7 +74,11 @@ export default async function CategoryPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <MovieList id={id} />
+      <Container className='relative min-h-[calc(100dvh-400px)] py-40'>
+        <div className='flex flex-col gap-12.5'>
+          <MovieList id={id} />
+        </div>
+      </Container>
     </HydrationBoundary>
   );
 }
