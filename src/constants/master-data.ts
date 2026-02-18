@@ -278,7 +278,8 @@ export const queryKeys = {
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_LIST: 'watch-history-list',
   WATCH_HISTORY_TRACKING: 'watch-history-tracking',
-  SIDEBAR_LIST: 'sidebar-list'
+  SIDEBAR_LIST: 'sidebar-list',
+  MOVIE_TOP_VIEW_LIST: 'movie-top-view-list'
 };
 
 export const countries = [

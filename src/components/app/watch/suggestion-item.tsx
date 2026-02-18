@@ -5,21 +5,17 @@ import { renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function SuggestionMovieItem({
-  movie
-}: {
-  movie: MovieResType;
-}) {
+export default function SuggestionItem({ movie }: { movie: MovieResType }) {
   const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
 
   return (
     <Link
       href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-      className='flex grow flex-row items-center justify-between overflow-hidden rounded-md bg-white/5'
+      className='flex grow flex-row items-center justify-between overflow-hidden rounded bg-white/5 hover:bg-white/4'
     >
       <div className='w-20 shrink-0'>
-        <div className='bg-gunmetal-blue relative block h-0 overflow-hidden rounded-md pb-[150%]'>
+        <div className='bg-gunmetal-blue relative block h-0 overflow-hidden rounded pb-[150%]'>
           <Image
             alt={`${movie.title} - ${movie.originalTitle}`}
             src={renderImageUrl(movie.posterUrl)}

@@ -46,3 +46,17 @@ export const useMovieHistoryListQuery = ({
     enabled
   });
 };
+
+export const useTopViewMovieListQuery = ({
+  params = {},
+  enabled
+}: {
+  params?: MovieSearchType;
+  enabled?: boolean;
+} = {}) => {
+  return useQuery({
+    queryKey: [queryKeys.MOVIE_TOP_VIEW_LIST, params],
+    queryFn: () => movieApiRequest.getTopViewList(params),
+    enabled
+  });
+};

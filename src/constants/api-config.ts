@@ -203,6 +203,12 @@ const apiConfig = defineApiConfig({
       method: 'GET',
       headers: baseHeader,
       isRequiredTenantId: true
+    },
+    getTopViewList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/top-views`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
     }
   },
   moviePerson: {

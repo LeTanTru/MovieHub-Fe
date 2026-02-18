@@ -1,4 +1,4 @@
-import SuggestionMovieItem from './suggestion-movie-item';
+import SuggestionItem from './suggestion-item';
 import { MovieResType } from '@/types';
 
 export default function SuggestionList({
@@ -14,7 +14,7 @@ export default function SuggestionList({
         </div>
         <div className='flex flex-col gap-4'>
           {movieList.map((movie) => (
-            <SuggestionMovieItem key={movie.id} movie={movie} />
+            <SuggestionItem key={movie.id} movie={movie} />
           ))}
         </div>
       </div>
