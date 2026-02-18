@@ -18,7 +18,7 @@ export default function TopViewItem({
   return (
     <Link href={`${route.movie.path}/${movie.slug}.${movie.id}`}>
       <div className='flex items-center justify-between'>
-        <div className='w-15 shrink-0 text-left text-[56px] font-extrabold text-[#191b24] text-shadow-[-1px_0_#fff,_0_1px_#fff,_1px_0_#fff,_0_-1px_#fff]'>
+        <div className='w-15 shrink-0 text-left text-[56px] font-extrabold text-[#191b24] text-shadow-[-1px_0_#fff,0_1px_#fff,1px_0_#fff,0_-1px_#fff]'>
           {index}
         </div>
         <div className='flex grow items-center justify-between rounded bg-white/5 transition-colors duration-200 ease-linear hover:bg-white/4'>
