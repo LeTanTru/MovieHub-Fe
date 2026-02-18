@@ -1,5 +1,6 @@
 export { default as CommentDotIcon } from './comment-dot';
 export { default as DislikeIcon } from './dislike';
+export { default as FallingStarIcon } from './falling-star';
 export { default as HeartIcon } from './heart';
 export { default as InfoIcon } from './info';
 export { default as LikeIcon } from './like';

@@ -26,7 +26,13 @@ const movieApiRequest = {
       }
     }),
   getHistoryList: () =>
-    http.get<ApiResponse<MovieHistoryResType[]>>(apiConfig.movie.getHistoryList)
+    http.get<ApiResponse<MovieHistoryResType[]>>(
+      apiConfig.movie.getHistoryList
+    ),
+  getTopViewList: (params?: MovieSearchType) =>
+    http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getTopViewList, {
+      params
+    })
 };
 
 export default movieApiRequest;

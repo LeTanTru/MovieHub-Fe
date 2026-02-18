@@ -34,6 +34,7 @@ import ActorList from './actor-list';
 import Image from 'next/image';
 import Link from 'next/link';
 import MovieInfoSkeleton from './movie-info-skeleton';
+import TopViewList from './top-view-list';
 
 export default function MovieInfo({
   isLoading = false
@@ -235,6 +236,7 @@ export default function MovieInfo({
         </span>
       </div>
       <ActorList actors={actors} />
+      <TopViewList />
     </div>
   );
 }
