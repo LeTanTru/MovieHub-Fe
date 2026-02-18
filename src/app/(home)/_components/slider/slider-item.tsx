@@ -1,6 +1,6 @@
 'use client';
 
-import { renderImageUrl, sanitizeText } from '@/utils';
+import { getYearFromDate, renderImageUrl, sanitizeText } from '@/utils';
 import { route } from '@/routes';
 import { ageRatings } from '@/constants';
 import { SidebarResType } from '@/types';
@@ -22,6 +22,7 @@ export default function SliderItem({
   onPointerDown,
   onPointerUp
 }: SliderItemProps) {
+  console.log('🚀 ~ SliderItem ~ slider:', slider);
   return (
     <div className='slide-elements'>
       <Link
@@ -92,7 +93,7 @@ export default function SliderItem({
                 </span>
               </div>
               <div className='tag-classic'>
-                <span>{slider.movie.year}</span>
+                <span>{getYearFromDate(slider.movie.releaseDate)}</span>
               </div>
               <div className='tag-classic'>
                 <span>Phần 2</span>

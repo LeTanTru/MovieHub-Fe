@@ -24,6 +24,7 @@ import {
   formatDate,
   formatDuration,
   generateSlug,
+  getYearFromDate,
   renderImageUrl,
   sanitizeText
 } from '@/utils';
@@ -123,7 +124,11 @@ export default function WatchInfo() {
         </p>
         <TagWrapper className='mb-3'>
           {ageRating ? <TagAgeRating value={ageRating} /> : null}
-          <TagNormal value={movie.year} />
+          <TagNormal
+            value={getYearFromDate(
+              currentSeason?.releaseDate || movie.releaseDate
+            )}
+          />
           {/* Single movie */}
           <Activity visible={isSingle}>
             <TagNormal value={formatDuration(movie.duration)} />
