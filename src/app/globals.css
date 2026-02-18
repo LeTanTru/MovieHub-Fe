@@ -204,17 +204,17 @@
 
   .featured-title {
     background: linear-gradient(
-      135deg,
+      to right,
       #ff6b6b 0%,
       #feca57 33%,
       #48dbfb 66%,
-      #0abde3 100%
+      #f79a65 100%
     );
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientShift 5s ease infinite;
+    animation: gradientShift 3s alternate infinite;
   }
 
   .vds-video-layout.dark .vds-kb-action {

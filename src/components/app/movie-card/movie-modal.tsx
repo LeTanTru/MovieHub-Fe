@@ -57,12 +57,9 @@ export default function MovieModal({
             <div className='w-full bg-[linear-gradient(0deg,rgba(47,51,70,1),rgba(47,51,70,.7))] p-6 pt-2'>
               <div className='mb-4'>
                 <h3
-                  className={cn(
-                    'font-semibold text-shadow-[0_0_3px_#00000030]',
-                    {
-                      'featured-title': movie.isFeatured
-                    }
-                  )}
+                  className={cn('font-normal text-shadow-[0_0_3px_#00000030]', {
+                    'featured-title font-bold': movie.isFeatured
+                  })}
                 >
                   {movie.title}
                 </h3>

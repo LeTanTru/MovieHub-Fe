@@ -32,6 +32,10 @@ export const formatSecondsToHMS = (totalSeconds: number): string => {
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
 
+  if (hours === 0) {
+    return `${pad(minutes)}:${pad(seconds)}`;
+  }
+
   return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 };
 

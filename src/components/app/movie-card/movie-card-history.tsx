@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRef } from 'react';
 import { route } from '@/routes';
-import { formatSecondsToMinutes, renderImageUrl } from '@/utils';
+import { formatSecondsToHMS, renderImageUrl } from '@/utils';
 import { cn } from '@/lib';
 import { X } from 'lucide-react';
 
@@ -91,27 +91,30 @@ export default function MovieCardHistory({
             style={{ width: `${percentWatched}%` }}
           ></div>
         </div>
-        <div className='flex items-center justify-center gap-2 text-xs text-white/80 [&_div]:leading-5'>
+        <div className='flex flex-col items-center justify-center text-xs text-white/80 [&_div]:leading-5'>
+          {/* ClassName to make a dot between time and duration, and make the dot in the middle of the two text */}
+          {/*
+          className='relative pl-2.5 before:absolute before:top-1/2 before:left-0 before:h-1 before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-white before:content-[""]' */}
+          <div>
+            <span title={formatSecondsToHMS(movieHistory.lastWatchSeconds)}>
+              {formatSecondsToHMS(movieHistory.lastWatchSeconds)}
+            </span>
+            &nbsp;/&nbsp;
+            <span
+              className='text-white/50'
+              title={formatSecondsToHMS(movieItem.video.duration)}
+            >
+              {formatSecondsToHMS(movieItem.video.duration)}
+            </span>
+          </div>
           <div>
             {isSingle ? (
               'Tập full'
             ) : (
               <>
-                P. {movieItem.parent.label} - Tập {movieItem.label}
+                Phần {movieItem.parent.label} - Tập {movieItem.label}
               </>
             )}
-          </div>
-          <div className='relative pl-2.5 before:absolute before:top-1/2 before:left-0 before:h-1 before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-white before:content-[""]'>
-            <span title={formatSecondsToMinutes(movieHistory.lastWatchSeconds)}>
-              {Math.floor(movieHistory.lastWatchSeconds / 60)}m
-            </span>
-            &nbsp;/&nbsp;
-            <span
-              className='text-white/50'
-              title={formatSecondsToMinutes(movieItem.video.duration)}
-            >
-              {Math.floor(movieItem.video.duration / 60)}m
-            </span>
           </div>
         </div>
         <Link href={watchLink} title={movie.title}>
@@ -119,7 +122,7 @@ export default function MovieCardHistory({
             className={cn(
               'hover:text-light-golden-yellow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
               {
-                'featured-title': movie.isFeatured
+                'featured-title font-bold': movie.isFeatured
               }
             )}
           >
