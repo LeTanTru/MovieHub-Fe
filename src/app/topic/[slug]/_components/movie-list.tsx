@@ -40,12 +40,12 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
   };
 
   return (
-    <div className='max-989:mb-2.5 mb-5'>
+    <div className='mx-auto w-full max-w-475 px-12.5'>
       <div className='topic-detail-background' style={gradientStyle}></div>
       {collectionLoading ? (
-        <Skeleton className='skeleton m-0 mb-6 h-10 w-50' />
+        <Skeleton className='skeleton mb-6 h-10 w-50' />
       ) : (
-        <h3 className='max-1600:text-2xl m-0 mb-6 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+        <h3 className='mb-6 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           Phim {collection?.name}
         </h3>
       )}

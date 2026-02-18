@@ -27,30 +27,30 @@ export default function MovieList() {
   const totalPages = movieListData?.data?.totalPages || 0;
 
   return (
-    <>
-      <div className='max-989:mb-2.5 mb-5'>
-        <h3 className='max-1600:text-2xl m-0 mb-6 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+    <div className='mx-auto w-full max-w-475 px-12.5'>
+      <div className='flex-start relative mb-5 flex min-h-11 items-center gap-4'>
+        <h3 className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           Phim lẻ
         </h3>
-        {movieListLoading ? (
-          <MovieGridSkeleton />
-        ) : movieList.length === 0 ? (
-          <NoData
-            className='pt-25 pb-40'
-            content={
-              <>
-                Không có phim nào trong danh mục&nbsp;
-                <span className='font-medium'>Phim lẻ</span>
-              </>
-            }
-          />
-        ) : (
-          <MovieGrid movieList={movieList} />
-        )}
       </div>
+      {movieListLoading ? (
+        <MovieGridSkeleton />
+      ) : movieList.length === 0 ? (
+        <NoData
+          className='pt-25 pb-40'
+          content={
+            <>
+              Không có phim nào trong danh mục&nbsp;
+              <span className='font-medium'>Phim lẻ</span>
+            </>
+          }
+        />
+      ) : (
+        <MovieGrid movieList={movieList} />
+      )}
       <Activity visible={!!totalPages}>
         <Pagination totalPages={totalPages} />
       </Activity>
-    </>
+    </div>
   );
 }

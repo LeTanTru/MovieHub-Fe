@@ -5,6 +5,7 @@ import {
   reviewApiRequest
 } from '@/api-requests';
 import { Watch } from '@/app/watch/[slug]/_components';
+import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers';
 import envConfig from '@/config';
 import {
@@ -155,49 +156,11 @@ export default async function WatchPage({
     })
   ]);
 
-  // await queryClient.prefetchQuery({
-  //   queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
-  //   queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
-  // });
-
-  // await queryClient.prefetchQuery({
-  //   queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
-  //   queryFn: () => movieApiRequest.getSuggestionList(id)
-  // });
-
-  // await queryClient.prefetchInfiniteQuery({
-  //   queryKey: [queryKeys.COMMENT_LIST, commentFilters],
-  //   queryFn: ({ pageParam }) =>
-  //     commentApiRequest.getList({
-  //       movieId: id,
-  //       page: pageParam,
-  //       size: DEFAULT_PAGE_SIZE
-  //     }),
-  //   initialPageParam: DEFAULT_TABLE_PAGE_START,
-  //   getNextPageParam: (
-  //     lastPage: ApiResponseList<CommentResType>,
-  //     pages: ApiResponseList<CommentResType>[]
-  //   ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
-  // });
-
-  // await queryClient.prefetchInfiniteQuery({
-  //   queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
-  //   queryFn: ({ pageParam }) =>
-  //     reviewApiRequest.getList({
-  //       movieId: id,
-  //       page: pageParam,
-  //       size: DEFAULT_PAGE_SIZE
-  //     }),
-  //   initialPageParam: DEFAULT_TABLE_PAGE_START,
-  //   getNextPageParam: (
-  //     lastPage: ApiResponseList<ReviewResType>,
-  //     pages: ApiResponseList<ReviewResType>[]
-  //   ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
-  // });
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Watch id={id} />
+      <Container className='relative min-h-[calc(100dvh-400px)] py-40'>
+        <Watch id={id} />
+      </Container>
     </HydrationBoundary>
   );
 }

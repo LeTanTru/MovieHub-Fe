@@ -7,7 +7,6 @@ import { ProfileType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
-import ButtonLogout from '@/components/button-logout';
 import { renderImageUrl } from '@/utils';
 import { List, ListItem } from '@/components/list';
 import { useDisclosure } from '@/hooks';
@@ -15,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { defaultAvatar } from '@/assets';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib';
+import { ButtonLogout } from '@/components/app/button-logout';
 
 type DropdownAvatarProps = {
   profile?: ProfileType | null;

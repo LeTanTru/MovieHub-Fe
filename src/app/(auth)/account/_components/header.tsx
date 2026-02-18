@@ -13,10 +13,10 @@ export default function Header() {
   const loading = useAppLoading();
 
   return (
-    <header className='max-800:relative max-800:top-auto max-800:right-auto max-800:left-auto fixed top-0 right-0 left-0 z-10 block'>
+    <header className='fixed top-0 right-0 left-0 z-10 block'>
       <div
         className={
-          '1368:pr-10 1368:pl-8 bg-transparent pl-4 transition-all duration-200 ease-linear'
+          'bg-transparent pr-10 pl-4 pl-8 transition-all duration-200 ease-linear'
         }
       >
         <div
@@ -24,18 +24,18 @@ export default function Header() {
             'h-header flex items-center justify-between gap-2 transition-all duration-200 ease-linear'
           }
         >
-          <div className='1368:gap-8 flex h-full flex-1 items-center gap-4'>
+          <div className='flex h-full flex-1 items-center gap-4 gap-8'>
             <Link href={route.home.path} className='shrink-0'>
               <Image
                 alt='Logo'
-                className='max-1919:h-10 max-1359:h-9 h-auto'
+                className='h-auto'
                 height={46}
                 src={logoWithText}
                 loading='eager'
               />
             </Link>
           </div>
-          <div className='h-header 1368:flex items-center gap-2'>
+          <div className='h-header flex items-center gap-2'>
             <AnimatePresence mode='wait' initial={false}>
               {loading ? (
                 <motion.div

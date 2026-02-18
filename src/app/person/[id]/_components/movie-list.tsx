@@ -42,9 +42,9 @@ export default function MovieList() {
   return (
     <div className='grow'>
       <div className='border-b-transparent-white border-b border-solid'>
-        <div className='max-1120:pl-0 pt-0 pb-10 pl-10'>
-          <div className='max-1120:mb-4 mb-8 flex items-center justify-between gap-8'>
-            <div className='max-1120:text-xl mb-0 text-xl leading-1.5 font-semibold text-white max-sm:text-[16px]'>
+        <div className='pt-0 pb-10 pl-10'>
+          <div className='mb-8 flex items-center justify-between gap-8'>
+            <div className='text-xl leading-1.5 font-semibold text-white'>
               Các phim đã tham gia
             </div>
             {!movieListLoading && movieList.length > 0 && (
@@ -64,7 +64,7 @@ export default function MovieList() {
               </div>
             )}
           </div>
-          <AnimatePresence mode='wait'>
+          <AnimatePresence mode='popLayout'>
             <motion.div
               key={activeKey}
               initial={{

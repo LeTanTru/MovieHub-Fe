@@ -252,7 +252,7 @@ export default function MovieTabEpisode({
   direction?: number;
   className?: string;
 }) {
-  const movie = useMovieStore((s) => s.movie);
+  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
   const Tab = movie
     ? movie.type === MOVIE_TYPE_SINGLE

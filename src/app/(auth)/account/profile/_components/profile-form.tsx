@@ -190,7 +190,7 @@ export default function ProfileForm() {
                   </Row>
                 </Col>
               </Row>
-              <Row className='mb-0 flex justify-end gap-2'>
+              <Row className='mb-2 flex justify-end gap-2'>
                 <Col span={6}>
                   <Button
                     type='button'

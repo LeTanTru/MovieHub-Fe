@@ -1,5 +1,6 @@
 import { collectionApiRequest, collectionItemApiRequest } from '@/api-requests';
 import { MovieList } from '@/app/topic/[slug]/_components';
+import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers';
 import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import { ApiResponse, CollectionItemSearchType } from '@/types';
@@ -58,7 +59,11 @@ export default async function TopicDetailPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <MovieList collectionId={collectionId} />
+      <Container className='relative min-h-[calc(100dvh-400px)] py-40'>
+        <div className='flex flex-col gap-12.5'>
+          <MovieList collectionId={collectionId} />
+        </div>
+      </Container>
     </HydrationBoundary>
   );
 }

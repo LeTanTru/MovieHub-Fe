@@ -7,6 +7,7 @@ import { Slider } from '@/app/(home)/_components/slider';
 import { TopicList } from '@/app/(home)/_components/topic-list';
 import { WatchContinue } from '@/app/(home)/_components/watch-continue';
 import type { Metadata } from 'next';
+import { Container } from '@/components/layout';
 
 export const metadata: Metadata = {
   description:
@@ -36,12 +37,12 @@ export default async function HomePage() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Slider />
-      <div className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
+      <Container className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
         <div className='flex flex-col gap-12.5'>
           <TopicList />
           <WatchContinue />
         </div>
-      </div>
+      </Container>
     </HydrationBoundary>
   );
 }

@@ -13,11 +13,7 @@ import { useShallow } from 'zustand/shallow';
 export default function WatchEpisodeSingle() {
   const { searchParams } = useQueryParams<{ season: string }>();
 
-  const { movie } = useMovieStore(
-    useShallow((s) => ({
-      movie: s.movie
-    }))
-  );
+  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
   const seasons = movie?.seasons || [];
 

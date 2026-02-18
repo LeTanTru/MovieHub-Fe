@@ -63,10 +63,10 @@ export default function PersonSidebar() {
       ?.sort((a, b) => a.localeCompare(b))
       .join(', ') || '';
 
-  return personLoading ? (
-    <PersonSidebarSkeleton />
-  ) : (
-    <div className='border-r-transparent-white max-1120:w-full max-1120:border-none max-1120:pr-0 max-1600:w-85 w-110 shrink-0 border-r pr-10'>
+  if (personLoading) return <PersonSidebarSkeleton />;
+
+  return (
+    <div className='border-r-transparent-white w-110 shrink-0 border-r pr-10'>
       <AvatarField
         size={160}
         src={renderImageUrl(person?.avatarPath)}
@@ -120,7 +120,7 @@ export default function PersonSidebar() {
         {person?.bio && (
           <Button
             onClick={handleOpenModal}
-            className='bg-accent hover:bg-background max-1120:mx-auto max-1120:mb-4 max-1120:w-110 max-1600:mt-4 max-800:w-full mt-2 ml-auto block text-sm text-white'
+            className='bg-accent hover:bg-background mt-2 ml-auto block text-sm text-white'
             variant='secondary'
           >
             Xem thêm

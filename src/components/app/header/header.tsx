@@ -11,7 +11,6 @@ import { logoWithText } from '@/assets';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
 import { Button } from '@/components/form';
-import { Search, X } from 'lucide-react';
 import { useAppLoading, useAuth, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 
@@ -20,7 +19,6 @@ export default function Header() {
   const loading = useAppLoading();
   const navigate = useNavigate();
   const [isFixed, setIsFixed] = useState<boolean>(false);
-  const [showSearch, setShowSearch] = useState<boolean>(false);
 
   useEffect(() => {
     const handleOnScroll = () => {
@@ -38,15 +36,12 @@ export default function Header() {
   };
 
   return (
-    <header className='max-800:relative max-800:top-auto max-800:right-auto max-800:left-auto fixed top-0 right-0 left-0 z-10 block'>
+    <header className='fixed top-0 right-0 left-0 z-10 block'>
       <div
-        className={cn(
-          '1368:pr-10 1368:pl-8 pl-4 transition-all duration-200 ease-linear',
-          {
-            'bg-fixed-header': isFixed,
-            'bg-transparent': !isFixed
-          }
-        )}
+        className={cn('pr-10 pl-8 transition-all duration-200 ease-linear', {
+          'bg-fixed-header': isFixed,
+          'bg-transparent': !isFixed
+        })}
       >
         <div
           className={cn(
@@ -57,32 +52,26 @@ export default function Header() {
             }
           )}
         >
-          <div className='1368:gap-8 flex h-full flex-1 items-center gap-4'>
-            {!showSearch && (
-              <>
-                <div className='1368:hidden'>
-                  <NavigationMenu />
-                </div>
-                <Link href={route.home.path} className='shrink-0'>
-                  <Image
-                    alt='Logo'
-                    className='max-1919:h-10 max-1359:h-9 h-auto'
-                    height={46}
-                    src={logoWithText}
-                    loading='eager'
-                  />
-                </Link>
-              </>
-            )}
-            <div className='1368:block hidden h-full w-full max-w-92'>
+          {/* Left side */}
+          <div className='flex h-full flex-1 items-center gap-8'>
+            <Link href={route.home.path} className='shrink-0'>
+              <Image
+                alt='Logo'
+                className='h-auto'
+                height={46}
+                src={logoWithText}
+                loading='eager'
+              />
+            </Link>
+            <div className='block h-full w-full max-w-92'>
               <SearchForm className='flex h-full w-full items-center bg-transparent p-0' />
             </div>
-            <div className='1368:block hidden grow items-center gap-2'>
+            <div className='block grow items-center gap-2'>
               <NavigationMenu />
             </div>
           </div>
           {/* Right side */}
-          <div className='h-header 1368:flex hidden items-center gap-2'>
+          <div className='h-header flex items-center gap-2'>
             <AnimatePresence mode='wait' initial={false}>
               {loading ? (
                 <motion.div
@@ -131,53 +120,6 @@ export default function Header() {
               )}
             </AnimatePresence>
           </div>
-          {/* Search */}
-          <div className='1368:hidden mr-4 items-center'>
-            <Button
-              variant='ghost'
-              className='p-1 hover:bg-transparent!'
-              onClick={() => setShowSearch(!showSearch)}
-              aria-label='Search icon'
-            >
-              <AnimatePresence mode='wait' initial={false}>
-                {showSearch ? (
-                  <motion.div
-                    key='close'
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <X className='size-6' />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key='search'
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <Search className='size-6' />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </Button>
-          </div>
-          <AnimatePresence>
-            {showSearch && (
-              <motion.div
-                key='mobile-search'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: 'linear' }}
-                className='absolute right-12.5 left-2.5 z-1000 p-3 shadow-lg'
-              >
-                <SearchForm className='w-full' />
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       </div>
     </header>

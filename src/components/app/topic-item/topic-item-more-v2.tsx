@@ -1,3 +1,4 @@
+import './topic.css';
 import { route } from '@/routes';
 import Link from 'next/link';
 

@@ -20,7 +20,6 @@ import { CiStreamOn } from 'react-icons/ci';
 import { Button } from '@/components/form';
 import { getAnonymousToken } from '@/app/actions/anonymous';
 import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
-import EpisodeList from './episode-list';
 import { PlaylistIcon } from '@/assets';
 import { cn } from '@/lib';
 import { useShallow } from 'zustand/shallow';
@@ -33,16 +32,12 @@ import {
   MediaTimeUpdateEventDetail,
   MediaPlayerInstance
 } from '@vidstack/react';
-import WatchContinueModal from './watch-continue-modal';
+import { EpisodeList, WatchContinueModal } from '@/components/app/watch';
 
 export default function WatchPlayer() {
   const { isAuthenticated } = useAuth();
 
-  const { movie } = useMovieStore(
-    useShallow((s) => ({
-      movie: s.movie
-    }))
-  );
+  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
   // Selected season and episode from movie detail page
   const { searchParams } = useQueryParams<{
@@ -246,7 +241,7 @@ export default function WatchPlayer() {
 
   return (
     <div className='watch-player relative z-3 mx-auto max-w-410 px-5'>
-      <div className='mb-6 inline-flex w-full items-center gap-2 px-10'>
+      <div className='mb-6 inline-flex w-full items-center gap-2 px-8'>
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
           className='mr-2 rounded-full border border-solid border-gray-200 p-2 transition-all duration-200 ease-linear hover:opacity-80'

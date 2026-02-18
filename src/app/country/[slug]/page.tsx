@@ -12,6 +12,7 @@ import { movieApiRequest } from '@/api-requests';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { MovieList } from '@/app/country/[slug]/_components';
 import { notFound } from 'next/navigation';
+import { Container } from '@/components/layout';
 
 export async function generateStaticParams() {
   return countries.slice(0, DEFAULT_PAGE_SIZE).map((country) => ({
@@ -66,7 +67,11 @@ export default async function CountryPage({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <MovieList countryCode={countryCode} />
+      <Container className='relative min-h-[calc(100dvh-400px)] py-40'>
+        <div className='flex flex-col gap-12.5'>
+          <MovieList countryCode={countryCode} />
+        </div>
+      </Container>
     </HydrationBoundary>
   );
 }

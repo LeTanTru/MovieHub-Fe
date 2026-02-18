@@ -1,11 +1,10 @@
 'use client';
 
 import { NoData } from '@/components/no-data';
-import { cn } from '@/lib';
 import { useCollectionTopicListQuery } from '@/queries';
-import TopicListSkeleton from './topic-skeleton';
 import { MAX_PAGE_SIZE } from '@/constants';
 import {
+  TopicCardSkeleton,
   TopicItemMoreV1,
   TopicItemMoreV2,
   TopicItemV1,
@@ -13,6 +12,7 @@ import {
 } from '@/components/app/topic-item';
 
 export default function TopicList() {
+  const skeletonCount = 7;
   const { data: topicListData, isLoading: topicListLoading } =
     useCollectionTopicListQuery({
       enabled: true,
@@ -37,24 +37,22 @@ export default function TopicList() {
           Bạn đang quan tâm chủ đề gì ?
         </h3>
       </div>
-      <div
-        className={cn('grid grid-cols-7 justify-between gap-4', {
-          'grid-cols-1': topicList.length === 0
-        })}
-      >
-        {topicListLoading ? (
-          <TopicListSkeleton skeletonCount={7} />
-        ) : topicList.length > 0 ? (
-          <>
-            {topicList.map((topic) => (
-              <TopicItem key={topic.id} topic={topic} />
-            ))}
-            <TopicItemMore moreCount={moreCount} />
-          </>
-        ) : (
-          <NoData className='pt-20 pb-40' content={<>Không có chủ đề nào</>} />
-        )}
-      </div>
+      {topicListLoading ? (
+        <div className='grid grid-cols-7 gap-4'>
+          {Array.from({ length: skeletonCount }).map((_, i) => (
+            <TopicCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : topicList.length > 0 ? (
+        <div className='grid grid-cols-7 gap-4'>
+          {topicList.map((topic) => (
+            <TopicItem key={topic.id} topic={topic} />
+          ))}
+          <TopicItemMore moreCount={moreCount} />
+        </div>
+      ) : (
+        <NoData className='pt-20 pb-40' content={<>Không có chủ đề nào</>} />
+      )}
     </div>
   );
 }

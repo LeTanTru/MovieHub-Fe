@@ -17,7 +17,6 @@ import {
   PERSON_KIND_DIRECTOR
 } from '@/constants';
 import { route } from '@/routes';
-import { PersonResType } from '@/types';
 import {
   formatDate,
   formatDuration,
@@ -25,45 +24,16 @@ import {
   renderImageUrl,
   sanitizeText
 } from '@/utils';
+import { Activity } from '@/components/activity';
+import { CircleLoading } from '@/components/loading';
+import { cn } from '@/lib';
+import { FaCheckCircle } from 'react-icons/fa';
+import { useMovieStore } from '@/store';
+import { useShallow } from 'zustand/shallow';
+import ActorList from './actor-list';
 import Image from 'next/image';
 import Link from 'next/link';
-import { cn } from '@/lib';
-import { useMovieStore } from '@/store';
-import { Activity } from '@/components/activity';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { defaultAvatar } from '@/assets';
-import { useShallow } from 'zustand/shallow';
-import { CircleLoading } from '@/components/loading';
-import { FaCheckCircle } from 'react-icons/fa';
 import MovieInfoSkeleton from './movie-info-skeleton';
-
-const ActorCell = ({ actor }: { actor: PersonResType }) => {
-  return (
-    <div className='flex flex-col items-center gap-3 text-center'>
-      <Link
-        href={`${route.person.path}/${actor.id}`}
-        className='bg-main-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
-      >
-        <Avatar className='h-full w-full transition-all duration-200 ease-linear hover:scale-105'>
-          <AvatarImage
-            src={renderImageUrl(actor.avatarPath)}
-            alt={actor.otherName}
-          />
-          <AvatarFallback>
-            <AvatarImage src={defaultAvatar.src} alt={actor.otherName} />
-          </AvatarFallback>
-        </Avatar>
-      </Link>
-      <Link
-        href={`${route.person.path}/${actor.id}`}
-        className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 leading-normal font-normal whitespace-normal text-white transition-all duration-200 ease-linear'
-        title={actor.otherName}
-      >
-        {actor.otherName}
-      </Link>
-    </div>
-  );
-};
 
 export default function MovieInfo({
   isLoading = false
@@ -139,7 +109,7 @@ export default function MovieInfo({
 
   return (
     <div className='bg-main-background/60 flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
-      <div className='mb-4 font-light xl:w-40'>
+      <div className='mb-4 w-40 font-light'>
         <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'>
           <Image
             alt={`${movie.title} - ${movie.originalTitle}`}
@@ -264,28 +234,7 @@ export default function MovieInfo({
             : 'Đang cập nhật'}
         </span>
       </div>
-      <div
-        className={cn('mb-5 flex-wrap items-end gap-2', {
-          flex: actors.length === 0
-        })}
-      >
-        <h3
-          className={cn('font-medium whitespace-nowrap text-white', {
-            'mb-8 text-xl': actors.length > 0
-          })}
-        >
-          Diễn viên:
-        </h3>
-        {actors.length > 0 ? (
-          <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
-            {actors.map((actor) => (
-              <ActorCell key={`info-actor-${actor.id}`} actor={actor} />
-            ))}
-          </div>
-        ) : (
-          <span className='text-foreground/80 font-light'>Đang cập nhật</span>
-        )}
-      </div>
+      <ActorList actors={actors} />
     </div>
   );
 }
