@@ -17,7 +17,7 @@ export const usePlaylistMoviesQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.PLAYLIST_MOVIES, playlistId, params],
-    queryFn: () => playlistApiRequest.getListMovies({ playlistId, params }),
+    queryFn: () => playlistApiRequest.getListMovies(playlistId, params),
     enabled: !!playlistId
   });
 };

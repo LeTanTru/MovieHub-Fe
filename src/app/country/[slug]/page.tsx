@@ -46,12 +46,12 @@ export default async function CountryPage({
   const { slug } = await params;
   const countryCode = getIdFromSlug(slug);
 
-  const filters = await searchParams;
+  const { page, ...rest } = await searchParams;
   const defaultFilters: MovieSearchType = {
-    page: DEFAULT_PAGE_START,
+    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
     country: countryCode,
     size: DEFAULT_PAGE_SIZE,
-    ...filters
+    ...rest
   };
 
   const queryClient = getQueryClient();

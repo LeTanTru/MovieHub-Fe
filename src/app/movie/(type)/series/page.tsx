@@ -22,12 +22,12 @@ export default async function MovieSeriesPage({
 }: {
   searchParams: Promise<MovieSearchType>;
 }) {
-  const filters = await searchParams;
+  const { page, ...rest } = await searchParams;
   const defaultFilters: MovieSearchType = {
-    page: DEFAULT_PAGE_START,
+    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
     type: movieTypes.MOVIE_TYPE_SERIES,
     size: DEFAULT_PAGE_SIZE,
-    ...filters
+    ...rest
   };
 
   const queryClient = getQueryClient();

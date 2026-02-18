@@ -1,17 +1,13 @@
 'use client';
 
-import { breakPoints, MOVIE_TYPE_SINGLE } from '@/constants';
+import { MOVIE_TYPE_SINGLE } from '@/constants';
 import { MovieHistoryResType } from '@/types';
-import { useMediaQuery } from 'react-responsive';
 import { motion, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useRef } from 'react';
 import { route } from '@/routes';
 import { formatSecondsToMinutes, renderImageUrl } from '@/utils';
-import MovieModal from './movie-modal';
-import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
 import { X } from 'lucide-react';
 
@@ -34,9 +30,6 @@ const itemTransition: Transition = {
   default: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }
 };
 
-const MODAL_WIDTH = 400;
-const EDGE_PADDING = 20;
-
 export default function MovieCardHistory({
   movieHistory,
   dir = 'up',
@@ -46,55 +39,9 @@ export default function MovieCardHistory({
   dir?: Dir;
   onDelete?: (id: string) => void;
 }) {
-  const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
-  const isDesktop = useMediaQuery({
-    query: `(min-width: ${breakPoints.desktop}px)`
-  });
-  const [modalPos, setModalPos] = useState<{ x: number; y: number } | null>(
-    null
-  );
 
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
-
-  const openModal = () => {
-    if (!cardRef.current) return;
-
-    const rect = cardRef.current.getBoundingClientRect();
-    const scrollY = window.scrollY;
-    const viewportWidth = window.innerWidth;
-
-    let centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2 + scrollY;
-
-    const modalLeftEdge = centerX - MODAL_WIDTH / 2;
-    if (modalLeftEdge < EDGE_PADDING) {
-      centerX = MODAL_WIDTH / 2 + EDGE_PADDING;
-    }
-
-    const modalRightEdge = centerX + MODAL_WIDTH / 2;
-    if (modalRightEdge > viewportWidth - EDGE_PADDING) {
-      centerX = viewportWidth - MODAL_WIDTH / 2 - EDGE_PADDING;
-    }
-
-    setModalPos({ x: centerX, y: centerY });
-  };
-
-  const handleMouseEnter = () => {
-    if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
-    hoverTimeout.current = setTimeout(openModal, 500);
-  };
-
-  const handleMouseLeave = () => {
-    if (hoverTimeout.current) {
-      clearTimeout(hoverTimeout.current);
-      hoverTimeout.current = null;
-    }
-    hoverTimeout.current = setTimeout(() => {
-      setModalPos(null);
-    }, 200);
-  };
 
   const movie = movieHistory.movie;
 
@@ -105,125 +52,96 @@ export default function MovieCardHistory({
 
   const isSingle = movie.type === MOVIE_TYPE_SINGLE;
 
+  const watchLink = isSingle
+    ? `${route.watch.path}/${movie.slug}.${movie.id}?season=${movieItem.label}`
+    : `${route.watch.path}/${movie.slug}.${movie.id}?season=${movieItem.parent.label}&episode=${movieItem.label}`;
+
   return (
-    <>
-      <motion.div
-        key={movie.id}
-        ref={cardRef}
-        variants={itemVariants}
-        initial='initial'
-        animate='animate'
-        exit='exit'
-        transition={itemTransition}
-        className='group relative flex flex-col gap-3'
+    <motion.div
+      key={movie.id}
+      ref={cardRef}
+      variants={itemVariants}
+      initial='initial'
+      animate='animate'
+      exit='exit'
+      transition={itemTransition}
+      className='group relative flex flex-col gap-3'
+    >
+      <Link
+        className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-lg pb-[150%]'
+        href={watchLink}
       >
-        <Link
-          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-lg pb-[150%]'
-          href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-          onPointerEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClick={() => {
-            if (hoverTimeout.current) {
-              clearTimeout(hoverTimeout.current);
-              hoverTimeout.current = null;
-            }
-            setModalPos(null);
-          }}
+        <Image
+          alt={movie.title}
+          className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
+          fill
+          src={renderImageUrl(movie.posterUrl)}
+          unoptimized
+          sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+        />
+      </Link>
+
+      <div className='min-h-10.5 text-center'>
+        <div
+          className='relative mb-2 h-1 w-full overflow-hidden rounded-lg bg-white/10'
+          title={`Bạn đã xem ${Math.floor(percentWatched)}% phim này`}
         >
-          <Image
-            alt={movie.title}
-            className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
-            fill
-            src={renderImageUrl(movie.posterUrl)}
-            unoptimized
-            sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-          />
-        </Link>
-
-        <div className='min-h-10.5 text-center'>
           <div
-            className='relative mb-2 h-1 w-full overflow-hidden rounded-lg bg-white/10'
-            title={`Bạn đã xem ${Math.floor(percentWatched)}% phim này`}
-          >
-            <div
-              className='absolute top-0 bottom-0 left-0 h-1 rounded-lg bg-white'
-              style={{ width: `${percentWatched}%` }}
-            ></div>
-          </div>
-          <div className='flex items-center justify-center gap-2 text-xs text-white/80 [&_div]:leading-5'>
-            <div>
-              {isSingle ? (
-                'Tập full'
-              ) : (
-                <>
-                  P. {movieItem.parent.label} - Tập {movieItem.label}
-                </>
-              )}
-            </div>
-            <div className='relative pl-2.5 before:absolute before:top-1/2 before:left-0 before:h-1 before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-white before:content-[""]'>
-              <span
-                title={formatSecondsToMinutes(movieHistory.lastWatchSeconds)}
-              >
-                {Math.floor(movieHistory.lastWatchSeconds / 60)}m
-              </span>
-              &nbsp;/&nbsp;
-              <span
-                className='text-white/50'
-                title={formatSecondsToMinutes(movieItem.video.duration)}
-              >
-                {Math.floor(movieItem.video.duration / 60)}m
-              </span>
-            </div>
-          </div>
-          <Link
-            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-            title={movie.title}
-          >
-            <h4
-              className={cn(
-                'hover:text-light-golden-yellow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
-                {
-                  'featured-title': movie.isFeatured
-                }
-              )}
-            >
-              {movie.title}
-            </h4>
-          </Link>
-          <Link
-            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-            title={movie.originalTitle}
-          >
-            <h4 className='text-light-gray line-clamp-1 text-xs leading-5'>
-              {movie.originalTitle}
-            </h4>
-          </Link>
+            className='absolute top-0 bottom-0 left-0 h-1 rounded-lg bg-white'
+            style={{ width: `${percentWatched}%` }}
+          ></div>
         </div>
-
-        {onDelete && (
-          <button
-            aria-label='Remove from favourite'
-            className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
-            onClick={() => onDelete(movie.id)}
+        <div className='flex items-center justify-center gap-2 text-xs text-white/80 [&_div]:leading-5'>
+          <div>
+            {isSingle ? (
+              'Tập full'
+            ) : (
+              <>
+                P. {movieItem.parent.label} - Tập {movieItem.label}
+              </>
+            )}
+          </div>
+          <div className='relative pl-2.5 before:absolute before:top-1/2 before:left-0 before:h-1 before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-white before:content-[""]'>
+            <span title={formatSecondsToMinutes(movieHistory.lastWatchSeconds)}>
+              {Math.floor(movieHistory.lastWatchSeconds / 60)}m
+            </span>
+            &nbsp;/&nbsp;
+            <span
+              className='text-white/50'
+              title={formatSecondsToMinutes(movieItem.video.duration)}
+            >
+              {Math.floor(movieItem.video.duration / 60)}m
+            </span>
+          </div>
+        </div>
+        <Link href={watchLink} title={movie.title}>
+          <h4
+            className={cn(
+              'hover:text-light-golden-yellow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
+              {
+                'featured-title': movie.isFeatured
+              }
+            )}
           >
-            <X className='size-4' />
-          </button>
-        )}
-      </motion.div>
+            {movie.title}
+          </h4>
+        </Link>
+        <Link href={watchLink} title={movie.originalTitle}>
+          <h4 className='text-light-gray line-clamp-1 text-xs leading-5'>
+            {movie.originalTitle}
+          </h4>
+        </Link>
+      </div>
 
-      {isMounted &&
-        isDesktop &&
-        createPortal(
-          <div
-            onMouseEnter={() => {
-              if (hoverTimeout.current) clearTimeout(hoverTimeout.current);
-            }}
-            onMouseLeave={() => setModalPos(null)}
-          >
-            <MovieModal movie={movie} pos={modalPos} />
-          </div>,
-          document.body
-        )}
-    </>
+      {onDelete && (
+        <button
+          aria-label='Remove from favourite'
+          className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
+          onClick={() => onDelete(movie.id)}
+        >
+          <X className='size-4' />
+        </button>
+      )}
+    </motion.div>
   );
 }

@@ -1,12 +1,13 @@
-import { collectionApiRequest, collectionItemApiRequest } from '@/api-requests';
-import { MovieList } from '@/app/topic/[slug]/_components';
-import { Container } from '@/components/layout';
-import { getQueryClient } from '@/components/providers';
-import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import { ApiResponse, CollectionItemSearchType } from '@/types';
-import { getIdFromSlug } from '@/utils';
+import { collectionApiRequest, collectionItemApiRequest } from '@/api-requests';
+import { Container } from '@/components/layout';
+import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { getIdFromSlug } from '@/utils';
+import { getQueryClient } from '@/components/providers';
+import { MovieList } from '@/app/topic/[slug]/_components';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 
 export async function generateStaticParams() {
   const topicList = await collectionApiRequest.getTopicList({
@@ -17,6 +18,19 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const id = getIdFromSlug(slug);
+  const res = await collectionApiRequest.getById(id);
+  const topic = res.data;
+
+  return { title: topic?.name || 'Chủ đề' };
+}
+
 export default async function TopicDetailPage({
   params,
   searchParams
@@ -25,15 +39,15 @@ export default async function TopicDetailPage({
   searchParams: Promise<CollectionItemSearchType>;
 }) {
   const { slug } = await params;
-  const filters = await searchParams;
+  const { page, ...rest } = await searchParams;
   const collectionId = getIdFromSlug(slug);
   const queryClient = getQueryClient();
 
   const defaultFilters: CollectionItemSearchType = {
     collectionId,
-    page: 0,
+    page: page ? Number(page) - 1 : 0,
     size: DEFAULT_PAGE_SIZE,
-    ...filters
+    ...rest
   };
 
   try {
