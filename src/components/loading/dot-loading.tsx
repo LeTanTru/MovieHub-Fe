@@ -4,7 +4,7 @@ export default function DotLoading({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        'flex items-center justify-center space-x-2 bg-white dark:bg-transparent',
+        'flex items-center justify-center space-x-2 bg-transparent',
         className
       )}
     >

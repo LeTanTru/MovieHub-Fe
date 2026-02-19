@@ -84,20 +84,25 @@ export default function TimePickerField<T extends FieldValues>({
           const mm = type === 'minute' ? val : minute;
           const ss = type === 'second' ? val : second;
 
+          // Always create the formatted time string for onChange callback
+          let formattedTime = '';
+          if (timeFormat === 'HH:mm:ss')
+            formattedTime = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+          else if (timeFormat === 'HH:mm')
+            formattedTime = `${pad(hh)}:${pad(mm)}`;
+          else if (timeFormat === 'mm:ss')
+            formattedTime = `${pad(mm)}:${pad(ss)}`;
+
           if (isNumberValue) {
             // Store as number (total seconds) if original value was a number
             const totalSeconds = hh * 3600 + mm * 60 + ss;
             field.onChange(totalSeconds);
-            onChange?.(String(totalSeconds));
+            // Pass formatted time string to onChange callback
+            onChange?.(formattedTime);
           } else {
             // Store as string if original value was a string (or undefined/null)
-            let result = '';
-            if (timeFormat === 'HH:mm:ss')
-              result = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
-            else if (timeFormat === 'HH:mm') result = `${pad(hh)}:${pad(mm)}`;
-            else if (timeFormat === 'mm:ss') result = `${pad(mm)}:${pad(ss)}`;
-            field.onChange(result);
-            onChange?.(result);
+            field.onChange(formattedTime);
+            onChange?.(formattedTime);
           }
         };
 

@@ -20,7 +20,7 @@ export default function NoData({
   return (
     <div
       className={cn(
-        'flex w-full flex-col items-center justify-center gap-4 rounded-lg py-4 pt-50 dark:bg-transparent dark:text-white',
+        'flex w-full flex-col items-center justify-center gap-4 rounded-lg bg-transparent py-4 pt-50 text-white',
         className
       )}
     >

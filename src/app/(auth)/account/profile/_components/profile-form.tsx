@@ -148,8 +148,7 @@ export default function ProfileForm() {
                         label='Email'
                         required
                         placeholder='Nhập email'
-                        className='text-sm disabled:opacity-100'
-                        disabled
+                        className='text-sm disabled:border-gray-500 disabled:opacity-100'
                       />
                     </Col>
                   </Row>

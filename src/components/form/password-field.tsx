@@ -147,18 +147,20 @@ export default function PasswordField<T extends FieldValues>({
                     className,
                     'shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
                     {
-                      'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/50 text-gray-500 dark:border-slate-800':
+                      'cursor-not-allowed border border-solid border-slate-800 bg-gray-200/50 text-gray-500':
                         disabled,
                       'border-red-500 focus-visible:ring-red-500':
                         !!fieldState.error,
                       'focus-visible:ring-main-color': !fieldState.error,
-                      'pb-[1.5px]': !isVisible
+                      'pb-0.5': !isVisible || !!field.value,
+                      'pb-1.25': !field.value,
+                      'pb-[5.2px]': isVisible
                     }
                   )}
                 />
                 <Button
                   variant='ghost'
-                  className='text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none hover:bg-transparent! focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50'
+                  className='text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 mr-0.75 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none hover:bg-transparent! focus:z-10 focus-visible:ring-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50'
                   type='button'
                   onClick={toggleVisibility}
                   aria-label={isVisible ? 'Hide password' : 'Show password'}

@@ -125,7 +125,7 @@ export default function DatePickerField<T extends FieldValues>({
                           : (placeholder ?? 'Chọn ngày');
                       })()}
                     </span>
-                    <CalendarIcon className='mr-1 h-4 w-4' />
+                    <CalendarIcon className='h-4 w-4' />
                   </Button>
                 </FormControl>
               </PopoverTrigger>

@@ -134,7 +134,7 @@ export default function DateTimePickerField<T extends FieldValues>({
                     className={cn(
                       'w-full justify-between text-left font-normal text-black opacity-100',
                       'focus:ring-0 focus-visible:border-gray-200 focus-visible:ring-0',
-                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color shadow-none data-[state=open]:ring-1',
+                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color px-3! shadow-none data-[state=open]:ring-1',
                       {
                         'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500 data-[state=open]:border-red-500 data-[state=open]:ring-1 data-[state=open]:ring-red-500':
                           fieldState.error,
@@ -150,7 +150,7 @@ export default function DateTimePickerField<T extends FieldValues>({
                           : (placeholder ?? 'Chọn ngày');
                       })()}
                     </span>
-                    <CalendarIcon className='mr-2 h-4 w-4' />
+                    <CalendarIcon className='h-4 w-4' />
                   </Button>
                 </FormControl>
               </PopoverTrigger>

@@ -142,17 +142,15 @@ export default function Modal({
             <Activity visible={!!title || !!showClose}>
               <div
                 className={cn(
-                  'header-title flex items-center justify-between border-b border-gray-200 py-2 pr-2 pl-4 dark:border-none',
+                  'header-title flex items-center justify-between border-none py-2 pr-2 pl-4',
                   headerClassName
                 )}
               >
-                <div className='font-semibold text-gray-800 dark:text-white'>
-                  {title}
-                </div>
+                <div className='font-semibold text-white'>{title}</div>
 
                 <Activity visible={showClose && onClose !== undefined}>
                   <Button
-                    className='h-fit! p-0! text-gray-500 transition hover:text-black dark:text-white dark:hover:bg-transparent dark:hover:text-gray-400'
+                    className='h-fit! p-0! text-white transition hover:bg-transparent hover:text-gray-400'
                     onClick={onClose}
                     variant='ghost'
                   >

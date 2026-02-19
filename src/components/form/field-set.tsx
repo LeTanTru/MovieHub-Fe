@@ -18,21 +18,16 @@ export default function FieldSet({
 }: FieldSetProps) {
   return (
     <fieldset
-      className={cn(
-        'mb-4 rounded-md border border-gray-200 p-4 dark:border-gray-700',
-        className
-      )}
+      className={cn('mb-4 rounded-md border border-gray-200 p-4', className)}
     >
       {title && (
-        <legend className='px-2 text-base font-semibold text-gray-800 dark:text-gray-100'>
+        <legend className='px-2 text-base font-semibold text-gray-800'>
           {title}
         </legend>
       )}
 
       {description && (
-        <p className='mb-3 text-sm text-gray-500 dark:text-gray-400'>
-          {description}
-        </p>
+        <p className='mb-3 text-sm text-gray-500'>{description}</p>
       )}
 
       <div className='space-y-3'>{children}</div>

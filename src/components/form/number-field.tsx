@@ -177,7 +177,7 @@ export default function NumberField<T extends FieldValues>({
                     {
                       'pl-10': prefixIcon,
                       'pr-10': suffixIcon,
-                      'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/80 text-gray-500 dark:border-slate-800':
+                      'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/80 text-gray-500':
                         disabled,
                       'border-red-500 focus-visible:ring-red-500':
                         fieldState.error,
