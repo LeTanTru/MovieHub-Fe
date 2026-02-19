@@ -65,7 +65,8 @@ export default function WatchPlayer() {
     close: closeContinueModal
   } = useDisclosure();
 
-  const { mutateAsync: trackWatchHistory } = useWatchHistoryTrackingMutation();
+  const { mutateAsync: trackWatchHistoryMutate } =
+    useWatchHistoryTrackingMutation();
 
   // Fetch watch history for current movie
   const { data: watchHistoryData } = useWatchHistoryListQuery({
@@ -159,8 +160,8 @@ export default function WatchPlayer() {
 
     if (!isAuthenticated) return;
 
-    await trackWatchHistory(payload);
-  }, [isAuthenticated, movieItemId, trackWatchHistory]);
+    await trackWatchHistoryMutate(payload);
+  }, [isAuthenticated, movieItemId, trackWatchHistoryMutate]);
 
   // Track when user leaves page (beforeunload, navigation, etc)
   useEffect(() => {
@@ -174,7 +175,7 @@ export default function WatchPlayer() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       saveWatchHistory();
     };
-  }, [movieItemId, saveWatchHistory, trackWatchHistory]);
+  }, [movieItemId, saveWatchHistory, trackWatchHistoryMutate]);
 
   // Track when episode/movie item changes
   useEffect(() => {

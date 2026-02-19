@@ -13,7 +13,11 @@ const watchHistoryApiRequest = {
       params
     }),
   tracking: (body: WatchHistoryType) =>
-    http.post<ApiResponse<any>>(apiConfig.watchHistory.tracking, { body })
+    http.post<ApiResponse<any>>(apiConfig.watchHistory.tracking, { body }),
+  delete: (movieId: string) =>
+    http.delete<ApiResponse<any>>(apiConfig.watchHistory.delete, {
+      pathParams: { movieId }
+    })
 };
 
 export default watchHistoryApiRequest;

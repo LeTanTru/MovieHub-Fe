@@ -22,7 +22,6 @@ export default function SliderItem({
   onPointerDown,
   onPointerUp
 }: SliderItemProps) {
-  console.log('🚀 ~ SliderItem ~ slider:', slider);
   return (
     <div className='slide-elements'>
       <Link

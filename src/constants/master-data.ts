@@ -250,6 +250,7 @@ export const queryKeys = {
   MOVIE_PERSON_LIST: 'movie-person-list',
   MOVIE_PERSON: 'movie-person',
   MOVIE_SUGGESTION_LIST: 'suggestion-movie-list',
+  MOVIE_TOP_VIEW_LIST: 'movie-top-view-list',
   MOVIE: 'movie',
   PERSON_LIST: 'person-list',
   PERSON: 'person',
@@ -271,15 +272,15 @@ export const queryKeys = {
   REVIEW_VOTE_LIST: 'review-vote-list',
   REVIEW: 'review',
   SET_COOKIE_SERVER: 'set-cookie-server',
+  SIDEBAR_LIST: 'sidebar-list',
   UPDATE_COMMENT: 'update-comment',
   UPDATE_REVIEW: 'update-review',
   VERIFY_OTP: 'verify-otp',
   VOTE_COMMENT: 'vote-comment',
   VOTE_REVIEW: 'vote-review',
+  WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
-  SIDEBAR_LIST: 'sidebar-list',
-  MOVIE_TOP_VIEW_LIST: 'movie-top-view-list'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
 };
 
 export const countries = [

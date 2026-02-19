@@ -432,6 +432,12 @@ const apiConfig = defineApiConfig({
       method: 'POST',
       headers: baseHeader,
       isRequiredTenantId: true
+    },
+    delete: {
+      baseUrl: `${AppConstants.apiUrl}/v1/watch-history/delete/:movieId`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredTenantId: true
     }
   },
   sidebar: {

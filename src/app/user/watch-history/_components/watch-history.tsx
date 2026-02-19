@@ -3,13 +3,43 @@
 import { MovieCardHistory } from '@/components/app/movie-card';
 import { MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
-import { useMovieHistoryListQuery } from '@/queries';
+import { getQueryClient } from '@/components/providers';
+import { queryKeys } from '@/constants';
+import { logger } from '@/logger';
+import {
+  useMovieHistoryListQuery,
+  useDeleteWatchHistoryMutation
+} from '@/queries';
+import { notify } from '@/utils';
 
 export default function WatchHistory() {
+  const queryClient = getQueryClient();
   const { data: movieHistoriesData, isLoading } = useMovieHistoryListQuery({
     enabled: true
   });
   const movieHistories = movieHistoriesData?.data || [];
+
+  const { mutateAsync: deleteWatchHistoryMutate } =
+    useDeleteWatchHistoryMutation();
+
+  const handleDeleteWatchHistory = async (movieId: string) => {
+    await deleteWatchHistoryMutate(movieId, {
+      onSuccess: async (res) => {
+        if (res.result) {
+          notify.success('Xóa lịch sử xem thành công');
+          await queryClient.invalidateQueries({
+            queryKey: [queryKeys.MOVIE_HISTORY]
+          });
+        } else {
+          notify.error('Xóa lịch sử xem thất bại');
+        }
+      },
+      onError: (error) => {
+        logger.error(`Error while deleting watch history`, error);
+        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      }
+    });
+  };
 
   return (
     <div className='mb-8 flex flex-col items-start justify-between gap-4'>
@@ -35,6 +65,7 @@ export default function WatchHistory() {
               key={movieHistory.id}
               movieHistory={movieHistory}
               dir='down'
+              onDelete={handleDeleteWatchHistory}
             />
           ))}
         </div>
