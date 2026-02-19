@@ -33,6 +33,7 @@ import {
   MediaPlayerInstance
 } from '@vidstack/react';
 import { EpisodeList, WatchContinueModal } from '@/components/app/watch';
+import envConfig from '@/config';
 
 export default function WatchPlayer() {
   const { isAuthenticated } = useAuth();
@@ -293,6 +294,9 @@ export default function WatchPlayer() {
                     </Button>
                   ) : null
                 }}
+                volume={
+                  envConfig.NEXT_PUBLIC_NODE_ENV === 'development' ? 0 : 0.5
+                }
                 prev={isSeries && !isFirstEpisode}
                 next={isSeries && !isLastEpisode}
                 onPrevClick={() => console.log('prev')}

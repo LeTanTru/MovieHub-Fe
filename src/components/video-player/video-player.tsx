@@ -55,20 +55,21 @@ const VideoPlayer = forwardRef<
   {
     auth: boolean;
     autoPlay?: boolean;
+    className?: string;
     duration: number;
     introEnd: number;
     introStart: number;
+    next?: boolean;
     outroStart: number;
+    prev?: boolean;
     slots?: DefaultVideoLayoutSlots;
     source: string;
     textTracks?: TrackProps[];
     thumbnailUrl: string;
-    vttUrl: string;
-    className?: string;
-    token?: string;
-    prev?: boolean;
-    next?: boolean;
     title?: string;
+    token?: string;
+    vttUrl: string;
+    volume?: number;
     onPrevClick?: () => void;
     onNextClick?: () => void;
     onTimeUpdate?: (detail: MediaTimeUpdateEventDetail) => void;
@@ -77,20 +78,21 @@ const VideoPlayer = forwardRef<
   {
     auth,
     autoPlay = true,
+    className,
     duration,
     introEnd,
     introStart,
+    next,
     outroStart,
+    prev,
     slots,
     source,
     textTracks,
     thumbnailUrl,
-    vttUrl,
-    className,
-    token,
-    prev,
-    next,
     title,
+    token,
+    vttUrl,
+    volume = 0.5,
     onPrevClick,
     onNextClick,
     onTimeUpdate
@@ -136,7 +138,7 @@ const VideoPlayer = forwardRef<
         onPlay={() => setCurrentAction('play-pause')}
         onPause={() => setCurrentAction('play-pause')}
         onVolumeChange={() => setCurrentAction('volume')}
-        volume={0}
+        volume={volume}
         className={cn(
           'video-player relative h-full rounded-none! border-none!',
           className
