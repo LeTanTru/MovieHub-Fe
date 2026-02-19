@@ -1,7 +1,7 @@
 'use client';
 
 import './watch-player.css';
-import { ButtonLikeWatch } from '@/components/app/button-like';
+import { ButtonLike } from '@/components/app/button-like';
 import { ButtonShareMovie } from '@/components/app/button-share';
 import { VideoPlayer } from '@/components/video-player';
 import {
@@ -337,11 +337,7 @@ export default function WatchPlayer() {
       )}
       <div className='flex h-16 items-center rounded-br-[12px] rounded-bl-[12px] bg-[#15151a]'>
         <div className='flex w-full items-center gap-2 px-4 select-none'>
-          <ButtonLikeWatch
-            targetId={movie.id}
-            className='h-10! hover:bg-white/10!'
-            text='Yêu thích'
-          />
+          <ButtonLike targetId={movie.id} variant='watch' text='Yêu thích' />
           <ButtonAddToPlaylist movieId={movie.id} variant='watch' />
           <Button
             variant='ghost'

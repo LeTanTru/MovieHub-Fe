@@ -34,10 +34,10 @@ import { useShallow } from 'zustand/shallow';
 import ActorList from './actor-list';
 import Image from 'next/image';
 import Link from 'next/link';
-import MovieInfoSkeleton from './movie-info-skeleton';
+import MovieSideSkeleton from './movie-side-skeleton';
 import TopViewList from './top-view-list';
 
-export default function MovieInfo({
+export default function MovieSide({
   isLoading = false
 }: {
   isLoading?: boolean;
@@ -101,7 +101,7 @@ export default function MovieInfo({
   const isSeries = movie?.type === MOVIE_TYPE_SERIES;
 
   if (isLoading) {
-    return <MovieInfoSkeleton />;
+    return <MovieSideSkeleton />;
   }
 
   if (!movie)

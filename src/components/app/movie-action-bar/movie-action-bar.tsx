@@ -1,7 +1,7 @@
 'use client';
 
 import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
-import { ButtonLikeDetail } from '@/components/app/button-like';
+import { ButtonLike } from '@/components/app/button-like';
 import { ButtonReview, ButtonViewReview } from '@/components/app/button-review';
 import { ButtonShareMovie } from '@/components/app/button-share';
 import { ButtonViewComment } from '@/components/app/button-comment';
@@ -61,11 +61,11 @@ export default function MovieActionBar({
         <ButtonWatchNow href={watchLink} variant='detail' />
         {/* Left */}
         <div className='flex grow justify-start gap-4'>
-          <ButtonLikeDetail targetId={movie.id} />
+          <ButtonLike targetId={movie.id} variant='detail' />
           <ButtonAddToPlaylist movieId={movie.id} variant='detail' />
           <ButtonShareMovie variant='detail' />
-          <ButtonViewComment to='discussion-detail' />
-          <ButtonViewReview to='discussion-detail' />
+          <ButtonViewComment to='discussion-detail' variant='detail' />
+          <ButtonViewReview to='discussion-detail' variant='detail' />
         </div>
         {/* Right */}
         <ButtonReview movieId={movie.id} />

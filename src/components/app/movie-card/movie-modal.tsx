@@ -18,7 +18,7 @@ import { route } from '@/routes';
 import { cn } from '@/lib';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Activity } from '@/components/activity';
-import { ButtonLikePopup } from '@/components/app/button-like';
+import { ButtonLike } from '@/components/app/button-like';
 
 export default function MovieModal({
   movie,
@@ -72,10 +72,11 @@ export default function MovieModal({
                   href={`${route.watch.path}/${movie.slug}.${movie.id}`}
                   variant='popup'
                 />
-                <ButtonLikePopup
+                <ButtonLike
                   targetId={movie.id}
                   refetch={!!pos}
                   className='grow'
+                  variant='popup'
                 />
                 <Link
                   href={`${route.movie.path}/${movie.slug}.${movie.id}`}

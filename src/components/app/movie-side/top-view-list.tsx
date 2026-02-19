@@ -1,7 +1,7 @@
 'use client';
 
 import { FallingStarIcon } from '@/assets';
-import TopViewItem from '@/components/app/movie-info/top-view-item';
+import TopViewItem from '@/components/app/movie-side/top-view-item';
 import { useAuth } from '@/hooks';
 import { useTopViewMovieListQuery } from '@/queries';
 

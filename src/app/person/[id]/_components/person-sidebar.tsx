@@ -15,7 +15,7 @@ import { FaArrowDown } from 'react-icons/fa6';
 import { useDisclosure, useQueryParams } from '@/hooks';
 import { usePersonQuery } from '@/queries';
 import PersonSidebarSkeleton from './person-sidebar-skeleton';
-import { ButtonLikePerson } from '@/components/app/button-like';
+import { ButtonLike } from '@/components/app/button-like';
 import { ButtonSharePerson } from '@/components/app/button-share';
 import { useParams } from 'next/navigation';
 import { PersonSearchType } from '@/types';
@@ -83,7 +83,7 @@ export default function PersonSidebar() {
       <div className='mb-4 flex justify-center gap-2'>
         {kind === PERSON_KIND_ACTOR ||
         person?.kinds.includes(PERSON_KIND_ACTOR) ? (
-          <ButtonLikePerson targetId={id} />
+          <ButtonLike targetId={id} variant='person' />
         ) : null}
         <ButtonSharePerson />
       </div>

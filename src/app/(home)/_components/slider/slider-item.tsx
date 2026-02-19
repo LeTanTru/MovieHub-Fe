@@ -4,7 +4,7 @@ import { getYearFromDate, renderImageUrl, sanitizeText } from '@/utils';
 import { route } from '@/routes';
 import { ageRatings } from '@/constants';
 import { SidebarResType } from '@/types';
-import { ButtonLikeHome } from '@/components/app/button-like';
+import { ButtonLike } from '@/components/app/button-like';
 import Link from 'next/link';
 import { ButtonPlay } from '@/components/app/button-play';
 import { ButtonInfo } from '@/components/app/button-info';
@@ -125,7 +125,7 @@ export default function SliderItem({
               />
 
               <div className='touch-group transition-all duration-200 ease-linear hover:border-white!'>
-                <ButtonLikeHome targetId={slider.movie.id} />
+                <ButtonLike targetId={slider.movie.id} variant='home' />
                 <ButtonInfo
                   href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
                   title={`Xem chi tiết phim ${slider.movie.title} - ${slider.movie.originalTitle}`}

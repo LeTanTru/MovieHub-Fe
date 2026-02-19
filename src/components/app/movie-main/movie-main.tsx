@@ -2,7 +2,7 @@ import { Discussion } from '@/components/app/discussion';
 import { MovieActionBar } from '@/components/app/movie-action-bar';
 import { MovieTabs } from '@/components/app/movie-tabs';
 
-export default function MovieContent({
+export default function MovieMain({
   isLoading = false
 }: {
   isLoading?: boolean;

@@ -35,9 +35,9 @@ export default function WatchSide() {
   return (
     <div className='flex w-110 shrink-0 flex-col gap-10 border-l border-solid border-white/10 p-10'>
       <div className='flex items-center justify-end gap-4'>
-        <ButtonViewComment to='discussion-watch' className='text-sm' />
-        <ButtonViewReview to='discussion-watch' className='text-sm' />
-        <ButtonReview movieId={movie.id} className='text-sm' />
+        <ButtonViewComment to='discussion-watch' variant='watch' />
+        <ButtonViewReview to='discussion-watch' variant='watch' />
+        <ButtonReview movieId={movie.id} />
       </div>
 
       <ActorList actors={actors} />

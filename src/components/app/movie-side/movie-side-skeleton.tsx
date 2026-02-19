@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function MovieInfoSkeleton() {
+export default function MovieSideSkeleton() {
   return (
     <div className='bg-main-background/60 flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
       <Skeleton className='skeleton mb-4 h-52 w-40' />
