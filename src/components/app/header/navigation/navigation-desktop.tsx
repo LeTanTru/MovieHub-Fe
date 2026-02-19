@@ -82,7 +82,7 @@ export default function NavigationDesktop({
                         <ListItem
                           key={sub.label}
                           title={sub.label}
-                          className='hover:bg-accent hover:text-light-golden-yellow rounded transition-all duration-100 ease-linear'
+                          className='hover:text-light-golden-yellow rounded transition-all duration-100 ease-linear hover:bg-white/5'
                         >
                           <Link
                             className='line-clamp-1 block truncate px-5 py-2.5'

@@ -12,7 +12,7 @@ export default function SuggestionItem({ movie }: { movie: MovieResType }) {
   return (
     <Link
       href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-      className='flex grow flex-row items-center justify-between overflow-hidden rounded bg-white/5 hover:bg-white/4'
+      className='flex grow flex-row items-center justify-between overflow-hidden rounded bg-white/5 transition-all duration-200 ease-linear hover:bg-white/4'
     >
       <div className='w-20 shrink-0'>
         <div className='bg-gunmetal-blue relative block h-0 overflow-hidden rounded pb-[150%]'>

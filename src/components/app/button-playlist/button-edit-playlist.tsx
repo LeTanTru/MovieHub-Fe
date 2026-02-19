@@ -1,10 +1,10 @@
 'use client';
 
 import PlaylistModal from './playlist-modal';
-import { ToolTip } from '@/components/form';
+import { Button, ToolTip } from '@/components/form';
 import { useDisclosure } from '@/hooks';
 import { PlaylistResType } from '@/types';
-import { FaRegEdit } from 'react-icons/fa';
+import { FaPen } from 'react-icons/fa6';
 
 export default function ButtonEditPlaylist({
   playlist
@@ -28,12 +28,13 @@ export default function ButtonEditPlaylist({
         title='Cập nhật danh sách phát'
         className='bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
       >
-        <button
-          className='hover:text-light-golden-yellow hover:border-light-golden-yellow rounded-full'
+        <Button
+          className='hover:text-light-golden-yellow hover:border-light-golden-yellow h-fit! rounded-full p-0!'
           onClick={handleOpen}
+          variant='ghost'
         >
-          <FaRegEdit />
-        </button>
+          <FaPen className='size-3.5' />
+        </Button>
       </ToolTip>
       <PlaylistModal
         opened={opened}

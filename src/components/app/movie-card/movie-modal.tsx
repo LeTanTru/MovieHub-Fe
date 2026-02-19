@@ -18,7 +18,7 @@ import { route } from '@/routes';
 import { cn } from '@/lib';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Activity } from '@/components/activity';
-import { ButtonLikePopup } from '@/components/app/button-like';
+import { ButtonLike } from '@/components/app/button-like';
 
 export default function MovieModal({
   movie,
@@ -70,14 +70,22 @@ export default function MovieModal({
               <div className='mb-5 flex items-stretch justify-between gap-2.5'>
                 <ButtonWatchNow
                   href={`${route.watch.path}/${movie.slug}.${movie.id}`}
-                  className='bg-light-golden-yellow! hover:bg-light-golden-yellow/80! w-full text-black!'
+                  variant='popup'
                 />
-                <ButtonLikePopup targetId={movie.id} refetch={!!pos} />
+                <ButtonLike
+                  targetId={movie.id}
+                  refetch={!!pos}
+                  className='grow'
+                  variant='popup'
+                />
                 <Link
                   href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                  className='block grow'
+                  className='block'
                 >
-                  <Button className='w-full border border-white/50 bg-transparent! text-white'>
+                  <Button
+                    className='hover:text-light-golden-yellow hover:border-light-golden-yellow w-full border border-white/50 bg-transparent text-white hover:bg-transparent'
+                    variant='ghost'
+                  >
                     <FaInfoCircle />
                     Chi tiết
                   </Button>

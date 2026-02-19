@@ -27,21 +27,22 @@ export default function WatchContinueModal({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'linear' }}
             onClick={onClose}
           />
           {/* Modal */}
           <motion.div
             className='bg-main-background absolute top-1/2 left-1/2 z-20 w-110 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-[0px_0px_10px_2px] shadow-black/40'
-            initial={{ opacity: 0.8, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0.8, scale: 0.8 }}
+            exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.2, ease: 'linear' }}
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className='flex items-center justify-between border-b border-gray-200 py-2 pr-2 pl-4 dark:border-none'>
-              <div className='text-sm font-semibold text-gray-800 dark:text-white'>
+            <div className='flex items-center justify-between border-b border-none border-gray-200 py-2 pr-2 pl-4'>
+              <div className='text-sm font-semibold text-gray-800 text-white'>
                 Tiếp tục xem
               </div>
             </div>
@@ -65,7 +66,7 @@ export default function WatchContinueModal({
                 <Col span={8}>
                   <Button
                     variant='primary'
-                    className='bg-light-golden-yellow text-black'
+                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 text-black'
                     onClick={onContinueWatching}
                   >
                     Tiếp tục xem

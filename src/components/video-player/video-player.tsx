@@ -70,8 +70,9 @@ const VideoPlayer = forwardRef<
     token?: string;
     vttUrl: string;
     volume?: number;
-    onPrevClick?: () => void;
     onNextClick?: () => void;
+    onPrevClick?: () => void;
+    onSeeked?: (currentTime: number) => void;
     onTimeUpdate?: (detail: MediaTimeUpdateEventDetail) => void;
   }
 >(function VideoPlayer(
@@ -91,10 +92,11 @@ const VideoPlayer = forwardRef<
     thumbnailUrl,
     title,
     token,
-    vttUrl,
     volume = 0.5,
-    onPrevClick,
+    vttUrl,
     onNextClick,
+    onPrevClick,
+    onSeeked,
     onTimeUpdate
   },
   ref
@@ -144,6 +146,7 @@ const VideoPlayer = forwardRef<
           className
         )}
         onTimeUpdate={handleTimeChange}
+        onSeeked={onSeeked}
         title={title}
       >
         <MediaProvider slot='media' className='cursor-pointer'>

@@ -1,7 +1,7 @@
 'use client';
 
 import './watch-player.css';
-import { ButtonLikeWatch } from '@/components/app/button-like';
+import { ButtonLike } from '@/components/app/button-like';
 import { ButtonShareMovie } from '@/components/app/button-share';
 import { VideoPlayer } from '@/components/video-player';
 import {
@@ -164,6 +164,13 @@ export default function WatchPlayer() {
     await trackWatchHistoryMutate(payload);
   }, [isAuthenticated, movieItemId, trackWatchHistoryMutate]);
 
+  // Track when user seeks (clicks on time slider)
+  const handleSeeked = (currentTime: number) => {
+    currentSecondsRef.current = Math.floor(currentTime || 0);
+
+    saveWatchHistory();
+  };
+
   // Track when user leaves page (beforeunload, navigation, etc)
   useEffect(() => {
     const handleBeforeUnload = async () => {
@@ -302,6 +309,7 @@ export default function WatchPlayer() {
                 onPrevClick={() => console.log('prev')}
                 onNextClick={() => console.log('next')}
                 onTimeUpdate={handleWatchHistoryTimeUpdate}
+                onSeeked={handleSeeked}
               />
               <WatchContinueModal
                 opened={isShowContinueModal}
@@ -329,15 +337,8 @@ export default function WatchPlayer() {
       )}
       <div className='flex h-16 items-center rounded-br-[12px] rounded-bl-[12px] bg-[#15151a]'>
         <div className='flex w-full items-center gap-2 px-4 select-none'>
-          <ButtonLikeWatch
-            targetId={movie.id}
-            className='h-10! hover:bg-white/10!'
-            text='Yêu thích'
-          />
-          <ButtonAddToPlaylist
-            movieId={movie.id}
-            className='hover:text-light-golden-yellow flex h-10! flex-row items-center justify-center gap-2 px-4! py-2.5 text-sm whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
-          />
+          <ButtonLike targetId={movie.id} variant='watch' text='Yêu thích' />
+          <ButtonAddToPlaylist movieId={movie.id} variant='watch' />
           <Button
             variant='ghost'
             className='hover:text-light-golden-yellow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
@@ -365,7 +366,7 @@ export default function WatchPlayer() {
               OFF
             </span>
           </Button>
-          <ButtonShareMovie className='hover:text-light-golden-yellow flex h-10! flex-row items-center justify-center gap-2 px-4! py-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear' />
+          <ButtonShareMovie variant='watch' />
           <Button
             variant='ghost'
             className='hover:text-light-golden-yellow flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
@@ -376,7 +377,7 @@ export default function WatchPlayer() {
           <div className='grow'></div>
           <Button
             variant='ghost'
-            className='hover:text-light-golden-yellow flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+            className='hover:text-light-golden-yellow flex h-10! items-center justify-center gap-2 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
           >
             <FaFlag /> Báo lỗi
           </Button>

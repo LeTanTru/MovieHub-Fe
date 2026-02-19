@@ -1,7 +1,8 @@
 'use client';
 
-import { Col, InputField, Row } from '@/components/form';
+import { InputField } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
+import { cn } from '@/lib';
 import { searchSchema } from '@/schemaValidations';
 import { SearchType } from '@/types';
 import { Search } from 'lucide-react';
@@ -22,7 +23,7 @@ export default function SearchForm({ className }: SearchFormProps) {
       schema={searchSchema}
       defaultValues={defaultValues}
       onSubmit={onSubmit}
-      className={className}
+      className={cn('bg-transparent', className)}
     >
       {(form) => (
         <>

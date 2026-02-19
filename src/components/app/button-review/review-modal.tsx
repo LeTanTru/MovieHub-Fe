@@ -104,7 +104,7 @@ export default function ReviewModal({
     <Modal
       open={opened}
       onClose={onClose}
-      className='[&_.body-wrapper]:dark:bg-review-modal [&_.body-wrapper]:h-fit! [&_.body-wrapper]:min-h-fit! [&_.body-wrapper]:max-w-160'
+      className='[&_.body-wrapper]:bg-review-modal [&_.body-wrapper]:h-fit! [&_.body-wrapper]:min-h-fit! [&_.body-wrapper]:max-w-160'
       headerClassName='border-none'
       closeOnBackdropClick
     >
@@ -113,7 +113,7 @@ export default function ReviewModal({
         initialValues={initialValues}
         schema={reviewSchema}
         onSubmit={handleSubmit}
-        className='p-8 pt-0'
+        className='bg-transparent p-8 pt-0'
       >
         {(form) => (
           <>

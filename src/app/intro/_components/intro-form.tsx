@@ -40,7 +40,7 @@ export default function IntroForm() {
       schema={introSchema}
       defaultValues={defaultValues}
       onSubmit={onSubmit}
-      className='mx-auto flex h-screen w-200 flex-col items-center justify-center'
+      className='mx-auto flex h-screen w-200 flex-col items-center justify-center bg-transparent'
     >
       {(form) => (
         <>

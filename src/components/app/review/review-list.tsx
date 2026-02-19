@@ -211,7 +211,7 @@ export default function ReviewList({
   if (!reviewList.length)
     return (
       <NoData
-        className='dark:bg-background/30 mt-4 min-h-40 rounded-lg px-8 py-12 opacity-50'
+        className='bg-background/30 mt-4 min-h-40 rounded-lg px-8 py-12 opacity-50'
         content='Chưa có đánh giá nào'
         size={50}
         src={emptyDiscussion.src}

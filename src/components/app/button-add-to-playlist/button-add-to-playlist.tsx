@@ -1,13 +1,17 @@
 'use client';
 
 import { Button } from '@/components/form';
-import { useAuth, useClickOutside, useDisclosure } from '@/hooks';
+import {
+  useAuth,
+  useClickAnimation,
+  useClickOutside,
+  useDisclosure
+} from '@/hooks';
 import {
   usePlaylistByMovieQuery,
   usePlaylistListQuery,
   useUpdatePlaylistItemMutation
 } from '@/queries';
-import { FaPlus } from 'react-icons/fa6';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ButtonAddPlayList } from '@/components/app/button-playlist';
 import {
@@ -25,19 +29,37 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import PlaylistItem from './playlist-item';
 import PlaylistItemListSkeleton from './playlist-item-list-skeleton';
+import { PlusICon } from '@/assets';
+import { cva, VariantProps } from 'class-variance-authority';
+
+const variants = cva('', {
+  variants: {
+    variant: {
+      detail:
+        'hover:text-light-golden-yellow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
+      watch:
+        'hover:text-light-golden-yellow h-10 items-center justify-center gap-2 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+    }
+  },
+  defaultVariants: {
+    variant: 'detail'
+  }
+});
 
 export default function ButtonAddToPlaylist({
   movieId,
-  className
+  className,
+  variant
 }: {
   movieId: string;
   className?: string;
-}) {
+} & VariantProps<typeof variants>) {
   const { opened, toggle, close } = useDisclosure();
   const containerRef = useClickOutside<HTMLDivElement>(close);
   const [checkedPlaylist, setCheckedPlaylist] = useState<string[]>([]);
   const [playlistId, setPlaylistId] = useState<string>('');
   const { isAuthenticated } = useAuth();
+  const { iconRef, startAnimation } = useClickAnimation();
 
   const { data: playlistData, isLoading: playlistLoading } =
     usePlaylistListQuery({
@@ -77,6 +99,7 @@ export default function ButtonAddToPlaylist({
       );
       return;
     }
+    startAnimation();
     toggle();
   };
 
@@ -135,23 +158,20 @@ export default function ButtonAddToPlaylist({
   return (
     <div className='relative' ref={containerRef}>
       <Button
-        className={cn(
-          'hover:text-light-golden-yellow h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10',
-          className
-        )}
+        className={cn(variants({ variant }), className)}
         variant='ghost'
         onClick={handleOpen}
       >
-        <FaPlus />
+        <PlusICon ref={iconRef} />
         Thêm vào
       </Button>
       <AnimatePresence mode='wait'>
         {opened && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            transition={{ duration: 0.05, ease: 'linear' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'linear' }}
             style={{ transformOrigin: '50% 0%' }}
             className='absolute top-full left-1/2 z-10 flex w-50 -translate-x-1/2 flex-col gap-4 rounded bg-white p-4 shadow-lg shadow-black/50'
           >
@@ -178,7 +198,7 @@ export default function ButtonAddToPlaylist({
             )}
             {playlist.length < MAX_PLAYLIST_COUNT && (
               <ButtonAddPlayList
-                className='bg-light-golden-yellow! border-light-golden-yellow hover:bg-light-golden-yellow/80! rounded text-black hover:text-black/80!'
+                className='bg-light-golden-yellow border-light-golden-yellow hover:bg-light-golden-yellow/80 rounded text-black hover:text-black/80'
                 text='Thêm mới'
                 showText
               />

@@ -7,8 +7,8 @@ import { renderImageUrl } from '@/utils';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MovieContent } from '@/components/app/movie-content';
-import { MovieInfo } from '@/components/app/movie-info';
+import { MovieSide } from '@/components/app/movie-side';
+import { MovieMain } from '@/components/app/movie-main';
 import { Container } from '@/components/layout';
 
 export default function Movie({ id }: { id: string }) {
@@ -43,8 +43,8 @@ export default function Movie({ id }: { id: string }) {
       <div className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
         <Skeleton className='skeleton h-0 w-full pt-[40%]' />
         <div className='relative z-3 mx-auto -mt-50 mb-0 flex w-full max-w-410 items-stretch justify-between px-5 py-0'>
-          <MovieInfo isLoading />
-          <MovieContent isLoading />
+          <MovieSide isLoading />
+          <MovieMain isLoading />
         </div>
       </div>
     );
@@ -72,8 +72,8 @@ export default function Movie({ id }: { id: string }) {
       </div>
       <Container className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
         <div className='relative z-3 mx-auto -mt-50 flex w-full max-w-410 items-stretch justify-between px-5'>
-          <MovieInfo />
-          <MovieContent />
+          <MovieSide />
+          <MovieMain />
         </div>
       </Container>
     </>

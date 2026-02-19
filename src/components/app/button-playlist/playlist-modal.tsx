@@ -138,7 +138,7 @@ export default function PlaylistModal({
               </Col>
               <Col span={12}>
                 <Button
-                  className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 text-black'
+                  className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 text-black'
                   variant='primary'
                   disabled={!form.formState.isDirty || loading}
                   type='submit'

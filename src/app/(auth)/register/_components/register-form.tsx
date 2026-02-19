@@ -75,7 +75,7 @@ export default function RegisterForm() {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onChange={() => setIsFormChanged(true)}
-        className='p-0'
+        className='bg-transparent p-0'
       >
         {(form) => (
           <>
@@ -142,7 +142,7 @@ export default function RegisterForm() {
             <Button
               type='submit'
               variant='primary'
-              className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/50 dark:disabled:hover:bg-light-golden-yellow/50 w-full'
+              className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/50 disabled:hover:bg-light-golden-yellow/50 w-full'
               disabled={registerLoading || !isFormChanged}
               loading={registerLoading}
             >

@@ -114,10 +114,12 @@ export default function EpisodeList({
           <h3 className='font-medium text-white'>Danh sách tập</h3>
           <Button
             variant='ghost'
-            className='size-4! rounded-full p-0! text-gray-400 hover:bg-transparent! hover:text-white!'
+            className='rounded-full p-0 text-gray-400 hover:bg-transparent hover:text-white'
             onClick={onToggle}
           >
-            <X />
+            <span>
+              <X />
+            </span>
           </Button>
         </div>
         <div className='relative px-4 py-2' ref={dropdownRef}>

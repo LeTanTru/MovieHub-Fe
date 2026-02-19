@@ -4,6 +4,7 @@ import {
   ButtonDeletePlaylist,
   ButtonEditPlaylist
 } from '@/components/app/button-playlist';
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib';
 import { usePlaylistStore } from '@/store';
 import { PlaylistResType } from '@/types';
@@ -42,8 +43,9 @@ export default function PlaylistCard({
           <FaRegCirclePlay />
           {playlist.totalMovie} phim
         </div>
-        <div className='flex gap-4'>
+        <div className='flex gap-3'>
           <ButtonEditPlaylist playlist={playlist} />
+          <Separator orientation='vertical' className='h-4! bg-white/20' />
           <ButtonDeletePlaylist id={playlist.id} />
         </div>
       </div>

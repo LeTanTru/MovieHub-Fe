@@ -289,7 +289,7 @@ export default function ForgotPasswordForm() {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onChange={() => setIsFormChanged(true)}
-        className='p-0'
+        className='bg-transparent p-0'
       >
         {(form) => {
           return (
@@ -309,7 +309,7 @@ export default function ForgotPasswordForm() {
                 <Button
                   type='submit'
                   variant='primary'
-                  className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80 w-full'
+                  className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80 w-full'
                   disabled={requestForgotPasswordLoading || !isFormChanged}
                   loading={requestForgotPasswordLoading}
                 >
@@ -400,7 +400,7 @@ export default function ForgotPasswordForm() {
                     <Button
                       type='submit'
                       variant='primary'
-                      className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80'
+                      className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80'
                       disabled={
                         forgotPasswordLoading || !form.formState.isValid
                       }
@@ -416,6 +416,7 @@ export default function ForgotPasswordForm() {
                       type='button'
                       variant='secondary'
                       onClick={handleBack}
+                      className='border-none'
                     >
                       Quay lại
                     </Button>

@@ -7,5 +7,6 @@ export { default as LikeIcon } from './like';
 export { default as MessageIcon } from './message';
 export { default as PlayIcon } from './play';
 export { default as PlaylistIcon } from './playlist';
+export { default as PlusICon } from './plus';
 export { default as StarIcon } from './star-icon';
 export { default as TelegramIcon } from './telegram';
