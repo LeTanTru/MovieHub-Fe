@@ -19,12 +19,14 @@ import { notify } from '@/utils';
 import { getQueryClient } from '@/components/providers';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
+import { useAuth } from '@/hooks';
 
 export default function WatchContinue() {
   const queryClient = getQueryClient();
   const swiper = useSwiper();
+  const { isAuthenticated } = useAuth();
   const { data: movieHistoriesData, isLoading } = useMovieHistoryListQuery({
-    enabled: true
+    enabled: isAuthenticated
   });
 
   const movieHistories = movieHistoriesData?.data || [];
