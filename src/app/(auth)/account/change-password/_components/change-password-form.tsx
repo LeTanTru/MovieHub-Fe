@@ -82,7 +82,7 @@ export default function ChangePasswordForm() {
         schema={changePasswordSchema}
         defaultValues={defaultValues}
         onSubmit={onSubmit}
-        className='mt-4 p-0'
+        className='mt-4 bg-transparent p-0'
       >
         {(form) => {
           return (
@@ -137,7 +137,7 @@ export default function ChangePasswordForm() {
                   <Button
                     type='submit'
                     variant='primary'
-                    className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80'
+                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80'
                     loading={
                       changePasswordLoading ||
                       logoutLoading ||

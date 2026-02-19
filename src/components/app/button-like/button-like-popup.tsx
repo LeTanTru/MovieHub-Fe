@@ -143,7 +143,7 @@ export default function ButtonLikePopup({
       className={cn(
         'border border-white/50 bg-transparent! text-white',
         {
-          'text-light-golden-yellow border-light-golden-yellow dark:disabled:opacity-80':
+          'text-light-golden-yellow border-light-golden-yellow disabled:opacity-80':
             isLiked
         },
         className

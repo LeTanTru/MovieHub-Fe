@@ -139,7 +139,7 @@ export default function ButtonLikeWatch({
         className={cn(
           'hover:text-light-golden-yellow border-none bg-transparent! text-white',
           {
-            'text-light-golden-yellow dark:disabled:opacity-80': isLiked
+            'text-light-golden-yellow disabled:opacity-80': isLiked
           },
           className
         )}

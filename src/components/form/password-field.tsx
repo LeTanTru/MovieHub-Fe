@@ -151,7 +151,8 @@ export default function PasswordField<T extends FieldValues>({
                         disabled,
                       'border-red-500 focus-visible:ring-red-500':
                         !!fieldState.error,
-                      'focus-visible:ring-main-color': !fieldState.error
+                      'focus-visible:ring-main-color': !fieldState.error,
+                      'pb-[1.5px]': !isVisible
                     }
                   )}
                 />

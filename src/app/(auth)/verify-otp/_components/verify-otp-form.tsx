@@ -221,7 +221,7 @@ export default function VerifyOtpForm() {
         onSubmit={onSubmit}
         defaultValues={defaultValues}
         onChange={() => setIsFormChanged(true)}
-        className='p-0'
+        className='bg-transparent p-0'
       >
         {(form) => {
           return (
@@ -252,6 +252,7 @@ export default function VerifyOtpForm() {
                     onClick={handleResendOtp}
                     disabled={isResendDisabled}
                     loading={resendOtpLoading}
+                    variant='primary'
                   >
                     Gửi lại OTP
                   </Button>
@@ -282,7 +283,7 @@ export default function VerifyOtpForm() {
                   <Button
                     type='submit'
                     variant='primary'
-                    className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80'
+                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80'
                     disabled={verifyOtpLoading || !isFormChanged}
                     loading={verifyOtpLoading}
                   >
@@ -296,6 +297,7 @@ export default function VerifyOtpForm() {
                     type='button'
                     variant='secondary'
                     onClick={handleBack}
+                    className='border-none'
                   >
                     Quay lại
                   </Button>

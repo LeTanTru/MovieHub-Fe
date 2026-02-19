@@ -135,9 +135,9 @@ export default function ButtonLikePerson({
     >
       <Button
         className={cn(
-          'dark:hover:text-light-golden-yellow dark:hover:border-light-golden-yellow rounded-full py-2 text-white',
+          'hover:text-light-golden-yellow hover:border-light-golden-yellow rounded-full py-2 text-white',
           {
-            'dark:text-light-golden-yellow dark:border-light-golden-yellow dark:disabled:opacity-80':
+            'text-light-golden-yellow border-light-golden-yellow disabled:opacity-80':
               isLiked
           },
           className

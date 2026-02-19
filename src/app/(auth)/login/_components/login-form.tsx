@@ -85,7 +85,7 @@ export default function LoginForm() {
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         onChange={() => setIsFormChanged(true)}
-        className='p-0'
+        className='bg-transparent p-0'
       >
         {(form) => (
           <>
@@ -127,7 +127,7 @@ export default function LoginForm() {
             <Button
               type='submit'
               variant='primary'
-              className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80 w-full'
+              className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80 w-full'
               disabled={
                 !isFormChanged || loginLoading || setCookieServerLoading
               }

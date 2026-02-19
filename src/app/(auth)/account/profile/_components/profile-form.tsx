@@ -105,7 +105,7 @@ export default function ProfileForm() {
         initialValues={initialValues}
         defaultValues={defaultValues}
         onSubmit={onSubmit}
-        className='mt-2 p-0'
+        className='mt-2 bg-transparent p-0'
       >
         {(form) => {
           return (
@@ -190,7 +190,7 @@ export default function ProfileForm() {
                   </Row>
                 </Col>
               </Row>
-              <Row className='mb-2 flex justify-end gap-2'>
+              <Row className='mb-2 flex justify-end'>
                 <Col span={6}>
                   <Button
                     type='button'
@@ -205,7 +205,7 @@ export default function ProfileForm() {
                   <Button
                     type='submit'
                     variant='primary'
-                    className='dark:bg-light-golden-yellow dark:hover:bg-light-golden-yellow/80 dark:disabled:bg-light-golden-yellow/80 dark:disabled:hover:bg-light-golden-yellow/80'
+                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80'
                     loading={updateProfileLoading}
                     disabled={!form.formState.isDirty}
                   >

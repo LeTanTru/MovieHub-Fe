@@ -40,8 +40,8 @@ export default function WatchContinueModal({
             onMouseDown={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className='flex items-center justify-between border-b border-gray-200 py-2 pr-2 pl-4 dark:border-none'>
-              <div className='text-sm font-semibold text-gray-800 dark:text-white'>
+            <div className='flex items-center justify-between border-b border-none border-gray-200 py-2 pr-2 pl-4'>
+              <div className='text-sm font-semibold text-gray-800 text-white'>
                 Tiếp tục xem
               </div>
             </div>
@@ -65,7 +65,7 @@ export default function WatchContinueModal({
                 <Col span={8}>
                   <Button
                     variant='primary'
-                    className='bg-light-golden-yellow text-black'
+                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 text-black'
                     onClick={onContinueWatching}
                   >
                     Tiếp tục xem

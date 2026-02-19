@@ -96,7 +96,7 @@ export default function CommentForm({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='dark:bg-discussion-form mt-4 flex h-full flex-col gap-2.5 rounded-md! p-2.5'
+      className='bg-discussion-form mt-4 flex h-full flex-col gap-2.5 rounded-md! p-2.5'
     >
       {(form) => (
         <>
@@ -104,7 +104,7 @@ export default function CommentForm({
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-discussion-input block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
+              className='bg-discussion-input block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
               label={

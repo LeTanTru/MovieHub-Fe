@@ -2,10 +2,14 @@
 
 import { FallingStarIcon } from '@/assets';
 import TopViewItem from '@/components/app/movie-info/top-view-item';
+import { useAuth } from '@/hooks';
 import { useTopViewMovieListQuery } from '@/queries';
 
 export default function TopViewList() {
-  const { data: topViewMovieListData } = useTopViewMovieListQuery();
+  const { isAuthenticated } = useAuth();
+  const { data: topViewMovieListData } = useTopViewMovieListQuery({
+    enabled: isAuthenticated
+  });
   const topViewMovieList = topViewMovieListData?.data?.content || [];
 
   if (topViewMovieList.length === 0) return null;

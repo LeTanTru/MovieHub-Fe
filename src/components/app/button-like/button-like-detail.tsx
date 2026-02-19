@@ -135,9 +135,9 @@ export default function ButtonLikeDetail({
     >
       <Button
         className={cn(
-          'hover:text-light-golden-yellow h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10',
+          'hover:text-light-golden-yellow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
           {
-            'text-light-golden-yellow dark:disabled:opacity-80': isLiked
+            'text-light-golden-yellow disabled:opacity-80': isLiked
           },
           className
         )}

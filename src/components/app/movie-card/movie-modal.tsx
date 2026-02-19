@@ -70,7 +70,7 @@ export default function MovieModal({
               <div className='mb-5 flex items-stretch justify-between gap-2.5'>
                 <ButtonWatchNow
                   href={`${route.watch.path}/${movie.slug}.${movie.id}`}
-                  className='bg-light-golden-yellow! hover:bg-light-golden-yellow/80! w-full text-black!'
+                  variant='popup'
                 />
                 <ButtonLikePopup targetId={movie.id} refetch={!!pos} />
                 <Link

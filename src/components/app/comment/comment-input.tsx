@@ -108,7 +108,7 @@ export default function CommentInput({
 
   if (isLoading)
     return (
-      <div className='bg-discussion-form flex flex-col gap-2 rounded-lg p-2'>
+      <div className='bg-discussion-form flex flex-col gap-2 rounded-md p-2'>
         <Skeleton className='skeleton h-40 w-full' />
         <div className='flex items-center gap-4'>
           <Skeleton className='skeleton h-8 w-24' />
@@ -124,7 +124,7 @@ export default function CommentInput({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='dark:bg-discussion-form flex flex-col gap-2 rounded-lg p-2.5'
+      className='bg-discussion-form flex flex-col gap-2 rounded-md p-2.5'
     >
       {(form) => (
         <>
@@ -132,7 +132,7 @@ export default function CommentInput({
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-discussion-input block w-full resize-none rounded-lg! border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-discussion-input block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
             />

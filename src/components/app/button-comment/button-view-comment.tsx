@@ -37,7 +37,7 @@ export default function ButtonViewComment({
   return (
     <Button
       className={cn(
-        'hover:text-light-golden-yellow! h-fit min-w-20! flex-col px-2! text-xs hover:bg-white/10',
+        'hover:text-light-golden-yellow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
         className
       )}
       variant='ghost'
