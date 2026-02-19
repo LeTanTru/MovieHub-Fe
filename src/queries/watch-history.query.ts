@@ -24,3 +24,10 @@ export const useWatchHistoryTrackingMutation = () => {
       watchHistoryApiRequest.tracking(body)
   });
 };
+
+export const useDeleteWatchHistoryMutation = () => {
+  return useMutation({
+    mutationKey: [queryKeys.WATCH_HISTORY_DELETE],
+    mutationFn: (movieId: string) => watchHistoryApiRequest.delete(movieId)
+  });
+};

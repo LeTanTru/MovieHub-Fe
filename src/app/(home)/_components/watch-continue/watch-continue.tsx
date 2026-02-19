@@ -7,19 +7,49 @@ import './watch-continue.css';
 import { MovieCardHistory } from '@/components/app/movie-card';
 import { MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
-import { useMovieHistoryListQuery } from '@/queries';
+import {
+  useDeleteWatchHistoryMutation,
+  useMovieHistoryListQuery
+} from '@/queries';
 import { route } from '@/routes';
 import Link from 'next/link';
 import { Navigation } from 'swiper/modules';
 import { FaChevronRight } from 'react-icons/fa6';
+import { notify } from '@/utils';
+import { getQueryClient } from '@/components/providers';
+import { queryKeys } from '@/constants';
+import { logger } from '@/logger';
 
 export default function WatchContinue() {
+  const queryClient = getQueryClient();
   const swiper = useSwiper();
   const { data: movieHistoriesData, isLoading } = useMovieHistoryListQuery({
     enabled: true
   });
 
   const movieHistories = movieHistoriesData?.data || [];
+
+  const { mutateAsync: deleteWatchHistoryMutate } =
+    useDeleteWatchHistoryMutation();
+
+  const handleDeleteWatchHistory = async (movieId: string) => {
+    await deleteWatchHistoryMutate(movieId, {
+      onSuccess: async (res) => {
+        if (res.result) {
+          notify.success('Xóa lịch sử xem thành công');
+          await queryClient.invalidateQueries({
+            queryKey: [queryKeys.MOVIE_HISTORY]
+          });
+        } else {
+          notify.error('Xóa lịch sử xem thất bại');
+        }
+      },
+      onError: (error) => {
+        logger.error(`Error while deleting watch history`, error);
+        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      }
+    });
+  };
 
   if (!movieHistories.length) return null;
 
@@ -73,7 +103,11 @@ export default function WatchContinue() {
           >
             {movieHistories.map((movieHistory) => (
               <SwiperSlide key={movieHistory.id}>
-                <MovieCardHistory movieHistory={movieHistory} dir='down' />
+                <MovieCardHistory
+                  movieHistory={movieHistory}
+                  dir='down'
+                  onDelete={handleDeleteWatchHistory}
+                />
               </SwiperSlide>
             ))}
           </Swiper>
