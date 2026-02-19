@@ -72,12 +72,19 @@ export default function MovieModal({
                   href={`${route.watch.path}/${movie.slug}.${movie.id}`}
                   variant='popup'
                 />
-                <ButtonLikePopup targetId={movie.id} refetch={!!pos} />
+                <ButtonLikePopup
+                  targetId={movie.id}
+                  refetch={!!pos}
+                  className='grow'
+                />
                 <Link
                   href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                  className='block grow'
+                  className='block'
                 >
-                  <Button className='w-full border border-white/50 bg-transparent! text-white'>
+                  <Button
+                    className='hover:text-light-golden-yellow hover:border-light-golden-yellow w-full border border-white/50 bg-transparent text-white hover:bg-transparent'
+                    variant='ghost'
+                  >
                     <FaInfoCircle />
                     Chi tiết
                   </Button>

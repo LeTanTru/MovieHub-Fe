@@ -120,7 +120,7 @@ export default function PersonSidebar() {
         {person?.bio && (
           <Button
             onClick={handleOpenModal}
-            className='bg-accent hover:bg-background mt-2 ml-auto block text-sm text-white'
+            className='hover:bg-main-background mt-2 ml-auto block border-none bg-white/5 text-sm text-white'
             variant='secondary'
           >
             Xem thêm

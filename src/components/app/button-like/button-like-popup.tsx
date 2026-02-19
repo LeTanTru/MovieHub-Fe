@@ -141,7 +141,7 @@ export default function ButtonLikePopup({
   return (
     <Button
       className={cn(
-        'border border-white/50 bg-transparent! text-white',
+        'hover:border-light-golden-yellow hover:text-light-golden-yellow border border-white/50 text-white hover:bg-transparent',
         {
           'text-light-golden-yellow border-light-golden-yellow disabled:opacity-80':
             isLiked
@@ -149,6 +149,7 @@ export default function ButtonLikePopup({
         className
       )}
       onClick={isLiked ? handleRemoveLike : handleLike}
+      variant='ghost'
     >
       <HeartIcon ref={iconRef} />
       Thích
