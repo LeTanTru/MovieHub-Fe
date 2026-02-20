@@ -102,7 +102,7 @@ export default function Search() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(() => {
       setShowFilter(false);
-    }, 550);
+    }, 500);
   };
 
   useEffect(() => {

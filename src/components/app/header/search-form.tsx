@@ -78,7 +78,9 @@ export default function SearchForm({ className }: SearchFormProps) {
   const navigate = useNavigate();
   const pathname = usePathname();
   const isSearchPage = pathname === route.search.path;
-  const { setQueryParam, serializeParams } = useQueryParams();
+  const { searchParams, setQueryParam, serializeParams } = useQueryParams<{
+    keyword: string;
+  }>();
   const { keyword, setKeyword } = useSearchStore(
     useShallow((s) => ({
       keyword: s.keyword,
@@ -94,14 +96,14 @@ export default function SearchForm({ className }: SearchFormProps) {
   const movieList = movieListData?.data?.content || [];
 
   const defaultValues: SearchType = {
-    keyword: ''
+    keyword: searchParams.keyword || ''
   };
 
-  const handleOnChange = (event: FormEvent<HTMLFormElement>) => {
+  const handleOnChange = debounce((event: FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLInputElement;
     setKeyword(target.value);
     setQueryParam('keyword', target.value);
-  };
+  }, 300);
 
   const onSubmit = (values: SearchType) => {
     if (!values.keyword || values.keyword.trim() === '') return;
@@ -124,7 +126,7 @@ export default function SearchForm({ className }: SearchFormProps) {
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         className={cn('bg-transparent', className)}
-        onChange={debounce(handleOnChange, 300)}
+        onChange={handleOnChange}
       >
         {(form) => (
           <>
