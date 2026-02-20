@@ -16,10 +16,16 @@ import { searchSchema } from '@/schemaValidations';
 import { useMovieListQuery } from '@/queries';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useNavigate, useQueryParams } from '@/hooks';
-import { usePathname } from 'next/navigation';
+import {
+  useClickOutside,
+  useDisclosure,
+  useNavigate,
+  useQueryParams
+} from '@/hooks';
 import { useSearchStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
+import { usePathname } from 'next/navigation';
+import { CircleLoading } from '@/components/loading';
 
 type SearchFormProps = {
   className?: string;
@@ -77,8 +83,19 @@ function MovieItem({ movie }: { movie: MovieResType }) {
 export default function SearchForm({ className }: SearchFormProps) {
   const navigate = useNavigate();
   const pathname = usePathname();
+
   const isSearchPage = pathname === route.search.path;
-  const { setQueryParam, serializeParams } = useQueryParams();
+
+  const {
+    opened: showMovieList,
+    open: openMovieList,
+    close: closeMovieList
+  } = useDisclosure();
+  const movieListRef = useClickOutside<HTMLDivElement>(closeMovieList);
+
+  const { searchParams, setQueryParam, serializeParams } = useQueryParams<{
+    keyword: string;
+  }>();
   const { keyword, setKeyword } = useSearchStore(
     useShallow((s) => ({
       keyword: s.keyword,
@@ -86,45 +103,46 @@ export default function SearchForm({ className }: SearchFormProps) {
     }))
   );
 
-  const { data: movieListData } = useMovieListQuery({
+  const { data: movieListData, isLoading } = useMovieListQuery({
     params: { keyword },
-    enabled: !!keyword && !isSearchPage
+    enabled: !!keyword
   });
 
   const movieList = movieListData?.data?.content || [];
 
   const defaultValues: SearchType = {
-    keyword: ''
+    keyword: searchParams.keyword || ''
   };
 
-  const handleOnChange = (event: FormEvent<HTMLFormElement>) => {
+  const handleOnChange = debounce((event: FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLInputElement;
     setKeyword(target.value);
-    setQueryParam('keyword', target.value);
-  };
+    if (isSearchPage) setQueryParam('keyword', target.value);
+  }, 300);
 
   const onSubmit = (values: SearchType) => {
-    if (!values.keyword || values.keyword.trim() === '') return;
+    if (!values.keyword || values.keyword.trim() === '' || isSearchPage) return;
 
-    setQueryParam('keyword', values.keyword);
+    navigate(
+      `${route.search.path}?${serializeParams({
+        keyword: values.keyword
+      })}`
+    );
+  };
 
-    if (!isSearchPage) {
-      navigate(
-        `${route.search.path}?${serializeParams({
-          keyword: values.keyword
-        })}`
-      );
-    }
+  const handleToggleMovieList = () => {
+    openMovieList();
   };
 
   return (
-    <div className='relative block w-full max-w-92'>
+    <div className='relative block w-full max-w-92' ref={movieListRef}>
       <BaseForm
         schema={searchSchema}
         defaultValues={defaultValues}
         onSubmit={onSubmit}
         className={cn('bg-transparent', className)}
-        onChange={debounce(handleOnChange, 300)}
+        onChange={handleOnChange}
+        onClick={handleToggleMovieList}
       >
         {(form) => (
           <>
@@ -154,7 +172,7 @@ export default function SearchForm({ className }: SearchFormProps) {
         )}
       </BaseForm>
       <AnimatePresence>
-        {keyword && !isSearchPage && (
+        {keyword && showMovieList && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -166,7 +184,11 @@ export default function SearchForm({ className }: SearchFormProps) {
               Danh sách phim
             </div>
             <div className='scrollbar-none max-h-125 overflow-y-auto'>
-              {movieList.length === 0 ? (
+              {isLoading ? (
+                <div className='py-10'>
+                  <CircleLoading />
+                </div>
+              ) : movieList.length === 0 ? (
                 <NoData
                   className='py-10'
                   size={100}

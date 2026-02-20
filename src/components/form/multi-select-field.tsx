@@ -170,7 +170,7 @@ export default function MultiSelectField<
                       'cursor-not-allowed border-gray-300 bg-gray-200/80 text-gray-500':
                         disabled,
                       'ring-main-color border-transparent ring-2': open,
-                      'border-red-500 ring-red-500': !!fieldState.error
+                      'border-red-500 ring-1 ring-red-500': !!fieldState.error
                     }
                   )}
                 >
