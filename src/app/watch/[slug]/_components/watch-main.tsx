@@ -1,5 +1,6 @@
 'use client';
 
+import { ScheduleBadge } from '@/components/app/schedule-badge';
 import {
   WatchDiscussion,
   WatchEpisode,
@@ -11,6 +12,7 @@ export default function WatchMain() {
     <div className='flex grow flex-col gap-10 p-10'>
       <WatchInfo />
       <div>
+        <ScheduleBadge />
         <WatchEpisode />
         <WatchDiscussion />
       </div>

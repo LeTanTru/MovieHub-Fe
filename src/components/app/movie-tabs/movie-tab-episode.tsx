@@ -16,6 +16,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
+import { ScheduleBadge } from '@/components/app/schedule-badge';
 
 const MovieTabEpisodeSingle = ({ movie }: { movie: MovieResType }) => {
   return (
@@ -121,6 +122,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
   return (
     <>
       {/* Header */}
+      <ScheduleBadge />
       <div className='mb-8 flex items-center justify-between gap-8'>
         <div className='relative' ref={dropdownRef}>
           <div

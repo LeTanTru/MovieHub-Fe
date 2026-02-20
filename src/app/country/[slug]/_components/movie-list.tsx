@@ -8,7 +8,7 @@ import { useQueryParams } from '@/hooks';
 import { Activity } from '@/components/activity';
 import { Pagination } from '@/components/pagination';
 
-export default function CountryList({ countryCode }: { countryCode: string }) {
+export default function MovieList({ countryCode }: { countryCode: string }) {
   const {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();

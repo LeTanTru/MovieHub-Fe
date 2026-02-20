@@ -124,7 +124,7 @@ export type MovieTopViewsResType = {
 export type MovieSearchType = z.infer<typeof movieSearchSchema> &
   BaseSearchType;
 
-type MovieStates = {
+type MovieState = {
   movie: MovieResType | null;
   movieItem: MovieItemResType | null;
   moviePerson: MoviePersonResType | null;
@@ -154,4 +154,4 @@ type MovieAction = {
   reset: () => void;
 };
 
-export type MovieStoreType = MovieStates & MovieAction;
+export type MovieStoreType = MovieState & MovieAction;

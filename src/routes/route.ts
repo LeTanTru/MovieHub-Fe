@@ -73,6 +73,9 @@ const route = defineRoute({
   },
   verifyOtp: {
     path: 'verify-otp'
+  },
+  search: {
+    path: '/search'
   }
 });
 

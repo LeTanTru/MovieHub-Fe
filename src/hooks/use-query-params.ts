@@ -26,7 +26,9 @@ const useQueryParams = <S extends Record<string, any>>() => {
       if (v !== null) sortedParams.set(k, v);
     });
 
-    router.push(`${pathname}?${sortedParams.toString()}`);
+    router.push(
+      `${pathname}?${serializeParams(Object.fromEntries(sortedParams.entries()) as Record<string, any>)}`
+    );
   };
 
   const setQueryParams = (newParams: Partial<S>) => {

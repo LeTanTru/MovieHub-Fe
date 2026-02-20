@@ -15,6 +15,7 @@ import ratingOk from './rating-ok.webp';
 import ratingWonderful from './rating-wonderful.webp';
 import routeNotFound from './404-route.svg';
 import vnFlag from './vn-flag.svg';
+import bell from './bell.webp';
 
 export {
   authBackground,
@@ -33,5 +34,6 @@ export {
   ratingOk,
   ratingWonderful,
   routeNotFound,
-  vnFlag
+  vnFlag,
+  bell
 };

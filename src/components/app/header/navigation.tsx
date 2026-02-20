@@ -5,11 +5,16 @@ import NavigationDesktop from './navigation/navigation-desktop';
 import NavigationMobile from './navigation/navigation-mobile';
 import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
-import { countries } from '@/constants';
+import { countries, MAX_PAGE_SIZE } from '@/constants';
 import { generateSlug } from '@/utils';
 
 export default function NavigationMenu() {
-  const { data: categoryListData } = useCategoryListQuery({ enabled: true });
+  const { data: categoryListData } = useCategoryListQuery({
+    params: {
+      size: MAX_PAGE_SIZE
+    },
+    enabled: true
+  });
   const categoryList: CategoryResType[] = categoryListData?.data?.content || [];
 
   const navigationList: ItemProps[] = [

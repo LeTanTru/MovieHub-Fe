@@ -4,7 +4,7 @@ import { Form } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type ReactNode, type Ref, useEffect } from 'react';
+import { FormEvent, type ReactNode, type Ref, useEffect } from 'react';
 import {
   type DefaultValues,
   useForm,
@@ -23,7 +23,7 @@ type BaseFormProps<T extends Record<string, any>> = {
   initialValues?: T;
   mode?: 'onBlur' | 'onChange' | 'onSubmit' | 'onTouched' | 'all';
   id?: string;
-  onChange?: () => void;
+  onChange?: (e: FormEvent<HTMLFormElement>) => void;
   ref?: Ref<HTMLFormElement> | undefined;
 };
 

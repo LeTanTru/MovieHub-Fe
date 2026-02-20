@@ -3,19 +3,22 @@
 import { movieApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import { MovieSearchType } from '@/types';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 export const useMovieListQuery = ({
   params = {},
-  enabled = false
+  enabled = false,
+  isKeepPreviousData = false
 }: {
   params?: MovieSearchType;
   enabled?: boolean;
+  isKeepPreviousData?: boolean;
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_LIST, params],
     queryFn: () => movieApiRequest.getList(params),
-    enabled
+    enabled,
+    placeholderData: isKeepPreviousData ? keepPreviousData : undefined
   });
 };
 

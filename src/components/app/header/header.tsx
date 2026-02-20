@@ -63,9 +63,7 @@ export default function Header() {
                 loading='eager'
               />
             </Link>
-            <div className='block h-full w-full max-w-92'>
-              <SearchForm className='flex h-full w-full items-center bg-transparent p-0' />
-            </div>
+            <SearchForm className='flex h-full w-full items-center bg-transparent p-0' />
             <div className='block grow items-center gap-2'>
               <NavigationMenu />
             </div>
