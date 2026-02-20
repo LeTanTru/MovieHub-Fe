@@ -6,5 +6,5 @@ export const baseSearchSchema = z.object({
 });
 
 export const searchSchema = z.object({
-  title: z.string().optional()
+  keyword: z.string().optional()
 });

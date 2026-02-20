@@ -30,7 +30,7 @@ export default function NoData({
         height={size || height}
         alt={'No data'}
       />
-      <p>{content}</p>
+      <p className='text-center'>{content}</p>
     </div>
   );
 }

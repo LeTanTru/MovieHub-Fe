@@ -1,4 +1,4 @@
-import { apiConfig, MAX_PAGE_SIZE } from '@/constants';
+import { apiConfig } from '@/constants';
 import {
   ApiResponse,
   ApiResponseList,
@@ -10,10 +10,7 @@ import { http } from '@/utils';
 const categoryApiRequest = {
   getList: (params?: CategorySearchType) =>
     http.get<ApiResponseList<CategoryResType>>(apiConfig.category.getList, {
-      params: {
-        size: MAX_PAGE_SIZE,
-        ...params
-      }
+      params
     }),
   getById: (id: string) =>
     http.get<ApiResponse<CategoryResType>>(apiConfig.category.getById, {

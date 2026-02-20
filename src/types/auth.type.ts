@@ -54,11 +54,11 @@ type AuthState = {
   profile: ProfileType | null;
 };
 
-type AuthActions = {
+type AuthAction = {
   setProfile: (profile: ProfileType | null) => void;
 };
 
-export type AuthStoreType = AuthState & AuthActions;
+export type AuthStoreType = AuthState & AuthAction;
 
 export type CookieServerBodyType = LoginResType;
 

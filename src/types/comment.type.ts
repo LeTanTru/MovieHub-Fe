@@ -61,7 +61,7 @@ type CommentStoreState = {
   openParentIds: string[];
 };
 
-type CommentStoreActions = {
+type CommentStoreAction = {
   openReply: (replyingComment: CommentResType | null) => void;
   closeReply: () => void;
 
@@ -69,4 +69,4 @@ type CommentStoreActions = {
   setOpenParentIds: (ids: string[] | ((prev: string[]) => string[])) => void;
 };
 
-export type CommentStoreType = CommentStoreState & CommentStoreActions;
+export type CommentStoreType = CommentStoreState & CommentStoreAction;

@@ -3,6 +3,7 @@ export { default as useAuth } from './use-auth';
 export { default as useBodyHeight } from './use-body-height';
 export { default as useClickAnimation } from './use-click-animation';
 export { default as useClickOutside } from './use-click-out-side';
+export { default as useDebounce } from './use-debounce';
 export { default as useDisclosure } from './use-disclosure';
 export { default as useFileUploadManager } from './use-file-upload-manager';
 export { default as useImageStatus } from './use-image-status';

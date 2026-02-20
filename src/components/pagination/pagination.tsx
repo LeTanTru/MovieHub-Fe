@@ -4,16 +4,21 @@ import { cn } from '@/lib';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
+import { scroller } from 'react-scroll';
 
 type PaginationProps = {
   totalPages: number;
   page?: number;
+  to?: string;
+  scrollOptions?: any;
   onPageChange?: (page: number) => void;
 };
 
 export default function Pagination({
   totalPages,
   page,
+  to,
+  scrollOptions,
   onPageChange
 }: PaginationProps) {
   const pathname = usePathname();
@@ -35,6 +40,29 @@ export default function Pagination({
   const handlePageClick = (nextPage: number) => {
     if (!isControlled || nextPage === currentPage) return;
     onPageChange?.(nextPage);
+    if (to) {
+      scroller.scrollTo(to, {
+        duration: 200,
+        delay: 0,
+        smooth: true,
+        offset: -100,
+        isDynamic: true,
+        ...scrollOptions
+      });
+    }
+  };
+
+  const handleScroll = () => {
+    if (to) {
+      scroller.scrollTo(to, {
+        duration: 200,
+        delay: 0,
+        smooth: true,
+        offset: -100,
+        isDynamic: true,
+        ...scrollOptions
+      });
+    }
   };
 
   const renderPage = (page: number) => {
@@ -64,6 +92,7 @@ export default function Pagination({
       <Link
         key={page}
         href={createPageLink(page)}
+        onClick={handleScroll}
         className={cn(
           'hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
         )}
@@ -122,6 +151,7 @@ export default function Pagination({
         ) : (
           <Link
             href={createPageLink(currentPage - 1)}
+            onClick={handleScroll}
             className='hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
           >
             <FaAngleLeft />
@@ -159,6 +189,7 @@ export default function Pagination({
         ) : (
           <Link
             href={createPageLink(currentPage + 1)}
+            onClick={handleScroll}
             className='hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
           >
             <FaAngleRight />

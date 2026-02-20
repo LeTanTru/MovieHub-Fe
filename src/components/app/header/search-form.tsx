@@ -1,44 +1,191 @@
 'use client';
 
-import { InputField } from '@/components/form';
+import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
+import { AnimatePresence, motion } from 'framer-motion';
 import { BaseForm } from '@/components/form/base-form';
 import { cn } from '@/lib';
+import { debounce } from 'lodash';
+import { FormEvent } from 'react';
+import { InputField } from '@/components/form';
+import { MovieResType, SearchType } from '@/types';
+import { NoData } from '@/components/no-data';
+import { renderImageUrl } from '@/utils';
+import { route } from '@/routes';
+import { Search, XCircle } from 'lucide-react';
 import { searchSchema } from '@/schemaValidations';
-import { SearchType } from '@/types';
-import { Search } from 'lucide-react';
+import { useMovieListQuery } from '@/queries';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useNavigate, useQueryParams } from '@/hooks';
+import { usePathname } from 'next/navigation';
+import { useSearchStore } from '@/store';
+import { useShallow } from 'zustand/shallow';
 
 type SearchFormProps = {
   className?: string;
   inputClassName?: string;
 };
 
+function MovieItem({ movie }: { movie: MovieResType }) {
+  const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
+  const isSeries = movie.type === MOVIE_TYPE_SERIES;
+  return (
+    <Link
+      key={movie.id}
+      href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+      className='flex items-center justify-between gap-4 rounded p-2.5 transition-colors duration-200 ease-linear hover:bg-white/5'
+    >
+      <div className='w-12.5 shrink-0'>
+        <div className='bg-gunmetal-blue relative block h-0 w-full rounded pb-[135%]'>
+          <Image
+            src={renderImageUrl(movie.posterUrl)}
+            alt={`${movie.title} - ${movie.originalTitle}`}
+            width={50}
+            height={70}
+            className='absolute inset-0 size-full object-cover'
+          />
+        </div>
+      </div>
+      <div className='grow'>
+        <h3 className='mb-1.5 line-clamp-2 leading-normal text-white'>
+          {movie.title}
+        </h3>
+        <div className='line-clamp-1 text-xs leading-normal text-neutral-400'>
+          {movie.originalTitle}
+        </div>
+        <div className='flex items-center gap-4'>
+          <div
+            className='inline text-xs whitespace-nowrap text-neutral-400'
+            title={ageRating?.mean}
+          >
+            <strong>{ageRating?.label}</strong>
+          </div>
+          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.8px] before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+            <strong>Phần {movie.latestSeason}</strong>
+          </div>
+          {isSeries && (
+            <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.8px] before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+              <strong>Tập {movie.latestEpisode}</strong>
+            </div>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 export default function SearchForm({ className }: SearchFormProps) {
-  const onSubmit = (values: SearchType) => {};
+  const navigate = useNavigate();
+  const pathname = usePathname();
+  const isSearchPage = pathname === route.search.path;
+  const { setQueryParam, serializeParams } = useQueryParams();
+  const { keyword, setKeyword } = useSearchStore(
+    useShallow((s) => ({
+      keyword: s.keyword,
+      setKeyword: s.setKeyword
+    }))
+  );
+
+  const { data: movieListData } = useMovieListQuery({
+    params: { keyword },
+    enabled: !!keyword && !isSearchPage
+  });
+
+  const movieList = movieListData?.data?.content || [];
+
   const defaultValues: SearchType = {
-    title: ''
+    keyword: ''
+  };
+
+  const handleOnChange = (event: FormEvent<HTMLFormElement>) => {
+    const target = event.target as HTMLInputElement;
+    setKeyword(target.value);
+    setQueryParam('keyword', target.value);
+  };
+
+  const onSubmit = (values: SearchType) => {
+    if (!values.keyword || values.keyword.trim() === '') return;
+
+    setQueryParam('keyword', values.keyword);
+
+    if (!isSearchPage) {
+      navigate(
+        `${route.search.path}?${serializeParams({
+          keyword: values.keyword
+        })}`
+      );
+    }
   };
 
   return (
-    <BaseForm
-      schema={searchSchema}
-      defaultValues={defaultValues}
-      onSubmit={onSubmit}
-      className={cn('bg-transparent', className)}
-    >
-      {(form) => (
-        <>
-          <div className='h-search-form my-0 w-full'>
-            <InputField
-              formItemClassName='h-search-form'
-              className='h-search-form border-none focus-visible:ring-slate-500'
-              prefixIcon={<Search size={16} />}
-              control={form.control}
-              name='title'
-              placeholder='Tìm kiếm phim, diễn viên'
-            />
-          </div>
-        </>
-      )}
-    </BaseForm>
+    <div className='relative block w-full max-w-92'>
+      <BaseForm
+        schema={searchSchema}
+        defaultValues={defaultValues}
+        onSubmit={onSubmit}
+        className={cn('bg-transparent', className)}
+        onChange={debounce(handleOnChange, 300)}
+      >
+        {(form) => (
+          <>
+            <div className='h-search-form my-0 w-full'>
+              <InputField
+                formItemClassName='h-search-form'
+                className='h-search-form border-none focus-visible:ring-slate-500'
+                prefixIcon={<Search size={16} className='text-white' />}
+                suffixIcon={
+                  keyword ? (
+                    <XCircle
+                      size={16}
+                      className='cursor-pointer text-white'
+                      onClick={() => {
+                        setKeyword('');
+                        form.reset();
+                      }}
+                    />
+                  ) : null
+                }
+                control={form.control}
+                name='keyword'
+                placeholder='Tìm kiếm phim, diễn viên'
+              />
+            </div>
+          </>
+        )}
+      </BaseForm>
+      <AnimatePresence>
+        {keyword && !isSearchPage && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className='bg-gunmetal-blue shadow-gunmetal-blue absolute top-[calc(100%+5px)] left-0 w-full rounded p-4 shadow-[0px_0px_10px_1px]'
+          >
+            <div className='mb-3 flex items-center justify-between text-neutral-400'>
+              Danh sách phim
+            </div>
+            <div className='scrollbar-none max-h-125 overflow-y-auto'>
+              {movieList.length === 0 ? (
+                <NoData
+                  className='py-10'
+                  size={100}
+                  content={
+                    <>
+                      Không tìm thấy phim nào
+                      <br /> phù hợp với từ khóa của bạn
+                    </>
+                  }
+                />
+              ) : (
+                movieList.map((movie) => (
+                  <MovieItem key={movie.id} movie={movie} />
+                ))
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
