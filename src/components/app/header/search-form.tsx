@@ -105,7 +105,7 @@ export default function SearchForm({ className }: SearchFormProps) {
 
   const { data: movieListData, isLoading } = useMovieListQuery({
     params: { keyword },
-    enabled: !!keyword
+    enabled: !!keyword && !isSearchPage
   });
 
   const movieList = movieListData?.data?.content || [];
@@ -172,7 +172,7 @@ export default function SearchForm({ className }: SearchFormProps) {
         )}
       </BaseForm>
       <AnimatePresence>
-        {keyword && showMovieList && (
+        {keyword && !isSearchPage && showMovieList && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}

@@ -10,7 +10,7 @@ export const movieSearchSchema = z.object({
   isFeatured: z.boolean().optional().nullable(),
   keyword: z.string().optional().nullable(),
   language: z.string().optional().nullable(),
-  originalTitle: z.number().optional().nullable(),
+  originalTitle: z.string().optional().nullable(),
   releaseYear: z.number().optional().nullable(),
   title: z.string().optional().nullable(),
   type: z.number().optional().nullable()

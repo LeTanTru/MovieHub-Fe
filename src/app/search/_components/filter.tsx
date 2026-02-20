@@ -17,24 +17,61 @@ import { FaArrowRight, FaFilter } from 'react-icons/fa6';
 
 type SearchKeys = keyof MovieSearchType;
 
+const isMultiSelectField = (key: SearchKeys): boolean => {
+  return key === 'categoryIds';
+};
+
+const getSelectedValues = (
+  filters: { key: SearchKeys; value: string | number | string[] }[],
+  key: SearchKeys
+): (string | number | string[])[] => {
+  const filter = filters.find((item) => item.key === key);
+  if (!filter) return [];
+
+  if (isMultiSelectField(key) && Array.isArray(filter.value)) {
+    return filter.value;
+  }
+
+  return filter.value ? [filter.value] : [];
+};
+
+const isValueSelected = (
+  filters: { key: SearchKeys; value: string | number | string[] }[],
+  key: SearchKeys,
+  value: string | number
+): boolean => {
+  const filter = filters.find((item) => item.key === key);
+  if (!filter) return false;
+
+  if (isMultiSelectField(key) && Array.isArray(filter.value)) {
+    return filter.value.includes(String(value));
+  }
+
+  return filter.value === value;
+};
+
 export default function Filter({
   filters,
   showFilter,
+  isAllFiltersDefault,
   handleApplyFilters,
   handleClearFilters,
+  handleCloseFilters,
   handleFilterChange,
   handleShowFilter
 }: {
-  filters: { label: SearchKeys; value: string | number }[];
+  filters: { key: SearchKeys; value: string | number | string[] }[];
   showFilter: boolean;
+  isAllFiltersDefault: boolean;
   handleApplyFilters: () => void;
   handleClearFilters: () => void;
+  handleCloseFilters: () => void;
   handleFilterChange: ({
-    label,
+    key,
     value
   }: {
-    label: SearchKeys;
-    value: string | number;
+    key: SearchKeys;
+    value: string | number | string[];
   }) => void;
   handleShowFilter: () => void;
 }) {
@@ -65,7 +102,7 @@ export default function Filter({
         { label: 'Tất cả', value: 'all' },
         ...ageRatings.map((ageRating) => ({
           label: `${ageRating.label} (${ageRating.mean})`,
-          value: ageRating.value
+          value: ageRating.value.toString()
         }))
       ]
     },
@@ -91,18 +128,21 @@ export default function Filter({
     {
       label: 'Năm phát hành',
       key: 'releaseYear',
-      value: Array.from({ length: 27 }, (_, i) => {
-        const year = 2026 - i;
-        return { label: year.toString(), value: year };
-      })
+      value: [
+        { label: 'Tất cả', value: 'all' },
+        ...Array.from({ length: 27 }, (_, i) => {
+          const year = 2026 - i;
+          return { label: year.toString(), value: year.toString() };
+        })
+      ]
     },
     {
       label: 'Loại phim',
       key: 'type',
       value: [
         { label: 'Tất cả', value: 'all' },
-        { label: 'Phim lẻ', value: MOVIE_TYPE_SINGLE },
-        { label: 'Phim bộ', value: MOVIE_TYPE_SERIES }
+        { label: 'Phim lẻ', value: MOVIE_TYPE_SINGLE.toString() },
+        { label: 'Phim bộ', value: MOVIE_TYPE_SERIES.toString() }
       ]
     }
   ];
@@ -140,30 +180,69 @@ export default function Filter({
                         {condition.label}
                       </div>
                       <div className='flex grow flex-wrap justify-start gap-2'>
-                        {condition.value.map((value) => (
-                          <div
-                            key={value.value}
-                            className={cn(
-                              'hover:text-light-golden-yellow cursor-pointer rounded border border-solid border-transparent px-2.5 py-1.25 transition-all duration-200 ease-linear',
-                              {
-                                'border-light-golden-yellow text-light-golden-yellow':
-                                  filters.some(
-                                    (item) =>
-                                      item.label === condition.key &&
-                                      item.value === value.value
-                                  )
+                        {condition.value.map((value) => {
+                          const isSelected = isValueSelected(
+                            filters,
+                            condition.key,
+                            value.value
+                          );
+
+                          const handleClick = () => {
+                            if (isMultiSelectField(condition.key)) {
+                              const currentValues = getSelectedValues(
+                                filters,
+                                condition.key
+                              ) as string[];
+
+                              const valueStr = String(value.value);
+                              let newValues: string[];
+
+                              if (valueStr === 'all') {
+                                newValues = isSelected ? [] : ['all'];
+                                handleFilterChange({
+                                  key: condition.key,
+                                  value: newValues
+                                });
+                              } else {
+                                if (isSelected) {
+                                  newValues = currentValues.filter(
+                                    (v) => String(v) !== valueStr
+                                  );
+                                } else {
+                                  newValues = [...currentValues, valueStr];
+                                }
+                                handleFilterChange({
+                                  key: condition.key,
+                                  value:
+                                    newValues.length > 0
+                                      ? newValues.filter((v) => v !== 'all')
+                                      : ['all']
+                                });
                               }
-                            )}
-                            onClick={() =>
+                            } else {
                               handleFilterChange({
-                                label: condition.key,
+                                key: condition.key,
                                 value: value.value
-                              })
+                              });
                             }
-                          >
-                            {value.label}
-                          </div>
-                        ))}
+                          };
+
+                          return (
+                            <div
+                              key={value.value}
+                              className={cn(
+                                'hover:text-light-golden-yellow cursor-pointer rounded border border-solid border-transparent px-2.5 py-1.25 transition-all duration-200 ease-linear',
+                                {
+                                  'border-light-golden-yellow text-light-golden-yellow':
+                                    isSelected
+                                }
+                              )}
+                              onClick={handleClick}
+                            >
+                              {value.label}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   ))}
@@ -180,9 +259,18 @@ export default function Filter({
                       </Button>
                       <Button
                         type='button'
+                        className='min-h-10 rounded-full px-5 hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50'
+                        variant='outline'
+                        disabled={isAllFiltersDefault}
+                        onClick={handleClearFilters}
+                      >
+                        Xóa bộ lọc
+                      </Button>
+                      <Button
+                        type='button'
                         className='min-h-10 rounded-full px-5 hover:opacity-80'
                         variant='outline'
-                        onClick={handleClearFilters}
+                        onClick={handleCloseFilters}
                       >
                         Đóng
                       </Button>

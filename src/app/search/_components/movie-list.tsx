@@ -5,6 +5,7 @@ import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { Activity } from '@/components/activity';
 import { Pagination } from '@/components/pagination';
 import { MovieResType } from '@/types';
+import { Element } from 'react-scroll';
 
 export default function MovieList({
   movieList,
@@ -18,7 +19,7 @@ export default function MovieList({
   listKey?: string;
 }) {
   return (
-    <>
+    <Element name='search-movie-list'>
       {isLoading ? (
         <MovieGridSkeleton />
       ) : movieList.length === 0 ? (
@@ -29,6 +30,6 @@ export default function MovieList({
       <Activity visible={!!totalPages}>
         <Pagination totalPages={totalPages} />
       </Activity>
-    </>
+    </Element>
   );
 }
