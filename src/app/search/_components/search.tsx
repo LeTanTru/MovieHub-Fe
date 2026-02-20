@@ -9,6 +9,7 @@ import { useSearchStore } from '@/store';
 import { SearchKeys, SearchParamsType } from '@/types';
 import { TextSearch } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { animateScroll, scroller } from 'react-scroll';
 import { useShallow } from 'zustand/shallow';
 
 export default function Search() {
@@ -21,18 +22,33 @@ export default function Search() {
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const { searchParams, setQueryParams } = useQueryParams<SearchParamsType>();
   const [filters, setFilters] = useState<
-    { label: SearchKeys; value: string | number }[]
+    { key: SearchKeys; value: string | number | string[] }[]
   >([
-    { label: 'ageRating', value: searchParams.ageRating || 'all' },
-    { label: 'categoryIds', value: searchParams.categoryIds || 'all' },
-    { label: 'country', value: searchParams.country || 'all' },
-    { label: 'language', value: searchParams.language || 'all' },
-    { label: 'releaseYear', value: searchParams.releaseYear || 'all' },
-    { label: 'type', value: searchParams.type || 'all' },
-    { label: 'keyword', value: keyword || searchParams.keyword || '' }
+    { key: 'ageRating', value: searchParams.ageRating || 'all' },
+    {
+      key: 'categoryIds',
+      value: searchParams.categoryIds?.split(',') || ['all']
+    },
+    { key: 'country', value: searchParams.country || 'all' },
+    { key: 'language', value: searchParams.language || 'all' },
+    { key: 'releaseYear', value: searchParams.releaseYear || 'all' },
+    { key: 'type', value: searchParams.type || 'all' },
+    { key: 'keyword', value: keyword || searchParams.keyword || '' }
   ]);
 
   const currentPage = searchParams.page ? Number(searchParams.page) - 1 : 0;
+
+  // Only use searchParams for API queries, not the local filters state
+  const queryFilterParams = Object.fromEntries(
+    Object.entries(searchParams)
+      .filter(([key, value]) => key !== 'page' && !!value)
+      .map(([key, value]) => {
+        if (Array.isArray(value)) {
+          return [key, value.join(',')];
+        }
+        return [key, value];
+      })
+  ) as Partial<SearchParamsType>;
 
   const {
     data: movieListData,
@@ -40,12 +56,7 @@ export default function Search() {
     isLoading
   } = useMovieListQuery({
     params: {
-      ...Object.fromEntries(
-        filters
-          .filter((item) => item.value !== 'all')
-          .filter((item) => !!item.value)
-          .map((item) => [item.label, item.value])
-      ),
+      ...queryFilterParams,
       page: currentPage,
       size: DEFAULT_PAGE_SIZE
     },
@@ -64,29 +75,40 @@ export default function Search() {
   };
 
   const handleFilterChange = ({
-    label,
+    key,
     value
   }: {
-    label: SearchKeys;
-    value: string | number;
+    key: SearchKeys;
+    value: string | number | string[];
   }) => {
     setFilters((prev) => {
-      const existingIndex = prev.findIndex((item) => item.label === label);
+      const existingIndex = prev.findIndex((item) => item.key === key);
       if (existingIndex !== -1) {
         const updated = [...prev];
-        updated[existingIndex] = { label, value };
+        updated[existingIndex] = { key, value };
         return updated;
       }
-      return [...prev, { label, value }];
+      return [...prev, { key, value }];
     });
   };
 
   const handleApplyFilters = () => {
+    // Convert filters to URL params format
     const filterParams: Partial<SearchParamsType> = {};
 
     filters.forEach((item) => {
-      if (item.value !== 'all' && item.value) {
-        (filterParams as Record<string, any>)[item.label] = item.value;
+      if (item.value === 'all' || !item.value) return;
+
+      // Handle categoryIds as array - convert to comma-separated string
+      if (item.key === 'categoryIds' && Array.isArray(item.value)) {
+        if (item.value.length > 0 && item.value[0] !== 'all') {
+          (filterParams as Record<string, any>)[item.key] =
+            item.value.join(',');
+        }
+      } else if (Array.isArray(item.value)) {
+        (filterParams as Record<string, any>)[item.key] = item.value.join(',');
+      } else {
+        (filterParams as Record<string, any>)[item.key] = item.value;
       }
     });
 
@@ -95,23 +117,76 @@ export default function Search() {
       page: undefined
     } as Partial<SearchParamsType>);
 
-    getMovieList();
+    scroller.scrollTo('search-movie-list', {
+      duration: 500,
+      smooth: true,
+      offset: -200,
+      delay: 0,
+      isDynamic: true
+    });
   };
 
-  const handleClearFilters = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleCloseFilters = () => {
+    animateScroll.scrollToTop({
+      smooth: true,
+      duration: 0,
+      delay: 0
+    });
     setTimeout(() => {
       setShowFilter(false);
     }, 500);
   };
 
+  const handleClearFilters = () => {
+    // Reset all filters to 'all'
+    setFilters([
+      { key: 'ageRating', value: 'all' },
+      { key: 'categoryIds', value: ['all'] },
+      { key: 'country', value: 'all' },
+      { key: 'language', value: 'all' },
+      { key: 'releaseYear', value: 'all' },
+      { key: 'type', value: 'all' },
+      { key: 'keyword', value: keyword || '' }
+    ]);
+
+    // Clear URL params except keyword
+    setQueryParams({
+      keyword: keyword || undefined,
+      page: undefined
+    } as Partial<SearchParamsType>);
+
+    animateScroll.scrollToTop({
+      smooth: true,
+      duration: 0,
+      delay: 0
+    });
+    setTimeout(() => {
+      setShowFilter(false);
+    }, 500);
+  };
+
+  // Check if all filters are at default state
+  const isAllFiltersDefault = filters.every((filter) => {
+    if (filter.key === 'categoryIds') {
+      return (
+        Array.isArray(filter.value) &&
+        (filter.value.length === 0 ||
+          (filter.value.length === 1 && filter.value[0] === 'all'))
+      );
+    }
+    if (filter.key === 'keyword') {
+      return filter.value === '' || filter.value === keyword;
+    }
+    return filter.value === 'all';
+  });
+
   useEffect(() => {
     setFilters((prev) => {
-      const existingIndex = prev.findIndex((item) => item.label === 'keyword');
+      const existingIndex = prev.findIndex((item) => item.key === 'keyword');
       if (existingIndex !== -1) {
         const updated = [...prev];
         updated[existingIndex] = {
-          label: 'keyword',
+          key: 'keyword',
           value: keyword || searchParams.keyword || ''
         };
         return updated;
@@ -126,9 +201,10 @@ export default function Search() {
     }
   }, [debouncedKeyword, getMovieList]);
 
+  // Fetch when search params change (from filter apply or URL change)
   useEffect(() => {
     getMovieList();
-  }, [currentPage, getMovieList]);
+  }, [searchParams, getMovieList]);
 
   return (
     <div className='mx-auto w-full max-w-475 px-12.5'>
@@ -143,8 +219,10 @@ export default function Search() {
       <Filter
         filters={filters}
         showFilter={showFilter}
+        isAllFiltersDefault={isAllFiltersDefault}
         handleApplyFilters={handleApplyFilters}
         handleClearFilters={handleClearFilters}
+        handleCloseFilters={handleCloseFilters}
         handleFilterChange={handleFilterChange}
         handleShowFilter={handleShowFilter}
       />
