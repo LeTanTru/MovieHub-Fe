@@ -1,13 +1,21 @@
 import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
 import { route } from '@/routes';
-import { MovieResType } from '@/types';
-import { renderImageUrl } from '@/utils';
+import { MetadataType, MovieResType } from '@/types';
+import { getYearFromDate, parseJSON, renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function SuggestionItem({ movie }: { movie: MovieResType }) {
   const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
+
+  const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
+
+  const latestSeason = metadata?.latestSeason;
+  const latestEpisode = metadata?.latestEpisode;
+  const releaseYear = getYearFromDate(
+    latestSeason?.releaseDate || movie.releaseDate
+  );
 
   return (
     <Link
@@ -40,12 +48,15 @@ export default function SuggestionItem({ movie }: { movie: MovieResType }) {
           >
             <strong>{ageRating?.label}</strong>
           </div>
-          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.8px] before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-            <strong>Phần {movie.latestSeason}</strong>
+          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+            <strong>{releaseYear}</strong>
+          </div>
+          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+            <strong>Phần {latestSeason?.label}</strong>
           </div>
           {isSeries && (
-            <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.8px] before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-              <strong>Tập {movie.latestEpisode}</strong>
+            <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+              <strong>Tập {latestEpisode?.label}</strong>
             </div>
           )}
         </div>

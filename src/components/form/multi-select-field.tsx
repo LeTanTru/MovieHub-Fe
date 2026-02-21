@@ -7,7 +7,12 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import {
+  useWatch,
+  type Control,
+  type FieldPath,
+  type FieldValues
+} from 'react-hook-form';
 import {
   Command,
   CommandEmpty,
@@ -53,6 +58,7 @@ type MultiSelectFieldProps<
   labelClassName?: string;
   disabled?: boolean;
   onValueChange?: (value: Array<string | number>) => void;
+  isMultiLine?: boolean;
 };
 
 const normalizeText = (text: string): string =>
@@ -70,6 +76,46 @@ const fuzzyMatch = (text: string, search: string) => {
 
   const pattern = s.split('').join('.*');
   return new RegExp(pattern).test(t);
+};
+
+const measureVisibleCount = (
+  selectedValues: Array<string | number>,
+  options: any[],
+  getValue: (o: any) => string | number,
+  getLabel: (o: any) => string | number,
+  availableWidth: number
+): number => {
+  const measurer = document.createElement('div');
+  measurer.style.cssText =
+    'position:absolute;visibility:hidden;display:flex;gap:4px;top:-9999px;left:-9999px;pointer-events:none;';
+  document.body.appendChild(measurer);
+
+  let totalWidth = 0;
+  let count = 0;
+
+  for (const val of selectedValues) {
+    const option = options.find((o) => getValue(o) === val);
+    if (!option) continue;
+
+    const span = document.createElement('span');
+    span.style.cssText =
+      'display:inline-flex;align-items:center;gap:4px;padding:4px 4px 4px 6px;font-size:14px;white-space:nowrap;border-radius:4px;flex-shrink:0;';
+    const labelSpan = document.createElement('span');
+    labelSpan.textContent = String(getLabel(option));
+    const iconSpan = document.createElement('span');
+    iconSpan.style.cssText = 'width:12px;height:12px;display:inline-block;';
+    span.appendChild(labelSpan);
+    span.appendChild(iconSpan);
+    measurer.appendChild(span);
+
+    const width = span.getBoundingClientRect().width;
+    if (totalWidth + width > availableWidth) break;
+    totalWidth += width + 4;
+    count++;
+  }
+
+  document.body.removeChild(measurer);
+  return count;
 };
 
 export default function MultiSelectField<
@@ -91,16 +137,76 @@ export default function MultiSelectField<
   notFoundContent = 'Không có kết quả nào',
   labelClassName,
   disabled = false,
-  onValueChange
+  onValueChange,
+  isMultiLine = false
 }: MultiSelectFieldProps<TFieldValues, TOption>) {
   const [open, setOpen] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
+  const [visibleCount, setVisibleCount] = useState<number>(0);
   const commandRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const watchedValue = useWatch({ control, name });
+
+  const selectedValues: Array<string | number> = (() => {
+    if (Array.isArray(watchedValue)) return watchedValue;
+    if (typeof watchedValue === 'string' && watchedValue)
+      return (watchedValue as string)
+        .split(',')
+        .map((v) => v.trim())
+        .filter(Boolean);
+    return [];
+  })();
 
   const filteredOptions = options.filter((option) =>
     fuzzyMatch(String(getLabel(option)), searchValue)
   );
+
+  // Measure visible tag count — skip entirely in multiLine mode
+  useEffect(() => {
+    if (isMultiLine || !triggerRef.current || !selectedValues.length) {
+      setVisibleCount(0);
+      return;
+    }
+    // Reserve: chevron (~32px) + +N badge (~44px) + padding (8px)
+    const availableWidth = triggerRef.current.clientWidth - 32 - 44 - 8 - 36;
+    setVisibleCount(
+      measureVisibleCount(
+        selectedValues,
+        options,
+        getValue,
+        getLabel,
+        availableWidth
+      )
+    );
+  }, [isMultiLine, selectedValues, options, getValue, getLabel]);
+
+  // Re-measure on container resize — skip in multiLine mode
+  useEffect(() => {
+    if (isMultiLine || !triggerRef.current) return;
+
+    const observer = new ResizeObserver(() => {
+      const container = triggerRef.current;
+      if (!container || !selectedValues.length) {
+        setVisibleCount(0);
+        return;
+      }
+      const availableWidth = container.clientWidth - 32 - 44 - 8;
+      setVisibleCount(
+        measureVisibleCount(
+          selectedValues,
+          options,
+          getValue,
+          getLabel,
+          availableWidth
+        )
+      );
+    });
+
+    observer.observe(triggerRef.current);
+    return () => observer.disconnect();
+  }, [isMultiLine, selectedValues, options, getValue, getLabel]);
 
   useEffect(() => {
     if (!searchValue) setHighlightedIndex(-1);
@@ -111,16 +217,6 @@ export default function MultiSelectField<
       control={control}
       name={name}
       render={({ field, fieldState }) => {
-        let selectedValues: Array<string | number> = [];
-        if (Array.isArray(field.value)) {
-          selectedValues = field.value;
-        } else if (typeof field.value === 'string' && field.value) {
-          selectedValues = (field.value as string)
-            .split(',')
-            .map((v) => v.trim())
-            .filter(Boolean);
-        }
-
         const handleSelect = (val: string | number) => {
           let newValues: Array<string | number> = [];
           if (selectedValues.includes(val)) {
@@ -139,6 +235,13 @@ export default function MultiSelectField<
           field.onChange(newValues);
           onValueChange?.(newValues);
         };
+
+        const hiddenCount = selectedValues.length - visibleCount;
+
+        // multiLine → show all; single line → slice to visibleCount
+        const visibleValues = isMultiLine
+          ? selectedValues
+          : selectedValues.slice(0, visibleCount);
 
         return (
           <FormItem
@@ -160,12 +263,13 @@ export default function MultiSelectField<
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
                 <Button
+                  ref={triggerRef}
                   type='button'
                   variant='outline'
                   role='combobox'
                   disabled={disabled}
                   className={cn(
-                    'focus-visible:border-main-color h-auto min-h-9 w-full justify-between border px-1! py-1 pr-3! text-black shadow-none focus:ring-0 focus-visible:border-2',
+                    'focus-visible:border-main-color h-auto min-h-9 w-full justify-between border py-0 pr-3! pl-1! text-black shadow-none hover:text-black focus:ring-0 focus-visible:border-2',
                     {
                       'cursor-not-allowed border-gray-300 bg-gray-200/80 text-gray-500':
                         disabled,
@@ -175,37 +279,45 @@ export default function MultiSelectField<
                   )}
                 >
                   {selectedValues.length ? (
-                    <div className='flex min-w-0 flex-wrap gap-1'>
-                      {selectedValues?.length > 0
-                        ? selectedValues.map((val) => {
-                            const option = options.find(
-                              (o) => getValue(o) === val
-                            );
-                            if (!option) return null;
-                            return (
-                              <span
-                                key={val}
-                                className='flex items-center gap-1 rounded bg-gray-200/60 py-1 pr-1 pl-1.5 text-sm'
-                              >
-                                {getLabel(option)}
-                                <span
-                                  className='flex items-center justify-center rounded-sm transition-colors hover:bg-gray-300/60'
-                                  onClick={(e) => handleRemove(val, e)}
-                                  onMouseDown={(e) => e.stopPropagation()}
-                                >
-                                  <X className='h-3 w-3' />
-                                </span>
-                              </span>
-                            );
-                          })
-                        : placeholder}
+                    <div
+                      className={cn('flex min-w-0 flex-1 items-center gap-1', {
+                        'flex-wrap': isMultiLine,
+                        'overflow-hidden': !isMultiLine
+                      })}
+                    >
+                      {visibleValues.map((val) => {
+                        const option = options.find((o) => getValue(o) === val);
+                        if (!option) return null;
+                        return (
+                          <span
+                            key={val}
+                            className='flex shrink-0 items-center gap-1 rounded bg-gray-200/60 py-1 pr-1 pl-1.5 text-sm'
+                          >
+                            {getLabel(option)}
+                            <span
+                              className='flex items-center justify-center rounded-sm transition-colors hover:bg-gray-300/60'
+                              onClick={(e) => handleRemove(val, e)}
+                              onMouseDown={(e) => e.stopPropagation()}
+                            >
+                              <X className='h-3 w-3' />
+                            </span>
+                          </span>
+                        );
+                      })}
+
+                      {/* +N badge — only in single-line mode */}
+                      {!isMultiLine && hiddenCount > 0 && (
+                        <span className='bg-main-color/15 text-main-color shrink-0 rounded px-1.5 py-[2.2px] text-xs font-medium'>
+                          +{hiddenCount}
+                        </span>
+                      )}
                     </div>
                   ) : (
                     <span className='truncate pl-2 text-gray-300'>
                       {placeholder}
                     </span>
                   )}
-                  <ChevronDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                  <ChevronDown className='ml-2 shrink-0 opacity-50' />
                 </Button>
               </PopoverTrigger>
 

@@ -179,7 +179,7 @@ export default function ReviewItem({
             {(isAuthor || isHiddenReview) && (
               <button
                 type='button'
-                className='flex items-center gap-1 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
+                className='flex cursor-pointer items-center gap-1 font-light opacity-50 transition-opacity duration-200 ease-linear select-none hover:opacity-100'
                 onClick={handleDropdownToggle}
               >
                 <FaEllipsis /> <span>Thêm</span>

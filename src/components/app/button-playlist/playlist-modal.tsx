@@ -111,7 +111,7 @@ export default function PlaylistModal({
         defaultValues={defaultValues}
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        className='pt-0'
+        className='bg-transparent pt-0'
       >
         {(form) => (
           <>

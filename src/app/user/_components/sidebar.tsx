@@ -7,10 +7,8 @@ import {
   genderIconMaps,
   userSidebarList
 } from '@/constants';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ButtonLogout } from '@/components/app/button-logout';
 import { cn } from '@/lib';
-import { defaultAvatar } from '@/assets';
 import { List, ListItem } from '@/components/list';
 import { ProfileType } from '@/types';
 import { renderImageUrl } from '@/utils';
@@ -19,6 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { AvatarField } from '@/components/form';
 
 export default function Sidebar() {
   const path = usePathname();
@@ -63,21 +62,11 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
 
   return (
     <>
-      {profile?.avatarPath ? (
-        <Avatar className='h-15 w-15'>
-          <AvatarImage
-            src={renderImageUrl(profile.avatarPath)}
-            alt={profile.fullName}
-          />
-          <AvatarFallback>
-            <AvatarImage src={defaultAvatar.src} alt={profile.fullName} />
-          </AvatarFallback>
-        </Avatar>
-      ) : (
-        <div className='bg-muted flex h-15 w-15 items-center justify-center rounded-full text-3xl'>
-          {profile.fullName.charAt(0) ?? 'U'}
-        </div>
-      )}
+      <AvatarField
+        src={renderImageUrl(profile.avatarPath)}
+        alt={profile.fullName}
+        size={60}
+      />
 
       <div className='mt-5 flex items-center gap-x-1 text-sm'>
         <h1>{profile.fullName}</h1>

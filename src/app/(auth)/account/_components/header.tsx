@@ -37,7 +37,7 @@ export default function Header() {
           </div>
           <div className='h-header flex items-center gap-2'>
             <AnimatePresence mode='wait' initial={false}>
-              {loading ? (
+              {loading || !profile ? (
                 <motion.div
                   key='loading'
                   initial={{ opacity: 0 }}

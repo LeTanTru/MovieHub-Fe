@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/form';
+import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
 import { dropdownAvatarAccountList, dropdownAvatarMotion } from '@/constants';
 import { ProfileType } from '@/types';
@@ -10,14 +10,12 @@ import Link from 'next/link';
 import { renderImageUrl } from '@/utils';
 import { List, ListItem } from '@/components/list';
 import { useDisclosure } from '@/hooks';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { defaultAvatar } from '@/assets';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib';
 import { ButtonLogout } from '@/components/app/button-logout';
 
 type DropdownAvatarProps = {
-  profile?: ProfileType | null;
+  profile: ProfileType;
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
@@ -37,21 +35,12 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
         variant='ghost'
         className='size-full rounded-full px-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
       >
-        {profile?.avatarPath ? (
-          <Avatar className='h-11 w-11'>
-            <AvatarImage
-              src={renderImageUrl(profile.avatarPath)}
-              alt={profile.fullName}
-            />
-            <AvatarFallback>
-              <AvatarImage src={defaultAvatar.src} />
-            </AvatarFallback>
-          </Avatar>
-        ) : (
-          <div className='bg-muted flex size-10 items-center justify-center rounded-full text-xl'>
-            {profile?.fullName?.charAt(0) ?? 'U'}
-          </div>
-        )}
+        <AvatarField
+          src={renderImageUrl(profile.avatarPath)}
+          alt={profile.fullName}
+          size={44}
+          disablePreview
+        />
         <ChevronDown />
       </Button>
 
@@ -62,7 +51,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             initial='initial'
             animate='animate'
             exit='exit'
-            className='bg-popover absolute top-[calc(100%+0px)] right-1 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-popover absolute top-[calc(100%+0px)] right-1.5 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-8 h-2 w-4'>
               <div className='bg-popover h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />

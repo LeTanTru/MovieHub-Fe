@@ -1,9 +1,15 @@
 'use client';
 
-import { getYearFromDate, renderImageUrl, sanitizeText } from '@/utils';
+import {
+  formatDuration,
+  getYearFromDate,
+  parseJSON,
+  renderImageUrl,
+  sanitizeText
+} from '@/utils';
 import { route } from '@/routes';
-import { ageRatings } from '@/constants';
-import { SidebarResType } from '@/types';
+import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
+import { MetadataType, SidebarResType } from '@/types';
 import { ButtonLike } from '@/components/app/button-like';
 import Link from 'next/link';
 import { ButtonPlay } from '@/components/app/button-play';
@@ -22,6 +28,15 @@ export default function SliderItem({
   onPointerDown,
   onPointerUp
 }: SliderItemProps) {
+  const movie = slider.movie;
+  const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
+
+  const latestSeason = metadata?.latestSeason;
+  const latestEpisode = metadata?.latestEpisode;
+
+  const isSeries = movie.type === MOVIE_TYPE_SERIES;
+  const duration = metadata?.duration || 0;
+
   return (
     <div className='slide-elements'>
       <Link
@@ -94,11 +109,18 @@ export default function SliderItem({
               <div className='tag-classic'>
                 <span>{getYearFromDate(slider.movie.releaseDate)}</span>
               </div>
+              {isSeries && (
+                <>
+                  <div className='tag-classic'>
+                    <span>Phần {latestSeason?.label || '1'}</span>
+                  </div>
+                  <div className='tag-classic'>
+                    <span>Tập {latestEpisode?.label || '1'}</span>
+                  </div>
+                </>
+              )}
               <div className='tag-classic'>
-                <span>Phần 2</span>
-              </div>
-              <div className='tag-classic'>
-                <span>Tập 4</span>
+                <span>{formatDuration(duration)}</span>
               </div>
             </div>
             <div className='hl-tags mb-4'>

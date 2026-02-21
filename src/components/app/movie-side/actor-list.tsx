@@ -1,5 +1,4 @@
-import { defaultAvatar } from '@/assets';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { AvatarField } from '@/components/form';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { PersonResType } from '@/types';
@@ -13,15 +12,13 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
         href={`${route.person.path}/${actor.id}`}
         className='bg-main-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
       >
-        <Avatar className='h-full w-full transition-all duration-200 ease-linear hover:scale-105'>
-          <AvatarImage
-            src={renderImageUrl(actor.avatarPath)}
-            alt={actor.otherName}
-          />
-          <AvatarFallback>
-            <AvatarImage src={defaultAvatar.src} alt={actor.otherName} />
-          </AvatarFallback>
-        </Avatar>
+        <AvatarField
+          src={renderImageUrl(actor.avatarPath)}
+          alt={actor.otherName}
+          className='transition-all duration-200 ease-linear hover:scale-105'
+          size={80}
+          disablePreview
+        />
       </Link>
       <Link
         href={`${route.person.path}/${actor.id}`}

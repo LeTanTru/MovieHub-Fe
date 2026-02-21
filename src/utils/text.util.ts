@@ -1,3 +1,5 @@
+import { logger } from '@/logger';
+
 export const stripHtml = (html: string) => {
   if (!html) return '';
 
@@ -18,4 +20,13 @@ export const removeAccents = (str: string) => {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd')
     .replace(/Đ/g, 'D');
+};
+
+export const parseJSON = <T>(str: string): T => {
+  try {
+    return JSON.parse(str) as T;
+  } catch (error) {
+    logger.error('Failed to parse JSON:', error);
+    return {} as T;
+  }
 };

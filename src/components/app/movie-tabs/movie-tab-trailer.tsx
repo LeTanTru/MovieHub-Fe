@@ -31,7 +31,7 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
   );
 
   const currentSeason = movie?.seasons?.find(
-    (season) => season.ordering + 1 === selectedSeason
+    (season) => season.label === selectedSeason
   );
 
   const trailer = currentSeason?.trailer;

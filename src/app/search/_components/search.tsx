@@ -21,6 +21,7 @@ export default function Search() {
   const debouncedKeyword = useDebounce(keyword, 500);
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const { searchParams, setQueryParams } = useQueryParams<SearchParamsType>();
+  // Local state for filters to allow user to change them before applying
   const [filters, setFilters] = useState<
     { key: SearchKeys; value: string | number | string[] }[]
   >([
@@ -81,6 +82,7 @@ export default function Search() {
     key: SearchKeys;
     value: string | number | string[];
   }) => {
+    // Update local filters state
     setFilters((prev) => {
       const existingIndex = prev.findIndex((item) => item.key === key);
       if (existingIndex !== -1) {

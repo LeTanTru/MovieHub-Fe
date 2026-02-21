@@ -83,7 +83,7 @@ export default function Pagination({
         type='button'
         onClick={() => handlePageClick(page)}
         className={cn(
-          'hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
+          'hover:bg-muted flex h-10 w-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
         )}
       >
         {page}
@@ -143,7 +143,7 @@ export default function Pagination({
           <button
             type='button'
             onClick={() => handlePageClick(currentPage - 1)}
-            className='hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
+            className='hover:bg-muted flex h-10 w-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
             aria-label='Prev button'
           >
             <FaAngleLeft />
@@ -181,7 +181,7 @@ export default function Pagination({
           <button
             type='button'
             onClick={() => handlePageClick(currentPage + 1)}
-            className='hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
+            className='hover:bg-muted flex h-10 w-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
             aria-label='Next button'
           >
             <FaAngleRight />

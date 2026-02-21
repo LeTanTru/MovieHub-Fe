@@ -5,7 +5,8 @@ import { useClickOutside, useQueryParams } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { renderImageUrl } from '@/utils';
+import { MetadataType } from '@/types';
+import { parseJSON, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -31,6 +32,9 @@ export default function WatchEpisodeSeries() {
       setSelectedSeason: s.setSelectedSeason
     }))
   );
+
+  const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');
+  const latestSeason = metadata?.latestSeason?.label;
 
   const seasons = movie?.seasons || [];
   const seasonCount = seasons.length;
@@ -62,17 +66,17 @@ export default function WatchEpisodeSeries() {
 
   const handleSelectSeason = (index: number) => {
     // Plus one because index is zero-based
-    setSelectedSeason(index + 1);
+    setSelectedSeason((index + 1).toString());
     setShowDropdown(false);
   };
 
   useEffect(() => {
     if (searchParams.season) {
-      setSelectedSeason(+searchParams.season);
+      setSelectedSeason(searchParams.season);
     } else {
-      setSelectedSeason(movie?.latestSeason ? +movie.latestSeason : 1);
+      setSelectedSeason(latestSeason ? latestSeason : '1');
     }
-  }, [movie?.latestSeason, searchParams.season, setSelectedSeason]);
+  }, [latestSeason, searchParams.season, setSelectedSeason]);
 
   if (!movie) return null;
 
@@ -117,7 +121,8 @@ export default function WatchEpisodeSeries() {
                     className={cn(
                       'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
                       {
-                        'bg-light-golden-yellow': index + 1 === selectedSeason
+                        'bg-light-golden-yellow':
+                          (index + 1).toString() === selectedSeason
                       }
                     )}
                     onClick={() => handleSelectSeason(index)}

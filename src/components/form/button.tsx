@@ -6,19 +6,20 @@ import { Loader2 } from 'lucide-react';
 import type { ComponentProps } from 'react';
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-normal disabled:pointer-events-none disabled:opacity-80 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-all ease-linear duration-200 disabled:pointer-events-auto disabled:cursor-not-allowed focus-visible:ring-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-normal disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-all ease-linear duration-200 disabled:pointer-events-auto disabled:cursor-not-allowed focus-visible:ring-0",
   {
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-xs hover:bg-primary/80 disabled:bg-transparent disabled:hover:bg-transparent',
+          'bg-primary text-primary-foreground shadow-xs hover:bg-primary/80 disabled:bg-primary/80 disabled:hover:bg-primary/80',
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/80 focus-visible:ring-destructive/20 hover:opacity-80 disabled:bg-destructive/80 disabled:hover:bg-destructive/80',
         outline:
-          'border border-input bg-transparent disabled:hover:bg-transparent disabled:border-gray-500 disabled:hover:border-gray-500',
+          'border border-input bg-transparent hover:text-gray-400 hover:border-input/50          disabled:hover:text-black disabled:hover:bg-transparent disabled:border-gray-200 disabled:hover:border-gray-200',
         secondary:
-          'border border-gray-500 bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-gray-500/80 hover:border-gray-500/80 disabled:text-gray-500/80 disabled:hover:border-gray-500/80',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-gray-400 disabled:text-gray-400',
+        ghost:
+          'hover:bg-accent hover:text-accent-foreground disabled:hover:bg-transparent disabled:hover:text-gray-400 disabled:text-gray-400',
         link: 'text-primary underline-offset-4 hover:underline',
         primary:
           'bg-main-color text-primary-foreground hover:bg-main-color/80 disabled:bg-main-color/80 disabled:hover:bg-main-color/80 disabled:text-primary-foreground/80'

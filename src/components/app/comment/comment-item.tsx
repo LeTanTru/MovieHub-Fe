@@ -345,7 +345,7 @@ export default function CommentItem({
           <Activity visible={isAuthenticated}>
             <button
               type='button'
-              className='hover:text-light-golden-yellow flex items-center gap-2 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
+              className='hover:text-light-golden-yellow flex cursor-pointer items-center gap-2 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
               onClick={handleReplyComment}
             >
               <FaReply />
@@ -355,7 +355,7 @@ export default function CommentItem({
           <Activity visible={isAuthor && isAuthenticated}>
             <button
               type='button'
-              className='hover:text-light-golden-yellow flex items-center gap-2 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
+              className='hover:text-light-golden-yellow flex cursor-pointer items-center gap-2 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
               onClick={() => handleEditComment(comment)}
             >
               <AiOutlineEdit />
@@ -366,7 +366,7 @@ export default function CommentItem({
             {(isHiddenComment || isAuthor) && (
               <button
                 type='button'
-                className='hover:text-light-golden-yellow flex items-center gap-1 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
+                className='hover:text-light-golden-yellow flex cursor-pointer items-center gap-1 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
                 onClick={handleDropdownToggle}
               >
                 <FaEllipsis /> <span>Thêm</span>
@@ -459,7 +459,7 @@ export default function CommentItem({
         <Activity visible={comment.totalChildren > 0}>
           {!isActiveParent ? (
             <button
-              className='hover:text-light-golden-yellow mt-4 flex items-center gap-2 transition-colors duration-200 ease-linear'
+              className='hover:text-light-golden-yellow mt-4 flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
               onClick={() => handleViewReplies(comment.id)}
             >
               <FaChevronDown /> Xem tất cả&nbsp;{comment.totalChildren} trả lời

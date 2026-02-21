@@ -69,7 +69,7 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
         className='bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
       >
         <button
-          className='hover:text-light-golden-yellow hover:border-light-golden-yellow rounded-full'
+          className='hover:text-light-golden-yellow hover:border-light-golden-yellow cursor-pointer rounded-full'
           onClick={handleOpen}
         >
           <FaTrash />
@@ -78,6 +78,7 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
       <Modal
         open={opened}
         onClose={handleClose}
+        className='bg-transparent'
         bodyWrapperClassName='bg-main-background w-110 h-fit min-h-fit'
         bodyClassName='p-4 pt-0'
         headerClassName='text-sm'

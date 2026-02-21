@@ -42,7 +42,7 @@ export default function MovieActionBar({
   if (!movie) return null;
 
   const currentSeasonObj = movie.seasons.find(
-    (season) => season.ordering + 1 === selectedSeason
+    (season) => season.label === selectedSeason
   );
   const latestSeason = movie.seasons[movie.seasons.length - 1];
   const targetSeason = currentSeasonObj || latestSeason;

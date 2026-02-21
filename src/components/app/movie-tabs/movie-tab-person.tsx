@@ -29,13 +29,10 @@ export default function MovieTabPerson({
 
   const title = movieTabPersonTitles[kind];
 
+  const key = kind === PERSON_KIND_ACTOR ? MOVIE_TAB_ACTOR : MOVIE_TAB_DIRECTOR;
+
   return (
-    <MotionWrapper
-      uniqueKey={
-        kind === PERSON_KIND_ACTOR ? MOVIE_TAB_ACTOR : MOVIE_TAB_DIRECTOR
-      }
-      direction={direction}
-    >
+    <MotionWrapper uniqueKey={key} direction={direction}>
       <h3 className='mb-8 text-lg leading-normal font-semibold text-white'>
         {title}
       </h3>
@@ -43,6 +40,7 @@ export default function MovieTabPerson({
         className={cn('grid gap-6', {
           'grid-cols-6': personList.length > 0
         })}
+        key={key}
       >
         {personList.length === 0 ? (
           <p className='text-gray-400'>
@@ -52,7 +50,7 @@ export default function MovieTabPerson({
           personList.map((person) => (
             <PersonCard
               person={person}
-              key={`tab-item-actor-${person.id}`}
+              key={`tab-item-${key}-${person.id}`}
               showFullName
               willNavigate
               params={{ kind }}

@@ -22,6 +22,7 @@ import {
   formatDuration,
   generateSlug,
   getYearFromDate,
+  parseJSON,
   renderImageUrl,
   sanitizeText
 } from '@/utils';
@@ -36,6 +37,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import MovieSideSkeleton from './movie-side-skeleton';
 import TopViewList from './top-view-list';
+import { MetadataType } from '@/types';
 
 export default function MovieSide({
   isLoading = false
@@ -72,21 +74,25 @@ export default function MovieSide({
     .filter((moviePerson) => moviePerson.kind === PERSON_KIND_ACTOR)
     .map((moviePerson) => moviePerson.person);
 
+  const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');
+
   // For series movie
-  const latestSeason = selectedSeason || movie?.latestSeason;
+  const latestSeason = selectedSeason || metadata?.latestSeason?.label;
 
   const currentSeason = movie?.seasons?.find(
-    (season) => season.ordering + 1 === latestSeason
+    (season) => season.label === latestSeason.toString()
   );
 
   const episodes = currentSeason?.episodes || [];
 
-  const latestEpisode = episodes ? episodes.length : movie?.latestEpisode;
+  const latestEpisode = episodes
+    ? episodes.length
+    : metadata?.latestEpisode?.label;
 
   const latestEpisodeVideo = episodes?.[episodes.length - 1]?.video;
   // For series movie
 
-  const duration = movie?.duration || latestEpisodeVideo?.duration;
+  const duration = metadata?.duration || latestEpisodeVideo?.duration;
 
   const sanitizedDescription = sanitizeText(
     currentSeason?.description || movie?.description || 'Đang cập nhật'
@@ -99,6 +105,12 @@ export default function MovieSide({
 
   const isSingle = movie?.type === MOVIE_TYPE_SINGLE;
   const isSeries = movie?.type === MOVIE_TYPE_SERIES;
+
+  const releaseYear = getYearFromDate(
+    currentSeason?.releaseDate ||
+      metadata?.latestSeason?.releaseDate ||
+      movie?.releaseDate
+  );
 
   if (isLoading) {
     return <MovieSideSkeleton />;
@@ -128,21 +140,17 @@ export default function MovieSide({
           'featured-title font-bold': movie.isFeatured
         })}
       >
-        {movie.title} {selectedSeason > 1 ? selectedSeason : ''}
+        {movie.title} {+latestSeason > 1 ? selectedSeason : ''}
       </h2>
       <div className='text-light-golden-yellow mb-5 font-normal'>
-        {movie.originalTitle} {selectedSeason > 1 ? selectedSeason : ''}
+        {movie.originalTitle} {+latestSeason > 1 ? selectedSeason : ''}
       </div>
       <TagWrapper className='mb-3'>
         {ageRating ? <TagAgeRating value={ageRating} /> : null}
-        <TagNormal
-          value={getYearFromDate(
-            currentSeason?.releaseDate || movie.releaseDate
-          )}
-        />
+        <TagNormal value={releaseYear} />
         {/* Single movie */}
         <Activity visible={isSingle}>
-          <TagNormal value={formatDuration(movie.duration)} />
+          <TagNormal value={formatDuration(duration)} />
         </Activity>
         {/* Series movie */}
         <Activity visible={isSeries}>
