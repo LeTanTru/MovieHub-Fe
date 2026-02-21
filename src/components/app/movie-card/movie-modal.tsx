@@ -5,9 +5,14 @@ import { ageRatings, MOVIE_TYPE_SERIES, MOVIE_TYPE_SINGLE } from '@/constants';
 import { Button } from '@/components/form';
 import { FaInfoCircle } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MovieResType } from '@/types';
+import { MetadataType, MovieResType } from '@/types';
 import Link from 'next/link';
-import { formatDuration, getYearFromDate, renderImageUrl } from '@/utils';
+import {
+  formatDuration,
+  getYearFromDate,
+  parseJSON,
+  renderImageUrl
+} from '@/utils';
 import {
   TagAgeRating,
   TagCategory,
@@ -27,6 +32,15 @@ export default function MovieModal({
   movie: MovieResType;
   pos: { x: number; y: number } | null;
 }) {
+  const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
+
+  const latestSeason = metadata?.latestSeason;
+  const latestEpisode = metadata?.latestEpisode;
+  const duration = metadata?.duration;
+  const releaseYear = getYearFromDate(
+    latestSeason?.releaseDate || movie.releaseDate
+  );
+
   return (
     <AnimatePresence>
       {pos && (
@@ -96,31 +110,35 @@ export default function MovieModal({
                   className='flex shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-5.5 font-medium text-black'
                   value={
                     ageRatings.find((age) => age.value === movie.ageRating)
-                      ?.label || 'U'
+                      ?.label || 'N/A'
                   }
                 />
                 <TagNormal
                   className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                  value={getYearFromDate(movie.releaseDate)}
+                  value={releaseYear}
                 />
                 <Activity visible={movie.type === MOVIE_TYPE_SINGLE}>
                   <TagNormal
                     className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                    value={`Phần ${movie.latestSeason}`}
+                    value={`Phần ${latestSeason?.label}`}
                   />
                   <TagNormal
                     className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                    value={formatDuration(movie.duration)}
+                    value={formatDuration(duration)}
                   />
                 </Activity>
                 <Activity visible={movie.type === MOVIE_TYPE_SERIES}>
                   <TagNormal
                     className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                    value={`Phần ${movie.latestSeason}`}
+                    value={`Phần ${latestSeason?.label}`}
                   />
                   <TagNormal
                     className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                    value={`Tập ${movie.latestEpisode}`}
+                    value={`Tập ${latestEpisode?.label}`}
+                  />
+                  <TagNormal
+                    className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                    value={formatDuration(duration)}
                   />
                 </Activity>
               </TagWrapper>

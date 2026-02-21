@@ -8,8 +8,8 @@ import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { MovieResType } from '@/types';
-import { renderImageUrl } from '@/utils';
+import { MetadataType, MovieResType } from '@/types';
+import { parseJSON, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -79,11 +79,15 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
     }))
   );
 
+  const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
+
+  const latestSeason = metadata?.latestSeason?.label;
+
   const seasons = movie.seasons;
   const seasonCount = seasons.length;
 
   const currentSeason = seasons.find(
-    (season) => season.ordering + 1 === selectedSeason
+    (season) => season.label === selectedSeason.toString()
   );
 
   const episodes = currentSeason?.episodes || [];
@@ -109,20 +113,20 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
 
   const handleSelectSeason = (index: number) => {
     // Plus one because index is zero-based
-    setSelectedSeason(index + 1);
+    setSelectedSeason((index + 1).toString());
     setShowDropdown(false);
   };
 
   useEffect(() => {
-    if (movie.latestSeason) {
-      setSelectedSeason(+movie.latestSeason);
+    if (latestSeason) {
+      setSelectedSeason(latestSeason);
     }
-  }, [movie.latestSeason, setSelectedSeason]);
+  }, [latestSeason, setSelectedSeason]);
 
   return (
     <>
-      {/* Header */}
       <ScheduleBadge />
+      {/* Header */}
       <div className='mb-8 flex items-center justify-between gap-8'>
         <div className='relative' ref={dropdownRef}>
           <div
@@ -161,7 +165,8 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
                     className={cn(
                       'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
                       {
-                        'bg-light-golden-yellow': index + 1 === selectedSeason
+                        'bg-light-golden-yellow':
+                          (index + 1).toString() === selectedSeason
                       }
                     )}
                     onClick={() => handleSelectSeason(index)}

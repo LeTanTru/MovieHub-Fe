@@ -20,11 +20,13 @@ import {
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
+import { MetadataType } from '@/types';
 import {
   formatDate,
   formatDuration,
   generateSlug,
   getYearFromDate,
+  parseJSON,
   renderImageUrl,
   sanitizeText
 } from '@/utils';
@@ -62,20 +64,23 @@ export default function WatchInfo() {
     .map((moviePerson) => moviePerson.person);
 
   // For series movie
-  const latestSeason = selectedSeason || movie?.latestSeason;
+  const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');
+  const latestSeason = selectedSeason || metadata?.latestSeason?.label;
 
   const currentSeason = movie?.seasons?.find(
-    (season) => season.ordering + 1 === latestSeason
+    (season) => season.label === latestSeason.toString()
   );
 
   const episodes = currentSeason?.episodes || [];
 
-  const latestEpisode = episodes ? episodes.length : movie?.latestEpisode;
+  const latestEpisode = episodes
+    ? episodes.length
+    : metadata?.latestEpisode?.label;
 
   const latestEpisodeVideo = episodes?.[episodes.length - 1]?.video;
   // For series movie
 
-  const duration = movie?.duration || latestEpisodeVideo?.duration;
+  const duration = metadata?.duration || latestEpisodeVideo?.duration;
 
   const releaseDate = currentSeason?.releaseDate || movie?.releaseDate;
 
@@ -88,6 +93,12 @@ export default function WatchInfo() {
 
   const isSingle = movie?.type === MOVIE_TYPE_SINGLE;
   const isSeries = movie?.type === MOVIE_TYPE_SERIES;
+
+  const releaseYear = getYearFromDate(
+    currentSeason?.releaseDate ||
+      metadata?.latestSeason?.releaseDate ||
+      movie?.releaseDate
+  );
 
   if (!movie) return null;
 
@@ -120,18 +131,14 @@ export default function WatchInfo() {
           </Link>
         </h2>
         <p className='text-light-golden-yellow mb-3'>
-          {movie.originalTitle} {selectedSeason > 1 ? selectedSeason : ''}
+          {movie.originalTitle} {+selectedSeason > 1 ? selectedSeason : ''}
         </p>
         <TagWrapper className='mb-3'>
           {ageRating ? <TagAgeRating value={ageRating} /> : null}
-          <TagNormal
-            value={getYearFromDate(
-              currentSeason?.releaseDate || movie.releaseDate
-            )}
-          />
+          <TagNormal value={releaseYear} />
           {/* Single movie */}
           <Activity visible={isSingle}>
-            <TagNormal value={formatDuration(movie.duration)} />
+            <TagNormal value={formatDuration(duration)} />
           </Activity>
           {/* Series movie */}
           <Activity visible={isSeries}>

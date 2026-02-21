@@ -2,7 +2,7 @@ import { DISCUSSION_TAB_COMMENT } from '@/constants';
 import { MovieStoreType } from '@/types';
 import { create } from 'zustand';
 
-const DEFAULT_SEASON = 1;
+const DEFAULT_SEASON = '1';
 
 const useMovieStore = create<MovieStoreType>((set) => ({
   movie: null,

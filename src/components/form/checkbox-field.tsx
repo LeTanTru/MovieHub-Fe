@@ -52,7 +52,7 @@ export default function CheckboxField<T extends FieldValues>({
                 id={field.name}
                 className={cn(
                   'cursor-pointer transition-colors duration-300 ease-in-out focus-visible:ring-0',
-                  'data-[state=checked]:bg-primary',
+                  'data-[state=checked]:bg-main-color data-[state=checked]:border-main-color',
                   'data-[state=unchecked]:bg-muted',
                   disabled && 'cursor-not-allowed',
                   checkboxClassName

@@ -40,6 +40,11 @@ type InputFieldProps<T extends FieldValues> = {
   onOptionSelect?: (value: string) => void;
 } & Omit<ComponentPropsWithoutRef<'input'>, 'name' | 'defaultValue'>;
 
+const toNumberIfPossible = (value: string): string | number => {
+  const num = Number(value);
+  return !isNaN(num) && value.trim() !== '' ? num : value;
+};
+
 function InputFieldInner<T extends FieldValues>(
   {
     control,
@@ -142,9 +147,12 @@ function InputFieldInner<T extends FieldValues>(
                   }
                 )}
                 onChange={(e) => {
-                  field.onChange(e);
+                  const raw = e.target.value;
+                  const transformed =
+                    type === 'number' ? toNumberIfPossible(raw) : raw;
+                  field.onChange(transformed);
                   if (options.length > 0) {
-                    handleFilterOptions(e.target.value);
+                    handleFilterOptions(raw);
                     setShowOptions(true);
                   }
                 }}

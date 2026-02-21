@@ -7,9 +7,9 @@ import { cn } from '@/lib';
 import { debounce } from 'lodash';
 import { FormEvent } from 'react';
 import { InputField } from '@/components/form';
-import { MovieResType, SearchType } from '@/types';
+import { MetadataType, MovieResType, SearchType } from '@/types';
 import { NoData } from '@/components/no-data';
-import { renderImageUrl } from '@/utils';
+import { getYearFromDate, parseJSON, renderImageUrl } from '@/utils';
 import { route } from '@/routes';
 import { Search, XCircle } from 'lucide-react';
 import { searchSchema } from '@/schemaValidations';
@@ -35,6 +35,15 @@ type SearchFormProps = {
 function MovieItem({ movie }: { movie: MovieResType }) {
   const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
+
+  const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
+
+  const latestSeason = metadata?.latestSeason;
+  const latestEpisode = metadata?.latestEpisode;
+  const releaseYear = getYearFromDate(
+    latestSeason?.releaseDate || movie.releaseDate
+  );
+
   return (
     <Link
       key={movie.id}
@@ -53,10 +62,10 @@ function MovieItem({ movie }: { movie: MovieResType }) {
         </div>
       </div>
       <div className='grow'>
-        <h3 className='mb-1.5 line-clamp-2 leading-normal text-white'>
+        <h3 className='mb-1 line-clamp-2 leading-normal text-white'>
           {movie.title}
         </h3>
-        <div className='line-clamp-1 text-xs leading-normal text-neutral-400'>
+        <div className='mb-1 line-clamp-1 text-xs leading-normal text-neutral-400'>
           {movie.originalTitle}
         </div>
         <div className='flex items-center gap-4'>
@@ -66,12 +75,15 @@ function MovieItem({ movie }: { movie: MovieResType }) {
           >
             <strong>{ageRating?.label}</strong>
           </div>
-          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.8px] before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-            <strong>Phần {movie.latestSeason}</strong>
+          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+            <strong>{releaseYear}</strong>
+          </div>
+          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+            <strong>Phần {latestSeason?.label}</strong>
           </div>
           {isSeries && (
-            <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.8px] before:size-1.5 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-              <strong>Tập {movie.latestEpisode}</strong>
+            <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+              <strong>Tập {latestEpisode?.label}</strong>
             </div>
           )}
         </div>
@@ -163,6 +175,7 @@ export default function SearchForm({ className }: SearchFormProps) {
                     />
                   ) : null
                 }
+                autoComplete='off'
                 control={form.control}
                 name='keyword'
                 placeholder='Tìm kiếm phim, diễn viên'

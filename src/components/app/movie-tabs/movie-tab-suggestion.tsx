@@ -32,7 +32,11 @@ export default function MovieTabSuggestion({
       ) : suggestionMovieList.length === 0 ? (
         <p className='text-gray-400'>Danh sách đề xuất trống</p>
       ) : (
-        <MovieGrid movieList={suggestionMovieList} className='grid-cols-6' />
+        <MovieGrid
+          key={MOVIE_TAB_SUGGESTION}
+          movieList={suggestionMovieList}
+          className='grid-cols-6'
+        />
       )}
     </MotionWrapper>
   );

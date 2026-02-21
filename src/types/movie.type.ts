@@ -6,6 +6,24 @@ import { BaseSearchType } from '@/types/search.type';
 import { VideoResType } from '@/types/video.type';
 import { z } from 'zod';
 
+export type MetadataType = {
+  latestSeason: {
+    id: string;
+    title: string;
+    kind: number;
+    label: string;
+    releaseDate: string;
+  };
+  latestEpisode: {
+    id: string;
+    title: string;
+    kind: number;
+    label: string;
+    releaseDate: string;
+  };
+  duration: number;
+};
+
 export type EpisodeResType = {
   id: string;
   title: string;
@@ -60,12 +78,10 @@ export type MovieResType = {
   country: string;
   createdDate: string;
   description: string;
-  duration: number;
   id: string;
   isFeatured: boolean;
   language: string;
-  latestEpisode: string;
-  latestSeason: string;
+  metadata: string;
   modifiedDate: string;
   originalTitle: string;
   posterUrl: string;
@@ -133,7 +149,7 @@ type MovieState = {
   movieItems: MovieItemResType[];
   moviePersons: MoviePersonResType[];
 
-  selectedSeason: number;
+  selectedSeason: string;
 
   discussionTab: string;
 };
@@ -147,7 +163,7 @@ type MovieAction = {
   setMovieItems: (movieItems: MovieItemResType[]) => void;
   setMoviePersons: (moviePersons: MoviePersonResType[]) => void;
 
-  setSelectedSeason: (season: number) => void;
+  setSelectedSeason: (season: string) => void;
 
   setDiscussionTab: (tab: string) => void;
 

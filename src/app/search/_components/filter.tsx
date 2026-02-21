@@ -17,10 +17,12 @@ import { FaArrowRight, FaFilter } from 'react-icons/fa6';
 
 type SearchKeys = keyof MovieSearchType;
 
+// Function to check if a filter key is for multi-select fields
 const isMultiSelectField = (key: SearchKeys): boolean => {
   return key === 'categoryIds';
 };
 
+// Helper function to get selected values for a filter key
 const getSelectedValues = (
   filters: { key: SearchKeys; value: string | number | string[] }[],
   key: SearchKeys
@@ -35,6 +37,7 @@ const getSelectedValues = (
   return filter.value ? [filter.value] : [];
 };
 
+// Helper function to check if a specific value is selected for a filter key
 const isValueSelected = (
   filters: { key: SearchKeys; value: string | number | string[] }[],
   key: SearchKeys,
@@ -90,6 +93,7 @@ export default function Filter({
       }))
       .sort((a, b) => a.label.localeCompare(b.label)) || [];
 
+  // Define filter conditions and their options
   const searchConditions: {
     label: string;
     key: SearchKeys;
@@ -181,6 +185,7 @@ export default function Filter({
                       </div>
                       <div className='flex grow flex-wrap justify-start gap-2'>
                         {condition.value.map((value) => {
+                          // Determine if the current value is selected based on filters state
                           const isSelected = isValueSelected(
                             filters,
                             condition.key,
@@ -188,29 +193,38 @@ export default function Filter({
                           );
 
                           const handleClick = () => {
+                            // Handle multi-select logic for categoryIds, and single-select for others
                             if (isMultiSelectField(condition.key)) {
+                              // Get current selected values for this filter key from filters state
                               const currentValues = getSelectedValues(
                                 filters,
                                 condition.key
                               ) as string[];
 
+                              // Toggle the clicked value in the current selected values
                               const valueStr = String(value.value);
                               let newValues: string[];
 
+                              // If "all" is clicked, toggle between selecting all or none
                               if (valueStr === 'all') {
+                                // If "all" is currently selected, deselect all. Otherwise, select all.
                                 newValues = isSelected ? [] : ['all'];
                                 handleFilterChange({
                                   key: condition.key,
                                   value: newValues
                                 });
                               } else {
+                                // For other values, toggle the specific value and ensure "all" is deselected if any specific value is selected
                                 if (isSelected) {
+                                  // If currently selected, remove it from the array
                                   newValues = currentValues.filter(
                                     (v) => String(v) !== valueStr
                                   );
                                 } else {
+                                  // If not currently selected, add it to the array
                                   newValues = [...currentValues, valueStr];
                                 }
+                                // If any specific value is selected, ensure "all" is not selected. If no specific values are selected, select "all".
                                 handleFilterChange({
                                   key: condition.key,
                                   value:
@@ -220,6 +234,7 @@ export default function Filter({
                                 });
                               }
                             } else {
+                              // For single-select fields, simply set the selected value
                               handleFilterChange({
                                 key: condition.key,
                                 value: value.value

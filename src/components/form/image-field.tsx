@@ -56,7 +56,7 @@ export default function ImageField({
   ...props
 }: ImageFieldProps) {
   const isMounted = useIsMounted();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
 
   const { isError: imageError } = useImageStatus(src);
@@ -69,7 +69,7 @@ export default function ImageField({
     if (shouldDisablePreview) return;
     e.preventDefault();
     e.stopPropagation();
-    setIsOpen(true);
+    setOpen(true);
   };
 
   const handleWheel = useCallback(
@@ -88,13 +88,24 @@ export default function ImageField({
   );
 
   useEffect(() => {
-    if (!isOpen || !previewRef.current) return;
+    if (!open || !previewRef.current) return;
 
     const node = previewRef.current;
     node.addEventListener('wheel', handleWheel, { passive: false });
 
     return () => node.removeEventListener('wheel', handleWheel);
-  }, [handleWheel, isOpen]);
+  }, [handleWheel, open]);
+
+  // Lock body scroll without layout shift when modal opens
+  useEffect(() => {
+    if (!open) return;
+
+    document.body.classList.add('body-lock');
+
+    return () => {
+      document.body.classList.remove('body-lock');
+    };
+  }, [open]);
 
   if (!isMounted) return null;
 
@@ -142,7 +153,7 @@ export default function ImageField({
           )
         ) : (
           <div className='flex h-full w-full items-center justify-center opacity-50'>
-            <AiOutlineFileImage className='h-12 w-12' />
+            <AiOutlineFileImage className='h-12! w-12!' />
           </div>
         )}
 
@@ -155,7 +166,7 @@ export default function ImageField({
       {createPortal(
         <LazyMotion features={domAnimation} strict>
           <AnimatePresence>
-            {isOpen && !shouldDisablePreview && (
+            {open && !shouldDisablePreview && (
               <m.div
                 className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
                 initial={{ opacity: 0 }}
@@ -163,7 +174,7 @@ export default function ImageField({
                 exit={{ opacity: 0 }}
                 onClick={(e) => {
                   setScale(1);
-                  setIsOpen(false);
+                  setOpen(false);
                   e.stopPropagation();
                 }}
               >

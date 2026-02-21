@@ -113,7 +113,7 @@ export default function ReviewModal({
         initialValues={initialValues}
         schema={reviewSchema}
         onSubmit={handleSubmit}
-        className='bg-transparent p-8 pt-0'
+        className='bg-transparent px-8 pb-5'
       >
         {(form) => (
           <>

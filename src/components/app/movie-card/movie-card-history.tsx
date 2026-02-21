@@ -126,12 +126,14 @@ export default function MovieCardHistory({
               }
             )}
           >
-            {movie.title}
+            {movie.title}&nbsp;
+            {movieItem?.parent?.label !== '1' && movieItem?.parent?.label}
           </h4>
         </Link>
         <Link href={watchLink} title={movie.originalTitle}>
           <h4 className='text-light-gray line-clamp-1 text-xs leading-5'>
-            {movie.originalTitle}
+            {movie.originalTitle}&nbsp;
+            {movieItem?.parent?.label !== '1' && movieItem?.parent?.label}
           </h4>
         </Link>
       </div>
