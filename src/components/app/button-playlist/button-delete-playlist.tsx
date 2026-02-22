@@ -69,7 +69,7 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
         className='bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
       >
         <button
-          className='hover:text-light-golden-yellow hover:border-light-golden-yellow cursor-pointer rounded-full'
+          className='hover:text-destructive cursor-pointer rounded-full transition-all duration-200 ease-linear'
           onClick={handleOpen}
         >
           <FaTrash />
