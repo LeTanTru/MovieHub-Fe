@@ -9,13 +9,11 @@ import {
   UploadImageField
 } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import { getQueryClient } from '@/components/providers';
 import {
   GENDER,
   GENDER_MALE,
   genderOptions,
-  profileErrorMaps,
-  queryKeys
+  profileErrorMaps
 } from '@/constants';
 import { useFileUploadManager } from '@/hooks';
 import { logger } from '@/logger';
@@ -32,10 +30,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
 
 export default function ProfileForm() {
-  const { profile, setProfile } = useAuthStore(
-    useShallow((s) => ({ profile: s.profile, setProfile: s.setProfile }))
-  );
-  const queryClient = getQueryClient();
+  const { profile } = useAuthStore(useShallow((s) => ({ profile: s.profile })));
   const { mutateAsync: uploadImageMutate, isPending: uploadImageLoading } =
     useUploadImageMutation();
   const { mutateAsync: updateProfileMutate, isPending: updateProfileLoading } =

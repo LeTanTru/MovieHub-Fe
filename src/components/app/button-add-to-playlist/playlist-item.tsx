@@ -31,7 +31,7 @@ export default function PlaylistItem({
     >
       <Checkbox
         id={playlist.id}
-        className='mb-0! cursor-pointer border-black transition-colors duration-25 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
+        className='mb-0! cursor-pointer border-black transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
         checked={checked}
         disabled={disabled}
         aria-labelledby={`playlist-label-${playlist.id}`}

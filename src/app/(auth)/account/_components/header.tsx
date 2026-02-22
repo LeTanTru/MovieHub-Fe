@@ -13,7 +13,7 @@ export default function Header() {
   const loading = useAppLoading();
 
   return (
-    <header className='fixed top-0 right-0 left-0 z-10 block'>
+    <header className='header fixed top-0 right-0 left-0 z-10 block'>
       <div
         className={
           'bg-transparent pr-10 pl-4 pl-8 transition-all duration-200 ease-linear'
@@ -21,7 +21,7 @@ export default function Header() {
       >
         <div
           className={
-            'h-header flex items-center justify-between gap-2 transition-all duration-200 ease-linear'
+            'h-fixed-header flex items-center justify-between gap-2 transition-all duration-200 ease-linear'
           }
         >
           <div className='flex h-full flex-1 items-center gap-4 gap-8'>

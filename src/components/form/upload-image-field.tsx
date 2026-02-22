@@ -8,13 +8,7 @@ import {
   useRef,
   useState
 } from 'react';
-import {
-  ArrowLeftIcon,
-  UploadIcon,
-  XIcon,
-  ZoomInIcon,
-  ZoomOutIcon
-} from 'lucide-react';
+import { UploadIcon, XIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 
 import {
   Cropper,
@@ -29,7 +23,6 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import { Slider } from '@/components/ui/slider';
 import { Button, ImageField } from '@/components/form';
 import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
@@ -43,6 +36,8 @@ import {
 } from 'react-hook-form';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import type { ApiResponse } from '@/types';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Slider } from '@/components/ui/slider';
 
 type Area = { x: number; y: number; width: number; height: number };
 
@@ -319,34 +314,11 @@ export default function UploadImageField<T extends FieldValues>({
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent
-          className='gap-0 p-0 sm:max-w-140'
+          className='gap-0 p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
           showCloseButton={false}
         >
           <DialogHeader className='text-left'>
-            <DialogTitle className='flex items-center justify-between border-b p-4 text-base'>
-              <div className='flex items-center gap-2'>
-                <Button
-                  type='button'
-                  variant='ghost'
-                  size='icon'
-                  className='-my-1 opacity-60'
-                  onClick={() => setDialogOpen(false)}
-                >
-                  <ArrowLeftIcon />
-                </Button>
-                <span>{showCrop ? 'Cắt ảnh' : 'Xem trước ảnh'}</span>
-              </div>
-              <Button
-                type='button'
-                variant={'primary'}
-                className='-my-1 w-25'
-                onClick={handleApply}
-                disabled={!previewUrl || loading}
-                loading={loading}
-              >
-                Áp dụng
-              </Button>
-            </DialogTitle>
+            <DialogTitle className='border-none p-0 outline-none'></DialogTitle>
           </DialogHeader>
 
           {showCrop ? (
@@ -366,7 +338,7 @@ export default function UploadImageField<T extends FieldValues>({
                   >
                     <CropperDescription />
                     <CropperImage />
-                    <CropperCropArea />
+                    <CropperCropArea className='border-main-color border-2' />
                   </Cropper>
                 ) : (
                   previewUrl && (
@@ -379,16 +351,7 @@ export default function UploadImageField<T extends FieldValues>({
                 )}
               </AspectRatio>
 
-              <DialogFooter className='flex flex-col gap-4 border-t px-4 py-6 sm:justify-between'>
-                <label className='flex cursor-pointer items-center gap-2'>
-                  <input
-                    type='checkbox'
-                    checked={shouldCrop}
-                    onChange={(e) => setShouldCrop(e.target.checked)}
-                  />
-                  <span className='text-sm'>Cắt ảnh trước khi lưu</span>
-                </label>
-
+              <DialogFooter className='flex flex-col flex-wrap gap-4 border-t px-4 py-6 sm:justify-between'>
                 {shouldCrop && (
                   <div className='mx-auto flex w-full max-w-80 items-center gap-4'>
                     <ZoomOutIcon className='shrink-0 opacity-60' size={16} />
@@ -398,10 +361,49 @@ export default function UploadImageField<T extends FieldValues>({
                       max={3}
                       step={0.01}
                       onValueChange={(val) => setZoom(val[0])}
+                      showTooltip
+                      className='cursor-pointer [&_span[role="slider"]]:bg-gray-500'
                     />
                     <ZoomInIcon className='shrink-0 opacity-60' size={16} />
                   </div>
                 )}
+
+                <div className='flex w-full justify-between'>
+                  <label
+                    id='crop-image'
+                    className='flex cursor-pointer items-center gap-2'
+                  >
+                    <Checkbox
+                      id='crop-image'
+                      className='mb-0! cursor-pointer border-black transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
+                      checked={shouldCrop}
+                      onCheckedChange={(checked) => setShouldCrop(!!checked)}
+                    />
+                    <span className='text-sm'>Cắt ảnh</span>
+                  </label>
+
+                  <div className='flex items-center justify-center gap-2'>
+                    <Button
+                      type='button'
+                      variant='outline'
+                      size='icon'
+                      className='border-destructive text-destructive hover:border-destructive/80 hover:text-destructive/80! -my-1 w-25'
+                      onClick={() => setDialogOpen(false)}
+                    >
+                      Đóng
+                    </Button>
+                    <Button
+                      type='button'
+                      variant={'primary'}
+                      className='-my-1 w-25'
+                      onClick={handleApply}
+                      disabled={!previewUrl || loading}
+                      loading={loading}
+                    >
+                      Áp dụng
+                    </Button>
+                  </div>
+                </div>
               </DialogFooter>
             </>
           ) : (
