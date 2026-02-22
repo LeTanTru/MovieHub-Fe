@@ -24,7 +24,7 @@ export default function DropdownNotification() {
     >
       <Button
         variant='outline'
-        className='h-11 w-11 rounded-full border-white p-0! focus:outline-none focus-visible:ring-0'
+        className='h-11 w-11 rounded-full border-white p-0! text-white! hover:border-white/50 hover:text-white/50! focus:outline-none focus-visible:ring-0'
       >
         <FaBell className='size-5 stroke-2' />
         <div className='text-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-base'>

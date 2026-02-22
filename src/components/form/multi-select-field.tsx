@@ -269,13 +269,11 @@ export default function MultiSelectField<
                   role='combobox'
                   disabled={disabled}
                   className={cn(
-                    'focus-visible:border-main-color hover:border-input focus-visiborder-input h-auto min-h-9 w-full justify-between border py-0 pr-3! pl-1! text-black shadow-none hover:text-black focus:ring-0',
+                    'hover:border-input bg-input/30 dark:border-input w-full justify-between border px-3! py-0 focus-visible:border-transparent dark:text-white dark:hover:text-white',
                     {
-                      'cursor-not-allowed border-gray-300 bg-gray-200/80 text-gray-500':
-                        disabled,
-                      'ring-main-color border-transparent ring-2': open,
-                      'border-red-500 ring-1 ring-red-500 hover:border-red-500':
-                        !!fieldState.error
+                      'ring-main-color border-transparent! ring-2': open,
+                      '[&>div>span]:text-gray-300': fieldState.invalid,
+                      'border-red-500 ring-red-500': !!fieldState.error
                     }
                   )}
                 >
@@ -330,9 +328,9 @@ export default function MultiSelectField<
 
               <PopoverContent className='w-(--radix-popover-trigger-width) p-0'>
                 <Command
-                  className='bg-background'
                   shouldFilter={false}
                   ref={commandRef}
+                  className='dark:bg-main-background/50'
                 >
                   <CommandInput
                     placeholder={searchText}
@@ -393,11 +391,11 @@ export default function MultiSelectField<
                           onMouseLeave={() => setHighlightedIndex(-1)}
                           onSelect={() => handleSelect(val)}
                           className={cn(
-                            'block cursor-pointer truncate rounded-none transition-all first:rounded-tl first:rounded-tr last:rounded-br last:rounded-bl data-[state=active]:bg-transparent',
+                            'bg-input/30 hover:bg-main-color/20! block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                             {
                               'bg-accent text-accent-foreground':
                                 highlightedIndex === idx,
-                              'bg-main-color/10': isSelected
+                              'bg-main-color/20': isSelected
                             }
                           )}
                         >
