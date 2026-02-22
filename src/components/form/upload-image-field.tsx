@@ -323,7 +323,7 @@ export default function UploadImageField<T extends FieldValues>({
       {showCrop && (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent
-            className='gap-0 p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
+            className='gap-0 rounded-tl-none rounded-tr-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
             showCloseButton={false}
           >
             <DialogHeader className='text-left'>
