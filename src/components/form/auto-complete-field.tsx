@@ -219,6 +219,8 @@ export default function AutoCompleteField<
       control={control}
       name={name}
       render={({ field, fieldState }) => {
+        const selectedValue = field.value;
+
         const toggleValue = (val: string | number) => {
           field.onChange(val.toString());
           const picked = combinedOptions.find((o) => o.value === val);
@@ -262,10 +264,8 @@ export default function AutoCompleteField<
                   disabled={disabled}
                   title={selectedOption?.label ?? ''}
                   className={cn(
-                    'hover:border-input w-full flex-nowrap justify-between truncate border px-3! py-0 text-black opacity-80 opacity-100 hover:text-black focus:ring-0 focus-visible:shadow-none focus-visible:ring-0',
+                    'hover:border-input bg-input/30 dark:border-input w-full justify-between border px-3! py-0 focus-visible:border-transparent dark:text-white dark:hover:text-white',
                     {
-                      'disabled:cursor-not-allowed disabled:opacity-100 disabled:hover:bg-transparent disabled:[&>div>span]:opacity-80':
-                        disabled,
                       'ring-main-color border-transparent! ring-2': open,
                       '[&>div>span]:text-gray-300': fieldState.invalid,
                       'border-red-500 ring-red-500': !!fieldState.error
@@ -308,7 +308,7 @@ export default function AutoCompleteField<
               <PopoverContent className='scroll-bar max-h-[60vh] w-(--radix-popover-trigger-width) overflow-auto p-0'>
                 <Command
                   shouldFilter={false}
-                  className='bg-background'
+                  className='dark:bg-main-background/50'
                   ref={commandRef}
                 >
                   <CommandInput
@@ -370,36 +370,40 @@ export default function AutoCompleteField<
                       {loading ? (
                         <CircleLoading className='stroke-main-color my-2 size-7' />
                       ) : (
-                        combinedOptions.map((opt, idx) => (
-                          <CommandItem
-                            key={opt.value}
-                            onSelect={() => toggleValue(opt.value)}
-                            onMouseEnter={() => setHighlightedIndex(idx)}
-                            onMouseLeave={() => setHighlightedIndex(-1)}
-                            title={opt.label}
-                            className={cn(
-                              'block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
-                              {
-                                'bg-accent text-accent-foreground':
-                                  field.value === opt.value ||
-                                  highlightedIndex === idx
-                              }
-                            )}
-                          >
-                            {renderOption ? (
-                              renderOption(opt)
-                            ) : (
-                              <>
-                                {opt.prefix && (
-                                  <span className='mr-1 font-mono text-xs opacity-70'>
-                                    {opt.prefix}
-                                  </span>
-                                )}
-                                {opt.label}
-                              </>
-                            )}
-                          </CommandItem>
-                        ))
+                        combinedOptions.map((opt, idx) => {
+                          const val = opt.value;
+                          const isSelected = val === selectedValue;
+                          return (
+                            <CommandItem
+                              key={opt.value}
+                              onSelect={() => toggleValue(opt.value)}
+                              onMouseEnter={() => setHighlightedIndex(idx)}
+                              onMouseLeave={() => setHighlightedIndex(-1)}
+                              title={opt.label}
+                              className={cn(
+                                'bg-input/30 hover:bg-main-color/20! block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                                {
+                                  'bg-accent text-accent-foreground':
+                                    highlightedIndex === idx,
+                                  'bg-main-color/20': isSelected
+                                }
+                              )}
+                            >
+                              {renderOption ? (
+                                renderOption(opt)
+                              ) : (
+                                <>
+                                  {opt.prefix && (
+                                    <span className='mr-1 font-mono text-xs opacity-70'>
+                                      {opt.prefix}
+                                    </span>
+                                  )}
+                                  {opt.label}
+                                </>
+                              )}
+                            </CommandItem>
+                          );
+                        })
                       )}
                     </CommandGroup>
                   )}

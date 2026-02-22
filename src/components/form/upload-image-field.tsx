@@ -38,6 +38,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import type { ApiResponse } from '@/types';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
+import { CircleLoading } from '@/components/loading';
 
 type Area = { x: number; y: number; width: number; height: number };
 
@@ -210,9 +211,14 @@ export default function UploadImageField<T extends FieldValues>({
 
   useEffect(() => {
     if (fileId && fileId !== previousFileIdRef.current) {
-      setDialogOpen(true);
-      setZoom(1);
-      setCroppedAreaPixels(null);
+      if (showCrop) {
+        setDialogOpen(true);
+        setZoom(1);
+        setCroppedAreaPixels(null);
+      } else {
+        // Upload directly without showing dialog when showCrop is false
+        handleApply();
+      }
     }
     previousFileIdRef.current = fileId;
   }, [fileId]);
@@ -270,6 +276,8 @@ export default function UploadImageField<T extends FieldValues>({
                 height={originalSize ? undefined : size}
                 originalSize={originalSize}
               />
+            ) : loading && !showCrop ? (
+              <CircleLoading className='stroke-main-color dark:stroke-white' />
             ) : (
               <UploadIcon
                 strokeWidth={1}
@@ -312,113 +320,101 @@ export default function UploadImageField<T extends FieldValues>({
         )}
       </div>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent
-          className='gap-0 p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
-          showCloseButton={false}
-        >
-          <DialogHeader className='text-left'>
-            <DialogTitle className='border-none p-0 outline-none'></DialogTitle>
-          </DialogHeader>
+      {showCrop && (
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent
+            className='gap-0 p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
+            showCloseButton={false}
+          >
+            <DialogHeader className='text-left'>
+              <DialogTitle className='border-none p-0 outline-none'></DialogTitle>
+            </DialogHeader>
 
-          {showCrop ? (
-            <>
-              <AspectRatio
-                ratio={aspect < 1 ? 1 : aspect}
-                className='bg-muted h-full'
-              >
-                {previewUrl && shouldCrop ? (
-                  <Cropper
-                    aspectRatio={aspect}
-                    className='h-full w-full'
-                    image={previewUrl}
-                    zoom={zoom}
-                    onCropChange={handleCropChange}
-                    onZoomChange={setZoom}
-                  >
-                    <CropperDescription />
-                    <CropperImage />
-                    <CropperCropArea className='border-main-color border-2' />
-                  </Cropper>
-                ) : (
-                  previewUrl && (
-                    <img
-                      src={previewUrl}
-                      alt='Preview'
-                      className='h-full w-full object-cover'
-                    />
-                  )
-                )}
-              </AspectRatio>
-
-              <DialogFooter className='flex flex-col flex-wrap gap-4 border-t px-4 py-6 sm:justify-between'>
-                {shouldCrop && (
-                  <div className='mx-auto flex w-full max-w-80 items-center gap-4'>
-                    <ZoomOutIcon className='shrink-0 opacity-60' size={16} />
-                    <Slider
-                      value={[zoom]}
-                      min={1}
-                      max={3}
-                      step={0.01}
-                      onValueChange={(val) => setZoom(val[0])}
-                      showTooltip
-                      className='cursor-pointer [&_span[role="slider"]]:bg-gray-500'
-                    />
-                    <ZoomInIcon className='shrink-0 opacity-60' size={16} />
-                  </div>
-                )}
-
-                <div className='flex w-full justify-between'>
-                  <label
-                    id='crop-image'
-                    className='flex cursor-pointer items-center gap-2'
-                  >
-                    <Checkbox
-                      id='crop-image'
-                      className='mb-0! cursor-pointer border-black transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
-                      checked={shouldCrop}
-                      onCheckedChange={(checked) => setShouldCrop(!!checked)}
-                    />
-                    <span className='text-sm'>Cắt ảnh</span>
-                  </label>
-
-                  <div className='flex items-center justify-center gap-2'>
-                    <Button
-                      type='button'
-                      variant='outline'
-                      size='icon'
-                      className='border-destructive text-destructive hover:border-destructive/80 hover:text-destructive/80! -my-1 w-25'
-                      onClick={() => setDialogOpen(false)}
-                    >
-                      Đóng
-                    </Button>
-                    <Button
-                      type='button'
-                      variant={'primary'}
-                      className='-my-1 w-25'
-                      onClick={handleApply}
-                      disabled={!previewUrl || loading}
-                      loading={loading}
-                    >
-                      Áp dụng
-                    </Button>
-                  </div>
-                </div>
-              </DialogFooter>
-            </>
-          ) : (
-            <div className='bg-muted flex items-center justify-center p-4'>
-              {previewUrl && (
-                <img
-                  src={previewUrl}
-                  alt='Preview'
-                  className='max-h-[60vh] w-full object-contain'
-                />
+            <AspectRatio
+              ratio={aspect < 1 ? 1 : aspect}
+              className='bg-muted h-full'
+            >
+              {previewUrl && shouldCrop ? (
+                <Cropper
+                  aspectRatio={aspect}
+                  className='h-full w-full'
+                  image={previewUrl}
+                  zoom={zoom}
+                  onCropChange={handleCropChange}
+                  onZoomChange={setZoom}
+                >
+                  <CropperDescription />
+                  <CropperImage />
+                  <CropperCropArea className='border-main-color border-2' />
+                </Cropper>
+              ) : (
+                previewUrl && (
+                  <img
+                    src={previewUrl}
+                    alt='Preview'
+                    className='h-full w-full object-cover'
+                  />
+                )
               )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+            </AspectRatio>
+
+            <DialogFooter className='flex flex-col flex-wrap gap-4 border-t px-4 py-6 sm:justify-between'>
+              {shouldCrop && (
+                <div className='mx-auto flex w-full max-w-80 items-center gap-4'>
+                  <ZoomOutIcon className='shrink-0 opacity-60' size={16} />
+                  <Slider
+                    value={[zoom]}
+                    min={1}
+                    max={3}
+                    step={0.01}
+                    onValueChange={(val) => setZoom(val[0])}
+                    showTooltip
+                    className='cursor-pointer [&_span[role="slider"]]:bg-gray-500'
+                  />
+                  <ZoomInIcon className='shrink-0 opacity-60' size={16} />
+                </div>
+              )}
+
+              <div className='flex w-full justify-between'>
+                <label
+                  id='crop-image'
+                  className='flex cursor-pointer items-center gap-2'
+                >
+                  <Checkbox
+                    id='crop-image'
+                    className='mb-0! cursor-pointer border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
+                    checked={shouldCrop}
+                    onCheckedChange={(checked) => setShouldCrop(!!checked)}
+                  />
+                  <span className='text-sm'>Cắt ảnh</span>
+                </label>
+
+                <div className='flex items-center justify-center gap-2'>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    size='icon'
+                    className='border-destructive text-destructive hover:border-destructive/80 hover:text-destructive/80! -my-1 w-25'
+                    onClick={() => setDialogOpen(false)}
+                  >
+                    Đóng
+                  </Button>
+                  <Button
+                    type='button'
+                    variant={'primary'}
+                    className='-my-1 w-25'
+                    onClick={handleApply}
+                    disabled={!previewUrl || loading}
+                    loading={loading}
+                  >
+                    Áp dụng
+                  </Button>
+                </div>
+              </div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

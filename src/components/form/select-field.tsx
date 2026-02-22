@@ -159,7 +159,7 @@ export default function SelectField<
                   aria-label='Select'
                   disabled={disabled}
                   className={cn(
-                    'hover:border-input bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent',
+                    'hover:border-input bg-input/30 dark:border-input w-full justify-between border px-3! py-0 focus-visible:border-transparent dark:text-white dark:hover:text-white',
                     {
                       'ring-main-color border-transparent! ring-2': open,
                       '[&>div>span]:text-gray-300': fieldState.invalid,
@@ -204,7 +204,7 @@ export default function SelectField<
                 <Command
                   ref={commandRef}
                   shouldFilter={false}
-                  className='dark:bg-main-background'
+                  className='dark:bg-main-background/50'
                 >
                   <CommandInput
                     placeholder={searchText}
@@ -264,11 +264,11 @@ export default function SelectField<
                           onMouseEnter={() => setHighlightedIndex(idx)}
                           onSelect={() => handleSelect(val)}
                           className={cn(
-                            'bg-input/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                            'bg-input/30 hover:bg-main-color/20! block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                             {
                               'bg-accent text-accent-foreground':
                                 highlightedIndex === idx,
-                              'bg-main-color/10': isSelected
+                              'bg-main-color/20': isSelected
                             }
                           )}
                         >
