@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/select';
 import { DATE_TIME_FORMAT } from '@/constants';
 import { type ChangeEvent, useState } from 'react';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, X } from 'lucide-react';
 import { format, isValid, Locale, parse } from 'date-fns';
 import { vi } from 'date-fns/locale';
 
@@ -42,6 +42,7 @@ type DateTimePickerFieldProps<T extends FieldValues> = {
   labelClassName?: string;
   disabled?: boolean;
   placeholder?: string;
+  clearable?: boolean;
 };
 
 export default function DateTimePickerField<T extends FieldValues>({
@@ -53,7 +54,8 @@ export default function DateTimePickerField<T extends FieldValues>({
   format: dateFormat = DATE_TIME_FORMAT,
   labelClassName,
   disabled,
-  placeholder
+  placeholder,
+  clearable = true
 }: DateTimePickerFieldProps<T>) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
   const minutes = Array.from({ length: 60 }, (_, i) => i);
@@ -73,9 +75,15 @@ export default function DateTimePickerField<T extends FieldValues>({
       control={control}
       render={({ field, fieldState }) => {
         const date = parseDate(field.value);
+        const hasValue = !!field.value;
 
         const updateFieldValue = (d: Date) => {
           field.onChange(format(d, dateFormat));
+        };
+
+        const handleClear = (e: React.MouseEvent) => {
+          e.stopPropagation();
+          field.onChange('');
         };
 
         const handleDateSelect = (selected: Date | undefined) => {
@@ -134,7 +142,7 @@ export default function DateTimePickerField<T extends FieldValues>({
                     className={cn(
                       'w-full justify-between text-left font-normal text-black opacity-100',
                       'focus:ring-0 focus-visible:border-gray-200 focus-visible:ring-0',
-                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color px-3! shadow-none data-[state=open]:ring-1',
+                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color hover:border-input px-3! text-black shadow-none hover:text-black data-[state=open]:ring-1',
                       {
                         'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500 data-[state=open]:border-red-500 data-[state=open]:ring-1 data-[state=open]:ring-red-500':
                           fieldState.error,
@@ -150,7 +158,19 @@ export default function DateTimePickerField<T extends FieldValues>({
                           : (placeholder ?? 'Chọn ngày');
                       })()}
                     </span>
-                    <CalendarIcon className='h-4 w-4' />
+                    <span className='flex items-center gap-1'>
+                      {clearable && hasValue && !disabled && (
+                        <span
+                          role='button'
+                          aria-label='Clear date'
+                          onClick={handleClear}
+                          className='rounded-full p-0.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600'
+                        >
+                          <X className='h-3.5 w-3.5' />
+                        </span>
+                      )}
+                      <CalendarIcon className='h-4 w-4' />
+                    </span>
                   </Button>
                 </FormControl>
               </PopoverTrigger>
@@ -276,7 +296,20 @@ export default function DateTimePickerField<T extends FieldValues>({
                     </ScrollArea>
                   </div>
                 </div>
-                <div className='flex justify-end border-t p-2'>
+                <div className='flex justify-end gap-2 border-t p-2'>
+                  {clearable && (
+                    <Button
+                      size='lg'
+                      variant='outline'
+                      className='mx-auto'
+                      onClick={() => {
+                        field.onChange('');
+                        setIsOpen(false);
+                      }}
+                    >
+                      Xóa
+                    </Button>
+                  )}
                   <Button
                     size='lg'
                     variant='primary'

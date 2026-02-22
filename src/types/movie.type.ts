@@ -80,6 +80,7 @@ export type MovieResType = {
   description: string;
   id: string;
   isFeatured: boolean;
+  imageTitleUrl: string;
   language: string;
   metadata: string;
   modifiedDate: string;
