@@ -132,6 +132,7 @@ function InputFieldInner<T extends FieldValues>(
                 readOnly={readOnly}
                 {...field}
                 {...inputProps}
+                value={field.value ?? ''}
                 ref={ref}
                 className={cn(
                   className,
