@@ -359,6 +359,11 @@
   justify-content: center;
   color: #191b24 !important;
   opacity: 0.95;
+
+  &:hover {
+    opacity: 0.8;
+    transition: opacity 0.2s linear;
+  }
 }
 
 .button-play {

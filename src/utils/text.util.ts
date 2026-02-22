@@ -30,3 +30,8 @@ export const parseJSON = <T>(str: string): T => {
     return {} as T;
   }
 };
+
+export const getLastWord = (text: string): string => {
+  const words = text.trim().split(/\s+/);
+  return words[words.length - 1] || '';
+};

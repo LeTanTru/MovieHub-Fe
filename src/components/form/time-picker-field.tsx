@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { useState } from 'react';
 import { Button } from '@/components/form';
+import { X } from 'lucide-react';
 
 type TimePickerFieldProps<T extends FieldValues> = {
   control: Control<T>;
@@ -27,6 +28,7 @@ type TimePickerFieldProps<T extends FieldValues> = {
   className?: string;
   labelClassName?: string;
   disabled?: boolean;
+  clearable?: boolean;
   onChange?: (value: string) => void;
 };
 
@@ -40,6 +42,7 @@ export default function TimePickerField<T extends FieldValues>({
   className,
   labelClassName,
   disabled = false,
+  clearable = true,
   onChange
 }: TimePickerFieldProps<T>) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
@@ -56,20 +59,21 @@ export default function TimePickerField<T extends FieldValues>({
       name={name}
       control={control}
       render={({ field, fieldState }) => {
-        // Track whether the original value was a number
         const isNumberValue = typeof field.value === 'number';
+        const hasValue =
+          field.value !== null &&
+          field.value !== undefined &&
+          field.value !== '';
 
         let hour = 0,
           minute = 0,
           second = 0;
 
         if (isNumberValue) {
-          // Convert number (total seconds) to h:m:s for display
           hour = Math.floor(field.value / 3600);
           minute = Math.floor((field.value % 3600) / 60);
           second = field.value % 60;
         } else if (typeof field.value === 'string') {
-          // Parse string format for display
           const parts = field.value.split(':').map((v: string) => parseInt(v));
           hour = isNaN(parts[0]) ? 0 : parts[0];
           minute = isNaN(parts[1]) ? 0 : parts[1];
@@ -84,7 +88,6 @@ export default function TimePickerField<T extends FieldValues>({
           const mm = type === 'minute' ? val : minute;
           const ss = type === 'second' ? val : second;
 
-          // Always create the formatted time string for onChange callback
           let formattedTime = '';
           if (timeFormat === 'HH:mm:ss')
             formattedTime = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
@@ -94,16 +97,19 @@ export default function TimePickerField<T extends FieldValues>({
             formattedTime = `${pad(mm)}:${pad(ss)}`;
 
           if (isNumberValue) {
-            // Store as number (total seconds) if original value was a number
             const totalSeconds = hh * 3600 + mm * 60 + ss;
             field.onChange(totalSeconds);
-            // Pass formatted time string to onChange callback
             onChange?.(formattedTime);
           } else {
-            // Store as string if original value was a string (or undefined/null)
             field.onChange(formattedTime);
             onChange?.(formattedTime);
           }
+        };
+
+        const handleClear = (e: React.MouseEvent) => {
+          e.stopPropagation();
+          field.onChange(isNumberValue ? null : '');
+          onChange?.('');
         };
 
         return (
@@ -134,9 +140,9 @@ export default function TimePickerField<T extends FieldValues>({
                     disabled={disabled}
                     variant='outline'
                     className={cn(
-                      'w-full justify-start text-left font-normal',
+                      'w-full justify-between text-left font-normal',
                       !field.value && 'text-muted-foreground',
-                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color px-3! shadow-none data-[state=open]:ring-1',
+                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color hover:border-input px-3! text-black shadow-none hover:text-black data-[state=open]:ring-1',
                       {
                         'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500 data-[state=open]:border-red-500 data-[state=open]:ring-1 data-[state=open]:ring-red-500':
                           fieldState.error
@@ -153,6 +159,16 @@ export default function TimePickerField<T extends FieldValues>({
                     >
                       {formatDisplay(hour, minute, second)}
                     </span>
+                    {clearable && hasValue && !disabled && (
+                      <span
+                        role='button'
+                        aria-label='Clear time'
+                        onClick={handleClear}
+                        className='rounded-full p-0.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600'
+                      >
+                        <X className='h-3.5 w-3.5' />
+                      </span>
+                    )}
                   </Button>
                 </FormControl>
               </PopoverTrigger>
@@ -250,6 +266,21 @@ export default function TimePickerField<T extends FieldValues>({
                     </ScrollArea>
                   )}
                 </div>
+                {clearable && (
+                  <div className='border-t p-2'>
+                    <Button
+                      variant='outline'
+                      className='w-full'
+                      onClick={() => {
+                        field.onChange(isNumberValue ? null : '');
+                        onChange?.('');
+                        setIsOpen(false);
+                      }}
+                    >
+                      Xóa
+                    </Button>
+                  </div>
+                )}
               </PopoverContent>
             </Popover>
             {fieldState.error && (

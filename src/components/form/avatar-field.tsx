@@ -31,7 +31,6 @@ type AvatarFieldProps = {
   previewAspect?: number;
   alt?: string;
   zoomOnScroll?: boolean;
-  showHoverIcon?: boolean;
 } & HTMLAttributes<HTMLElement>;
 
 export default function AvatarField({
@@ -46,7 +45,6 @@ export default function AvatarField({
   width,
   height,
   previewAspect = 1,
-  showHoverIcon = true,
   zoomOnScroll = true,
   alt,
   ...props
@@ -126,7 +124,7 @@ export default function AvatarField({
           })}
           style={{ width: width || size, height: height || size }}
         >
-          {/* 1. Show src if provided */}
+          {/* AvatarImage handles showing/hiding automatically based on src */}
           {src && (
             <AvatarImage
               src={src}
@@ -134,15 +132,15 @@ export default function AvatarField({
               className='object-cover'
             />
           )}
-
-          <AvatarFallback className='bg-muted'>
+          {/* AvatarFallback is shown when src is empty or image fails to load */}
+          <div className='flex size-full items-center justify-center'>
             {altInitial ? (
-              /* 2. Show first char of alt */
+              /* Show first char of alt if available */
               <span className='text-xl leading-none font-medium'>
                 {altInitial}
               </span>
             ) : (
-              /* 3. Default avatar image */
+              /* Default avatar image */
               <Image
                 src={fallbackSrc || defaultAvatar}
                 alt='Avatar'
@@ -152,10 +150,10 @@ export default function AvatarField({
                 unoptimized
               />
             )}
-          </AvatarFallback>
+          </div>
         </Avatar>
 
-        {!shouldDisablePreview && showHoverIcon && (
+        {!shouldDisablePreview && (
           <div className='absolute inset-0 flex items-center justify-center rounded-full bg-black/30 opacity-0 transition-all duration-200 ease-linear hover:opacity-100'>
             <EyeIcon className='h-6 w-6 text-white' />
           </div>

@@ -269,12 +269,13 @@ export default function MultiSelectField<
                   role='combobox'
                   disabled={disabled}
                   className={cn(
-                    'focus-visible:border-main-color h-auto min-h-9 w-full justify-between border py-0 pr-3! pl-1! text-black shadow-none hover:text-black focus:ring-0 focus-visible:border-2',
+                    'focus-visible:border-main-color hover:border-input focus-visiborder-input h-auto min-h-9 w-full justify-between border py-0 pr-3! pl-1! text-black shadow-none hover:text-black focus:ring-0',
                     {
                       'cursor-not-allowed border-gray-300 bg-gray-200/80 text-gray-500':
                         disabled,
                       'ring-main-color border-transparent ring-2': open,
-                      'border-red-500 ring-1 ring-red-500': !!fieldState.error
+                      'border-red-500 ring-1 ring-red-500 hover:border-red-500':
+                        !!fieldState.error
                     }
                   )}
                 >

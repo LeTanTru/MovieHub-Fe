@@ -57,7 +57,8 @@ const createImage = (url: string): Promise<HTMLImageElement> =>
 
 async function getCroppedImg(
   imageSrc: string,
-  pixelCrop: Area
+  pixelCrop: Area,
+  outputType?: string
 ): Promise<Blob | null> {
   try {
     const image = await createImage(imageSrc);
@@ -82,7 +83,7 @@ async function getCroppedImg(
     );
 
     return new Promise((resolve) => {
-      canvas.toBlob((blob) => resolve(blob), 'image/jpeg');
+      canvas.toBlob((blob) => resolve(blob), outputType || 'image/jpeg');
     });
   } catch (error) {
     logger.error('getCroppedImg error:', error);
@@ -102,6 +103,8 @@ type UploadImageFieldProps<T extends FieldValues> = {
   loading?: boolean;
   aspect?: number;
   defaultCrop?: boolean;
+  showCrop?: boolean;
+  originalSize?: boolean;
   onChange?: (url: string) => void;
   uploadImageFn: (file: Blob) => Promise<string>;
   deleteImageFn?: (url: string) => Promise<ApiResponse<any> | undefined>;
@@ -118,14 +121,18 @@ export default function UploadImageField<T extends FieldValues>({
   size = 70,
   loading,
   aspect = 1,
-  defaultCrop,
+  defaultCrop = true,
+  showCrop = true,
+  originalSize = false,
   onChange,
   uploadImageFn,
   deleteImageFn
 }: UploadImageFieldProps<T>) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-  const [shouldCrop, setShouldCrop] = useState<boolean>(defaultCrop ?? false);
+  const [shouldCrop, setShouldCrop] = useState<boolean>(
+    showCrop && defaultCrop
+  );
   const [zoom, setZoom] = useState<number>(1);
   const {
     field: { value: fieldValue, onChange: fieldOnChange },
@@ -143,7 +150,7 @@ export default function UploadImageField<T extends FieldValues>({
       getInputProps,
       clearFiles
     }
-  ] = useFileUpload({ accept: 'image/*' });
+  ] = useFileUpload({ accept: '*' });
 
   const previewUrl = files[0]?.preview;
 
@@ -157,10 +164,14 @@ export default function UploadImageField<T extends FieldValues>({
   const handleApply = async () => {
     if (!previewUrl || !fileId || !uploadImageFn) return;
 
+    const fileType =
+      files[0]?.file instanceof File ? files[0].file.type : undefined;
+    const outputType = fileType || 'image/jpeg';
+
     let blob: Blob | null = null;
 
     if (shouldCrop && croppedAreaPixels) {
-      blob = await getCroppedImg(previewUrl, croppedAreaPixels);
+      blob = await getCroppedImg(previewUrl, croppedAreaPixels, outputType);
     } else {
       const image = await createImage(previewUrl);
       const canvas = document.createElement('canvas');
@@ -172,7 +183,7 @@ export default function UploadImageField<T extends FieldValues>({
       ctx.drawImage(image, 0, 0);
 
       blob = await new Promise((resolve) =>
-        canvas.toBlob((b) => resolve(b), 'image/jpeg')
+        canvas.toBlob((b) => resolve(b), outputType)
       );
     }
 
@@ -232,13 +243,17 @@ export default function UploadImageField<T extends FieldValues>({
           <Button
             variant={'ghost'}
             type='button'
-            style={{ width: size * aspect, height: size }}
+            style={{
+              width: size * aspect,
+              height: size
+            }}
             className={cn(
               'border-input hover:bg-accent/50 focus-visible:border-ring relative flex cursor-pointer items-center justify-center overflow-hidden border border-dashed p-0 transition-colors outline-none focus-visible:ring-[3px]',
               className,
               {
                 'border border-solid border-red-500': !!error,
-                'border-none': !!value
+                'border-none': !!value,
+                'flex items-center justify-center': originalSize
               }
             )}
             onClick={openFileDialog}
@@ -253,12 +268,12 @@ export default function UploadImageField<T extends FieldValues>({
             {!!value ? (
               <ImageField
                 disablePreview
-                showHoverIcon={false}
                 src={value}
                 className='size-full rounded-none border-none object-cover'
-                aspect={aspect}
-                width={size * aspect}
-                height={size}
+                aspect={originalSize ? undefined : aspect}
+                width={originalSize ? undefined : size * aspect}
+                height={originalSize ? undefined : size}
+                originalSize={originalSize}
               />
             ) : (
               <UploadIcon
@@ -319,7 +334,7 @@ export default function UploadImageField<T extends FieldValues>({
                 >
                   <ArrowLeftIcon />
                 </Button>
-                <span>Cắt ảnh</span>
+                <span>{showCrop ? 'Cắt ảnh' : 'Xem trước ảnh'}</span>
               </div>
               <Button
                 type='button'
@@ -334,58 +349,72 @@ export default function UploadImageField<T extends FieldValues>({
             </DialogTitle>
           </DialogHeader>
 
-          <AspectRatio
-            ratio={aspect < 1 ? 1 : aspect}
-            className='bg-muted h-full'
-          >
-            {previewUrl && shouldCrop ? (
-              <Cropper
-                aspectRatio={aspect}
-                className='h-full w-full'
-                image={previewUrl}
-                zoom={zoom}
-                onCropChange={handleCropChange}
-                onZoomChange={setZoom}
+          {showCrop ? (
+            <>
+              <AspectRatio
+                ratio={aspect < 1 ? 1 : aspect}
+                className='bg-muted h-full'
               >
-                <CropperDescription />
-                <CropperImage />
-                <CropperCropArea />
-              </Cropper>
-            ) : (
-              previewUrl && (
+                {previewUrl && shouldCrop ? (
+                  <Cropper
+                    aspectRatio={aspect}
+                    className='h-full w-full'
+                    image={previewUrl}
+                    zoom={zoom}
+                    onCropChange={handleCropChange}
+                    onZoomChange={setZoom}
+                  >
+                    <CropperDescription />
+                    <CropperImage />
+                    <CropperCropArea />
+                  </Cropper>
+                ) : (
+                  previewUrl && (
+                    <img
+                      src={previewUrl}
+                      alt='Preview'
+                      className='h-full w-full object-cover'
+                    />
+                  )
+                )}
+              </AspectRatio>
+
+              <DialogFooter className='flex flex-col gap-4 border-t px-4 py-6 sm:justify-between'>
+                <label className='flex cursor-pointer items-center gap-2'>
+                  <input
+                    type='checkbox'
+                    checked={shouldCrop}
+                    onChange={(e) => setShouldCrop(e.target.checked)}
+                  />
+                  <span className='text-sm'>Cắt ảnh trước khi lưu</span>
+                </label>
+
+                {shouldCrop && (
+                  <div className='mx-auto flex w-full max-w-80 items-center gap-4'>
+                    <ZoomOutIcon className='shrink-0 opacity-60' size={16} />
+                    <Slider
+                      value={[zoom]}
+                      min={1}
+                      max={3}
+                      step={0.01}
+                      onValueChange={(val) => setZoom(val[0])}
+                    />
+                    <ZoomInIcon className='shrink-0 opacity-60' size={16} />
+                  </div>
+                )}
+              </DialogFooter>
+            </>
+          ) : (
+            <div className='bg-muted flex items-center justify-center p-4'>
+              {previewUrl && (
                 <img
                   src={previewUrl}
                   alt='Preview'
-                  className='h-full w-full object-cover'
+                  className='max-h-[60vh] w-full object-contain'
                 />
-              )
-            )}
-          </AspectRatio>
-
-          <DialogFooter className='flex flex-col gap-4 border-t px-4 py-6 sm:justify-between'>
-            <label className='flex cursor-pointer items-center gap-2'>
-              <input
-                type='checkbox'
-                checked={shouldCrop}
-                onChange={(e) => setShouldCrop(e.target.checked)}
-              />
-              <span className='text-sm'>Cắt ảnh trước khi lưu</span>
-            </label>
-
-            {shouldCrop && (
-              <div className='mx-auto flex w-full max-w-80 items-center gap-4'>
-                <ZoomOutIcon className='shrink-0 opacity-60' size={16} />
-                <Slider
-                  value={[zoom]}
-                  min={1}
-                  max={3}
-                  step={0.01}
-                  onValueChange={(val) => setZoom(val[0])}
-                />
-                <ZoomInIcon className='shrink-0 opacity-60' size={16} />
-              </div>
-            )}
-          </DialogFooter>
+              )}
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

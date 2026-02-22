@@ -36,6 +36,9 @@ export default function SliderItem({
 
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
   const duration = metadata?.duration || 0;
+  const releaseYear = getYearFromDate(
+    latestSeason?.releaseDate || movie.releaseDate
+  );
 
   return (
     <div className='slide-elements'>
@@ -74,7 +77,15 @@ export default function SliderItem({
                 href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
                 className='hover:text-light-golden-yellow text-4xl font-bold text-white transition-colors duration-200 ease-linear text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'
               >
-                {slider.movie.title}
+                {slider.movie.imageTitleUrl ? (
+                  <img
+                    src={renderImageUrl(slider.movie.imageTitleUrl)}
+                    alt={slider.movie.title}
+                    className='bg-transparent'
+                  />
+                ) : (
+                  slider.movie.title
+                )}
               </Link>
             </div>
             <h3 className='media-title' style={{ display: 'none' }}>
@@ -107,7 +118,7 @@ export default function SliderItem({
                 </span>
               </div>
               <div className='tag-classic'>
-                <span>{getYearFromDate(slider.movie.releaseDate)}</span>
+                <span>{releaseYear}</span>
               </div>
               {isSeries && (
                 <>

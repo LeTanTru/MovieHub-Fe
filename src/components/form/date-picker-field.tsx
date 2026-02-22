@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger
 } from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/form';
 import { useState, useRef, ChangeEvent } from 'react';
@@ -27,7 +27,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import { DropdownProps } from 'react-day-picker/';
+import { DropdownProps } from 'react-day-picker';
 import { DEFAULT_DATE_FORMAT } from '@/constants';
 import { vi } from 'date-fns/locale';
 import { format, parse, isValid, Locale } from 'date-fns';
@@ -43,6 +43,7 @@ type DatePickerFieldProps<T extends FieldValues> = {
   required?: boolean;
   placeholder?: string;
   labelClassName?: string;
+  clearable?: boolean;
 };
 
 export default function DatePickerField<T extends FieldValues>({
@@ -55,18 +56,12 @@ export default function DatePickerField<T extends FieldValues>({
   disabled,
   required,
   placeholder,
-  labelClassName
+  labelClassName,
+  clearable = true
 }: DatePickerFieldProps<T>) {
   const calendarLocale: Locale = vi;
   const [open, setOpen] = useState<boolean>(false);
-  // const [popoverWidth, setPopoverWidth] = useState<number | undefined>();
   const triggerRef = useRef<HTMLButtonElement>(null);
-
-  // useEffect(() => {
-  //   if (triggerRef.current) {
-  //     setPopoverWidth(triggerRef.current.offsetWidth);
-  //   }
-  // }, [open]);
 
   const parseDate = (value: string) => {
     if (!value) return undefined;
@@ -82,6 +77,12 @@ export default function DatePickerField<T extends FieldValues>({
       name={name}
       render={({ field, fieldState }) => {
         const parsedValue = parseDate(field.value);
+        const hasValue = !!field.value;
+
+        const handleClear = (e: React.MouseEvent) => {
+          e.stopPropagation();
+          field.onChange(null);
+        };
 
         return (
           <FormItem
@@ -108,9 +109,9 @@ export default function DatePickerField<T extends FieldValues>({
                     className={cn(
                       'w-full justify-between text-left font-normal text-black opacity-100',
                       'focus:ring-0 focus-visible:border-gray-200 focus-visible:ring-0',
-                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color px-3! shadow-none data-[state=open]:ring-1',
-                      !field.value && 'text-gray-300',
+                      'data-[state=open]:border-main-color data-[state=open]:ring-main-color hover:border-input px-3! shadow-none hover:text-black data-[state=open]:ring-1',
                       {
+                        'text-gray-300 hover:text-gray-300': !field.value,
                         'border-red-500 focus-visible:border-red-500 focus-visible:ring-[1px] focus-visible:ring-red-500 data-[state=open]:border-red-500 data-[state=open]:ring-1 data-[state=open]:ring-red-500':
                           fieldState.error
                       }
@@ -125,7 +126,19 @@ export default function DatePickerField<T extends FieldValues>({
                           : (placeholder ?? 'Chọn ngày');
                       })()}
                     </span>
-                    <CalendarIcon className='h-4 w-4' />
+                    <span className='flex items-center gap-1'>
+                      {clearable && hasValue && !disabled && (
+                        <span
+                          role='button'
+                          aria-label='Clear date'
+                          onClick={handleClear}
+                          className='rounded-full p-0.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600'
+                        >
+                          <X className='h-3.5 w-3.5' />
+                        </span>
+                      )}
+                      <CalendarIcon className='h-4 w-4' />
+                    </span>
                   </Button>
                 </FormControl>
               </PopoverTrigger>
@@ -170,18 +183,33 @@ export default function DatePickerField<T extends FieldValues>({
                     field.onChange(format(firstDay, dateFormat));
                   }}
                 />
-                <Button
-                  type='button'
-                  variant='outline'
-                  className='w-full'
-                  onClick={() => {
-                    const today = new Date();
-                    field.onChange(format(today, dateFormat));
-                    setOpen(false);
-                  }}
-                >
-                  Hôm nay
-                </Button>
+                <div className='flex gap-2'>
+                  <Button
+                    type='button'
+                    variant='outline'
+                    className='flex-1'
+                    onClick={() => {
+                      const today = new Date();
+                      field.onChange(format(today, dateFormat));
+                      setOpen(false);
+                    }}
+                  >
+                    Hôm nay
+                  </Button>
+                  {clearable && (
+                    <Button
+                      type='button'
+                      variant='outline'
+                      className='flex-1'
+                      onClick={() => {
+                        field.onChange('');
+                        setOpen(false);
+                      }}
+                    >
+                      Xóa
+                    </Button>
+                  )}
+                </div>
               </PopoverContent>
             </Popover>
             {description && <FormDescription>{description}</FormDescription>}

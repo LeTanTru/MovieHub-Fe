@@ -262,11 +262,11 @@ export default function AutoCompleteField<
                   disabled={disabled}
                   title={selectedOption?.label ?? ''}
                   className={cn(
-                    'w-full flex-nowrap justify-between truncate border px-3! py-0 text-black opacity-80 opacity-100 focus:ring-0 focus-visible:border-gray-200 focus-visible:shadow-none focus-visible:ring-0',
+                    'hover:border-input w-full flex-nowrap justify-between truncate border px-3! py-0 text-black opacity-80 opacity-100 hover:text-black focus:ring-0 focus-visible:shadow-none focus-visible:ring-0',
                     {
                       'disabled:cursor-not-allowed disabled:opacity-100 disabled:hover:bg-transparent disabled:[&>div>span]:opacity-80':
                         disabled,
-                      'ring-main-color border-transparent ring-2': open,
+                      'ring-main-color border-transparent! ring-2': open,
                       '[&>div>span]:text-gray-300': fieldState.invalid,
                       'border-red-500 ring-red-500': !!fieldState.error
                     }

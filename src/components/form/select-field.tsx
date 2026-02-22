@@ -159,7 +159,7 @@ export default function SelectField<
                   aria-label='Select'
                   disabled={disabled}
                   className={cn(
-                    'bg-input/30! w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent',
+                    'hover:border-input bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent',
                     {
                       'ring-main-color border-transparent! ring-2': open,
                       '[&>div>span]:text-gray-300': fieldState.invalid,
@@ -197,11 +197,14 @@ export default function SelectField<
                 </FormDescription>
               )}
 
-              <PopoverContent className='w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-[#222]'>
+              <PopoverContent
+                sideOffset={8}
+                className='dark:bg-main-background w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-[#222]'
+              >
                 <Command
                   ref={commandRef}
-                  className='bg-background'
                   shouldFilter={false}
+                  className='dark:bg-main-background'
                 >
                   <CommandInput
                     placeholder={searchText}
@@ -261,7 +264,7 @@ export default function SelectField<
                           onMouseEnter={() => setHighlightedIndex(idx)}
                           onSelect={() => handleSelect(val)}
                           className={cn(
-                            'block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                            'bg-input/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                             {
                               'bg-accent text-accent-foreground':
                                 highlightedIndex === idx,

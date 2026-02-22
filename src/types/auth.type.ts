@@ -6,7 +6,7 @@ import {
   otpSchema,
   registerSchema
 } from '@/schemaValidations';
-import { ProfileType } from '@/types/account.type';
+import { ProfileResType } from '@/types/account.type';
 import { z } from 'zod';
 
 export type LoginType = z.output<typeof loginSchema>;
@@ -51,11 +51,11 @@ export type RefreshTokenResType = {
 };
 
 type AuthState = {
-  profile: ProfileType | null;
+  profile: ProfileResType | null;
 };
 
 type AuthAction = {
-  setProfile: (profile: ProfileType | null) => void;
+  setProfile: (profile: ProfileResType | null) => void;
 };
 
 export type AuthStoreType = AuthState & AuthAction;
