@@ -7,8 +7,7 @@ import { NoData } from '@/components/no-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { useQueryParams } from '@/hooks';
-import { useCollectionQuery } from '@/queries';
-import { useCollectionItemListQuery } from '@/queries/collection-item.query';
+import { useCollectionItemListQuery, useCollectionQuery } from '@/queries';
 import { Pagination } from '@/components/pagination';
 import { MovieResType } from '@/types';
 

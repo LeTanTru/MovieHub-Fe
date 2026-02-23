@@ -1,27 +1,42 @@
 'use client';
 
-import CollectionList from './collection-list';
-import { useCollectionListQuery } from '@/queries';
-import { useInView } from 'react-intersection-observer';
+import { DotLoading } from '@/components/loading';
+import MovieList from './movie-list';
+import { useScrollLoadMore } from '@/hooks';
+import { queryKeys } from '@/constants';
+import { collectionApiRequest } from '@/api-requests';
+import { CollectionResType, CollectionSearchType } from '@/types';
 
 export default function Collection() {
-  const { ref, inView } = useInView({
-    rootMargin: '0px 0px 100px 0px'
+  const loadMoreSize = 3;
+
+  const {
+    data: collectionList,
+    isLoading,
+    loadMoreRef
+  } = useScrollLoadMore<
+    HTMLDivElement,
+    CollectionSearchType,
+    CollectionResType
+  >({
+    queryKey: queryKeys.COLLECTION_LIST,
+    params: { size: loadMoreSize },
+    queryFn: collectionApiRequest.getList,
+    enabled: true
   });
-  const { data: collectionListData, isLoading } = useCollectionListQuery({
-    enabled: inView
-  });
-  const collectionList = collectionListData?.data?.content || [];
 
   return (
-    <div className='collection-wrapper' ref={ref}>
+    <>
       {collectionList.map((collection) => (
-        <CollectionList
+        <MovieList
           key={collection.id}
           collection={collection}
           isLoading={isLoading}
         />
       ))}
-    </div>
+      <div ref={loadMoreRef} className='flex items-center justify-center'>
+        {isLoading && <DotLoading />}
+      </div>
+    </>
   );
 }
