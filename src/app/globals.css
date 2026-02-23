@@ -235,6 +235,15 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  body[data-scroll-locked] {
+    margin-right: 0 !important;
+    padding-right: 15px !important;
+
+    .header {
+      margin-right: 15px !important;
+    }
+  }
 }
 
 @keyframes skeleton {
