@@ -199,7 +199,7 @@ export default function SelectField<
 
               <PopoverContent
                 sideOffset={8}
-                className='dark:bg-main-background w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-[#222]'
+                className='dark:bg-main-background w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-neutral-800'
               >
                 <Command
                   ref={commandRef}

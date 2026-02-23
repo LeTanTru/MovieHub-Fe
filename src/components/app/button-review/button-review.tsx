@@ -35,7 +35,7 @@ export default function ButtonReview({
         <span>
           Vui lòng&nbsp;
           <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
             href={route.login.path}
           >
             đăng nhập
@@ -65,7 +65,7 @@ export default function ButtonReview({
         )}
       >
         <div
-          className='bg-review flex cursor-pointer items-center rounded-full px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'
+          className='bg-dark-conflower-blue flex cursor-pointer items-center rounded-full px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'
           onClick={handleOpenReviewModal}
         >
           <div className='h-6 w-6 bg-[url(/logo.webp)] bg-cover bg-position-[50%]'></div>

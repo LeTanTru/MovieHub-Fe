@@ -133,7 +133,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
             className='flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
             onClick={handleDropdownToggle}
           >
-            <FaBarsStaggered className='text-light-golden-yellow' />
+            <FaBarsStaggered className='text-golden-glow' />
             Phần {selectedSeason}
             <FaCaretDown />
           </div>
@@ -165,7 +165,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
                     className={cn(
                       'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
                       {
-                        'bg-light-golden-yellow':
+                        'bg-golden-glow':
                           (index + 1).toString() === selectedSeason
                       }
                     )}
@@ -207,14 +207,14 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
             <Link
               href={`${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`}
               className={cn('block', {
-                'bg-episode-1 hover:text-light-golden-yellow flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
+                'bg-charade hover:text-golden-glow flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
                   toggle
               })}
             >
               <motion.div
                 layout
                 className={cn(
-                  'bg-episode-2 group relative mb-2.5 block w-full overflow-hidden rounded-md',
+                  'bg-gunmetal-blue group relative mb-2.5 block w-full overflow-hidden rounded-md',
                   {
                     'h-0 pb-[66%]': !toggle,
                     hidden: toggle
@@ -225,7 +225,7 @@ const MovieTabEpisodeSeries = ({ movie }: { movie: MovieResType }) => {
                   ease: 'linear'
                 }}
               >
-                <div className='group-hover:text-light-golden-yellow border-light-golden-yellow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
+                <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
                   <FaPlay />
                 </div>
                 <Image

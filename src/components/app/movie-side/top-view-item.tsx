@@ -26,7 +26,7 @@ export default function TopViewItem({
   return (
     <Link href={`${route.movie.path}/${movie.slug}.${movie.id}`}>
       <div className='flex items-center justify-between'>
-        <div className='w-15 shrink-0 text-left text-[56px] font-extrabold text-[#191b24] text-shadow-[-1px_0_#fff,0_1px_#fff,1px_0_#fff,0_-1px_#fff]'>
+        <div className='text-black-denim w-15 shrink-0 text-left text-[56px] font-extrabold text-shadow-[-1px_0_#fff,0_1px_#fff,1px_0_#fff,0_-1px_#fff]'>
           {index}
         </div>
         <div className='flex grow items-center justify-between rounded bg-white/5 transition-colors duration-200 ease-linear hover:bg-white/4'>
@@ -42,7 +42,7 @@ export default function TopViewItem({
             </div>
           </div>
           <div className='grow px-4 py-2.5'>
-            <h3 className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 leading-normal font-medium text-white transition-all duration-200 ease-linear'>
+            <h3 className='hover:text-golden-glow mb-1.5 line-clamp-2 leading-normal font-medium text-white transition-all duration-200 ease-linear'>
               {movie.title}
             </h3>
             <p className='mb-1.5 line-clamp-1 text-xs leading-normal font-normal text-neutral-400'>

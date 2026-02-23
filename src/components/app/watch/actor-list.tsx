@@ -24,7 +24,7 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
       </Link>
       <Link
         href={`${route.person.path}/${actor.id}`}
-        className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 leading-normal font-normal whitespace-normal text-white transition-all duration-200 ease-linear'
+        className='hover:text-golden-glow mb-1.5 line-clamp-2 leading-normal font-normal whitespace-normal text-white transition-all duration-200 ease-linear'
         title={actor.otherName}
       >
         {actor.otherName}

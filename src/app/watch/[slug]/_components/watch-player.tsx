@@ -289,9 +289,9 @@ export default function WatchPlayer() {
                     <Button
                       variant='ghost'
                       className={cn(
-                        `hover:text-light-golden-yellow font-medium! hover:bg-transparent!`,
+                        `hover:text-golden-glow font-medium! hover:bg-transparent!`,
                         {
-                          'text-light-golden-yellow': isEpisodeListOpen
+                          'text-golden-glow': isEpisodeListOpen
                         }
                       )}
                       onClick={openEpisodeList}
@@ -335,41 +335,41 @@ export default function WatchPlayer() {
           </p>
         </div>
       )}
-      <div className='flex h-16 items-center rounded-br-[12px] rounded-bl-[12px] bg-[#15151a]'>
+      <div className='bg-covert-black flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
         <div className='flex w-full items-center gap-2 px-4 select-none'>
           <ButtonLike targetId={movie.id} variant='watch' text='Yêu thích' />
           <ButtonAddToPlaylist movieId={movie.id} variant='watch' />
           <Button
             variant='ghost'
-            className='hover:text-light-golden-yellow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+            className='hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
           >
             Chuyển tập
-            <span className='group-hover:border-light-golden-yellow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
+            <span className='group-hover:border-golden-glow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
               OFF
             </span>
           </Button>
           <Button
             variant='ghost'
-            className='hover:text-light-golden-yellow group flex items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+            className='hover:text-golden-glow group flex items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
           >
             Bỏ qua giới thiệu
-            <span className='group-hover:border-light-golden-yellow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
+            <span className='group-hover:border-golden-glow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
               OFF
             </span>
           </Button>
           <Button
             variant='ghost'
-            className='hover:text-light-golden-yellow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+            className='hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
           >
             Rạp phim
-            <span className='group-hover:border-light-golden-yellow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
+            <span className='group-hover:border-golden-glow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
               OFF
             </span>
           </Button>
           <ButtonShareMovie variant='watch' />
           <Button
             variant='ghost'
-            className='hover:text-light-golden-yellow flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+            className='hover:text-golden-glow flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
           >
             <CiStreamOn className='size-5' />
             Xem chung
@@ -377,7 +377,7 @@ export default function WatchPlayer() {
           <div className='grow'></div>
           <Button
             variant='ghost'
-            className='hover:text-light-golden-yellow flex h-10! items-center justify-center gap-2 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+            className='hover:text-golden-glow flex h-10! items-center justify-center gap-2 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
           >
             <FaFlag /> Báo lỗi
           </Button>

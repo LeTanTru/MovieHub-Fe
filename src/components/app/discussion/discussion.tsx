@@ -1,10 +1,6 @@
 'use client';
 
 import { CommentDotIcon } from '@/assets';
-import {
-  useInfiniteCommentListQuery,
-  useInfiniteReviewListQuery
-} from '@/queries';
 import { route } from '@/routes';
 import { getIdFromSlug, renderImageUrl } from '@/utils';
 import Link from 'next/link';
@@ -23,15 +19,27 @@ import { CommentInput, CommentList } from '@/components/app/comment';
 import { Element } from 'react-scroll';
 import { ReviewList } from '@/components/app/review';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from '@/hooks';
+import { useAuth, useScrollLoadMore } from '@/hooks';
 import DiscussionSkeleton from './discussion-skeleton';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
+import { commentApiRequest, reviewApiRequest } from '@/api-requests';
+import {
+  CommentResType,
+  CommentSearchType,
+  ReviewResType,
+  ReviewSearchType
+} from '@/types';
+import { cn } from '@/lib';
 
 export default function Discussion({
-  isLoading = false
+  isLoading = false,
+  toId,
+  className
 }: {
   isLoading?: boolean;
+  toId: string;
+  className?: string;
 }) {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
@@ -45,57 +53,57 @@ export default function Discussion({
   );
 
   const {
-    data: commentListData,
+    data: commentList,
     isLoading: commentListLoading,
     hasNextPage: hasMoreComments,
-    fetchNextPage: fetchMoreComments,
-    isFetchingNextPage: commentLoadMoreLoading
-  } = useInfiniteCommentListQuery({
+    isFetchingNextPage: commentLoadMoreLoading,
+    handleLoadMore: handleLoadMoreComments,
+    totalElements: totalComments
+  } = useScrollLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
+    queryKey: queryKeys.COMMENT_LIST,
     params: {
       movieId: id,
       size: DEFAULT_PAGE_SIZE
     },
-    queryKey: queryKeys.COMMENT_LIST,
-    enabled: !isLoading && !!id && discussionTab === DISCUSSION_TAB_COMMENT
+    queryFn: commentApiRequest.getList,
+    enabled: !isLoading && !!id && discussionTab === DISCUSSION_TAB_COMMENT,
+    mode: 'click'
   });
 
   const {
-    data: reviewListData,
+    data: reviewList,
     isLoading: reviewListLoading,
     hasNextPage: hasMoreReviews,
-    fetchNextPage: fetchMoreReviews,
-    isFetchingNextPage: reviewLoadMoreLoading
-  } = useInfiniteReviewListQuery({
+    isFetchingNextPage: reviewLoadMoreLoading,
+    handleLoadMore: handleLoadMoreReviews,
+    totalElements: totalReviews
+  } = useScrollLoadMore<HTMLDivElement, ReviewSearchType, ReviewResType>({
+    queryKey: queryKeys.REVIEW_LIST,
     params: {
       movieId: id,
       size: DEFAULT_PAGE_SIZE
     },
-    enabled: !isLoading && !!id && discussionTab === DISCUSSION_TAB_REVIEW
+    queryFn: reviewApiRequest.getList,
+    enabled: !isLoading && !!id && discussionTab === DISCUSSION_TAB_REVIEW,
+    mode: 'click'
   });
 
-  const commentList = (
-    commentListData?.pages?.flatMap(
-      (pageData) => pageData.data.content || []
-    ) || []
-  ).filter((comment) => Boolean(comment?.id));
-
-  const reviewList = (
-    reviewListData?.pages?.flatMap((pageData) => pageData.data.content || []) ||
-    []
-  ).filter((review) => Boolean(review?.id));
+  const filteredCommentList = commentList.filter((comment) =>
+    Boolean(comment?.id)
+  );
+  const filteredReviewList = reviewList.filter((review) => Boolean(review?.id));
 
   const totalMaps: Record<string, number> = {
-    [DISCUSSION_TAB_COMMENT]:
-      commentListData?.pages?.[0]?.data?.totalElements || 0,
-    [DISCUSSION_TAB_REVIEW]:
-      reviewListData?.pages?.[0]?.data?.totalElements || 0
+    [DISCUSSION_TAB_COMMENT]: totalComments,
+    [DISCUSSION_TAB_REVIEW]: totalReviews
   };
+
   const remainingComments = Math.max(
-    totalMaps[DISCUSSION_TAB_COMMENT] - commentList.length,
+    totalComments - filteredCommentList.length,
     0
   );
   const remainingReviews = Math.max(
-    totalMaps[DISCUSSION_TAB_REVIEW] - reviewList.length,
+    totalReviews - filteredReviewList.length,
     0
   );
 
@@ -107,21 +115,11 @@ export default function Discussion({
   const isCommentTab = discussionTab === DISCUSSION_TAB_COMMENT;
   const isReviewTab = discussionTab === DISCUSSION_TAB_REVIEW;
 
-  const handleLoadMoreComments = () => {
-    if (!hasMoreComments || commentLoadMoreLoading) return;
-    fetchMoreComments();
-  };
-
-  const handleLoadMoreReviews = () => {
-    if (!hasMoreReviews || reviewLoadMoreLoading) return;
-    fetchMoreReviews();
-  };
-
   if (isLoading) return <DiscussionSkeleton />;
 
   return (
-    <Element name='discussion-detail' id='discussion-detail'>
-      <div className='relative block px-10 py-5'>
+    <Element name={toId} id={toId}>
+      <div className={cn('relative block px-10 py-5', className)}>
         {/* Header */}
         <div className='mb-2 flex items-center font-semibold text-white'>
           <div className='flex grow items-center gap-4'>
@@ -177,7 +175,7 @@ export default function Discussion({
             <div className='mb-4 text-gray-400'>
               Vui lòng&nbsp;
               <Link
-                className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+                className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
                 href={route.login.path}
               >
                 đăng nhập
@@ -190,7 +188,7 @@ export default function Discussion({
         </Activity>
         <Activity visible={isCommentTab}>
           <CommentList
-            commentList={commentList}
+            commentList={filteredCommentList}
             isLoading={commentListLoading}
             hasMore={!!hasMoreComments}
             remainingCount={remainingComments}
@@ -200,7 +198,7 @@ export default function Discussion({
         </Activity>
         <Activity visible={isReviewTab}>
           <ReviewList
-            reviewList={reviewList}
+            reviewList={filteredReviewList}
             isLoading={reviewListLoading}
             hasMore={!!hasMoreReviews}
             remainingCount={remainingReviews}

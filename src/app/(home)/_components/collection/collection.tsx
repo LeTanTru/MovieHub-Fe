@@ -1,14 +1,14 @@
 'use client';
 
-import { DotLoading } from '@/components/loading';
+import { VerticalBarLoading } from '@/components/loading';
 import MovieList from './movie-list';
 import { useScrollLoadMore } from '@/hooks';
-import { queryKeys } from '@/constants';
+import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
 import { collectionApiRequest } from '@/api-requests';
 import { CollectionResType, CollectionSearchType } from '@/types';
 
 export default function Collection() {
-  const loadMoreSize = 3;
+  const loadMoreSize = DEFAULT_PAGE_SIZE;
 
   const {
     data: collectionList,
@@ -35,7 +35,7 @@ export default function Collection() {
         />
       ))}
       <div ref={loadMoreRef} className='flex items-center justify-center'>
-        {isLoading && <DotLoading />}
+        {isLoading && <VerticalBarLoading />}
       </div>
     </>
   );

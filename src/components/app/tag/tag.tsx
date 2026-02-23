@@ -22,7 +22,7 @@ export const TagWrapper = ({
 
 export const TagIMDb = ({ value }: { value: string | number }) => {
   return (
-    <div className='border-light-golden-yellow before:text-light-golden-yellow inline-flex shrink-0 items-center rounded-[0.33rem] border border-solid bg-transparent px-[0.4rem] py-0 text-xs leading-6 text-white before:relative before:pr-1 before:text-[10px] before:font-medium before:content-["IMDb"]'>
+    <div className='border-golden-glow before:text-golden-glow inline-flex shrink-0 items-center rounded-[0.33rem] border border-solid bg-transparent px-[0.4rem] py-0 text-xs leading-6 text-white before:relative before:pr-1 before:text-[10px] before:font-medium before:content-["IMDb"]'>
       <span>{value}</span>
     </div>
   );
@@ -97,7 +97,7 @@ export const TagCategoryLink = ({
   return (
     <Link
       href={href}
-      className='bg-transparent-white hover:text-light-golden-yellow transition-color inline-flex h-6.5 items-center rounded px-0 px-2 text-xs text-white duration-200 ease-linear'
+      className='bg-transparent-white hover:text-golden-glow transition-color inline-flex h-6.5 items-center rounded px-0 px-2 text-xs text-white duration-200 ease-linear'
     >
       {text}
     </Link>

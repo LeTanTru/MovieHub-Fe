@@ -75,7 +75,7 @@ export default function SliderItem({
               <Link
                 title={slider.movie.title}
                 href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-                className='hover:text-light-golden-yellow text-4xl font-bold text-white transition-colors duration-200 ease-linear text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'
+                className='hover:text-golden-glow text-4xl font-bold text-white transition-colors duration-200 ease-linear text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'
               >
                 {slider.movie.imageTitleUrl ? (
                   <img

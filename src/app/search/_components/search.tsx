@@ -2,7 +2,7 @@
 
 import Filter from './filter';
 import MovieList from './movie-list';
-import { DEFAULT_PAGE_SIZE } from '@/constants';
+import { DEFAULT_PAGE_SIZE, SEARCH_MOVIE_LIST_ID } from '@/constants';
 import { useDebounce, useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';
 import { useSearchStore } from '@/store';
@@ -119,7 +119,7 @@ export default function Search() {
       page: undefined
     } as Partial<SearchParamsType>);
 
-    scroller.scrollTo('search-movie-list', {
+    scroller.scrollTo(SEARCH_MOVIE_LIST_ID, {
       duration: 500,
       smooth: true,
       offset: -200,

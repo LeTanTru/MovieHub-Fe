@@ -29,7 +29,7 @@ export default function WatchEpisodeSingle() {
               className={cn(
                 'bg-episode relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1',
                 {
-                  'border-light-golden-yellow border-2':
+                  'border-golden-glow border-2':
                     season.label === searchParams.season
                 }
               )}

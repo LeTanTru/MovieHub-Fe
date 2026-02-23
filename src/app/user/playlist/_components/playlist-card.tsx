@@ -32,7 +32,7 @@ export default function PlaylistCard({
       className={cn(
         'cursor-pointer rounded-md border-2 p-4 transition-all duration-200 ease-linear',
         {
-          'border-light-golden-yellow': selectedPlaylist?.id === playlist.id
+          'border-golden-glow': selectedPlaylist?.id === playlist.id
         }
       )}
       onClick={handleSelectPlaylist}

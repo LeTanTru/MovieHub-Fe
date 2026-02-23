@@ -43,37 +43,35 @@
   --spacing-header: 90px;
   --spacing-fixed-header: 70px;
   --spacing-search-form: 44.8px;
-  --color-transparent-white: #ffffff10;
+  /* Color */
+  --color-black-denim: #191b24;
+  --color-blue-party: #4158d0;
+  --color-bunker: #0d1117;
+  --color-charade: #282b3a;
+  --color-covert-black: #15151a;
+  --color-dark-conflower-blue: #3556b6;
+  --color-dark-gunmetal-gray: #1f1f29;
+  --color-dark-space: #1a1f32;
+  --color-fixed-header: #070a18;
+  --color-golden-glow: #ffd875;
+  --color-gunmetal-black: #151420e6;
   --color-gunmetal-blue: #2f3346;
   --color-light-gray: #aaa;
-  --color-light-golden-yellow: #ffd875;
-  --color-statuary: #9fa0a5;
-  --color-main-color: var(--color-gray-300);
-  --color-fixed-header: #070a18;
+  --color-lyla: #232531;
   --color-main-background: #1d1d27;
-  /* --color-main-background: #2b2b35; */
-  --color-navigation: rgba(21, 20, 32, 0.9);
-  --color-navigation-mobile: rgb(15, 23, 43);
-  --color-auth-layout: #1a1f32;
-  --color-watch-now: #191b24;
-  --color-review: #3556b6;
-  --color-auth-form: #333f59;
-  --color-actor-name: #f0adb1;
-  --color-episode: #5e6070;
-  --color-discussion-form: #ffffff10;
-  --color-avatar: #282b3a;
-  --color-dislike-comment: #d33d25;
-  --color-episode-1: #282b3a;
-  --color-episode-2: #2f3346;
-  --color-review-modal: #2a314e;
-  --color-rating-active: #3556b6;
-  --color-discussion-input: #191b24;
+  --color-main-color: var(--color-gray-300);
+  --color-malachite: #22cb4c;
+  --color-pinkest: #f0adb1;
+  --color-red-beauty: #d33d25;
+  --color-statuary: #9fa0a5;
+  --color-transparent-white: #ffffff10;
   --color-user-sidebar: #24242c;
-  --color-footer: #232531;
+  --color-vintage-blue: #333f59;
+  --color-vintage-navi: #2a314e;
+  --color-vivid-orange: #ff8300;
   --color-vn-flag: #78140f;
-  --color-footer-icon: #282b3a;
-  --color-on-going-episode: #ff8300;
-  --color-complete-episode: #22cb4c;
+  /* --color-main-background: #2b2b35; */
+  /* Color */
 }
 
 :root {

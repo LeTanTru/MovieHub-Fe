@@ -72,7 +72,7 @@ export default function LoginForm() {
   };
 
   return (
-    <section className='bg-auth-form rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Đăng nhập</h3>
         <p className='text-muted-foreground text-center text-sm'>
@@ -113,7 +113,7 @@ export default function LoginForm() {
             </Row>
             <Row>
               <Col span={24}>
-                <div className='text-muted-foreground hover:text-light-golden-yellow text-right text-sm transition-all duration-200 ease-linear'>
+                <div className='text-muted-foreground hover:text-golden-glow text-right text-sm transition-all duration-200 ease-linear'>
                   <Link
                     onClick={handleClearForgotPasswordData}
                     href={route.forgotPassword.path}
@@ -127,7 +127,7 @@ export default function LoginForm() {
             <Button
               type='submit'
               variant='primary'
-              className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80 w-full'
+              className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 w-full'
               disabled={
                 !isFormChanged || loginLoading || setCookieServerLoading
               }
@@ -156,7 +156,7 @@ export default function LoginForm() {
         Chưa có tài khoản? &nbsp;
         <Link
           href={route.register.path}
-          className='hover:text-light-golden-yellow transition-all duration-200 ease-linear'
+          className='hover:text-golden-glow transition-all duration-200 ease-linear'
         >
           Đăng ký ngay
         </Link>

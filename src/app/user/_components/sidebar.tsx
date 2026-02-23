@@ -31,7 +31,7 @@ export default function Sidebar() {
           <ListItem
             key={item.link}
             className={cn('opacity-70', {
-              'text-light-golden-yellow opacity-100': path === item.link
+              'text-golden-glow opacity-100': path === item.link
             })}
           >
             <Link

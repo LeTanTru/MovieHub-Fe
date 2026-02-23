@@ -23,7 +23,7 @@
       opacity 0.2s linear;
 
     &:hover {
-      color: var(--color-light-golden-yellow);
+      color: var(--color-golden-glow);
       opacity: 1;
     }
   }

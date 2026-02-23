@@ -3,7 +3,7 @@
 import { ButtonReview, ButtonViewReview } from '@/components/app/button-review';
 import { ButtonViewComment } from '@/components/app/button-comment';
 import { getIdFromSlug } from '@/utils';
-import { PERSON_KIND_ACTOR } from '@/constants';
+import { MOVIE_WATCH_DISCUSSION_ID, PERSON_KIND_ACTOR } from '@/constants';
 import { ActorList, SuggestionList } from '@/components/app/watch';
 import { useMovieStore } from '@/store';
 import { useParams } from 'next/navigation';
@@ -35,8 +35,8 @@ export default function WatchSide() {
   return (
     <div className='flex w-110 shrink-0 flex-col gap-10 border-l border-solid border-white/10 p-10'>
       <div className='flex items-center justify-end gap-4'>
-        <ButtonViewComment to='discussion-watch' variant='watch' />
-        <ButtonViewReview to='discussion-watch' variant='watch' />
+        <ButtonViewComment to={MOVIE_WATCH_DISCUSSION_ID} variant='watch' />
+        <ButtonViewReview to={MOVIE_WATCH_DISCUSSION_ID} variant='watch' />
         <ButtonReview movieId={movie.id} />
       </div>
 

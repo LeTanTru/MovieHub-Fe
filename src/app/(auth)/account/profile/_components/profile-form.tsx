@@ -97,7 +97,7 @@ export default function ProfileForm() {
   };
 
   return (
-    <section className='bg-auth-form rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
       <h3 className='text-center text-xl font-semibold'>Tài khoản</h3>
       <p className='text-muted-foreground mt-2 text-center text-sm'>
         Cập nhật thông tin tài khoản
@@ -206,7 +206,7 @@ export default function ProfileForm() {
                   <Button
                     type='submit'
                     variant='primary'
-                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80'
+                    className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                     loading={updateProfileLoading}
                     disabled={!form.formState.isDirty}
                   >

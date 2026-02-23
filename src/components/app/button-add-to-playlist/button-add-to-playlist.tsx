@@ -36,9 +36,9 @@ const variants = cva('', {
   variants: {
     variant: {
       detail:
-        'hover:text-light-golden-yellow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
+        'hover:text-golden-glow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
       watch:
-        'hover:text-light-golden-yellow h-10 items-center justify-center gap-2 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+        'hover:text-golden-glow h-10 items-center justify-center gap-2 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
     }
   },
   defaultVariants: {
@@ -89,7 +89,7 @@ export default function ButtonAddToPlaylist({
         <span>
           Vui lòng&nbsp;
           <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
             href={route.login.path}
           >
             đăng nhập
@@ -198,7 +198,7 @@ export default function ButtonAddToPlaylist({
             )}
             {playlist.length < MAX_PLAYLIST_COUNT && (
               <ButtonAddPlayList
-                className='bg-light-golden-yellow border-light-golden-yellow hover:bg-light-golden-yellow/80 rounded text-black hover:text-black/80'
+                className='bg-golden-glow border-golden-glow hover:bg-golden-glow/80 rounded text-black hover:text-black/80'
                 text='Thêm mới'
                 showText
               />

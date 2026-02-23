@@ -96,7 +96,7 @@ export default function CommentForm({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='bg-discussion-form mt-4 flex h-full flex-col gap-2.5 rounded-md! p-2.5'
+      className='bg-transparent-white mt-4 flex h-full flex-col gap-2.5 rounded-md! p-2.5'
     >
       {(form) => (
         <>
@@ -104,12 +104,12 @@ export default function CommentForm({
             <TextAreaField
               control={form.control}
               name='content'
-              className='bg-discussion-input block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
+              className='bg-black-denim block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
               label={
                 !editingComment && (
-                  <span className='bg-light-golden-yellow rounded px-1.5 py-1 font-semibold text-black'>
+                  <span className='bg-golden-glow rounded px-1.5 py-1 font-semibold text-black'>
                     {defaultMention}
                   </span>
                 )
@@ -127,7 +127,7 @@ export default function CommentForm({
               Hủy
             </Button>
             <Button
-              className='text-light-golden-yellow hover:text-light-golden-yellow h-fit gap-2 bg-transparent px-4.5 py-0 font-medium hover:bg-transparent hover:opacity-80'
+              className='text-golden-glow hover:text-golden-glow h-fit gap-2 bg-transparent px-4.5 py-0 font-medium hover:bg-transparent hover:opacity-80'
               disabled={
                 createCommentLoading ||
                 updateCommentLoading ||

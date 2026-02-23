@@ -28,7 +28,7 @@ export default function NavigationDesktop({
               onMouseEnter={() => setHovered(item.label)}
               onMouseLeave={() => setHovered(null)}
             >
-              <div className='hover:text-light-golden-yellow flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear'>
+              <div className='hover:text-golden-glow flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear'>
                 {item.label}
                 <ChevronDown
                   className={cn(
@@ -69,7 +69,7 @@ export default function NavigationDesktop({
                     <div className='absolute -top-5 left-0 z-10 h-10 w-full bg-transparent'></div>
                     <List
                       className={cn(
-                        'bg-navigation scrollbar-none max-h-[80vh] grid-cols-1 overflow-y-auto rounded shadow-[0px_0px_6px_2px_var(--color-main-background)]',
+                        'bg-gunmetal-black scrollbar-none max-h-[80vh] grid-cols-1 overflow-y-auto rounded shadow-[0px_0px_6px_2px_var(--color-main-background)]',
                         {
                           'w-160 grid-cols-4 p-2':
                             item.subItems!.length > 4 && item.isGrid,
@@ -82,7 +82,7 @@ export default function NavigationDesktop({
                         <ListItem
                           key={sub.label}
                           title={sub.label}
-                          className='hover:text-light-golden-yellow rounded transition-all duration-100 ease-linear hover:bg-white/5'
+                          className='hover:text-golden-glow rounded transition-all duration-100 ease-linear hover:bg-white/5'
                         >
                           <Link
                             className='line-clamp-1 block truncate px-5 py-2.5'
@@ -101,7 +101,7 @@ export default function NavigationDesktop({
           ) : (
             <ListItem
               key={item.label}
-              className='hover:text-light-golden-yellow p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear'
+              className='hover:text-golden-glow p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear'
             >
               <Link
                 href={item.href!}

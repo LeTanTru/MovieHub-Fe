@@ -93,7 +93,7 @@ export default function MovieTabs({
             className={cn(
               'flex cursor-pointer items-center justify-center px-4 py-3 text-sm font-medium text-white opacity-90 transition-opacity duration-200 ease-linear',
               {
-                'text-light-golden-yellow opacity-100': tab.key === activeKey
+                'text-golden-glow opacity-100': tab.key === activeKey
               }
             )}
             onClick={() => handleClick(tab.key)}
@@ -103,7 +103,7 @@ export default function MovieTabs({
         ))}
 
         <div
-          className='bg-light-golden-yellow absolute -bottom-px h-0.5 rounded transition-all duration-300 ease-in-out'
+          className='bg-golden-glow absolute -bottom-px h-0.5 rounded transition-all duration-300 ease-in-out'
           style={{
             left: `${indicatorStyle.left}px`,
             width: `${indicatorStyle.width}px`,

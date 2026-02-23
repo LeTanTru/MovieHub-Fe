@@ -1,0 +1,30 @@
+.bar-list {
+  & .bar-item {
+    --delay: 0s;
+    animation: barAnimation 1s linear infinite var(--delay);
+  }
+
+  & .bar-item-1 {
+    --delay: 0s;
+  }
+
+  & .bar-item-2 {
+    --delay: 0.3s;
+  }
+
+  & .bar-item-3 {
+    --delay: 0.6s;
+  }
+}
+
+@keyframes barAnimation {
+  0%,
+  100% {
+    transform: scaleY(1);
+    background-color: #6b7280;
+  }
+  50% {
+    transform: scaleY(0.1);
+    background-color: #5b5d68;
+  }
+}

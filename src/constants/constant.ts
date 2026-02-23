@@ -81,3 +81,7 @@ export const REACTION_TYPE_LIKE = 1;
 export const REACTION_TYPE_DISLIKE = 2;
 
 export const STATUS_HIDE = -1;
+
+export const MOVIE_DETAIL_DISCUSSION_ID = 'discussion-detail';
+export const MOVIE_WATCH_DISCUSSION_ID = 'discussion-watch';
+export const SEARCH_MOVIE_LIST_ID = 'search-movie-list';

@@ -113,7 +113,7 @@ export default function PersonCard({
             {person.otherName}
           </h4>
           <Activity visible={!!showFullName}>
-            <span title={person.name} className='text-actor-name text-xs'>
+            <span title={person.name} className='text-pinkest text-xs'>
               {person.name}
             </span>
           </Activity>

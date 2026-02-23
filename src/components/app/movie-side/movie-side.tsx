@@ -27,9 +27,7 @@ import {
   sanitizeText
 } from '@/utils';
 import { Activity } from '@/components/activity';
-import { CircleLoading } from '@/components/loading';
 import { cn } from '@/lib';
-import { FaCheckCircle } from 'react-icons/fa';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import ActorList from './actor-list';
@@ -38,6 +36,7 @@ import Link from 'next/link';
 import MovieSideSkeleton from './movie-side-skeleton';
 import TopViewList from './top-view-list';
 import { MetadataType } from '@/types';
+import { MovieProgress } from '@/components/app/movie-progress';
 
 export default function MovieSide({
   isLoading = false
@@ -142,7 +141,7 @@ export default function MovieSide({
       >
         {movie.title} {+latestSeason > 1 ? selectedSeason : ''}
       </h2>
-      <div className='text-light-golden-yellow mb-5 font-normal'>
+      <div className='text-golden-glow mb-5 font-normal'>
         {movie.originalTitle} {+latestSeason > 1 ? selectedSeason : ''}
       </div>
       <TagWrapper className='mb-3'>
@@ -159,7 +158,7 @@ export default function MovieSide({
         </Activity>
         {isSeries && isComplete && (
           <TagNormal
-            value={`Hoàn tất ${episodes.length} / ${currentSeason?.totalEpisode ?? '?'} tập`}
+            value={`Hoàn tất ${episodes.length} / ${currentSeason?.totalEpisode || '?'} tập`}
           />
         )}
       </TagWrapper>
@@ -173,28 +172,11 @@ export default function MovieSide({
         ))}
       </TagWrapper>
       {isSeries && (
-        <div className='mb-5'>
-          <div
-            className={cn(
-              'inline-flex items-center gap-2 rounded-4xl px-3.5 py-2 text-xs',
-              {
-                'bg-complete-episode/30 text-complete-episode': isComplete,
-                'bg-on-going-episode/30 text-on-going-episode': !isComplete
-              }
-            )}
-          >
-            {isComplete ? (
-              <FaCheckCircle className='fill-complete-episode stroke-complete-episode/30 size-4' />
-            ) : (
-              <CircleLoading className='stroke-on-going-episode size-4 animate-spin stroke-3' />
-            )}
-            <span>
-              {isComplete ? 'Đã hoàn thành' : 'Đã chiếu'}: {episodes.length}
-              &nbsp;/&nbsp;
-              {currentSeason?.totalEpisode ?? '?'} Tập
-            </span>
-          </div>
-        </div>
+        <MovieProgress
+          currentTotalEpisode={episodes?.length}
+          isComplete={isComplete}
+          totalEpisode={currentSeason?.totalEpisode || 0}
+        />
       )}
       <div className='mb-5'>
         <div className='mb-2 block font-medium text-white'>Giới thiệu:</div>
@@ -227,7 +209,7 @@ export default function MovieSide({
           href={`${route.country.path}/${generateSlug(
             countryName
           )}.${movie.country}`}
-          className='text-foreground/80 hover:text-light-golden-yellow linear font-light transition duration-200'
+          className='text-foreground/80 hover:text-golden-glow linear font-light transition duration-200'
         >
           {countryName}
         </Link>

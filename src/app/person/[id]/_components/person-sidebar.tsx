@@ -139,7 +139,7 @@ export default function PersonSidebar() {
           >
             <motion.div
               ref={modalContentRef}
-              className='scrollbar-none relative max-h-[80vh] w-[90%] max-w-2xl overflow-y-auto rounded-lg bg-[#0d1117] p-6'
+              className='scrollbar-none bg-bunker relative max-h-[80vh] w-[90%] max-w-2xl overflow-y-auto rounded-lg p-6'
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}

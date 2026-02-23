@@ -208,7 +208,7 @@ export default function VerifyOtpForm() {
     (resendData.count >= MAX_RESEND && countdown > 0) || cooldownRemaining > 0;
 
   return (
-    <section className='bg-auth-form rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h2 className='text-xl font-semibold'>Xác thực email</h2>
         <p className='text-muted-foreground text-center text-sm'>
@@ -283,7 +283,7 @@ export default function VerifyOtpForm() {
                   <Button
                     type='submit'
                     variant='primary'
-                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80'
+                    className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                     disabled={verifyOtpLoading || !isFormChanged}
                     loading={verifyOtpLoading}
                   >

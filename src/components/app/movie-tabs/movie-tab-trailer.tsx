@@ -118,20 +118,20 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
           >
             <div
               className={cn('block', {
-                'bg-episode-1 hover:text-light-golden-yellow flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
+                'bg-charade hover:text-golden-glow flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
                   toggle
               })}
             >
               <div
                 className={cn(
-                  'bg-episode-2 group relative mb-2.5 block w-full overflow-hidden rounded-md',
+                  'bg-gunmetal-blue group relative mb-2.5 block w-full overflow-hidden rounded-md',
                   {
                     'h-0 pb-[66%]': !toggle,
                     hidden: toggle
                   }
                 )}
               >
-                <div className='group-hover:text-light-golden-yellow border-light-golden-yellow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
+                <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
                   <FaPlay />
                 </div>
                 <Image
@@ -155,7 +155,7 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
                 <>
                   <div
                     className={cn(
-                      'transition-color hover:text-light-golden-yellow flex items-center gap-2.5 text-sm font-medium text-white duration-200 ease-linear'
+                      'transition-color hover:text-golden-glow flex items-center gap-2.5 text-sm font-medium text-white duration-200 ease-linear'
                     )}
                   >
                     <div className='block shrink-0 text-xs'>

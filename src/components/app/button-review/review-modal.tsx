@@ -104,7 +104,7 @@ export default function ReviewModal({
     <Modal
       open={opened}
       onClose={onClose}
-      className='[&_.body-wrapper]:bg-review-modal [&_.body-wrapper]:h-fit! [&_.body-wrapper]:min-h-fit! [&_.body-wrapper]:max-w-160'
+      className='[&_.body-wrapper]:bg-vintage-navi [&_.body-wrapper]:h-fit! [&_.body-wrapper]:min-h-fit! [&_.body-wrapper]:max-w-160'
       headerClassName='border-none'
       closeOnBackdropClick
     >
@@ -138,7 +138,7 @@ export default function ReviewModal({
                       className={cn(
                         'jucenter flex cursor-pointer flex-col items-center gap-2.5 rounded-lg px-2.5 py-4 text-white grayscale-100 transition-all duration-200 ease-linear select-none hover:grayscale-0',
                         {
-                          'bg-rating-active grayscale-0':
+                          'bg-dark-conflower-blue grayscale-0':
                             selectedRating === rating.value
                         }
                       )}
@@ -177,7 +177,7 @@ export default function ReviewModal({
               </Col>
               <Col span={6}>
                 <Button
-                  className='bg-light-golden-yellow hover:bg-light-golden-yellow/80'
+                  className='bg-golden-glow hover:bg-golden-glow/80'
                   variant='primary'
                   loading={createReviewLoading}
                 >

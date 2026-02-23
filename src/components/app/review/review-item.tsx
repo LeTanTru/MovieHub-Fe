@@ -87,7 +87,7 @@ export default function ReviewItem({
               </Badge>
             )}
             {ratingInfo && (
-              <div className='bg-review flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 text-white'>
+              <div className='bg-dark-conflower-blue flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 text-white'>
                 <Image
                   src={ratingInfo.icon}
                   alt={ratingInfo.label}
@@ -102,7 +102,7 @@ export default function ReviewItem({
               {review.author.fullName}
               <span
                 className={cn({
-                  'text-light-golden-yellow font-semibold': isAuthor
+                  'text-golden-glow font-semibold': isAuthor
                 })}
               >
                 {isAuthor && ' (Bạn)'}
@@ -113,7 +113,7 @@ export default function ReviewItem({
               className={cn('size-4', {
                 'text-cyan-500': gender === GENDER_MALE,
                 'text-pink-500': gender === GENDER_FEMALE,
-                'text-light-golden-yellow': gender === GENDER_OTHER
+                'text-golden-glow': gender === GENDER_OTHER
               })}
             />
           </div>
@@ -151,9 +151,8 @@ export default function ReviewItem({
                 iconClassName={cn(
                   'transition-colors duration-200 ease-linear',
                   {
-                    'hover:text-light-golden-yellow':
-                      isAuthenticated && !isVoteLoading,
-                    'text-light-golden-yellow': voteType === REACTION_TYPE_LIKE
+                    'hover:text-golden-glow': isAuthenticated && !isVoteLoading,
+                    'text-golden-glow': voteType === REACTION_TYPE_LIKE
                   }
                 )}
               />
@@ -166,9 +165,8 @@ export default function ReviewItem({
                 iconClassName={cn(
                   'transition-colors duration-200 ease-linear',
                   {
-                    'hover:text-dislike-comment':
-                      isAuthenticated && !isVoteLoading,
-                    'text-dislike-comment': voteType === REACTION_TYPE_DISLIKE
+                    'hover:text-red-beauty': isAuthenticated && !isVoteLoading,
+                    'text-red-beauty': voteType === REACTION_TYPE_DISLIKE
                   }
                 )}
               />

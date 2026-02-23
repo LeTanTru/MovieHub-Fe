@@ -11,7 +11,7 @@ import { scroller } from 'react-scroll';
 import { useShallow } from 'zustand/shallow';
 
 const variants = cva(
-  'hover:text-light-golden-yellow h-fit min-w-20 flex-col px-2 hover:bg-white/10',
+  'hover:text-golden-glow h-fit min-w-20 flex-col px-2 hover:bg-white/10',
   {
     variants: {
       variant: {

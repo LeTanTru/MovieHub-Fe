@@ -24,7 +24,7 @@ export default function ButtonSharePerson() {
 
   return (
     <Button
-      className='hover:text-light-golden-yellow! hover:border-light-golden-yellow! rounded-full'
+      className='hover:text-golden-glow! hover:border-golden-glow! rounded-full'
       variant='outline'
       onClick={handleCopyLink}
     >
