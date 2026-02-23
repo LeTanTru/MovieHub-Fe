@@ -1,6 +1,7 @@
 export * from './account.query';
 export * from './auth.query';
 export * from './category.query';
+export * from './collection-item.query';
 export * from './collection.query';
 export * from './comment.query';
 export * from './favourite.query';

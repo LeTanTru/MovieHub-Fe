@@ -26,7 +26,7 @@ import { useShallow } from 'zustand/shallow';
 import {
   useWatchHistoryTrackingMutation,
   useWatchHistoryListQuery
-} from '@/queries/watch-history.query';
+} from '@/queries';
 import { WatchHistoryType } from '@/types';
 import {
   MediaTimeUpdateEventDetail,
