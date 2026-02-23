@@ -5,10 +5,8 @@ import { useCollectionTopicListQuery } from '@/queries';
 import { MAX_PAGE_SIZE } from '@/constants';
 import {
   TopicCardSkeleton,
-  TopicItemMoreV1,
-  TopicItemMoreV2,
-  TopicItemV1,
-  TopicItemV2
+  TopicItem,
+  TopicItemMore
 } from '@/components/app/topic-item';
 
 export default function TopicList() {
@@ -22,9 +20,7 @@ export default function TopicList() {
   const topicList = topicListData?.data?.content?.slice(0, 6) || [];
   const totalElements = topicListData?.data?.totalElements || 0;
 
-  const switchToV2 = Math.random() < 0.5;
-  const TopicItem = switchToV2 ? TopicItemV2 : TopicItemV1;
-  const TopicItemMore = switchToV2 ? TopicItemMoreV2 : TopicItemMoreV1;
+  const random = Math.random() < 0.5;
 
   const moreCount = totalElements - topicList.length;
 
@@ -46,9 +42,9 @@ export default function TopicList() {
       ) : topicList.length > 0 ? (
         <div className='grid grid-cols-7 gap-4'>
           {topicList.map((topic) => (
-            <TopicItem key={topic.id} topic={topic} />
+            <TopicItem key={topic.id} topic={topic} random={random} />
           ))}
-          <TopicItemMore moreCount={moreCount} />
+          <TopicItemMore moreCount={moreCount} random={random} />
         </div>
       ) : (
         <NoData className='pt-20 pb-40' content={<>Không có chủ đề nào</>} />

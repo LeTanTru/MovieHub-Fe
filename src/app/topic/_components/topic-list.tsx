@@ -3,11 +3,7 @@
 import { NoData } from '@/components/no-data';
 import { useCollectionTopicListQuery } from '@/queries';
 import { MAX_PAGE_SIZE } from '@/constants';
-import {
-  TopicCardSkeleton,
-  TopicItemV1,
-  TopicItemV2
-} from '@/components/app/topic-item';
+import { TopicCardSkeleton, TopicItem } from '@/components/app/topic-item';
 
 export default function TopicList() {
   const skeletonCount = 14;
@@ -20,8 +16,7 @@ export default function TopicList() {
 
   const topicList = topicListData?.data?.content || [];
 
-  const switchToV2 = Math.random() < 0.5;
-  const TopicItem = switchToV2 ? TopicItemV2 : TopicItemV1;
+  const random = Math.random() < 0.5;
 
   return (
     <div className='mx-auto w-full max-w-475 px-12.5'>
@@ -39,7 +34,7 @@ export default function TopicList() {
       ) : topicList.length > 0 ? (
         <div className='grid grid-cols-7 gap-4'>
           {topicList.map((topic) => (
-            <TopicItem key={topic.id} topic={topic} />
+            <TopicItem key={topic.id} topic={topic} random={random} />
           ))}
         </div>
       ) : (
