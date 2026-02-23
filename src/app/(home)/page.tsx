@@ -1,5 +1,6 @@
 import { collectionApiRequest, sidebarApiRequest } from '@/api-requests';
 import { CollectionSearchType, SidebarSearchType } from '@/types';
+import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/components/providers';
 import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
@@ -7,7 +8,7 @@ import { Slider } from '@/app/(home)/_components/slider';
 import { TopicList } from '@/app/(home)/_components/topic-list';
 import { WatchContinue } from '@/app/(home)/_components/watch-continue';
 import type { Metadata } from 'next';
-import { Container } from '@/components/layout';
+import { Collection } from '@/app/(home)/_components/collection';
 
 export const metadata: Metadata = {
   description:
@@ -41,6 +42,7 @@ export default async function HomePage() {
         <div className='flex flex-col gap-12.5'>
           <TopicList />
           <WatchContinue />
+          <Collection />
         </div>
       </Container>
     </HydrationBoundary>

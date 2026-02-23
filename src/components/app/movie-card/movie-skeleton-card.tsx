@@ -2,7 +2,7 @@
 
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function MovieCardSkeleton() {
+export default function MovieSkeletonCard() {
   return (
     <div className='relative flex flex-col gap-3'>
       <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md! pb-[150%]'></Skeleton>

@@ -24,3 +24,17 @@ export const useCollectionQuery = (id: string) => {
     enabled: !!id
   });
 };
+
+export const useCollectionListQuery = ({
+  params = {},
+  enabled
+}: {
+  params?: CollectionSearchType;
+  enabled?: boolean;
+} = {}) => {
+  return useQuery({
+    queryKey: [queryKeys.COLLECTION_LIST, params],
+    queryFn: () => collectionApiRequest.getList(params),
+    enabled
+  });
+};

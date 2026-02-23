@@ -30,7 +30,7 @@ const itemTransition: Transition = {
   default: { duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }
 };
 
-export default function MovieCardHistory({
+export default function MovieHistoryCard({
   movieHistory,
   dir = 'up',
   onDelete

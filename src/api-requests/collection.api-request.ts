@@ -20,6 +20,10 @@ const collectionApiRequest = {
       pathParams: {
         id
       }
+    }),
+  getList: (params?: CollectionSearchType) =>
+    http.get<ApiResponseList<CollectionResType>>(apiConfig.collection.getList, {
+      params
     })
 };
 
