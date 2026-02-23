@@ -120,7 +120,7 @@ export default function MovieHistoryCard({
         <Link href={watchLink} title={movie.title}>
           <h4
             className={cn(
-              'hover:text-light-golden-yellow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
+              'hover:text-golden-glow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
               {
                 'featured-title font-bold': movie.isFeatured
               }

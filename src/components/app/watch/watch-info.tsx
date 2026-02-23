@@ -1,13 +1,13 @@
 'use client';
 
 import { Activity } from '@/components/activity';
+import { MovieProgress } from '@/components/app/movie-progress';
 import {
   TagAgeRating,
   TagCategoryLink,
   TagNormal,
   TagWrapper
 } from '@/components/app/tag';
-import { CircleLoading } from '@/components/loading';
 import {
   ageRatings,
   countries,
@@ -32,7 +32,6 @@ import {
 } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaCheckCircle } from 'react-icons/fa';
 import { FaChevronRight } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
@@ -121,7 +120,7 @@ export default function WatchInfo() {
           <Link
             href={`${route.movie.path}/${movie.slug}.${movie.id}`}
             className={cn(
-              'hover:text-light-golden-yellow font-normal transition-all duration-200 ease-linear',
+              'hover:text-golden-glow font-normal transition-all duration-200 ease-linear',
               {
                 'featured-title font-bold': movie.isFeatured
               }
@@ -130,7 +129,7 @@ export default function WatchInfo() {
             {movie.title}
           </Link>
         </h2>
-        <p className='text-light-golden-yellow mb-3'>
+        <p className='text-golden-glow mb-3'>
           {movie.originalTitle} {+selectedSeason > 1 ? selectedSeason : ''}
         </p>
         <TagWrapper className='mb-3'>
@@ -156,28 +155,11 @@ export default function WatchInfo() {
           ))}
         </TagWrapper>
         {isSeries && (
-          <div className='mb-3'>
-            <div
-              className={cn(
-                'inline-flex items-center gap-2 rounded-4xl px-3.5 py-2 text-xs',
-                {
-                  'bg-complete-episode/30 text-complete-episode': isComplete,
-                  'bg-on-going-episode/30 text-on-going-episode': !isComplete
-                }
-              )}
-            >
-              {isComplete ? (
-                <FaCheckCircle className='fill-complete-episode stroke-complete-episode/30 size-4' />
-              ) : (
-                <CircleLoading className='stroke-on-going-episode size-4 animate-spin stroke-3' />
-              )}
-              <span>
-                {isComplete ? 'Đã hoàn thành' : 'Đã chiếu'}: {episodes.length}
-                &nbsp;/&nbsp;
-                {currentSeason?.totalEpisode ?? '?'} Tập
-              </span>
-            </div>
-          </div>
+          <MovieProgress
+            currentTotalEpisode={episodes?.length}
+            isComplete={isComplete}
+            totalEpisode={currentSeason?.totalEpisode || 0}
+          />
         )}
         <div className='flex items-center justify-between'>
           <div className='mb-3 flex items-end gap-2'>
@@ -206,7 +188,7 @@ export default function WatchInfo() {
               href={`${route.country.path}/${generateSlug(
                 countryName
               )}.${movie.country}`}
-              className='text-foreground/80 hover:text-light-golden-yellow linear font-light transition duration-200'
+              className='text-foreground/80 hover:text-golden-glow linear font-light transition duration-200'
             >
               {countryName}
             </Link>
@@ -238,7 +220,7 @@ export default function WatchInfo() {
         />
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-          className='text-light-golden-yellow hover:text-light-golden-yellow/80 flex items-center gap-2 transition-all duration-200 ease-linear'
+          className='text-golden-glow hover:text-golden-glow/80 flex items-center gap-2 transition-all duration-200 ease-linear'
         >
           Thông tin phim
           <FaChevronRight />

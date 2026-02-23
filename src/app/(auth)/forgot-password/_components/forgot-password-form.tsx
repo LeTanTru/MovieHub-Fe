@@ -267,7 +267,7 @@ export default function ForgotPasswordForm() {
     (resendData.count >= MAX_RESEND && countdown > 0) || cooldownRemaining > 0;
 
   return (
-    <section className='bg-auth-form rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>
         <Activity visible={step == 1}>
@@ -309,7 +309,7 @@ export default function ForgotPasswordForm() {
                 <Button
                   type='submit'
                   variant='primary'
-                  className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80 w-full'
+                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 w-full'
                   disabled={requestForgotPasswordLoading || !isFormChanged}
                   loading={requestForgotPasswordLoading}
                 >
@@ -400,7 +400,7 @@ export default function ForgotPasswordForm() {
                     <Button
                       type='submit'
                       variant='primary'
-                      className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80'
+                      className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                       disabled={
                         forgotPasswordLoading || !form.formState.isValid
                       }
@@ -436,7 +436,7 @@ export default function ForgotPasswordForm() {
       <div className='text-muted-foreground mt-4 text-center text-sm'>
         <Link
           href={route.login.path}
-          className='hover:text-light-golden-yellow flex items-center justify-center gap-x-2 transition-all duration-200 ease-linear'
+          className='hover:text-golden-glow flex items-center justify-center gap-x-2 transition-all duration-200 ease-linear'
           onClick={handleClearForgotPasswordData}
         >
           <ArrowLeft />

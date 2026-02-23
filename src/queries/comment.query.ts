@@ -1,12 +1,12 @@
 import { commentApiRequest } from '@/api-requests';
-import { DEFAULT_PAGE_START, queryKeys } from '@/constants';
+import { queryKeys } from '@/constants';
 import {
   CommentSearchType,
   CreateCommentBodyType,
   UpdateCommentBodyType,
   VoteCommentBodyType
 } from '@/types';
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useCommentListQuery = ({
   params = {},
@@ -19,30 +19,6 @@ export const useCommentListQuery = ({
     queryKey: [queryKeys.COMMENT_LIST, params],
     queryFn: () => commentApiRequest.getList(params),
     enabled
-  });
-};
-
-export const useInfiniteCommentListQuery = ({
-  params,
-  queryKey,
-  enabled
-}: {
-  params: CommentSearchType;
-  queryKey: string;
-  enabled?: boolean;
-}) => {
-  return useInfiniteQuery({
-    queryKey: [queryKey, params],
-    queryFn: ({ pageParam }) =>
-      commentApiRequest.getList({ ...params, page: pageParam }),
-    initialPageParam: DEFAULT_PAGE_START,
-    getNextPageParam: (lastPage, pages) => {
-      const totalPages = lastPage?.data?.totalPages || 0;
-      const nextPage = pages.length;
-
-      return nextPage < totalPages ? nextPage : undefined;
-    },
-    enabled: enabled
   });
 };
 

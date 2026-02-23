@@ -62,7 +62,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <section className='bg-auth-form rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Đăng ký</h3>
         <p className='text-muted-foreground text-center text-sm'>
@@ -142,7 +142,7 @@ export default function RegisterForm() {
             <Button
               type='submit'
               variant='primary'
-              className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/50 disabled:hover:bg-light-golden-yellow/50 w-full'
+              className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/50 disabled:hover:bg-golden-glow/50 w-full'
               disabled={registerLoading || !isFormChanged}
               loading={registerLoading}
             >
@@ -161,7 +161,7 @@ export default function RegisterForm() {
         Đã có tài khoản? &nbsp;
         <Link
           href={route.login.path}
-          className='hover:text-light-golden-yellow transition-all duration-200 ease-linear'
+          className='hover:text-golden-glow transition-all duration-200 ease-linear'
         >
           Đăng nhập ngay
         </Link>

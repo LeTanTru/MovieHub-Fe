@@ -76,7 +76,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className='bg-footer'>
+    <footer className='bg-lyla'>
       <div className='max-w-475 px-12.5'>
         <div className='relative flex min-h-100 items-center justify-between py-8'>
           <div className='absolute top-1/2 left-1/2 z-10 h-full w-150 -translate-x-1/2 -translate-y-1/2'>
@@ -123,7 +123,7 @@ export default function Footer() {
                   <Link
                     key={index}
                     href={url}
-                    className='bg-footer-icon flex size-10 items-center justify-center rounded-full'
+                    className='bg-charade flex size-10 items-center justify-center rounded-full'
                     target='_blank'
                     rel='noreferrer'
                   >
@@ -135,7 +135,7 @@ export default function Footer() {
             <div className='mb-4 flex gap-4'>
               {infoLinks.map(({ title, url }, index) => (
                 <Link
-                  className='hover:text-light-golden-yellow transition-all duration-200 ease-linear'
+                  className='hover:text-golden-glow transition-all duration-200 ease-linear'
                   href={url}
                   key={index}
                 >

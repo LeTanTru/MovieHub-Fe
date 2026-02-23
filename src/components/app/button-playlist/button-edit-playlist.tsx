@@ -29,7 +29,7 @@ export default function ButtonEditPlaylist({
         className='bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
       >
         <Button
-          className='hover:text-light-golden-yellow hover:border-light-golden-yellow h-fit! rounded-full p-0!'
+          className='hover:text-golden-glow hover:border-golden-glow h-fit! rounded-full p-0!'
           onClick={handleOpen}
           variant='ghost'
         >

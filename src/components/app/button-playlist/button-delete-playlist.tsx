@@ -115,7 +115,7 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
           </Col>
           <Col span={6}>
             <Button
-              className='bg-[#dc3545]!'
+              className='bg-red-500'
               variant='destructive'
               disabled={isPending}
               loading={isPending}

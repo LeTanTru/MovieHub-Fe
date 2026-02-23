@@ -6,7 +6,7 @@ import { ButtonReview, ButtonViewReview } from '@/components/app/button-review';
 import { ButtonShareMovie } from '@/components/app/button-share';
 import { ButtonViewComment } from '@/components/app/button-comment';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
-import { MOVIE_TYPE_SERIES } from '@/constants';
+import { MOVIE_DETAIL_DISCUSSION_ID, MOVIE_TYPE_SERIES } from '@/constants';
 import { route } from '@/routes';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMovieStore } from '@/store';
@@ -64,8 +64,8 @@ export default function MovieActionBar({
           <ButtonLike targetId={movie.id} variant='detail' />
           <ButtonAddToPlaylist movieId={movie.id} variant='detail' />
           <ButtonShareMovie variant='detail' />
-          <ButtonViewComment to='discussion-detail' variant='detail' />
-          <ButtonViewReview to='discussion-detail' variant='detail' />
+          <ButtonViewComment to={MOVIE_DETAIL_DISCUSSION_ID} variant='detail' />
+          <ButtonViewReview to={MOVIE_DETAIL_DISCUSSION_ID} variant='detail' />
         </div>
         {/* Right */}
         <ButtonReview movieId={movie.id} />

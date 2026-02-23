@@ -72,7 +72,7 @@ export default function ChangePasswordForm() {
   };
 
   return (
-    <section className='bg-auth-form rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
       <h3 className='text-center text-xl font-medium'>Đổi mật khẩu</h3>
       <p className='mt-2 text-center text-sm text-slate-400'>
         Cập nhật mật khẩu tài khoản <br /> để đảm bảo an toàn cho tài khoản của
@@ -137,7 +137,7 @@ export default function ChangePasswordForm() {
                   <Button
                     type='submit'
                     variant='primary'
-                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 disabled:bg-light-golden-yellow/80 disabled:hover:bg-light-golden-yellow/80'
+                    className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                     loading={
                       changePasswordLoading ||
                       logoutLoading ||

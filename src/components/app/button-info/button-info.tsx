@@ -30,7 +30,7 @@ export default function ButtonInfo({
       <div className='inc-icon icon-20'>
         <InfoIcon
           ref={iconRef}
-          iconClassName='group-hover:fill-light-golden-yellow size-5 fill-white stroke-black transition-colors ease-linear duration-200'
+          iconClassName='group-hover:fill-golden-glow size-5 fill-white stroke-black transition-colors ease-linear duration-200'
         />
       </div>
     </Link>

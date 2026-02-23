@@ -68,7 +68,7 @@ export default function CommentInput({
         <span>
           Vui lòng&nbsp;
           <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
             href={route.login.path}
           >
             đăng nhập
@@ -108,7 +108,7 @@ export default function CommentInput({
 
   if (isLoading)
     return (
-      <div className='bg-discussion-form flex flex-col gap-2 rounded-md p-2'>
+      <div className='bg-transparent-white flex flex-col gap-2 rounded-md p-2'>
         <Skeleton className='skeleton h-40 w-full' />
         <div className='flex items-center gap-4'>
           <Skeleton className='skeleton h-8 w-24' />
@@ -124,7 +124,7 @@ export default function CommentInput({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='bg-discussion-form flex flex-col gap-2 rounded-md p-2.5'
+      className='bg-transparent-white flex flex-col gap-2 rounded-md p-2.5'
     >
       {(form) => (
         <>
@@ -132,7 +132,7 @@ export default function CommentInput({
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-discussion-input block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-black-denim block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
             />
@@ -141,7 +141,7 @@ export default function CommentInput({
             <div className='grow'></div>
 
             <Button
-              className='text-light-golden-yellow hover:text-light-golden-yellow min-h-7.5 gap-2 bg-transparent px-4.5 py-2 font-medium hover:bg-transparent hover:opacity-80'
+              className='text-golden-glow hover:text-golden-glow min-h-7.5 gap-2 bg-transparent px-4.5 py-2 font-medium hover:bg-transparent hover:opacity-80'
               disabled={createCommentLoading || !form.formState.isDirty}
               loading={createCommentLoading}
               type='submit'

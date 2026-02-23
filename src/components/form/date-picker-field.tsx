@@ -123,7 +123,7 @@ export default function DatePickerField<T extends FieldValues>({
                         const parsed = parseDate(field.value);
                         return parsed && !isNaN(parsed.getTime())
                           ? format(parsed, dateFormat)
-                          : (placeholder ?? 'Chọn ngày');
+                          : placeholder || 'Chọn ngày';
                       })()}
                     </span>
                     <span className='flex items-center gap-1'>

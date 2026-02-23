@@ -35,7 +35,7 @@ export default function SuggestionItem({ movie }: { movie: MovieResType }) {
         </div>
       </div>
       <div className='grow px-4 py-2.5'>
-        <h3 className='hover:text-light-golden-yellow mb-1.5 line-clamp-2 leading-normal font-medium text-white transition-all duration-200 ease-linear'>
+        <h3 className='hover:text-golden-glow mb-1.5 line-clamp-2 leading-normal font-medium text-white transition-all duration-200 ease-linear'>
           {movie.title}
         </h3>
         <p className='mb-1.5 line-clamp-1 text-xs leading-normal font-normal text-neutral-400'>

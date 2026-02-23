@@ -21,14 +21,13 @@ const buttonVariants = cva('', {
   variants: {
     variant: {
       detail:
-        'hover:text-light-golden-yellow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
+        'hover:text-golden-glow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
       home: '',
       person:
-        'hover:text-light-golden-yellow hover:border-light-golden-yellow rounded-full py-2 text-white',
+        'hover:text-golden-glow hover:border-golden-glow rounded-full py-2 text-white',
       popup:
-        'hover:border-light-golden-yellow hover:text-light-golden-yellow border border-white/50 text-white hover:bg-transparent',
-      watch:
-        'hover:text-light-golden-yellow border-none bg-transparent! text-white'
+        'hover:border-golden-glow hover:text-golden-glow border border-white/50 text-white hover:bg-transparent',
+      watch: 'hover:text-golden-glow border-none bg-transparent! text-white'
     }
   }
 });
@@ -130,7 +129,7 @@ export default function ButtonLike({
         <span>
           Vui lòng&nbsp;
           <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
             href={route.login.path}
           >
             đăng nhập
@@ -173,7 +172,7 @@ export default function ButtonLike({
         <span>
           Vui lòng&nbsp;
           <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
             href={route.login.path}
           >
             đăng nhập
@@ -226,8 +225,8 @@ export default function ButtonLike({
           <HeartIcon
             ref={iconRef}
             iconClassName={cn(iconVariants({ variant }), {
-              'text-light-golden-yellow stroke-0': isLiked,
-              'text-white group-hover:text-light-golden-yellow group-hover:stroke-0':
+              'text-golden-glow stroke-0': isLiked,
+              'text-white group-hover:text-golden-glow group-hover:stroke-0':
                 !isLiked
             })}
           />
@@ -241,8 +240,8 @@ export default function ButtonLike({
       className={cn(
         buttonVariants({ variant }),
         {
-          'text-light-golden-yellow disabled:opacity-80': isLiked,
-          'text-light-golden-yellow border-light-golden-yellow disabled:opacity-80':
+          'text-golden-glow disabled:opacity-80': isLiked,
+          'text-golden-glow border-golden-glow disabled:opacity-80':
             isLiked && (variant === 'person' || variant === 'popup')
         },
         className

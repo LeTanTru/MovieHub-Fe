@@ -157,7 +157,7 @@ export default function Filter({
         <div className='block'>
           <div className='mb-8'>
             <div
-              className='inline-flex h-7.5 cursor-pointer items-center gap-2 rounded bg-[#191b24] pr-3 pl-2 font-medium text-white'
+              className='bg-black-denim inline-flex h-7.5 cursor-pointer items-center gap-2 rounded pr-3 pl-2 font-medium text-white'
               onClick={handleShowFilter}
             >
               <FaFilter className='size-5' />
@@ -246,9 +246,9 @@ export default function Filter({
                             <div
                               key={value.value}
                               className={cn(
-                                'hover:text-light-golden-yellow cursor-pointer rounded border border-solid border-transparent px-2.5 py-1.25 transition-all duration-200 ease-linear',
+                                'hover:text-golden-glow cursor-pointer rounded border border-solid border-transparent px-2.5 py-1.25 transition-all duration-200 ease-linear',
                                 {
-                                  'border-light-golden-yellow text-light-golden-yellow':
+                                  'border-golden-glow text-golden-glow':
                                     isSelected
                                 }
                               )}
@@ -266,7 +266,7 @@ export default function Filter({
                     <div className='flex grow items-center gap-4'>
                       <Button
                         variant='primary'
-                        className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 min-h-10 rounded-full'
+                        className='bg-golden-glow hover:bg-golden-glow/80 min-h-10 rounded-full'
                         onClick={handleApplyFilters}
                       >
                         Lọc kết quả

@@ -77,7 +77,7 @@ export default function MovieModal({
                 >
                   {movie.title}
                 </h3>
-                <h3 className='text-light-golden-yellow mb-0 text-xs leading-normal font-normal'>
+                <h3 className='text-golden-glow mb-0 text-xs leading-normal font-normal'>
                   {movie.originalTitle}
                 </h3>
               </div>
@@ -97,7 +97,7 @@ export default function MovieModal({
                   className='block'
                 >
                   <Button
-                    className='hover:text-light-golden-yellow hover:border-light-golden-yellow w-full border border-white/50 bg-transparent text-white hover:bg-transparent'
+                    className='hover:text-golden-glow hover:border-golden-glow w-full border border-white/50 bg-transparent text-white hover:bg-transparent'
                     variant='ghost'
                   >
                     <FaInfoCircle />

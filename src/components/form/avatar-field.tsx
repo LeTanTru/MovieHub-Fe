@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { EyeIcon } from 'lucide-react';
 import Image from 'next/image';
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import {
   type HTMLAttributes,
   type MouseEvent,
@@ -118,7 +118,7 @@ export default function AvatarField({
         style={{ width: width || size, height: height || size }}
       >
         <Avatar
-          className={cn('bg-avatar shadow-sm', {
+          className={cn('bg-charade shadow-sm', {
             'transition-all duration-200 ease-linear hover:scale-105 hover:opacity-90':
               !shouldDisablePreview
           })}

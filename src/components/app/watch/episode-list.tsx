@@ -30,10 +30,9 @@ function EpisodeItem({
     <Link
       href={`${watchUrl}?season=${selectedSeason}&episode=${episode.label}`}
       className={cn(
-        'hover:text-light-golden-yellow block px-4 py-2 transition-colors duration-200 ease-linear hover:bg-white/10',
+        'hover:text-golden-glow block px-4 py-2 transition-colors duration-200 ease-linear hover:bg-white/10',
         {
-          'text-light-golden-yellow bg-white/10':
-            currentEpisode === episode.label
+          'text-golden-glow bg-white/10': currentEpisode === episode.label
         }
       )}
       onClick={onClick}
@@ -103,7 +102,7 @@ export default function EpisodeList({
     <>
       <div
         className={cn(
-          `episode-sidebar absolute top-0 right-0 z-50 flex h-full w-100 transform flex-col bg-[#1f1f29] shadow-lg transition-transform duration-200 ease-linear`,
+          `episode-sidebar bg-dark-gunmetal-gray absolute top-0 right-0 z-50 flex h-full w-100 transform flex-col shadow-lg transition-transform duration-200 ease-linear`,
           {
             'translate-x-0': isOpen,
             'translate-x-full': !isOpen
@@ -156,7 +155,7 @@ export default function EpisodeList({
                     className={cn(
                       'flex cursor-pointer items-center gap-2 px-4 py-2 leading-6 text-white transition-all duration-200 ease-linear hover:bg-white/20',
                       {
-                        'text-light-golden-yellow bg-white/25 font-semibold':
+                        'text-golden-glow bg-white/25 font-semibold':
                           seasonIndex.toString() === selectedSeason.toString()
                       }
                     )}

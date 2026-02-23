@@ -36,7 +36,7 @@ export default function MovieList({
           </h3>
           <Link
             href={`${route.topic.path}/${generateSlug(collection.name)}.${collection.id}`}
-            className='group hover:text-light-golden-yellow hover:border-light-golden-yellow flex items-center gap-0.5 rounded-full border p-1 text-lg transition-all duration-200 ease-linear hover:w-auto hover:px-2.5'
+            className='group hover:text-golden-glow hover:border-golden-glow flex items-center gap-0.5 rounded-full border p-1 text-lg transition-all duration-200 ease-linear hover:w-auto hover:px-2.5'
           >
             <span className='hidden text-sm group-hover:block'>Xem thêm</span>
             <FaChevronRight className='text-sm' />

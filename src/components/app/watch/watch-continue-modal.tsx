@@ -66,7 +66,7 @@ export default function WatchContinueModal({
                 <Col span={8}>
                   <Button
                     variant='primary'
-                    className='bg-light-golden-yellow hover:bg-light-golden-yellow/80 text-black'
+                    className='bg-golden-glow hover:bg-golden-glow/80 text-black'
                     onClick={onContinueWatching}
                   >
                     Tiếp tục xem

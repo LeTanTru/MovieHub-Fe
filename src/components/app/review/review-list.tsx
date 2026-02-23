@@ -18,7 +18,7 @@ import {
   useVoteReviewMutation
 } from '@/queries';
 import { Button } from '@/components/form';
-import { DotLoading } from '@/components/loading';
+import { VerticalBarLoading } from '@/components/loading';
 import { getQueryClient } from '@/components/providers';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
@@ -117,7 +117,7 @@ export default function ReviewList({
         <span>
           Vui lòng&nbsp;
           <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
             href={route.login.path}
           >
             đăng nhập
@@ -161,7 +161,7 @@ export default function ReviewList({
         <span>
           Vui lòng&nbsp;
           <Link
-            className='text-light-golden-yellow transition-all duration-200 ease-linear hover:opacity-80'
+            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
             href={route.login.path}
           >
             đăng nhập
@@ -239,12 +239,12 @@ export default function ReviewList({
       {hasMore && (
         <div className='flex justify-center'>
           <Button
-            className='hover:text-light-golden-yellow min-w-45 text-sm hover:bg-transparent'
+            className='hover:text-golden-glow min-w-45 text-sm hover:bg-transparent'
             variant='ghost'
             onClick={onLoadMore}
           >
             {isLoadMoreLoading ? (
-              <DotLoading />
+              <VerticalBarLoading />
             ) : (
               remainingCount > 0 && `Xem thêm ${remainingCount} đánh giá`
             )}
