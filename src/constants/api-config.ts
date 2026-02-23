@@ -243,6 +243,13 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredTenantId: true,
       ignoreAuth: true
+    },
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/collection/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true,
+      ignoreAuth: true
     }
   },
   collectionItem: {

@@ -46,7 +46,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
         <Skeleton className='skeleton mb-6 h-10 w-50' />
       ) : (
         <h3 className='mb-6 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
-          Phim {collection?.name}
+          {collection?.name}
         </h3>
       )}
       {collectionItemListLoading ? (
