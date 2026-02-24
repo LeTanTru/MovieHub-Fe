@@ -1,11 +1,11 @@
 'use client';
 
 import { ButtonToggle } from '@/components/app/button-toggle';
-import { useClickOutside, useQueryParams } from '@/hooks';
+import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { MetadataType } from '@/types';
+import { MetadataType, MovieResType } from '@/types';
 import { parseJSON, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
@@ -13,30 +13,27 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
+import { ScheduleBadge } from '@/components/app/schedule-badge';
 
-export default function WatchEpisodeSeries() {
+export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
   const ANIMATION_DURATION = 300;
 
   const [toggle, setToggle] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-  const { searchParams } = useQueryParams<{
-    season: string;
-    episode: string;
-  }>();
 
-  const { movie, selectedSeason, setSelectedSeason } = useMovieStore(
+  const { selectedSeason, setSelectedSeason } = useMovieStore(
     useShallow((s) => ({
-      movie: s.movie,
       selectedSeason: s.selectedSeason,
       setSelectedSeason: s.setSelectedSeason
     }))
   );
 
-  const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');
+  const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
+
   const latestSeason = metadata?.latestSeason?.label;
 
-  const seasons = movie?.seasons || [];
+  const seasons = movie.seasons;
   const seasonCount = seasons.length;
 
   const currentSeason = seasons.find(
@@ -71,17 +68,14 @@ export default function WatchEpisodeSeries() {
   };
 
   useEffect(() => {
-    if (searchParams.season) {
-      setSelectedSeason(searchParams.season);
-    } else {
-      setSelectedSeason(latestSeason ? latestSeason : '1');
+    if (latestSeason) {
+      setSelectedSeason(latestSeason);
     }
-  }, [latestSeason, searchParams.season, setSelectedSeason]);
-
-  if (!movie) return null;
+  }, [latestSeason, setSelectedSeason]);
 
   return (
     <>
+      <ScheduleBadge />
       {/* Header */}
       <div className='mb-8 flex items-center justify-between gap-8'>
         <div className='relative' ref={dropdownRef}>
@@ -144,7 +138,7 @@ export default function WatchEpisodeSeries() {
       {/* Body */}
       <motion.div
         layout
-        className={cn('grid', {
+        className={cn('grid translate-z-0 will-change-transform', {
           'grid-cols-6 gap-x-2.5 gap-y-8': !toggle,
           'grid-cols-8 gap-2.5': toggle
         })}
@@ -159,21 +153,19 @@ export default function WatchEpisodeSeries() {
             transition={{
               layout: { duration: 0.15, ease: 'linear' }
             }}
+            className='translate-z-0 will-change-transform'
           >
             <Link
               href={`${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`}
-              className={cn('block transition-all duration-200 ease-linear', {
-                'bg-charade hover:text-golden-glow flex h-12.5 items-center justify-center gap-2 rounded-sm':
-                  toggle,
-                'bg-golden-glow hover:bg-golden-glow/85 text-black hover:text-black/80':
-                  episode.label === searchParams.episode &&
-                  currentSeason?.label === searchParams.season
+              className={cn('group block', {
+                'bg-charade hover:text-golden-glow flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
+                  toggle
               })}
             >
               <motion.div
                 layout
                 className={cn(
-                  'bg-gunmetal-blue group relative mb-2.5 block w-full overflow-hidden rounded-md',
+                  'bg-gunmetal-blue relative mb-2.5 block w-full overflow-hidden rounded-md',
                   {
                     'h-0 pb-[66%]': !toggle,
                     hidden: toggle
@@ -184,7 +176,7 @@ export default function WatchEpisodeSeries() {
                   ease: 'linear'
                 }}
               >
-                <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
+                <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
                   <FaPlay />
                 </div>
                 <Image
@@ -195,7 +187,7 @@ export default function WatchEpisodeSeries() {
                   sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
                 />
               </motion.div>
-              <div className='flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear'>
+              <div className='group-hover:text-golden-glow flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear'>
                 <div className='block shrink-0 text-xs'>
                   <FaPlay />
                 </div>

@@ -32,7 +32,7 @@ import {
   MediaTimeUpdateEventDetail,
   MediaPlayerInstance
 } from '@vidstack/react';
-import { EpisodeList, WatchContinueModal } from '@/components/app/watch';
+import { EpisodeList, WatchAskContinueModal } from '@/components/app/watch';
 import envConfig from '@/config';
 
 export default function WatchPlayer() {
@@ -311,7 +311,7 @@ export default function WatchPlayer() {
                 onTimeUpdate={handleWatchHistoryTimeUpdate}
                 onSeeked={handleSeeked}
               />
-              <WatchContinueModal
+              <WatchAskContinueModal
                 opened={isShowContinueModal}
                 lastWatchedSeconds={lastWatchedSeconds}
                 onClose={closeContinueModal}

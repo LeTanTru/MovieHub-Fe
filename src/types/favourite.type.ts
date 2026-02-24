@@ -53,5 +53,10 @@ export type FavouriteGetType = {
   type: number;
 };
 
+export type FavoriteDeleteType = {
+  targetId: string;
+  type: number;
+};
+
 export type FavouriteSearchType = z.infer<typeof favouriteSearchSchema> &
   BaseSearchType;

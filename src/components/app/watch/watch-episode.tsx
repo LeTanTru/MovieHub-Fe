@@ -1,8 +1,8 @@
 'use client';
 
 import { useShallow } from 'zustand/shallow';
-import WatchEpisodeSeries from './watch-episode-series';
-import WatchEpisodeSingle from './watch-episode-single';
+import WatchSeries from './watch-series';
+import WatchSingle from './watch-single';
 import { MOVIE_TYPE_SINGLE } from '@/constants';
 import { useMovieStore } from '@/store';
 
@@ -11,8 +11,8 @@ export default function WatchEpisode() {
 
   const Tab = movie
     ? movie.type === MOVIE_TYPE_SINGLE
-      ? WatchEpisodeSingle
-      : WatchEpisodeSeries
+      ? WatchSingle
+      : WatchSeries
     : null;
 
   if (!movie) return null;
