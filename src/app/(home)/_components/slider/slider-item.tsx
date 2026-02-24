@@ -189,7 +189,7 @@ export default function SliderItem({
                       )}
                     />
                   </div>
-                </button>{' '}
+                </button>
                 <ButtonInfo
                   href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
                   title={`Xem chi tiết phim ${slider.movie.title} - ${slider.movie.originalTitle}`}

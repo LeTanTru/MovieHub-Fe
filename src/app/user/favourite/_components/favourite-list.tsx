@@ -59,7 +59,7 @@ export default function FavouriteList() {
 
   const handleDeleteFavourite = async (targetId: string) => {
     await deleteFavouriteMutate(
-      { targetId, type: FAVOURITE_TYPE_MOVIE },
+      { targetId, type: activeTab },
       {
         onSuccess: (res) => {
           if (res.result) {

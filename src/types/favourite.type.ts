@@ -53,7 +53,7 @@ export type FavouriteGetType = {
   type: number;
 };
 
-export type FavoriteDeleteType = {
+export type FavouriteDeleteType = {
   targetId: string;
   type: number;
 };

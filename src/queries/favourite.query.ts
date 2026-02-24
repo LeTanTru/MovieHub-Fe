@@ -1,7 +1,7 @@
 import { favouriteApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import {
-  FavoriteDeleteType,
+  FavouriteDeleteType,
   FavouriteBodyType,
   FavouriteGetType,
   FavouriteSearchType
@@ -18,7 +18,7 @@ export const useFavouriteMutation = () => {
 export const useDeleteFavouriteMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.DELETE_FAVOURITE],
-    mutationFn: (params: FavoriteDeleteType) =>
+    mutationFn: (params: FavouriteDeleteType) =>
       favouriteApiRequest.delete(params)
   });
 };
