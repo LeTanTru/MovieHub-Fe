@@ -4,7 +4,7 @@ import { NoData } from '@/components/no-data';
 import { useCollectionTopicListQuery } from '@/queries';
 import { MAX_PAGE_SIZE } from '@/constants';
 import {
-  TopicCardSkeleton,
+  TopicItemSkeleton,
   TopicItem,
   TopicItemMore
 } from '@/components/app/topic-item';
@@ -36,7 +36,7 @@ export default function TopicList() {
       {topicListLoading ? (
         <div className='grid grid-cols-7 gap-4'>
           {Array.from({ length: skeletonCount }).map((_, i) => (
-            <TopicCardSkeleton key={i} />
+            <TopicItemSkeleton key={i} />
           ))}
         </div>
       ) : topicList.length > 0 ? (

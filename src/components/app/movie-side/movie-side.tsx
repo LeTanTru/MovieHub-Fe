@@ -173,7 +173,7 @@ export default function MovieSide({
       </TagWrapper>
       {isSeries && (
         <MovieProgress
-          currentTotalEpisode={episodes?.length}
+          currentTotalEpisode={episodes?.length || 0}
           isComplete={isComplete}
           totalEpisode={currentSeason?.totalEpisode || 0}
         />

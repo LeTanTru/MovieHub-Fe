@@ -57,30 +57,24 @@ export default function FavouriteList() {
     setActiveTab(type);
   };
 
-  const handleDeleteFavourite = async (id: string) => {
-    const favouriteId = favouriteList.find(
-      (favourite) => favourite.movie?.id === id || favourite.person?.id === id
-    )?.id;
-
-    if (!favouriteId) {
-      notify.error('Không tìm thấy mục yêu thích để xóa');
-      return;
-    }
-
-    await deleteFavouriteMutate(favouriteId, {
-      onSuccess: (res) => {
-        if (res.result) {
-          notify.success(
-            `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thành công`
-          );
-          getFavouriteList();
-        } else {
-          notify.error(
-            `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thất bại`
-          );
+  const handleDeleteFavourite = async (targetId: string) => {
+    await deleteFavouriteMutate(
+      { targetId, type: activeTab },
+      {
+        onSuccess: (res) => {
+          if (res.result) {
+            notify.success(
+              `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thành công`
+            );
+            getFavouriteList();
+          } else {
+            notify.error(
+              `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thất bại`
+            );
+          }
         }
       }
-    });
+    );
   };
 
   const handlePageChange = (page: number) => {

@@ -22,7 +22,6 @@ const buttonVariants = cva('', {
     variant: {
       detail:
         'hover:text-golden-glow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
-      home: '',
       person:
         'hover:text-golden-glow hover:border-golden-glow rounded-full py-2 text-white',
       popup:
@@ -32,21 +31,8 @@ const buttonVariants = cva('', {
   }
 });
 
-const iconVariants = cva('', {
-  variants: {
-    variant: {
-      detail: '',
-      home: 'size-5 transition-all duration-200 ease-linear',
-      person: '',
-      popup: '',
-      watch: ''
-    }
-  }
-});
-
 const textVariants: Record<string, string> = {
   detail: 'Yêu thích',
-  home: '',
   person: 'Thích',
   popup: 'Thích',
   watch: 'Thích'
@@ -54,7 +40,6 @@ const textVariants: Record<string, string> = {
 
 const entityTypeVariants: Record<string, number> = {
   detail: FAVOURITE_TYPE_MOVIE,
-  home: FAVOURITE_TYPE_MOVIE,
   person: FAVOURITE_TYPE_PERSON,
   popup: FAVOURITE_TYPE_MOVIE,
   watch: FAVOURITE_TYPE_MOVIE
@@ -62,7 +47,6 @@ const entityTypeVariants: Record<string, number> = {
 
 const entityTypeLabels: Record<string, string> = {
   detail: 'phim',
-  home: 'phim',
   person: 'diễn viên',
   popup: 'phim',
   watch: 'phim'
@@ -84,7 +68,6 @@ export default function ButtonLike({
 } & VariantProps<typeof buttonVariants>) {
   const { iconRef, startAnimation } = useClickAnimation();
   const [isLiked, setIsLiked] = useState(false);
-  const [favouriteId, setFavouriteId] = useState<string>('');
   const { isAuthenticated } = useAuth();
 
   const favouriteType: number = variant
@@ -118,7 +101,6 @@ export default function ButtonLike({
 
   useEffect(() => {
     setIsLiked(!!favouriteData?.result && isAuthenticated);
-    setFavouriteId(favouriteData?.data?.id ?? '');
   }, [favouriteData, isAuthenticated]);
 
   const handleLike = async () => {
@@ -151,7 +133,6 @@ export default function ButtonLike({
               `Thêm ${entityTypeLabel} vào danh sách yêu thích thành công`
             );
             setIsLiked(true);
-            setFavouriteId(res.data ?? '');
           } else {
             notify.error(
               `Thêm ${entityTypeLabel} vào danh sách yêu thích thất bại`
@@ -185,10 +166,11 @@ export default function ButtonLike({
 
     if (removeFavouriteLoading) return;
 
-    if (favouriteId) {
-      startAnimation();
+    startAnimation();
 
-      await removeFavourite(favouriteId, {
+    await removeFavourite(
+      { targetId, type: favouriteType },
+      {
         onSuccess: (res) => {
           if (res.result) {
             setIsLiked(false);
@@ -205,8 +187,8 @@ export default function ButtonLike({
           logger.error('Error while removing favourite', error);
           notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
         }
-      });
-    }
+      }
+    );
   };
 
   const handleClick = () => {
@@ -216,24 +198,6 @@ export default function ButtonLike({
       handleLike();
     }
   };
-
-  // Home variant has special rendering
-  if (variant === 'home') {
-    return (
-      <button className={cn('item group', className)} onClick={handleClick}>
-        <div className='inc-icon icon-20'>
-          <HeartIcon
-            ref={iconRef}
-            iconClassName={cn(iconVariants({ variant }), {
-              'text-golden-glow stroke-0': isLiked,
-              'text-white group-hover:text-golden-glow group-hover:stroke-0':
-                !isLiked
-            })}
-          />
-        </div>
-      </button>
-    );
-  }
 
   const buttonContent = (
     <Button

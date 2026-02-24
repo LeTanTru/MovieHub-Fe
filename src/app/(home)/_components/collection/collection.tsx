@@ -3,12 +3,12 @@
 import { VerticalBarLoading } from '@/components/loading';
 import MovieList from './movie-list';
 import { useScrollLoadMore } from '@/hooks';
-import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
+import { queryKeys } from '@/constants';
 import { collectionApiRequest } from '@/api-requests';
 import { CollectionResType, CollectionSearchType } from '@/types';
 
 export default function Collection() {
-  const loadMoreSize = DEFAULT_PAGE_SIZE;
+  const loadMoreSize = 3;
 
   const {
     data: collectionList,

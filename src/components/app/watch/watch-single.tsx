@@ -10,7 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useShallow } from 'zustand/shallow';
 
-export default function WatchEpisodeSingle() {
+export default function WatchSingle() {
   const { searchParams } = useQueryParams<{ season: string }>();
 
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
@@ -27,7 +27,7 @@ export default function WatchEpisodeSingle() {
               href={`${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`}
               key={season.id}
               className={cn(
-                'bg-episode relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1',
+                'bg-mid-gray relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1',
                 {
                   'border-golden-glow border-2':
                     season.label === searchParams.season

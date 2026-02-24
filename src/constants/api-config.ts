@@ -353,7 +353,7 @@ const apiConfig = defineApiConfig({
       isRequiredTenantId: true
     },
     delete: {
-      baseUrl: `${AppConstants.apiUrl}/v1/favourite/delete/:id`,
+      baseUrl: `${AppConstants.apiUrl}/v1/favourite/delete`,
       method: 'DELETE',
       headers: baseHeader,
       isRequiredTenantId: true
@@ -366,6 +366,12 @@ const apiConfig = defineApiConfig({
     },
     getList: {
       baseUrl: `${AppConstants.apiUrl}/v1/favourite/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
+    },
+    getListIds: {
+      baseUrl: `${AppConstants.apiUrl}/v1/favourite/get-list-ids`,
       method: 'GET',
       headers: baseHeader,
       isRequiredTenantId: true

@@ -10,23 +10,31 @@ import {
 import { route } from '@/routes';
 import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
 import { MetadataType, SidebarResType } from '@/types';
-import { ButtonLike } from '@/components/app/button-like';
 import Link from 'next/link';
 import { ButtonPlay } from '@/components/app/button-play';
 import { ButtonInfo } from '@/components/app/button-info';
+import { useClickAnimation } from '@/hooks';
+import { HeartIcon } from '@/assets';
+import { cn } from '@/lib';
 
 type SliderItemProps = {
   slider: SidebarResType;
   isGrabbing: boolean;
   onPointerDown: () => void;
   onPointerUp: () => void;
+  handleLike: (targetId: string) => void;
+  handleRemoveLike: (favouriteId: string) => void;
+  isLiked: boolean;
 };
 
 export default function SliderItem({
   slider,
   isGrabbing,
   onPointerDown,
-  onPointerUp
+  onPointerUp,
+  handleLike,
+  handleRemoveLike,
+  isLiked
 }: SliderItemProps) {
   const movie = slider.movie;
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
@@ -39,6 +47,15 @@ export default function SliderItem({
   const releaseYear = getYearFromDate(
     latestSeason?.releaseDate || movie.releaseDate
   );
+
+  const { iconRef, startAnimation } = useClickAnimation();
+
+  const handleClick = () => {
+    startAnimation();
+
+    const action = isLiked ? handleRemoveLike : handleLike;
+    action(slider.movie.id);
+  };
 
   return (
     <div className='slide-elements'>
@@ -158,7 +175,21 @@ export default function SliderItem({
               />
 
               <div className='touch-group transition-all duration-200 ease-linear hover:border-white!'>
-                <ButtonLike targetId={slider.movie.id} variant='home' />
+                <button className='item group' onClick={handleClick}>
+                  <div className='inc-icon icon-20'>
+                    <HeartIcon
+                      ref={iconRef}
+                      iconClassName={cn(
+                        'size-5 transition-all duration-200 ease-linear',
+                        {
+                          'text-golden-glow stroke-0': isLiked,
+                          'text-white group-hover:text-golden-glow group-hover:stroke-0':
+                            !isLiked
+                        }
+                      )}
+                    />
+                  </div>
+                </button>
                 <ButtonInfo
                   href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
                   title={`Xem chi tiết phim ${slider.movie.title} - ${slider.movie.originalTitle}`}

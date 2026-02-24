@@ -4,7 +4,7 @@ import { Button, Col, Row } from '@/components/form';
 import { formatSecondsToHMS } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export default function WatchContinueModal({
+export default function WatchAskContinueModal({
   opened,
   lastWatchedSeconds,
   onClose,

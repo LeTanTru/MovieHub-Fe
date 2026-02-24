@@ -2,6 +2,7 @@ import { apiConfig } from '@/constants';
 import {
   ApiResponse,
   ApiResponseList,
+  FavouriteDeleteType,
   FavouriteBodyType,
   FavouriteGetType,
   FavouriteResType,
@@ -22,11 +23,13 @@ const favouriteApiRequest = {
     http.post<ApiResponse<string>>(apiConfig.favourite.create, {
       body
     }),
-  delete: (id: string) =>
+  delete: (params: FavouriteDeleteType) =>
     http.delete<ApiResponse<any>>(apiConfig.favourite.delete, {
-      pathParams: {
-        id
-      }
+      params
+    }),
+  getListIds: (params?: FavouriteSearchType) =>
+    http.get<ApiResponse<string[]>>(apiConfig.favourite.getListIds, {
+      params
     })
 };
 

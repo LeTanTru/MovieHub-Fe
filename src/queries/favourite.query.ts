@@ -1,6 +1,7 @@
 import { favouriteApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import {
+  FavouriteDeleteType,
   FavouriteBodyType,
   FavouriteGetType,
   FavouriteSearchType
@@ -17,7 +18,8 @@ export const useFavouriteMutation = () => {
 export const useDeleteFavouriteMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.DELETE_FAVOURITE],
-    mutationFn: (id: string) => favouriteApiRequest.delete(id)
+    mutationFn: (params: FavouriteDeleteType) =>
+      favouriteApiRequest.delete(params)
   });
 };
 
@@ -45,6 +47,20 @@ export const useFavouriteListQuery = ({
   return useQuery({
     queryKey: [queryKeys.FAVOURITE_LIST, params],
     queryFn: () => favouriteApiRequest.getList(params),
+    enabled
+  });
+};
+
+export const useFavouriteGetListIdsQuery = ({
+  params = {},
+  enabled
+}: {
+  params?: FavouriteSearchType;
+  enabled?: boolean;
+} = {}) => {
+  return useQuery({
+    queryKey: [queryKeys.FAVOURITE_GET_LIST_IDS, params],
+    queryFn: () => favouriteApiRequest.getListIds(params),
     enabled
   });
 };
