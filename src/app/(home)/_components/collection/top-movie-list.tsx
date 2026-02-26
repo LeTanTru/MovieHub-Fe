@@ -1,19 +1,15 @@
 'use client';
 
-import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { CollectionResType } from '@/types';
-import { route } from '@/routes';
-import { FaChevronRight } from 'react-icons/fa6';
 import { NoData } from '@/components/no-data';
 import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
-import { generateSlug } from '@/utils';
-import { MovieCard } from '@/components/app/movie-card';
+import { TopMovieCard } from '@/components/app/collection';
 
-export default function MovieList({
+export default function TopMovieList({
   collection
 }: {
   collection: CollectionResType;
@@ -30,13 +26,6 @@ export default function MovieList({
           <h3 className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
             {collection.name}&nbsp;
           </h3>
-          <Link
-            href={`${route.topic.path}/${generateSlug(collection.name)}.${collection.id}`}
-            className='group hover:text-golden-glow hover:border-golden-glow flex items-center gap-0.5 rounded-full border p-1 text-lg transition-all duration-200 ease-linear hover:w-auto hover:px-2.5'
-          >
-            <span className='hidden text-sm group-hover:block'>Xem thêm</span>
-            <FaChevronRight className='text-sm' />
-          </Link>
         </div>
         {movieList.length === 0 ? (
           <NoData
@@ -73,9 +62,9 @@ export default function MovieList({
               }}
               key='collection-list-slider'
             >
-              {movieList.map((movie) => (
+              {movieList.map((movie, index) => (
                 <SwiperSlide key={movie.id}>
-                  <MovieCard movie={movie} dir='down' />
+                  <TopMovieCard movie={movie} dir='down' index={index} />
                 </SwiperSlide>
               ))}
             </Swiper>

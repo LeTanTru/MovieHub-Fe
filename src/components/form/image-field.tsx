@@ -29,6 +29,10 @@ type ImageFieldProps = {
   previewSize?: number;
   disablePreview?: boolean;
   originalSize?: boolean;
+  /** Render the thumbnail without a fixed aspect ratio — lets it grow to its natural size */
+  freeAspect?: boolean;
+  /** Render the preview overlay without a fixed aspect ratio — sizes to the image's natural dimensions */
+  freePreviewAspect?: boolean;
   className?: string;
   imageClassName?: string;
   previewClassName?: string;
@@ -47,6 +51,8 @@ export default function ImageField({
   previewSize = 500,
   disablePreview = false,
   originalSize = false,
+  freeAspect = false,
+  freePreviewAspect = false,
   className,
   imageClassName,
   previewClassName,
@@ -114,6 +120,7 @@ export default function ImageField({
       >
         {src && !imageError ? (
           originalSize ? (
+            // originalSize: unconstrained, natural dimensions
             <Image
               src={src}
               alt={alt}
@@ -123,6 +130,20 @@ export default function ImageField({
               className={cn(
                 'rounded object-contain',
                 'h-auto w-auto max-w-full',
+                imageClassName
+              )}
+              unoptimized
+            />
+          ) : freeAspect ? (
+            // freeAspect: no AspectRatio wrapper, image sizes to its natural dimensions
+            <Image
+              src={src}
+              alt={alt}
+              width={0}
+              height={0}
+              sizes='100vw'
+              className={cn(
+                'h-auto w-full rounded object-contain',
                 imageClassName
               )}
               unoptimized
@@ -190,31 +211,33 @@ export default function ImageField({
                     'relative cursor-zoom-in rounded',
                     previewClassName
                   )}
-                  style={{
-                    width: previewSize * previewAspect,
-                    height: previewSize
-                  }}
+                  // freePreviewAspect: omit explicit width/height so the
+                  // container sizes naturally around the image
+                  style={
+                    freePreviewAspect
+                      ? { maxWidth: '90vw', maxHeight: '90vh' }
+                      : {
+                          width: previewSize * previewAspect,
+                          height: previewSize
+                        }
+                  }
                   initial={{ scale: 0.85, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.85, opacity: 0 }}
                   transition={{ duration: 0.25 }}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {src && (
-                    <div
-                      className='relative'
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        overflow: 'visible'
-                      }}
-                    >
+                  {src &&
+                    (freePreviewAspect ? (
+                      // freePreviewAspect: render at natural size capped to viewport
                       <Image
                         src={src}
                         alt='Preview'
-                        fill
+                        width={0}
+                        height={0}
+                        sizes='90vw'
                         className={cn(
-                          'rounded object-cover transition-transform duration-100',
+                          'h-auto max-h-[90vh] w-auto max-w-[90vw] rounded object-contain transition-transform duration-100',
                           imagePreviewClassName
                         )}
                         style={{
@@ -223,8 +246,31 @@ export default function ImageField({
                         }}
                         unoptimized
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div
+                        className='relative'
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          overflow: 'visible'
+                        }}
+                      >
+                        <Image
+                          src={src}
+                          alt='Preview'
+                          fill
+                          className={cn(
+                            'rounded object-cover transition-transform duration-100',
+                            imagePreviewClassName
+                          )}
+                          style={{
+                            transform: `scale(${scale})`,
+                            transformOrigin: 'center center'
+                          }}
+                          unoptimized
+                        />
+                      </div>
+                    ))}
                 </m.div>
               </m.div>
             )}

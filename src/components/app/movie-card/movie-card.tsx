@@ -109,7 +109,7 @@ export default function MovieCard({
         className='group relative flex flex-col gap-3'
       >
         <Link
-          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-lg pb-[150%]'
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -123,7 +123,7 @@ export default function MovieCard({
         >
           <Image
             alt={movie.title}
-            className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
+            className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
             fill
             src={renderImageUrl(movie.posterUrl)}
             unoptimized
@@ -138,7 +138,7 @@ export default function MovieCard({
           >
             <h4
               className={cn(
-                'hover:text-golden-glow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
+                'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
                 {
                   'featured-title font-bold': movie.isFeatured
                 }
@@ -151,7 +151,7 @@ export default function MovieCard({
             href={`${route.movie.path}/${movie.slug}.${movie.id}`}
             title={movie.originalTitle}
           >
-            <h4 className='text-light-gray line-clamp-1 text-xs leading-5'>
+            <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
               {movie.originalTitle}
             </h4>
           </Link>

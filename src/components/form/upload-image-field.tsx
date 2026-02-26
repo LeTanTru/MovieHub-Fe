@@ -39,6 +39,23 @@ import type { ApiResponse } from '@/types';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { CircleLoading } from '@/components/loading';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
+
+const ASPECT_RATIOS = [
+  { label: '1:1', value: 1 },
+  { label: '4:3', value: 4 / 3 },
+  { label: '3:4', value: 3 / 4 },
+  { label: '16:9', value: 16 / 9 },
+  { label: '9:16', value: 9 / 16 },
+  { label: '3:2', value: 3 / 2 },
+  { label: '2:3', value: 2 / 3 }
+] as const;
 
 type Area = { x: number; y: number; width: number; height: number };
 
@@ -101,6 +118,7 @@ type UploadImageFieldProps<T extends FieldValues> = {
   defaultCrop?: boolean;
   showCrop?: boolean;
   originalSize?: boolean;
+  allowCustomAspect?: boolean;
   onChange?: (url: string) => void;
   uploadImageFn: (file: Blob) => Promise<string>;
   deleteImageFn?: (url: string) => Promise<ApiResponse<any> | undefined>;
@@ -120,6 +138,7 @@ export default function UploadImageField<T extends FieldValues>({
   defaultCrop = true,
   showCrop = true,
   originalSize = false,
+  allowCustomAspect = false,
   onChange,
   uploadImageFn,
   deleteImageFn
@@ -130,6 +149,8 @@ export default function UploadImageField<T extends FieldValues>({
     showCrop && defaultCrop
   );
   const [zoom, setZoom] = useState<number>(1);
+  const [customAspect, setCustomAspect] = useState<number>(aspect);
+  const [keepOriginalSize, setKeepOriginalSize] = useState<boolean>(false);
   const {
     field: { value: fieldValue, onChange: fieldOnChange },
     fieldState: { error }
@@ -215,6 +236,7 @@ export default function UploadImageField<T extends FieldValues>({
         setDialogOpen(true);
         setZoom(1);
         setCroppedAreaPixels(null);
+        setCustomAspect(aspect);
       } else {
         // Upload directly without showing dialog when showCrop is false
         handleApply();
@@ -254,7 +276,7 @@ export default function UploadImageField<T extends FieldValues>({
               {
                 'border border-solid border-red-500': !!error,
                 'border-none': !!value,
-                'flex items-center justify-center': originalSize
+                'flex items-center justify-center': keepOriginalSize
               }
             )}
             onClick={openFileDialog}
@@ -271,10 +293,10 @@ export default function UploadImageField<T extends FieldValues>({
                 disablePreview
                 src={value}
                 className='size-full rounded-none border-none object-cover'
-                aspect={originalSize ? undefined : aspect}
-                width={originalSize ? undefined : size * aspect}
-                height={originalSize ? undefined : size}
-                originalSize={originalSize}
+                aspect={keepOriginalSize ? undefined : aspect}
+                width={keepOriginalSize ? undefined : size * aspect}
+                height={keepOriginalSize ? undefined : size}
+                originalSize={keepOriginalSize}
               />
             ) : loading && !showCrop ? (
               <CircleLoading className='stroke-main-color dark:stroke-white' />
@@ -323,7 +345,7 @@ export default function UploadImageField<T extends FieldValues>({
       {showCrop && (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent
-            className='gap-0 rounded-tl-none rounded-tr-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
+            className='gap-0 rounded-tl-none rounded-tr-none border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
             showCloseButton={false}
           >
             <DialogHeader className='text-left'>
@@ -331,12 +353,14 @@ export default function UploadImageField<T extends FieldValues>({
             </DialogHeader>
 
             <AspectRatio
-              ratio={aspect < 1 ? 1 : aspect}
-              className='bg-muted h-full'
+              ratio={customAspect < 1 ? 1 : customAspect}
+              className={cn('h-full bg-black', {
+                'bg-black': keepOriginalSize && !shouldCrop
+              })}
             >
               {previewUrl && shouldCrop ? (
                 <Cropper
-                  aspectRatio={aspect}
+                  aspectRatio={customAspect}
                   className='h-full w-full'
                   image={previewUrl}
                   zoom={zoom}
@@ -352,7 +376,10 @@ export default function UploadImageField<T extends FieldValues>({
                   <img
                     src={previewUrl}
                     alt='Preview'
-                    className='h-full w-full object-cover'
+                    className={cn('h-full w-full', {
+                      'object-contain': keepOriginalSize && !shouldCrop,
+                      'object-cover': !keepOriginalSize && shouldCrop
+                    })}
                   />
                 )
               )}
@@ -375,19 +402,77 @@ export default function UploadImageField<T extends FieldValues>({
                 </div>
               )}
 
+              {allowCustomAspect && shouldCrop && (
+                <div className='flex items-center gap-2'>
+                  <span className='text-muted-foreground text-sm'>
+                    Tỉ lệ khung hình:
+                  </span>
+                  <Select
+                    value={customAspect.toString()}
+                    onValueChange={(val) => setCustomAspect(parseFloat(val))}
+                  >
+                    <SelectTrigger className='w-24'>
+                      <SelectValue placeholder='Chọn tỉ lệ' />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {ASPECT_RATIOS.map((ratio) => (
+                        <SelectItem
+                          key={ratio.value}
+                          value={ratio.value.toString()}
+                        >
+                          {ratio.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
               <div className='flex w-full justify-between'>
-                <label
-                  id='crop-image'
-                  className='flex cursor-pointer items-center gap-2'
-                >
-                  <Checkbox
+                <div className='flex items-center gap-4'>
+                  <label
                     id='crop-image'
-                    className='mb-0! cursor-pointer border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
-                    checked={shouldCrop}
-                    onCheckedChange={(checked) => setShouldCrop(!!checked)}
-                  />
-                  <span className='text-sm'>Cắt ảnh</span>
-                </label>
+                    className='flex cursor-pointer items-center gap-2'
+                  >
+                    <Checkbox
+                      id='crop-image'
+                      className='mb-0! cursor-pointer border-gray-200 border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
+                      checked={shouldCrop}
+                      onCheckedChange={(checked) => {
+                        setShouldCrop(!!checked);
+                        setKeepOriginalSize(false);
+                        if (!checked) {
+                          setZoom(1);
+                          setCustomAspect(aspect);
+                          setKeepOriginalSize(true);
+                        }
+                      }}
+                    />
+                    <span className='text-sm'>Cắt ảnh</span>
+                  </label>
+                  {originalSize && (
+                    <label
+                      id='keep-original-size'
+                      className='flex cursor-pointer items-center gap-2'
+                    >
+                      <Checkbox
+                        id='keep-original-size'
+                        className='mb-0! cursor-pointer border-gray-200 border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
+                        checked={keepOriginalSize}
+                        onCheckedChange={(checked) => {
+                          setKeepOriginalSize(!!checked);
+                          setShouldCrop(false);
+                          if (!checked) {
+                            setZoom(1);
+                            setCustomAspect(aspect);
+                            setShouldCrop(true);
+                          }
+                        }}
+                      />
+                      <span className='text-sm'>Gốc</span>
+                    </label>
+                  )}
+                </div>
 
                 <div className='flex items-center justify-center gap-2'>
                   <Button

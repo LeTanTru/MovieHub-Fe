@@ -253,7 +253,7 @@ export default function WatchPlayer() {
       <div className='mb-6 inline-flex w-full items-center gap-2 px-8'>
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-          className='mr-2 rounded-full border border-solid border-gray-200 p-2 transition-all duration-200 ease-linear hover:opacity-80'
+          className='mr-2 rounded-full border border-solid border-gray-200 p-2 opacity-50 transition-all duration-200 ease-linear hover:opacity-100'
         >
           <FaChevronLeft />
         </Link>

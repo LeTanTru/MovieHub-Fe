@@ -68,7 +68,7 @@ export default function MovieHistoryCard({
       className='group relative flex flex-col gap-3'
     >
       <Link
-        className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-lg pb-[150%]'
+        className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'
         href={watchLink}
       >
         <Image
@@ -83,18 +83,15 @@ export default function MovieHistoryCard({
 
       <div className='min-h-10.5 text-center'>
         <div
-          className='relative mb-2 h-1 w-full overflow-hidden rounded-lg bg-white/10'
+          className='relative mb-2 h-1 w-full overflow-hidden rounded-md bg-white/10'
           title={`Bạn đã xem ${Math.floor(percentWatched)}% phim này`}
         >
           <div
-            className='absolute top-0 bottom-0 left-0 h-1 rounded-lg bg-white'
+            className='absolute top-0 bottom-0 left-0 h-1 rounded-tl-md rounded-bl-md bg-white'
             style={{ width: `${percentWatched}%` }}
           ></div>
         </div>
-        <div className='flex flex-col items-center justify-center text-xs text-white/80 [&_div]:leading-5'>
-          {/* ClassName to make a dot between time and duration, and make the dot in the middle of the two text */}
-          {/*
-          className='relative pl-2.5 before:absolute before:top-1/2 before:left-0 before:h-1 before:w-1 before:-translate-y-1/2 before:rounded-full before:bg-white before:content-[""]' */}
+        <div className='text-dark-gray flex flex-col items-center justify-center text-xs [&_div]:leading-5'>
           <div>
             <span title={formatSecondsToHMS(movieHistory.lastWatchSeconds)}>
               {formatSecondsToHMS(movieHistory.lastWatchSeconds)}
@@ -131,7 +128,7 @@ export default function MovieHistoryCard({
           </h4>
         </Link>
         <Link href={watchLink} title={movie.originalTitle}>
-          <h4 className='text-light-gray line-clamp-1 text-xs leading-5'>
+          <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
             {movie.originalTitle}&nbsp;
             {movieItem?.parent?.label !== '1' && movieItem?.parent?.label}
           </h4>
@@ -141,7 +138,7 @@ export default function MovieHistoryCard({
       {onDelete && (
         <button
           aria-label='Remove from favourite'
-          className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
+          className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-md transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
           onClick={() => onDelete(movie.id)}
         >
           <X className='size-4' />

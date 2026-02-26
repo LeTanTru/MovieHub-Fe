@@ -79,9 +79,8 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
         open={opened}
         onClose={handleClose}
         className='bg-transparent'
-        bodyWrapperClassName='bg-main-background w-110 h-fit min-h-fit'
+        bodyWrapperClassName='bg-main-background w-110'
         bodyClassName='p-4 pt-0'
-        headerClassName='text-sm'
         closeOnBackdropClick={!isPending}
         variants={{
           initial: {

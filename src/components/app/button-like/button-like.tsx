@@ -148,22 +148,6 @@ export default function ButtonLike({
   };
 
   const handleRemoveLike = async () => {
-    if (!isAuthenticated) {
-      notify.error(
-        <span>
-          Vui lòng&nbsp;
-          <Link
-            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
-          >
-            đăng nhập
-          </Link>
-          &nbsp;để xóa {entityTypeLabel} khỏi danh sách yêu thích
-        </span>
-      );
-      return;
-    }
-
     if (removeFavouriteLoading) return;
 
     startAnimation();

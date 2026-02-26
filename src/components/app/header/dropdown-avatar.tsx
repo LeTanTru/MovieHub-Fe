@@ -2,7 +2,7 @@
 
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
-import { dropdownAvatarList, dropdownAvatarMotion } from '@/constants';
+import { dropdownAvatarList } from '@/constants';
 import { ProfileType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -47,10 +47,33 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
       <AnimatePresence>
         {opened && (
           <motion.div
-            variants={dropdownAvatarMotion}
-            initial='initial'
-            animate='animate'
-            exit='exit'
+            initial={{
+              opacity: 0,
+              scale: 0,
+              x: 0,
+              y: 0,
+              transformOrigin: '80% -15px'
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              x: 0,
+              y: 0,
+              transition: {
+                duration: 0.2,
+                ease: 'linear'
+              }
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0,
+              x: 0,
+              y: 0,
+              transition: {
+                duration: 0.2,
+                ease: 'linear'
+              }
+            }}
             className='bg-popover absolute top-[calc(100%+0px)] right-1.5 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-8 h-2 w-4'>
