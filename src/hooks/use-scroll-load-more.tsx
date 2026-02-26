@@ -13,7 +13,7 @@ const useSrollLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
   queryFn,
   enabled,
   mode = 'scroll',
-  threshold = 0.5
+  threshold = 1
 }: {
   queryKey: string;
   params: S;
@@ -78,7 +78,7 @@ const useSrollLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
     handleLoadMore,
     hasNextPage,
     isFetchingNextPage,
-    isLoading,
+    isLoading: isLoading || isFetchingNextPage,
     loadMoreRef,
     totalElements
   };

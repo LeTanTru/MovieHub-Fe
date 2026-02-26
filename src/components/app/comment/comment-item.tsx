@@ -275,7 +275,7 @@ export default function CommentItem({
             ))}
           <Activity visible={comment.isPinned}>
             <span title='Đã ghim' className='ml-auto'>
-              <Pin className='text-golden-glow fill-golden-glow size-5' />
+              <Pin className='text-golden-glow fill-golden-glow size-5 rotate-45' />
             </span>
           </Activity>
         </div>

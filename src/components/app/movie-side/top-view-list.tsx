@@ -1,14 +1,12 @@
 'use client';
 
 import { FallingStarIcon } from '@/assets';
-import TopViewItem from '@/components/app/movie-side/top-view-item';
-import { useAuth } from '@/hooks';
+import TopViewItem from './top-view-item';
 import { useTopViewMovieListQuery } from '@/queries';
 
 export default function TopViewList() {
-  const { isAuthenticated } = useAuth();
   const { data: topViewMovieListData } = useTopViewMovieListQuery({
-    enabled: isAuthenticated
+    enabled: true
   });
   const topViewMovieList = topViewMovieListData?.data?.content || [];
 

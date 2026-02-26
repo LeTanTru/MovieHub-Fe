@@ -11,9 +11,9 @@ import { NoData } from '@/components/no-data';
 import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { generateSlug } from '@/utils';
-import { MovieCard } from '@/components/app/movie-card';
+import { CinemaMovieCard } from '@/components/app/collection';
 
-export default function MovieList({
+export default function CinemaMovieList({
   collection
 }: {
   collection: CollectionResType;
@@ -55,7 +55,7 @@ export default function MovieList({
               <div ref={prevRef} className='swiper-button-prev' />
             </div>
             <Swiper
-              slidesPerView={7}
+              slidesPerView={4}
               spaceBetween={16}
               modules={[Navigation]}
               grabCursor={true}
@@ -75,7 +75,7 @@ export default function MovieList({
             >
               {movieList.map((movie) => (
                 <SwiperSlide key={movie.id}>
-                  <MovieCard movie={movie} dir='down' />
+                  <CinemaMovieCard movie={movie} dir='down' />
                 </SwiperSlide>
               ))}
             </Swiper>

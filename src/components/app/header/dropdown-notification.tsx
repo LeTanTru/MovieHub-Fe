@@ -2,7 +2,6 @@
 
 import { Button } from '@/components/form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { dropdownNotificationMotion } from '@/constants';
 import { useDisclosure } from '@/hooks';
 import { route } from '@/routes';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -34,10 +33,33 @@ export default function DropdownNotification() {
       <AnimatePresence>
         {opened && (
           <motion.div
-            variants={dropdownNotificationMotion}
-            initial='initial'
-            animate='animate'
-            exit='exit'
+            initial={{
+              opacity: 0,
+              scale: 0,
+              x: 0,
+              y: 0,
+              transformOrigin: '87% -15px'
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              x: 0,
+              y: 0,
+              transition: {
+                duration: 0.2,
+                ease: 'linear'
+              }
+            }}
+            exit={{
+              opacity: 0,
+              scale: 0,
+              x: 0,
+              y: 0,
+              transition: {
+                duration: 0.2,
+                ease: 'linear'
+              }
+            }}
             className='bg-popover absolute top-[calc(100%+8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-50 w-100 flex-col justify-between rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11 h-2 w-4'>

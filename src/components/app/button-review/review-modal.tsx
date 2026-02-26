@@ -104,8 +104,7 @@ export default function ReviewModal({
     <Modal
       open={opened}
       onClose={onClose}
-      className='[&_.body-wrapper]:bg-vintage-navi [&_.body-wrapper]:h-fit! [&_.body-wrapper]:min-h-fit! [&_.body-wrapper]:max-w-160'
-      headerClassName='border-none'
+      bodyWrapperClassName='bg-vintage-navi w-160'
       closeOnBackdropClick
     >
       <BaseForm
@@ -177,9 +176,14 @@ export default function ReviewModal({
               </Col>
               <Col span={6}>
                 <Button
-                  className='bg-golden-glow hover:bg-golden-glow/80'
+                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                   variant='primary'
                   loading={createReviewLoading}
+                  disabled={
+                    !form.formState.isDirty ||
+                    !selectedRating ||
+                    createReviewLoading
+                  }
                 >
                   Gửi đánh giá
                 </Button>

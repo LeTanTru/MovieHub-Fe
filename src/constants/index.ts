@@ -4,5 +4,4 @@ export * from './constant';
 export * from './error-code';
 export { default as languageNameMap } from './language-map';
 export * from './master-data';
-export * from './motion-variant';
 export { default as storageKeys } from './storage-key';

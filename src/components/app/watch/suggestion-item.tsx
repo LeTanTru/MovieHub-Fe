@@ -20,7 +20,7 @@ export default function SuggestionItem({ movie }: { movie: MovieResType }) {
   return (
     <Link
       href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-      className='flex grow flex-row items-center justify-between overflow-hidden rounded bg-white/5 transition-all duration-200 ease-linear hover:bg-white/4'
+      className='flex grow flex-row items-center justify-between overflow-hidden rounded bg-white/5 transition-colors duration-200 ease-linear hover:bg-white/4'
     >
       <div className='w-20 shrink-0'>
         <div className='bg-gunmetal-blue relative block h-0 overflow-hidden rounded pb-[150%]'>
@@ -38,25 +38,25 @@ export default function SuggestionItem({ movie }: { movie: MovieResType }) {
         <h3 className='hover:text-golden-glow mb-1.5 line-clamp-2 leading-normal font-medium text-white transition-all duration-200 ease-linear'>
           {movie.title}
         </h3>
-        <p className='mb-1.5 line-clamp-1 text-xs leading-normal font-normal text-neutral-400'>
+        <p className='mb-2 line-clamp-1 text-xs leading-normal font-normal text-neutral-400'>
           {movie.originalTitle}
         </p>
         <div className='flex items-center gap-4'>
           <div
-            className='inline text-xs whitespace-nowrap text-neutral-400'
+            className='text-dark-gray inline text-xs whitespace-nowrap'
             title={ageRating?.mean}
           >
             <strong>{ageRating?.label}</strong>
           </div>
-          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-            <strong>{releaseYear}</strong>
+          <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+            {releaseYear}
           </div>
-          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-            <strong>Phần {latestSeason?.label}</strong>
+          <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+            Phần {latestSeason?.label}
           </div>
           {isSeries && (
-            <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-              <strong>Tập {latestEpisode?.label}</strong>
+            <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+              Tập {latestEpisode?.label}
             </div>
           )}
         </div>

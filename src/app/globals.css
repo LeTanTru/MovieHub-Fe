@@ -50,17 +50,19 @@
   --color-charade: #282b3a;
   --color-covert-black: #15151a;
   --color-dark-conflower-blue: #3556b6;
+  --color-dark-gray: #aaaaaa;
   --color-dark-gunmetal-gray: #1f1f29;
   --color-dark-space: #1a1f32;
   --color-fixed-header: #070a18;
   --color-golden-glow: #ffd875;
+  --color-golden-tainoi: #fecf59;
   --color-gunmetal-black: #151420e6;
   --color-gunmetal-blue: #2f3346;
-  --color-light-gray: #aaa;
   --color-lyla: #232531;
   --color-main-background: #1d1d27;
   --color-main-color: var(--color-gray-300);
   --color-malachite: #22cb4c;
+  --color-mid-gray: #5e6070;
   --color-pinkest: #f0adb1;
   --color-red-beauty: #d33d25;
   --color-statuary: #9fa0a5;
@@ -70,7 +72,6 @@
   --color-vintage-navi: #2a314e;
   --color-vivid-orange: #ff8300;
   --color-vn-flag: #78140f;
-  --color-mid-gray: #5e6070;
   /* --color-main-background: #2b2b35; */
   /* Color */
 }

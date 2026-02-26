@@ -13,7 +13,7 @@ import { useRef } from 'react';
 import { generateSlug } from '@/utils';
 import { MovieCard } from '@/components/app/movie-card';
 
-export default function MovieList({
+export default function LastestMovieList({
   collection
 }: {
   collection: CollectionResType;

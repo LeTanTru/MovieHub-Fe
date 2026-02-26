@@ -84,27 +84,8 @@ export default function PlaylistModal({
     <Modal
       open={opened}
       onClose={onClose}
-      bodyWrapperClassName='bg-main-background w-75 h-fit min-h-fit'
-      headerClassName='text-sm'
+      bodyWrapperClassName='bg-main-background w-75'
       closeOnBackdropClick={!loading}
-      variants={{
-        initial: {
-          opacity: 0.8,
-          scale: 0.8
-        },
-        animate: {
-          opacity: 1,
-          scale: 1
-        },
-        exit: {
-          opacity: 0.8,
-          scale: 0.8
-        }
-      }}
-      transition={{
-        duration: 0.2,
-        ease: 'linear'
-      }}
     >
       <BaseForm
         schema={playlistSchema}

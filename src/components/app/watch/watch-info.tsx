@@ -120,7 +120,7 @@ export default function WatchInfo() {
           <Link
             href={`${route.movie.path}/${movie.slug}.${movie.id}`}
             className={cn(
-              'hover:text-golden-glow font-normal transition-all duration-200 ease-linear',
+              'hover:text-golden-glow font-normal transition-colors duration-200 ease-linear',
               {
                 'featured-title font-bold': movie.isFeatured
               }
@@ -220,7 +220,7 @@ export default function WatchInfo() {
         />
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-          className='text-golden-glow hover:text-golden-glow/80 flex items-center gap-2 transition-all duration-200 ease-linear'
+          className='text-golden-glow hover:text-golden-glow/80 flex items-center gap-2 transition-colors duration-200 ease-linear'
         >
           Thông tin phim
           <FaChevronRight />

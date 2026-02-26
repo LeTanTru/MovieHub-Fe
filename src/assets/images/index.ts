@@ -7,7 +7,7 @@ import emptyDiscussion from './empty-discussion.svg';
 import footerIcon from './footer-icon.svg';
 import googleIcon from './google.svg';
 import logo from './logo.webp';
-import logoWithText from './logo-with-text.svg';
+import logoWithText from './logo-with-text-2.webp';
 import ratingBad from './rating-bad.webp';
 import ratingBoring from './rating-boring.webp';
 import ratingGood from './rating-good.webp';

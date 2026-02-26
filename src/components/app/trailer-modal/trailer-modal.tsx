@@ -3,7 +3,7 @@
 import './trailer-modal.css';
 import { Modal } from '@/components/modal';
 import { VideoPlayer } from '@/components/video-player';
-import { trailerMotionVariant, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
+import { VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
 import { useBodyHeight } from '@/hooks';
 import { VideoResType } from '@/types';
 import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
@@ -42,15 +42,9 @@ export default function TrailerModal({
       open={opened}
       onClose={onClose}
       className='trailer-modal overflow-hidden'
-      headerClassName='pt-10'
       aria-labelledby='video-modal-title'
       aria-label={`Phát video ${video.name}`}
       bodyRef={bodyRef}
-      variants={{
-        initial: trailerMotionVariant.initial,
-        animate: trailerMotionVariant.animate,
-        exit: trailerMotionVariant.exit
-      }}
       closeOnBackdropClick
     >
       <div
