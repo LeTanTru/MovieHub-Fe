@@ -1,5 +1,6 @@
 'use client';
 
+import './latest-country-movie-list.css';
 import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -11,6 +12,7 @@ import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { generateSlug, getColorList } from '@/utils';
 import { LatestCountryMovieCard } from '@/components/app/collection';
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 export default function LastestCountryMovieList({
   collection
@@ -23,18 +25,20 @@ export default function LastestCountryMovieList({
   const movieList = collection?.movies || [];
   const colors = getColorList(collection.color || '[]');
 
-  const gradientStyle = {
-    background: `linear-gradient(to bottom, ${colors.slice(0, 2).join(', ')})`
-  };
-
   return (
-    <div className='collection-movie-list fade-in slide-in-from-top-[-30px] animate-in mx-auto w-full max-w-475 px-12.5 duration-200'>
-      <div
-        className='flex items-center justify-between gap-4 rounded-lg p-8'
-        style={{ ...gradientStyle }}
-      >
+    <div className='collection-movie-list latest-country-movie-list fade-in slide-in-from-top-[-30px] animate-in mx-auto w-full max-w-475 px-12.5 duration-200'>
+      <div className='flex items-center justify-between gap-4'>
         <div className='relative z-3 flex w-0.5 grow flex-col gap-4 pr-4 pl-2 text-center'>
-          <h3 className='bg-linear-to-r from-red-500 to-blue-500 bg-clip-text text-[28px] leading-[1.3] font-semibold text-transparent text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+          <h3
+            className='bg-clip-text text-[28px] leading-[1.3] font-semibold text-transparent text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'
+            style={
+              {
+                backgroundImage: `linear-gradient(90deg, ${colors
+                  .map((color) => `${color}`)
+                  .join(', ')})`
+              } as React.CSSProperties
+            }
+          >
             {collection.name}&nbsp;
           </h3>
           <Link
@@ -48,8 +52,12 @@ export default function LastestCountryMovieList({
         <div className='relative z-3 w-[calc(100%-230px)]'>
           <div className='swiper-container'>
             <div className='swiper-navigation'>
-              <div ref={nextRef} className='swiper-button-next' />
-              <div ref={prevRef} className='swiper-button-prev' />
+              <div ref={nextRef} className='swiper-button swiper-next-button'>
+                <LuChevronRight />
+              </div>
+              <div ref={prevRef} className='swiper-button swiper-prev-button'>
+                <LuChevronLeft />
+              </div>
             </div>
             <Swiper
               slidesPerView={5}

@@ -7,6 +7,7 @@ import { CollectionResType } from '@/types';
 import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { TopMovieCard } from '@/components/app/collection';
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 export default function TopMovieList({
   collection
@@ -28,8 +29,12 @@ export default function TopMovieList({
         </div>
         <div className='swiper-container'>
           <div className='swiper-navigation'>
-            <div ref={nextRef} className='swiper-button-next' />
-            <div ref={prevRef} className='swiper-button-prev' />
+            <div ref={nextRef} className='swiper-button swiper-next-button'>
+              <LuChevronRight />
+            </div>
+            <div ref={prevRef} className='swiper-button swiper-prev-button'>
+              <LuChevronLeft />
+            </div>
           </div>
           <Swiper
             slidesPerView={7}

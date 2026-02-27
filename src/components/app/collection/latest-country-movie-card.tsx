@@ -106,7 +106,7 @@ export default function LatestCountryMovieCard({
         className='group relative flex flex-col gap-3'
       >
         <Link
-          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[56%]'
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -122,7 +122,7 @@ export default function LatestCountryMovieCard({
             alt={`${movie.title} - ${movie.originalTitle}`}
             className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
             fill
-            src={renderImageUrl(movie.posterUrl)}
+            src={renderImageUrl(movie.thumbnailUrl)}
             unoptimized
             sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
           />

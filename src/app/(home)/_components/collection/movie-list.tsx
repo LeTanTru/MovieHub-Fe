@@ -11,6 +11,7 @@ import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { generateSlug } from '@/utils';
 import { MovieCard } from '@/components/app/movie-card';
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 export default function MovieList({
   collection
@@ -39,8 +40,12 @@ export default function MovieList({
         </div>
         <div className='swiper-container'>
           <div className='swiper-navigation'>
-            <div ref={nextRef} className='swiper-button-next' />
-            <div ref={prevRef} className='swiper-button-prev' />
+            <div ref={nextRef} className='swiper-button swiper-next-button'>
+              <LuChevronRight />
+            </div>
+            <div ref={prevRef} className='swiper-button swiper-prev-button'>
+              <LuChevronLeft />
+            </div>
           </div>
           <Swiper
             slidesPerView={7}

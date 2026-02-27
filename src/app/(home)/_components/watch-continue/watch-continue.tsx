@@ -87,8 +87,8 @@ export default function WatchContinue() {
       ) : (
         <div className='swiper-container'>
           <div className='swiper-navigation'>
-            <div ref={nextRef} className='swiper-button-next' />
-            <div ref={prevRef} className='swiper-button-prev' />
+            <div ref={nextRef} className='swiper-button swiper-next-button' />
+            <div ref={prevRef} className='swiper-button swiper-prev-button' />
           </div>
           <Swiper
             slidesPerView={7}

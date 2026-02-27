@@ -5,8 +5,8 @@
     width: 100%;
   }
 
-  .swiper-container .swiper-button-next,
-  .swiper-container .swiper-button-prev {
+  .swiper-container .swiper-next-button,
+  .swiper-container .swiper-prev-button {
     color: #fff;
     background-color: transparent;
     border-radius: 50%;
@@ -28,24 +28,24 @@
     }
   }
 
-  .swiper-container .swiper-button-next {
+  .swiper-container .swiper-next-button {
     transform: translate(100%, -50%);
     right: -10px;
   }
 
-  .swiper-container .swiper-button-prev {
+  .swiper-container .swiper-prev-button {
     transform: translate(-100%, -50%);
     left: -10px;
   }
 
-  .swiper-container .swiper-button-next::after,
-  .swiper-container .swiper-button-prev::after {
+  .swiper-container .swiper-next-button::after,
+  .swiper-container .swiper-prev-button::after {
     font-size: 16px;
     font-weight: 600;
   }
 
-  .swiper-container .swiper-button-prev.swiper-button-disabled,
-  .swiper-container .swiper-button-next.swiper-button-disabled {
+  .swiper-container .swiper-prev-button.swiper-button-disabled,
+  .swiper-container .swiper-next-button.swiper-button-disabled {
     display: none;
   }
 }
