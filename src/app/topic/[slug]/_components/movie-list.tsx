@@ -10,6 +10,7 @@ import { useQueryParams } from '@/hooks';
 import { useCollectionItemListQuery, useCollectionQuery } from '@/queries';
 import { Pagination } from '@/components/pagination';
 import { MovieResType } from '@/types';
+import { getColorList } from '@/utils';
 
 export default function MovieList({ collectionId }: { collectionId: string }) {
   const {
@@ -32,7 +33,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
 
   const movieList = movieListData?.data?.content || [];
   const totalPages = movieListData?.data?.totalPages || 0;
-  const colors = JSON.parse(collection?.color || '[]');
+  const colors = getColorList(collection?.color || '[]');
 
   const gradientStyle = {
     background: `linear-gradient(to bottom, ${colors.join(', ')})`

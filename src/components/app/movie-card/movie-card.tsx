@@ -122,7 +122,7 @@ export default function MovieCard({
           }}
         >
           <Image
-            alt={movie.title}
+            alt={`${movie.title} - ${movie.originalTitle}`}
             className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
             fill
             src={renderImageUrl(movie.posterUrl)}
@@ -132,29 +132,29 @@ export default function MovieCard({
         </Link>
 
         <div className='min-h-10.5 text-center'>
-          <Link
-            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-            title={movie.title}
+          <h4
+            className={cn(
+              'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
+              {
+                'featured-title font-bold': movie.isFeatured
+              }
+            )}
           >
-            <h4
-              className={cn(
-                'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
-                {
-                  'featured-title font-bold': movie.isFeatured
-                }
-              )}
+            <Link
+              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+              title={movie.title}
             >
               {movie.title}
-            </h4>
-          </Link>
-          <Link
-            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-            title={movie.originalTitle}
-          >
-            <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+            </Link>
+          </h4>
+          <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+            <Link
+              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+              title={movie.originalTitle}
+            >
               {movie.originalTitle}
-            </h4>
-          </Link>
+            </Link>
+          </h4>
         </div>
 
         {onDelete && (

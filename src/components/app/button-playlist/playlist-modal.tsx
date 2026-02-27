@@ -13,6 +13,7 @@ import {
 import { playlistSchema } from '@/schemaValidations';
 import { PlaylistBodyType, PlaylistResType } from '@/types';
 import { notify } from '@/utils';
+import { useState } from 'react';
 
 export default function PlaylistModal({
   opened,
@@ -32,6 +33,8 @@ export default function PlaylistModal({
     mutateAsync: updatePlaylistMutate,
     isPending: updatePlaylistLoading
   } = useUpdatePlaylistMutation();
+
+  const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
 
   const loading = createPlaylistLoading || updatePlaylistLoading;
   const isEditing = !!playlist;
@@ -85,7 +88,7 @@ export default function PlaylistModal({
       open={opened}
       onClose={onClose}
       bodyWrapperClassName='bg-main-background w-75'
-      closeOnBackdropClick={!loading}
+      confirmOnClose={isFormChanged}
     >
       <BaseForm
         schema={playlistSchema}
@@ -93,6 +96,7 @@ export default function PlaylistModal({
         initialValues={initialValues}
         onSubmit={handleSubmit}
         className='bg-transparent pt-0'
+        onFormChange={setIsFormChanged}
       >
         {(form) => (
           <>
@@ -109,17 +113,13 @@ export default function PlaylistModal({
             </Row>
             <Row className='mb-0'>
               <Col span={12}>
-                <Button
-                  className='bg-white text-black'
-                  variant='primary'
-                  onClick={handleClose}
-                >
+                <Button variant='primary' onClick={handleClose}>
                   Đóng
                 </Button>
               </Col>
               <Col span={12}>
                 <Button
-                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 text-black'
+                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                   variant='primary'
                   disabled={!form.formState.isDirty || loading}
                   type='submit'

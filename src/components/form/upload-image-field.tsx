@@ -146,11 +146,12 @@ export default function UploadImageField<T extends FieldValues>({
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [shouldCrop, setShouldCrop] = useState<boolean>(
-    showCrop && defaultCrop
+    showCrop && defaultCrop && !originalSize
   );
   const [zoom, setZoom] = useState<number>(1);
   const [customAspect, setCustomAspect] = useState<number>(aspect);
-  const [keepOriginalSize, setKeepOriginalSize] = useState<boolean>(false);
+  const [keepOriginalSize, setKeepOriginalSize] =
+    useState<boolean>(originalSize);
   const {
     field: { value: fieldValue, onChange: fieldOnChange },
     fieldState: { error }
@@ -345,7 +346,7 @@ export default function UploadImageField<T extends FieldValues>({
       {showCrop && (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogContent
-            className='gap-0 rounded-tl-none rounded-tr-none border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
+            className='gap-0 overflow-hidden rounded-tl-sm rounded-tr-sm border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
             showCloseButton={false}
           >
             <DialogHeader className='text-left'>
@@ -354,7 +355,7 @@ export default function UploadImageField<T extends FieldValues>({
 
             <AspectRatio
               ratio={customAspect < 1 ? 1 : customAspect}
-              className={cn('h-full bg-black', {
+              className={cn('bg-muted h-full dark:bg-black', {
                 'bg-black': keepOriginalSize && !shouldCrop
               })}
             >

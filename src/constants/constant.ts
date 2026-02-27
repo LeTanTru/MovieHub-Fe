@@ -86,6 +86,9 @@ export const MOVIE_DETAIL_DISCUSSION_ID = 'discussion-detail';
 export const MOVIE_WATCH_DISCUSSION_ID = 'discussion-watch';
 export const SEARCH_MOVIE_LIST_ID = 'search-movie-list';
 
-export const STYLE_TOP_RANKING_LIST = 1;
-export const STYLE_LATEST_MOVIE_LIST = 2;
-export const STYLE_MOVIE_CINEMA_LIST = 4;
+export const STYLE_TOP_RANKING = 1;
+export const STYLE_DEFAULT = 2;
+export const STYLE_CINEMA = 3;
+export const STYLE_COMING_SOON = 4;
+export const STYLE_LATEST_BY_COUNTRY = 5;
+export const STYLE_ANIME = 6;

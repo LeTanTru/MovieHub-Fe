@@ -30,6 +30,7 @@ type BaseFormProps<T extends Record<string, any>> = Omit<
   schema: any;
   children?: (methods: UseFormReturn<T>) => ReactNode;
   onSubmit: (values: T, form: UseFormReturn<T>) => Promise<void> | void;
+  onFormChange?: (isFormChanged: boolean) => void;
 };
 
 export default function BaseForm<T extends Record<string, any>>({
@@ -42,6 +43,7 @@ export default function BaseForm<T extends Record<string, any>>({
   schema,
   children,
   onSubmit,
+  onFormChange,
   ...rest
 }: BaseFormProps<T>) {
   const form = useForm<T>({
@@ -69,13 +71,17 @@ export default function BaseForm<T extends Record<string, any>>({
     formState
   };
 
+  useEffect(() => {
+    onFormChange?.(form.formState.isDirty);
+  }, [form.formState.isDirty, onFormChange]);
+
   return (
     <Form {...form}>
       <form
         ref={ref}
         id={id}
         className={cn('relative rounded-lg bg-white p-4', className)}
-        onSubmit={form.handleSubmit((values) => onSubmit(values, form))}
+        onSubmit={form.handleSubmit((values) => onSubmit(values, enhancedForm))}
         {...rest}
       >
         {children?.(enhancedForm as UseFormReturn<T>)}

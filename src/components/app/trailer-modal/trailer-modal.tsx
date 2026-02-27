@@ -45,7 +45,8 @@ export default function TrailerModal({
       aria-labelledby='video-modal-title'
       aria-label={`Phát video ${video.name}`}
       bodyRef={bodyRef}
-      closeOnBackdropClick
+      confirmOnClose
+      confirmOnCloseMessage='Bạn có chắc chắn muốn đóng không?'
     >
       <div
         style={

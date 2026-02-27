@@ -4,7 +4,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { CollectionResType } from '@/types';
-import { NoData } from '@/components/no-data';
 import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { TopMovieCard } from '@/components/app/collection';
@@ -27,49 +26,37 @@ export default function TopMovieList({
             {collection.name}&nbsp;
           </h3>
         </div>
-        {movieList.length === 0 ? (
-          <NoData
-            className='pt-25'
-            content={
-              <>
-                Bạn chưa xem phim nào. Hãy khám phá và xem những bộ phim yêu
-                thích của bạn ngay bây giờ 😉
-              </>
-            }
-          />
-        ) : (
-          <div className='swiper-container'>
-            <div className='swiper-navigation'>
-              <div ref={nextRef} className='swiper-button-next' />
-              <div ref={prevRef} className='swiper-button-prev' />
-            </div>
-            <Swiper
-              slidesPerView={7}
-              spaceBetween={16}
-              modules={[Navigation]}
-              grabCursor={true}
-              className='w-full'
-              onSwiper={(swiper) => {
-                if (
-                  swiper.params.navigation &&
-                  typeof swiper.params.navigation !== 'boolean'
-                ) {
-                  swiper.params.navigation.nextEl = nextRef.current;
-                  swiper.params.navigation.prevEl = prevRef.current;
-                  swiper.navigation.init();
-                  swiper.navigation.update();
-                }
-              }}
-              key='collection-list-slider'
-            >
-              {movieList.map((movie, index) => (
-                <SwiperSlide key={movie.id}>
-                  <TopMovieCard movie={movie} dir='down' index={index} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+        <div className='swiper-container'>
+          <div className='swiper-navigation'>
+            <div ref={nextRef} className='swiper-button-next' />
+            <div ref={prevRef} className='swiper-button-prev' />
           </div>
-        )}
+          <Swiper
+            slidesPerView={7}
+            spaceBetween={16}
+            modules={[Navigation]}
+            grabCursor={true}
+            className='w-full'
+            onSwiper={(swiper) => {
+              if (
+                swiper.params.navigation &&
+                typeof swiper.params.navigation !== 'boolean'
+              ) {
+                swiper.params.navigation.nextEl = nextRef.current;
+                swiper.params.navigation.prevEl = prevRef.current;
+                swiper.navigation.init();
+                swiper.navigation.update();
+              }
+            }}
+            key={collection.id}
+          >
+            {movieList.map((movie, index) => (
+              <SwiperSlide key={movie.id}>
+                <TopMovieCard movie={movie} dir='down' index={index} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </>
     </div>
   );
