@@ -11,7 +11,6 @@ import { generateSlug, notify, renderImageUrl } from '@/utils';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import { useState } from 'react';
 import { Autoplay, EffectFade, Thumbs } from 'swiper/modules';
-import AnimeItem from '@/components/app/collection/anime-item';
 import { FAVOURITE_TYPE_MOVIE, queryKeys } from '@/constants';
 import { getQueryClient } from '@/components/providers';
 import { useAuth } from '@/hooks';
@@ -21,6 +20,7 @@ import {
   useFavouriteMutation
 } from '@/queries';
 import { logger } from '@/logger';
+import { AnimeItem } from '@/components/app/collection';
 
 export default function AnimeMovieList({
   collection

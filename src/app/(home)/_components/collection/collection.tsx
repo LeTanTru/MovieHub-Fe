@@ -7,6 +7,7 @@ import {
   queryKeys,
   STYLE_ANIME,
   STYLE_CINEMA,
+  STYLE_COMING_SOON,
   STYLE_LATEST_BY_COUNTRY,
   STYLE_TOP_RANKING
 } from '@/constants';
@@ -17,6 +18,7 @@ import MovieList from './movie-list';
 import CinemaMovieList from './cinema-movie-list';
 import LastestCountryMovieList from './latest-country-movie-list';
 import AnimeMovieList from './anime-movie-list';
+import ComingSoonList from './coming-soon-list';
 
 export default function Collection() {
   const loadMoreSize = 3;
@@ -45,17 +47,22 @@ export default function Collection() {
           case STYLE_TOP_RANKING: {
             return <TopMovieList collection={collection} key={collection.id} />;
           }
+          case STYLE_CINEMA: {
+            return (
+              <CinemaMovieList collection={collection} key={collection.id} />
+            );
+          }
+          case STYLE_COMING_SOON: {
+            return (
+              <ComingSoonList key={collection.id} collection={collection} />
+            );
+          }
           case STYLE_LATEST_BY_COUNTRY: {
             return (
               <LastestCountryMovieList
                 collection={collection}
                 key={collection.id}
               />
-            );
-          }
-          case STYLE_CINEMA: {
-            return (
-              <CinemaMovieList collection={collection} key={collection.id} />
             );
           }
           case STYLE_ANIME: {
