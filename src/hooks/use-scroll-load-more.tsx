@@ -78,7 +78,7 @@ const useSrollLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
     handleLoadMore,
     hasNextPage,
     isFetchingNextPage,
-    isLoading: isLoading || isFetchingNextPage,
+    isLoading: isLoading,
     loadMoreRef,
     totalElements
   };

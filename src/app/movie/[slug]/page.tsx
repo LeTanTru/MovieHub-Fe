@@ -19,6 +19,7 @@ import {
   CommentResType,
   CommentSearchType,
   MoviePersonSearchType,
+  MovieSearchType,
   ReviewResType
 } from '@/types';
 import { getIdFromSlug, stripHtml } from '@/utils';
@@ -96,6 +97,8 @@ export default async function MoviePage({
     size: DEFAULT_PAGE_SIZE
   };
 
+  const topViewFilters: MovieSearchType = {};
+
   const queryClient = getQueryClient();
 
   try {
@@ -152,6 +155,10 @@ export default async function MoviePage({
         lastPage: ApiResponseList<ReviewResType>,
         pages: ApiResponseList<ReviewResType>[]
       ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE_TOP_VIEW_LIST, topViewFilters],
+      queryFn: () => movieApiRequest.getTopViewList(topViewFilters)
     })
   ]);
 
