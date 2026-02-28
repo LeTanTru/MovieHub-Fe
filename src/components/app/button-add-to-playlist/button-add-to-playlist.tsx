@@ -198,7 +198,7 @@ export default function ButtonAddToPlaylist({
             )}
             {playlist.length < MAX_PLAYLIST_COUNT && (
               <ButtonAddPlayList
-                className='bg-golden-glow border-golden-glow hover:bg-golden-glow/80 rounded text-black hover:text-black/80'
+                className='dark:bg-golden-glow dark:border-golden-glow dark:hover:bg-golden-glow/80 rounded dark:border-none dark:text-black dark:hover:text-black/80'
                 text='Thêm mới'
                 showText
               />

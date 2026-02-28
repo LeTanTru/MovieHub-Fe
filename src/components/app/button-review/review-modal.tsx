@@ -178,7 +178,7 @@ export default function ReviewModal({
               </Col>
               <Col span={6}>
                 <Button
-                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
+                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
                   variant='primary'
                   loading={createReviewLoading}
                   disabled={

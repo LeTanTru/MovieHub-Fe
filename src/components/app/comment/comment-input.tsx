@@ -139,9 +139,8 @@ export default function CommentInput({
           </div>
           <div className='flex items-center gap-2'>
             <div className='grow'></div>
-
             <Button
-              className='text-golden-glow hover:text-golden-glow min-h-7.5 gap-2 bg-transparent px-4.5 py-2 font-medium hover:bg-transparent hover:opacity-80'
+              className='dark:text-golden-glow dark:hover:text-golden-glow min-h-7.5 gap-2 px-4.5 py-2 font-medium dark:bg-transparent dark:hover:bg-transparent'
               disabled={createCommentLoading || !form.formState.isDirty}
               loading={createCommentLoading}
               type='submit'

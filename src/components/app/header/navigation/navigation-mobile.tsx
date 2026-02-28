@@ -42,7 +42,7 @@ export default function NavigationMobile({
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}
-        className='group flex size-8 items-center justify-center hover:bg-transparent!'
+        className='group flex size-8 items-center justify-center dark:hover:bg-transparent'
         aria-label='Open menu'
       >
         <AnimatePresence mode='wait' initial={false}>

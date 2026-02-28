@@ -32,7 +32,7 @@ export default function NotFound() {
           </div>
           <Link className='block w-full' href={route.home.path}>
             <Button
-              className='hover:bg-golden-glow bg-golden-glow mx-auto flex min-h-12.5 items-center gap-x-2 rounded-4xl text-base font-semibold text-black'
+              className='dark:hover:bg-golden-glow dark:bg-golden-glow mx-auto flex min-h-12.5 items-center gap-x-2 rounded-4xl text-base font-semibold dark:text-black'
               size='lg'
             >
               <FaChevronLeft />

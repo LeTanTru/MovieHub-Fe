@@ -239,7 +239,7 @@ export default function Modal({
                         Không
                       </Button>
                       <Button
-                        className='bg-main-color hover:bg-main-color/80 dark:bg-primary-button w-20 text-white dark:text-black'
+                        className='bg-main-color hover:bg-main-color/80 dark:bg-primary-button dark:hover:bg-primary-button/80 w-20 text-white dark:text-black'
                         onClick={handleConfirmYes}
                       >
                         Có

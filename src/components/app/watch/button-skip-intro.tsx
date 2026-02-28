@@ -12,7 +12,7 @@ export default function ButtonSkipIntro({
     <Button
       variant='ghost'
       className={
-        'hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
+        'dark:hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear dark:hover:bg-white/10'
       }
       onClick={handleToggleSkipIntro}
     >

@@ -463,7 +463,7 @@ export default function CommentItem({
               {hasMoreComments && (
                 <Button
                   variant='ghost'
-                  className='hover:text-golden-glow flex h-5! items-center p-0! font-medium hover:bg-transparent!'
+                  className='dark:hover:text-golden-glow flex h-5! items-center p-0! font-medium dark:hover:bg-transparent'
                   onClick={() => handleFetchNextPage()}
                 >
                   <FaChevronDown /> Xem thêm&nbsp;
@@ -472,7 +472,7 @@ export default function CommentItem({
               )}
               <Button
                 variant='ghost'
-                className='h-5! p-0! font-medium hover:bg-transparent! hover:text-red-500'
+                className='h-5! p-0! font-medium dark:hover:bg-transparent dark:hover:text-red-500'
                 onClick={() => handleHideReplies(comment.id)}
               >
                 <FaChevronUp /> Ẩn trả lời

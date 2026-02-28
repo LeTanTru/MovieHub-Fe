@@ -23,10 +23,10 @@ export default function DropdownNotification() {
     >
       <Button
         variant='outline'
-        className='h-11 w-11 rounded-full border-white p-0! text-white! hover:border-white/50 hover:text-white/50! focus:outline-none focus-visible:ring-0'
+        className='group h-11 w-11 rounded-full p-0! focus:outline-none focus-visible:ring-0 dark:border-white dark:text-white dark:hover:border-white/50 dark:hover:text-white/50'
       >
         <FaBell className='size-5 stroke-2' />
-        <div className='text-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-base'>
+        <div className='text-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white transition-opacity duration-200 ease-linear group-hover:opacity-80'>
           0
         </div>
       </Button>
@@ -86,7 +86,7 @@ export default function DropdownNotification() {
                 <div>
                   <Button
                     variant='ghost'
-                    className='text-slate-400 hover:bg-transparent! hover:text-white'
+                    className='dark:text-slate-400 dark:hover:bg-transparent dark:hover:text-white'
                   >
                     <CheckCheck />
                     Đã đọc
@@ -111,7 +111,7 @@ export default function DropdownNotification() {
               </TabsContent>
             </Tabs>
             <Link
-              className='border-t-accent hover:bg-popover mt-auto block w-full border-t px-4 py-2 text-center text-sm text-slate-400 transition-all duration-500 ease-linear hover:text-white'
+              className='border-t-accent hover:bg-popover mt-auto block w-full border-t px-4 py-2 text-center text-slate-400 transition-all duration-500 ease-linear hover:text-white'
               href={route.user.notification.path}
               onClick={handleClose}
             >

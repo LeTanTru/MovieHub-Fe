@@ -37,7 +37,7 @@ export default function Header() {
 
   return (
     <header
-      className={cn('header fixed top-0 right-0 left-0 z-10 block', {
+      className={cn('header fixed top-0 right-0 left-0 z-50 block', {
         'bg-fixed-header': isFixed,
         'bg-transparent': !isFixed
       })}

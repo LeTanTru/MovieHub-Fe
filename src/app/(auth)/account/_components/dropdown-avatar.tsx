@@ -33,7 +33,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
     >
       <Button
         variant='ghost'
-        className='size-full rounded-full px-0! hover:bg-transparent! focus:outline-none focus-visible:ring-0'
+        className='size-full rounded-full px-0! focus:outline-none focus-visible:ring-0 dark:hover:bg-transparent'
       >
         <AvatarField
           src={renderImageUrl(profile.avatarPath)}

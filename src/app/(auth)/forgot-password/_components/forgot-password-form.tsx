@@ -309,7 +309,7 @@ export default function ForgotPasswordForm() {
                 <Button
                   type='submit'
                   variant='primary'
-                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 w-full'
+                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 w-full'
                   disabled={requestForgotPasswordLoading || !isFormChanged}
                   loading={requestForgotPasswordLoading}
                 >
@@ -400,7 +400,7 @@ export default function ForgotPasswordForm() {
                     <Button
                       type='submit'
                       variant='primary'
-                      className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
+                      className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
                       disabled={
                         forgotPasswordLoading || !form.formState.isValid
                       }
@@ -416,7 +416,7 @@ export default function ForgotPasswordForm() {
                       type='button'
                       variant='secondary'
                       onClick={handleBack}
-                      className='border-none'
+                      className='dark:border-none'
                     >
                       Quay lại
                     </Button>

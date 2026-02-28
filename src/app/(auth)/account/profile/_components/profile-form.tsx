@@ -206,7 +206,7 @@ export default function ProfileForm() {
                   <Button
                     type='submit'
                     variant='primary'
-                    className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
+                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
                     loading={updateProfileLoading}
                     disabled={!form.formState.isDirty}
                   >

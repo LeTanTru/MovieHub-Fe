@@ -102,7 +102,7 @@ export default function EpisodeList({
     <>
       <div
         className={cn(
-          `episode-sidebar bg-dark-gunmetal-gray absolute top-0 right-0 z-50 flex h-full w-100 transform flex-col shadow-lg transition-transform duration-200 ease-linear`,
+          `episode-sidebar bg-dark-gunmetal-gray absolute top-0 right-0 z-30 flex h-full w-100 transform flex-col shadow-lg transition-transform duration-200 ease-linear`,
           {
             'translate-x-0': isOpen,
             'translate-x-full': !isOpen

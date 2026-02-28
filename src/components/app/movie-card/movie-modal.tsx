@@ -97,7 +97,7 @@ export default function MovieModal({
                   className='block'
                 >
                   <Button
-                    className='hover:text-golden-glow hover:border-golden-glow w-full border border-white/50 bg-transparent text-white hover:bg-transparent'
+                    className='dark:hover:text-golden-glow dark:hover:border-golden-glow w-full border border-white/50 bg-transparent dark:text-white dark:hover:bg-transparent'
                     variant='ghost'
                   >
                     <FaInfoCircle />
