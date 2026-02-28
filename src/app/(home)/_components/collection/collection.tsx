@@ -26,7 +26,8 @@ export default function Collection() {
   const {
     data: collectionList,
     isLoading,
-    loadMoreRef
+    loadMoreRef,
+    isFetchingNextPage
   } = useScrollLoadMore<
     HTMLDivElement,
     CollectionSearchType,
@@ -79,7 +80,7 @@ export default function Collection() {
         ref={loadMoreRef}
         className='vertical-loading flex items-center justify-center pt-20'
       >
-        {isLoading && <VerticalBarLoading />}
+        {(isLoading || isFetchingNextPage) && <VerticalBarLoading />}
       </div>
     </>
   );
