@@ -12,11 +12,17 @@ import {
 import { useAuth, useDisclosure, useQueryParams } from '@/hooks';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
+import {
+  renderImageUrl,
+  renderVideoUrl,
+  renderVttUrl,
+  setData,
+  getData
+} from '@/utils';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { FaChevronLeft, FaFlag } from 'react-icons/fa6';
-import { CiStreamOn } from 'react-icons/ci';
+import { FaChevronLeft } from 'react-icons/fa6';
 import { Button } from '@/components/form';
 import { getAnonymousToken } from '@/app/actions/anonymous';
 import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
@@ -32,10 +38,19 @@ import {
   MediaTimeUpdateEventDetail,
   MediaPlayerInstance
 } from '@vidstack/react';
-import { EpisodeList, WatchAskContinueModal } from '@/components/app/watch';
+import {
+  ButtonAutoNextEpisode,
+  ButtonMovieTheater,
+  ButtonReport,
+  ButtonSkipIntro,
+  ButtonWatchTogether,
+  EpisodeList,
+  WatchAskContinueModal
+} from '@/components/app/watch';
 import envConfig from '@/config';
 
 export default function WatchPlayer() {
+  const router = useRouter();
   const { isAuthenticated } = useAuth();
 
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
@@ -50,6 +65,10 @@ export default function WatchPlayer() {
   const [isLoadingToken, setIsLoadingToken] = useState<boolean>(true);
   const [lastWatchedSeconds, setLastWatchedSeconds] = useState<number>(0);
   const [autoPlay, setAutoPlay] = useState<boolean>(false);
+  const [autoNextEpisode, setAutoNextEpisode] = useState<boolean>(false);
+  const [skipIntro, setSkipIntro] = useState<boolean>(false);
+  const [introSkipped, setIntroSkipped] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const currentSecondsRef = useRef<number>(0);
   const playerRef = useRef<MediaPlayerInstance>(null);
   const hasFetchedTokenRef = useRef<boolean>(false);
@@ -116,7 +135,7 @@ export default function WatchPlayer() {
   })();
 
   // Episodes of current season, if not season, return empty array
-  const episodes = season?.episodes || [];
+  const episodes = useMemo(() => season?.episodes || [], [season?.episodes]);
 
   // Find index of current episode in episodes array, if not found, return -1
   const currentEpisodeIndex = (() => {
@@ -145,9 +164,43 @@ export default function WatchPlayer() {
 
   const movieItemId = isSeries ? selectedEpisode?.id : season?.id;
 
+  // Load settings from localStorage on mount
+  useEffect(() => {
+    const savedAutoNextEpisode = getData('watch_auto_next_episode') === 'true';
+    const savedSkipIntro = getData('watch_skip_intro') === 'true';
+    setAutoNextEpisode(savedAutoNextEpisode);
+    setSkipIntro(savedSkipIntro);
+  }, []);
+
+  // Toggle auto next episode
+  const handleToggleAutoNextEpisode = () => {
+    const newValue = !autoNextEpisode;
+    setAutoNextEpisode(newValue);
+    setData('watch_auto_next_episode', String(newValue));
+  };
+
+  // Toggle skip intro
+  const handleToggleSkipIntro = () => {
+    const newValue = !skipIntro;
+    setSkipIntro(newValue);
+    setData('watch_skip_intro', String(newValue));
+  };
+
   // Track current position (no API calls during playback)
   const handleWatchHistoryTimeUpdate = (detail: MediaTimeUpdateEventDetail) => {
     currentSecondsRef.current = Math.floor(detail.currentTime || 0);
+
+    // Handle skip intro
+    if (skipIntro && typeof video?.introEnd === 'number' && !introSkipped) {
+      const currentTime = detail.currentTime || 0;
+      const introStartTime = video.introStart ?? 0;
+      if (currentTime >= introStartTime && currentTime < video.introEnd) {
+        if (playerRef.current) {
+          playerRef.current.currentTime = video.introEnd;
+        }
+        setIntroSkipped(true);
+      }
+    }
   };
 
   // Save watch history when leaving video page
@@ -167,9 +220,81 @@ export default function WatchPlayer() {
   // Track when user seeks (clicks on time slider)
   const handleSeeked = (currentTime: number) => {
     currentSecondsRef.current = Math.floor(currentTime || 0);
-
     saveWatchHistory();
   };
+
+  // Handle video ended - auto play next episode if enabled
+  const handleVideoEnded = useCallback(() => {
+    if (
+      !autoNextEpisode ||
+      !isSeries ||
+      isLastEpisode ||
+      !season ||
+      !selectedEpisode
+    ) {
+      return;
+    }
+
+    const nextEpisodeIndex = currentEpisodeIndex + 1;
+    const nextEpisode = episodes[nextEpisodeIndex];
+
+    if (nextEpisode && season && movie) {
+      const nextUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${nextEpisode.label}`;
+      router.push(nextUrl);
+    }
+  }, [
+    autoNextEpisode,
+    isSeries,
+    isLastEpisode,
+    season,
+    selectedEpisode,
+    currentEpisodeIndex,
+    episodes,
+    movie,
+    router
+  ]);
+
+  // Handle navigate to previous episode
+  const handlePrevEpisode = useCallback(() => {
+    if (!isSeries || isFirstEpisode || !season || !movie) return;
+
+    const prevEpisodeIndex = currentEpisodeIndex - 1;
+    const prevEpisode = episodes[prevEpisodeIndex];
+
+    if (prevEpisode) {
+      const prevUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${prevEpisode.label}`;
+      router.push(prevUrl);
+    }
+  }, [
+    isSeries,
+    isFirstEpisode,
+    season,
+    movie,
+    currentEpisodeIndex,
+    episodes,
+    router
+  ]);
+
+  // Handle navigate to next episode
+  const handleNextEpisode = useCallback(() => {
+    if (!isSeries || isLastEpisode || !season || !movie) return;
+
+    const nextEpisodeIndex = currentEpisodeIndex + 1;
+    const nextEpisode = episodes[nextEpisodeIndex];
+
+    if (nextEpisode) {
+      const nextUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${nextEpisode.label}`;
+      router.push(nextUrl);
+    }
+  }, [
+    isSeries,
+    isLastEpisode,
+    season,
+    movie,
+    currentEpisodeIndex,
+    episodes,
+    router
+  ]);
 
   // Track when user leaves page (beforeunload, navigation, etc)
   useEffect(() => {
@@ -189,6 +314,7 @@ export default function WatchPlayer() {
   useEffect(() => {
     saveWatchHistory().then(() => {
       currentSecondsRef.current = 0;
+      setIntroSkipped(false);
     });
   }, [movieItemId, saveWatchHistory]);
 
@@ -222,12 +348,68 @@ export default function WatchPlayer() {
 
   const handleStartOver = () => {
     if (playerRef.current) {
-      playerRef.current.currentTime = 0;
+      // If skip intro is enabled and video starts in intro range, skip to intro end
+      if (skipIntro && typeof video?.introEnd === 'number') {
+        const introStartTime = video.introStart ?? 0;
+        if (introStartTime === 0) {
+          playerRef.current.currentTime = video.introEnd;
+          setIntroSkipped(true);
+        } else {
+          playerRef.current.currentTime = 0;
+        }
+      } else {
+        playerRef.current.currentTime = 0;
+      }
     }
     setAutoPlay(true);
     closeContinueModal();
     playerRef.current?.play();
   };
+
+  // Handle player ready - skip intro immediately if enabled
+  const handlePlayerCanPlay = useCallback(() => {
+    if (
+      !skipIntro ||
+      !playerRef.current ||
+      typeof video?.introEnd !== 'number' ||
+      introSkipped
+    ) {
+      return;
+    }
+
+    const currentTime = playerRef.current.currentTime;
+    const introStartTime = video.introStart ?? 0;
+
+    // If starting from the beginning and intro starts at 0, skip immediately
+    if (currentTime >= introStartTime && currentTime < video.introEnd) {
+      playerRef.current.currentTime = video.introEnd;
+      setIntroSkipped(true);
+    }
+  }, [skipIntro, video?.introStart, video?.introEnd, introSkipped]);
+
+  // Auto-skip intro when skipIntro setting is enabled and player is ready
+  useEffect(() => {
+    if (
+      !skipIntro ||
+      !playerRef.current ||
+      typeof video?.introEnd !== 'number' ||
+      introSkipped
+    ) {
+      return;
+    }
+
+    // Use a small timeout to ensure player is fully ready
+    if (playerRef.current) {
+      const currentTime = playerRef.current.currentTime;
+      const introStartTime = video.introStart ?? 0;
+
+      // Skip intro if at the beginning and intro is enabled
+      if (currentTime >= introStartTime && currentTime < video.introEnd) {
+        playerRef.current.currentTime = video.introEnd;
+        setIntroSkipped(true);
+      }
+    }
+  }, [skipIntro, video?.introEnd, video?.introStart, introSkipped]);
 
   useEffect(() => {
     if (hasFetchedTokenRef.current) return;
@@ -249,7 +431,7 @@ export default function WatchPlayer() {
   if (!movie) return null;
 
   return (
-    <div className='watch-player relative z-3 mx-auto max-w-410 px-5'>
+    <div className='watch-player relative mx-auto max-w-410 px-5'>
       <div className='mb-6 inline-flex w-full items-center gap-2 px-8'>
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
@@ -273,7 +455,7 @@ export default function WatchPlayer() {
                 duration={video.duration}
                 introEnd={video.introEnd}
                 introStart={video.introStart}
-                source={renderVideoUrl(video.content)}
+                src={renderVideoUrl(video.content)}
                 thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
                 vttUrl={renderVttUrl(video.vttUrl)}
                 outroStart={video.outroStart}
@@ -282,34 +464,40 @@ export default function WatchPlayer() {
                 className='w-full'
                 autoPlay={autoPlay}
                 slots={{
-                  topControlsGroupStart: (
+                  topControlsGroupStart: !isFullscreen ? (
                     <span className='text-base font-medium'>{videoTitle}</span>
-                  ),
-                  topControlsGroupEnd: isSeries ? (
-                    <Button
-                      variant='ghost'
-                      className={cn(
-                        `hover:text-golden-glow font-medium! hover:bg-transparent!`,
-                        {
-                          'text-golden-glow': isEpisodeListOpen
-                        }
-                      )}
-                      onClick={openEpisodeList}
-                    >
-                      <PlaylistIcon className='h-6! w-6!' />
-                      Danh sách tập
-                    </Button>
-                  ) : null
+                  ) : null,
+                  topControlsGroupEnd:
+                    !isFullscreen && isSeries ? (
+                      <Button
+                        variant='ghost'
+                        className={cn(
+                          `hover:text-golden-glow font-medium! hover:bg-transparent!`,
+                          {
+                            'text-golden-glow': isEpisodeListOpen
+                          }
+                        )}
+                        onClick={openEpisodeList}
+                      >
+                        <PlaylistIcon className='h-6! w-6!' />
+                        Danh sách tập
+                      </Button>
+                    ) : null
                 }}
                 volume={
                   envConfig.NEXT_PUBLIC_NODE_ENV === 'development' ? 0 : 0.5
                 }
                 prev={isSeries && !isFirstEpisode}
                 next={isSeries && !isLastEpisode}
-                onPrevClick={() => console.log('prev')}
-                onNextClick={() => console.log('next')}
+                onPrevClick={handlePrevEpisode}
+                onNextClick={handleNextEpisode}
                 onTimeUpdate={handleWatchHistoryTimeUpdate}
                 onSeeked={handleSeeked}
+                onEnded={handleVideoEnded}
+                onLoadedMetadata={handlePlayerCanPlay}
+                onFullscreenChange={(isFullscreen) =>
+                  setIsFullscreen(isFullscreen)
+                }
               />
               <WatchAskContinueModal
                 opened={isShowContinueModal}
@@ -335,52 +523,24 @@ export default function WatchPlayer() {
           </p>
         </div>
       )}
-      <div className='bg-covert-black flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
+      <div className='player-controls bg-covert-black flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
         <div className='flex w-full items-center gap-2 px-4 select-none'>
           <ButtonLike targetId={movie.id} variant='watch' text='Yêu thích' />
           <ButtonAddToPlaylist movieId={movie.id} variant='watch' />
-          <Button
-            variant='ghost'
-            className='hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
-          >
-            Chuyển tập
-            <span className='group-hover:border-golden-glow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
-              OFF
-            </span>
-          </Button>
-          <Button
-            variant='ghost'
-            className='hover:text-golden-glow group flex items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
-          >
-            Bỏ qua giới thiệu
-            <span className='group-hover:border-golden-glow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
-              OFF
-            </span>
-          </Button>
-          <Button
-            variant='ghost'
-            className='hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
-          >
-            Rạp phim
-            <span className='group-hover:border-golden-glow w-8 cursor-pointer rounded border border-solid border-white p-1 text-center text-[10px] leading-none opacity-50 transition-all duration-200 ease-linear group-hover:opacity-100'>
-              OFF
-            </span>
-          </Button>
+          <ButtonAutoNextEpisode
+            autoNextEpisode={autoNextEpisode}
+            handleToggleAutoNextEpisode={handleToggleAutoNextEpisode}
+          />
+          <ButtonSkipIntro
+            handleToggleSkipIntro={handleToggleSkipIntro}
+            skipIntro={skipIntro}
+          />
+          <ButtonMovieTheater />
+          <div className='backdrop-movie-theater'></div>
           <ButtonShareMovie variant='watch' />
-          <Button
-            variant='ghost'
-            className='hover:text-golden-glow flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
-          >
-            <CiStreamOn className='size-5' />
-            Xem chung
-          </Button>
+          <ButtonWatchTogether />
           <div className='grow'></div>
-          <Button
-            variant='ghost'
-            className='hover:text-golden-glow flex h-10! items-center justify-center gap-2 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
-          >
-            <FaFlag /> Báo lỗi
-          </Button>
+          <ButtonReport />
         </div>
       </div>
     </div>

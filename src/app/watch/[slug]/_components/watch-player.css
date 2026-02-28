@@ -16,3 +16,51 @@
     padding-inline: 12px;
   }
 }
+
+.movie-theater {
+  & .backdrop-movie-theater {
+    display: block;
+  }
+
+  & .watch-player {
+    z-index: 100;
+
+    & .video-player {
+      z-index: 101;
+    }
+    & .episode-sidebar {
+      z-index: 102;
+    }
+    & .episode-sidebar-backdrop {
+      z-index: 101;
+    }
+
+    & .player-controls {
+      background: transparent;
+      & > div > *:not(.backdrop-movie-theater) {
+        opacity: 0;
+      }
+
+      & .button-movie-theater {
+        transition: all 1s linear;
+      }
+    }
+
+    &:hover {
+      & .player-controls > div > .button-movie-theater {
+        opacity: 1;
+        position: relative;
+        z-index: 102;
+      }
+    }
+  }
+}
+
+.backdrop-movie-theater {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 100;
+  transition: all 0.2s linear;
+}

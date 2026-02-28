@@ -209,6 +209,12 @@ const apiConfig = defineApiConfig({
       method: 'GET',
       headers: baseHeader,
       isRequiredTenantId: true
+    },
+    getScheduleList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/schedule`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredTenantId: true
     }
   },
   moviePerson: {

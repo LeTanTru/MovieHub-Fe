@@ -62,7 +62,7 @@ export default function TrailerModal({
           duration={video.duration}
           introEnd={video.introEnd}
           introStart={video.introStart}
-          source={renderVideoUrl(video.content)}
+          src={renderVideoUrl(video.content)}
           thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
           vttUrl={renderVttUrl(video.vttUrl)}
           outroStart={video.outroStart}
