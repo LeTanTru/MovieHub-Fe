@@ -472,9 +472,9 @@ export default function WatchPlayer() {
                       <Button
                         variant='ghost'
                         className={cn(
-                          `hover:text-golden-glow font-medium! hover:bg-transparent!`,
+                          `dark:hover:text-golden-glow font-medium dark:hover:bg-transparent`,
                           {
-                            'text-golden-glow': isEpisodeListOpen
+                            'dark:text-golden-glow': isEpisodeListOpen
                           }
                         )}
                         onClick={openEpisodeList}

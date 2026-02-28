@@ -120,7 +120,7 @@ export default function PersonSidebar() {
         {person?.bio && (
           <Button
             onClick={handleOpenModal}
-            className='hover:bg-main-background mt-2 ml-auto block border-none bg-white/5 text-sm text-white'
+            className='dark:hover:bg-main-background mt-2 ml-auto block border-none dark:bg-white/5 dark:text-white'
             variant='secondary'
           >
             Xem thêm
@@ -147,7 +147,7 @@ export default function PersonSidebar() {
             >
               <Button
                 variant='ghost'
-                className='absolute top-2 right-0 hover:bg-transparent!'
+                className='absolute top-2 right-0 dark:hover:bg-transparent'
                 onClick={handleCloseModal}
               >
                 <X className='size-5' />

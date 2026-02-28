@@ -49,7 +49,7 @@ export default function WatchAskContinueModal({
             {/* Body */}
             <div className='p-4 pt-0'>
               <p className='text-gray-300'>
-                Bạn đã xem phim này trước đó đến{' '}
+                Bạn đã xem phim này trước đó đến&nbsp;
                 {formatSecondsToHMS(lastWatchedSeconds)}. Bạn muốn tiếp tục hay
                 bắt đầu lại?
               </p>
@@ -62,7 +62,7 @@ export default function WatchAskContinueModal({
                 <Col span={8}>
                   <Button
                     variant='primary'
-                    className='bg-golden-glow hover:bg-golden-glow/80 text-black'
+                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:text-black'
                     onClick={onContinueWatching}
                   >
                     Tiếp tục xem

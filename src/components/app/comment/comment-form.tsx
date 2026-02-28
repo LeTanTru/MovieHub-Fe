@@ -122,12 +122,12 @@ export default function CommentForm({
               type='button'
               variant='ghost'
               onClick={onCancel}
-              className='hover:text-destructive h-fit py-0 hover:bg-transparent!'
+              className='dark:hover:text-destructive h-fit py-0 dark:hover:bg-transparent'
             >
               Hủy
             </Button>
             <Button
-              className='text-golden-glow hover:text-golden-glow h-fit gap-2 bg-transparent px-4.5 py-0 font-medium hover:bg-transparent hover:opacity-80'
+              className='dark:text-golden-glow dark:hover:text-golden-glow h-fit gap-2 px-4.5 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
               disabled={
                 createCommentLoading ||
                 updateCommentLoading ||

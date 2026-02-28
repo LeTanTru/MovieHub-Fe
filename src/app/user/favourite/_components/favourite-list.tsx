@@ -95,10 +95,10 @@ export default function FavouriteList() {
           <Button
             key={tab.key}
             className={cn(
-              'min-w-25 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear hover:bg-white hover:text-black',
+              'min-w-25 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear dark:hover:bg-white dark:hover:text-black',
               {
-                'bg-white text-black': activeTab === tab.key,
-                'bg-white/5 text-white': activeTab !== tab.key
+                'dark:bg-white dark:text-black': activeTab === tab.key,
+                'dark:bg-white/5 dark:text-white': activeTab !== tab.key
               }
             )}
             role='tab'

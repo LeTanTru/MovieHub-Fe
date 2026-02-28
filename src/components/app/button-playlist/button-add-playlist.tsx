@@ -31,7 +31,7 @@ export default function ButtonAddPlayList({
         <Button
           variant='outline'
           className={cn(
-            'hover:text-golden-glow hover:border-golden-glow',
+            'dark:hover:text-golden-glow dark:hover:border-golden-glow',
             className
           )}
           onClick={handleOpen}
@@ -47,7 +47,7 @@ export default function ButtonAddPlayList({
           <Button
             variant='outline'
             className={cn(
-              'hover:text-golden-glow! hover:border-golden-glow! h-7 w-7 rounded-full p-0!',
+              'dark:hover:text-golden-glow dark:hover:border-golden-glow h-7 w-7 rounded-full p-0!',
               className
             )}
             onClick={handleOpen}

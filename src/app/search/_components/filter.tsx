@@ -266,7 +266,7 @@ export default function Filter({
                     <div className='flex grow items-center gap-4'>
                       <Button
                         variant='primary'
-                        className='bg-golden-glow hover:bg-golden-glow/80 min-h-10 rounded-full'
+                        className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 min-h-10 rounded-full'
                         onClick={handleApplyFilters}
                       >
                         Lọc kết quả
@@ -274,7 +274,7 @@ export default function Filter({
                       </Button>
                       <Button
                         type='button'
-                        className='min-h-10 rounded-full px-5 hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50'
+                        className='min-h-10 rounded-full px-5 dark:hover:opacity-80 dark:disabled:opacity-50'
                         variant='outline'
                         disabled={isAllFiltersDefault}
                         onClick={handleClearFilters}
@@ -283,7 +283,7 @@ export default function Filter({
                       </Button>
                       <Button
                         type='button'
-                        className='min-h-10 rounded-full px-5 hover:opacity-80'
+                        className='min-h-10 rounded-full px-5 dark:hover:opacity-80'
                         variant='outline'
                         onClick={handleCloseFilters}
                       >
