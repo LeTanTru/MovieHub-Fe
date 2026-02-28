@@ -139,10 +139,10 @@ export default function Slider() {
           loop={sidebarList.length > 1}
           grabCursor={true}
           thumbs={{ swiper: thumbsSwiper }}
-          // autoplay={{
-          //   delay: 2000,
-          //   disableOnInteraction: false
-          // }}
+          autoplay={{
+            delay: 2000,
+            disableOnInteraction: false
+          }}
           modules={[EffectFade, Thumbs, Autoplay]}
           className='top-slide-main'
         >
