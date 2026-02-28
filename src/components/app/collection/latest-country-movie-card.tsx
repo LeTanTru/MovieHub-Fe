@@ -10,10 +10,9 @@ import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { route } from '@/routes';
 import { renderImageUrl } from '@/utils';
-import MovieModal from './movie-modal';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
-import { X } from 'lucide-react';
+import { MovieModal } from '@/components/app/movie-card';
 
 type Dir = 'up' | 'down';
 
@@ -37,14 +36,12 @@ const itemTransition: Transition = {
 const MODAL_WIDTH = 400;
 const EDGE_PADDING = 20;
 
-export default function MovieCard({
+export default function LatestCountryMovieCard({
   movie,
-  dir = 'up',
-  onDelete
+  dir = 'up'
 }: {
   movie: MovieResType;
   dir?: Dir;
-  onDelete?: (id: string) => void;
 }) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
@@ -109,7 +106,7 @@ export default function MovieCard({
         className='group relative flex flex-col gap-3'
       >
         <Link
-          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[56%]'
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
           onPointerEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -125,7 +122,7 @@ export default function MovieCard({
             alt={`${movie.title} - ${movie.originalTitle}`}
             className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
             fill
-            src={renderImageUrl(movie.posterUrl)}
+            src={renderImageUrl(movie.thumbnailUrl)}
             unoptimized
             sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
           />
@@ -156,16 +153,6 @@ export default function MovieCard({
             </Link>
           </h4>
         </div>
-
-        {onDelete && (
-          <button
-            aria-label='Remove from favourite'
-            className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
-            onClick={() => onDelete(movie.id)}
-          >
-            <X className='size-4' />
-          </button>
-        )}
       </motion.div>
 
       {isMounted &&

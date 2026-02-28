@@ -140,7 +140,7 @@ export default function TopMovieCard({
           <Image
             alt={`${movie.title} - ${movie.originalTitle}`}
             className={cn(
-              'image absolute h-full w-full object-cover transition-transform duration-200 ease-linear',
+              'image absolute h-full w-full object-cover transition-all duration-200 ease-linear',
               {
                 left: index % 2 === 0,
                 right: index % 2 !== 0
@@ -153,34 +153,41 @@ export default function TopMovieCard({
           />
         </Link>
 
-        <div className='flex min-h-10.5 gap-6'>
-          <div className='from-golden-glow to-golden-tainoi w-12.5 shrink-0 bg-linear-[135deg] bg-clip-text text-6xl font-extrabold text-transparent italic'>
+        <div className='relative flex min-h-10.5 gap-2'>
+          <div
+            className={cn(
+              'from-golden-glow to-golden-tainoi min-w-12.5 shrink-0 bg-linear-[135deg] bg-clip-text text-left text-[58px] leading-none font-extrabold text-transparent italic',
+              {
+                'min-w-18': (index + 1).toString().length > 1
+              }
+            )}
+          >
             {index + 1}
           </div>
-          <div className='w-full'>
-            <Link
-              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-              title={movie.title}
+          <div>
+            <h4
+              className={cn(
+                'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
+                {
+                  'featured-title font-bold': movie.isFeatured
+                }
+              )}
             >
-              <h4
-                className={cn(
-                  'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
-                  {
-                    'featured-title font-bold': movie.isFeatured
-                  }
-                )}
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.title}
               >
                 {movie.title}
-              </h4>
-            </Link>
-            <Link
-              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-              title={movie.originalTitle}
-            >
-              <h4 className='text-dark-gray mb-1.25 line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+              </Link>
+            </h4>
+            <h4 className='text-dark-gray mb-1.25 line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.originalTitle}
+              >
                 {movie.originalTitle}
-              </h4>
-            </Link>
+              </Link>
+            </h4>
             <div className='flex items-center gap-4'>
               <div
                 className='text-dark-gray inline text-xs whitespace-nowrap'
@@ -191,9 +198,11 @@ export default function TopMovieCard({
               <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
                 {releaseYear}
               </div>
-              <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-                Phần {latestSeason?.label}
-              </div>
+              {latestSeason?.label !== '1' && (
+                <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+                  Phần {latestSeason?.label}
+                </div>
+              )}
               {isSeries && (
                 <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
                   Tập {latestEpisode?.label}

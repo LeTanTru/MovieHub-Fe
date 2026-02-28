@@ -24,6 +24,7 @@ export default function ReviewModal({
   onClose: () => void;
 }) {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const { movie, setMovie } = useMovieStore(
     useShallow((s) => ({ movie: s.movie, setMovie: s.setMovie }))
   );
@@ -105,7 +106,7 @@ export default function ReviewModal({
       open={opened}
       onClose={onClose}
       bodyWrapperClassName='bg-vintage-navi w-160'
-      closeOnBackdropClick
+      confirmOnClose={isFormChanged}
     >
       <BaseForm
         defaultValues={defaultValues}
@@ -113,6 +114,7 @@ export default function ReviewModal({
         schema={reviewSchema}
         onSubmit={handleSubmit}
         className='bg-transparent px-8 pb-5'
+        onFormChange={setIsFormChanged}
       >
         {(form) => (
           <>

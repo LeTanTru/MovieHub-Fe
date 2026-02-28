@@ -135,7 +135,7 @@ export default function CinemaMovieCard({
         >
           <div>
             <Image
-              alt={movie.title}
+              alt={`${movie.title} - ${movie.originalTitle}`}
               className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
               fill
               src={renderImageUrl(movie.thumbnailUrl)}
@@ -151,7 +151,7 @@ export default function CinemaMovieCard({
               className='bg-gunmetal-blue relative block h-0 w-full shrink-0 overflow-hidden rounded-md pb-[150%] shadow-[0_0_10px_5x_rgba(0,0,0,0.1)]'
             >
               <Image
-                alt={movie.title}
+                alt={`${movie.title} - ${movie.originalTitle}`}
                 className='absolute inset-0 h-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
                 src={renderImageUrl(movie.posterUrl)}
                 unoptimized
@@ -161,29 +161,29 @@ export default function CinemaMovieCard({
             </Link>
           </div>
           <div className='grow'>
-            <Link
-              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-              title={movie.title}
+            <h4
+              className={cn(
+                'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
+                {
+                  'featured-title font-bold': movie.isFeatured
+                }
+              )}
             >
-              <h4
-                className={cn(
-                  'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
-                  {
-                    'featured-title font-bold': movie.isFeatured
-                  }
-                )}
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.title}
               >
                 {movie.title}
-              </h4>
-            </Link>
-            <Link
-              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-              title={movie.originalTitle}
-            >
-              <h4 className='text-dark-gray mb-1.25 line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+              </Link>
+            </h4>
+            <h4 className='text-dark-gray mb-1.25 line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.originalTitle}
+              >
                 {movie.originalTitle}
-              </h4>
-            </Link>
+              </Link>
+            </h4>
             <div className='flex items-center gap-4'>
               <div
                 className='text-dark-gray inline text-xs whitespace-nowrap'

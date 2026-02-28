@@ -1,6 +1,6 @@
 import { route } from '@/routes';
 import { CollectionResType } from '@/types';
-import { generateSlug } from '@/utils';
+import { generateSlug, getColorList } from '@/utils';
 import Link from 'next/link';
 import { FaAngleRight } from 'react-icons/fa6';
 
@@ -11,7 +11,7 @@ export default function TopicItem({
   topic: CollectionResType;
   random: boolean;
 }) {
-  const colors = JSON.parse(topic.color || '[]');
+  const colors = getColorList(topic.color || '[]');
 
   const gradientStyle = {
     background: `linear-gradient(135deg, ${colors.slice(0, 2).join(', ')})`

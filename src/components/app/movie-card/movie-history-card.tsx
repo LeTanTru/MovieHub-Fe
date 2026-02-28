@@ -72,7 +72,7 @@ export default function MovieHistoryCard({
         href={watchLink}
       >
         <Image
-          alt={movie.title}
+          alt={`${movie.title} - ${movie.originalTitle}`}
           className='absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear hover:scale-105'
           fill
           src={renderImageUrl(movie.posterUrl)}
@@ -114,25 +114,25 @@ export default function MovieHistoryCard({
             )}
           </div>
         </div>
-        <Link href={watchLink} title={movie.title}>
-          <h4
-            className={cn(
-              'hover:text-golden-glow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
-              {
-                'featured-title font-bold': movie.isFeatured
-              }
-            )}
-          >
+        <h4
+          className={cn(
+            'hover:text-golden-glow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
+            {
+              'featured-title font-bold': movie.isFeatured
+            }
+          )}
+        >
+          <Link href={watchLink} title={movie.title}>
             {movie.title}&nbsp;
             {movieItem?.parent?.label !== '1' && movieItem?.parent?.label}
-          </h4>
-        </Link>
-        <Link href={watchLink} title={movie.originalTitle}>
-          <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+          </Link>
+        </h4>
+        <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+          <Link href={watchLink} title={movie.originalTitle}>
             {movie.originalTitle}&nbsp;
             {movieItem?.parent?.label !== '1' && movieItem?.parent?.label}
-          </h4>
-        </Link>
+          </Link>
+        </h4>
       </div>
 
       {onDelete && (

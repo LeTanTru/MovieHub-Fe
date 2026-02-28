@@ -7,11 +7,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { CollectionResType } from '@/types';
 import { route } from '@/routes';
 import { FaChevronRight } from 'react-icons/fa6';
-import { NoData } from '@/components/no-data';
 import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { generateSlug } from '@/utils';
 import { CinemaMovieCard } from '@/components/app/collection';
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 export default function CinemaMovieList({
   collection
@@ -38,49 +38,41 @@ export default function CinemaMovieList({
             <FaChevronRight className='text-sm' />
           </Link>
         </div>
-        {movieList.length === 0 ? (
-          <NoData
-            className='pt-25'
-            content={
-              <>
-                Bạn chưa xem phim nào. Hãy khám phá và xem những bộ phim yêu
-                thích của bạn ngay bây giờ 😉
-              </>
-            }
-          />
-        ) : (
-          <div className='swiper-container'>
-            <div className='swiper-navigation'>
-              <div ref={nextRef} className='swiper-button-next' />
-              <div ref={prevRef} className='swiper-button-prev' />
+        <div className='swiper-container'>
+          <div className='swiper-navigation'>
+            <div ref={nextRef} className='swiper-button swiper-next-button'>
+              <LuChevronRight />
             </div>
-            <Swiper
-              slidesPerView={4}
-              spaceBetween={16}
-              modules={[Navigation]}
-              grabCursor={true}
-              className='w-full'
-              onSwiper={(swiper) => {
-                if (
-                  swiper.params.navigation &&
-                  typeof swiper.params.navigation !== 'boolean'
-                ) {
-                  swiper.params.navigation.nextEl = nextRef.current;
-                  swiper.params.navigation.prevEl = prevRef.current;
-                  swiper.navigation.init();
-                  swiper.navigation.update();
-                }
-              }}
-              key='collection-list-slider'
-            >
-              {movieList.map((movie) => (
-                <SwiperSlide key={movie.id}>
-                  <CinemaMovieCard movie={movie} dir='down' />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            <div ref={prevRef} className='swiper-button swiper-prev-button'>
+              <LuChevronLeft />
+            </div>
           </div>
-        )}
+          <Swiper
+            slidesPerView={4}
+            spaceBetween={16}
+            modules={[Navigation]}
+            grabCursor={true}
+            className='w-full'
+            onSwiper={(swiper) => {
+              if (
+                swiper.params.navigation &&
+                typeof swiper.params.navigation !== 'boolean'
+              ) {
+                swiper.params.navigation.nextEl = nextRef.current;
+                swiper.params.navigation.prevEl = prevRef.current;
+                swiper.navigation.init();
+                swiper.navigation.update();
+              }
+            }}
+            key={collection.id}
+          >
+            {movieList.map((movie) => (
+              <SwiperSlide key={movie.id}>
+                <CinemaMovieCard movie={movie} dir='down' />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </>
     </div>
   );

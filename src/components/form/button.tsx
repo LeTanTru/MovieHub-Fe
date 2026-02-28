@@ -2,8 +2,8 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
 import type { ComponentProps } from 'react';
+import { CircleLoading } from '@/components/loading';
 
 export const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-normal disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-all ease-linear duration-200 disabled:pointer-events-auto disabled:cursor-not-allowed focus-visible:ring-0",
@@ -61,10 +61,7 @@ export default function Button({
       {...props}
     >
       {loading ? (
-        <Loader2
-          className='h-5! w-5! animate-spin stroke-3'
-          aria-hidden='true'
-        />
+        <CircleLoading className='size-5 stroke-3' aria-hidden='true' />
       ) : (
         children
       )}

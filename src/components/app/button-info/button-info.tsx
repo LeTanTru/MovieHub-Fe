@@ -22,15 +22,15 @@ export default function ButtonInfo({
 
   return (
     <Link
-      className={cn('item group', className)}
+      className={cn('item', className)}
       href={href}
       title={title}
       onClick={handleClick}
     >
-      <div className='inc-icon icon-20'>
+      <div className='inc-icon icon-20 group'>
         <InfoIcon
           ref={iconRef}
-          iconClassName='group-hover:fill-golden-glow size-5 fill-white stroke-black transition-colors ease-linear duration-200'
+          iconClassName='group-hover:text-golden-glow size-5 text-white stroke-black transition-colors ease-linear duration-200'
         />
       </div>
     </Link>

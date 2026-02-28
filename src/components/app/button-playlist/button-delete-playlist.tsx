@@ -81,40 +81,17 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
         className='bg-transparent'
         bodyWrapperClassName='bg-main-background w-110'
         bodyClassName='p-4 pt-0'
-        closeOnBackdropClick={!isPending}
-        variants={{
-          initial: {
-            opacity: 0.8,
-            scale: 0.8
-          },
-          animate: {
-            opacity: 1,
-            scale: 1
-          },
-          exit: {
-            opacity: 0.8,
-            scale: 0.8
-          }
-        }}
-        transition={{
-          duration: 0.2,
-          ease: 'linear'
-        }}
       >
         <h3>Bạn có chắc chắn muốn xóa danh sách phát này không?</h3>
         <Row className='mt-4 mb-0 justify-end'>
           <Col span={6}>
-            <Button
-              className='bg-white text-black'
-              variant='primary'
-              onClick={handleClose}
-            >
+            <Button variant='primary' onClick={handleClose}>
               Đóng
             </Button>
           </Col>
           <Col span={6}>
             <Button
-              className='bg-red-500'
+              className='dark:bg-red-500'
               variant='destructive'
               disabled={isPending}
               loading={isPending}

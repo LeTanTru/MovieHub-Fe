@@ -5,16 +5,18 @@ import { VerticalBarLoading } from '@/components/loading';
 import { useScrollLoadMore } from '@/hooks';
 import {
   queryKeys,
-  STYLE_LATEST_MOVIE_LIST,
-  STYLE_MOVIE_CINEMA_LIST,
-  STYLE_TOP_RANKING_LIST
+  STYLE_ANIME,
+  STYLE_CINEMA,
+  STYLE_LATEST_BY_COUNTRY,
+  STYLE_TOP_RANKING
 } from '@/constants';
 import { collectionApiRequest } from '@/api-requests';
 import { CollectionResType, CollectionSearchType } from '@/types';
-import LastestMovieList from './latest-movie-list';
 import TopMovieList from './top-movie-list';
 import MovieList from './movie-list';
 import CinemaMovieList from './cinema-movie-list';
+import LastestCountryMovieList from './latest-country-movie-list';
+import AnimeMovieList from './anime-movie-list';
 
 export default function Collection() {
   const loadMoreSize = 3;
@@ -40,17 +42,25 @@ export default function Collection() {
         const styleType = collection.styleType;
 
         switch (styleType) {
-          case STYLE_TOP_RANKING_LIST: {
+          case STYLE_TOP_RANKING: {
             return <TopMovieList collection={collection} key={collection.id} />;
           }
-          case STYLE_LATEST_MOVIE_LIST: {
+          case STYLE_LATEST_BY_COUNTRY: {
             return (
-              <LastestMovieList collection={collection} key={collection.id} />
+              <LastestCountryMovieList
+                collection={collection}
+                key={collection.id}
+              />
             );
           }
-          case STYLE_MOVIE_CINEMA_LIST: {
+          case STYLE_CINEMA: {
             return (
               <CinemaMovieList collection={collection} key={collection.id} />
+            );
+          }
+          case STYLE_ANIME: {
+            return (
+              <AnimeMovieList collection={collection} key={collection.id} />
             );
           }
           default: {

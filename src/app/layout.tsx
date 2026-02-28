@@ -12,12 +12,11 @@ import { PerformanceMonitor } from '@/components/performance-monitor';
 import { BodyLoad } from '@/components/app/body-load';
 import { ToastContainer } from 'react-toastify';
 
-const inter = Be_Vietnam_Pro({
+const beVietnamPro = Be_Vietnam_Pro({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
   subsets: ['latin'],
   variable: '--font-be-vietnam-pro',
-  display: 'swap',
-  preload: false
+  display: 'swap'
 });
 
 export const metadata: Metadata = {
@@ -34,7 +33,9 @@ export default async function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang='vi' data-scroll-behavior='smooth'>
-      <body className={`${inter.variable} ${inter.className} antialiased`}>
+      <body
+        className={`${beVietnamPro.variable} ${beVietnamPro.className} antialiased`}
+      >
         <BodyLoad />
         <QueryProvider>
           <AppProvider>
