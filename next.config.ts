@@ -24,7 +24,21 @@ const nextConfig: NextConfig = {
     ]
   },
   outputFileTracingRoot: path.join(__dirname),
-  reactCompiler: true
+  reactCompiler: true,
+  // Optimize CSS chunking and reduce network requests
+  experimental: {
+    optimizePackageImports: ['@vidstack/react', 'react-icons', 'lucide-react'],
+    optimizeCss: true
+  },
+  // Optimize bundle size
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? {
+            exclude: ['error', 'warn']
+          }
+        : false
+  }
 };
 
 const withBundleAnalyzer = createBundleAnalyzer({
