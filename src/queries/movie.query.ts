@@ -63,3 +63,17 @@ export const useTopViewMovieListQuery = ({
     enabled
   });
 };
+
+export const useScheludeMovieListQuery = ({
+  params,
+  enabled
+}: {
+  params: { date: string };
+  enabled?: boolean;
+}) => {
+  return useQuery({
+    queryKey: [queryKeys.MOVIE_SCHEDULE_LIST, params],
+    queryFn: () => movieApiRequest.getScheduleList(params),
+    enabled
+  });
+};

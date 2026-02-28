@@ -1,3 +1,24 @@
+import { ScheduleList } from '@/app/schedule/_components';
+import { Container } from '@/components/layout';
+import { getQueryClient } from '@/components/providers';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Lịch chiếu',
+  description: 'Xem lịch chiếu phim'
+};
+
 export default function SchedulePage() {
-  return <div>SchedulePage</div>;
+  const queryClient = getQueryClient();
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Container className='relative mx-auto min-h-[calc(100dvh-400px)] max-w-350 py-40'>
+        <div className='flex flex-col gap-12.5'>
+          <ScheduleList />
+        </div>
+      </Container>
+    </HydrationBoundary>
+  );
 }

@@ -32,6 +32,10 @@ const movieApiRequest = {
   getTopViewList: (params?: MovieSearchType) =>
     http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getTopViewList, {
       params
+    }),
+  getScheduleList: (params: { date: string }) =>
+    http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getScheduleList, {
+      params
     })
 };
 

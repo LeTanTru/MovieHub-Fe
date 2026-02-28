@@ -282,7 +282,8 @@ export const queryKeys = {
   WATCH_HISTORY_LIST: 'watch-history-list',
   WATCH_HISTORY_TRACKING: 'watch-history-tracking',
   COLLECTION_LIST: 'collection-list',
-  FAVOURITE_GET_LIST_IDS: 'favourite-get-list-ids'
+  FAVOURITE_GET_LIST_IDS: 'favourite-get-list-ids',
+  MOVIE_SCHEDULE_LIST: 'movie-schedule-list'
 };
 
 export const countries = [

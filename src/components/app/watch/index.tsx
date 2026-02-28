@@ -1,4 +1,9 @@
 export { default as ActorList } from './actor-list';
+export { default as ButtonAutoNextEpisode } from './button-auto-next-episode';
+export { default as ButtonMovieTheater } from './button-movie-theater';
+export { default as ButtonReport } from './button-report';
+export { default as ButtonSkipIntro } from './button-skip-intro';
+export { default as ButtonWatchTogether } from './button-watch-together';
 export { default as EpisodeList } from './episode-list';
 export { default as SuggestionList } from './suggestion-list';
 export { default as WatchAskContinueModal } from './watch-ask-continue-modal';
