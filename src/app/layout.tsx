@@ -13,10 +13,11 @@ import { BodyLoad } from '@/components/app/body-load';
 import { ToastContainer } from 'react-toastify';
 
 const beVietnamPro = Be_Vietnam_Pro({
-  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  weight: ['400', '500', '600', '700', '800'],
   subsets: ['latin'],
   variable: '--font-be-vietnam-pro',
-  display: 'swap'
+  display: 'swap',
+  preload: true
 });
 
 export const metadata: Metadata = {
