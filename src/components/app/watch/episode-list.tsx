@@ -187,7 +187,7 @@ export default function EpisodeList({
 
       <div
         className={cn(
-          `absolute top-0 left-0 z-20 h-full w-full cursor-pointer bg-black/50 transition-opacity duration-300 ease-linear`,
+          `episode-sidebar-backdrop absolute top-0 left-0 z-20 h-full w-full cursor-pointer bg-black/50 transition-opacity duration-300 ease-linear`,
           {
             'opacity-100': isOpen,
             'pointer-events-none opacity-0': !isOpen

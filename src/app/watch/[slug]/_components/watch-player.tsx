@@ -68,6 +68,7 @@ export default function WatchPlayer() {
   const [autoNextEpisode, setAutoNextEpisode] = useState<boolean>(false);
   const [skipIntro, setSkipIntro] = useState<boolean>(false);
   const [introSkipped, setIntroSkipped] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const currentSecondsRef = useRef<number>(0);
   const playerRef = useRef<MediaPlayerInstance>(null);
   const hasFetchedTokenRef = useRef<boolean>(false);
@@ -430,7 +431,7 @@ export default function WatchPlayer() {
   if (!movie) return null;
 
   return (
-    <div className='watch-player relative z-3 mx-auto max-w-410 px-5'>
+    <div className='watch-player relative mx-auto max-w-410 px-5'>
       <div className='mb-6 inline-flex w-full items-center gap-2 px-8'>
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
@@ -463,24 +464,25 @@ export default function WatchPlayer() {
                 className='w-full'
                 autoPlay={autoPlay}
                 slots={{
-                  topControlsGroupStart: (
+                  topControlsGroupStart: !isFullscreen ? (
                     <span className='text-base font-medium'>{videoTitle}</span>
-                  ),
-                  topControlsGroupEnd: isSeries ? (
-                    <Button
-                      variant='ghost'
-                      className={cn(
-                        `hover:text-golden-glow font-medium! hover:bg-transparent!`,
-                        {
-                          'text-golden-glow': isEpisodeListOpen
-                        }
-                      )}
-                      onClick={openEpisodeList}
-                    >
-                      <PlaylistIcon className='h-6! w-6!' />
-                      Danh sách tập
-                    </Button>
-                  ) : null
+                  ) : null,
+                  topControlsGroupEnd:
+                    !isFullscreen && isSeries ? (
+                      <Button
+                        variant='ghost'
+                        className={cn(
+                          `hover:text-golden-glow font-medium! hover:bg-transparent!`,
+                          {
+                            'text-golden-glow': isEpisodeListOpen
+                          }
+                        )}
+                        onClick={openEpisodeList}
+                      >
+                        <PlaylistIcon className='h-6! w-6!' />
+                        Danh sách tập
+                      </Button>
+                    ) : null
                 }}
                 volume={
                   envConfig.NEXT_PUBLIC_NODE_ENV === 'development' ? 0 : 0.5
@@ -493,6 +495,9 @@ export default function WatchPlayer() {
                 onSeeked={handleSeeked}
                 onEnded={handleVideoEnded}
                 onLoadedMetadata={handlePlayerCanPlay}
+                onFullscreenChange={(isFullscreen) =>
+                  setIsFullscreen(isFullscreen)
+                }
               />
               <WatchAskContinueModal
                 opened={isShowContinueModal}
@@ -518,7 +523,7 @@ export default function WatchPlayer() {
           </p>
         </div>
       )}
-      <div className='bg-covert-black flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
+      <div className='player-controls bg-covert-black flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
         <div className='flex w-full items-center gap-2 px-4 select-none'>
           <ButtonLike targetId={movie.id} variant='watch' text='Yêu thích' />
           <ButtonAddToPlaylist movieId={movie.id} variant='watch' />
@@ -531,6 +536,7 @@ export default function WatchPlayer() {
             skipIntro={skipIntro}
           />
           <ButtonMovieTheater />
+          <div className='backdrop-movie-theater'></div>
           <ButtonShareMovie variant='watch' />
           <ButtonWatchTogether />
           <div className='grow'></div>

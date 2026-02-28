@@ -14,7 +14,7 @@ export default function Watch({ id }: { id: string }) {
       setMoviePersons: s.setMoviePersons
     }))
   );
-  const { data: movieData, isLoading: movieLoading } = useMovieQuery(id);
+  const { data: movieData } = useMovieQuery(id);
   const movie = movieData?.data;
 
   const { data: moviePersonData } = useMoviePersonListQuery({
