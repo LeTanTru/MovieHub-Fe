@@ -5,14 +5,18 @@ import 'swiper/css/navigation';
 import './schedule-list.css';
 import { DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT } from '@/constants';
 import { useScheludeMovieListQuery } from '@/queries';
-import { formatDate } from '@/utils';
-import { useRef, useState } from 'react';
+import { formatDate, renderImageUrl } from '@/utils';
+import { useEffect, useRef, useState } from 'react';
 import { FaRegCalendarCheck } from 'react-icons/fa6';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { addDays, format, subDays } from 'date-fns';
 import { cn } from '@/lib';
+import { NoData } from '@/components/no-data';
+import Link from 'next/link';
+import { route } from '@/routes';
+import { VerticalBarLoading } from '@/components/loading';
 
 export default function ScheduleList() {
   const nextRef = useRef<HTMLDivElement>(null);
@@ -26,11 +30,15 @@ export default function ScheduleList() {
     )
   );
 
-  const { data: scheduleListData, isLoading: scheduleListLoading } =
-    useScheludeMovieListQuery({
-      params: { date },
-      enabled: !!date
-    });
+  const {
+    data: scheduleListData,
+    isLoading,
+    isFetching,
+    refetch: getScheduleList
+  } = useScheludeMovieListQuery({
+    params: { date },
+    enabled: !false
+  });
 
   const scheduleList = scheduleListData?.data || [];
   const startDate = subDays(new Date(), 2); // Two days ago
@@ -51,6 +59,10 @@ export default function ScheduleList() {
     Math.ceil(
       (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
     ) + 1;
+
+  useEffect(() => {
+    getScheduleList();
+  }, [date, getScheduleList]);
 
   return (
     <div className='mx-auto w-full max-w-475 px-12.5'>
@@ -130,7 +142,41 @@ export default function ScheduleList() {
           </div>
         </div>
         <div className='schedule-movie-list'>
-          <div className='relative flex min-h-15 items-start justify-between'></div>
+          <div className='relative flex min-h-15 items-start justify-between'>
+            {isLoading || isFetching ? (
+              <VerticalBarLoading className='mx-auto py-20' />
+            ) : scheduleList.length === 0 ? (
+              <NoData className='py-20' />
+            ) : (
+              <div className='relative z-2 grid grow grid-cols-4 gap-4 p-4'>
+                {scheduleList.map((item) => (
+                  <Link
+                    href={`${route.movie.path}/${item.movie.slug}.${item.movie.id}`}
+                    key={item.id}
+                    className='hover:border-golden-glow relative flex items-center justify-between gap-4 rounded-[12px] border border-solid border-[#ffffff20] bg-[#363840] p-2.5 transition-all duration-200 ease-linear'
+                  >
+                    <div className='w-12.5 shrink-0'>
+                      <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-sm pb-[150%]'>
+                        <img
+                          src={renderImageUrl(item.movie.posterUrl)}
+                          alt={`${item.movie.title} - ${item.movie.originalTitle}`}
+                          className='absolute inset-0 size-full object-cover'
+                        />
+                      </div>
+                    </div>
+                    <div className='grow'>
+                      <h4 className='mb-1 text-white'>{item.movie.title}</h4>
+                      <div className='block'>
+                        <span className='text-dark-gray inline text-xs whitespace-nowrap'>
+                          Tập {item.label} - {item.title}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

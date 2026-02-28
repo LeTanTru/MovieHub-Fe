@@ -4,6 +4,7 @@ import {
   ApiResponseList,
   MovieHistoryResType,
   MovieResType,
+  MovieScheduleResType,
   MovieSearchType
 } from '@/types';
 import { http } from '@/utils';
@@ -34,9 +35,12 @@ const movieApiRequest = {
       params
     }),
   getScheduleList: (params: { date: string }) =>
-    http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getScheduleList, {
-      params
-    })
+    http.get<ApiResponse<MovieScheduleResType[]>>(
+      apiConfig.movie.getScheduleList,
+      {
+        params
+      }
+    )
 };
 
 export default movieApiRequest;

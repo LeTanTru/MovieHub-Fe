@@ -155,6 +155,19 @@ type MovieState = {
   discussionTab: string;
 };
 
+export type MovieScheduleResType = {
+  id: string;
+  title: string;
+  description: string;
+  kind: number;
+  label: string;
+  ordering: number;
+  movie: MovieResType;
+  releaseDate: string;
+  thumbnailUrl: string;
+  totalEpisode: number;
+};
+
 type MovieAction = {
   setMovie: (movie?: MovieResType | null) => void;
   setMovieItem: (movieItem?: MovieItemResType | null) => void;
