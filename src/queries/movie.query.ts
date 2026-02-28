@@ -64,7 +64,7 @@ export const useTopViewMovieListQuery = ({
   });
 };
 
-export const useScheludeMovieListQuery = ({
+export const useScheduleMovieListQuery = ({
   params,
   enabled
 }: {

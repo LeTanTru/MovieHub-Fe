@@ -2,13 +2,23 @@
 
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function ButtonMovieTheater() {
   const [isMovieTheater, setIsMovieTheater] = useState(false);
 
+  useEffect(() => {
+    if (isMovieTheater) {
+      document.body.classList.add('movie-theater');
+    } else {
+      document.body.classList.remove('movie-theater');
+    }
+    return () => {
+      document.body.classList.remove('movie-theater');
+    };
+  }, [isMovieTheater]);
+
   const handleToggleMovieTheater = () => {
-    document.body.classList.toggle('movie-theater');
     setIsMovieTheater((prev) => !prev);
   };
 
@@ -32,7 +42,7 @@ export default function ButtonMovieTheater() {
           }
         )}
       >
-        OFF
+        {isMovieTheater ? 'ON' : 'OFF'}
       </span>
     </Button>
   );

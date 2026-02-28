@@ -1,6 +1,5 @@
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
-import React from 'react';
 
 export default function ButtonSkipIntro({
   skipIntro,

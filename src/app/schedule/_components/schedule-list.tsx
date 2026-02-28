@@ -4,7 +4,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import './schedule-list.css';
 import { DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT } from '@/constants';
-import { useScheludeMovieListQuery } from '@/queries';
+import { useScheduleMovieListQuery } from '@/queries';
 import { formatDate, renderImageUrl } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
 import { FaRegCalendarCheck } from 'react-icons/fa6';
@@ -35,7 +35,7 @@ export default function ScheduleList() {
     isLoading,
     isFetching,
     refetch: getScheduleList
-  } = useScheludeMovieListQuery({
+  } = useScheduleMovieListQuery({
     params: { date },
     enabled: !false
   });
