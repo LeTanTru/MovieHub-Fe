@@ -1,5 +1,14 @@
 'use client';
 
+import { HeartIcon } from '@/assets';
+import { ButtonInfo } from '@/components/app/button-info';
+import { ButtonPlay } from '@/components/app/button-play';
+import { Separator } from '@/components/ui/separator';
+import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
+import { useClickAnimation } from '@/hooks';
+import { cn } from '@/lib';
+import { route } from '@/routes';
+import { MetadataType, MovieResType } from '@/types';
 import {
   formatDuration,
   getYearFromDate,
@@ -7,18 +16,10 @@ import {
   renderImageUrl,
   sanitizeText
 } from '@/utils';
-import { route } from '@/routes';
-import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
-import { MetadataType, SidebarResType } from '@/types';
 import Link from 'next/link';
-import { ButtonPlay } from '@/components/app/button-play';
-import { ButtonInfo } from '@/components/app/button-info';
-import { useClickAnimation } from '@/hooks';
-import { HeartIcon } from '@/assets';
-import { cn } from '@/lib';
 
-type SliderItemProps = {
-  slider: SidebarResType;
+type MovieItemProps = {
+  movie: MovieResType;
   isGrabbing: boolean;
   onPointerDown: () => void;
   onPointerUp: () => void;
@@ -27,17 +28,21 @@ type SliderItemProps = {
   isLiked: boolean;
 };
 
-export default function SliderItem({
-  slider,
+export default function AnimeItem({
+  movie,
   isGrabbing,
   onPointerDown,
   onPointerUp,
   handleLike,
   handleRemoveLike,
   isLiked
-}: SliderItemProps) {
-  const movie = slider.movie;
+}: MovieItemProps) {
+  const movieLink = `${route.movie.path}/${movie.slug}.${movie.id}`;
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
+
+  const ageRating = ageRatings.find(
+    (rating) => rating.value === movie.ageRating
+  );
 
   const latestSeason = metadata?.latestSeason;
   const latestEpisode = metadata?.latestEpisode;
@@ -54,29 +59,17 @@ export default function SliderItem({
     startAnimation();
 
     const action = isLiked ? handleRemoveLike : handleLike;
-    action(slider.movie.id);
+    action(movie.id);
   };
 
   return (
     <div className='slide-elements'>
-      <Link
-        className='hidden'
-        href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-      />
-      <div
-        className='background-fade'
-        style={{
-          backgroundImage: `url(${renderImageUrl(slider.webThumbnailUrl)})`
-        }}
-      ></div>
+      <Link href={movieLink} className='hidden'></Link>
       <div className='cover-fade'>
         <div className='cover-image'>
           <img
-            className='fade-in visible'
-            title={`${slider.movie.title} - ${slider.movie.originalTitle}`}
-            loading='lazy'
-            src={renderImageUrl(slider.webThumbnailUrl)}
-            alt={`Slider ${slider.movie.title} - ${slider.movie.originalTitle}`}
+            src={renderImageUrl(movie.thumbnailUrl)}
+            alt={`${movie.title} - ${movie.originalTitle}`}
           />
         </div>
       </div>
@@ -88,49 +81,31 @@ export default function SliderItem({
       >
         <div className='slide-content'>
           <div className='media-item'>
-            {slider.webThumbnailUrl ? (
+            {movie.imageTitleUrl ? (
               <div className='media-title-image'>
-                <Link
-                  title={slider.movie.title}
-                  href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-                >
+                <Link title={movie.title} href={movieLink}>
                   <img
-                    src={renderImageUrl(slider.movie.imageTitleUrl)}
-                    alt={slider.movie.title}
+                    src={renderImageUrl(movie.imageTitleUrl)}
+                    alt={movie.title}
                     className='bg-transparent'
                   />
                 </Link>
               </div>
             ) : (
-              <h3 className='media-title'>
-                <Link
-                  title={slider.movie.title}
-                  href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-                >
-                  {slider.movie.title}
+              <h3 className='media-title line-clamp-1'>
+                <Link title={movie.title} href={movieLink}>
+                  {movie.title}
                 </Link>
               </h3>
             )}
             <h3 className='media-alias-title'>
-              <Link
-                title={slider.movie.originalTitle}
-                href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-              >
-                {slider.movie.originalTitle}
+              <Link title={movie.originalTitle} href={movieLink}>
+                {movie.originalTitle}
               </Link>
             </h3>
             <div className='hl-tags'>
               <div className='tag-model'>
-                <span className='last'>
-                  <strong>
-                    {
-                      ageRatings.find(
-                        (ageRating) =>
-                          ageRating.value === slider.movie.ageRating
-                      )?.label
-                    }
-                  </strong>
-                </span>
+                <span className='last'>{ageRating?.label}</span>
               </div>
               <div className='tag-classic'>
                 <span>{releaseYear}</span>
@@ -149,8 +124,8 @@ export default function SliderItem({
                 <span>{formatDuration(duration)}</span>
               </div>
             </div>
-            <div className='hl-tags mb-6!'>
-              {slider.movie.categories.map((category) => (
+            <div className='hl-tags mb-4!'>
+              {movie.categories.map((category) => (
                 <Link
                   key={category.id}
                   className='tag-topic'
@@ -161,18 +136,18 @@ export default function SliderItem({
               ))}
             </div>
             <div
-              className='description line-clamp-3'
+              className='description line-clamp-3 break-all'
               dangerouslySetInnerHTML={{
-                __html: sanitizeText(slider.movie.description)
+                __html: sanitizeText(movie.description)
               }}
             />
             <div className='touch'>
               <ButtonPlay
-                href={`${route.watch.path}/${slider.movie.slug}.${slider.movie.id}`}
-                title={`Xem phim ${slider.movie.title} - ${slider.movie.originalTitle}`}
+                href={`${route.watch.path}/${movie.slug}.${movie.id}`}
+                title={`Xem phim ${movie.title} - ${movie.originalTitle}`}
               />
 
-              <div className='touch-group transition-all duration-200 ease-linear hover:border-white!'>
+              <div className='touch-group'>
                 <button
                   className='item group button-like'
                   onClick={handleClick}
@@ -191,9 +166,10 @@ export default function SliderItem({
                     />
                   </div>
                 </button>
+                <Separator orientation='vertical' />
                 <ButtonInfo
-                  href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-                  title={`Xem chi tiết phim ${slider.movie.title} - ${slider.movie.originalTitle}`}
+                  href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                  title={`Xem chi tiết phim ${movie.title} - ${movie.originalTitle}`}
                 />
               </div>
             </div>

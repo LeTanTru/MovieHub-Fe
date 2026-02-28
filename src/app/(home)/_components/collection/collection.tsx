@@ -5,6 +5,7 @@ import { VerticalBarLoading } from '@/components/loading';
 import { useScrollLoadMore } from '@/hooks';
 import {
   queryKeys,
+  STYLE_ANIME,
   STYLE_CINEMA,
   STYLE_LATEST_BY_COUNTRY,
   STYLE_TOP_RANKING
@@ -15,6 +16,7 @@ import TopMovieList from './top-movie-list';
 import MovieList from './movie-list';
 import CinemaMovieList from './cinema-movie-list';
 import LastestCountryMovieList from './latest-country-movie-list';
+import AnimeMovieList from './anime-movie-list';
 
 export default function Collection() {
   const loadMoreSize = 3;
@@ -54,6 +56,11 @@ export default function Collection() {
           case STYLE_CINEMA: {
             return (
               <CinemaMovieList collection={collection} key={collection.id} />
+            );
+          }
+          case STYLE_ANIME: {
+            return (
+              <AnimeMovieList collection={collection} key={collection.id} />
             );
           }
           default: {

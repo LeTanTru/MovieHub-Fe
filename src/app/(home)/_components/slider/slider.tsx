@@ -1,10 +1,10 @@
 'use client';
 
-import './slider.css';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/thumbs';
+import './slider.css';
 import { EffectFade, Thumbs, Autoplay } from 'swiper/modules';
 import { useState } from 'react';
 import {
@@ -27,8 +27,7 @@ export default function Slider() {
   const [isGrabbing, setIsGrabbing] = useState<boolean>(false);
   const queryClient = getQueryClient();
 
-  const { data: sidebarListData, isLoading: sidebarListDataLoading } =
-    useSidebarListQuery({ enabled: true });
+  const { data: sidebarListData } = useSidebarListQuery({ enabled: true });
 
   const sidebarList = sidebarListData?.data?.content || [];
 
@@ -132,18 +131,18 @@ export default function Slider() {
   };
 
   return (
-    <div id='top-slide'>
+    <div id='top-slider'>
       <div className='slide-wrapper top-slide-wrap'>
         <Swiper
           effect='fade'
           slidesPerView={1}
-          loop={true}
+          loop={sidebarList.length > 1}
           grabCursor={true}
           thumbs={{ swiper: thumbsSwiper }}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false
-          }}
+          // autoplay={{
+          //   delay: 2000,
+          //   disableOnInteraction: false
+          // }}
           modules={[EffectFade, Thumbs, Autoplay]}
           className='top-slide-main'
         >
