@@ -175,6 +175,7 @@ export default function Slider() {
                 src={renderImageUrl(slider.webThumbnailUrl)}
                 alt={slider.movie.title}
                 draggable={false}
+                loading='eager'
               />
             </SwiperSlide>
           ))}
