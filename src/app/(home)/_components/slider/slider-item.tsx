@@ -74,7 +74,7 @@ export default function SliderItem({
           <img
             className='fade-in visible'
             title={`${slider.movie.title} - ${slider.movie.originalTitle}`}
-            loading='lazy'
+            loading='eager'
             src={renderImageUrl(slider.webThumbnailUrl)}
             alt={`Slider ${slider.movie.title} - ${slider.movie.originalTitle}`}
           />
@@ -95,9 +95,11 @@ export default function SliderItem({
                   href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
                 >
                   <img
+                    className='bg-transparent'
+                    title={slider.movie.title}
                     src={renderImageUrl(slider.movie.imageTitleUrl)}
                     alt={slider.movie.title}
-                    className='bg-transparent'
+                    loading='eager'
                   />
                 </Link>
               </div>
