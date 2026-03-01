@@ -161,6 +161,10 @@ export default function ScheduleList() {
                           src={renderImageUrl(item.movie.posterUrl)}
                           alt={`${item.movie.title} - ${item.movie.originalTitle}`}
                           className='absolute inset-0 size-full object-cover'
+                          width={50}
+                          height={75}
+                          loading='lazy'
+                          decoding='async'
                         />
                       </div>
                     </div>

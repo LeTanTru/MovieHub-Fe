@@ -5,6 +5,9 @@ import path from 'path';
 
 const nextConfig: NextConfig = {
   images: {
+    deviceSizes: [640, 768, 1024, 1280, 1536, 1920],
+    imageSizes: [32, 48, 64, 96, 128, 192, 256],
+    qualities: [50, 75, 85, 100],
     remotePatterns: [
       {
         protocol: 'https',
@@ -27,7 +30,7 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   // Optimize CSS chunking and reduce network requests
   experimental: {
-    optimizePackageImports: ['@vidstack/react', 'react-icons', 'lucide-react'],
+    optimizePackageImports: ['@vidstack/react'],
     optimizeCss: true
   },
   // Optimize bundle size

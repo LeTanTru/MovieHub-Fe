@@ -187,6 +187,10 @@ export default function AnimeMovieList({
                   <img
                     src={renderImageUrl(movie.posterUrl)}
                     alt={`${movie.title} - ${movie.originalTitle}`}
+                    width={59}
+                    height={89}
+                    loading='lazy'
+                    decoding='async'
                   />
                 </div>
               </SwiperSlide>
