@@ -70,7 +70,6 @@ export default function AnimeItem({
           <img
             src={renderImageUrl(movie.thumbnailUrl)}
             alt={`${movie.title} - ${movie.originalTitle}`}
-            loading='eager'
           />
         </div>
       </div>
@@ -89,7 +88,6 @@ export default function AnimeItem({
                     src={renderImageUrl(movie.imageTitleUrl)}
                     alt={movie.title}
                     className='bg-transparent'
-                    loading='eager'
                   />
                 </Link>
               </div>
