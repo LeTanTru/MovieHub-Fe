@@ -38,13 +38,15 @@ function EpisodeItem({
       onClick={onClick}
     >
       <div className='relative flex w-full items-center gap-2 overflow-hidden'>
-        <Image
-          src={renderImageUrl(episode.thumbnailUrl)}
-          width={100}
-          height={100}
-          alt={`Episode ${episode.label}. ${episode.title}`}
-          className='aspect-video rounded'
-        />
+        {episode.thumbnailUrl && (
+          <Image
+            src={renderImageUrl(episode.thumbnailUrl)}
+            width={100}
+            height={100}
+            alt={`Episode ${episode.label}. ${episode.title}`}
+            className='aspect-video rounded'
+          />
+        )}
         <h3
           className='line-clamp-2'
           title={`Tập ${episode.label}. ${episode.title}`}

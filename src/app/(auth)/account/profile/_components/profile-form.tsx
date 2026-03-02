@@ -55,7 +55,7 @@ export default function ProfileForm() {
   };
 
   const initialValues = {
-    id: profile?.id?.toString() || '',
+    id: profile?.id || '',
     fullName: profile?.fullName || '',
     email: profile?.email || '',
     phone: profile?.phone || '',

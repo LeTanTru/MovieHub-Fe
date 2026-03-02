@@ -43,7 +43,7 @@ export default function ReviewModal({
   const initialValues: ReviewBodyType = {
     id: '',
     content: '',
-    movieId: movie?.id?.toString() || '',
+    movieId: movie?.id || '',
     rate: 0
   };
 
@@ -76,15 +76,15 @@ export default function ReviewModal({
                 queryKey: [queryKeys.REVIEW_LIST]
               }),
               queryClient.invalidateQueries({
-                queryKey: [queryKeys.CHECK_MOVIE, movie?.id?.toString()]
+                queryKey: [queryKeys.CHECK_MOVIE, movie?.id]
               }),
               queryClient.invalidateQueries({
-                queryKey: [queryKeys.MOVIE, movie?.id?.toString()]
+                queryKey: [queryKeys.MOVIE, movie?.id]
               })
             ]);
             const newMovieData = queryClient.getQueryData<
               ApiResponse<MovieResType>
-            >([queryKeys.MOVIE, movie?.id?.toString()]);
+            >([queryKeys.MOVIE, movie?.id]);
             const newMovie = newMovieData?.data;
             setMovie(newMovie);
             onClose();

@@ -61,7 +61,7 @@ export default function ReviewList({
   );
 
   const { data: voteReviewListData } = useVoteReviewListQuery({
-    movieId: movie?.id?.toString() || '',
+    movieId: movie?.id || '',
     enabled: isAuthenticated && !!movie?.id
   });
 
@@ -89,15 +89,15 @@ export default function ReviewList({
               queryKey: [queryKeys.REVIEW_LIST]
             }),
             queryClient.invalidateQueries({
-              queryKey: [queryKeys.CHECK_MOVIE, movie?.id?.toString()]
+              queryKey: [queryKeys.CHECK_MOVIE, movie?.id]
             }),
             queryClient.invalidateQueries({
-              queryKey: [queryKeys.MOVIE, movie?.id?.toString()]
+              queryKey: [queryKeys.MOVIE, movie?.id]
             })
           ]);
           const newMovieData = queryClient.getQueryData<
             ApiResponse<MovieResType>
-          >([queryKeys.MOVIE, movie?.id?.toString()]);
+          >([queryKeys.MOVIE, movie?.id]);
           const newMovie = newMovieData?.data;
           setMovie(newMovie);
         } else {
@@ -140,7 +140,7 @@ export default function ReviewList({
                 queryKey: [queryKeys.REVIEW_LIST]
               }),
               queryClient.invalidateQueries({
-                queryKey: [queryKeys.REVIEW_VOTE_LIST, movie?.id?.toString()]
+                queryKey: [queryKeys.REVIEW_VOTE_LIST, movie?.id]
               })
             ]);
           } else {
@@ -184,7 +184,7 @@ export default function ReviewList({
                 queryKey: [queryKeys.REVIEW_LIST]
               }),
               queryClient.invalidateQueries({
-                queryKey: [queryKeys.REVIEW_VOTE_LIST, movie?.id?.toString()]
+                queryKey: [queryKeys.REVIEW_VOTE_LIST, movie?.id]
               })
             ]);
           } else {
