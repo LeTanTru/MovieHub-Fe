@@ -21,6 +21,7 @@ import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useAuth } from '@/hooks';
 import { useRef } from 'react';
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 export default function WatchContinue() {
   const queryClient = getQueryClient();
@@ -87,8 +88,12 @@ export default function WatchContinue() {
       ) : (
         <div className='swiper-container'>
           <div className='swiper-navigation'>
-            <div ref={nextRef} className='swiper-button swiper-next-button' />
-            <div ref={prevRef} className='swiper-button swiper-prev-button' />
+            <div ref={nextRef} className='swiper-button swiper-next-button'>
+              <LuChevronRight />
+            </div>
+            <div ref={prevRef} className='swiper-button swiper-prev-button'>
+              <LuChevronLeft />
+            </div>
           </div>
           <Swiper
             slidesPerView={7}
