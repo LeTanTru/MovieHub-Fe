@@ -1,27 +1,10 @@
-import {
-  commentApiRequest,
-  movieApiRequest,
-  moviePersonApiRequest,
-  reviewApiRequest
-} from '@/api-requests';
+import { movieApiRequest, moviePersonApiRequest } from '@/api-requests';
 import { Watch } from '@/app/watch/[slug]/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers';
 import envConfig from '@/config';
-import {
-  AppConstants,
-  DEFAULT_PAGE_SIZE,
-  DEFAULT_TABLE_PAGE_START,
-  queryKeys
-} from '@/constants';
-import {
-  ApiResponse,
-  ApiResponseList,
-  CommentResType,
-  CommentSearchType,
-  MoviePersonSearchType,
-  ReviewResType
-} from '@/types';
+import { AppConstants, DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
+import { ApiResponse, MoviePersonSearchType } from '@/types';
 import { getIdFromSlug, stripHtml } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
@@ -89,16 +72,6 @@ export default async function WatchPage({
     movieId: id
   };
 
-  const commentFilters: CommentSearchType = {
-    movieId: id,
-    size: DEFAULT_PAGE_SIZE
-  };
-
-  const reviewFilters: CommentSearchType = {
-    movieId: id,
-    size: DEFAULT_PAGE_SIZE
-  };
-
   const queryClient = getQueryClient();
 
   try {
@@ -127,34 +100,6 @@ export default async function WatchPage({
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
       queryFn: () => movieApiRequest.getSuggestionList(id)
-    }),
-    queryClient.prefetchInfiniteQuery({
-      queryKey: [queryKeys.COMMENT_LIST, commentFilters],
-      queryFn: ({ pageParam }) =>
-        commentApiRequest.getList({
-          movieId: id,
-          page: pageParam,
-          size: DEFAULT_PAGE_SIZE
-        }),
-      initialPageParam: DEFAULT_TABLE_PAGE_START,
-      getNextPageParam: (
-        lastPage: ApiResponseList<CommentResType>,
-        pages: ApiResponseList<CommentResType>[]
-      ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
-    }),
-    queryClient.prefetchInfiniteQuery({
-      queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
-      queryFn: ({ pageParam }) =>
-        reviewApiRequest.getList({
-          movieId: id,
-          page: pageParam,
-          size: DEFAULT_PAGE_SIZE
-        }),
-      initialPageParam: DEFAULT_TABLE_PAGE_START,
-      getNextPageParam: (
-        lastPage: ApiResponseList<ReviewResType>,
-        pages: ApiResponseList<ReviewResType>[]
-      ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
     })
   ]);
 

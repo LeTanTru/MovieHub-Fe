@@ -73,7 +73,7 @@ export default function CommentList({
   const { mutateAsync: voteCommentMutate, isPending: voteCommentLoading } =
     useVoteCommentMutation();
   const { data: voteCommentListData } = useVoteCommentListQuery({
-    movieId: movie?.id?.toString() || '',
+    movieId: movie?.id || '',
     enabled: isAuthenticated && !!movie?.id
   });
 
@@ -98,7 +98,7 @@ export default function CommentList({
               queryKey: [queryKeys.COMMENT_LIST]
             }),
             queryClient.invalidateQueries({
-              queryKey: [queryKeys.MOVIE, movie?.id?.toString()]
+              queryKey: [queryKeys.MOVIE, movie?.id]
             })
           ]);
 
@@ -114,7 +114,7 @@ export default function CommentList({
           // Update movie store data
           const newMovieData = queryClient.getQueryData<
             ApiResponse<MovieResType>
-          >([queryKeys.MOVIE, movie?.id?.toString()]);
+          >([queryKeys.MOVIE, movie?.id]);
           const newMovie = newMovieData?.data;
           setMovie(newMovie);
         } else {
@@ -159,7 +159,7 @@ export default function CommentList({
           if (res.result) {
             await Promise.all([
               queryClient.invalidateQueries({
-                queryKey: [queryKeys.COMMENT_VOTE_LIST, movie?.id?.toString()]
+                queryKey: [queryKeys.COMMENT_VOTE_LIST, movie?.id]
               })
             ]);
             if (onSuccess) onSuccess();
@@ -195,7 +195,7 @@ export default function CommentList({
           openParentIds={openParentIds}
           replyingComment={replyingComment}
           rootId={rootId ?? comment.id}
-          userId={profile?.id?.toString() || ''}
+          userId={profile?.id || ''}
           voteMap={voteMap}
           closeReply={closeReply}
           onDelete={() => handleDeleteComment(comment)}

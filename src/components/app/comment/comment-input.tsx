@@ -92,7 +92,7 @@ export default function CommentInput({
             queryKey: [queryKeys.COMMENT_LIST]
           });
           await queryClient.invalidateQueries({
-            queryKey: [queryKeys.MOVIE, movie?.id?.toString()]
+            queryKey: [queryKeys.MOVIE, movie?.id]
           });
           form?.reset(initialValues);
         } else {

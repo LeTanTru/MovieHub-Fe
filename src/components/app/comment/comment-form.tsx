@@ -53,10 +53,10 @@ export default function CommentForm({
 
   const initialValues: CreateCommentBodyType = {
     content: editingComment?.content || '',
-    movieId: editingComment?.movieId?.toString() || movieId,
-    movieItemId: editingComment?.movieItem?.id?.toString() || '',
-    parentId: editingComment?.parent?.id?.toString() || parentId,
-    replyToId: authorInfo?.id?.toString() || '',
+    movieId: editingComment?.movieId || movieId,
+    movieItemId: editingComment?.movieItem?.id || '',
+    parentId: editingComment?.parent?.id || parentId,
+    replyToId: authorInfo?.id || '',
     replyToKind: authorInfo?.kind || 0
   };
 
