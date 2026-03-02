@@ -11,5 +11,5 @@ export { default as useIsMounted } from './use-is-mounted';
 export { default as useMobile } from './use-mobile';
 export { default as useNavigate } from './use-navigate';
 export { default as useQueryParams } from './use-query-params';
-export { default as useScrollLoadMore } from './use-scroll-load-more';
+export { default as useLoadMore } from './use-load-more';
 export { useFileUpload } from './use-file-upload';

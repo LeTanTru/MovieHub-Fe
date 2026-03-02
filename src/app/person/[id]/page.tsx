@@ -16,6 +16,8 @@ import { ApiResponse, MoviePersonSearchType } from '@/types';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/layout';
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const persons = await personApiRequest.getList({
     size: DEFAULT_PAGE_SIZE
@@ -67,20 +69,16 @@ export async function generateMetadata(
 }
 
 export default async function PersonDetailPage({
-  params,
-  searchParams
+  params
 }: {
-  searchParams: Promise<MoviePersonSearchType>;
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
   const queryClient = getQueryClient();
-  const filters = await searchParams;
   const defaultFilters: MoviePersonSearchType = {
     personId: id,
     size: MAX_PAGE_SIZE,
-    kind: PERSON_KIND_ACTOR,
-    ...filters
+    kind: PERSON_KIND_ACTOR
   };
 
   try {

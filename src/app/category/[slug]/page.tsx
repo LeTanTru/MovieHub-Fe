@@ -9,6 +9,8 @@ import { getIdFromSlug } from '@/utils';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/layout';
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const categories = await categoryApiRequest.getList({
     size: DEFAULT_PAGE_SIZE
@@ -34,20 +36,16 @@ export async function generateMetadata({
 }
 
 export default async function CategoryPage({
-  params,
-  searchParams
+  params
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<MovieSearchType>;
 }) {
   const { slug } = await params;
-  const { page, ...rest } = await searchParams;
   const id = getIdFromSlug(slug);
   const defaultFilters: MovieSearchType = {
-    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
+    page: DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
-    categoryIds: id,
-    ...rest
+    categoryIds: id
   };
   const queryClient = getQueryClient();
 

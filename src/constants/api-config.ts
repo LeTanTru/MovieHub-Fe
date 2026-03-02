@@ -233,6 +233,7 @@ const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.apiUrl}/v1/movie/top-views`,
       method: 'GET',
       headers: baseHeader,
+      ignoreAuth: true,
       isRequiredTenantId: true,
       isRequiredXClientType: true
     },

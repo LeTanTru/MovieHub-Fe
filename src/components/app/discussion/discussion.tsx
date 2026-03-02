@@ -19,7 +19,7 @@ import { CommentInput, CommentList } from '@/components/app/comment';
 import { Element } from 'react-scroll';
 import { ReviewList } from '@/components/app/review';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth, useScrollLoadMore } from '@/hooks';
+import { useAuth, useLoadMore } from '@/hooks';
 import DiscussionSkeleton from './discussion-skeleton';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
@@ -59,7 +59,7 @@ export default function Discussion({
     isFetchingNextPage: commentLoadMoreLoading,
     handleLoadMore: handleLoadMoreComments,
     totalElements: totalComments
-  } = useScrollLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
+  } = useLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
     queryKey: queryKeys.COMMENT_LIST,
     params: {
       movieId: id,
@@ -77,7 +77,7 @@ export default function Discussion({
     isFetchingNextPage: reviewLoadMoreLoading,
     handleLoadMore: handleLoadMoreReviews,
     totalElements: totalReviews
-  } = useScrollLoadMore<HTMLDivElement, ReviewSearchType, ReviewResType>({
+  } = useLoadMore<HTMLDivElement, ReviewSearchType, ReviewResType>({
     queryKey: queryKeys.REVIEW_LIST,
     params: {
       movieId: id,

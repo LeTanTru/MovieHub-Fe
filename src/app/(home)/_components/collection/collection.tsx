@@ -2,7 +2,7 @@
 
 import './collection.css';
 import { VerticalBarLoading } from '@/components/loading';
-import { useScrollLoadMore } from '@/hooks';
+import { useLoadMore } from '@/hooks';
 import {
   queryKeys,
   STYLE_ANIME,
@@ -28,11 +28,7 @@ export default function Collection() {
     isLoading,
     loadMoreRef,
     isFetchingNextPage
-  } = useScrollLoadMore<
-    HTMLDivElement,
-    CollectionSearchType,
-    CollectionResType
-  >({
+  } = useLoadMore<HTMLDivElement, CollectionSearchType, CollectionResType>({
     queryKey: queryKeys.COLLECTION_LIST,
     params: { size: loadMoreSize },
     queryFn: collectionApiRequest.getList,
