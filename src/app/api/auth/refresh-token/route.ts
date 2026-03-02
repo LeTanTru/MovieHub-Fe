@@ -4,7 +4,7 @@ import { logger } from '@/logger';
 import { CookieServerBodyType } from '@/types';
 import { setCookieData } from '@/utils';
 import { HttpStatusCode } from 'axios';
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 const maxAgeAccessToken = 24 * 60 * 60; // 1 day
 const maxAgeRefreshToken = 60 * 60 * 24 * 7; // 7 days

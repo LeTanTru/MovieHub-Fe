@@ -10,5 +10,6 @@ export type ItemProps = {
   submenu?: boolean;
   type?: string;
   subItems?: SubmenuProps[];
-  isGrid?: boolean;
+  isDropdown?: boolean;
+  isNew?: boolean;
 };

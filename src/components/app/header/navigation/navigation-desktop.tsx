@@ -18,7 +18,7 @@ export default function NavigationDesktop({
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
-    <div className='block flex items-center gap-2 md:gap-6'>
+    <div className='max-1360:hidden block flex grow items-center gap-2 md:gap-6'>
       <List className='flex gap-4'>
         {navigationList.map((item) =>
           item.submenu ? (
@@ -28,7 +28,7 @@ export default function NavigationDesktop({
               onMouseEnter={() => setHovered(item.label)}
               onMouseLeave={() => setHovered(null)}
             >
-              <div className='hover:text-golden-glow flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear'>
+              <div className='hover:text-golden-glow relative flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear'>
                 {item.label}
                 <ChevronDown
                   className={cn(
@@ -38,6 +38,11 @@ export default function NavigationDesktop({
                     }
                   )}
                 />
+                {item.isNew && (
+                  <div className='bg-golden-glow text-main-background absolute -top-4.5 -right-1 rounded p-0.5 text-xs'>
+                    Mới
+                  </div>
+                )}
               </div>
 
               <AnimatePresence>
@@ -72,9 +77,9 @@ export default function NavigationDesktop({
                         'bg-gunmetal-black scrollbar-none max-h-[80vh] grid-cols-1 overflow-y-auto rounded shadow-[0px_0px_6px_2px_var(--color-main-background)]',
                         {
                           'w-160 grid-cols-4 p-2':
-                            item.subItems!.length > 4 && item.isGrid,
-                          grid: item.isGrid,
-                          'w-48 p-1': !item.isGrid
+                            item.subItems!.length > 4 && item.isDropdown,
+                          grid: item.isDropdown,
+                          'w-48 p-1': !item.isDropdown
                         }
                       )}
                     >
@@ -101,8 +106,13 @@ export default function NavigationDesktop({
           ) : (
             <ListItem
               key={item.label}
-              className='hover:text-golden-glow p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear'
+              className='hover:text-golden-glow relative p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear'
             >
+              {item.isNew && (
+                <div className='bg-golden-glow text-main-background absolute -top-2.5 -right-2 rounded p-0.5 text-xs'>
+                  Mới
+                </div>
+              )}
               <Link
                 href={item.href!}
                 className={cn({

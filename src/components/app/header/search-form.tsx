@@ -29,7 +29,7 @@ import { CircleLoading } from '@/components/loading';
 
 type SearchFormProps = {
   className?: string;
-  inputClassName?: string;
+  formClassName?: string;
 };
 
 function MovieItem({ movie }: { movie: MovieResType }) {
@@ -92,7 +92,10 @@ function MovieItem({ movie }: { movie: MovieResType }) {
   );
 }
 
-export default function SearchForm({ className }: SearchFormProps) {
+export default function SearchForm({
+  className,
+  formClassName
+}: SearchFormProps) {
   const navigate = useNavigate();
   const pathname = usePathname();
 
@@ -147,12 +150,15 @@ export default function SearchForm({ className }: SearchFormProps) {
   };
 
   return (
-    <div className='relative block w-full max-w-92' ref={movieListRef}>
+    <div
+      className={cn('relative block w-full max-w-92', className)}
+      ref={movieListRef}
+    >
       <BaseForm
         schema={searchSchema}
         defaultValues={defaultValues}
         onSubmit={onSubmit}
-        className={cn('bg-transparent', className)}
+        className={cn('bg-transparent', formClassName)}
         onChange={handleOnChange}
         onClick={handleToggleMovieList}
       >

@@ -75,6 +75,12 @@
   --color-primary-button: #ffd875;
   --color-top-slider: #202331;
   /* Color */
+
+  /* Break point */
+  --breakpoint-1600: 1600px;
+  --breakpoint-1360: 1360px;
+  --breakpoint-800: 800px;
+  /* Break point */
 }
 
 :root {
