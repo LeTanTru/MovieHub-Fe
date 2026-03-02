@@ -31,7 +31,7 @@ export const revalidate = 60;
 
 export async function generateStaticParams() {
   const movies = await movieApiRequest.getList({
-    size: 12
+    size: DEFAULT_PAGE_SIZE
   });
   return movies.data.content.map((movie) => ({
     slug: `${movie.slug}.${movie.id}`

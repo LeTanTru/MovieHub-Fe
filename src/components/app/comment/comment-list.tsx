@@ -195,7 +195,7 @@ export default function CommentList({
           openParentIds={openParentIds}
           replyingComment={replyingComment}
           rootId={rootId ?? comment.id}
-          userId={profile?.id || ''}
+          userId={profile?.id?.toString() || ''}
           voteMap={voteMap}
           closeReply={closeReply}
           onDelete={() => handleDeleteComment(comment)}
