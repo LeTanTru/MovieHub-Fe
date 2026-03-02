@@ -21,6 +21,7 @@ export default function BodyLoad() {
           height={360}
           alt='MovieHub'
           loading='eager'
+          unoptimized
         />
         <div className='text-h1 text-center'>
           Xem Phim Miễn Phí Cực Nhanh, Chất Lượng Cao Và Cập Nhật Liên Tục

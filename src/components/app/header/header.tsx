@@ -66,6 +66,7 @@ export default function Header() {
                 height={46}
                 src={logoWithText}
                 loading='eager'
+                unoptimized
               />
             </Link>
             <SearchForm className='flex h-full w-full items-center bg-transparent p-0' />

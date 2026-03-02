@@ -116,6 +116,7 @@ export default function Footer() {
                   decoding='async'
                   loading='lazy'
                   className='h-15 w-auto'
+                  unoptimized
                 />
               </Link>
               <div className='border-500-200 flex items-center gap-3 border-l border-solid pl-12'>

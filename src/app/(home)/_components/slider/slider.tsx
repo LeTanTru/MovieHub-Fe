@@ -176,6 +176,9 @@ export default function Slider() {
                 alt={slider.movie.title}
                 draggable={false}
                 loading='eager'
+                width={1920}
+                height={1080}
+                decoding='async'
               />
             </SwiperSlide>
           ))}

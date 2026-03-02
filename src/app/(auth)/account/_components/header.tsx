@@ -32,6 +32,7 @@ export default function Header() {
                 height={46}
                 src={logoWithText}
                 loading='eager'
+                unoptimized
               />
             </Link>
           </div>
