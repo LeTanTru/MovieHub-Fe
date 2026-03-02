@@ -18,7 +18,12 @@ import {
   getRefreshTokenFromCookie,
   setAccessTokenToCookie,
   setRefreshTokenToCookie,
-  removeDatas
+  removeAccessTokenFromLocalStorage,
+  removeRefreshTokenFromLocalStorage,
+  removeAccessTokenFromCookie,
+  removeRefreshTokenFromCookie,
+  removeData,
+  removeCookieData
 } from '@/utils';
 import axios, {
   AxiosError,
@@ -27,6 +32,7 @@ import axios, {
   type AxiosRequestConfig,
   type AxiosResponse
 } from 'axios';
+import { redirect } from 'next/navigation';
 
 const isClient = () => typeof window !== 'undefined';
 const axiosInstance = axios.create();
@@ -77,7 +83,6 @@ const refreshToken = async () => {
   if (data) {
     const newAccessToken = data.access_token;
     const newRefreshToken = data.refresh_token;
-    await axiosInstance.post(apiConfig.api.auth.refreshToken.baseUrl, data);
     if (isClient()) {
       if (newAccessToken) setAccessTokenToLocalStorage(newAccessToken);
       if (newRefreshToken) setRefreshTokenToLocalStorage(newRefreshToken);
@@ -134,16 +139,19 @@ axiosInstance.interceptors.response.use(
           error instanceof AxiosError &&
           error?.response?.status === HttpStatusCode.BadRequest &&
           error?.response?.data?.message &&
-          error?.response?.data?.message?.includes('Invalid refresh token') &&
-          error?.response?.data?.data?.includes('invalid_request')
+          error?.response?.data?.message?.includes('Invalid refresh token')
         ) {
-          removeDatas([
-            storageKeys.ACCESS_TOKEN,
-            storageKeys.REFRESH_TOKEN,
-            storageKeys.USER_KIND
-          ]);
-          await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
-          window.location.href = route.login.path;
+          if (isClient()) {
+            removeAccessTokenFromLocalStorage();
+            removeRefreshTokenFromLocalStorage();
+            removeData(storageKeys.USER_KIND);
+            window.location.href = route.login.path;
+          } else {
+            await removeAccessTokenFromCookie();
+            await removeRefreshTokenFromCookie();
+            await removeCookieData(storageKeys.USER_KIND);
+            redirect(route.login.path);
+          }
         }
         processQueue(error, null);
         isRefreshing = false;
@@ -159,8 +167,15 @@ export const sendRequest = async <T>(
   apiConfig: ApiConfig,
   payload: Payload = {}
 ): Promise<T> => {
-  let { baseUrl, headers, method, ignoreAuth, isRequiredTenantId, isUpload } =
-    apiConfig;
+  let {
+    baseUrl,
+    headers,
+    method,
+    ignoreAuth,
+    isRequiredTenantId,
+    isRequiredXClientType,
+    isUpload
+  } = apiConfig;
 
   const {
     params = {},
@@ -172,6 +187,7 @@ export const sendRequest = async <T>(
 
   let accessToken: string | null = '';
   let tenantId: string | null | undefined = '';
+  let clientType: string | null | undefined = '';
 
   if (!ignoreAuth) {
     if (isClient()) {
@@ -190,6 +206,15 @@ export const sendRequest = async <T>(
     }
   }
 
+  if (isRequiredXClientType) {
+    if (isClient()) {
+      clientType =
+        getData(storageKeys.X_CLIENT_TYPE) || envConfig.NEXT_PUBLIC_CLIENT_TYPE;
+    } else {
+      clientType = envConfig.NEXT_PUBLIC_CLIENT_TYPE;
+    }
+  }
+
   const baseHeader: Record<string, string> = { ...headers };
 
   if (!ignoreAuth && accessToken) {
@@ -202,6 +227,10 @@ export const sendRequest = async <T>(
 
   if (tenantId) {
     baseHeader[storageKeys.X_TENANT] = tenantId;
+  }
+
+  if (clientType) {
+    baseHeader[storageKeys.X_CLIENT_TYPE] = clientType;
   }
 
   Object.entries(pathParams).forEach(([key, value]) => {
@@ -242,7 +271,7 @@ export const sendRequest = async <T>(
 
       axiosConfig.data = formData;
 
-      delete axiosConfig.headers?.['Content-Type'];
+      delete axiosConfig.headers!['Content-Type'];
     } else if (method !== 'GET') {
       axiosConfig.data = body;
       axiosConfig.headers = {
@@ -277,6 +306,6 @@ export const http = {
   }
 };
 
-export const isAxiosError = (error: unknown): error is AxiosError => {
+export function isAxiosError(error: unknown): error is AxiosError {
   return (error as AxiosError)?.isAxiosError === true;
-};
+}
