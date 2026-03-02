@@ -27,9 +27,11 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const movies = await movieApiRequest.getList({
-    size: DEFAULT_PAGE_SIZE
+    size: 12
   });
   return movies.data.content.map((movie) => ({
     slug: `${movie.slug}.${movie.id}`

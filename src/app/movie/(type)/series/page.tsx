@@ -17,17 +17,11 @@ export const metadata: Metadata = {
   description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.'
 };
 
-export default async function MovieSeriesPage({
-  searchParams
-}: {
-  searchParams: Promise<MovieSearchType>;
-}) {
-  const { page, ...rest } = await searchParams;
+export default async function MovieSeriesPage() {
   const defaultFilters: MovieSearchType = {
-    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
+    page: DEFAULT_PAGE_START,
     type: movieTypes.MOVIE_TYPE_SERIES,
-    size: DEFAULT_PAGE_SIZE,
-    ...rest
+    size: DEFAULT_PAGE_SIZE
   };
 
   const queryClient = getQueryClient();

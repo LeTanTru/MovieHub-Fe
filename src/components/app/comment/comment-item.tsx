@@ -16,7 +16,7 @@ import {
   REACTION_TYPE_LIKE,
   STATUS_HIDE
 } from '@/constants';
-import { useClickOutside, useScrollLoadMore } from '@/hooks';
+import { useClickOutside, useLoadMore } from '@/hooks';
 import { cn } from '@/lib';
 import { AuthorInfoType, CommentResType, CommentSearchType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
@@ -110,7 +110,7 @@ export default function CommentItem({
     hasNextPage: hasMoreComments,
     isFetchingNextPage: commentLoadMoreLoading,
     handleLoadMore: handleFetchNextPage
-  } = useScrollLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
+  } = useLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
     params: {
       movieId: comment.movieId,
       parentId: comment.id,
@@ -430,8 +430,8 @@ export default function CommentItem({
               transition={{ duration: 0.1, ease: 'linear' }}
             >
               <CommentForm
-                parentId={rootId.toString()}
-                movieId={comment.movieId.toString()}
+                parentId={rootId}
+                movieId={comment.movieId}
                 defaultMention={`@${authorInfo.fullName}`}
                 onSubmitted={handleReplySubmit}
                 onCancel={handleCancelReply}

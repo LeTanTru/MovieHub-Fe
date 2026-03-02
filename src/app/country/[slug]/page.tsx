@@ -14,6 +14,8 @@ import { MovieList } from '@/app/country/[slug]/_components';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/layout';
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   return countries.slice(0, DEFAULT_PAGE_SIZE).map((country) => ({
     slug: `${generateSlug(country.label)}.${country.value}`
@@ -37,21 +39,17 @@ export async function generateMetadata({
 }
 
 export default async function CountryPage({
-  params,
-  searchParams
+  params
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<MovieSearchType>;
 }) {
   const { slug } = await params;
   const countryCode = getIdFromSlug(slug);
 
-  const { page, ...rest } = await searchParams;
   const defaultFilters: MovieSearchType = {
-    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
+    page: DEFAULT_PAGE_START,
     country: countryCode,
-    size: DEFAULT_PAGE_SIZE,
-    ...rest
+    size: DEFAULT_PAGE_SIZE
   };
 
   const queryClient = getQueryClient();

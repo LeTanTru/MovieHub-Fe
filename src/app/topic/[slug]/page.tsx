@@ -1,13 +1,15 @@
 import { ApiResponse, CollectionItemSearchType } from '@/types';
 import { collectionApiRequest, collectionItemApiRequest } from '@/api-requests';
 import { Container } from '@/components/layout';
-import { DEFAULT_PAGE_SIZE, queryKeys } from '@/constants';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getIdFromSlug } from '@/utils';
 import { getQueryClient } from '@/components/providers';
 import { MovieList } from '@/app/topic/[slug]/_components';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const topicList = await collectionApiRequest.getTopicList({
@@ -32,22 +34,18 @@ export async function generateMetadata({
 }
 
 export default async function TopicDetailPage({
-  params,
-  searchParams
+  params
 }: {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<CollectionItemSearchType>;
 }) {
   const { slug } = await params;
-  const { page, ...rest } = await searchParams;
   const collectionId = getIdFromSlug(slug);
   const queryClient = getQueryClient();
 
   const defaultFilters: CollectionItemSearchType = {
     collectionId,
-    page: page ? Number(page) - 1 : 0,
-    size: DEFAULT_PAGE_SIZE,
-    ...rest
+    page: DEFAULT_PAGE_START,
+    size: DEFAULT_PAGE_SIZE
   };
 
   try {

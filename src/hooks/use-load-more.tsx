@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 export type LoadMoreMode = 'scroll' | 'click' | 'both';
 
-const useSrollLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
+const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
   queryKey,
   params,
   queryFn,
@@ -84,4 +84,4 @@ const useSrollLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
   };
 };
 
-export default useSrollLoadMore;
+export default useLoadMore;

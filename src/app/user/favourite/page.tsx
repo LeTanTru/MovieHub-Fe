@@ -17,19 +17,13 @@ export const metadata: Metadata = {
   description: 'Quản lý danh sách phim và diễn viên yêu thích của bạn'
 };
 
-export default async function FavouritePage({
-  searchParams
-}: {
-  searchParams: Promise<FavouriteSearchType>;
-}) {
-  const filters = await searchParams;
+export default async function FavouritePage() {
   const pageSize = 12;
 
   const defaultFilters: FavouriteSearchType = {
     type: FAVOURITE_TYPE_MOVIE,
     page: DEFAULT_PAGE_START,
-    size: pageSize,
-    ...filters
+    size: pageSize
   };
 
   const queryClient = getQueryClient();

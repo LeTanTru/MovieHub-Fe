@@ -17,17 +17,11 @@ export const metadata: Metadata = {
   description: 'Trang danh sách diễn viên MovieHub'
 };
 
-export default async function PersonPage({
-  searchParams
-}: {
-  searchParams: Promise<PersonSearchType>;
-}) {
-  const { page, ...rest } = await searchParams;
+export default async function PersonPage() {
   const defaultFilters: PersonSearchType = {
-    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
+    page: DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
-    kind: PERSON_KIND_ACTOR,
-    ...rest
+    kind: PERSON_KIND_ACTOR
   };
   const queryClient = getQueryClient();
 
