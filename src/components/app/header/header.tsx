@@ -43,87 +43,81 @@ export default function Header() {
       })}
     >
       <div
-        className={cn('pr-10 pl-8 transition-all duration-200 ease-linear', {
-          'bg-fixed-header': isFixed,
-          'bg-transparent': !isFixed
-        })}
+        className={cn(
+          'max-1600:px-5 max-1600:gap-6 max-1360:px-1.5 flex items-center gap-8 pr-10 pl-8 transition-all duration-200 ease-linear',
+          {
+            'bg-fixed-header h-fixed-header max-1360:h-17.5': isFixed,
+            'h-header max-1360:h-15 bg-transparent': !isFixed
+          }
+        )}
       >
-        <div
-          className={cn(
-            'flex items-center justify-between gap-2 transition-all duration-200 ease-linear',
-            {
-              'h-fixed-header': isFixed,
-              'h-header': !isFixed
-            }
-          )}
+        <NavigationMenu mode='mobile' />
+        {/* Left side */}
+        <Link
+          href={route.home.path}
+          className='max-1360:absolute max-1360:left-16.25 shrink-0'
         >
-          {/* Left side */}
-          <div className='flex h-full flex-1 items-center gap-8'>
-            <Link href={route.home.path} className='shrink-0'>
-              <Image
-                alt='Logo'
-                className='h-auto'
-                height={46}
-                src={logoWithText}
-                loading='eager'
-                unoptimized
-              />
-            </Link>
-            <SearchForm className='flex h-full w-full items-center bg-transparent p-0' />
-            <div className='block grow items-center gap-2'>
-              <NavigationMenu />
-            </div>
-          </div>
-          {/* Right side */}
-          <div className='h-header flex items-center gap-2'>
-            <AnimatePresence mode='wait' initial={false}>
-              {loading ? (
+          <Image
+            alt='Logo'
+            className='max-1360:h-9 max-1360:w-auto h-auto'
+            height={46}
+            src={logoWithText}
+            loading='eager'
+            unoptimized
+          />
+        </Link>
+        <SearchForm formClassName='max-1360:hidden flex h-full w-full items-center bg-transparent p-0' />
+        {/* Right side */}
+        <div className='h-header max-1360:hidden max-1600:gap-2.5 flex grow items-center gap-8'>
+          <NavigationMenu mode='desktop' />
+          <div className='grow'></div>
+          <AnimatePresence mode='wait' initial={false}>
+            {loading ? (
+              <motion.div
+                key='loading'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                style={{ marginRight: 24 }}
+              >
+                <div className='skeleton h-10 w-10 rounded-full!' />
+              </motion.div>
+            ) : !profile ? (
+              <motion.div
+                key='auth'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Button onClick={handleLogin} className='w-full rounded-full'>
+                  Đăng nhập
+                </Button>
+              </motion.div>
+            ) : (
+              <div className='flex h-full items-center gap-x-5'>
                 <motion.div
-                  key='loading'
+                  key='notification'
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  style={{ marginRight: 24 }}
                 >
-                  <div className='skeleton h-10 w-10 rounded-full!' />
+                  <DropdownNotification />
                 </motion.div>
-              ) : !profile ? (
                 <motion.div
-                  key='auth'
+                  key='avatar'
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Button onClick={handleLogin} className='w-full rounded-full'>
-                    Đăng nhập
-                  </Button>
+                  <DropdownAvatar profile={profile} />
                 </motion.div>
-              ) : (
-                <div className='flex h-full items-center gap-x-5'>
-                  <motion.div
-                    key='notification'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <DropdownNotification />
-                  </motion.div>
-                  <motion.div
-                    key='avatar'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <DropdownAvatar profile={profile} />
-                  </motion.div>
-                </div>
-              )}
-            </AnimatePresence>
-          </div>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </header>

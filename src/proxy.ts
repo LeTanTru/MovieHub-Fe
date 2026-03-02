@@ -28,6 +28,7 @@ export const config = {
     '/register',
     '/forgot-password',
     '/verify-otp',
+    '/account',
     '/account/:path*'
   ]
 };

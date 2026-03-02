@@ -8,7 +8,11 @@ import { route } from '@/routes';
 import { countries, MAX_PAGE_SIZE } from '@/constants';
 import { generateSlug } from '@/utils';
 
-export default function NavigationMenu() {
+export default function NavigationMenu({
+  mode
+}: {
+  mode?: 'mobile' | 'desktop';
+}) {
   const { data: categoryListData } = useCategoryListQuery({
     params: {
       size: MAX_PAGE_SIZE
@@ -32,7 +36,7 @@ export default function NavigationMenu() {
           href: `${route.category.path}/${category.slug}.${category.id}`
         }))
         .sort((a, b) => a.label.localeCompare(b.label)),
-      isGrid: true
+      isDropdown: true
     },
     {
       label: 'Phim lẻ',
@@ -43,13 +47,18 @@ export default function NavigationMenu() {
       href: `${route.movieType.series.path}`
     },
     {
+      label: 'Xem chung',
+      href: '#',
+      isNew: true
+    },
+    {
       label: 'Quốc gia',
       submenu: true,
       subItems: countries.map((country) => ({
         href: `${route.country.path}/${generateSlug(country.label)}.${country.value}`,
         label: country.label
       })),
-      isGrid: true
+      isDropdown: true
     },
     {
       label: 'Diễn viên',
@@ -64,9 +73,13 @@ export default function NavigationMenu() {
   return (
     <>
       {/* Mobile menu */}
-      <NavigationMobile navigationList={navigationList} />
+      {mode === 'mobile' && (
+        <NavigationMobile navigationList={navigationList} />
+      )}
       {/* Desktop menu */}
-      <NavigationDesktop navigationList={navigationList} />
+      {mode === 'desktop' && (
+        <NavigationDesktop navigationList={navigationList} />
+      )}
     </>
   );
 }

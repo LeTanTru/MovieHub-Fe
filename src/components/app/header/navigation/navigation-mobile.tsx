@@ -38,11 +38,11 @@ export default function NavigationMobile({
   );
 
   return (
-    <div className='hidden'>
+    <div className='max-1360:block hidden'>
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}
-        className='group flex size-8 items-center justify-center dark:hover:bg-transparent'
+        className='group flex size-10 items-center justify-center dark:hover:bg-transparent'
         aria-label='Open menu'
       >
         <AnimatePresence mode='wait' initial={false}>
@@ -77,8 +77,8 @@ export default function NavigationMobile({
             initial={{ opacity: 0, scale: 0.8, transformOrigin: '5% 0%' }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-gunmetal-black top-header absolute w-90 rounded-lg p-4'
+            transition={{ duration: 0.15, ease: 'linear' }}
+            className='bg-gunmetal-black absolute top-15 w-120 rounded-lg p-4 max-md:w-90'
           >
             {!profile ? (
               <div className='flex justify-center'>
@@ -89,7 +89,7 @@ export default function NavigationMobile({
                 <div className='mb-2'>
                   <div className='flex items-center justify-between'>
                     <div className='flex gap-2'>
-                      <p className='text-sm'>{profile.fullName}</p>
+                      <p className=''>{profile.fullName}</p>
                       {(() => {
                         const Icon = genderIconMaps[profile.gender];
                         return (
@@ -116,7 +116,7 @@ export default function NavigationMobile({
                     {navMobileList.map((item) => (
                       <ListItem
                         key={item.link}
-                        className='flex items-center gap-x-2 gap-y-4 rounded-lg border px-2 py-2 text-sm'
+                        className='flex items-center gap-x-2 gap-y-4 rounded-lg border px-4 py-2 max-md:px-2'
                       >
                         <item.icon className={item.className} />
                         <Link href={item.link}>{item.title}</Link>
@@ -133,7 +133,7 @@ export default function NavigationMobile({
                 item.submenu ? (
                   <ListItem
                     key={item.label}
-                    className='relative flex cursor-pointer gap-2 py-2 text-sm'
+                    className='relative flex cursor-pointer gap-2 p-2 select-none'
                     onClick={() =>
                       setOpenSub((prev) =>
                         prev === item.label ? null : item.label
@@ -142,30 +142,32 @@ export default function NavigationMobile({
                   >
                     {item.label}
                     <ChevronDown className='size-5' />
+                    {item.isNew && (
+                      <div className='bg-golden-glow text-main-background absolute -top-4.5 -right-1 rounded p-0.5 text-xs'>
+                        Mới
+                      </div>
+                    )}
                     <AnimatePresence>
                       {openSub === item.label && (
                         <motion.div
                           initial={{
                             opacity: 0,
-                            scale: 0,
-                            transformOrigin: '5% -5%'
+                            scale: 0.8,
+                            transformOrigin: '5% 0%'
                           }}
                           animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0 }}
-                          transition={{ duration: 0.05, ease: 'linear' }}
-                          className='bg-popover absolute top-10 left-0 grid w-80 grid-cols-2 gap-2 rounded-sm p-2 px-6 py-4 shadow-lg'
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          transition={{ duration: 0.15, ease: 'linear' }}
+                          className='bg-gunmetal-blue scrollbar-none absolute top-10 left-0 z-10 grid max-h-[50vh] w-150 grid-cols-3 gap-4 overflow-y-auto rounded-sm p-2 px-6 py-4 shadow-lg max-lg:w-120 max-lg:grid-cols-2 max-lg:gap-3'
                         >
-                          <div className='absolute -top-2 left-5'>
-                            <div className='bg-popover h-4 w-4 rotate-45 shadow-[-5px_-5px_8px_0px_var(--bg-popover)]' />
-                          </div>
-                          {item.subItems!.map((sub) => (
+                          {item.subItems?.map((sub) => (
                             <Link
                               key={sub.label}
-                              href={sub.href!}
+                              href={sub.href as string}
                               className='text-muted-foreground hover:text-primary flex cursor-pointer items-center gap-2 py-2 whitespace-nowrap'
                             >
                               {sub.icon && <sub.icon className='size-4' />}
-                              <span className='text-sm font-medium'>
+                              <span className='line-clamp-1 font-medium'>
                                 {sub.label}
                               </span>
                             </Link>
@@ -175,13 +177,16 @@ export default function NavigationMobile({
                     </AnimatePresence>
                   </ListItem>
                 ) : (
-                  <Link
-                    className='py-2 text-sm'
-                    key={item.label}
-                    href={item.href!}
-                  >
-                    {item.label}
-                  </Link>
+                  <ListItem className='p-2' key={item.label}>
+                    <Link href={item.href as string} className='relative'>
+                      {item.label}
+                      {item.isNew && (
+                        <div className='bg-golden-glow text-main-background absolute -top-4.5 -right-5 rounded p-0.5 text-xs'>
+                          Mới
+                        </div>
+                      )}
+                    </Link>
+                  </ListItem>
                 )
               )}
             </List>

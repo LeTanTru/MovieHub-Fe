@@ -18,12 +18,7 @@ import {
   getRefreshTokenFromCookie,
   setAccessTokenToCookie,
   setRefreshTokenToCookie,
-  removeAccessTokenFromLocalStorage,
-  removeRefreshTokenFromLocalStorage,
-  removeAccessTokenFromCookie,
-  removeRefreshTokenFromCookie,
-  removeData,
-  removeCookieData
+  removeDatas
 } from '@/utils';
 import axios, {
   AxiosError,
@@ -32,7 +27,6 @@ import axios, {
   type AxiosRequestConfig,
   type AxiosResponse
 } from 'axios';
-import { redirect } from 'next/navigation';
 
 const isClient = () => typeof window !== 'undefined';
 const axiosInstance = axios.create();
@@ -83,6 +77,7 @@ const refreshToken = async () => {
   if (data) {
     const newAccessToken = data.access_token;
     const newRefreshToken = data.refresh_token;
+    await axiosInstance.post(apiConfig.api.auth.refreshToken.baseUrl, data);
     if (isClient()) {
       if (newAccessToken) setAccessTokenToLocalStorage(newAccessToken);
       if (newRefreshToken) setRefreshTokenToLocalStorage(newRefreshToken);
@@ -139,19 +134,16 @@ axiosInstance.interceptors.response.use(
           error instanceof AxiosError &&
           error?.response?.status === HttpStatusCode.BadRequest &&
           error?.response?.data?.message &&
-          error?.response?.data?.message?.includes('Invalid refresh token')
+          error?.response?.data?.message?.includes('Invalid refresh token') &&
+          error?.response?.data?.data?.includes('invalid_request')
         ) {
-          if (isClient()) {
-            removeAccessTokenFromLocalStorage();
-            removeRefreshTokenFromLocalStorage();
-            removeData(storageKeys.USER_KIND);
-            window.location.href = route.login.path;
-          } else {
-            await removeAccessTokenFromCookie();
-            await removeRefreshTokenFromCookie();
-            await removeCookieData(storageKeys.USER_KIND);
-            redirect(route.login.path);
-          }
+          removeDatas([
+            storageKeys.ACCESS_TOKEN,
+            storageKeys.REFRESH_TOKEN,
+            storageKeys.USER_KIND
+          ]);
+          await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
+          window.location.href = route.login.path;
         }
         processQueue(error, null);
         isRefreshing = false;
@@ -271,7 +263,7 @@ export const sendRequest = async <T>(
 
       axiosConfig.data = formData;
 
-      delete axiosConfig.headers!['Content-Type'];
+      delete axiosConfig.headers?.['Content-Type'];
     } else if (method !== 'GET') {
       axiosConfig.data = body;
       axiosConfig.headers = {
@@ -306,6 +298,6 @@ export const http = {
   }
 };
 
-export function isAxiosError(error: unknown): error is AxiosError {
+export const isAxiosError = (error: unknown): error is AxiosError => {
   return (error as AxiosError)?.isAxiosError === true;
-}
+};

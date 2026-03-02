@@ -10,7 +10,7 @@ export default function WatchMain() {
     <div className='flex grow flex-col gap-10 p-10'>
       <WatchInfo />
       <div>
-        <ScheduleBadge />
+        {/* <ScheduleBadge /> */}
         <WatchEpisode />
         <Discussion toId={MOVIE_WATCH_DISCUSSION_ID} className='px-0 pt-5' />
       </div>
