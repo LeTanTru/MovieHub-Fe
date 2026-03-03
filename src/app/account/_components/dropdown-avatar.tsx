@@ -19,17 +19,19 @@ type DropdownAvatarProps = {
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
-  const { opened, open, close } = useDisclosure();
+  const { opened, open, close, toggle } = useDisclosure();
   const pathname = usePathname();
 
   const handleOpen = () => open();
   const handleClose = () => close();
+  const handleToggle = () => toggle();
 
   return (
     <div
       className='group relative'
       onMouseEnter={handleOpen}
       onMouseLeave={handleClose}
+      onClick={handleToggle}
     >
       <Button
         variant='ghost'
@@ -92,7 +94,13 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             <Separator />
             <List>
               {dropdownAvatarAccountList.map((item) => (
-                <ListItem key={item.link} onClick={handleClose}>
+                <ListItem
+                  key={item.link}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleClose();
+                  }}
+                >
                   <Link
                     href={item.link}
                     className={cn(

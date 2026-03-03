@@ -72,7 +72,7 @@ export default function ChangePasswordForm() {
   };
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
       <h3 className='text-center text-xl font-medium'>Đổi mật khẩu</h3>
       <p className='mt-2 text-center text-sm text-slate-400'>
         Cập nhật mật khẩu tài khoản <br /> để đảm bảo an toàn cho tài khoản của
@@ -87,8 +87,8 @@ export default function ChangePasswordForm() {
         {(form) => {
           return (
             <>
-              <Row className='mb-0 justify-center'>
-                <Col span={24} className='mb-8'>
+              <Row className='justify-center max-[640px]:mb-4 max-[400px]:mb-4'>
+                <Col className='w-full'>
                   <PasswordField
                     control={form.control}
                     name='oldPassword'
@@ -99,8 +99,8 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='mb-0 justify-center'>
-                <Col span={24} className='mb-8'>
+              <Row className='justify-center max-[640px]:mb-4 max-[400px]:mb-4'>
+                <Col className='w-full'>
                   <PasswordField
                     control={form.control}
                     name='newPassword'
@@ -111,8 +111,8 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='mb-0 justify-center'>
-                <Col span={24} className='mb-8'>
+              <Row className='justify-center max-[640px]:mb-4 max-[400px]:mb-4'>
+                <Col className='w-full'>
                   <PasswordField
                     control={form.control}
                     name='confirmNewPassword'
@@ -123,21 +123,22 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='mb-2 justify-end'>
-                <Col span={12}>
+              <Row className='mb-2 flex justify-end max-[640px]:mb-0 max-[600px]:flex-col-reverse max-[600px]:gap-4'>
+                <Col className='my-0 w-1/2 max-[600px]:w-full'>
                   <Button
                     type='button'
                     variant='outline'
+                    className='w-full'
                     disabled={!form.formState.isDirty}
                   >
                     Hủy
                   </Button>
                 </Col>
-                <Col span={12}>
+                <Col className='my-0 w-1/2 max-[600px]:w-full'>
                   <Button
                     type='submit'
                     variant='primary'
-                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
+                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 w-full'
                     loading={
                       changePasswordLoading ||
                       logoutLoading ||

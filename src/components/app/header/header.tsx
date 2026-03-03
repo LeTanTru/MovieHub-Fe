@@ -15,7 +15,6 @@ import { useAppLoading, useAuth, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 import { FaSearch } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
-import { Activity } from '@/components/activity';
 
 export default function Header() {
   const { profile } = useAuth();

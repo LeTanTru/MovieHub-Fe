@@ -97,7 +97,7 @@ export default function ProfileForm() {
   };
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
       <h3 className='text-center text-xl font-semibold'>Tài khoản</h3>
       <p className='text-muted-foreground mt-2 text-center text-sm'>
         Cập nhật thông tin tài khoản
@@ -112,8 +112,8 @@ export default function ProfileForm() {
         {(form) => {
           return (
             <>
-              <Row className='flex-col gap-2'>
-                <Col span={24} className='mx-auto'>
+              <Row className='flex-col gap-2 max-[640px]:mb-4'>
+                <Col className='mx-auto'>
                   <UploadImageField
                     value={renderImageUrl(imageManager.currentUrl)}
                     control={form.control}
@@ -131,9 +131,9 @@ export default function ProfileForm() {
                     size={100}
                   />
                 </Col>
-                <Col span={24}>
-                  <Row>
-                    <Col span={12}>
+                <Col>
+                  <Row className='max-[640px]:mb-4 max-[640px]:*:mb-4 max-[400px]:mb-0'>
+                    <Col className='w-1/2 max-[640px]:w-full'>
                       <InputField
                         control={form.control}
                         name='fullName'
@@ -143,7 +143,7 @@ export default function ProfileForm() {
                         className='text-sm'
                       />
                     </Col>
-                    <Col span={12}>
+                    <Col className='w-1/2 max-[640px]:w-full'>
                       <InputField
                         control={form.control}
                         name='email'
@@ -154,8 +154,8 @@ export default function ProfileForm() {
                       />
                     </Col>
                   </Row>
-                  <Row>
-                    <Col span={12}>
+                  <Row className='max-[640px]:mb-4 max-[640px]:*:mb-4 max-[400px]:mb-0'>
+                    <Col className='w-1/2 max-[640px]:w-full'>
                       <InputField
                         control={form.control}
                         name='username'
@@ -165,7 +165,7 @@ export default function ProfileForm() {
                         className='text-sm'
                       />
                     </Col>
-                    <Col span={12}>
+                    <Col className='w-1/2 max-[640px]:w-full'>
                       <InputField
                         control={form.control}
                         name='phone'
@@ -177,7 +177,7 @@ export default function ProfileForm() {
                     </Col>
                   </Row>
                   <Row className='mb-0'>
-                    <Col span={12}>
+                    <Col className='w-1/2 max-[640px]:w-full'>
                       <SelectField
                         control={form.control}
                         options={genderOptions}
@@ -191,8 +191,8 @@ export default function ProfileForm() {
                   </Row>
                 </Col>
               </Row>
-              <Row className='mb-2 flex justify-end'>
-                <Col span={6}>
+              <Row className='mb-2 flex justify-end max-[400px]:mb-0 max-[400px]:flex-col-reverse max-[400px]:gap-4'>
+                <Col className='my-0 w-1/4 max-[867px]:w-1/3 max-[640px]:w-1/2 max-[400px]:w-full'>
                   <Button
                     type='button'
                     variant='outline'
@@ -202,7 +202,7 @@ export default function ProfileForm() {
                     Hủy
                   </Button>
                 </Col>
-                <Col span={6}>
+                <Col className='my-0 w-1/4 max-[867px]:w-1/3 max-[640px]:w-1/2 max-[400px]:w-full'>
                   <Button
                     type='submit'
                     variant='primary'
