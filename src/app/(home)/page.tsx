@@ -37,14 +37,14 @@ export default async function HomePage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Slider />
+      {/* <Slider />
       <Container className='relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
         <div className='flex flex-col gap-12.5'>
           <TopicList />
           <WatchContinue />
           <Collection />
         </div>
-      </Container>
+      </Container> */}
     </HydrationBoundary>
   );
 }

@@ -1,12 +1,12 @@
 'use client';
 
 import { CategoryResType, ItemProps } from '@/types';
-import NavigationDesktop from './navigation/navigation-desktop';
-import NavigationMobile from './navigation/navigation-mobile';
 import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
 import { countries, MAX_PAGE_SIZE } from '@/constants';
 import { generateSlug } from '@/utils';
+import NavigationMobile from './navigation/navigation-mobile';
+import NavigationDesktop from './navigation/navigation-desktop';
 
 export default function NavigationMenu({
   mode

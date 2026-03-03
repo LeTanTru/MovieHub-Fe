@@ -1,5 +1,6 @@
 'use client';
 
+import './navigation-mobile.css';
 import { ButtonLogout } from '@/components/app/button-logout';
 import { AvatarField, Button } from '@/components/form';
 import { List, ListItem } from '@/components/list';
@@ -19,6 +20,7 @@ import { renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, MenuIcon, X } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 export default function NavigationMobile({
@@ -26,6 +28,7 @@ export default function NavigationMobile({
 }: {
   navigationList: ItemProps[];
 }) {
+  const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
   const { profile } = useAuth();
   const [openSub, setOpenSub] = useState<string | null>(null);
@@ -52,7 +55,7 @@ export default function NavigationMobile({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: 0.1 }}
             >
               <X className='size-8' />
             </motion.div>
@@ -62,7 +65,7 @@ export default function NavigationMobile({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: 0.1 }}
             >
               <MenuIcon className='size-8' />
             </motion.div>
@@ -77,8 +80,8 @@ export default function NavigationMobile({
             initial={{ opacity: 0, scale: 0.8, transformOrigin: '5% 0%' }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.15, ease: 'linear' }}
-            className='bg-gunmetal-black absolute top-15 w-120 rounded-lg p-4 max-md:w-90'
+            transition={{ duration: 0.1, ease: 'linear' }}
+            className='bg-gunmetal-black absolute top-15 w-110 rounded-lg p-4 max-md:w-90'
           >
             {!profile ? (
               <div className='flex justify-center'>
@@ -95,12 +98,10 @@ export default function NavigationMobile({
                         return (
                           <Icon
                             className={cn('size-4.5', {
-                              'stroke-cyan-500':
-                                profile?.gender === GENDER_MALE,
-                              'stroke-pink-500':
+                              'text-cyan-500': profile?.gender === GENDER_MALE,
+                              'text-pink-500':
                                 profile?.gender === GENDER_FEMALE,
-                              'stroke-amber-400':
-                                profile?.gender === GENDER_OTHER
+                              'text-amber-400': profile?.gender === GENDER_OTHER
                             })}
                           />
                         );
@@ -116,7 +117,14 @@ export default function NavigationMobile({
                     {navMobileList.map((item) => (
                       <ListItem
                         key={item.link}
-                        className='flex items-center gap-x-2 gap-y-4 rounded-lg border px-4 py-2 max-md:px-2'
+                        className={cn(
+                          'flex items-center gap-x-2 gap-y-4 rounded-lg border px-4 py-2 max-md:px-2',
+                          {
+                            'text-golden-glow border-golden-glow':
+                              pathname === item.link
+                          }
+                        )}
+                        onClick={() => setOpen(false)}
                       >
                         <item.icon className={item.className} />
                         <Link href={item.link}>{item.title}</Link>
@@ -143,7 +151,7 @@ export default function NavigationMobile({
                     {item.label}
                     <ChevronDown className='size-5' />
                     {item.isNew && (
-                      <div className='bg-golden-glow text-main-background absolute -top-4.5 -right-1 rounded p-0.5 text-xs'>
+                      <div className='bg-golden-glow text-main-background absolute -top-4 -right-7 rounded px-1 text-xs'>
                         Mới
                       </div>
                     )}
@@ -152,13 +160,12 @@ export default function NavigationMobile({
                         <motion.div
                           initial={{
                             opacity: 0,
-                            scale: 0.8,
-                            transformOrigin: '5% 0%'
+                            scale: 0.8
                           }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.8 }}
                           transition={{ duration: 0.15, ease: 'linear' }}
-                          className='bg-gunmetal-blue scrollbar-none absolute top-10 left-0 z-10 grid max-h-[50vh] w-150 grid-cols-3 gap-4 overflow-y-auto rounded-sm p-2 px-6 py-4 shadow-lg max-lg:w-120 max-lg:grid-cols-2 max-lg:gap-3'
+                          className='bg-gunmetal-blue scrollbar-none dropdown-mobile absolute top-10 left-0 z-10 grid max-h-[50vh] w-180 origin-[5%_0%] grid-cols-4 gap-2 overflow-y-auto rounded-sm p-2 px-6 py-4 shadow-lg'
                         >
                           {item.subItems?.map((sub) => (
                             <Link
@@ -181,7 +188,7 @@ export default function NavigationMobile({
                     <Link href={item.href as string} className='relative'>
                       {item.label}
                       {item.isNew && (
-                        <div className='bg-golden-glow text-main-background absolute -top-4.5 -right-5 rounded p-0.5 text-xs'>
+                        <div className='bg-golden-glow text-main-background absolute -top-4 -right-7 rounded px-1 text-xs'>
                           Mới
                         </div>
                       )}

@@ -1,0 +1,57 @@
+/*
+max-lg:w-150 max-lg:grid-cols-3 max-lg:gap-3 max-md:w-110 max-md:grid-cols-2 max-sm:left-1/2 max-sm:w-90 max-sm:origin-[center_top] max-sm:-translate-x-1/2 max-sm:gap-2
+*/
+
+.dropdown-mobile {
+  @media screen and (max-width: 1023px) {
+    width: 700px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media screen and (max-width: 967px) {
+    width: 600px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media screen and (max-width: 865px) {
+    left: -40%;
+    transform-origin: 20% 0%;
+    gap: 8px;
+  }
+
+  @media screen and (max-width: 767px) {
+    left: -80%;
+    transform-origin: 30% 0%;
+    gap: 6px;
+  }
+
+  @media screen and (max-width: 677px) {
+    width: 550px;
+  }
+
+  @media screen and (max-width: 639px) {
+    transform-origin: center top;
+    transform: translateX(-50%);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 500px;
+  }
+
+  @media screen and (max-width: 599px) {
+    width: 450px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media screen and (max-width: 519px) {
+    width: 400px;
+    transform-origin: 40% 0%;
+  }
+
+  @media screen and (max-width: 479px) {
+    width: 350px;
+  }
+
+  @media screen and (max-width: 439px) {
+    left: -100%;
+    transform-origin: 60% 0%;
+  }
+}
