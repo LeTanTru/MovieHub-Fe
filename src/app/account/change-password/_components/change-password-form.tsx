@@ -87,7 +87,7 @@ export default function ChangePasswordForm() {
         {(form) => {
           return (
             <>
-              <Row className='justify-center max-[640px]:mb-4 max-[400px]:mb-4'>
+              <Row className='justify-center'>
                 <Col className='w-full'>
                   <PasswordField
                     control={form.control}
@@ -99,7 +99,7 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='justify-center max-[640px]:mb-4 max-[400px]:mb-4'>
+              <Row className='justify-center'>
                 <Col className='w-full'>
                   <PasswordField
                     control={form.control}
@@ -111,7 +111,7 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='justify-center max-[640px]:mb-4 max-[400px]:mb-4'>
+              <Row className='justify-center'>
                 <Col className='w-full'>
                   <PasswordField
                     control={form.control}

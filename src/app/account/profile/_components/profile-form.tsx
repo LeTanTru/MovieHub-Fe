@@ -132,7 +132,7 @@ export default function ProfileForm() {
                   />
                 </Col>
                 <Col>
-                  <Row className='max-[640px]:mb-4 max-[640px]:*:mb-4 max-[400px]:mb-0'>
+                  <Row className='max-[640px]:mb-0 max-[640px]:*:mb-4 max-[400px]:mb-0'>
                     <Col className='w-1/2 max-[640px]:w-full'>
                       <InputField
                         control={form.control}
@@ -154,7 +154,7 @@ export default function ProfileForm() {
                       />
                     </Col>
                   </Row>
-                  <Row className='max-[640px]:mb-4 max-[640px]:*:mb-4 max-[400px]:mb-0'>
+                  <Row className='max-[640px]:mb-0 max-[640px]:*:mb-4 max-[400px]:mb-0'>
                     <Col className='w-1/2 max-[640px]:w-full'>
                       <InputField
                         control={form.control}
@@ -191,8 +191,8 @@ export default function ProfileForm() {
                   </Row>
                 </Col>
               </Row>
-              <Row className='mb-2 flex justify-end max-[400px]:mb-0 max-[400px]:flex-col-reverse max-[400px]:gap-4'>
-                <Col className='my-0 w-1/4 max-[867px]:w-1/3 max-[640px]:w-1/2 max-[400px]:w-full'>
+              <Row className='mb-2 flex justify-end max-[480px]:mb-0 max-[480px]:flex-col-reverse max-[480px]:gap-4'>
+                <Col className='my-0 w-1/4 max-[867px]:w-1/3 max-[640px]:w-1/2 max-[480px]:w-full'>
                   <Button
                     type='button'
                     variant='outline'
@@ -202,7 +202,7 @@ export default function ProfileForm() {
                     Hủy
                   </Button>
                 </Col>
-                <Col className='my-0 w-1/4 max-[867px]:w-1/3 max-[640px]:w-1/2 max-[400px]:w-full'>
+                <Col className='my-0 w-1/4 max-[867px]:w-1/3 max-[640px]:w-1/2 max-[480px]:w-full'>
                   <Button
                     type='submit'
                     variant='primary'
