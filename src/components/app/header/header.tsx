@@ -13,12 +13,15 @@ import { cn } from '@/lib';
 import { Button } from '@/components/form';
 import { useAppLoading, useAuth, useNavigate } from '@/hooks';
 import { route } from '@/routes';
+import { FaSearch } from 'react-icons/fa';
+import { FaXmark } from 'react-icons/fa6';
 
 export default function Header() {
   const { profile } = useAuth();
   const loading = useAppLoading();
   const navigate = useNavigate();
   const [isFixed, setIsFixed] = useState<boolean>(false);
+  const [showSearch, setShowSearch] = useState<boolean>(false);
 
   useEffect(() => {
     const handleOnScroll = () => {
@@ -51,22 +54,55 @@ export default function Header() {
           }
         )}
       >
-        <NavigationMenu mode='mobile' />
-        {/* Left side */}
-        <Link
-          href={route.home.path}
-          className='max-1360:absolute max-1360:left-16.25 shrink-0'
+        <div
+          className={cn({
+            'max-1360:block hidden': !showSearch,
+            'max-1360:hidden': showSearch
+          })}
         >
+          <NavigationMenu mode='mobile' />
+        </div>
+
+        {/* Left side */}
+        <Link href={route.home.path} className='shrink-0'>
           <Image
             alt='Logo'
-            className='max-1360:h-9 max-1360:w-auto h-auto'
+            className={cn('max-1360:h-9 max-1360:w-auto h-auto', {
+              hidden: showSearch
+            })}
             height={46}
             src={logoWithText}
             loading='eager'
             unoptimized
           />
         </Link>
-        <SearchForm formClassName='max-1360:hidden flex h-full w-full items-center bg-transparent p-0' />
+
+        {/* Desktop search — always visible, no animation needed */}
+        <SearchForm
+          className='max-1360:hidden'
+          formClassName='flex h-full w-full items-center bg-transparent p-0'
+        />
+
+        {/* Mobile search — animated show/hide */}
+        <AnimatePresence>
+          {showSearch && (
+            <motion.div
+              key='mobile-search-form'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
+              style={{ transformOrigin: 'top center' }}
+              className='max-1360:absolute max-1360:left-2.5 max-1360:right-12.5 max-1360:z-50 max-1360:block hidden w-auto'
+            >
+              <SearchForm
+                className='max-1360:max-w-none max-1360:w-auto'
+                formClassName='flex h-full w-full items-center bg-transparent p-0'
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Right side */}
         <div className='h-header max-1360:hidden max-1600:gap-2.5 flex grow items-center gap-8'>
           <NavigationMenu mode='desktop' />
@@ -116,6 +152,38 @@ export default function Header() {
                   <DropdownAvatar profile={profile} />
                 </motion.div>
               </div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <div className='max-1360:block hidden grow'></div>
+
+        {/* Mobile search toggle button */}
+        <div
+          className='mobile-search max-1360:flex hidden size-10 items-center justify-center'
+          onClick={() => setShowSearch((prev) => !prev)}
+        >
+          <AnimatePresence mode='wait' initial={false}>
+            {!showSearch ? (
+              <motion.div
+                key='icon-search'
+                initial={{ opacity: 0, scale: 0.8, rotate: -15 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.8, rotate: 15 }}
+                transition={{ duration: 0.1 }}
+              >
+                <FaSearch className='size-5 font-semibold' />
+              </motion.div>
+            ) : (
+              <motion.div
+                key='icon-close'
+                initial={{ opacity: 0, scale: 0.8, rotate: 15 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.8, rotate: -15 }}
+                transition={{ duration: 0.1 }}
+              >
+                <FaXmark className='size-6 font-semibold text-red-500' />
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
