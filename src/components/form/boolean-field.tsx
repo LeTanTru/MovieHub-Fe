@@ -38,16 +38,20 @@ export default function BooleanField<T extends FieldValues>({
     <FormField
       control={control}
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <FormItem
           className={cn('flex h-full items-center space-x-2', className)}
         >
           {label && (
             <FormLabel
               htmlFor={id}
-              className={cn('ml-2 cursor-pointer gap-1.5', labelClassName, {
-                'opacity-50 select-none': disabled
-              })}
+              className={cn(
+                'ml-2 cursor-pointer gap-1.5 leading-5.5',
+                labelClassName,
+                {
+                  'opacity-50 select-none': disabled
+                }
+              )}
             >
               {label}
               {required && <span className='text-destructive'>*</span>}
@@ -72,7 +76,11 @@ export default function BooleanField<T extends FieldValues>({
             </div>
           </FormControl>
 
-          <FormMessage />
+          {fieldState.error && (
+            <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+              <FormMessage className='leading-5.5' />
+            </div>
+          )}
         </FormItem>
       )}
     />

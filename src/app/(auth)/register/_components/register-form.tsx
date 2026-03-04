@@ -62,7 +62,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Đăng ký</h3>
         <p className='text-muted-foreground text-center text-sm'>
@@ -80,7 +80,7 @@ export default function RegisterForm() {
         {(form) => (
           <>
             <Row>
-              <Col span={24}>
+              <Col className='w-full'>
                 <InputField
                   control={form.control}
                   name='email'
@@ -91,7 +91,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='w-full'>
                 <InputField
                   control={form.control}
                   name='fullName'
@@ -102,7 +102,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='w-full'>
                 <PasswordField
                   control={form.control}
                   name='password'
@@ -113,7 +113,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='w-full'>
                 <PasswordField
                   control={form.control}
                   name='confirmPassword'
@@ -124,7 +124,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='w-full'>
                 <CheckboxField
                   control={form.control}
                   name='terms'
@@ -139,15 +139,19 @@ export default function RegisterForm() {
                 />
               </Col>
             </Row>
-            <Button
-              type='submit'
-              variant='primary'
-              className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/50 dark:disabled:hover:bg-golden-glow/50 w-full'
-              disabled={registerLoading || !isFormChanged}
-              loading={registerLoading}
-            >
-              Đăng ký
-            </Button>
+            <Row>
+              <Col className='mt-1 w-full'>
+                <Button
+                  type='submit'
+                  variant='primary'
+                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/50 dark:disabled:hover:bg-golden-glow/50 w-full'
+                  disabled={registerLoading || !isFormChanged}
+                  loading={registerLoading}
+                >
+                  Đăng ký
+                </Button>
+              </Col>
+            </Row>
           </>
         )}
       </BaseForm>
@@ -158,7 +162,7 @@ export default function RegisterForm() {
       />
 
       <div className='text-muted-foreground mt-4 text-center text-sm'>
-        Đã có tài khoản? &nbsp;
+        Đã có tài khoản?&nbsp;
         <Link
           href={route.login.path}
           className='hover:text-golden-glow transition-all duration-200 ease-linear'

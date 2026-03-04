@@ -16,7 +16,7 @@ import {
 } from 'react-hook-form';
 
 import { Button } from '@/components/form';
-import { FormLabel } from '@/components/ui/form';
+import { FormLabel, FormMessage } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { CircleLoading } from '@/components/loading';
@@ -118,7 +118,7 @@ export default function UploadVideoField<T extends FieldValues>({
       {label && (
         <FormLabel
           className={cn(
-            'ml-2 flex items-center gap-1',
+            'ml-2 flex items-center gap-1 leading-5.5',
             error && !uploading && 'text-destructive',
             className
           )}
@@ -208,8 +208,10 @@ export default function UploadVideoField<T extends FieldValues>({
         )}
       </div>
 
-      {error?.message && !uploading && (
-        <p className='text-destructive ml-2 text-sm'>{error.message}</p>
+      {error?.message && (
+        <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+          <FormMessage className='leading-5.5' />
+        </div>
       )}
     </div>
   );

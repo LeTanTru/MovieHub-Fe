@@ -48,7 +48,7 @@ export default function RadioGroupField<T extends FieldValues>({
       render={({ field, fieldState }) => (
         <FormItem className='relative space-y-3'>
           {label && (
-            <FormLabel className={cn('ml-1 gap-2', labelClassName)}>
+            <FormLabel className={cn('ml-1 gap-2 leading-5.5', labelClassName)}>
               {label}
               {required && <span className='text-destructive'>*</span>}
             </FormLabel>
@@ -84,8 +84,8 @@ export default function RadioGroupField<T extends FieldValues>({
             </RadioGroup>
           </FormControl>
           {fieldState.error && (
-            <div className='animate-in fade-in absolute -bottom-6 left-2 z-0 mt-1 text-sm text-red-500'>
-              <FormMessage />
+            <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+              <FormMessage className='leading-5.5' />
             </div>
           )}
         </FormItem>

@@ -141,7 +141,7 @@ export default function SelectField<
           >
             {label && (
               <FormLabel
-                className={cn('ml-2 gap-1.5', labelClassName, {
+                className={cn('ml-2 gap-1.5 leading-5.5', labelClassName, {
                   'opacity-50 select-none': disabled
                 })}
               >
@@ -293,8 +293,8 @@ export default function SelectField<
             </Popover>
 
             {fieldState.error && (
-              <div className='animate-in fade-in absolute -bottom-6 left-2 text-sm text-red-500'>
-                <FormMessage />
+              <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+                <FormMessage className='leading-5.5' />
               </div>
             )}
           </FormItem>

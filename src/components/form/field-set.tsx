@@ -21,9 +21,7 @@ export default function FieldSet({
       className={cn('mb-4 rounded-md border border-gray-200 p-4', className)}
     >
       {title && (
-        <legend className='px-2 text-base font-semibold text-gray-800'>
-          {title}
-        </legend>
+        <legend className='px-2 font-semibold text-gray-800'>{title}</legend>
       )}
 
       {description && (

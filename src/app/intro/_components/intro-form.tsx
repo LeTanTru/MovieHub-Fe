@@ -48,7 +48,7 @@ export default function IntroForm() {
             <Image src={logo} alt='Logo' width={100} height={100} unoptimized />
           </Row>
           <Row className='w-full justify-center'>
-            <Col span={12}>
+            <Col>
               <PasswordField
                 control={form.control}
                 name='key'
@@ -59,7 +59,7 @@ export default function IntroForm() {
             </Col>
           </Row>
           <Row className='w-full justify-center'>
-            <Col span={12}>
+            <Col>
               <Button disabled={!form.formState.isDirty} type='submit'>
                 Truy cập
               </Button>

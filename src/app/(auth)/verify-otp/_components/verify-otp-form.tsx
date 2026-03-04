@@ -208,7 +208,7 @@ export default function VerifyOtpForm() {
     (resendData.count >= MAX_RESEND && countdown > 0) || cooldownRemaining > 0;
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h2 className='text-xl font-semibold'>Xác thực email</h2>
         <p className='text-muted-foreground text-center text-sm'>
@@ -226,8 +226,8 @@ export default function VerifyOtpForm() {
         {(form) => {
           return (
             <>
-              <Row className='mb-6'>
-                <Col span={24}>
+              <Row>
+                <Col className='w-full'>
                   <OtpInputField
                     name='otp'
                     control={form.control}
@@ -245,7 +245,7 @@ export default function VerifyOtpForm() {
                 </Col>
               </Row>
               <Row className='flex-col'>
-                <Col span={24}>
+                <Col className='my-2 w-full'>
                   <Button
                     type='button'
                     className='mx-auto'
@@ -257,7 +257,7 @@ export default function VerifyOtpForm() {
                     Gửi lại OTP
                   </Button>
                 </Col>
-                <Col span={24}>
+                <Col className='w-full'>
                   <span className='block text-center text-sm text-gray-500'>
                     Số lần đã gửi: {resendData.count} / {MAX_RESEND}
                     {countdown > 0 && resendData.count >= MAX_RESEND && (
@@ -279,7 +279,7 @@ export default function VerifyOtpForm() {
 
               <div className='bg-accent mb-4 h-px w-full'></div>
               <Row className='mb-4'>
-                <Col span={24}>
+                <Col className='w-full'>
                   <Button
                     type='submit'
                     variant='primary'
@@ -292,7 +292,7 @@ export default function VerifyOtpForm() {
                 </Col>
               </Row>
               <Row className='mb-0'>
-                <Col span={24}>
+                <Col className='w-full'>
                   <Button
                     type='button'
                     variant='secondary'

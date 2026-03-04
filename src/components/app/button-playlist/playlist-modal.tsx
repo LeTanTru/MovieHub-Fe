@@ -101,7 +101,7 @@ export default function PlaylistModal({
         {(form) => (
           <>
             <Row className='mb-4'>
-              <Col span={24}>
+              <Col>
                 <InputField
                   control={form.control}
                   name='name'
@@ -112,12 +112,12 @@ export default function PlaylistModal({
               </Col>
             </Row>
             <Row className='mb-0'>
-              <Col span={12}>
+              <Col>
                 <Button variant='primary' onClick={handleClose}>
                   Đóng
                 </Button>
               </Col>
-              <Col span={12}>
+              <Col>
                 <Button
                   className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
                   variant='primary'

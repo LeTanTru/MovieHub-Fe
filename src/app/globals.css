@@ -242,12 +242,10 @@
     scrollbar-width: none;
   }
 
-  body[data-scroll-locked] {
-    margin-right: 0 !important;
-    padding-right: 15px !important;
-
-    .header {
-      margin-right: 15px !important;
+  @media (min-height: 1px) {
+    body[data-scroll-locked] {
+      margin-right: 0 !important;
+      padding-right: var(--scroll-padding, 0px) !important;
     }
   }
 }

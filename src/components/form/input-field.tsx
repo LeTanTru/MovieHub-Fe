@@ -110,7 +110,7 @@ function InputFieldInner<T extends FieldValues>(
         >
           {label && (
             <FormLabel
-              className={cn('ml-2 gap-1.5', labelClassName, {
+              className={cn('ml-2 gap-1.5 leading-5.5', labelClassName, {
                 'opacity-50 select-none': disabled
               })}
             >
@@ -136,7 +136,7 @@ function InputFieldInner<T extends FieldValues>(
                 ref={ref}
                 className={cn(
                   className,
-                  'font-normal shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
+                  'text-sm font-normal shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
                   {
                     'pl-10': prefixIcon,
                     'pr-10': suffixIcon,
@@ -234,8 +234,8 @@ function InputFieldInner<T extends FieldValues>(
                 </div>
               )}
               {fieldState.error && (
-                <div className='animate-in fade-in absolute -bottom-6 left-2 z-0 mt-1 text-sm text-red-500'>
-                  <FormMessage />
+                <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+                  <FormMessage className='leading-5.5' />
                 </div>
               )}
             </div>

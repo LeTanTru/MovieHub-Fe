@@ -102,6 +102,17 @@ export default function ImageField({
     return () => node.removeEventListener('wheel', handleWheel);
   }, [handleWheel, open]);
 
+  // Lock body scroll without layout shift when modal opens
+  useEffect(() => {
+    if (!open) return;
+
+    document.body.classList.add('body-lock');
+
+    return () => {
+      document.body.classList.remove('body-lock');
+    };
+  }, [open]);
+
   if (!isMounted) return null;
 
   return (
@@ -195,7 +206,7 @@ export default function ImageField({
           <AnimatePresence>
             {open && !shouldDisablePreview && (
               <m.div
-                className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'
+                className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs'
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

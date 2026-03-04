@@ -24,7 +24,7 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 import { Button, ImageField } from '@/components/form';
-import { FormLabel } from '@/components/ui/form';
+import { FormLabel, FormMessage } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { logger } from '@/logger';
@@ -252,7 +252,7 @@ export default function UploadImageField<T extends FieldValues>({
         {label && (
           <FormLabel
             className={cn(
-              'ml-0 gap-1.5',
+              'ml-0 gap-1.5 leading-5.5',
               {
                 'text-destructive': error?.message
               },
@@ -337,9 +337,9 @@ export default function UploadImageField<T extends FieldValues>({
           </label>
         </div>
         {error?.message && (
-          <p className='text-destructive animate-in fade-in absolute -bottom-6 text-sm'>
-            {error.message}
-          </p>
+          <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+            <FormMessage className='leading-5.5' />
+          </div>
         )}
       </div>
 
@@ -480,7 +480,7 @@ export default function UploadImageField<T extends FieldValues>({
                     type='button'
                     variant='outline'
                     size='icon'
-                    className='border-destructive text-destructive hover:border-destructive/80 hover:text-destructive/80! -my-1 w-25'
+                    className='hover:border-destructive/80! dark:border-destructive dark:text-destructive dark:hover:border-destructive/80 hover:text-destructive/80! dark:hover:text-destructive/80 -my-1 w-25'
                     onClick={() => setDialogOpen(false)}
                   >
                     Đóng

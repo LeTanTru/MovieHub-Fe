@@ -72,10 +72,10 @@ export default function LoginForm() {
   };
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Đăng nhập</h3>
-        <p className='text-muted-foreground text-center text-sm'>
+        <p className='text-muted-foreground text-center'>
           Đăng nhập để có trải nghiệm tốt nhất với MovieHub
         </p>
       </div>
@@ -90,7 +90,7 @@ export default function LoginForm() {
         {(form) => (
           <>
             <Row>
-              <Col span={24}>
+              <Col className='mb-2 w-full'>
                 <InputField
                   control={form.control}
                   name='email'
@@ -100,8 +100,8 @@ export default function LoginForm() {
                 />
               </Col>
             </Row>
-            <Row>
-              <Col span={24}>
+            <Row className='my-4'>
+              <Col className='mb-2 w-full'>
                 <PasswordField
                   control={form.control}
                   name='password'
@@ -112,11 +112,12 @@ export default function LoginForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
-                <div className='text-muted-foreground hover:text-golden-glow text-right text-sm transition-all duration-200 ease-linear'>
+              <Col className='w-full'>
+                <div className='text-right'>
                   <Link
                     onClick={handleClearForgotPasswordData}
                     href={route.forgotPassword.path}
+                    className='text-muted-foreground hover:text-golden-glow transition-all duration-200 ease-linear'
                   >
                     Quên mật khẩu?
                   </Link>
@@ -141,7 +142,7 @@ export default function LoginForm() {
 
       <div className='my-4 flex items-center gap-3'>
         <div className='bg-border h-px flex-1'></div>
-        <span className='text-muted-foreground text-sm'>Hoặc</span>
+        <span className='text-muted-foreground'>Hoặc</span>
         <div className='bg-border h-px flex-1'></div>
       </div>
 
@@ -152,7 +153,7 @@ export default function LoginForm() {
         className='mt-4 h-[0.5px]! bg-gray-500'
       />
 
-      <div className='text-muted-foreground mt-4 text-center text-sm'>
+      <div className='text-muted-foreground mt-4 text-center'>
         Chưa có tài khoản? &nbsp;
         <Link
           href={route.register.path}

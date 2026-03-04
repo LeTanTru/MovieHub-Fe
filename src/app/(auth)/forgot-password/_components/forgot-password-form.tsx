@@ -267,7 +267,7 @@ export default function ForgotPasswordForm() {
     (resendData.count >= MAX_RESEND && countdown > 0) || cooldownRemaining > 0;
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>
         <Activity visible={step == 1}>
@@ -296,7 +296,7 @@ export default function ForgotPasswordForm() {
             <>
               <Activity visible={step === 1}>
                 <Row>
-                  <Col span={24}>
+                  <Col className='w-full'>
                     <InputField
                       control={form.control}
                       name='email'
@@ -318,7 +318,7 @@ export default function ForgotPasswordForm() {
               </Activity>
               <Activity visible={step === 2}>
                 <Row className='mb-6'>
-                  <Col span={24}>
+                  <Col className='w-full'>
                     <OtpInputField
                       name='otp'
                       control={form.control}
@@ -336,7 +336,7 @@ export default function ForgotPasswordForm() {
                   </Col>
                 </Row>
                 <Row className='flex-col'>
-                  <Col span={24}>
+                  <Col className='my-2 w-full'>
                     <Button
                       type='button'
                       variant='primary'
@@ -348,7 +348,7 @@ export default function ForgotPasswordForm() {
                       Gửi lại OTP
                     </Button>
                   </Col>
-                  <Col span={24}>
+                  <Col className='w-full'>
                     <span className='block text-center text-sm text-gray-500'>
                       Số lần đã gửi: {resendData.count} / {MAX_RESEND}
                       {countdown > 0 && resendData.count >= MAX_RESEND && (
@@ -374,7 +374,7 @@ export default function ForgotPasswordForm() {
                   className='mb-4 h-[0.5px]! bg-gray-500'
                 />
                 <Row>
-                  <Col span={24}>
+                  <Col className='w-full'>
                     <PasswordField
                       name='password'
                       control={form.control}
@@ -385,7 +385,7 @@ export default function ForgotPasswordForm() {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={24}>
+                  <Col className='w-full'>
                     <PasswordField
                       name='confirmPassword'
                       control={form.control}
@@ -396,7 +396,7 @@ export default function ForgotPasswordForm() {
                   </Col>
                 </Row>
                 <Row className='mb-4'>
-                  <Col span={24}>
+                  <Col className='w-full'>
                     <Button
                       type='submit'
                       variant='primary'
@@ -411,7 +411,7 @@ export default function ForgotPasswordForm() {
                   </Col>
                 </Row>
                 <Row className='mb-0'>
-                  <Col span={24}>
+                  <Col className='w-full'>
                     <Button
                       type='button'
                       variant='secondary'
