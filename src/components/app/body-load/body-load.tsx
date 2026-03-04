@@ -23,8 +23,9 @@ export default function BodyLoad() {
           loading='eager'
           unoptimized
         />
-        <div className='text-h1 text-center'>
-          Xem Phim Miễn Phí Cực Nhanh, Chất Lượng Cao Và Cập Nhật Liên Tục
+        <div className='max-1280:text-3xl max-1024:text-2xl max-768:text-xl max-480:text-lg text-center text-[32px] text-white/30'>
+          Xem Phim Miễn Phí Cực Nhanh, <br /> Chất Lượng Cao Và Cập Nhật Liên
+          Tục
         </div>
       </div>
     </div>
