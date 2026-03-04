@@ -141,7 +141,7 @@ export default function SelectField<
           >
             {label && (
               <FormLabel
-                className={cn('ml-2 gap-1.5 leading-5.5', labelClassName, {
+                className={cn('ml-2', labelClassName, {
                   'opacity-50 select-none': disabled
                 })}
               >
@@ -159,7 +159,7 @@ export default function SelectField<
                   aria-label='Select'
                   disabled={disabled}
                   className={cn(
-                    'hover:border-input bg-input/30 dark:border-input w-full justify-between border px-3! py-0 focus-visible:border-transparent dark:text-white dark:hover:text-white',
+                    'hover:border-input dark:hover:border-input dark:bg-input/30 dark:border-input w-full justify-between border px-3! py-0 text-black hover:text-black focus-visible:border-transparent dark:text-white dark:hover:text-white',
                     {
                       'ring-main-color border-transparent! ring-2': open,
                       '[&>div>span]:text-gray-300': fieldState.invalid,
@@ -199,12 +199,12 @@ export default function SelectField<
 
               <PopoverContent
                 sideOffset={8}
-                className='dark:bg-main-background w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-neutral-800'
+                className='dark:bg-charade w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-gray-200 dark:shadow-neutral-800'
               >
                 <Command
                   ref={commandRef}
+                  className='dark:bg-input/30 bg-background'
                   shouldFilter={false}
-                  className='dark:bg-main-background/50'
                 >
                   <CommandInput
                     placeholder={searchText}
@@ -264,11 +264,12 @@ export default function SelectField<
                           onMouseEnter={() => setHighlightedIndex(idx)}
                           onSelect={() => handleSelect(val)}
                           className={cn(
-                            'bg-input/30 hover:bg-main-color/20! block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                            'dark:hover:bg-main-color/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                             {
-                              'bg-accent text-accent-foreground':
+                              'bg-accent text-accent-foreground dark:bg-main-color/10':
                                 highlightedIndex === idx,
-                              'bg-main-color/20': isSelected
+                              'dark:bg-main-color/30 bg-main-color/10':
+                                isSelected
                             }
                           )}
                         >

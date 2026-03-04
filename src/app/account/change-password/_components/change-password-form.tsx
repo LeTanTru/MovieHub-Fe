@@ -72,7 +72,7 @@ export default function ChangePasswordForm() {
   };
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
       <h3 className='text-center text-xl font-medium'>Đổi mật khẩu</h3>
       <p className='mt-2 text-center text-sm text-slate-400'>
         Cập nhật mật khẩu tài khoản <br /> để đảm bảo an toàn cho tài khoản của
@@ -87,7 +87,7 @@ export default function ChangePasswordForm() {
         {(form) => {
           return (
             <>
-              <Row className='justify-center'>
+              <Row>
                 <Col className='w-full'>
                   <PasswordField
                     control={form.control}
@@ -99,7 +99,7 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='justify-center'>
+              <Row>
                 <Col className='w-full'>
                   <PasswordField
                     control={form.control}
@@ -111,7 +111,7 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='justify-center'>
+              <Row>
                 <Col className='w-full'>
                   <PasswordField
                     control={form.control}
@@ -123,8 +123,8 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='mb-2 flex justify-end max-[640px]:mb-0 max-[600px]:flex-col-reverse max-[600px]:gap-4'>
-                <Col className='my-0 w-1/2 max-[600px]:w-full'>
+              <Row className='max-640:mb-0 max-600:flex-col-reverse max-600:gap-6 mb-2 flex justify-end'>
+                <Col className='max-600:w-full my-0 w-1/2'>
                   <Button
                     type='button'
                     variant='outline'
@@ -134,7 +134,7 @@ export default function ChangePasswordForm() {
                     Hủy
                   </Button>
                 </Col>
-                <Col className='my-0 w-1/2 max-[600px]:w-full'>
+                <Col className='max-600:w-full my-0 w-1/2'>
                   <Button
                     type='submit'
                     variant='primary'

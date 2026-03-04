@@ -66,7 +66,7 @@ export default function CheckboxField<T extends FieldValues>({
               htmlFor={field.name}
               className={cn(
                 disabled && 'text-muted-foreground',
-                'cursor-pointer gap-1 leading-5.5',
+                'cursor-pointer',
                 labelClassName
               )}
             >

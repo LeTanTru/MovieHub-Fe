@@ -55,7 +55,7 @@ export default function OtpInputField<T extends FieldValues>({
           )}
         >
           {label && (
-            <FormLabel className={cn('mb-2 leading-5.5', labelClassName)}>
+            <FormLabel className={cn('mb-2', labelClassName)}>
               {label}
               {required && <span className='text-destructive'>*</span>}
             </FormLabel>

@@ -14,7 +14,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               src={logo.src}
               width={80}
               height={80}
-              className='mx-auto border-none bg-transparent shadow-none max-[520px]:size-16'
+              className='max-520:size-16 mx-auto border-none bg-transparent shadow-none'
               alt='Logo'
             />
           </Link>

@@ -110,7 +110,7 @@ function InputFieldInner<T extends FieldValues>(
         >
           {label && (
             <FormLabel
-              className={cn('ml-2 gap-1.5 leading-5.5', labelClassName, {
+              className={cn('ml-2', labelClassName, {
                 'opacity-50 select-none': disabled
               })}
             >
@@ -140,7 +140,7 @@ function InputFieldInner<T extends FieldValues>(
                   {
                     'pl-10': prefixIcon,
                     'pr-10': suffixIcon,
-                    'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/50 text-gray-400':
+                    'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/50 text-gray-500':
                       disabled,
                     'border-red-500 focus-visible:ring-red-500':
                       !!fieldState.error,

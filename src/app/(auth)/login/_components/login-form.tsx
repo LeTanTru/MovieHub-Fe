@@ -72,7 +72,7 @@ export default function LoginForm() {
   };
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Đăng nhập</h3>
         <p className='text-muted-foreground text-center'>
@@ -90,7 +90,7 @@ export default function LoginForm() {
         {(form) => (
           <>
             <Row>
-              <Col className='mb-2 w-full'>
+              <Col className='w-full'>
                 <InputField
                   control={form.control}
                   name='email'
@@ -101,7 +101,7 @@ export default function LoginForm() {
               </Col>
             </Row>
             <Row className='my-4'>
-              <Col className='mb-2 w-full'>
+              <Col className='w-full'>
                 <PasswordField
                   control={form.control}
                   name='password'

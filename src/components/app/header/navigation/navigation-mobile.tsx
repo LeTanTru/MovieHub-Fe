@@ -81,7 +81,7 @@ export default function NavigationMobile({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-gunmetal-black absolute top-15 w-110 rounded-lg p-4 max-md:w-90'
+            className='bg-gunmetal-black max-768:w-90 absolute top-15 w-110 rounded-lg p-4'
           >
             {!profile ? (
               <div className='flex justify-center'>
@@ -118,7 +118,7 @@ export default function NavigationMobile({
                       <ListItem
                         key={item.link}
                         className={cn(
-                          'flex items-center gap-x-2 gap-y-4 rounded-lg border px-4 py-2 max-md:px-2',
+                          'max-768:px-2 flex items-center gap-x-2 gap-y-4 rounded-lg border px-4 py-2',
                           {
                             'text-golden-glow border-golden-glow':
                               pathname === item.link

@@ -62,7 +62,7 @@ export default function RegisterForm() {
   };
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Đăng ký</h3>
         <p className='text-muted-foreground text-center text-sm'>
