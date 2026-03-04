@@ -44,6 +44,17 @@ export default function AppProvider({
     }
   }, [pathname, router]);
 
+  useEffect(() => {
+    const hasScroll = document.body.scrollHeight > window.innerHeight;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    document.documentElement.style.setProperty(
+      '--scroll-padding',
+      hasScroll ? `${scrollbarWidth}px` : '0px'
+    );
+  }, []);
+
   return <>{children}</>;
 }
 

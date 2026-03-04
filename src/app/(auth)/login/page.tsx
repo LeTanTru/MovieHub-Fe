@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className='mx-auto flex w-full max-w-125 flex-col text-sm text-white'>
+    <div className='max-520:w-[95%] mx-auto flex w-full max-w-125 flex-col text-white'>
       <LoginForm />
     </div>
   );

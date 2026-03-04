@@ -124,7 +124,7 @@ export default function PasswordField<T extends FieldValues>({
           >
             {label && (
               <FormLabel
-                className={cn('ml-2 gap-1.5', labelClassName, {
+                className={cn('ml-2', labelClassName, {
                   'opacity-50 select-none': disabled
                 })}
               >
@@ -145,9 +145,9 @@ export default function PasswordField<T extends FieldValues>({
                   value={value}
                   className={cn(
                     className,
-                    'shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
+                    'text-sm shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
                     {
-                      'cursor-not-allowed border border-solid border-slate-800 bg-gray-200/50 text-gray-500':
+                      'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/50 text-gray-500':
                         disabled,
                       'border-red-500 focus-visible:ring-red-500':
                         !!fieldState.error,
@@ -175,8 +175,8 @@ export default function PasswordField<T extends FieldValues>({
                   )}
                 </Button>
                 {fieldState.error && (
-                  <div className='animate-in fade-in absolute -bottom-6 left-2 z-0 mt-1 text-sm text-red-500'>
-                    <FormMessage />
+                  <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+                    <FormMessage className='leading-5.5' />
                   </div>
                 )}
               </div>

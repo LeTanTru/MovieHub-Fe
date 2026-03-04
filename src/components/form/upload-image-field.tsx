@@ -24,7 +24,7 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 import { Button, ImageField } from '@/components/form';
-import { FormLabel } from '@/components/ui/form';
+import { FormLabel, FormMessage } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
 import { logger } from '@/logger';
@@ -112,6 +112,9 @@ type UploadImageFieldProps<T extends FieldValues> = {
   required?: boolean;
   labelClassName?: string;
   className?: string;
+  imageClassName?: string;
+  previewClassName?: string;
+  imagePreviewClassName?: string;
   size?: number;
   loading?: boolean;
   aspect?: number;
@@ -132,6 +135,9 @@ export default function UploadImageField<T extends FieldValues>({
   required,
   labelClassName,
   className,
+  imageClassName,
+  previewClassName,
+  imagePreviewClassName,
   size = 70,
   loading,
   aspect = 1,
@@ -247,12 +253,11 @@ export default function UploadImageField<T extends FieldValues>({
   }, [fileId]);
 
   return (
-    <div className='space-y-2'>
-      <div className='relative flex flex-col items-center justify-center gap-y-5'>
+    <div className='space-y-1'>
+      <div className='relative flex flex-col items-center justify-center gap-2'>
         {label && (
           <FormLabel
             className={cn(
-              'ml-0 gap-1.5',
               {
                 'text-destructive': error?.message
               },
@@ -298,6 +303,9 @@ export default function UploadImageField<T extends FieldValues>({
                 width={keepOriginalSize ? undefined : size * aspect}
                 height={keepOriginalSize ? undefined : size}
                 originalSize={keepOriginalSize}
+                imageClassName={imageClassName}
+                previewClassName={previewClassName}
+                imagePreviewClassName={imagePreviewClassName}
               />
             ) : loading && !showCrop ? (
               <CircleLoading className='stroke-main-color dark:stroke-white' />
@@ -337,9 +345,11 @@ export default function UploadImageField<T extends FieldValues>({
           </label>
         </div>
         {error?.message && (
-          <p className='text-destructive animate-in fade-in absolute -bottom-6 text-sm'>
-            {error.message}
-          </p>
+          <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+            <p className='text-destructive text-sm leading-5.5'>
+              {error.message}
+            </p>
+          </div>
         )}
       </div>
 
@@ -480,7 +490,7 @@ export default function UploadImageField<T extends FieldValues>({
                     type='button'
                     variant='outline'
                     size='icon'
-                    className='border-destructive text-destructive hover:border-destructive/80 hover:text-destructive/80! -my-1 w-25'
+                    className='hover:border-destructive/80 text-destructive border-destructive dark:border-destructive dark:text-destructive dark:hover:border-destructive/80 hover:text-destructive/80 dark:hover:text-destructive/80 -my-1 w-25'
                     onClick={() => setDialogOpen(false)}
                   >
                     Đóng

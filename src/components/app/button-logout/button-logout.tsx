@@ -46,10 +46,13 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
   return (
     <Button
       variant='ghost'
-      className={cn('w-full rounded-none rounded-br rounded-bl', {
-        'justify-start': !logoutLoading && !removeCookieLoading,
-        'pointer-events-none': logoutLoading || removeCookieLoading
-      })}
+      className={cn(
+        'w-full rounded-none rounded-br rounded-bl dark:hover:bg-black/20',
+        {
+          'justify-start': !logoutLoading && !removeCookieLoading,
+          'pointer-events-none': logoutLoading || removeCookieLoading
+        }
+      )}
       onClick={handleLogout}
       loading={logoutLoading || removeCookieLoading}
       {...props}

@@ -9,7 +9,7 @@ export default function AccountLayout({ children }: { children: ReactNode }) {
       <div className='bg-dark-space absolute inset-0 top-0 h-screen bg-[url(/auth-background.webp)] mask-[linear-gradient(#000_0%,transparent_80%)] bg-cover bg-top bg-no-repeat before:absolute before:inset-0 before:top-0 before:h-screen before:bg-[linear-gradient(rgba(76,102,206,0.3)_0%,rgba(54,75,250,0)_100%)] before:content-[""]'></div>
       <Header />
 
-      <Container className='relative z-1 max-[480px]:mb-4'>
+      <Container className='max-480:mb-4 relative z-1'>
         {children}
         <div className='mt-4 text-center text-sm'>
           © Copyright {new Date().getFullYear()} by&nbsp;

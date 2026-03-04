@@ -97,7 +97,7 @@ export default function ProfileForm() {
   };
 
   return (
-    <section className='bg-vintage-blue rounded-lg px-6 py-4 max-[520px]:px-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
       <h3 className='text-center text-xl font-semibold'>Tài khoản</h3>
       <p className='text-muted-foreground mt-2 text-center text-sm'>
         Cập nhật thông tin tài khoản
@@ -112,7 +112,7 @@ export default function ProfileForm() {
         {(form) => {
           return (
             <>
-              <Row className='flex-col gap-2 max-[640px]:mb-4'>
+              <Row className='max-640:mb-4 flex-col gap-2'>
                 <Col className='mx-auto'>
                   <UploadImageField
                     value={renderImageUrl(imageManager.currentUrl)}
@@ -131,68 +131,66 @@ export default function ProfileForm() {
                     size={100}
                   />
                 </Col>
-                <Col>
-                  <Row className='max-[640px]:mb-0 max-[640px]:*:mb-4 max-[400px]:mb-0'>
-                    <Col className='w-1/2 max-[640px]:w-full'>
-                      <InputField
-                        control={form.control}
-                        name='fullName'
-                        label='Họ và tên'
-                        required
-                        placeholder='Nhập họ và tên'
-                        className='text-sm'
-                      />
-                    </Col>
-                    <Col className='w-1/2 max-[640px]:w-full'>
-                      <InputField
-                        control={form.control}
-                        name='email'
-                        label='Email'
-                        required
-                        placeholder='Nhập email'
-                        className='text-sm disabled:border-gray-500 disabled:opacity-100'
-                      />
-                    </Col>
-                  </Row>
-                  <Row className='max-[640px]:mb-0 max-[640px]:*:mb-4 max-[400px]:mb-0'>
-                    <Col className='w-1/2 max-[640px]:w-full'>
-                      <InputField
-                        control={form.control}
-                        name='username'
-                        label='Tên hiển thị'
-                        required
-                        placeholder='Nhập tên hiển thị'
-                        className='text-sm'
-                      />
-                    </Col>
-                    <Col className='w-1/2 max-[640px]:w-full'>
-                      <InputField
-                        control={form.control}
-                        name='phone'
-                        label='Số điện thoại'
-                        required
-                        placeholder='Nhập số điện thoại'
-                        className='text-sm'
-                      />
-                    </Col>
-                  </Row>
-                  <Row className='mb-0'>
-                    <Col className='w-1/2 max-[640px]:w-full'>
-                      <SelectField
-                        control={form.control}
-                        options={genderOptions}
-                        name='gender'
-                        label='Giới tính'
-                        required
-                        placeholder='Chọn giới tính'
-                        className='text-sm'
-                      />
-                    </Col>
-                  </Row>
+              </Row>
+              <Row className='max-640:gap-6'>
+                <Col className='max-640:w-full w-1/2'>
+                  <InputField
+                    control={form.control}
+                    name='fullName'
+                    label='Họ và tên'
+                    required
+                    placeholder='Nhập họ và tên'
+                    className='text-sm'
+                  />
+                </Col>
+                <Col className='max-640:w-full w-1/2'>
+                  <InputField
+                    control={form.control}
+                    name='email'
+                    label='Email'
+                    required
+                    placeholder='Nhập email'
+                    className='text-sm disabled:border-gray-500 disabled:opacity-100'
+                  />
                 </Col>
               </Row>
-              <Row className='mb-2 flex justify-end max-[480px]:mb-0 max-[480px]:flex-col-reverse max-[480px]:gap-4'>
-                <Col className='my-0 w-1/4 max-[867px]:w-1/3 max-[640px]:w-1/2 max-[480px]:w-full'>
+              <Row className='max-640:gap-6'>
+                <Col className='max-640:w-full w-1/2'>
+                  <InputField
+                    control={form.control}
+                    name='username'
+                    label='Tên hiển thị'
+                    required
+                    placeholder='Nhập tên hiển thị'
+                    className='text-sm'
+                  />
+                </Col>
+                <Col className='max-640:w-full w-1/2'>
+                  <InputField
+                    control={form.control}
+                    name='phone'
+                    label='Số điện thoại'
+                    required
+                    placeholder='Nhập số điện thoại'
+                    className='text-sm'
+                  />
+                </Col>
+              </Row>
+              <Row className='max-640:gap-6'>
+                <Col className='max-640:w-full w-1/2'>
+                  <SelectField
+                    control={form.control}
+                    options={genderOptions}
+                    name='gender'
+                    label='Giới tính'
+                    required
+                    placeholder='Chọn giới tính'
+                    className='text-sm'
+                  />
+                </Col>
+              </Row>
+              <Row className='max-480:mb-0 max-480:flex-col-reverse max-480:gap-6 mb-2 flex justify-end'>
+                <Col className='max-768:w-1/2 max-480:w-full my-0 w-1/4'>
                   <Button
                     type='button'
                     variant='outline'
@@ -202,7 +200,7 @@ export default function ProfileForm() {
                     Hủy
                   </Button>
                 </Col>
-                <Col className='my-0 w-1/4 max-[867px]:w-1/3 max-[640px]:w-1/2 max-[480px]:w-full'>
+                <Col className='max-768:w-1/2 max-480:w-full my-0 w-1/4'>
                   <Button
                     type='submit'
                     variant='primary'

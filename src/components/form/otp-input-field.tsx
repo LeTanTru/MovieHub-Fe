@@ -92,8 +92,8 @@ export default function OtpInputField<T extends FieldValues>({
             </FormDescription>
           )}
           {fieldState.error && (
-            <div className='animate-in fade-in absolute -bottom-6 z-0 mt-1 w-full text-center text-sm text-red-500'>
-              <FormMessage />
+            <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+              <FormMessage className='leading-5.5' />
             </div>
           )}
         </FormItem>

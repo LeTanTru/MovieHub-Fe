@@ -43,7 +43,7 @@ export default function CheckboxField<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <FormItem className={cn('relative flex flex-col space-y-1', className)}>
+        <FormItem className={cn('relative flex flex-col gap-0', className)}>
           <div
             className={cn('mb-0 flex items-center space-x-2', itemClassName)}
           >
@@ -66,7 +66,7 @@ export default function CheckboxField<T extends FieldValues>({
               htmlFor={field.name}
               className={cn(
                 disabled && 'text-muted-foreground',
-                'cursor-pointer gap-1',
+                'cursor-pointer',
                 labelClassName
               )}
             >
@@ -76,8 +76,8 @@ export default function CheckboxField<T extends FieldValues>({
           </div>
           {description && <FormDescription>{description}</FormDescription>}
           {fieldState.error && (
-            <div className='animate-in fade-in absolute -bottom-6 left-2 z-0 mt-1 text-sm text-red-500'>
-              <FormMessage />
+            <div className='animate-in fade-in -mb-6 ml-6 flex min-h-6 items-end'>
+              <FormMessage className='leading-5.5' />
             </div>
           )}
         </FormItem>
