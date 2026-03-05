@@ -28,7 +28,7 @@ export default function TopicList() {
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
-      <div className='flex-start max-800:mb-3 relative mb-5 flex min-h-11 items-center gap-4'>
+      <div className='max-800:mb-3 relative mb-5 flex min-h-11 items-center justify-start gap-4'>
         <h3 className='max-1600:text-xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           Bạn đang quan tâm chủ đề gì ?
         </h3>

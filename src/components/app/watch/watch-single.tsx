@@ -43,7 +43,7 @@ export default function WatchSingle() {
                   sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
                 />
               </div>
-              <div className='flex-start relative z-2 flex w-9/10 flex-col justify-center gap-4 p-6'>
+              <div className='relative z-2 flex w-9/10 flex-col justify-center justify-start gap-4 p-6'>
                 <div className='inline-flex items-center gap-2'>
                   <Image
                     src={caption}

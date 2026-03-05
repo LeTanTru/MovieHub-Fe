@@ -205,14 +205,14 @@ export default function CommentItem({
   };
 
   return (
-    <div className='flex-start relative flex gap-4 pt-4'>
+    <div className='relative flex justify-start gap-4 pt-4'>
       <AvatarField
         src={renderImageUrl(authorInfo.avatarPath)}
         size={50}
         alt={authorInfo.fullName}
       />
       <div className='grow'>
-        <div className='flex-start relative flex items-center gap-2'>
+        <div className='relative flex items-center justify-start gap-2'>
           <div className='flex items-center gap-x-2'>
             {kind && (
               <Badge

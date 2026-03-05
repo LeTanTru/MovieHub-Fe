@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ReviewItemSkeleton() {
   return (
-    <div className='flex-start flex gap-4'>
+    <div className='flex justify-start gap-4'>
       <Skeleton className='skeleton h-12.5 w-12.5 rounded-full!' />
       <div className='flex grow flex-col gap-3'>
         <div className='flex items-center gap-2'>

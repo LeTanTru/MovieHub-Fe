@@ -64,7 +64,7 @@ export default function AnimeItem({
 
   return (
     <div className='slide-elements'>
-      <Link href={movieLink} className='hidden'></Link>
+      <Link href={movieLink} className='slide-url'></Link>
       <div className='cover-fade'>
         <div className='cover-image'>
           <img
@@ -81,23 +81,20 @@ export default function AnimeItem({
       >
         <div className='slide-content'>
           <div className='media-item'>
-            {movie.imageTitleUrl ? (
-              <div className='media-title-image'>
-                <Link title={movie.title} href={movieLink}>
-                  <img
-                    src={renderImageUrl(movie.imageTitleUrl)}
-                    alt={movie.title}
-                    className='bg-transparent'
-                  />
-                </Link>
-              </div>
-            ) : (
-              <h3 className='media-title line-clamp-1'>
-                <Link title={movie.title} href={movieLink}>
-                  {movie.title}
-                </Link>
-              </h3>
-            )}
+            <div className='media-title-image'>
+              <Link title={movie.title} href={movieLink}>
+                <img
+                  src={renderImageUrl(movie.imageTitleUrl)}
+                  alt={movie.title}
+                  className='bg-transparent'
+                />
+              </Link>
+            </div>
+            <h3 className='media-title line-clamp-1'>
+              <Link title={movie.title} href={movieLink}>
+                {movie.title}
+              </Link>
+            </h3>
             <h3 className='media-alias-title'>
               <Link title={movie.originalTitle} href={movieLink}>
                 {movie.originalTitle}
