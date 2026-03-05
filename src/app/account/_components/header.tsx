@@ -16,7 +16,7 @@ export default function Header() {
     <header className='header relative top-0 right-0 left-0 z-10 block'>
       <div
         className={
-          'max-1600:pl-6 max-1600:pr-8 max-1360:pl-4 max-1360:pr-6 max-1024:px-4 flex items-center justify-between bg-transparent pr-10 pl-8 transition-all duration-200 ease-linear'
+          'max-1600:pl-6 max-1600:pr-8 max-1360:pl-4 max-1360:pr-6 max-1024:px-4 h-header max-1536:h-18 max-520:h-16 flex items-center justify-between bg-transparent pr-10 pl-8 transition-all duration-200 ease-linear'
         }
       >
         <div className='flex h-full flex-1 items-center gap-4 gap-8'>
@@ -31,7 +31,7 @@ export default function Header() {
             />
           </Link>
         </div>
-        <div className='h-header max-520:h-18 flex items-center gap-2'>
+        <div className='flex items-center gap-2'>
           <AnimatePresence mode='wait' initial={false}>
             {loading || !profile ? (
               <motion.div
