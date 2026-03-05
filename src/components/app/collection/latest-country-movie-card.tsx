@@ -1,15 +1,13 @@
 'use client';
 
-import { breakPoints } from '@/constants';
 import { MovieResType } from '@/types';
-import { useMediaQuery } from 'react-responsive';
 import { motion, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { route } from '@/routes';
-import { renderImageUrl } from '@/utils';
+import { isDesktopDevice, renderImageUrl } from '@/utils';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
 import { MovieModal } from '@/components/app/movie-card';
@@ -45,9 +43,7 @@ export default function LatestCountryMovieCard({
 }) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
-  const isDesktop = useMediaQuery({
-    query: `(min-width: ${breakPoints.desktop}px)`
-  });
+  const isDesktop = isDesktopDevice();
   const [modalPos, setModalPos] = useState<{ x: number; y: number } | null>(
     null
   );

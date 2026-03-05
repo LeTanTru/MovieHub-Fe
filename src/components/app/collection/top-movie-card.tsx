@@ -1,5 +1,4 @@
 'use client';
-
 import './top-movie-card.css';
 import { MetadataType, MovieResType } from '@/types';
 import { motion, Variants, Transition } from 'framer-motion';
@@ -8,7 +7,12 @@ import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { route } from '@/routes';
-import { getYearFromDate, parseJSON, renderImageUrl } from '@/utils';
+import {
+  getYearFromDate,
+  isDesktopDevice,
+  parseJSON,
+  renderImageUrl
+} from '@/utils';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
 import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
@@ -47,6 +51,7 @@ export default function TopMovieCard({
 }) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
+  const isDesktop = isDesktopDevice();
   const [modalPos, setModalPos] = useState<{ x: number; y: number } | null>(
     null
   );
@@ -214,6 +219,7 @@ export default function TopMovieCard({
       </motion.div>
 
       {isMounted &&
+        isDesktop &&
         createPortal(
           <div
             onMouseEnter={() => {
