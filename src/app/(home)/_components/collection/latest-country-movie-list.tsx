@@ -66,23 +66,14 @@ export default function LastestCountryMovieList({
               grabCursor={true}
               className='w-full'
               breakpoints={{
-                480: {
+                640: {
                   slidesPerView: 3.2
                 },
-                768: {
+                1024: {
                   slidesPerView: 4.2
                 },
-                1024: {
-                  slidesPerView: 5.2
-                },
-                1280: {
-                  slidesPerView: 6.2
-                },
-                1400: {
-                  slidesPerView: 7.2
-                },
                 1600: {
-                  slidesPerView: 7
+                  slidesPerView: 5
                 }
               }}
               onSwiper={(swiper) => {

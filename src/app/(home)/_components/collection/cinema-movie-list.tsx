@@ -48,12 +48,21 @@ export default function CinemaMovieList({
             </div>
           </div>
           <Swiper
-            slidesPerView={2.2}
+            slidesPerView={1.2}
             spaceBetween={16}
             modules={[Navigation]}
             grabCursor={true}
             className='w-full'
             breakpoints={{
+              480: {
+                slidesPerView: 1.8
+              },
+              640: {
+                slidesPerView: 2.2
+              },
+              800: {
+                slidesPerView: 2.8
+              },
               990: {
                 slidesPerView: 3.2
               },

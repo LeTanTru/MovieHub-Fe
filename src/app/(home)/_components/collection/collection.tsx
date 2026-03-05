@@ -19,6 +19,7 @@ import CinemaMovieList from './cinema-movie-list';
 import LastestCountryMovieList from './latest-country-movie-list';
 import AnimeMovieList from './anime-movie-list';
 import ComingSoonList from './coming-soon-list';
+import { cn } from '@/lib';
 
 export default function Collection() {
   const loadMoreSize = 3;
@@ -74,7 +75,9 @@ export default function Collection() {
       })}
       <div
         ref={loadMoreRef}
-        className='vertical-loading flex items-center justify-center pt-20'
+        className={cn('vertical-loading flex items-center justify-center', {
+          'pt-20': isLoading || isFetchingNextPage
+        })}
       >
         {(isLoading || isFetchingNextPage) && <VerticalBarLoading />}
       </div>
