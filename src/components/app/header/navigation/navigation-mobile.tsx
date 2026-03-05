@@ -12,7 +12,7 @@ import {
   genderIconMaps,
   userSidebarList
 } from '@/constants';
-import { useAuth, useClickOutside } from '@/hooks';
+import { useAuth, useClickOutside, useNavigate } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { ItemProps } from '@/types';
@@ -29,6 +29,7 @@ export default function NavigationMobile({
   navigationList: ItemProps[];
 }) {
   const pathname = usePathname();
+  const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   const { profile } = useAuth();
   const [openSub, setOpenSub] = useState<string | null>(null);
@@ -85,7 +86,12 @@ export default function NavigationMobile({
           >
             {!profile ? (
               <div className='flex justify-center'>
-                <Button className='w-full rounded-full'>Đăng nhập</Button>
+                <Button
+                  onClick={() => navigate(route.login.path)}
+                  className='w-full rounded-full'
+                >
+                  Đăng nhập
+                </Button>
               </div>
             ) : (
               <>
