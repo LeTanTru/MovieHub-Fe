@@ -19,7 +19,7 @@ export default function Header() {
           'max-1600:pl-6 max-1600:pr-8 max-1360:pl-4 max-1360:pr-6 max-1024:px-4 h-header max-1536:h-18 max-520:h-16 flex items-center justify-between bg-transparent pr-10 pl-8 transition-all duration-200 ease-linear'
         }
       >
-        <div className='flex h-full flex-1 items-center gap-4 gap-8'>
+        <div className='flex h-full items-center gap-4 gap-8'>
           <Link href={route.home.path} className='shrink-0'>
             <Image
               alt='Logo'
@@ -31,6 +31,7 @@ export default function Header() {
             />
           </Link>
         </div>
+        <div className='grow'></div>
         <div className='flex items-center gap-2'>
           <AnimatePresence mode='wait' initial={false}>
             {loading || !profile ? (
