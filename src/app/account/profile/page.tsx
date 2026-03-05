@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function ProfilePage() {
   return (
-    <div className='max-520:w-[95%] mx-auto flex w-full max-w-200 flex-col text-white'>
+    <div className='max-990:w-180 max-768:max-w-[95%] mx-auto flex w-full max-w-200 flex-col text-white'>
       <div className='flex items-center justify-center'>
         <Link href='/' className='inline-block'>
           <Image
