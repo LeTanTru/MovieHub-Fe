@@ -154,7 +154,7 @@ export default function SliderItem({
                 <span>{formatDuration(duration)}</span>
               </div>
             </div>
-            <div className='hl-tags mb-6! max-[640]:hidden!'>
+            <div className='hl-tags mb-6! max-[640px]:hidden!'>
               {slider.movie.categories.map((category) => (
                 <Link
                   key={category.id}

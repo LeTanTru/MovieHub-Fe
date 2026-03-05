@@ -26,11 +26,11 @@ export default function LastestCountryMovieList({
   const colors = getColorList(collection.color || '[]');
 
   return (
-    <div className='collection-movie-list latest-country-movie-list fade-in slide-in-from-top-[-30px] animate-in mx-auto w-full max-w-475 px-12.5 duration-200'>
-      <div className='flex items-center justify-between gap-4'>
-        <div className='relative z-3 flex w-0.5 grow flex-col gap-4 pr-4 pl-2 text-center'>
+    <div className='collection-movie-list latest-country-movie-list fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>
+      <div className='max-1360:flex-col max-1360:p-0 max-1360:gap-4 flex items-center justify-between gap-4'>
+        <div className='max-1360:flex-row max-1360:w-full max-1360:p-0 max-1360:items-center max-1360:justify-between relative z-3 flex grow flex-col gap-6 pr-4 pl-2 text-center'>
           <h3
-            className='bg-clip-text text-[28px] leading-[1.3] font-semibold text-transparent text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'
+            className='max-1360:text-2xl max-640:text-xl max-1360:flex-1 max-1360:text-left bg-clip-text text-[28px] leading-[1.3] font-semibold text-transparent text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'
             style={
               {
                 backgroundImage: `linear-gradient(90deg, ${colors
@@ -49,7 +49,7 @@ export default function LastestCountryMovieList({
             <FaChevronRight className='text-sm' />
           </Link>
         </div>
-        <div className='relative z-3 w-[calc(100%-230px)]'>
+        <div className='max-1600:w-[calc(100%-200px)] max-1360:w-full relative z-3 w-[calc(100%-230px)]'>
           <div className='swiper-container'>
             <div className='swiper-navigation'>
               <div ref={nextRef} className='swiper-button swiper-next-button'>
@@ -60,11 +60,31 @@ export default function LastestCountryMovieList({
               </div>
             </div>
             <Swiper
-              slidesPerView={5}
+              slidesPerView={2.2}
               spaceBetween={16}
               modules={[Navigation]}
               grabCursor={true}
               className='w-full'
+              breakpoints={{
+                480: {
+                  slidesPerView: 3.2
+                },
+                768: {
+                  slidesPerView: 4.2
+                },
+                1024: {
+                  slidesPerView: 5.2
+                },
+                1280: {
+                  slidesPerView: 6.2
+                },
+                1400: {
+                  slidesPerView: 7.2
+                },
+                1600: {
+                  slidesPerView: 7
+                }
+              }}
               onSwiper={(swiper) => {
                 if (
                   swiper.params.navigation &&

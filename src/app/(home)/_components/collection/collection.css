@@ -23,6 +23,10 @@
         color: var(--color-golden-glow);
         opacity: 1;
       }
+
+      @media screen and (max-width: 1599px) {
+        display: none;
+      }
     }
 
     & .swiper-next-button {

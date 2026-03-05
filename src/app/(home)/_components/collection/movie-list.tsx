@@ -24,10 +24,10 @@ export default function MovieList({
   const prevRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className='collection-movie-list fade-in slide-in-from-top-[-30px] animate-in mx-auto w-full max-w-475 px-12.5 duration-200'>
+    <div className='collection-movie-list fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>
       <>
-        <div className='flex-start relative mb-5 flex min-h-11 items-center gap-4'>
-          <h3 className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+        <div className='max-990:mb-2.5 max-480:justify-between relative mb-5 flex min-h-11 items-center justify-start gap-4'>
+          <h3 className='max-990:text-2xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
             {collection.name}&nbsp;
           </h3>
           <Link
@@ -48,11 +48,31 @@ export default function MovieList({
             </div>
           </div>
           <Swiper
-            slidesPerView={7}
+            slidesPerView={2.2}
             spaceBetween={16}
             modules={[Navigation]}
             grabCursor={true}
             className='w-full'
+            breakpoints={{
+              480: {
+                slidesPerView: 3.2
+              },
+              768: {
+                slidesPerView: 4.2
+              },
+              1024: {
+                slidesPerView: 5.2
+              },
+              1280: {
+                slidesPerView: 6.2
+              },
+              1400: {
+                slidesPerView: 7.2
+              },
+              1600: {
+                slidesPerView: 7
+              }
+            }}
             onSwiper={(swiper) => {
               if (
                 swiper.params.navigation &&

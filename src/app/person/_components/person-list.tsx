@@ -28,7 +28,7 @@ export default function PersonList() {
 
   return (
     <div className='mx-auto w-full max-w-475 px-12.5'>
-      <div className='flex-start relative mb-5 flex min-h-11 items-center gap-4'>
+      <div className='relative mb-5 flex min-h-11 items-center justify-start gap-4'>
         <h3 className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           Diễn viên
         </h3>

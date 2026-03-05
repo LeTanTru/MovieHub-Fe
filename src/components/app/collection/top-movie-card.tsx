@@ -156,7 +156,7 @@ export default function TopMovieCard({
         <div className='relative flex min-h-10.5 gap-2'>
           <div
             className={cn(
-              'from-golden-glow to-golden-tainoi min-w-12.5 shrink-0 bg-linear-[135deg] bg-clip-text text-left text-[58px] leading-none font-extrabold text-transparent italic',
+              'from-golden-glow to-golden-tainoi max-640:text-[28px] max-640:text-center max-640:min-w-7.5 min-w-12.5 shrink-0 bg-linear-[135deg] bg-clip-text text-left text-[58px] leading-none font-extrabold text-transparent italic',
               {
                 'min-w-18': (index + 1).toString().length > 1
               }
@@ -167,7 +167,7 @@ export default function TopMovieCard({
           <div>
             <h4
               className={cn(
-                'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
+                'hover:text-golden-glow max-640:mb-0 mb-1 line-clamp-1 font-normal text-white transition-colors duration-200 ease-linear',
                 {
                   'featured-title font-bold': movie.isFeatured
                 }
@@ -180,7 +180,7 @@ export default function TopMovieCard({
                 {movie.title}
               </Link>
             </h4>
-            <h4 className='text-dark-gray mb-1.25 line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+            <h4 className='text-dark-gray max-640:mb-0 mb-1.25 line-clamp-1 text-xs leading-5.5 transition-colors duration-200 ease-linear hover:text-white'>
               <Link
                 href={`${route.movie.path}/${movie.slug}.${movie.id}`}
                 title={movie.originalTitle}

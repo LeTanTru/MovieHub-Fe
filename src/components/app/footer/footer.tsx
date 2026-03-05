@@ -77,9 +77,9 @@ export default function Footer() {
 
   return (
     <footer className='bg-lyla'>
-      <div className='max-w-475 px-12.5'>
-        <div className='relative flex min-h-100 items-center justify-between py-8'>
-          <div className='absolute top-1/2 left-1/2 z-10 h-full w-150 -translate-x-1/2 -translate-y-1/2'>
+      <div className='max-1600:px-5 max-w-475 px-12.5'>
+        <div className='max-1600:px-8 max-1120:justify-center max-1120:py-12 max-640:py-8 max-640:px-0 max-640:text-xs relative flex min-h-100 items-center justify-between py-8'>
+          <div className='max-1600:hidden absolute top-1/2 left-1/2 z-10 h-full w-150 -translate-x-1/2 -translate-y-1/2'>
             <Image
               src={footerIcon.src}
               alt='Footer Icon'
@@ -90,9 +90,9 @@ export default function Footer() {
               className='h-full'
             />
           </div>
-          <div className='relative z-2 block max-w-187.5'>
-            <div className='mb-6'>
-              <div className='bg-vn-flag inline-flex justify-center gap-2 rounded-4xl px-3 py-2 text-white'>
+          <div className='max-1120:w-full max-1120:text-center relative z-2 block max-w-187.5'>
+            <div className='max-1120:mb-4 mb-6'>
+              <div className='bg-vn-flag inline-flex items-center justify-center gap-2 rounded-4xl px-3 py-2 text-white'>
                 <div className='h-5 w-5 shrink-0'>
                   <Image
                     src={vnFlag.src}
@@ -106,8 +106,8 @@ export default function Footer() {
                 <span>Hoàng Sa &amp; Trường Sa là của Việt Nam !</span>
               </div>
             </div>
-            <div className='mb-8 inline-flex items-center gap-12'>
-              <Link href={route.home.path} className='shrink-0'>
+            <div className='max-1120:flex-col max-1120:gap-8 max-800:gap-8 max-640:gap-4 max-800:mb-6 mb-8 inline-flex items-center gap-12'>
+              <Link href={route.home.path} className='max-1120:mb-2 shrink-0'>
                 <Image
                   src={logoWithText.src}
                   alt='Logo'
@@ -119,7 +119,7 @@ export default function Footer() {
                   unoptimized
                 />
               </Link>
-              <div className='border-500-200 flex items-center gap-3 border-l border-solid pl-12'>
+              <div className='max-1120:border-none max-480:grid max-1120:grid-cols-4 max-1120:pl-0 max-1120:justify-center flex items-center gap-3 border-l border-solid pl-12'>
                 {socialLinks.map(({ icon: Icon, url }, index) => (
                   <Link
                     key={index}
@@ -133,7 +133,7 @@ export default function Footer() {
                 ))}
               </div>
             </div>
-            <div className='mb-4 flex gap-4'>
+            <div className='max-1120:justify-center max-1120:flex-wrap mb-4 flex gap-4'>
               {infoLinks.map(({ title, url }, index) => (
                 <Link
                   className='hover:text-golden-glow transition-all duration-200 ease-linear'
@@ -144,7 +144,7 @@ export default function Footer() {
                 </Link>
               ))}
             </div>
-            <div className='mb-2 leading-normal text-gray-400'>
+            <div className='mb-2 text-justify leading-normal text-gray-400'>
               MovieHub - Trang xem phim online chất lượng cao miễn phí Vietsub,
               thuyết minh, lồng tiếng full HD. Kho phim mới khổng lồ, phim chiếu
               rạp, phim bộ, phim lẻ từ nhiều quốc gia như Việt Nam, Hàn Quốc,
