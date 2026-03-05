@@ -77,21 +77,21 @@
   /* Color */
 
   /* Break point */
-  --breakpoint-1024: 1024px;
+  --breakpoint-1024: 1025px;
   --breakpoint-1120: 1121px;
-  --breakpoint-1280: 1280px;
-  --breakpoint-1360: 1360px;
-  --breakpoint-1536: 1536px;
-  --breakpoint-1600: 1600px;
-  --breakpoint-1900: 1900px;
-  --breakpoint-480: 480px;
-  --breakpoint-520: 520px;
-  --breakpoint-600: 600px;
-  --breakpoint-640: 640px;
-  --breakpoint-768: 768px;
-  --breakpoint-800: 800px;
-  --breakpoint-969: 969px;
-  --breakpoint-990: 990px;
+  --breakpoint-1280: 1281px;
+  --breakpoint-1360: 1361px;
+  --breakpoint-1536: 1537px;
+  --breakpoint-1600: 1601px;
+  --breakpoint-1900: 1901px;
+  --breakpoint-480: 481px;
+  --breakpoint-520: 521px;
+  --breakpoint-600: 601px;
+  --breakpoint-640: 641px;
+  --breakpoint-768: 769px;
+  --breakpoint-800: 801px;
+  --breakpoint-969: 970px;
+  --breakpoint-990: 991px;
   /* Break point */
 }
 
