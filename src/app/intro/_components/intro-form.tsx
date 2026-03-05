@@ -40,15 +40,24 @@ export default function IntroForm() {
       schema={introSchema}
       defaultValues={defaultValues}
       onSubmit={onSubmit}
-      className='mx-auto flex h-screen w-200 flex-col items-center justify-center bg-transparent'
+      className='mx-auto flex h-screen max-w-200 flex-col items-center justify-center bg-transparent'
     >
       {(form) => (
         <>
           <Row>
-            <Image src={logo} alt='Logo' width={100} height={100} unoptimized />
+            <Col className='w-full'>
+              <Image
+                src={logo}
+                alt='Logo'
+                width={100}
+                height={100}
+                unoptimized
+                className='max-600:size-20'
+              />
+            </Col>
           </Row>
           <Row className='w-full justify-center'>
-            <Col>
+            <Col className='max-800:w-2/3 max-600:w-4/5 max-520:w-full w-1/2'>
               <PasswordField
                 control={form.control}
                 name='key'
@@ -59,7 +68,7 @@ export default function IntroForm() {
             </Col>
           </Row>
           <Row className='w-full justify-center'>
-            <Col>
+            <Col className='max-800:w-2/3 max-600:w-4/5 max-520:w-full w-1/2'>
               <Button disabled={!form.formState.isDirty} type='submit'>
                 Truy cập
               </Button>

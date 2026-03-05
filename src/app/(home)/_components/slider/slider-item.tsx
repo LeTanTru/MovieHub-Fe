@@ -16,7 +16,6 @@ import { ButtonInfo } from '@/components/app/button-info';
 import { useClickAnimation } from '@/hooks';
 import { HeartIcon } from '@/assets';
 import { cn } from '@/lib';
-import Image from 'next/image';
 
 type SliderItemProps = {
   slider: SidebarResType;
@@ -92,34 +91,31 @@ export default function SliderItem({
       >
         <div className='slide-content'>
           <div className='media-item'>
-            {slider.webThumbnailUrl ? (
-              <div className='media-title-image'>
-                <Link
+            <div className='media-title-image'>
+              <Link
+                title={slider.movie.title}
+                href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
+              >
+                <img
+                  className='bg-transparent'
                   title={slider.movie.title}
-                  href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-                >
-                  <img
-                    className='bg-transparent'
-                    title={slider.movie.title}
-                    src={renderImageUrl(slider.movie.imageTitleUrl)}
-                    alt={slider.movie.title}
-                    loading={slider.ordering === 0 ? 'eager' : 'lazy'}
-                    width={400}
-                    height={130}
-                    decoding='async'
-                  />
-                </Link>
-              </div>
-            ) : (
-              <h3 className='media-title'>
-                <Link
-                  title={slider.movie.title}
-                  href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-                >
-                  {slider.movie.title}
-                </Link>
-              </h3>
-            )}
+                  src={renderImageUrl(slider.movie.imageTitleUrl)}
+                  alt={slider.movie.title}
+                  loading={slider.ordering === 0 ? 'eager' : 'lazy'}
+                  width={400}
+                  height={130}
+                  decoding='async'
+                />
+              </Link>
+            </div>
+            <h3 className='media-title'>
+              <Link
+                title={slider.movie.title}
+                href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
+              >
+                {slider.movie.title}
+              </Link>
+            </h3>
             <h3 className='media-alias-title'>
               <Link
                 title={slider.movie.originalTitle}
@@ -158,7 +154,7 @@ export default function SliderItem({
                 <span>{formatDuration(duration)}</span>
               </div>
             </div>
-            <div className='hl-tags mb-6!'>
+            <div className='hl-tags mb-6! max-[640]:hidden!'>
               {slider.movie.categories.map((category) => (
                 <Link
                   key={category.id}

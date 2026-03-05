@@ -84,12 +84,12 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
       >
         <h3>Bạn có chắc chắn muốn xóa danh sách phát này không?</h3>
         <Row className='mt-4 mb-0 justify-end'>
-          <Col>
+          <Col className='w-1/2'>
             <Button variant='primary' onClick={handleClose}>
               Đóng
             </Button>
           </Col>
-          <Col>
+          <Col className='w-1/2'>
             <Button
               className='dark:bg-red-500'
               variant='destructive'
