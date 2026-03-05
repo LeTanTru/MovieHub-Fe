@@ -54,12 +54,12 @@ export default function WatchAskContinueModal({
                 bắt đầu lại?
               </p>
               <Row className='mt-4 mb-0 justify-end'>
-                <Col>
+                <Col className='w-1/2'>
                   <Button variant='primary' onClick={onStartOver}>
                     Bắt đầu lại
                   </Button>
                 </Col>
-                <Col>
+                <Col className='w-1/2'>
                   <Button
                     variant='primary'
                     className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:text-black'

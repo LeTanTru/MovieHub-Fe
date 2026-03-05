@@ -16,25 +16,25 @@ export default function TopicList() {
 
   const topicList = topicListData?.data?.content || [];
 
-  const random = Math.random() < 0.5;
+  const isSwitched = Math.random() < 0.5;
 
   return (
-    <div className='mx-auto w-full max-w-475 px-12.5'>
-      <div className='flex-start relative mb-5 flex min-h-11 items-center gap-4'>
-        <h3 className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+    <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
+      <div className='flex-start max-640:min-h-8 max-640:mb-3 relative mb-5 flex min-h-11 items-center gap-4'>
+        <h3 className='max-640:text-2xl max-480:text-xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           Các chủ đề
         </h3>
       </div>
       {topicListLoading ? (
-        <div className='grid grid-cols-7 gap-4'>
+        <div className='max-1600:grid-cols-6 max-1280:grid-cols-5 max-990:grid-cols-4 max-800:grid-cols-3 max-1120:gap-3 max-480:grid-cols-2 max-640:gap-2 max-480:[&_.topic-item]:w-full grid grid-cols-7 gap-4'>
           {Array.from({ length: skeletonCount }).map((_, i) => (
             <TopicItemSkeleton key={i} />
           ))}
         </div>
       ) : topicList.length > 0 ? (
-        <div className='grid grid-cols-7 gap-4'>
+        <div className='max-1600:grid-cols-6 max-1280:grid-cols-5 max-990:grid-cols-4 max-800:grid-cols-3 max-1120:gap-3 max-480:grid-cols-2 max-640:gap-2 max-480:[&_.topic-item]:w-full grid grid-cols-7 gap-4'>
           {topicList.map((topic) => (
-            <TopicItem key={topic.id} topic={topic} random={random} />
+            <TopicItem key={topic.id} topic={topic} isSwitched={isSwitched} />
           ))}
         </div>
       ) : (
