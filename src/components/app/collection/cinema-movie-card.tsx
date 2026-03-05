@@ -1,7 +1,7 @@
 'use client';
-import { ageRatings, breakPoints } from '@/constants';
+
+import { ageRatings } from '@/constants';
 import { MetadataType, MovieResType } from '@/types';
-import { useMediaQuery } from 'react-responsive';
 import { motion, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -11,6 +11,7 @@ import { route } from '@/routes';
 import {
   formatDuration,
   getYearFromDate,
+  isDesktopDevice,
   parseJSON,
   renderImageUrl
 } from '@/utils';
@@ -49,9 +50,7 @@ export default function CinemaMovieCard({
 }) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
-  const isDesktop = useMediaQuery({
-    query: `(min-width: ${breakPoints.desktop}px)`
-  });
+  const isDesktop = isDesktopDevice();
   const [modalPos, setModalPos] = useState<{ x: number; y: number } | null>(
     null
   );

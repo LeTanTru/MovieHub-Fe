@@ -1,5 +1,6 @@
 export * from './cookies-server.util';
 export * from './date.util';
+export * from './device.util';
 export * from './form-error.util';
 export * from './http.util';
 export * from './jwt.util';
