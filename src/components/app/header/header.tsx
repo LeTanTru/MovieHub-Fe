@@ -47,9 +47,10 @@ export default function Header() {
     >
       <div
         className={cn(
-          'max-1600:px-5 max-1600:gap-6 max-1360:px-1.5 flex items-center gap-8 pr-10 pl-8 transition-all duration-200 ease-linear',
+          'max-1600:px-5 max-1600:gap-6 max-640:px-2 max-640:gap-2 max-1360:gap-4 max-1360:px-4 max-640:h-14 flex items-center gap-8 pr-10 pl-8 transition-all duration-200 ease-linear',
           {
-            'bg-fixed-header h-fixed-header max-1360:h-17.5': isFixed,
+            'bg-fixed-header h-fixed-header max-640:h-15 max-1360:h-17.5':
+              isFixed,
             'h-header max-1360:h-15 bg-transparent': !isFixed
           }
         )}
@@ -67,7 +68,7 @@ export default function Header() {
         <Link href={route.home.path} className='shrink-0'>
           <Image
             alt='Logo'
-            className={cn('max-1360:h-9 max-1360:w-auto h-auto', {
+            className={cn('max-1360:h-9 max-1360:w-auto max-640:h-7.5 h-auto', {
               hidden: showSearch
             })}
             height={46}
@@ -93,10 +94,10 @@ export default function Header() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
               style={{ transformOrigin: 'top center' }}
-              className='max-1360:absolute max-1360:left-2.5 max-1360:right-12.5 max-1360:z-50 max-1360:block hidden w-auto'
+              className='max-1360:absolute max-1360:left-2.5 max-1360:right-12.5 max-1360:z-50 max-1360:block max-640:right-10 hidden w-auto'
             >
               <SearchForm
-                className='max-1360:max-w-none max-1360:w-auto'
+                className='max-1360:max-w-none max-1360:w-full'
                 formClassName='flex h-full w-full items-center bg-transparent p-0'
               />
             </motion.div>
@@ -160,7 +161,7 @@ export default function Header() {
 
         {/* Mobile search toggle button */}
         <div
-          className='mobile-search max-1360:flex hidden size-10 items-center justify-center'
+          className='mobile-search max-1360:flex max-640:size-6 max-640:pr-1 hidden size-10 items-center justify-center'
           onClick={() => setShowSearch((prev) => !prev)}
         >
           <AnimatePresence mode='wait' initial={false}>
@@ -172,7 +173,7 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.8, rotate: 15 }}
                 transition={{ duration: 0.1 }}
               >
-                <FaSearch className='size-5 font-semibold' />
+                <FaSearch className='max-640:size-4 size-5 font-semibold' />
               </motion.div>
             ) : (
               <motion.div
@@ -182,7 +183,7 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.8, rotate: -15 }}
                 transition={{ duration: 0.1 }}
               >
-                <FaXmark className='size-6 font-semibold text-red-500' />
+                <FaXmark className='max-640:size-5 size-6 font-semibold text-red-500' />
               </motion.div>
             )}
           </AnimatePresence>

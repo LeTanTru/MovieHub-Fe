@@ -1,7 +1,7 @@
 .bar-list {
   & .bar-item {
     --delay: 0s;
-    animation: barAnimation 1s linear infinite var(--delay);
+    animation: barAnimation 0.8s linear infinite var(--delay);
   }
 
   & .bar-item-1 {

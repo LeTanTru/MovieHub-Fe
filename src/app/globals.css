@@ -215,7 +215,7 @@
   }
 
   .featured-title {
-    background: linear-gradient(
+    /* background: linear-gradient(
       to right,
       #ff6b6b 0%,
       #feca57 33%,
@@ -226,7 +226,8 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientShift 3s alternate infinite;
+    font-weight: 600;
+    animation: gradientShift 3s alternate infinite; */
   }
 
   .vds-video-layout.dark .vds-kb-action {

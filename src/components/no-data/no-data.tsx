@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 export default function NoData({
   className,
+  imageClassName,
   content = 'Không có dữ liệu',
   width = 200,
   height = 80,
@@ -11,6 +12,7 @@ export default function NoData({
   src
 }: {
   className?: string;
+  imageClassName?: string;
   content?: string | React.ReactNode;
   width?: number;
   height?: number;
@@ -28,7 +30,8 @@ export default function NoData({
         src={src || emptyData.src}
         width={size || width}
         height={size || height}
-        alt={'No data'}
+        alt='No data'
+        className={imageClassName}
       />
       <p className='text-center'>{content}</p>
     </div>

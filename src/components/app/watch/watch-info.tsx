@@ -122,7 +122,7 @@ export default function WatchInfo() {
             className={cn(
               'hover:text-golden-glow font-normal transition-colors duration-200 ease-linear',
               {
-                'featured-title font-bold': movie.isFeatured
+                'featured-title': movie.isFeatured
               }
             )}
           >

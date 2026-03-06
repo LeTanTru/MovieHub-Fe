@@ -164,7 +164,7 @@ export default function CinemaMovieCard({
               className={cn(
                 'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
                 {
-                  'featured-title font-bold': movie.isFeatured
+                  'featured-title': movie.isFeatured
                 }
               )}
             >
