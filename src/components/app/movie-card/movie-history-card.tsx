@@ -118,7 +118,7 @@ export default function MovieHistoryCard({
           className={cn(
             'hover:text-golden-glow line-clamp-1 text-sm leading-5 font-normal text-white transition-all duration-200 ease-linear',
             {
-              'featured-title font-bold': movie.isFeatured
+              'featured-title': movie.isFeatured
             }
           )}
         >

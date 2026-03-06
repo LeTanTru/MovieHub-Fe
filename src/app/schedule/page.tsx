@@ -14,7 +14,7 @@ export default function SchedulePage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container className='relative mx-auto min-h-[calc(100dvh-400px)] max-w-350 py-40'>
+      <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative mx-auto min-h-[calc(100dvh-400px)] max-w-350 py-40'>
         <div className='flex flex-col gap-12.5'>
           <ScheduleList />
         </div>

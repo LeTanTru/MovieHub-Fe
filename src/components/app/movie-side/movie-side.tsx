@@ -136,7 +136,7 @@ export default function MovieSide({
       </div>
       <h2
         className={cn('mb-2 text-2xl leading-normal font-semibold text-white', {
-          'featured-title font-bold': movie.isFeatured
+          'featured-title': movie.isFeatured
         })}
       >
         {movie.title} {+latestSeason > 1 ? selectedSeason : ''}

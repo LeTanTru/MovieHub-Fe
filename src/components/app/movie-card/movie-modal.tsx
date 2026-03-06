@@ -72,7 +72,7 @@ export default function MovieModal({
               <div className='mb-4'>
                 <h3
                   className={cn('font-normal text-shadow-[0_0_3px_#00000030]', {
-                    'featured-title font-bold': movie.isFeatured
+                    'featured-title': movie.isFeatured
                   })}
                 >
                   {movie.title}

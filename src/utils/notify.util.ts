@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import { toast, ToastOptions, Bounce } from 'react-toastify';
+import { isMobileDevice } from './device.util';
 
-const defaultOptions: ToastOptions = {
-  position: 'bottom-right',
+const defaultOptions: Omit<ToastOptions, 'position'> = {
   autoClose: 3000,
   hideProgressBar: false,
   closeOnClick: true,
@@ -21,20 +21,25 @@ const defaultOptions: ToastOptions = {
   `
 };
 
+const getDefaultOptions = (): ToastOptions => ({
+  ...defaultOptions,
+  position: isMobileDevice() ? 'top-center' : 'bottom-right'
+});
+
 const showSuccess = (message: string | ReactNode, options?: ToastOptions) => {
-  toast.success(message, { ...defaultOptions, ...options });
+  toast.success(message, { ...getDefaultOptions(), ...options });
 };
 
 const showError = (message: string | ReactNode, options?: ToastOptions) => {
-  toast.error(message, { ...defaultOptions, ...options });
+  toast.error(message, { ...getDefaultOptions(), ...options });
 };
 
 const showInfo = (message: string | ReactNode, options?: ToastOptions) => {
-  toast.info(message, { ...defaultOptions, ...options });
+  toast.info(message, { ...getDefaultOptions(), ...options });
 };
 
 const showWarning = (message: string | ReactNode, options?: ToastOptions) => {
-  toast.warn(message, { ...defaultOptions, ...options });
+  toast.warn(message, { ...getDefaultOptions(), ...options });
 };
 
 export const notify = {

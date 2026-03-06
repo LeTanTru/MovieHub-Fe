@@ -60,7 +60,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
               duration: 0.12,
               ease: 'linear'
             }}
-            className='bg-charade absolute top-[calc(100%+5px)] right-1.5 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-charade absolute top-[calc(100%+8px)] right-1.5 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-8 h-2 w-4'>
               <div className='bg-charade h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />

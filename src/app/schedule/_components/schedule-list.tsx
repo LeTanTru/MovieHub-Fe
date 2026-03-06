@@ -65,19 +65,17 @@ export default function ScheduleList() {
   }, [date, getScheduleList]);
 
   return (
-    <div className='mx-auto w-full max-w-475 px-12.5'>
+    <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
       {/* Header */}
-      <div className='relative mb-5 flex min-h-11 items-center justify-start gap-4'>
-        <div className='text-[32px]'>
-          <FaRegCalendarCheck />
-        </div>
-        <div className='text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'>
+      <div className='max-1120:mb-5 max-990:mb-4 max-640:mb-3 max-480:mb-2 mb-6'>
+        <div className='max-990:text-2xl max-640:text-[22px] max-480:text-xl flex items-center gap-2 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+          <FaRegCalendarCheck className='max-990:[28px] max-640:text-2xl text-[32px]' />
           Lịch chiếu
         </div>
         <div className='grow'></div>
       </div>
       {/* Body */}
-      <div className='schedule flex flex-col gap-8 py-4'>
+      <div className='schedule flex flex-col gap-8'>
         <div className='schedule-date-list'>
           <div className='relative'>
             <div className='swiper-navigation'>
@@ -89,11 +87,28 @@ export default function ScheduleList() {
               </div>
             </div>
             <Swiper
-              slidesPerView={7}
+              slidesPerView={2.2}
               spaceBetween={6}
               modules={[Navigation]}
               grabCursor={true}
               className='w-full'
+              breakpoints={{
+                480: {
+                  slidesPerView: 4.2
+                },
+                640: {
+                  slidesPerView: 5.2
+                },
+                990: {
+                  slidesPerView: 6.2
+                },
+                1200: {
+                  slidesPerView: 7.2
+                },
+                1400: {
+                  slidesPerView: 8.2
+                }
+              }}
               onSwiper={(swiper) => {
                 if (
                   swiper.params.navigation &&
@@ -146,9 +161,13 @@ export default function ScheduleList() {
             {isLoading || isFetching ? (
               <VerticalBarLoading className='mx-auto py-20' />
             ) : scheduleList.length === 0 ? (
-              <NoData className='py-20' />
+              <NoData
+                className='max-990:py-15 py-20'
+                imageClassName='max-990:size-40'
+                content='Không có phim nào được chiếu vào ngày này'
+              />
             ) : (
-              <div className='relative z-2 grid grow grid-cols-4 gap-4 p-4'>
+              <div className='max-1120:grid-cols-3 max-800:grid-cols-2 max-640:grid-cols-1 relative z-2 grid grow grid-cols-4 gap-4'>
                 {scheduleList.map((item) => (
                   <Link
                     href={`${route.movie.path}/${item.movie.slug}.${item.movie.id}`}

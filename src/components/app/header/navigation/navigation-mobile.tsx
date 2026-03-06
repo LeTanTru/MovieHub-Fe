@@ -42,7 +42,7 @@ export default function NavigationMobile({
   );
 
   return (
-    <div className='max-1360:block hidden'>
+    <>
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}
@@ -58,7 +58,7 @@ export default function NavigationMobile({
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.1 }}
             >
-              <X className='size-8' />
+              <X className='max-640:size-7 size-8' />
             </motion.div>
           ) : (
             <motion.div
@@ -68,7 +68,7 @@ export default function NavigationMobile({
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.1 }}
             >
-              <MenuIcon className='size-8' />
+              <MenuIcon className='max-640:size-7 size-8' />
             </motion.div>
           )}
         </AnimatePresence>
@@ -82,7 +82,7 @@ export default function NavigationMobile({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-gunmetal-black max-768:w-90 absolute top-15 w-110 rounded-lg p-4'
+            className='bg-charade max-768:w-90 absolute top-15 w-110 rounded-lg p-4'
           >
             {!profile ? (
               <div className='flex justify-center'>
@@ -206,6 +206,6 @@ export default function NavigationMobile({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   );
 }

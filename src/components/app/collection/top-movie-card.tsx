@@ -174,7 +174,7 @@ export default function TopMovieCard({
               className={cn(
                 'hover:text-golden-glow max-640:mb-0 mb-1 line-clamp-1 font-normal text-white transition-colors duration-200 ease-linear',
                 {
-                  'featured-title font-bold': movie.isFeatured
+                  'featured-title': movie.isFeatured
                 }
               )}
             >
