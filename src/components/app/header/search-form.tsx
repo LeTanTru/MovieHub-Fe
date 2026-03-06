@@ -197,7 +197,7 @@ export default function SearchForm({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className='bg-gunmetal-blue shadow-gunmetal-blue absolute top-[calc(100%+5px)] left-0 w-full rounded p-4 shadow-[0px_0px_10px_1px]'
+            className='bg-gunmetal-black shadow-gunmetal-blue absolute top-[calc(100%+5px)] left-0 w-full rounded p-4 shadow-[0px_0px_10px_1px]'
           >
             <div className='mb-3 flex items-center justify-between text-neutral-400'>
               Danh sách phim

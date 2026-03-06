@@ -46,7 +46,7 @@ export default function MovieList({ countryCode }: { countryCode: string }) {
           content={
             <>
               Không có phim nào trong từ quốc gia&nbsp;
-              <span className='font-medium'>{countryName}</span>
+              <span className='font-semibold'>{countryName}</span>
             </>
           }
         />

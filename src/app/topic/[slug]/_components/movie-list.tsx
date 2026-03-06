@@ -68,7 +68,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
           content={
             <>
               Không có phim nào trong chủ đề&nbsp;
-              <span className='font-bold'>{collection?.name}</span>
+              <span className='font-semibold'>{collection?.name}</span>
             </>
           }
         />
