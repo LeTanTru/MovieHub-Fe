@@ -46,7 +46,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
       ></div>
       <div className='max-1120:mb-5 max-990:mb-4 max-640:mb-3 max-480:mb-2 mb-6'>
         {collectionLoading ? (
-          <Skeleton className='skeleton max-1120:mb-4 max-640:mb-2 max-640:h-8 mb-6 h-11 w-50' />
+          <Skeleton className='skeleton max-640:mb-4 max-480:mb-2 max-640:h-8 mb-6 h-10 w-50' />
         ) : (
           <h3
             className='max-990:text-2xl max-640:text-[22px] max-480:text-xl bg-clip-text text-[28px] leading-[1.4] font-semibold text-transparent text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'
