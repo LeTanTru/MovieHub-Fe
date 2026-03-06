@@ -49,7 +49,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
           <Skeleton className='skeleton max-1120:mb-4 max-640:mb-2 max-640:h-8 mb-6 h-11 w-50' />
         ) : (
           <h3
-            className='bg-clip-text text-[42px] leading-[1.4] font-medium text-transparent text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'
+            className='max-990:text-2xl max-640:text-[22px] max-480:text-xl bg-clip-text text-[28px] leading-[1.4] font-semibold text-transparent text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'
             style={{
               backgroundImage: getGradientStyle('to right')
             }}
@@ -68,7 +68,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
           content={
             <>
               Không có phim nào trong chủ đề&nbsp;
-              <span className='font-bold'>{collection?.name}</span>
+              <span className='font-semibold'>{collection?.name}</span>
             </>
           }
         />

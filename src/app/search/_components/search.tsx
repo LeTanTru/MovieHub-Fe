@@ -210,13 +210,13 @@ export default function Search() {
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
-      <div className='relative mb-5 flex min-h-11 items-center justify-start gap-4'>
-        <TextSearch className='size-8' />
-        <h3 className='m-0 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'>
+      <div className='max-1120:mb-5 max-990:mb-4 max-640:mb-3 max-480:mb-2 mb-6'>
+        <div className='max-990:text-2xl max-640:text-[22px] max-480:text-xl max-990:gap-2 flex items-center gap-4 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+          <TextSearch className='max-990:size-6.5 size-8' />
           {!searchParams.keyword
             ? 'Tìm kiếm phim'
             : `Kết quả tìm kiếm cho "${searchParams.keyword}"`}
-        </h3>
+        </div>
       </div>
       <Filter
         filters={filters}
@@ -233,6 +233,7 @@ export default function Search() {
         movieList={movieList}
         totalPages={totalPages}
         listKey={listKey}
+        keyword={searchParams.keyword || ''}
       />
     </div>
   );

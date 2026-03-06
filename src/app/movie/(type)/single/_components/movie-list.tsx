@@ -42,7 +42,7 @@ export default function MovieList() {
           content={
             <>
               Không có phim nào trong danh mục&nbsp;
-              <span className='font-medium'>Phim lẻ</span>
+              <span className='font-semibold'>Phim lẻ</span>
             </>
           }
         />
