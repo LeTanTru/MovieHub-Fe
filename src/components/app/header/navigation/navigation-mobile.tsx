@@ -82,7 +82,7 @@ export default function NavigationMobile({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-gunmetal-black max-768:w-90 absolute top-15 w-110 rounded-lg p-4'
+            className='bg-gunmetal-blue max-768:w-90 absolute top-15 w-110 rounded-lg p-4'
           >
             {!profile ? (
               <div className='flex justify-center'>

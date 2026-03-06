@@ -23,7 +23,7 @@ export default function TopMovieList({
     <div className='collection-movie-list fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>
       <>
         <div className='max-990:mb-2.5 max-480:justify-between relative mb-5 flex min-h-11 items-center justify-start gap-4'>
-          <h3 className='max-990:text-2xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+          <h3 className='max-990:text-2xl max-640:text-xl max-480:text-lg text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
             {collection.name}&nbsp;
           </h3>
         </div>
