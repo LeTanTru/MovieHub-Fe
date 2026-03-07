@@ -43,14 +43,18 @@ export default function WatchHistory() {
 
   return (
     <div className='mb-8 flex flex-col items-start justify-between gap-4'>
-      <h3 className='text-xl leading-normal font-semibold text-white'>
+      <h3 className='max-640:text-base text-xl leading-normal font-semibold text-white'>
         Xem tiếp
       </h3>
       {isLoading ? (
-        <MovieGridSkeleton className='grid-cols-6' skeletonCount={12} />
+        <MovieGridSkeleton
+          className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
+          skeletonCount={12}
+        />
       ) : movieHistories.length === 0 ? (
         <NoData
-          className='pt-25'
+          className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
+          imageClassName='max-640:size-40 max-480:size-30'
           content={
             <>
               Bạn chưa xem phim nào. Hãy khám phá và xem những bộ phim yêu thích
@@ -59,7 +63,7 @@ export default function WatchHistory() {
           }
         />
       ) : (
-        <div className='grid w-full grow grid-cols-6 gap-6'>
+        <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
           {movieHistories.map((movieHistory) => (
             <MovieHistoryCard
               key={movieHistory.id}

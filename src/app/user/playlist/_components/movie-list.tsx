@@ -77,10 +77,14 @@ export default function MovieList() {
   return (
     <>
       {isLoading ? (
-        <MovieGridSkeleton className='grid-cols-6' skeletonCount={12} />
+        <MovieGridSkeleton
+          className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
+          skeletonCount={12}
+        />
       ) : movieList.length === 0 ? (
         <NoData
-          className='pt-25'
+          className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
+          imageClassName='max-640:size-40 max-480:size-30'
           content={
             <>
               Danh sách <span className='font-semibold'>{playlist.name}</span>
@@ -89,7 +93,7 @@ export default function MovieList() {
           }
         />
       ) : (
-        <div className='grid w-full grow grid-cols-6 gap-6'>
+        <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
           {movieList.map((movie) => (
             <MovieCard
               key={movie.id}

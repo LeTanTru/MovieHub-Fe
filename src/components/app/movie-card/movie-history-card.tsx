@@ -138,7 +138,7 @@ export default function MovieHistoryCard({
       {onDelete && (
         <button
           aria-label='Remove from favourite'
-          className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black shadow-md transition-all duration-200 ease-linear'
+          className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
           onClick={() => onDelete(movie.id)}
         >
           <X className='size-4' />
