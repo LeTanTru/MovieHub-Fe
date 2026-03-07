@@ -489,6 +489,7 @@ export default function WatchPlayer() {
                 }
                 prev={isSeries && !isFirstEpisode}
                 next={isSeries && !isLastEpisode}
+                skipOutro={isSeries && !isLastEpisode}
                 onPrevClick={handlePrevEpisode}
                 onNextClick={handleNextEpisode}
                 onTimeUpdate={handleWatchHistoryTimeUpdate}
