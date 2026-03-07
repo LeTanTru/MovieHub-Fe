@@ -3,7 +3,7 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './schedule-list.css';
-import { DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT } from '@/constants';
+import { DATE_SHORT, DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT } from '@/constants';
 import { useScheduleMovieListQuery } from '@/queries';
 import { formatDate, renderImageUrl } from '@/utils';
 import { useEffect, useRef, useState } from 'react';
@@ -144,7 +144,7 @@ export default function ScheduleList() {
                       onClick={() => setDate(formattedDateForState)}
                     >
                       <span className='time'>
-                        {format(currentDate, 'dd/MM')}
+                        {format(currentDate, DATE_SHORT)}
                       </span>
                       <span className='day'>
                         {DAY_LABELS[currentDate.getDay()]}
@@ -164,7 +164,15 @@ export default function ScheduleList() {
               <NoData
                 className='max-990:py-15 py-20'
                 imageClassName='max-990:size-40'
-                content='Không có phim nào được chiếu vào ngày này'
+                content={
+                  <>
+                    Không có lịch chiếu nào cho ngày&nbsp;
+                    <span className='font-semibold'>
+                      {formatDate(date, DATE_SHORT)}
+                    </span>
+                    . Vui lòng chọn ngày khác.
+                  </>
+                }
               />
             ) : (
               <div className='max-1120:grid-cols-3 max-800:grid-cols-2 max-640:grid-cols-1 relative z-2 grid grow grid-cols-4 gap-4'>

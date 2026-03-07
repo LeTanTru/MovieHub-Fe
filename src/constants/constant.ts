@@ -28,6 +28,7 @@ export const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 export const TIME_DATE_FORMAT = 'HH:mm:ss dd/MM/yyyy';
 export const DATE_TIME_FORMAT = 'dd/MM/yyyy HH:mm:ss';
 export const DATE_DAY_TIME_FORMAT = 'EEEE HH:mm:ss dd/MM/yyyy';
+export const DATE_SHORT = 'dd/MM';
 
 export const DEFAULT_DATE_FORMAT_UTC = 'MM/dd/yyyy';
 export const DATE_TIME_FORMAT_UTC = 'HH:mm:ss MM/dd/yyyy';

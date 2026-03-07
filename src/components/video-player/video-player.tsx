@@ -16,6 +16,7 @@ import {
   SeekForwardButton,
   SettingMenu,
   SkipIntroButton,
+  SkipOutroButton,
   TimeSlider,
   VolumeIndicator,
   VolumeToggleButton
@@ -40,6 +41,7 @@ import {
 import {
   createContext,
   useContext,
+  useEffect,
   useRef,
   useState,
   forwardRef,
@@ -69,6 +71,7 @@ type VideoPlayerProps = Omit<
   next?: boolean;
   outroStart: number;
   prev?: boolean;
+  skipOutro?: boolean;
   slots?: DefaultVideoLayoutSlots;
   textTracks?: TrackProps[];
   thumbnailUrl: string;
@@ -89,6 +92,7 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
       next,
       outroStart,
       prev,
+      skipOutro = false,
       slots,
       textTracks,
       thumbnailUrl,
@@ -107,7 +111,8 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
     ref
   ) {
     const playerRef = useRef<MediaPlayerInstance>(null);
-    const [showSkip, setShowSkip] = useState<boolean>(true);
+    const [showSkipIntro, setShowSkipIntro] = useState<boolean>(false);
+    const [showSkipOutro, setShowSkipOutro] = useState<boolean>(false);
     const [currentAction, setCurrentAction] =
       useState<IndicatorAction>('initial');
 
@@ -118,15 +123,33 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
       ref.current = playerRef.current;
     }
 
+    useEffect(() => {
+      setShowSkipIntro(false);
+      setShowSkipOutro(false);
+    }, [duration, introEnd, introStart, onNextClick, outroStart, skipOutro]);
+
     const handleTimeChange = (
       detail: MediaTimeUpdateEventDetail,
       nativeEvent: MediaTimeUpdateEvent
     ) => {
       const { currentTime } = detail;
-      const shouldShowSkip =
+      const shouldShowSkipIntro =
         currentTime >= introStart && currentTime < introEnd;
+      const shouldShowSkipOutro =
+        skipOutro &&
+        !!onNextClick &&
+        duration > 0 &&
+        outroStart > 0 &&
+        outroStart < duration &&
+        currentTime >= outroStart &&
+        currentTime < duration;
 
-      setShowSkip((prev) => (prev !== shouldShowSkip ? shouldShowSkip : prev));
+      setShowSkipIntro((prev) =>
+        prev !== shouldShowSkipIntro ? shouldShowSkipIntro : prev
+      );
+      setShowSkipOutro((prev) =>
+        prev !== shouldShowSkipOutro ? shouldShowSkipOutro : prev
+      );
       onTimeUpdate?.(detail, nativeEvent);
     };
 
@@ -187,17 +210,21 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
                 </>
               ),
               googleCastButton: null,
-              afterTimeSlider: showSkip ? (
-                <SkipIntroButton
-                  onClick={() => {
-                    if (playerRef.current && introEnd) {
-                      playerRef.current.currentTime = introEnd;
-                    }
-                  }}
-                />
-              ) : (
-                <></>
-              ),
+              afterTimeSlider:
+                showSkipIntro || showSkipOutro ? (
+                  <>
+                    {showSkipIntro && (
+                      <SkipIntroButton
+                        onClick={() => {
+                          if (playerRef.current && introEnd) {
+                            playerRef.current.currentTime = introEnd;
+                          }
+                        }}
+                      />
+                    )}
+                    {showSkipOutro && <SkipOutroButton onClick={onNextClick} />}
+                  </>
+                ) : null,
               timeSlider: (
                 <TimeSlider
                   introStart={introStart}
