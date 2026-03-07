@@ -21,11 +21,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Build and Push
+      - name: Build Image
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
+          push: false
+          load: true
           tags: ${{ secrets.DOCKER_USERNAME }}/moviehub:latest
           build-args: |
             NEXT_PUBLIC_API_META_ENDPOINT_URL=${{ secrets.NEXT_PUBLIC_API_META_ENDPOINT_URL }}
@@ -42,3 +43,9 @@ jobs:
             NEXT_PUBLIC_MEDIA_HOST=${{ secrets.NEXT_PUBLIC_MEDIA_HOST }}
             NEXT_PUBLIC_ACCESS_KEY=${{ secrets.NEXT_PUBLIC_ACCESS_KEY }}
             NEXT_PUBLIC_CLIENT_TYPE=${{ secrets.NEXT_PUBLIC_CLIENT_TYPE }}
+
+      - name: Show Image Size
+        run: docker images ${{ secrets.DOCKER_USERNAME }}/moviehub:latest
+
+      - name: Push Image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/moviehub:latest
