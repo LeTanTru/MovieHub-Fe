@@ -171,12 +171,12 @@ export default function ReviewModal({
               </div>
             </div>
             <Row className='mb-0 flex items-center justify-center'>
-              <Col className='w-1/2'>
+              <Col className='w-1/3'>
                 <Button type='button' onClick={onClose}>
                   Đóng
                 </Button>
               </Col>
-              <Col className='w-1/2'>
+              <Col className='w-1/3'>
                 <Button
                   className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
                   variant='primary'

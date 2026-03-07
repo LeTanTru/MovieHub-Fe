@@ -111,13 +111,13 @@ export default function PlaylistModal({
                 />
               </Col>
             </Row>
-            <Row className='mb-0'>
-              <Col className='w-1/2'>
+            <Row className='mb-0 justify-center'>
+              <Col className='w-1/3'>
                 <Button variant='primary' onClick={handleClose}>
                   Đóng
                 </Button>
               </Col>
-              <Col className='w-1/2'>
+              <Col className='w-1/3'>
                 <Button
                   className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
                   variant='primary'

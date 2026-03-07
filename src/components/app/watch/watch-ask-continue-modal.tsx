@@ -53,13 +53,13 @@ export default function WatchAskContinueModal({
                 {formatSecondsToHMS(lastWatchedSeconds)}. Bạn muốn tiếp tục hay
                 bắt đầu lại?
               </p>
-              <Row className='mt-4 mb-0 justify-end'>
-                <Col className='w-1/2'>
+              <Row className='mt-4 mb-0 justify-center'>
+                <Col className='w-1/3'>
                   <Button variant='primary' onClick={onStartOver}>
                     Bắt đầu lại
                   </Button>
                 </Col>
-                <Col className='w-1/2'>
+                <Col className='w-1/3'>
                   <Button
                     variant='primary'
                     className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:text-black'
