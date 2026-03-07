@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 # Cài tất cả deps kể cả devDependencies để build
-RUN yarn install --frozen-lockfile && yarn cache clean
+RUN yarn install --frozen-lockfile --prefer-offline && yarn cache clean
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
