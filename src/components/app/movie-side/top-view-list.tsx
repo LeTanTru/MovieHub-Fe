@@ -13,7 +13,7 @@ export default function TopViewList() {
   if (topViewMovieList.length === 0) return null;
 
   return (
-    <div className='border-t border-solid border-white/10 pt-8'>
+    <div className='max-1120:hidden border-t border-solid border-white/10 pt-8'>
       <div className='mb-4 flex min-h-10 items-center gap-4 text-xl font-semibold text-white'>
         <div className='size-6 shrink-0'>
           <FallingStarIcon className='size-full' />

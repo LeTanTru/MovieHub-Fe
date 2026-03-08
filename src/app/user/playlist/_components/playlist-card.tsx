@@ -30,7 +30,7 @@ export default function PlaylistCard({
   return (
     <div
       className={cn(
-        'cursor-pointer rounded-md border-2 p-4 transition-all duration-200 ease-linear',
+        'cursor-pointer rounded-md border-2 p-4 shadow-[inset_0_0_0_3px_#ffffff03] transition-all duration-200 ease-linear',
         {
           'border-golden-glow': selectedPlaylist?.id === playlist.id
         }

@@ -8,7 +8,6 @@ import {
   movieTabPersonTitles,
   PERSON_KIND_ACTOR
 } from '@/constants';
-import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 
@@ -33,21 +32,20 @@ export default function MovieTabPerson({
 
   return (
     <MotionWrapper uniqueKey={key} direction={direction}>
-      <h3 className='mb-8 text-lg leading-normal font-semibold text-white'>
+      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg mb-6 text-2xl font-semibold'>
         {title}
       </h3>
-      <div
-        className={cn('grid gap-6', {
-          'grid-cols-6': personList.length > 0
-        })}
-        key={key}
-      >
-        {personList.length === 0 ? (
-          <p className='text-gray-400'>
-            Danh sách {title.toLowerCase()} trống. Vui lòng chờ cập nhật.
-          </p>
-        ) : (
-          personList.map((person) => (
+
+      {personList.length === 0 ? (
+        <p className='text-gray-400'>
+          Danh sách {title.toLowerCase()} trống. Vui lòng chờ cập nhật.
+        </p>
+      ) : (
+        <div
+          className='max-1600:grid-cols-5 max-1360:gap-5 max-1280:grid-cols-4 max-1280:gap-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-3 max-520:grid-cols-2 grid grid-cols-6 gap-6'
+          key={key}
+        >
+          {personList.map((person) => (
             <PersonCard
               person={person}
               key={`tab-item-${key}-${person.id}`}
@@ -55,9 +53,9 @@ export default function MovieTabPerson({
               willNavigate
               params={{ kind }}
             />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </MotionWrapper>
   );
 }

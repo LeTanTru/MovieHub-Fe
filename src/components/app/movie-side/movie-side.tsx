@@ -121,8 +121,8 @@ export default function MovieSide({
     );
 
   return (
-    <div className='bg-main-background/60 flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
-      <div className='mb-4 w-40 font-light'>
+    <div className='bg-main-background/60 max-1360:p-7.5 max-1360:w-95 max-1280:bg-transparent max-1280:backdrop-blur-none max-1280:p-0 max-1280:w-85 max-1120:w-full max-1120:mb-0 max-1120:text-center flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
+      <div className='max-1120:mx-auto mb-4 w-40'>
         <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'>
           <Image
             alt={`${movie.title} - ${movie.originalTitle}`}
@@ -141,94 +141,96 @@ export default function MovieSide({
       >
         {movie.title} {+latestSeason > 1 ? selectedSeason : ''}
       </h2>
-      <div className='text-golden-glow mb-5 font-normal'>
+      <div className='text-golden-glow max-1120:mb-4 max-1120:-mt-0.75 mb-5 font-normal'>
         {movie.originalTitle} {+latestSeason > 1 ? selectedSeason : ''}
       </div>
-      <TagWrapper className='mb-3'>
-        {ageRating ? <TagAgeRating value={ageRating} /> : null}
-        <TagNormal value={releaseYear} />
-        {/* Single movie */}
-        <Activity visible={isSingle}>
-          <TagNormal value={formatDuration(duration)} />
-        </Activity>
-        {/* Series movie */}
-        <Activity visible={isSeries}>
-          <TagNormal value={`Phần ${latestSeason}`} />
-          <TagNormal value={`Tập ${latestEpisode}`} />
-        </Activity>
-        {isSeries && isComplete && (
-          <TagNormal
-            value={`Hoàn tất ${episodes.length} / ${currentSeason?.totalEpisode || '?'} tập`}
+      <div className='max-1120:p-4 max-1120:rounded-md max-1120:bg-[rgba(0,0,0,.2)] max-1120:text-left'>
+        <TagWrapper className='mb-3'>
+          {ageRating ? <TagAgeRating value={ageRating} /> : null}
+          <TagNormal value={releaseYear} />
+          {/* Single movie */}
+          <Activity visible={isSingle}>
+            <TagNormal value={formatDuration(duration)} />
+          </Activity>
+          {/* Series movie */}
+          <Activity visible={isSeries}>
+            <TagNormal value={`Phần ${latestSeason}`} />
+            <TagNormal value={`Tập ${latestEpisode}`} />
+          </Activity>
+          {isSeries && isComplete && (
+            <TagNormal
+              value={`Hoàn tất ${episodes.length} / ${currentSeason?.totalEpisode || '?'} tập`}
+            />
+          )}
+        </TagWrapper>
+        <TagWrapper className='mb-3'>
+          {categories.map((category) => (
+            <TagCategoryLink
+              key={category.id}
+              href={`${route.category.path}/${category.slug}.${category.id}`}
+              text={category.name}
+            />
+          ))}
+        </TagWrapper>
+        {isSeries && (
+          <MovieProgress
+            currentTotalEpisode={episodes?.length || 0}
+            isComplete={isComplete}
+            totalEpisode={currentSeason?.totalEpisode || 0}
           />
         )}
-      </TagWrapper>
-      <TagWrapper className='mb-3'>
-        {categories.map((category) => (
-          <TagCategoryLink
-            key={category.id}
-            href={`${route.category.path}/${category.slug}.${category.id}`}
-            text={category.name}
+        <div className='mb-5'>
+          <div className='mb-2 block font-medium text-white'>Giới thiệu:</div>
+          <div
+            className='text-foreground/80!'
+            dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
           />
-        ))}
-      </TagWrapper>
-      {isSeries && (
-        <MovieProgress
-          currentTotalEpisode={episodes?.length || 0}
-          isComplete={isComplete}
-          totalEpisode={currentSeason?.totalEpisode || 0}
-        />
-      )}
-      <div className='mb-5'>
-        <div className='mb-2 block font-medium text-white'>Giới thiệu:</div>
-        <div
-          className='text-foreground/80! font-light'
-          dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-        />
-      </div>
-      <div className='mb-5 flex items-end gap-2'>
-        <div className='font-medium whitespace-nowrap text-white'>
-          Ngày phát hành:
         </div>
-        <div className='text-foreground/80 font-light'>
-          {formatDate(releaseDate, DEFAULT_DATE_FORMAT)}
+        <div className='mb-5 flex items-start gap-2'>
+          <div className='font-medium whitespace-nowrap text-white'>
+            Ngày phát hành:
+          </div>
+          <div className='text-foreground/80'>
+            {formatDate(releaseDate, DEFAULT_DATE_FORMAT)}
+          </div>
         </div>
-      </div>
-      <div className='mb-5 flex items-end gap-2'>
-        <div className='font-medium whitespace-nowrap text-white'>
-          Thời lượng:
+        <div className='mb-5 flex items-start gap-2'>
+          <div className='font-medium whitespace-nowrap text-white'>
+            Thời lượng:
+          </div>
+          <div className='text-foreground/80'>
+            {duration ? formatDuration(duration) : 'Đang cập nhật'}
+          </div>
         </div>
-        <div className='text-foreground/80 font-light'>
-          {duration ? formatDuration(duration) : 'Đang cập nhật'}
+        <div className='mb-5 flex items-start gap-2'>
+          <div className='font-medium whitespace-nowrap text-white'>
+            Quốc gia:
+          </div>
+          <Link
+            href={`${route.country.path}/${generateSlug(
+              countryName
+            )}.${movie.country}`}
+            className='text-foreground/80 hover:text-golden-glow linear transition duration-200'
+          >
+            {countryName}
+          </Link>
         </div>
-      </div>
-      <div className='mb-5 flex items-end gap-2'>
-        <div className='font-medium whitespace-nowrap text-white'>
-          Quốc gia:
+        <div className='mb-5 flex items-start gap-2'>
+          <div className='font-medium whitespace-nowrap text-white'>
+            Ngôn ngữ:
+          </div>
+          <div className='text-foreground/80'>{languageName}</div>
         </div>
-        <Link
-          href={`${route.country.path}/${generateSlug(
-            countryName
-          )}.${movie.country}`}
-          className='text-foreground/80 hover:text-golden-glow linear font-light transition duration-200'
-        >
-          {countryName}
-        </Link>
-      </div>
-      <div className='mb-5 flex items-end gap-2'>
-        <div className='font-medium whitespace-nowrap text-white'>
-          Ngôn ngữ:
+        <div className='max-1120:mb-0 mb-5 flex items-start gap-2'>
+          <div className='font-medium whitespace-nowrap text-white'>
+            Đạo diễn:
+          </div>
+          <span className='text-foreground/80'>
+            {directors.length > 0
+              ? directors.map((director) => director.otherName).join(', ')
+              : 'Đang cập nhật'}
+          </span>
         </div>
-        <div className='text-foreground/80 font-light'>{languageName}</div>
-      </div>
-      <div className='mb-5 flex flex-wrap items-end gap-2'>
-        <div className='font-medium whitespace-nowrap text-white'>
-          Đạo diễn:
-        </div>
-        <span className='text-foreground/80 font-light'>
-          {directors.length > 0
-            ? directors.map((director) => director.otherName).join(', ')
-            : 'Đang cập nhật'}
-        </span>
       </div>
       <ActorList actors={actors} />
       <TopViewList />

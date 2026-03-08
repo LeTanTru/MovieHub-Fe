@@ -3,9 +3,9 @@
     border-radius: 0 !important;
   }
 
-  [data-media-player][data-layout='video'] {
+  /* [data-media-player][data-layout='video'] {
     background: transparent !important;
-  }
+  } */
 
   :where(.vds-poster) {
     background: transparent !important;

@@ -38,7 +38,11 @@ export default function TopicList() {
           ))}
         </div>
       ) : (
-        <NoData className='pt-20 pb-40' content={<>Không có chủ đề nào</>} />
+        <NoData
+          className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
+          imageClassName='max-640:size-40 max-480:size-30'
+          content={<>Không có chủ đề nào</>}
+        />
       )}
     </div>
   );

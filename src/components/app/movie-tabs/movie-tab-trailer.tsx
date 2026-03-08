@@ -86,8 +86,8 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
   return (
     <>
       <MotionWrapper uniqueKey={MOVIE_TAB_TRAILER} direction={direction}>
-        <div className='mb-8 flex items-center justify-between gap-8'>
-          <h3 className='text-lg leading-normal font-semibold text-white'>
+        <div className='max-1120:mb-4 mb-6 flex justify-between'>
+          <h3 className='max-800:text-xl max-640:text-lg text-2xl leading-normal font-semibold'>
             Trailer phim {movie.title}
           </h3>
           <div className='grow'></div>
@@ -101,8 +101,10 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
 
         <div
           className={cn('grid', {
-            'grid-cols-6 gap-x-2.5 gap-y-8': !toggle,
-            'grid-cols-8 gap-2.5': toggle
+            'max-1120:grid-cols-5 max-990:grid-cols-4 max-640:grid-cols-3 max-520:grid-cols-2 grid-cols-6 gap-x-2.5 gap-y-8':
+              !toggle,
+            'max-1360:grid-cols-6 max-990:grid-cols-4 max-640:grid-cols-3 max-520:grid-cols-2 grid-cols-8 gap-2.5':
+              toggle
           })}
         >
           <motion.div

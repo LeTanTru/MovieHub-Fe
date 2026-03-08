@@ -62,7 +62,7 @@ export default function PersonCard({
       animate='animate'
       exit='exit'
       transition={itemTransition}
-      className='group relative overflow-hidden rounded-lg p-0'
+      className='relative overflow-hidden rounded-lg p-0'
     >
       <div className='flex flex-col items-center justify-center gap-0'>
         {willNavigate ? (
@@ -121,7 +121,7 @@ export default function PersonCard({
       </div>
       {onDelete && (
         <div
-          className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
+          className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
           onClick={() => onDelete(person.id)}
           aria-label='Remove from favourite'
         >

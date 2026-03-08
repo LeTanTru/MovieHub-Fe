@@ -119,7 +119,12 @@ export default function Discussion({
 
   return (
     <Element name={toId} id={toId}>
-      <div className={cn('relative block px-10 py-5', className)}>
+      <div
+        className={cn(
+          'max-1120:px-5 max-768:px-0 relative block px-10 py-5',
+          className
+        )}
+      >
         {/* Header */}
         <div className='mb-2 flex items-center font-semibold text-white'>
           <div className='flex grow items-center gap-4'>

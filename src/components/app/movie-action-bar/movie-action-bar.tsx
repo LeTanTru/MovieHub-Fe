@@ -56,19 +56,39 @@ export default function MovieActionBar({
     : `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}`;
 
   return (
-    <div className='relative z-3 p-7.5'>
-      <div className='flex items-center justify-between gap-8'>
-        <ButtonWatchNow href={watchLink} variant='detail' />
-        {/* Left */}
-        <div className='flex grow justify-start gap-4'>
-          <ButtonLike targetId={movie.id} variant='detail' />
-          <ButtonAddToPlaylist movieId={movie.id} variant='detail' />
-          <ButtonShareMovie variant='detail' />
-          <ButtonViewComment to={MOVIE_DETAIL_DISCUSSION_ID} variant='detail' />
-          <ButtonViewReview to={MOVIE_DETAIL_DISCUSSION_ID} variant='detail' />
+    <div className='max-1120:py-5 max-1120:px-2 max-800:px-0 relative z-3 p-7.5'>
+      <div className='max-1120:gap-6 max-990:gap-2 max-800:flex-col max-800:gap-4 flex items-center justify-between gap-8'>
+        <ButtonWatchNow
+          className='max-640:h-12.5 max-640:min-h-auto max-640:p-2 max-800:min-w-55 max-640:min-w-44'
+          href={watchLink}
+          variant='detail'
+        />
+        <div className='max-800:gap-4 flex grow items-center justify-between'>
+          <div className='max-1120:gap-2 max-800:gap-3 max-480:gap-2 flex grow items-center gap-4'>
+            <ButtonLike
+              className='max-640:min-w-15'
+              targetId={movie.id}
+              variant='detail'
+            />
+            <ButtonAddToPlaylist
+              className='max-640:min-w-15'
+              movieId={movie.id}
+              variant='detail'
+            />
+            <ButtonShareMovie className='max-640:min-w-15' variant='detail' />
+            <ButtonViewComment
+              className='max-520:hidden max-640:min-w-15'
+              to={MOVIE_DETAIL_DISCUSSION_ID}
+              variant='detail'
+            />
+            <ButtonViewReview
+              className='max-520:hidden max-640:min-w-15'
+              to={MOVIE_DETAIL_DISCUSSION_ID}
+              variant='detail'
+            />
+          </div>
+          <ButtonReview movieId={movie.id} />
         </div>
-        {/* Right */}
-        <ButtonReview movieId={movie.id} />
       </div>
     </div>
   );

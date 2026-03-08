@@ -162,8 +162,8 @@ export default function ScheduleList() {
               <VerticalBarLoading className='mx-auto py-20' />
             ) : scheduleList.length === 0 ? (
               <NoData
-                className='max-990:py-15 py-20'
-                imageClassName='max-990:size-40'
+                className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
+                imageClassName='max-640:size-40 max-480:size-30'
                 content={
                   <>
                     Không có lịch chiếu nào cho ngày&nbsp;

@@ -4,6 +4,15 @@
   height: 800px;
   background: var(--color-main-background);
   overflow: hidden;
+  @media screen and (max-width: 1900px) {
+    height: 0;
+    padding-bottom: 40%;
+  }
+
+  @media screen and (max-width: 1120px) {
+    padding-bottom: 300px;
+    opacity: 0.5;
+  }
 }
 
 .movie-detail-background {
@@ -64,13 +73,6 @@
     var(--color-main-background) 80%,
     transparent
   );
-  -webkit-mask-image: linear-gradient(
-    0deg,
-    transparent 0,
-    var(--color-main-background) 20%,
-    var(--color-main-background) 80%,
-    transparent
-  );
 }
 
 .movie-detail .cover-fade .cover-image {
@@ -83,13 +85,6 @@
   background-size: cover;
   background-position: 50%;
   mask-image: linear-gradient(
-    90deg,
-    transparent 0,
-    var(--color-main-background) 30%,
-    var(--color-main-background) 70%,
-    transparent
-  );
-  -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0,
     var(--color-main-background) 30%,

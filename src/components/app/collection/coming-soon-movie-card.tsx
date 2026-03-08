@@ -102,7 +102,7 @@ export default function ComingSoonMovieCard({
         animate='animate'
         exit='exit'
         transition={itemTransition}
-        className='group relative flex flex-col gap-3'
+        className='relative flex flex-col gap-3'
       >
         <Link
           className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[56%]'
@@ -159,7 +159,7 @@ export default function ComingSoonMovieCard({
         {onDelete && (
           <button
             aria-label='Remove from favourite'
-            className='absolute top-1 right-1 cursor-pointer rounded bg-white p-1 text-black opacity-0 shadow-lg transition-all duration-200 ease-linear group-hover:opacity-100 hover:opacity-80'
+            className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
             onClick={() => onDelete(movie.id)}
           >
             <X className='size-4' />

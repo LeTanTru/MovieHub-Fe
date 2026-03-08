@@ -8,9 +8,11 @@ import Link from 'next/link';
 export default function MovieTabSingle({ movie }: { movie: MovieResType }) {
   return (
     <>
-      <h3 className='mb-8 text-2xl font-semibold text-white'>Các bản chiếu</h3>
+      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg mb-6 text-2xl font-semibold'>
+        Các bản chiếu
+      </h3>
       {movie && movie.seasons && movie.seasons.length > 0 ? (
-        <div className='grid grid-cols-3 gap-4'>
+        <div className='max-990:grid-cols-2 max-480:grid-cols-1 grid grid-cols-3 gap-4'>
           {movie.seasons.map((season) => (
             <Link
               href={`${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`}

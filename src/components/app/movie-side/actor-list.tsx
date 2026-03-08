@@ -34,7 +34,7 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
 export default function ActorList({ actors }: { actors: PersonResType[] }) {
   return (
     <div
-      className={cn('mb-5 flex-wrap items-end gap-2', {
+      className={cn('max-1120:hidden mb-5 flex-wrap items-end gap-2', {
         flex: actors.length === 0
       })}
     >
@@ -52,7 +52,7 @@ export default function ActorList({ actors }: { actors: PersonResType[] }) {
           ))}
         </div>
       ) : (
-        <span className='text-foreground/80 font-light'>Đang cập nhật</span>
+        <span className='text-foreground/80'>Đang cập nhật</span>
       )}
     </div>
   );

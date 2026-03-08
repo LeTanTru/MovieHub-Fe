@@ -41,6 +41,8 @@ export default function Collection() {
       {collectionList.map((collection) => {
         const styleType = collection.styleType;
 
+        if (!collection.movies || collection?.movies?.length === 0) return null;
+
         switch (styleType) {
           case STYLE_TOP_RANKING: {
             return <TopMovieList collection={collection} key={collection.id} />;

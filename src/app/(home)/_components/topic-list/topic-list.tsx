@@ -1,16 +1,11 @@
 'use client';
 
-import { NoData } from '@/components/no-data';
 import { useCollectionTopicListQuery } from '@/queries';
 import { MAX_PAGE_SIZE } from '@/constants';
-import {
-  TopicItemSkeleton,
-  TopicItem,
-  TopicItemMore
-} from '@/components/app/topic-item';
+import { TopicItem, TopicItemMore } from '@/components/app/topic-item';
+import { VerticalBarLoading } from '@/components/loading';
 
 export default function TopicList() {
-  const skeletonCount = 7;
   const { data: topicListData, isLoading: topicListLoading } =
     useCollectionTopicListQuery({
       enabled: true,
@@ -24,6 +19,8 @@ export default function TopicList() {
 
   const moreCount = totalElements - topicList.length;
 
+  if (topicListLoading) return <VerticalBarLoading className='py-20' />;
+
   if (!topicList.length) return null;
 
   return (
@@ -33,22 +30,13 @@ export default function TopicList() {
           Bạn đang quan tâm chủ đề gì ?
         </h3>
       </div>
-      {topicListLoading ? (
-        <div className='max-1600:grid-cols-6 max-1280:grid-cols-5 max-990:grid-cols-4 max-800:grid-cols-3 max-1120:gap-3 max-480:flex max-480:flex-nowrap max-480:gap-2 max-480:overflow-auto max-480:scrollbar-none grid grid-cols-7 gap-4'>
-          {Array.from({ length: skeletonCount }).map((_, i) => (
-            <TopicItemSkeleton key={i} />
-          ))}
-        </div>
-      ) : topicList.length > 0 ? (
-        <div className='max-1600:grid-cols-6 max-1280:grid-cols-5 max-990:grid-cols-4 max-800:grid-cols-3 max-1120:gap-3 max-480:flex max-480:flex-nowrap max-480:gap-2 max-480:overflow-auto max-480:scrollbar-none grid grid-cols-7 gap-4'>
-          {topicList.map((topic) => (
-            <TopicItem key={topic.id} topic={topic} isSwitched={isSwitched} />
-          ))}
-          <TopicItemMore moreCount={moreCount} isSwitched={isSwitched} />
-        </div>
-      ) : (
-        <NoData className='pt-20 pb-40' content={<>Không có chủ đề nào</>} />
-      )}
+
+      <div className='max-1600:grid-cols-6 max-1280:grid-cols-5 max-990:grid-cols-4 max-800:grid-cols-3 max-1120:gap-3 max-480:flex max-480:flex-nowrap max-480:gap-2 max-480:overflow-auto max-480:scrollbar-none grid grid-cols-7 gap-4'>
+        {topicList.map((topic) => (
+          <TopicItem key={topic.id} topic={topic} isSwitched={isSwitched} />
+        ))}
+        <TopicItemMore moreCount={moreCount} isSwitched={isSwitched} />
+      </div>
     </div>
   );
 }
