@@ -219,7 +219,7 @@ export default function ReviewList({
     );
 
   return (
-    <div className='flex flex-col justify-between'>
+    <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
       {reviewList
         .filter((review) => review?.id)
         .map((review) => (

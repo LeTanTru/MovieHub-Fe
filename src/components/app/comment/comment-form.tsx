@@ -14,12 +14,14 @@ import { useShallow } from 'zustand/shallow';
 export default function CommentForm({
   parentId,
   movieId,
+  mode = 'reply',
   defaultMention,
   onSubmitted,
   onCancel
 }: {
   parentId: string;
   movieId: string;
+  mode?: 'reply' | 'edit';
   defaultMention?: string;
   onSubmitted?: () => void;
   onCancel?: () => void;
@@ -56,7 +58,7 @@ export default function CommentForm({
     movieId: editingComment?.movieId || movieId,
     movieItemId: editingComment?.movieItem?.id || '',
     parentId: editingComment?.parent?.id || parentId,
-    replyToId: authorInfo?.id || '',
+    replyToId: authorInfo?.id?.toString() || '',
     replyToKind: authorInfo?.kind || 0
   };
 
@@ -96,36 +98,36 @@ export default function CommentForm({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='bg-transparent-white mt-4 flex h-full flex-col gap-2.5 rounded-md! p-2.5'
+      className='bg-transparent-white max-640:p-2 mt-4 flex h-full flex-col gap-2.5 rounded-md! p-2.5'
     >
       {(form) => (
         <>
           <div className='relative'>
-            {!editingComment && (
-              <span className='bg-golden-glow max-520:text-xs mb-2 ml-1 inline-block rounded px-1.5 py-1 font-semibold text-black'>
+            {mode === 'reply' && (
+              <span className='bg-golden-glow max-640:text-[13px] max-640:mb-1 mb-2 inline-block rounded px-1.5 py-1 font-semibold text-black'>
                 {defaultMention}
               </span>
             )}
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-black-denim max-520:text-xs max-520:placeholder:text-xs block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-black-denim max-640:text-xs max-640:placeholder:text-xs block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
             />
           </div>
-          <div className='flex items-center gap-2'>
+          <div className='max-640:gap-0 flex items-center gap-2'>
             <div className='grow'></div>
             <Button
               type='button'
               variant='ghost'
               onClick={onCancel}
-              className='dark:hover:text-destructive max-520:text-xs max-520:px-2 h-fit py-0 dark:hover:bg-transparent'
+              className='dark:hover:text-destructive max-640:text-xs max-640:p-0 max-640:h-5! max-640:min-h-auto py-0 dark:hover:bg-transparent'
             >
               Hủy
             </Button>
             <Button
-              className='dark:text-golden-glow dark:hover:text-golden-glow max-520:text-xs max-520:px-2 h-fit gap-2 px-4.5 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
+              className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-xs max-640:px-0 max-640:gap-1 h-5! min-h-auto gap-2 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
               disabled={
                 createCommentLoading ||
                 updateCommentLoading ||

@@ -80,7 +80,7 @@ export default function MovieTabs({
     <div className='max-1120:px-5 max-800:px-0 flex flex-col px-10'>
       <div
         ref={containerRef}
-        className='max-800:justify-center max-480:justify-between max-640:gap-4 max-480:gap-2 max-520:-mx-4 relative flex flex-nowrap gap-6 border-b border-solid'
+        className='max-800:justify-center max-480:justify-evenly max-420:justify-center max-640:gap-4 max-480:gap-4 max-420:gap-2 max-520:-mx-4 relative flex flex-nowrap gap-6 border-b border-solid'
         role='tablist'
       >
         {movieTabs.map((tab) => (
@@ -91,7 +91,7 @@ export default function MovieTabs({
               tabRefs.current[tab.key] = el;
             }}
             className={cn(
-              'max-640:px-2 max-480:px-1 flex cursor-pointer items-center justify-center px-4 py-3 text-sm font-medium text-white opacity-90 transition-opacity duration-200 ease-linear',
+              'max-640:px-3 max-520:px-2 max-480:px-1 flex cursor-pointer items-center justify-center px-4 py-3 font-medium text-white opacity-90 transition-opacity duration-200 ease-linear',
               {
                 'text-golden-glow opacity-100': tab.key === activeKey
               }
@@ -115,7 +115,7 @@ export default function MovieTabs({
 
       <div
         role='tabpanel'
-        className='max-1120:pt-7.5 max-1120:pb-5 max-640:py-5 max-480:py-4 py-7.5'
+        className='max-1120:pt-7.5 max-1120:pb-5 max-640:py-5 max-520:py-4 py-7.5'
       >
         <AnimatePresence mode='wait'>{activeTabContent}</AnimatePresence>
       </div>

@@ -81,9 +81,12 @@ export default function ButtonLoginGoogle() {
           await setCookieServerMutate(res);
           notify.success('Đăng nhập thành công');
           const profile = await getProfile();
-          if (profile.data?.data) {
-            setProfile(profile.data?.data);
+          const profileData = profile.data?.data;
+
+          if (profileData) {
+            setProfile(profileData);
           }
+
           setTimeout(() => {
             window.location.href = route.home.path;
           }, 500);

@@ -56,7 +56,7 @@ export default function MovieActionBar({
     : `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}`;
 
   return (
-    <div className='max-1120:py-5 max-1120:px-2 max-800:px-0 relative z-3 p-7.5'>
+    <div className='max-1120:py-5 max-1120:px-2 max-800:px-0 max-520:pb-2.5 relative z-3 p-7.5'>
       <div className='max-1120:gap-6 max-990:gap-2 max-800:flex-col max-800:gap-4 flex items-center justify-between gap-8'>
         <ButtonWatchNow
           className='max-640:h-12.5 max-640:min-h-auto max-640:p-2 max-800:min-w-55 max-640:min-w-44'

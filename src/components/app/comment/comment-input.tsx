@@ -124,7 +124,7 @@ export default function CommentInput({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='bg-transparent-white flex flex-col gap-2 rounded-md p-2.5'
+      className='bg-transparent-white max-640:p-2 flex flex-col gap-2 rounded-md p-2.5'
     >
       {(form) => (
         <>
@@ -132,7 +132,7 @@ export default function CommentInput({
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-black-denim max-520:text-[13px] block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-black-denim max-640:text-[13px] block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
             />
@@ -140,7 +140,7 @@ export default function CommentInput({
           <div className='flex items-center gap-2'>
             <div className='grow'></div>
             <Button
-              className='dark:text-golden-glow dark:hover:text-golden-glow max-520:text-xs max-520:px-2 min-h-7.5 gap-2 px-4.5 py-2 font-medium dark:bg-transparent dark:hover:bg-transparent'
+              className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-xs max-640:pr-2! max-640:py-0 h-5! min-h-7.5 min-h-auto gap-2 py-2 font-medium dark:bg-transparent dark:hover:bg-transparent'
               disabled={createCommentLoading || !form.formState.isDirty}
               loading={createCommentLoading}
               type='submit'
