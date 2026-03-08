@@ -58,7 +58,7 @@ export default function MovieModal({
           transition={{ duration: 0.2, ease: 'linear' }}
           className='bg-gunmetal-blue w-full max-w-105 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-md border-none leading-normal text-white shadow-[0_5px_10px_0_rgba(0,0,0,.2)]'
         >
-          <div className='text-sm font-light text-white'>
+          <div className='text-sm text-white'>
             <div
               className='image-modal-mask relative bg-cover bg-position-[50%]'
               style={{

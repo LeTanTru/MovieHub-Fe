@@ -22,7 +22,7 @@ export default function MotionWrapper({
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: direction * -20 }}
       transition={{ duration: 0.2, ease: 'linear' }}
-      className={cn('py-10', className)}
+      className={cn(className)}
     >
       {children}
     </motion.div>

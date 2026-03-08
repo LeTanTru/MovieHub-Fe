@@ -166,7 +166,7 @@ export default function WatchInfo() {
             <div className='font-medium whitespace-nowrap text-white'>
               Ngày phát hành:
             </div>
-            <div className='text-foreground/80 font-light'>
+            <div className='text-foreground/80'>
               {formatDate(releaseDate, DEFAULT_DATE_FORMAT)}
             </div>
           </div>
@@ -174,7 +174,7 @@ export default function WatchInfo() {
             <div className='font-medium whitespace-nowrap text-white'>
               Thời lượng:
             </div>
-            <div className='text-foreground/80 font-light'>
+            <div className='text-foreground/80'>
               {duration ? formatDuration(duration) : 'Đang cập nhật'}
             </div>
           </div>
@@ -188,7 +188,7 @@ export default function WatchInfo() {
               href={`${route.country.path}/${generateSlug(
                 countryName
               )}.${movie.country}`}
-              className='text-foreground/80 hover:text-golden-glow linear font-light transition duration-200'
+              className='text-foreground/80 hover:text-golden-glow linear transition duration-200'
             >
               {countryName}
             </Link>
@@ -197,7 +197,7 @@ export default function WatchInfo() {
             <div className='font-medium whitespace-nowrap text-white'>
               Ngôn ngữ:
             </div>
-            <div className='text-foreground/80 font-light'>{languageName}</div>
+            <div className='text-foreground/80'>{languageName}</div>
           </div>
         </div>
         <div className='flex items-center justify-between'>
@@ -205,7 +205,7 @@ export default function WatchInfo() {
             <div className='font-medium whitespace-nowrap text-white'>
               Đạo diễn:
             </div>
-            <span className='text-foreground/80 font-light'>
+            <span className='text-foreground/80'>
               {directors.length > 0
                 ? directors.map((director) => director.otherName).join(', ')
                 : 'Đang cập nhật'}

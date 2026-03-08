@@ -8,6 +8,7 @@ import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { formatRating, notify } from '@/utils';
 import Link from 'next/link';
+import { FaStar } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
 export default function ButtonReview({
@@ -68,12 +69,13 @@ export default function ButtonReview({
           className='bg-dark-conflower-blue flex cursor-pointer items-center rounded-full px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'
           onClick={handleOpenReviewModal}
         >
-          <div className='h-6 w-6 bg-[url(/logo.webp)] bg-cover bg-position-[50%]'></div>
+          <FaStar className='mr-2 size-4' />
           <span className='mr-2 ml-1 font-bold'>
             {formatRating(movie?.averageRating || 0)}
-            &nbsp;({movie.reviewCount})
           </span>
-          {!isReviewed && <span className='text-xs underline'>Đánh giá</span>}
+          {!isReviewed && (
+            <span className='max-640:hidden text-xs underline'>Đánh giá</span>
+          )}
         </div>
       </div>
       <ReviewModal opened={opened} onClose={close} />

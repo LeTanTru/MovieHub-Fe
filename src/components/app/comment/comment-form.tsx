@@ -101,19 +101,17 @@ export default function CommentForm({
       {(form) => (
         <>
           <div className='relative'>
+            {!editingComment && (
+              <span className='bg-golden-glow max-520:text-xs mb-2 ml-1 inline-block rounded px-1.5 py-1 font-semibold text-black'>
+                {defaultMention}
+              </span>
+            )}
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-black-denim block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-black-denim max-520:text-xs max-520:placeholder:text-xs block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
-              label={
-                !editingComment && (
-                  <span className='bg-golden-glow rounded px-1.5 py-1 font-semibold text-black'>
-                    {defaultMention}
-                  </span>
-                )
-              }
             />
           </div>
           <div className='flex items-center gap-2'>
@@ -122,12 +120,12 @@ export default function CommentForm({
               type='button'
               variant='ghost'
               onClick={onCancel}
-              className='dark:hover:text-destructive h-fit py-0 dark:hover:bg-transparent'
+              className='dark:hover:text-destructive max-520:text-xs max-520:px-2 h-fit py-0 dark:hover:bg-transparent'
             >
               Hủy
             </Button>
             <Button
-              className='dark:text-golden-glow dark:hover:text-golden-glow h-fit gap-2 px-4.5 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
+              className='dark:text-golden-glow dark:hover:text-golden-glow max-520:text-xs max-520:px-2 h-fit gap-2 px-4.5 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
               disabled={
                 createCommentLoading ||
                 updateCommentLoading ||

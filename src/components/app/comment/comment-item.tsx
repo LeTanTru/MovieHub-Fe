@@ -205,7 +205,7 @@ export default function CommentItem({
   };
 
   return (
-    <div className='relative flex justify-start gap-4 pt-4'>
+    <div className='max-640:gap-3 max-520:gap-2.5 max-520:pt-3 relative flex justify-start gap-4 pt-4'>
       <AvatarField
         src={renderImageUrl(authorInfo.avatarPath)}
         size={50}
@@ -217,16 +217,19 @@ export default function CommentItem({
             {kind && (
               <Badge
                 variant='outline'
-                className={cn('border text-sm font-medium', kind.style)}
+                className={cn(
+                  'max-520:text-xs max-520:px-1 border text-sm font-medium',
+                  kind.style
+                )}
               >
                 {kind.label}
               </Badge>
             )}
-            <span>
+            <span className='max-520:text-[13px]'>
               {authorInfo.fullName}
               <span
                 className={cn({
-                  'text-golden-glow font-semibold': isAuthor
+                  'text-golden-glow max-520:text-xs font-semibold': isAuthor
                 })}
               >
                 {isAuthor && <>&nbsp;(Bạn)</>}
@@ -234,7 +237,7 @@ export default function CommentItem({
             </span>
 
             <GenderIcon
-              className={cn('size-4', {
+              className={cn('max-480:size-3 size-4', {
                 'text-cyan-500': gender === GENDER_MALE,
                 'text-pink-500': gender === GENDER_FEMALE,
                 'text-golden-glow': gender === GENDER_OTHER
@@ -243,14 +246,14 @@ export default function CommentItem({
           </div>
           <span
             title={convertUTCToLocal(comment.createdDate, DATE_TIME_FORMAT)}
-            className='text-xs text-gray-400'
+            className='max-480:text-[10px] text-xs text-gray-400'
           >
             {timeAgo(comment.createdDate)}
           </span>
           <Activity visible={comment.createdDate !== comment.modifiedDate}>
             <span
               title='Đã chỉnh sửa'
-              className='-ml-1.5 text-xs text-gray-400'
+              className='max-480:text-[10px] text-xs text-gray-400'
             >
               (đã chỉnh sửa)
             </span>
@@ -259,7 +262,7 @@ export default function CommentItem({
             (movieItem.parent ? (
               <Badge
                 variant='outline'
-                className='border px-2 py-1 text-xs font-medium text-gray-400'
+                className='max-520:px-1 max-480:text-[10px] border px-2 py-1 text-xs font-medium text-gray-400'
                 title={`Phần ${movieItem.parent.label} - Tập ${movieItem.label}`}
               >
                 P. {movieItem.parent.label} - Tập {movieItem.label}
@@ -267,7 +270,7 @@ export default function CommentItem({
             ) : (
               <Badge
                 variant='outline'
-                className='border px-2 py-1 text-xs font-medium text-gray-400'
+                className='max-520:px-1 max-480:text-[10px] border px-2 py-1 text-xs font-medium text-gray-400'
                 title={`Phần ${movieItem.label}`}
               >
                 P. {movieItem.label}
@@ -281,9 +284,12 @@ export default function CommentItem({
         </div>
 
         <div
-          className={cn('relative mt-2 break-all text-white', {
-            'cursor-pointer': isHiddenComment && !showBlurredContent
-          })}
+          className={cn(
+            'max-520:text-[13px] relative mt-2 break-all text-white',
+            {
+              'cursor-pointer': isHiddenComment && !showBlurredContent
+            }
+          )}
           onClick={
             isHiddenComment && !showBlurredContent
               ? handleToggleBlurredContent
@@ -292,7 +298,8 @@ export default function CommentItem({
         >
           <div
             className={cn({
-              'blur-xs select-none': isHiddenComment && !showBlurredContent
+              'max-480:text-[13px] blur-xs select-none':
+                isHiddenComment && !showBlurredContent
             })}
           >
             {renderMention()}
@@ -300,9 +307,9 @@ export default function CommentItem({
           </div>
         </div>
 
-        <div className='relative mt-4 flex items-center gap-4'>
-          <div className='flex items-center gap-4'>
-            <div className='flex items-center gap-2'>
+        <div className='max-480:mt-2 max-520:mt-3 relative mt-4 flex items-center gap-4'>
+          <div className='max-520:gap-3 flex items-center gap-4'>
+            <div className='max-480:gap-1 max-520:gap-1.5 flex items-center gap-2'>
               <LikeIcon
                 size={16}
                 onClick={() => handleVote(comment.id, REACTION_TYPE_LIKE)}
@@ -315,9 +322,15 @@ export default function CommentItem({
                   }
                 )}
               />
-              {comment.totalLike}
+              <span
+                className={cn('max-520:hidden max-520:text-xs', {
+                  'max-520:block': voteMap[comment.id] === REACTION_TYPE_LIKE
+                })}
+              >
+                {comment.totalLike}
+              </span>
             </div>
-            <div className='flex items-center gap-2'>
+            <div className='max-480:gap-1 max-520:gap-1.5 flex items-center gap-2'>
               <DislikeIcon
                 size={16}
                 onClick={() => handleVote(comment.id, REACTION_TYPE_DISLIKE)}
@@ -330,13 +343,19 @@ export default function CommentItem({
                   }
                 )}
               />
-              {comment.totalDislike}
+              <span
+                className={cn('max-520:hidden max-520:text-xs', {
+                  'max-520:block': voteMap[comment.id] === REACTION_TYPE_DISLIKE
+                })}
+              >
+                {comment.totalDislike}
+              </span>
             </div>
           </div>
           <Activity visible={isAuthenticated}>
             <button
               type='button'
-              className='hover:text-golden-glow flex cursor-pointer items-center gap-2 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
+              className='hover:text-golden-glow max-520:text-xs flex cursor-pointer items-center gap-2 text-gray-400 transition-all duration-200 ease-linear select-none'
               onClick={handleReplyComment}
             >
               <FaReply />
@@ -346,7 +365,7 @@ export default function CommentItem({
           <Activity visible={isAuthor && isAuthenticated}>
             <button
               type='button'
-              className='hover:text-golden-glow flex cursor-pointer items-center gap-2 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
+              className='hover:text-golden-glow max-520:text-xs flex cursor-pointer items-center gap-2 text-gray-400 transition-all duration-200 ease-linear select-none'
               onClick={() => handleEditComment(comment)}
             >
               <AiOutlineEdit />
@@ -357,7 +376,7 @@ export default function CommentItem({
             {(isHiddenComment || isAuthor) && (
               <button
                 type='button'
-                className='hover:text-golden-glow flex cursor-pointer items-center gap-1 font-light text-gray-400 transition-all duration-200 ease-linear select-none'
+                className='hover:text-golden-glow max-520:text-xs flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
                 onClick={handleDropdownToggle}
               >
                 <FaEllipsis /> <span>Thêm</span>
@@ -381,11 +400,11 @@ export default function CommentItem({
                     scale: 0.8
                   }}
                   transition={{ duration: 0.1, ease: 'linear' }}
-                  className='absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
+                  className='max-520:min-w-36 max-520:py-1 absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
                 >
                   {isHiddenComment && (
                     <button
-                      className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                      className='max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
                       onClick={handleToggleBlurredContent}
                     >
                       {showBlurredContent ? (
@@ -403,7 +422,7 @@ export default function CommentItem({
                   )}
                   {isAuthor && (
                     <button
-                      className='flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
+                      className='max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
                       onClick={() => {
                         setShowDropdown(false);
                         onDelete(comment.id);
@@ -442,13 +461,13 @@ export default function CommentItem({
 
         <Activity visible={isActiveParent && commentListSize > 0}>
           {renderChildren(commentList, level + 1, rootId)}
-          {commentLoadMoreLoading && <VerticalBarLoading />}
+          {commentLoadMoreLoading && <VerticalBarLoading className='py-10' />}
         </Activity>
 
         <Activity visible={comment.totalChildren > 0}>
           {!isActiveParent ? (
             <button
-              className='hover:text-golden-glow mt-4 flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
+              className='hover:text-golden-glow max-520:text-xs mt-4 flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
               onClick={() => handleViewReplies(comment.id)}
             >
               <FaChevronDown /> Xem tất cả&nbsp;{comment.totalChildren} trả lời
@@ -457,13 +476,13 @@ export default function CommentItem({
             <VerticalBarLoading />
           ) : (
             <div
-              className='mt-4 flex items-center gap-4'
+              className='max-520:mt-2 mt-4 flex items-center gap-4'
               style={{ marginLeft: level * 40 }}
             >
               {hasMoreComments && (
                 <Button
                   variant='ghost'
-                  className='dark:hover:text-golden-glow flex h-5! items-center p-0! font-medium dark:hover:bg-transparent'
+                  className='dark:hover:text-golden-glow max-520:text-xs flex h-5! items-center p-0! font-medium dark:hover:bg-transparent'
                   onClick={() => handleFetchNextPage()}
                 >
                   <FaChevronDown /> Xem thêm&nbsp;
@@ -472,7 +491,7 @@ export default function CommentItem({
               )}
               <Button
                 variant='ghost'
-                className='h-5! p-0! font-medium dark:hover:bg-transparent dark:hover:text-red-500'
+                className='max-520:text-xs flex h-5! items-center p-0! font-medium dark:hover:bg-transparent dark:hover:text-red-500'
                 onClick={() => handleHideReplies(comment.id)}
               >
                 <FaChevronUp /> Ẩn trả lời

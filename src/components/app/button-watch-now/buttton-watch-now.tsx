@@ -11,7 +11,7 @@ const variants = cva('', {
   variants: {
     variant: {
       detail:
-        'text-black-denim inline-flex min-h-15 shrink-0 items-center justify-center gap-2! rounded-full bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8! py-4! text-base font-semibold shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]',
+        'text-black-denim inline-flex min-h-15 shrink-0 items-center justify-center  rounded-full bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] px-8 py-4 text-base font-semibold shadow-[0_5px_10px_5px_rgba(255,218,125,.1)] hover:opacity-90 hover:shadow-[0_5px_10px_10px_rgba(255,218,125,.15)]',
       popup: 'bg-golden-glow hover:bg-golden-glow/80 w-full text-black'
     }
   },

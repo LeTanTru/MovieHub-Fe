@@ -57,7 +57,7 @@ export default function ActorList({ actors }: { actors: PersonResType[] }) {
           ))}
         </div>
       ) : (
-        <span className='text-foreground/80 font-light'>Đang cập nhật</span>
+        <span className='text-foreground/80'>Đang cập nhật</span>
       )}
     </div>
   );
