@@ -29,6 +29,7 @@ export type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   bodyStyle?: React.CSSProperties;
   scrollable?: boolean;
   bodyWrapperClassName?: string;
+  confirmClassName?: string;
 };
 
 export default function Modal({
@@ -52,6 +53,7 @@ export default function Modal({
   bodyStyle,
   scrollable = false,
   bodyWrapperClassName,
+  confirmClassName,
   ...rest
 }: ModalProps) {
   const isMounted = useIsMounted();
@@ -221,7 +223,10 @@ export default function Modal({
                   onMouseDown={(e) => e.stopPropagation()}
                 >
                   <motion.div
-                    className='flex flex-col items-center gap-4 rounded-lg bg-white px-6 py-5 shadow-lg dark:bg-gray-800'
+                    className={cn(
+                      'flex flex-col items-center gap-4 rounded-lg bg-white px-6 py-5 shadow-lg dark:bg-gray-800',
+                      confirmClassName
+                    )}
                     initial={{ scale: 0.85, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.85, opacity: 0 }}

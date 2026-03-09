@@ -107,6 +107,7 @@ export default function ReviewModal({
       onClose={onClose}
       bodyWrapperClassName='bg-vintage-navi w-160 max-768:w-150 max-640:w-[95%]'
       confirmOnClose={isFormChanged}
+      confirmClassName='dark:bg-charade'
     >
       <BaseForm
         defaultValues={defaultValues}
