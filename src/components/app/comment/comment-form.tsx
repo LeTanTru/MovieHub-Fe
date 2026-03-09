@@ -104,30 +104,30 @@ export default function CommentForm({
         <>
           <div className='relative'>
             {mode === 'reply' && (
-              <span className='bg-golden-glow max-640:text-[13px] max-640:mb-1 mb-2 inline-block rounded px-1.5 py-1 font-semibold text-black'>
+              <span className='bg-golden-glow max-640:text-[13px] max-520:text-xs max-640:mb-1 mb-2 inline-block rounded px-1.5 py-1 font-semibold text-black'>
                 {defaultMention}
               </span>
             )}
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-black-denim max-640:text-xs max-640:placeholder:text-xs block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
             />
           </div>
-          <div className='max-640:gap-0 flex items-center gap-2'>
+          <div className='max-640:gap-2 flex items-center gap-2'>
             <div className='grow'></div>
             <Button
               type='button'
               variant='ghost'
               onClick={onCancel}
-              className='dark:hover:text-destructive max-640:text-xs max-640:p-0 max-640:h-5! max-640:min-h-auto py-0 dark:hover:bg-transparent'
+              className='dark:hover:text-destructive max-640:text-[13px] max-520:text-xs max-640:p-0 max-640:h-5! max-640:min-h-auto py-0 dark:hover:bg-transparent'
             >
               Hủy
             </Button>
             <Button
-              className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-xs max-640:px-0 max-640:gap-1 h-5! min-h-auto gap-2 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
+              className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:px-2! max-640:gap-1 h-5! min-h-auto gap-2 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
               disabled={
                 createCommentLoading ||
                 updateCommentLoading ||

@@ -132,7 +132,7 @@ export default function CommentInput({
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-black-denim max-640:text-[13px] block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block w-full resize-none rounded-md border border-solid border-transparent leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
             />
@@ -140,7 +140,7 @@ export default function CommentInput({
           <div className='flex items-center gap-2'>
             <div className='grow'></div>
             <Button
-              className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-xs max-640:pr-2! max-640:py-0 h-5! min-h-7.5 min-h-auto gap-2 py-2 font-medium dark:bg-transparent dark:hover:bg-transparent'
+              className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:pr-2! max-640:py-0 h-5! min-h-7.5 min-h-auto gap-2 py-2 font-medium dark:bg-transparent dark:hover:bg-transparent'
               disabled={createCommentLoading || !form.formState.isDirty}
               loading={createCommentLoading}
               type='submit'

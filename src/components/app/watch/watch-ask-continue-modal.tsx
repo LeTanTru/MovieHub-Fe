@@ -23,7 +23,7 @@ export default function WatchAskContinueModal({
         <>
           {/* Backdrop */}
           <motion.div
-            className='absolute inset-0 z-10 bg-black/70'
+            className='absolute inset-0 z-10 bg-black/70 backdrop-blur-xs'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -32,7 +32,7 @@ export default function WatchAskContinueModal({
           />
           {/* Modal */}
           <motion.div
-            className='bg-main-background absolute top-1/2 left-1/2 z-20 w-110 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-[0px_0px_10px_2px] shadow-black/40'
+            className='bg-main-background absolute top-1/2 left-1/2 z-20 min-w-80 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-[0px_0px_10px_2px] shadow-black/40'
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
@@ -42,27 +42,31 @@ export default function WatchAskContinueModal({
           >
             {/* Header */}
             <div className='flex items-center justify-between border-b border-none border-gray-200 py-2 pr-2 pl-4'>
-              <div className='text-sm font-semibold text-gray-800 text-white'>
+              <div className='max-640:text-[13px] font-semibold text-gray-800 text-white'>
                 Tiếp tục xem
               </div>
             </div>
             {/* Body */}
-            <div className='p-4 pt-0'>
-              <p className='text-gray-300'>
+            <div className='max-640:text-[13px] px-4 pb-4 text-gray-300'>
+              <p>
                 Bạn đã xem phim này trước đó đến&nbsp;
-                {formatSecondsToHMS(lastWatchedSeconds)}. Bạn muốn tiếp tục hay
-                bắt đầu lại?
+                {formatSecondsToHMS(lastWatchedSeconds)}.
               </p>
-              <Row className='mt-4 mb-0 justify-center'>
-                <Col className='w-1/3'>
-                  <Button variant='primary' onClick={onStartOver}>
+              <p>Bạn muốn tiếp tục xem hay bắt đầu lại?</p>
+              <Row className='max-640:mt-2 mt-4 mb-0 justify-center'>
+                <Col className='mb-0 w-2/5'>
+                  <Button
+                    variant='primary'
+                    className='max-640:text-[13px]'
+                    onClick={onStartOver}
+                  >
                     Bắt đầu lại
                   </Button>
                 </Col>
-                <Col className='w-1/3'>
+                <Col className='mb-0 w-2/5'>
                   <Button
                     variant='primary'
-                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:text-black'
+                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 max-640:text-[13px] dark:text-black'
                     onClick={onContinueWatching}
                   >
                     Tiếp tục xem

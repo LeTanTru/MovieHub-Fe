@@ -21,7 +21,7 @@ const buttonVariants = cva('', {
   variants: {
     variant: {
       detail:
-        'dark:hover:text-golden-glow h-fit min-w-20 flex-col px-2 text-xs dark:hover:bg-white/10',
+        'dark:hover:text-golden-glow h-fit min-w-20 flex-col px-2 dark:hover:bg-white/10',
       person:
         'dark:hover:text-golden-glow dark:hover:border-golden-glow rounded-full py-2 text-white',
       popup:
@@ -199,7 +199,13 @@ export default function ButtonLike({
       onClick={handleClick}
     >
       <HeartIcon ref={iconRef} />
-      {text || defaultText}
+      <span
+        className={cn({
+          'max-520:hidden': variant === 'watch'
+        })}
+      >
+        {text || defaultText}
+      </span>
     </Button>
   );
 

@@ -48,7 +48,7 @@ export default function WatchHistory() {
       </h3>
       {isLoading ? (
         <MovieGridSkeleton
-          className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
+          className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-y-6 max-480:gap-y-4 grid w-full grow grid-cols-6 gap-6'
           skeletonCount={12}
         />
       ) : movieHistories.length === 0 ? (
@@ -63,7 +63,7 @@ export default function WatchHistory() {
           }
         />
       ) : (
-        <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
+        <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-y-6 max-480:gap-y-4 grid w-full grow grid-cols-6 gap-6'>
           {movieHistories.map((movieHistory) => (
             <MovieHistoryCard
               key={movieHistory.id}

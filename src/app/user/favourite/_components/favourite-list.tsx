@@ -125,7 +125,7 @@ export default function FavouriteList() {
           <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
             {isLoading ? (
               <MovieGridSkeleton
-                className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
+                className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
                 skeletonCount={12}
               />
             ) : movieList.length === 0 ? (
@@ -135,7 +135,7 @@ export default function FavouriteList() {
                 content='Bạn chưa có phim yêu thích nào'
               />
             ) : (
-              <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
+              <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
                 {movieList.map((movie) => (
                   <MovieCard
                     key={movie.id}
@@ -149,7 +149,7 @@ export default function FavouriteList() {
           <Activity visible={activeTab === FAVOURITE_TYPE_PERSON}>
             {isLoading ? (
               <PersonGridSkeleton
-                className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
+                className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
                 skeletonCount={12}
               />
             ) : personList.length === 0 ? (
@@ -159,7 +159,7 @@ export default function FavouriteList() {
                 content='Bạn chưa có diễn viên yêu thích nào'
               />
             ) : (
-              <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-x-2 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
+              <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
                 {personList.map((person) => (
                   <PersonCard
                     person={person}

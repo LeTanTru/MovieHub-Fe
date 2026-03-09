@@ -7,7 +7,7 @@ export default function SuggestionList({
   movieList: MovieResType[];
 }) {
   return (
-    <div className='border-t border-solid border-white/10 pt-10'>
+    <div className='border-t border-solid border-white/10 pt-7.5'>
       <div className='relative block'>
         <div className='mb-4 flex min-h-10 items-center gap-4 text-xl font-semibold text-white'>
           Đề xuất cho bạn

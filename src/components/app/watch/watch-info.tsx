@@ -102,7 +102,7 @@ export default function WatchInfo() {
   if (!movie) return null;
 
   return (
-    <div className='flex gap-6 border-b border-solid border-white/10 pb-10'>
+    <div className='max-1280:hidden flex gap-6 border-b border-solid border-white/10 pb-10'>
       <div className='w-25 shrink-0'>
         <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded pb-[150%]'>
           <Image

@@ -86,8 +86,8 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
   return (
     <>
       <MotionWrapper uniqueKey={MOVIE_TAB_TRAILER} direction={direction}>
-        <div className='max-1120:mb-4 mb-6 flex justify-between'>
-          <h3 className='max-800:text-xl max-640:text-lg text-2xl leading-normal font-semibold'>
+        <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex justify-between'>
+          <h3 className='max-800:text-xl max-640:text-lg max-520:text-base text-2xl leading-normal font-semibold'>
             Trailer phim {movie.title}
           </h3>
           <div className='grow'></div>
@@ -96,6 +96,7 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
             handleToggle={handleToggle}
             text='Rút gọn'
             disabled={isFetching}
+            className='max-640:hidden'
           />
         </div>
 
@@ -157,7 +158,7 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
                 <>
                   <div
                     className={cn(
-                      'transition-color hover:text-golden-glow flex items-center gap-2.5 text-sm font-medium text-white duration-200 ease-linear'
+                      'transition-color hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex items-center gap-2.5 font-medium text-white duration-200 ease-linear'
                     )}
                   >
                     <div className='block shrink-0 text-xs'>

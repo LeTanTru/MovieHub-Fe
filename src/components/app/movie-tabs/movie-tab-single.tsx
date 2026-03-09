@@ -8,7 +8,7 @@ import Link from 'next/link';
 export default function MovieTabSingle({ movie }: { movie: MovieResType }) {
   return (
     <>
-      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg mb-6 text-2xl font-semibold'>
+      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg max-640:mb-3 max-520:text-base mb-6 text-2xl font-semibold'>
         Các bản chiếu
       </h3>
       {movie && movie.seasons && movie.seasons.length > 0 ? (

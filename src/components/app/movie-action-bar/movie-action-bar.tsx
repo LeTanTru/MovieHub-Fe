@@ -56,7 +56,7 @@ export default function MovieActionBar({
     : `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}`;
 
   return (
-    <div className='max-1120:py-5 max-1120:px-2 max-800:px-0 max-520:pb-2.5 relative z-3 p-7.5'>
+    <div className='max-1120:py-5 max-1120:px-4 max-800:px-0 max-520:pb-2.5 max-860:px-2.5 relative z-3 p-7.5'>
       <div className='max-1120:gap-6 max-990:gap-2 max-800:flex-col max-800:gap-4 flex items-center justify-between gap-8'>
         <ButtonWatchNow
           className='max-640:h-12.5 max-640:min-h-auto max-640:p-2 max-800:min-w-55 max-640:min-w-44'
@@ -64,30 +64,36 @@ export default function MovieActionBar({
           variant='detail'
         />
         <div className='max-800:gap-4 flex grow items-center justify-between'>
-          <div className='max-1120:gap-2 max-800:gap-3 max-480:gap-2 flex grow items-center gap-4'>
+          <div className='max-1120:gap-2 max-800:gap-3 max-640:gap-2 flex grow items-center gap-4'>
             <ButtonLike
-              className='max-640:min-w-15'
+              className='max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
               targetId={movie.id}
               variant='detail'
             />
             <ButtonAddToPlaylist
-              className='max-640:min-w-15'
+              className='max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
               movieId={movie.id}
               variant='detail'
             />
-            <ButtonShareMovie className='max-640:min-w-15' variant='detail' />
+            <ButtonShareMovie
+              className='max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
+              variant='detail'
+            />
             <ButtonViewComment
-              className='max-520:hidden max-640:min-w-15'
+              className='max-520:hidden max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
               to={MOVIE_DETAIL_DISCUSSION_ID}
               variant='detail'
             />
             <ButtonViewReview
-              className='max-520:hidden max-640:min-w-15'
+              className='max-520:hidden max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
               to={MOVIE_DETAIL_DISCUSSION_ID}
               variant='detail'
             />
           </div>
-          <ButtonReview movieId={movie.id} />
+          <ButtonReview
+            movieId={movie.id}
+            className='max-640:[&_.rating]:mr-0 max-640:[&_.rating]:font-semibold max-640:[&_.content]:hidden'
+          />
         </div>
       </div>
     </div>

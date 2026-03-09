@@ -10,6 +10,12 @@
   }
 
   @media screen and (max-width: 1120px) {
+    padding-bottom: 50%;
+    opacity: 0.5;
+  }
+
+  @media screen and (max-width: 640px) {
+    padding-bottom: 60%;
     opacity: 0.5;
   }
 }

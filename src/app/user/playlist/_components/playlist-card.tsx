@@ -30,20 +30,20 @@ export default function PlaylistCard({
   return (
     <div
       className={cn(
-        'cursor-pointer rounded-md border-2 p-4 shadow-[inset_0_0_0_3px_#ffffff03] transition-all duration-200 ease-linear',
+        'max-520:w-50 max-520:shrink-0 cursor-pointer rounded-md border-2 p-4 shadow-[inset_0_0_0_3px_#ffffff03] transition-all duration-200 ease-linear',
         {
           'border-golden-glow': selectedPlaylist?.id === playlist.id
         }
       )}
       onClick={handleSelectPlaylist}
     >
-      <h3 className='mb-4 font-semibold'>{playlist.name}</h3>
+      <h3 className='max-520:mb-2 mb-4 font-semibold'>{playlist.name}</h3>
       <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-x-2'>
+        <div className='max-520:gap-x-1 max-520:text-[13px] flex items-center gap-x-2'>
           <FaRegCirclePlay />
           {playlist.totalMovie} phim
         </div>
-        <div className='flex gap-3'>
+        <div className='max-520:gap-3 flex gap-4'>
           <ButtonEditPlaylist playlist={playlist} />
           <Separator orientation='vertical' className='h-4! bg-white/20' />
           <ButtonDeletePlaylist id={playlist.id} />

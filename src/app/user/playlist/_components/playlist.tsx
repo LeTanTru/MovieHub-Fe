@@ -32,14 +32,14 @@ export default function Playlist() {
 
   return (
     <div className='max-1360:mb-4 mb-6'>
-      <div className='max-1360:mb-4 mb-6 flex items-center gap-4'>
+      <div className='max-1360:mb-4 max-640:gap-2 mb-6 flex items-center gap-4'>
         <h3 className='max-640:text-base text-xl leading-normal font-semibold text-white'>
-          Danh sách phát
+          Danh sách phát ({playlist.length})
         </h3>
         {playlist.length < MAX_PLAYLIST_COUNT && <ButtonAddPlayList />}
       </div>
       {isLoading ? (
-        <div className='max-1360:gap-4 max-1360:grid-cols-3 max-800:gap-2 max-800:grid-cols-2 grid grid-cols-5 gap-6'>
+        <div className='max-1360:gap-4 max-1360:grid-cols-4 max-990:grid-cols-3 max-768:grid-cols-2 max-520:flex max-520:flex-nowrap max-520:overflow-x-auto scrollbar-none max-520:gap-2 grid w-full grid-cols-5 gap-6'>
           {Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, i) => (
             <PlaylistCardSkeleton key={i} />
           ))}
@@ -51,7 +51,7 @@ export default function Playlist() {
           content='Bạn chưa có danh sách phát nào'
         />
       ) : (
-        <div className='max-1360:gap-4 max-1360:grid-cols-3 max-800:gap-2 max-800:grid-cols-2 grid w-full grid-cols-5 gap-6'>
+        <div className='max-1360:gap-4 max-1360:grid-cols-4 max-990:grid-cols-3 max-768:grid-cols-2 max-520:flex max-520:flex-nowrap max-520:overflow-x-auto scrollbar-none max-520:gap-2 grid w-full grid-cols-5 gap-6'>
           {playlist.map((playlist) => (
             <PlaylistCard playlist={playlist} key={playlist.id} />
           ))}

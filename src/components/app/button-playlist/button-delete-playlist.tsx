@@ -79,19 +79,23 @@ export default function ButtonDeletePlaylist({ id }: { id: string }) {
         open={opened}
         onClose={handleClose}
         className='bg-transparent'
-        bodyWrapperClassName='bg-main-background w-110'
+        bodyWrapperClassName='bg-main-background w-110 max-480:w-[90%]'
         bodyClassName='p-4 pt-0'
       >
         <h3>Bạn có chắc chắn muốn xóa danh sách phát này không?</h3>
         <Row className='mt-4 mb-0 justify-center'>
           <Col className='w-1/3'>
-            <Button variant='primary' onClick={handleClose}>
+            <Button
+              variant='primary'
+              className='max-640:text-[13px]'
+              onClick={handleClose}
+            >
               Đóng
             </Button>
           </Col>
           <Col className='w-1/3'>
             <Button
-              className='dark:bg-red-500'
+              className='max-640:text-[13px] dark:bg-red-500'
               variant='destructive'
               disabled={isPending}
               loading={isPending}

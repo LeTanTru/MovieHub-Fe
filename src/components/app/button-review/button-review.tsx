@@ -70,11 +70,13 @@ export default function ButtonReview({
           onClick={handleOpenReviewModal}
         >
           <FaStar className='mr-2 size-4' />
-          <span className='mr-2 ml-1 font-bold'>
+          <span className='rating mr-2 font-bold'>
             {formatRating(movie?.averageRating || 0)}
           </span>
           {!isReviewed && (
-            <span className='max-640:hidden text-xs underline'>Đánh giá</span>
+            <span className='content whitespace-nowrap underline'>
+              Đánh giá
+            </span>
           )}
         </div>
       </div>

@@ -35,11 +35,13 @@ import { cn } from '@/lib';
 export default function Discussion({
   isLoading = false,
   toId,
-  className
+  className,
+  variant = 'detail'
 }: {
   isLoading?: boolean;
   toId: string;
   className?: string;
+  variant?: 'detail' | 'watch';
 }) {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
@@ -121,7 +123,8 @@ export default function Discussion({
     <Element name={toId} id={toId}>
       <div
         className={cn(
-          'max-1120:px-5 max-768:px-0 max-520:py-4 relative block px-10 py-5',
+          'max-1120:px-5 max-800:px-0 relative block px-10 py-5',
+          { 'max-1120:px-0': variant === 'watch' },
           className
         )}
       >
@@ -156,7 +159,7 @@ export default function Discussion({
                 action={action.key}
                 activeKey={discussionTab}
                 setActiveKey={setDiscussionTab}
-                className='max-640:text-xs'
+                className='max-640:text-[13px] max-520:text-xs'
               />
             ))}
           </div>
@@ -171,7 +174,7 @@ export default function Discussion({
                 alt={profile.fullName}
                 breakpoints={[{ breakpoint: 640, size: 50 }]}
               />
-              <div className='flex flex-col justify-between gap-1'>
+              <div className='max-640:text-[13px] flex flex-col justify-between gap-1'>
                 <span className='text-gray-400'>Bình luận với tên</span>
                 <span className='line-clamp-2 font-medium text-white'>
                   {profile.fullName}
