@@ -135,7 +135,7 @@ export default function Slider() {
 
   if (isLoading)
     return (
-      <VerticalBarLoading className='max-1900:h-190 max-1280:h-150 max-800:h-125 max-640:h-100 flex items-center justify-center' />
+      <VerticalBarLoading className='max-1900:h-190 max-1280:h-150 max-800:h-125 max-640:h-100 flex h-215 items-center justify-center' />
     );
 
   return (

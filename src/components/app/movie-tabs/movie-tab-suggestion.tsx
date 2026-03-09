@@ -24,7 +24,7 @@ export default function MovieTabSuggestion({
 
   return (
     <MotionWrapper uniqueKey={MOVIE_TAB_SUGGESTION} direction={direction}>
-      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg mb-6 text-2xl font-semibold'>
+      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg max-640:mb-3 max-520:text-base mb-6 text-2xl font-semibold'>
         {suggestionMovieList.length === 0 ? 'Đề xuất' : 'Có thể bạn sẽ thích'}
       </h3>
       {suggestionMovieListLoading ? (

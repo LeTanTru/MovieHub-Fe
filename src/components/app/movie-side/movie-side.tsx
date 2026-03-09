@@ -122,7 +122,7 @@ export default function MovieSide({
 
   return (
     <div className='bg-main-background/60 max-1360:p-7.5 max-1360:w-95 max-1280:bg-transparent max-1280:backdrop-blur-none max-1280:p-0 max-1280:w-85 max-1120:w-full max-1120:mb-0 max-1120:text-center flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
-      <div className='max-1120:mx-auto mb-4 w-40'>
+      <div className='max-1120:mx-auto mb-4 w-30'>
         <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'>
           <Image
             alt={`${movie.title} - ${movie.originalTitle}`}
@@ -135,16 +135,19 @@ export default function MovieSide({
         </div>
       </div>
       <h2
-        className={cn('mb-2 text-2xl leading-normal font-semibold text-white', {
-          'featured-title': movie.isFeatured
-        })}
+        className={cn(
+          'max-640:mb-1 mb-2 text-2xl leading-normal font-semibold text-white',
+          {
+            'featured-title': movie.isFeatured
+          }
+        )}
       >
         {movie.title} {+latestSeason > 1 ? selectedSeason : ''}
       </h2>
-      <div className='text-golden-glow max-1120:mb-4 max-1120:-mt-0.75 mb-5 font-normal'>
+      <div className='text-golden-glow max-1120:mb-4 max-1120:-mt-0.75 max-640:mb-3 mb-5 font-normal'>
         {movie.originalTitle} {+latestSeason > 1 ? selectedSeason : ''}
       </div>
-      <div className='max-1120:p-4 max-1120:rounded-md max-1120:bg-[rgba(0,0,0,.2)] max-1120:text-left'>
+      <div className='max-1120:p-6 max-640:p-4 max-1120:rounded-md max-1120:bg-[rgba(0,0,0,.2)] max-1120:text-left'>
         <TagWrapper className='mb-3'>
           {ageRating ? <TagAgeRating value={ageRating} /> : null}
           <TagNormal value={releaseYear} />

@@ -78,7 +78,7 @@ export default function Footer() {
   return (
     <footer className='bg-lyla'>
       <div className='max-1600:px-5 max-w-475 px-12.5'>
-        <div className='max-1600:px-8 max-1120:justify-center max-1120:py-12 max-640:py-8 max-640:px-0 max-640:text-xs relative flex min-h-100 items-center justify-between py-8'>
+        <div className='max-1600:px-8 max-1120:justify-center max-1120:py-12 max-640:py-8 max-640:px-0 max-640:text-[13px] max-520:text-xs relative flex min-h-100 items-center justify-between py-8'>
           <div className='max-1600:hidden absolute top-1/2 left-1/2 z-10 h-full w-150 -translate-x-1/2 -translate-y-1/2'>
             <Image
               src={footerIcon.src}

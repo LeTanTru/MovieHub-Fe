@@ -211,7 +211,8 @@ export default function ReviewList({
   if (!reviewList.length)
     return (
       <NoData
-        className='bg-background/30 mt-4 min-h-40 rounded-lg px-8 py-12 opacity-50'
+        className='bg-background/30 max-640:text-[13px] max-520:text-xs mt-4 min-h-40 rounded-lg px-8 py-12 opacity-50'
+        imageClassName='max-640:size-10'
         content='Chưa có đánh giá nào'
         size={50}
         src={emptyDiscussion.src}
@@ -219,7 +220,7 @@ export default function ReviewList({
     );
 
   return (
-    <div className='flex flex-col justify-between'>
+    <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
       {reviewList
         .filter((review) => review?.id)
         .map((review) => (

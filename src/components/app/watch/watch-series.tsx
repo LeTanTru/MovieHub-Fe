@@ -83,10 +83,10 @@ export default function WatchSeries() {
   return (
     <>
       {/* Header */}
-      <div className='mb-8 flex items-center justify-between gap-8'>
+      <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex justify-between gap-8'>
         <div className='relative' ref={dropdownRef}>
           <div
-            className='flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
+            className='max-640:border-none max-800:text-xl max-640:text-lg max-520:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-2xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
             onClick={handleDropdownToggle}
           >
             <FaBarsStaggered className='text-golden-glow' />
@@ -139,14 +139,17 @@ export default function WatchSeries() {
           toggle={toggle}
           handleToggle={handleToggle}
           text='Rút gọn'
+          className='max-640:hidden'
         />
       </div>
       {/* Body */}
       <motion.div
         layout
         className={cn('grid translate-z-0 will-change-transform', {
-          'grid-cols-6 gap-x-2.5 gap-y-8': !toggle,
-          'grid-cols-8 gap-2.5': toggle
+          'max-1360:grid-cols-5 max-1360:gap-y-6 max-800:grid-cols-4 max-640:grid-cols-3 max-520:grid-cols-2 max-640:gap-y-4 grid-cols-6 gap-x-2.5 gap-y-8':
+            !toggle,
+          'max-1360:grid-cols-6 max-800:grid-cols-5 max-640:grid-cols-4 max-520:grid-cols-3 max-480:grid-cols-2 grid-cols-8 gap-2.5':
+            toggle
         })}
         transition={{
           layout: { duration: 0.15, ease: 'linear' }
@@ -170,7 +173,7 @@ export default function WatchSeries() {
                 className={cn(
                   'group block transition-all duration-200 ease-linear',
                   {
-                    'bg-charade hover:text-golden-glow flex h-12.5 items-center justify-center gap-2 rounded-sm':
+                    'bg-charade hover:text-golden-glow max-640:h-10.5 flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
                       toggle,
                     'bg-golden-glow hover:bg-golden-glow/85 text-black hover:text-black/80':
                       isPlaying && toggle
@@ -211,7 +214,7 @@ export default function WatchSeries() {
                 </motion.div>
                 <div
                   className={cn(
-                    'group-hover:text-golden-glow flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear',
+                    'group-hover:text-golden-glow max-640:gap-1 max-640:text-[13px] max-520:text-xs flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear',
                     {
                       'text-golden-glow': isPlaying && !toggle
                     }

@@ -70,17 +70,17 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
         size={60}
       />
 
-      <div className='mt-5 flex items-center gap-x-1'>
-        <h1>{profile.fullName}</h1>
+      <div className='mt-4 flex items-start gap-x-1'>
+        <h3 className='mb-2'>{profile.fullName}</h3>
         <GenderIcon
-          className={cn('ml-1 size-4.5', {
+          className={cn('ml-1 size-4.5 shrink-0', {
             'text-cyan-500': profile.gender === GENDER_MALE,
             'text-pink-500': profile.gender === GENDER_FEMALE,
             'text-amber-400': profile.gender === GENDER_OTHER
           })}
         />
       </div>
-      <p className='mt-0 text-xs text-slate-400'>{profile.email}</p>
+      <p className='mt-0 text-[13px] text-slate-400'>{profile.email}</p>
     </>
   );
 };
@@ -88,12 +88,12 @@ const ProfileSection = ({ profile }: { profile: ProfileType }) => {
 const ProfileSectionSkeleton = () => {
   return (
     <>
-      <Skeleton className='h-20 w-20 animate-pulse rounded-full' />
-      <div className='mt-5 flex items-center gap-x-1'>
-        <Skeleton className='h-4 w-full' />
-        <Skeleton className='size-4.5' />
+      <Skeleton className='skeleton h-15 w-15 rounded-full!' />
+      <div className='mt-4 flex items-center gap-x-1'>
+        <Skeleton className='skeleton h-4 w-full' />
+        <Skeleton className='skeleton size-4.5' />
       </div>
-      <Skeleton className='mt-2 h-4 w-full text-xs' />
+      <Skeleton className='skeleton mt-2 h-4 w-full text-xs' />
     </>
   );
 };

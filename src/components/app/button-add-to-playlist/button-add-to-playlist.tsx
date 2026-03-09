@@ -36,7 +36,7 @@ const variants = cva('', {
   variants: {
     variant: {
       detail:
-        'hover:text-golden-glow h-fit min-w-20 flex-col px-2 text-xs hover:bg-white/10',
+        'hover:text-golden-glow h-fit min-w-20 flex-col px-2 hover:bg-white/10',
       watch:
         'hover:text-golden-glow h-10 items-center justify-center gap-2 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear hover:bg-white/10'
     }
@@ -163,7 +163,13 @@ export default function ButtonAddToPlaylist({
         onClick={handleOpen}
       >
         <PlusICon ref={iconRef} />
-        Thêm vào
+        <span
+          className={cn({
+            'max-520:hidden': variant === 'watch'
+          })}
+        >
+          Thêm vào
+        </span>
       </Button>
       <AnimatePresence mode='wait'>
         {opened && (

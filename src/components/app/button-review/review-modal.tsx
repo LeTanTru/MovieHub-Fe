@@ -105,7 +105,7 @@ export default function ReviewModal({
     <Modal
       open={opened}
       onClose={onClose}
-      bodyWrapperClassName='bg-vintage-navi w-160'
+      bodyWrapperClassName='bg-vintage-navi w-160 max-768:w-150 max-640:w-[95%]'
       confirmOnClose={isFormChanged}
     >
       <BaseForm
@@ -113,23 +113,23 @@ export default function ReviewModal({
         initialValues={initialValues}
         schema={reviewSchema}
         onSubmit={handleSubmit}
-        className='bg-transparent px-8 pb-5'
+        className='max-640:px-6 max-480:px-4 max-480:pb-4 max-480:pt-0 max-480:pt-0 bg-transparent px-8 pb-5'
         onFormChange={setIsFormChanged}
       >
         {(form) => (
           <>
-            <div className='mb-2 text-center text-xl leading-normal font-semibold text-white'>
+            <div className='max-640:mb-0 mb-2 text-center text-xl leading-normal font-semibold text-white'>
               <h3>{movie?.title}</h3>
             </div>
-            <div className='mb-8'>
-              <div className='mb-6 block text-center'>
-                <div className='flex items-center justify-center gap-2'>
+            <div className='max-768:mb-6 max-640:mb-4 mb-8'>
+              <div className='max-640:mb-4 max-480:mb-2 mb-6 block text-center'>
+                <div className='flex items-center justify-center'>
                   <div className='h-10 w-10 bg-[url("/logo.webp")] bg-cover bg-position-[50%]'></div>
                   <strong>{formatRating(movie?.averageRating || 0)}</strong>
-                  <span>/ {movie?.reviewCount || 0} lượt đánh giá</span>
+                  <span>&nbsp;/ {movie?.reviewCount || 0} lượt đánh giá</span>
                 </div>
               </div>
-              <div className='grid grid-cols-5 gap-x-5 rounded-2xl bg-[rgba(0,0,0,0.3)] p-4'>
+              <div className='max-640:grid-cols-3 max-480:grid-cols-2 max-640:bg-transparent max-640:gap-3 max-480:gap-2 max-640:p-0 grid grid-cols-5 gap-5 rounded-xl bg-[rgba(0,0,0,0.3)] p-4'>
                 {reviewRatings
                   .slice()
                   .reverse()
@@ -137,7 +137,7 @@ export default function ReviewModal({
                     <div
                       onClick={() => handleSelectRating(+rating.value)}
                       className={cn(
-                        'jucenter flex cursor-pointer flex-col items-center gap-2.5 rounded-lg px-2.5 py-4 text-white grayscale-100 transition-all duration-200 ease-linear select-none hover:grayscale-0',
+                        'max-640:bg-[rgba(0,0,0,0.3)] max-640:flex-row max-640:py-2.5 flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-4 whitespace-nowrap text-white grayscale-100 transition-all duration-200 ease-linear select-none hover:grayscale-0',
                         {
                           'bg-dark-conflower-blue grayscale-0':
                             selectedRating === rating.value
@@ -145,23 +145,26 @@ export default function ReviewModal({
                       )}
                       key={rating.label}
                     >
-                      <div className='h-15 w-15 shrink-0'>
+                      <div className='max-640:size-10 size-15 shrink-0'>
                         <Image
                           src={rating.icon}
                           alt={rating.label}
                           width={60}
                           height={60}
+                          className='size-full object-cover'
                           unoptimized
                         />
                       </div>
-                      <span>{rating.label}</span>
+                      <span className='max-640:text-[13px] max-520:text-xs'>
+                        {rating.label}
+                      </span>
                     </div>
                   ))}
               </div>
-              <div className='relative mt-4'>
+              <div className='max-640:mt-3 max-480:mt-2 relative mt-4'>
                 <TextAreaField
                   control={form.control}
-                  className='scrollbar-none block h-auto min-h-8.75 min-h-25 w-full resize-none rounded-md border border-solid bg-transparent px-5 py-4 leading-normal font-normal text-white transition-all duration-200 ease-linear focus:border-white'
+                  className='scrollbar-none max-640:text-[13px] block h-auto min-h-8.75 min-h-25 w-full resize-none rounded-md border border-solid bg-transparent px-5 py-4 leading-normal font-normal text-white transition-all duration-200 ease-linear focus:border-white'
                   rows={100}
                   cols={3}
                   placeholder='Viết đánh giá của bạn...'
@@ -170,15 +173,19 @@ export default function ReviewModal({
                 />
               </div>
             </div>
-            <Row className='mb-0 flex items-center justify-center'>
-              <Col className='w-1/3'>
-                <Button type='button' onClick={onClose}>
+            <Row className='max-480:-mx-1 mb-0 flex items-center justify-center'>
+              <Col className='max-640:w-2/5 max-480:w-1/2 max-480:px-1 mb-0 w-1/3'>
+                <Button
+                  type='button'
+                  className='max-640:text-[13px]'
+                  onClick={onClose}
+                >
                   Đóng
                 </Button>
               </Col>
-              <Col className='w-1/3'>
+              <Col className='max-640:w-2/5 max-480:w-1/2 max-480:px-1 mb-0 w-1/3'>
                 <Button
-                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
+                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
                   variant='primary'
                   loading={createReviewLoading}
                   disabled={

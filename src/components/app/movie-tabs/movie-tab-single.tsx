@@ -8,18 +8,18 @@ import Link from 'next/link';
 export default function MovieTabSingle({ movie }: { movie: MovieResType }) {
   return (
     <>
-      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg mb-6 text-2xl font-semibold'>
+      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg max-640:mb-3 max-520:text-base mb-6 text-2xl font-semibold'>
         Các bản chiếu
       </h3>
       {movie && movie.seasons && movie.seasons.length > 0 ? (
-        <div className='max-990:grid-cols-2 max-480:grid-cols-1 grid grid-cols-3 gap-4'>
+        <div className='max-990:grid-cols-2 max-520:grid-cols-1 grid grid-cols-3 gap-4'>
           {movie.seasons.map((season) => (
             <Link
               href={`${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`}
               key={season.id}
               className='bg-mid-gray relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1'
             >
-              <div className='absolute top-0 right-0 bottom-0 w-2/5 max-w-32.5 mask-[linear-gradient(270deg,black_0,transparent_95%)]'>
+              <div className='max-990:max-w-90 max-990:w-[45%] absolute top-0 right-0 bottom-0 w-2/5 max-w-32.5 mask-[linear-gradient(270deg,black_0,transparent_95%)]'>
                 <Image
                   src={renderImageUrl(season?.thumbnailUrl)}
                   alt={`${movie?.title} - ${movie?.originalTitle}`}
@@ -28,7 +28,7 @@ export default function MovieTabSingle({ movie }: { movie: MovieResType }) {
                   sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
                 />
               </div>
-              <div className='relative z-2 flex w-9/10 flex-col justify-center justify-start gap-4 p-6'>
+              <div className='max-990:w-7/10 relative z-2 flex w-9/10 flex-col justify-center justify-start gap-4 p-6'>
                 <div className='inline-flex items-center gap-2'>
                   <Image
                     src={caption}

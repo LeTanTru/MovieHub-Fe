@@ -69,7 +69,8 @@ const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, mode, threshold]);
 
-  const dataList = data?.pages.flatMap((page) => page.data.content) || [];
+  const dataList =
+    data?.pages?.flatMap((page) => page.data.content)?.filter(Boolean) || [];
   const totalElements = data?.pages?.[0]?.data?.totalElements || 0;
 
   return {

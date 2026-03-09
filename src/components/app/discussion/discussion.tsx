@@ -35,11 +35,13 @@ import { cn } from '@/lib';
 export default function Discussion({
   isLoading = false,
   toId,
-  className
+  className,
+  variant = 'detail'
 }: {
   isLoading?: boolean;
   toId: string;
   className?: string;
+  variant?: 'detail' | 'watch';
 }) {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
@@ -121,17 +123,18 @@ export default function Discussion({
     <Element name={toId} id={toId}>
       <div
         className={cn(
-          'max-1120:px-5 max-768:px-0 relative block px-10 py-5',
+          'max-1120:px-5 max-800:px-0 relative block px-10 py-5',
+          { 'max-1120:px-0': variant === 'watch' },
           className
         )}
       >
         {/* Header */}
-        <div className='mb-2 flex items-center font-semibold text-white'>
-          <div className='flex grow items-center gap-4'>
-            <div className='h-6 w-6'>
-              <CommentDotIcon className='h-full w-full' />
+        <div className='flex items-center font-semibold text-white'>
+          <div className='max-640:gap-2 flex grow items-center gap-4'>
+            <div className='max-640:size-5 size-6'>
+              <CommentDotIcon className='size-full' />
             </div>
-            <span className='text-base'>
+            <span className='max-640:text-sm text-base'>
               {
                 discussionActions.find((action) => action.key === discussionTab)
                   ?.label
@@ -156,6 +159,7 @@ export default function Discussion({
                 action={action.key}
                 activeKey={discussionTab}
                 setActiveKey={setDiscussionTab}
+                className='max-640:text-[13px] max-520:text-xs'
               />
             ))}
           </div>
@@ -163,15 +167,16 @@ export default function Discussion({
         {/* Body */}
         <Activity visible={isCommentTab}>
           {profile ? (
-            <div className='my-4 flex items-center gap-4'>
+            <div className='max-640:gap-3 max-640:my-3 max-520:mt-2 max-520:gap-2 my-4 flex items-center gap-4'>
               <AvatarField
                 src={renderImageUrl(profile.avatarPath)}
-                size={50}
+                size={40}
                 alt={profile.fullName}
+                breakpoints={[{ breakpoint: 640, size: 50 }]}
               />
-              <div className='flex flex-col justify-between gap-1'>
+              <div className='max-640:text-[13px] flex flex-col justify-between gap-1'>
                 <span className='text-gray-400'>Bình luận với tên</span>
-                <span className='text font-medium text-white'>
+                <span className='line-clamp-2 font-medium text-white'>
                   {profile.fullName}
                 </span>
               </div>

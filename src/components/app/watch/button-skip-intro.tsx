@@ -3,17 +3,20 @@ import { cn } from '@/lib';
 
 export default function ButtonSkipIntro({
   skipIntro,
+  className,
   handleToggleSkipIntro
 }: {
   skipIntro: boolean;
+  className?: string;
   handleToggleSkipIntro: () => void;
 }) {
   return (
     <Button
       variant='ghost'
-      className={
-        'dark:hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear dark:hover:bg-white/10'
-      }
+      className={cn(
+        'dark:hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear dark:hover:bg-white/10',
+        className
+      )}
       onClick={handleToggleSkipIntro}
     >
       Bỏ qua giới thiệu

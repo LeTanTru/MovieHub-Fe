@@ -431,117 +431,137 @@ export default function WatchPlayer() {
   if (!movie) return null;
 
   return (
-    <div className='watch-player relative mx-auto max-w-410 px-5'>
-      <div className='mb-6 inline-flex w-full items-center gap-2 px-8'>
+    <div className='watch-player max-800:max-w-none max-800:w-full max-800:px-0 max-640:-mt-10 max-640:flex max-640:flex-col-reverse relative mx-auto max-w-410 px-5'>
+      <div className='max-1360:mb-4 max-1360:px-6 max-1120:px-4 max-800:mb-2 max-640:mt-4 max-640:mb-0 mb-6 inline-flex w-full items-center gap-2 px-8'>
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-          className='mr-2 rounded-full border border-solid border-gray-200 p-2 opacity-50 transition-all duration-200 ease-linear hover:opacity-100'
+          className='max-1120:p-1.5 max-640:p-1 rounded-full border border-solid border-gray-200 p-2 opacity-50 transition-all duration-200 ease-linear hover:opacity-100'
         >
           <FaChevronLeft />
         </Link>
-        <h3 className='text-xl font-bold'>Xem phim {videoTitle}</h3>
+        <h3 className='max-1120:font-semibold max-1120:text-lg max-640:text-sm text-xl font-bold'>
+          Xem phim {videoTitle}
+        </h3>
       </div>
-      {video ? (
-        <div className='relative aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px]'>
-          {isLoadingToken ? (
-            <div className='flex h-full w-full items-center justify-center bg-black'>
-              <div className='h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
-            </div>
-          ) : (
-            <>
-              <VideoPlayer
-                ref={playerRef}
-                auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
-                duration={video.duration}
-                introEnd={video.introEnd}
-                introStart={video.introStart}
-                src={renderVideoUrl(video.content)}
-                thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
-                vttUrl={renderVttUrl(video.vttUrl)}
-                outroStart={video.outroStart}
-                token={token}
-                title={videoTitle}
-                className='w-full'
-                autoPlay={autoPlay}
-                slots={{
-                  topControlsGroupStart: !isFullscreen ? (
-                    <span className='text-base font-medium'>{videoTitle}</span>
-                  ) : null,
-                  topControlsGroupEnd:
-                    !isFullscreen && isSeries ? (
-                      <Button
-                        variant='ghost'
-                        className={cn(
-                          `dark:hover:text-golden-glow font-medium dark:hover:bg-transparent`,
-                          {
-                            'dark:text-golden-glow': isEpisodeListOpen
-                          }
-                        )}
-                        onClick={openEpisodeList}
-                      >
-                        <PlaylistIcon className='h-6! w-6!' />
-                        Danh sách tập
-                      </Button>
-                    ) : null
-                }}
-                volume={
-                  envConfig.NEXT_PUBLIC_NODE_ENV === 'development' ? 0 : 0.5
-                }
-                prev={isSeries && !isFirstEpisode}
-                next={isSeries && !isLastEpisode}
-                skipOutro={isSeries && !isLastEpisode}
-                onPrevClick={handlePrevEpisode}
-                onNextClick={handleNextEpisode}
-                onTimeUpdate={handleWatchHistoryTimeUpdate}
-                onSeeked={handleSeeked}
-                onEnded={handleVideoEnded}
-                onLoadedMetadata={handlePlayerCanPlay}
-                onFullscreenChange={(isFullscreen) =>
-                  setIsFullscreen(isFullscreen)
-                }
+      <div className='watch-player-wrapper'>
+        {video ? (
+          <div className='max-800:rounded-none relative aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px]'>
+            {isLoadingToken ? (
+              <div className='flex h-full w-full items-center justify-center bg-black'>
+                <div className='h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
+              </div>
+            ) : (
+              <>
+                <VideoPlayer
+                  ref={playerRef}
+                  auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
+                  duration={video.duration}
+                  introEnd={video.introEnd}
+                  introStart={video.introStart}
+                  src={renderVideoUrl(video.content)}
+                  thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
+                  vttUrl={renderVttUrl(video.vttUrl)}
+                  outroStart={video.outroStart}
+                  token={token}
+                  title={videoTitle}
+                  className='w-full'
+                  autoPlay={autoPlay}
+                  slots={{
+                    topControlsGroupStart: !isFullscreen ? (
+                      <span className='text-base font-medium'>
+                        {videoTitle}
+                      </span>
+                    ) : null,
+                    topControlsGroupEnd:
+                      !isFullscreen && isSeries ? (
+                        <Button
+                          variant='ghost'
+                          className={cn(
+                            `dark:hover:text-golden-glow font-medium dark:hover:bg-transparent`,
+                            {
+                              'dark:text-golden-glow': isEpisodeListOpen
+                            }
+                          )}
+                          onClick={openEpisodeList}
+                        >
+                          <PlaylistIcon className='h-6! w-6!' />
+                          Danh sách tập
+                        </Button>
+                      ) : null
+                  }}
+                  volume={
+                    envConfig.NEXT_PUBLIC_NODE_ENV === 'development' ? 0 : 0.5
+                  }
+                  prev={isSeries && !isFirstEpisode}
+                  next={isSeries && !isLastEpisode}
+                  skipOutro={isSeries && !isLastEpisode}
+                  onPrevClick={handlePrevEpisode}
+                  onNextClick={handleNextEpisode}
+                  onTimeUpdate={handleWatchHistoryTimeUpdate}
+                  onSeeked={handleSeeked}
+                  onEnded={handleVideoEnded}
+                  onLoadedMetadata={handlePlayerCanPlay}
+                  onFullscreenChange={(isFullscreen) =>
+                    setIsFullscreen(isFullscreen)
+                  }
+                />
+                <WatchAskContinueModal
+                  opened={isShowContinueModal}
+                  lastWatchedSeconds={lastWatchedSeconds}
+                  onClose={closeContinueModal}
+                  onContinueWatching={handleContinueWatching}
+                  onStartOver={handleStartOver}
+                />
+              </>
+            )}
+            {isSeries && (
+              <EpisodeList
+                seasons={movie.seasons}
+                isOpen={isEpisodeListOpen}
+                onToggle={closeEpisodeList}
               />
-              <WatchAskContinueModal
-                opened={isShowContinueModal}
-                lastWatchedSeconds={lastWatchedSeconds}
-                onClose={closeContinueModal}
-                onContinueWatching={handleContinueWatching}
-                onStartOver={handleStartOver}
-              />
-            </>
-          )}
-          {isSeries && (
-            <EpisodeList
-              seasons={movie.seasons}
-              isOpen={isEpisodeListOpen}
-              onToggle={closeEpisodeList}
+            )}
+          </div>
+        ) : (
+          <div className='aspect-video rounded-tl rounded-tr bg-black'>
+            <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-400'>
+              Video cho phim này đang được cập nhật. Vui lòng quay lại sau.
+            </p>
+          </div>
+        )}
+        <div className='player-controls bg-covert-black max-990:h-13.5 max-800:rounded-none flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
+          <div className='max-1280:px-0 max-640:gap-0 max-640:px-0.5 max-1280:gap-0 max-520:px-4 max-520:gap-4 flex w-full items-center gap-2 px-4 select-none'>
+            <ButtonLike
+              className='max-640:px-2! max-520:px-4!'
+              targetId={movie.id}
+              variant='watch'
+              text='Yêu thích'
             />
-          )}
-        </div>
-      ) : (
-        <div className='aspect-video rounded-tl rounded-tr bg-black'>
-          <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-400'>
-            Video cho phim này đang được cập nhật. Vui lòng quay lại sau.
-          </p>
-        </div>
-      )}
-      <div className='player-controls bg-covert-black flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
-        <div className='flex w-full items-center gap-2 px-4 select-none'>
-          <ButtonLike targetId={movie.id} variant='watch' text='Yêu thích' />
-          <ButtonAddToPlaylist movieId={movie.id} variant='watch' />
-          <ButtonAutoNextEpisode
-            autoNextEpisode={autoNextEpisode}
-            handleToggleAutoNextEpisode={handleToggleAutoNextEpisode}
-          />
-          <ButtonSkipIntro
-            handleToggleSkipIntro={handleToggleSkipIntro}
-            skipIntro={skipIntro}
-          />
-          <ButtonMovieTheater />
-          <div className='backdrop-movie-theater'></div>
-          <ButtonShareMovie variant='watch' />
-          <ButtonWatchTogether />
-          <div className='grow'></div>
-          <ButtonReport />
+            <ButtonAddToPlaylist
+              className='max-640:px-2! max-520:px-4!'
+              movieId={movie.id}
+              variant='watch'
+            />
+            <ButtonAutoNextEpisode
+              autoNextEpisode={autoNextEpisode}
+              handleToggleAutoNextEpisode={handleToggleAutoNextEpisode}
+              className='max-990:hidden'
+            />
+            <ButtonSkipIntro
+              handleToggleSkipIntro={handleToggleSkipIntro}
+              skipIntro={skipIntro}
+              className='max-990:hidden'
+            />
+            <ButtonMovieTheater className='max-1120:hidden' />
+            <div className='backdrop-movie-theater'></div>
+            <ButtonShareMovie
+              variant='watch'
+              className='max-640:px-2! max-520:px-4!'
+            />
+            <ButtonWatchTogether className='max-640:px-2! max-520:px-4!' />
+            <div className='grow'></div>
+            <ButtonReport className='max-640:px-2! max-520:px-4!' />
+          </div>
         </div>
       </div>
     </div>

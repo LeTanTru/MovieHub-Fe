@@ -65,7 +65,7 @@ export const convertUTCToLocal = (
   }
 };
 
-export const timeAgo = (dateStr: string) => {
+export const timeAgo = (dateStr: string, short = false) => {
   const [day, month, yearAndTime] = dateStr.split('/');
   const [year, time] = yearAndTime.split(' ');
 
@@ -76,23 +76,23 @@ export const timeAgo = (dateStr: string) => {
 
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
 
-  if (seconds < 5) return 'Vừa xong';
-  if (seconds < 60) return `${seconds} giây trước`;
+  if (seconds < 5) return short ? '0s' : 'Vừa xong';
+  if (seconds < 60) return short ? `${seconds}s` : `${seconds} giây trước`;
 
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes} phút trước`;
+  if (minutes < 60) return short ? `${minutes}m` : `${minutes} phút trước`;
 
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} giờ trước`;
+  if (hours < 24) return short ? `${hours}h` : `${hours} giờ trước`;
 
   const days = Math.floor(hours / 24);
-  if (days < 30) return `${days} ngày trước`;
+  if (days < 7) return short ? `${days}d` : `${days} ngày trước`;
 
-  const months = Math.floor(days / 30);
-  if (months < 12) return `${months} tháng trước`;
+  const weeks = Math.floor(days / 7);
+  if (weeks < 52) return short ? `${weeks}w` : `${weeks} tuần trước`;
 
-  const years = Math.floor(months / 12);
-  return `${years} năm trước`;
+  const years = Math.floor(weeks / 52);
+  return short ? `${years}y` : `${years} năm trước`;
 };
 
 export const getYearFromDate = (dateStr?: string) => {

@@ -13,6 +13,7 @@ import {
   type SVGProps,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from 'react';
@@ -22,6 +23,10 @@ import { createPortal } from 'react-dom';
 type ImageFieldProps = {
   src?: string;
   alt?: string;
+  size?: number;
+  // Format: [{ breakpoint: 640, size: 220 }, { breakpoint: 1024, size: 320 }]
+  // Base uses `size`; matching breakpoints override it
+  breakpoints?: Array<{ breakpoint: number; size: number }>;
   width?: number;
   height?: number;
   aspect?: number;
@@ -44,6 +49,8 @@ type ImageFieldProps = {
 export default function ImageField({
   src,
   alt = 'Image',
+  size,
+  breakpoints,
   width,
   height,
   aspect = 1,
@@ -64,10 +71,40 @@ export default function ImageField({
   const isMounted = useIsMounted();
   const [open, setOpen] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
+  const [viewportWidth, setViewportWidth] = useState<number>(0);
 
   const { isError: imageError } = useImageStatus(src);
 
   const previewRef = useRef<HTMLDivElement | null>(null);
+
+  const responsiveRules = useMemo(() => {
+    if (!breakpoints?.length)
+      return [] as Array<{ breakpoint: number; size: number }>;
+
+    return [...breakpoints]
+      .filter(
+        (rule) =>
+          typeof rule?.breakpoint === 'number' && typeof rule?.size === 'number'
+      )
+      .sort((a, b) => a.breakpoint - b.breakpoint);
+  }, [breakpoints]);
+
+  const resolvedSize = useMemo(() => {
+    if (!responsiveRules.length || viewportWidth <= 0 || size === undefined) {
+      return size;
+    }
+
+    let next = size;
+    for (const rule of responsiveRules) {
+      if (viewportWidth >= rule.breakpoint) {
+        next = rule.size;
+      }
+    }
+    return next;
+  }, [responsiveRules, size, viewportWidth]);
+
+  const resolvedWidth = width ?? resolvedSize;
+  const resolvedHeight = height ?? resolvedSize;
 
   const shouldDisablePreview = disablePreview || !src || imageError;
 
@@ -112,6 +149,16 @@ export default function ImageField({
       document.body.classList.remove('body-lock');
     };
   }, [open]);
+
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    handleResize();
+
+    if (!responsiveRules.length) return;
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [responsiveRules.length]);
 
   if (!isMounted) return null;
 
@@ -161,7 +208,7 @@ export default function ImageField({
             />
           ) : aspect ? (
             <AspectRatio
-              style={{ width, height }}
+              style={{ width: resolvedWidth, height: resolvedHeight }}
               ratio={aspect}
               className='h-full w-full'
             >
@@ -177,12 +224,13 @@ export default function ImageField({
             <Image
               src={src}
               alt={alt}
-              width={width}
-              height={height}
+              width={resolvedWidth}
+              height={resolvedHeight}
               className={cn(
                 'rounded object-cover',
                 {
-                  'h-full w-full': !imageClassName && !width && !height
+                  'h-full w-full':
+                    !imageClassName && !resolvedWidth && !resolvedHeight
                 },
                 imageClassName
               )}

@@ -69,20 +69,21 @@ export default function ReviewItem({
   };
 
   return (
-    <div className='max-640:gap-3 max-520:gap-2.5 max-520:pt-3 relative flex justify-start gap-4 pt-4'>
+    <div className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'>
       <AvatarField
         src={renderImageUrl(author?.avatarPath)}
-        size={50}
-        alt={author?.fullName || 'User'}
+        size={45}
+        alt={author?.fullName}
+        breakpoints={[{ breakpoint: 640, size: 50 }]}
       />
       <div className='grow'>
-        <div className='relative mb-2 flex items-center justify-start gap-2.5'>
-          <div className='flex items-center gap-x-2'>
+        <div className='max-640:gap-1 max-768:gap-1.5 relative flex items-center justify-start gap-2'>
+          <div className='max-640:gap-x-1 flex items-center gap-x-2'>
             {kind && (
               <Badge
                 variant='outline'
                 className={cn(
-                  'max-520:text-xs max-520:px-1 border text-sm font-medium',
+                  'max-640:text-xs max-520:text-[10px] max-640:px-1 border text-sm font-medium uppercase',
                   kind.style
                 )}
               >
@@ -90,7 +91,7 @@ export default function ReviewItem({
               </Badge>
             )}
             {ratingInfo && (
-              <div className='bg-dark-conflower-blue max-520:py-1 max-520:px-1.5 flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 text-white'>
+              <div className='bg-dark-conflower-blue max-640:py-1 max-640:px-1.5 max-520:py-1 max-520:px-1.5 flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 whitespace-nowrap text-white'>
                 <Image
                   src={ratingInfo.icon}
                   alt={ratingInfo.label}
@@ -98,24 +99,24 @@ export default function ReviewItem({
                   height={16}
                   unoptimized
                 />
-                <span className='max-520:text-[10px] text-xs'>
+                <span className='max-640:text-[10px] max-520:text-[10px] text-xs'>
                   {ratingInfo.label}
                 </span>
               </div>
             )}
-            <span className='max-520:text-[13px]'>
-              {review.author.fullName}
-              <span
-                className={cn({
-                  'text-golden-glow max-520:text-xs font-semibold': isAuthor
-                })}
-              >
-                {isAuthor && <>&nbsp;(Bạn)</>}
+            <div className='max-640:text-[13px] flex items-center'>
+              <span className='max-990:max-w-90 max-800:max-w-80 max-768:max-w-70 max-720:max-w-50 max-640:max-w-45 max-480:max-w-40 max-420:max-w-20 line-clamp-1 block max-w-125 truncate'>
+                {review.author.fullName}
               </span>
-            </span>
+              {isAuthor && (
+                <span className='max-640:hidden text-golden-glow font-semibold'>
+                  &nbsp;(Bạn)
+                </span>
+              )}
+            </div>
 
             <GenderIcon
-              className={cn('max-480:size-3 size-4', {
+              className={cn('max-640:size-3 size-4', {
                 'text-cyan-500': gender === GENDER_MALE,
                 'text-pink-500': gender === GENDER_FEMALE,
                 'text-golden-glow': gender === GENDER_OTHER
@@ -124,14 +125,14 @@ export default function ReviewItem({
           </div>
           <span
             title={convertUTCToLocal(review.createdDate, DATE_TIME_FORMAT)}
-            className='max-480:text-[10px] text-xs text-gray-400'
+            className='max-640:hidden text-xs whitespace-nowrap text-gray-400'
           >
             {timeAgo(review.createdDate)}
           </span>
         </div>
         <div
           className={cn(
-            'max-520:text-[13px] relative mt-2 break-all text-white',
+            'max-640:text-[13px] relative mt-2 break-all text-white',
             {
               'cursor-pointer': isHiddenReview && !showBlurredContent
             }
@@ -144,61 +145,71 @@ export default function ReviewItem({
         >
           <div
             className={cn({
-              'max-480:text-[13px] blur-xs select-none':
+              'max-640:text-[13px] blur-xs select-none':
                 isHiddenReview && !showBlurredContent
             })}
           >
             {review.content}
           </div>
         </div>
-        <div className='max-480:mt-2 max-520:mt-3 relative mt-4 flex items-center gap-4'>
-          <div className='max-520:gap-3 flex items-center gap-4'>
-            <div className='max-480:gap-1 max-520:gap-1.5 flex items-center gap-2'>
-              <LikeIcon
-                size={16}
-                onClick={() => onLike(review.id)}
-                iconClassName={cn(
-                  'transition-colors duration-200 ease-linear',
-                  {
-                    'hover:text-golden-glow': isAuthenticated && !isVoteLoading,
-                    'text-golden-glow': voteType === REACTION_TYPE_LIKE
-                  }
-                )}
-              />
-              <span
-                className={cn('max-520:hidden max-520:text-xs', {
-                  'max-520:block': voteType === REACTION_TYPE_LIKE
-                })}
-              >
-                {review.totalLike}
-              </span>
-            </div>
-            <div className='max-480:gap-1 max-520:gap-1.5 flex items-center gap-2'>
-              <DislikeIcon
-                size={16}
-                onClick={() => onDislike(review.id)}
-                iconClassName={cn(
-                  'transition-colors duration-200 ease-linear',
-                  {
-                    'hover:text-red-beauty': isAuthenticated && !isVoteLoading,
-                    'text-red-beauty': voteType === REACTION_TYPE_DISLIKE
-                  }
-                )}
-              />
-              <span
-                className={cn('max-520:hidden max-520:text-xs', {
-                  'max-520:block': voteType === REACTION_TYPE_DISLIKE
-                })}
-              >
-                {review.totalDislike}
-              </span>
+        <div className='max-640:mt-3 relative mt-4 flex items-center gap-4'>
+          <div className='flex items-center gap-2'>
+            <span
+              title={convertUTCToLocal(review.createdDate, DATE_TIME_FORMAT)}
+              className='max-640:block max-640:min-w-6 max-640:text-[13px] max-520:text-xs hidden text-gray-400'
+            >
+              {timeAgo(review.createdDate, true)}
+            </span>
+            <div className='flex items-center gap-4'>
+              <div className='max-640:gap-1.5 flex items-center gap-2'>
+                <LikeIcon
+                  size={16}
+                  onClick={() => onLike(review.id)}
+                  iconClassName={cn(
+                    'transition-colors duration-200 ease-linear',
+                    {
+                      'hover:text-golden-glow':
+                        isAuthenticated && !isVoteLoading,
+                      'text-golden-glow': voteType === REACTION_TYPE_LIKE
+                    }
+                  )}
+                />
+                <span
+                  className={cn('max-640:hidden', {
+                    'max-640:block': voteType === REACTION_TYPE_LIKE
+                  })}
+                >
+                  {review.totalLike}
+                </span>
+              </div>
+              <div className='max-640:gap-1.5 flex items-center gap-2'>
+                <DislikeIcon
+                  size={16}
+                  onClick={() => onDislike(review.id)}
+                  iconClassName={cn(
+                    'transition-colors duration-200 ease-linear',
+                    {
+                      'hover:text-red-beauty':
+                        isAuthenticated && !isVoteLoading,
+                      'text-red-beauty': voteType === REACTION_TYPE_DISLIKE
+                    }
+                  )}
+                />
+                <span
+                  className={cn('max-640:hidden', {
+                    'max-640:block': voteType === REACTION_TYPE_DISLIKE
+                  })}
+                >
+                  {review.totalDislike}
+                </span>
+              </div>
             </div>
           </div>
           <div className='relative' ref={dropdownRef}>
             {(isAuthor || isHiddenReview) && (
               <button
                 type='button'
-                className='hover:text-golden-glow max-520:text-xs flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
+                className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
                 onClick={handleDropdownToggle}
               >
                 <FaEllipsis /> <span>Thêm</span>
@@ -221,11 +232,11 @@ export default function ReviewItem({
                     scale: 0.8
                   }}
                   transition={{ duration: 0.1, ease: 'linear' }}
-                  className='max-520:min-w-36 max-520:py-1 absolute top-5 z-10 min-w-40 overflow-hidden rounded-lg bg-gray-100 py-2 shadow-lg'
+                  className='max-640:min-w-36 absolute top-5 -left-5 z-10 min-w-40 origin-[10px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg'
                 >
                   {isHiddenReview && (
                     <button
-                      className='max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                      className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
                       onClick={handleToggleBlurredContent}
                     >
                       {showBlurredContent ? (
@@ -243,7 +254,7 @@ export default function ReviewItem({
                   )}
                   {isAuthor && (
                     <button
-                      className='max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
+                      className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
                       onClick={() => {
                         setShowDropdown(false);
                         onDelete(review.id);

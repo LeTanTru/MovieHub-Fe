@@ -10,6 +10,7 @@ import {
   type MouseEvent,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from 'react';
@@ -19,6 +20,9 @@ import { createPortal } from 'react-dom';
 
 type AvatarFieldProps = {
   size?: number;
+  // Format: [{ breakpoint: 640, size: 40 }, { breakpoint: 1024, size: 52 }]
+  // Base uses `size`; matching breakpoints override it
+  breakpoints?: Array<{ breakpoint: number; size: number }>;
   src?: string;
   fallbackSrc?: string;
   className?: string;
@@ -35,6 +39,7 @@ type AvatarFieldProps = {
 
 export default function AvatarField({
   size = 48,
+  breakpoints,
   previewSize = 200,
   src,
   fallbackSrc,
@@ -52,10 +57,38 @@ export default function AvatarField({
   const isMounted = useIsMounted();
   const [open, setOpen] = useState<boolean>(false);
   const [scale, setScale] = useState<number>(1);
+  const [viewportWidth, setViewportWidth] = useState<number>(0);
 
   const { isError: imageError } = useImageStatus(src);
 
   const previewRef = useRef<HTMLDivElement | null>(null);
+
+  const responsiveRules = useMemo(() => {
+    if (!breakpoints?.length)
+      return [] as Array<{ breakpoint: number; size: number }>;
+
+    return [...breakpoints]
+      .filter(
+        (rule) =>
+          typeof rule?.breakpoint === 'number' && typeof rule?.size === 'number'
+      )
+      .sort((a, b) => a.breakpoint - b.breakpoint);
+  }, [breakpoints]);
+
+  const resolvedSize = useMemo(() => {
+    if (!responsiveRules.length || viewportWidth <= 0) return size;
+
+    let next = size;
+    for (const rule of responsiveRules) {
+      if (viewportWidth >= rule.breakpoint) {
+        next = rule.size;
+      }
+    }
+    return next;
+  }, [responsiveRules, size, viewportWidth]);
+
+  const resolvedWidth = width || resolvedSize;
+  const resolvedHeight = height || resolvedSize;
 
   // Preview is only available when there's a valid src
   const shouldDisablePreview = disablePreview || !src || imageError;
@@ -103,6 +136,16 @@ export default function AvatarField({
     };
   }, [open]);
 
+  useEffect(() => {
+    const handleResize = () => setViewportWidth(window.innerWidth);
+    handleResize();
+
+    if (!responsiveRules.length) return;
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [responsiveRules.length]);
+
   if (!isMounted) return null;
 
   return (
@@ -115,14 +158,14 @@ export default function AvatarField({
           { 'cursor-pointer': !shouldDisablePreview },
           className
         )}
-        style={{ width: width || size, height: height || size }}
+        style={{ width: resolvedWidth, height: resolvedHeight }}
       >
         <Avatar
           className={cn('bg-charade shadow-sm', {
             'transition-all duration-200 ease-linear hover:scale-105 hover:opacity-90':
               !shouldDisablePreview
           })}
-          style={{ width: width || size, height: height || size }}
+          style={{ width: resolvedWidth, height: resolvedHeight }}
         >
           {/* AvatarImage handles showing/hiding automatically based on src */}
           {src && (
@@ -144,8 +187,8 @@ export default function AvatarField({
               <Image
                 src={fallbackSrc || defaultAvatar}
                 alt='Avatar'
-                width={width || size}
-                height={height || size}
+                width={resolvedWidth}
+                height={resolvedHeight}
                 className='h-full w-full object-cover'
                 unoptimized
               />

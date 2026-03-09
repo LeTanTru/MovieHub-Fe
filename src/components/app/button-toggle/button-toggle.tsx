@@ -6,21 +6,27 @@ export default function ButtonToggle({
   toggle,
   handleToggle,
   text,
-  disabled
+  disabled,
+  className
 }: {
   toggle: boolean;
   handleToggle: () => void;
   text: string;
   disabled?: boolean;
+  className?: string;
 }) {
   return (
     <div
       role='switch'
       aria-checked={toggle}
-      className={cn('flex items-center gap-x-2', {
-        'pointer-events-none relative cursor-not-allowed opacity-50 select-none':
-          disabled
-      })}
+      className={cn(
+        'flex items-center gap-x-2',
+        {
+          'pointer-events-none relative cursor-not-allowed opacity-50 select-none':
+            disabled
+        },
+        className
+      )}
       aria-disabled={disabled}
     >
       <div

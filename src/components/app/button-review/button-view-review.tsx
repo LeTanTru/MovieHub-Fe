@@ -15,8 +15,8 @@ const variants = cva(
   {
     variants: {
       variant: {
-        detail: 'text-xs',
-        watch: 'text-sm'
+        detail: '',
+        watch: ''
       }
     },
     defaultVariants: { variant: 'detail' }
