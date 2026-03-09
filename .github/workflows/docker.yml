@@ -27,7 +27,7 @@ jobs:
           context: .
           push: false
           load: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/moviehub:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/fe-moviehub:latest
           build-args: |
             NEXT_PUBLIC_API_META_ENDPOINT_URL=${{ secrets.NEXT_PUBLIC_API_META_ENDPOINT_URL }}
             NEXT_PUBLIC_NODE_ENV=${{ secrets.NEXT_PUBLIC_NODE_ENV }}
@@ -45,7 +45,7 @@ jobs:
             NEXT_PUBLIC_CLIENT_TYPE=${{ secrets.NEXT_PUBLIC_CLIENT_TYPE }}
 
       - name: Show Image Size
-        run: docker images ${{ secrets.DOCKER_USERNAME }}/moviehub:latest
+        run: docker images ${{ secrets.DOCKER_USERNAME }}/fe-moviehub:latest
 
       - name: Push Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/moviehub:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/fe-moviehub:latest
