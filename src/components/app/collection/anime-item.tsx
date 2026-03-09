@@ -133,7 +133,7 @@ export default function AnimeItem({
               ))}
             </div>
             <div
-              className='description line-clamp-3 break-all'
+              className='description line-clamp-3'
               dangerouslySetInnerHTML={{
                 __html: sanitizeText(movie.description)
               }}

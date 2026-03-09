@@ -40,11 +40,11 @@ export default function PlayPauseIndicator() {
           }}
           className='pointer-events-none relative inset-0 flex items-center justify-center'
         >
-          <div className='rounded-full bg-black/60 p-6 backdrop-blur-sm'>
+          <div className='rounded-full bg-black/60 p-4 backdrop-blur-sm md:p-6'>
             {lastAction === 'pause' ? (
-              <PlayIcon className='h-12 w-12 fill-white' />
+              <PlayIcon className='h-8 w-8 fill-white md:h-12 md:w-12' />
             ) : (
-              <PauseIcon className='h-12 w-12 fill-white' />
+              <PauseIcon className='h-8 w-8 fill-white md:h-12 md:w-12' />
             )}
           </div>
         </motion.div>

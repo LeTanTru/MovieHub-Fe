@@ -39,7 +39,7 @@ export default function VolumeIndicator() {
             'pointer-events-none absolute inset-0 z-50 flex h-full items-center justify-center'
           }
         >
-          <div className='flex aspect-video items-center justify-center gap-1 rounded-lg bg-black/60 px-8 py-4 text-xl font-semibold text-white backdrop-blur-sm'>
+          <div className='flex aspect-video items-center justify-center gap-1 rounded-lg bg-black/60 px-4 py-2 text-base font-semibold text-white backdrop-blur-sm md:px-8 md:py-4 md:text-xl'>
             {Math.round(volume * 100)}%
           </div>
         </motion.div>
