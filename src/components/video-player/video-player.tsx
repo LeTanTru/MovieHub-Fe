@@ -123,6 +123,9 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
       ref.current = playerRef.current;
     }
 
+    /*
+    * Set pointer to 'fine' for both touch and mouse devices
+    
     useEffect(() => {
       let rafId: number;
 
@@ -130,7 +133,7 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
         const player = playerRef.current;
         if (!player) return;
         // Set via internal state signal so vidstack's reactive system reflects 'fine'
-        (player.$state as any).pointer?.set?.('fine');
+        player.$state.pointer.set('fine');
       };
 
       const setup = () => {
@@ -147,7 +150,7 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
         return true;
       };
 
-      let el: HTMLElement | null | undefined;
+      let el: HTMLElement | undefined;
       if (!setup()) {
         rafId = requestAnimationFrame(() => {
           setup();
@@ -162,6 +165,7 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
         el?.removeEventListener('media-player-connect', setPointerFine);
       };
     }, []);
+    */
 
     useEffect(() => {
       setShowSkipIntro(false);

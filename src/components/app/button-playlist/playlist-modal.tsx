@@ -89,6 +89,7 @@ export default function PlaylistModal({
       onClose={onClose}
       bodyWrapperClassName='bg-main-background w-75 max-480:w-[90%] max-990:w-100'
       confirmOnClose={isFormChanged}
+      confirmClassName='dark:bg-charade'
     >
       <BaseForm
         schema={playlistSchema}

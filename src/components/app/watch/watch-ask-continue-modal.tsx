@@ -32,7 +32,7 @@ export default function WatchAskContinueModal({
           />
           {/* Modal */}
           <motion.div
-            className='bg-main-background absolute top-1/2 left-1/2 z-20 min-w-80 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-[0px_0px_10px_2px] shadow-black/40'
+            className='bg-charade absolute top-1/2 left-1/2 z-20 min-w-80 -translate-x-1/2 -translate-y-1/2 rounded-lg shadow-[0px_0px_10px_2px] shadow-black/40'
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
