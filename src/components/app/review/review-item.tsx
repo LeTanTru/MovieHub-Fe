@@ -69,7 +69,7 @@ export default function ReviewItem({
   };
 
   return (
-    <div className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'>
+    <div className='max-640:gap-3 max-520:gap-2 relative flex justify-start gap-4'>
       <AvatarField
         src={renderImageUrl(author?.avatarPath)}
         size={45}
@@ -77,8 +77,8 @@ export default function ReviewItem({
         breakpoints={[{ breakpoint: 640, size: 50 }]}
       />
       <div className='grow'>
-        <div className='max-640:gap-1 max-768:gap-1.5 relative flex items-center justify-start gap-2'>
-          <div className='max-640:gap-x-1 flex items-center gap-x-2'>
+        <div className='relative flex items-center justify-start gap-2'>
+          <div className='flex items-center gap-x-2'>
             {kind && (
               <Badge
                 variant='outline'
@@ -91,7 +91,7 @@ export default function ReviewItem({
               </Badge>
             )}
             {ratingInfo && (
-              <div className='bg-dark-conflower-blue max-640:py-1 max-640:px-1.5 max-520:py-1 max-520:px-1.5 flex items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 whitespace-nowrap text-white'>
+              <div className='bg-dark-conflower-blue max-640:py-1 max-640:px-1.5 max-520:py-1 max-520:px-1.5 flex shrink-0 items-center gap-2 rounded-lg py-1.25 pr-2.5 pl-1.25 leading-1 whitespace-nowrap text-white'>
                 <Image
                   src={ratingInfo.icon}
                   alt={ratingInfo.label}
@@ -105,7 +105,7 @@ export default function ReviewItem({
               </div>
             )}
             <div className='max-640:text-[13px] flex items-center'>
-              <span className='max-990:max-w-90 max-800:max-w-80 max-768:max-w-70 max-720:max-w-50 max-640:max-w-45 max-480:max-w-40 max-420:max-w-20 line-clamp-1 block max-w-125 truncate'>
+              <span className='max-990:max-w-100 max-800:max-w-80 max-720:max-w-65 max-640:max-w-55 max-480:max-w-45 max-420:max-w-30 line-clamp-1 block max-w-125 truncate'>
                 {review.author.fullName}
               </span>
               {isAuthor && (
@@ -116,7 +116,7 @@ export default function ReviewItem({
             </div>
 
             <GenderIcon
-              className={cn('max-640:size-3 size-4', {
+              className={cn('max-640:size-3 size-4 shrink-0', {
                 'text-cyan-500': gender === GENDER_MALE,
                 'text-pink-500': gender === GENDER_FEMALE,
                 'text-golden-glow': gender === GENDER_OTHER
@@ -125,9 +125,14 @@ export default function ReviewItem({
           </div>
           <span
             title={convertUTCToLocal(review.createdDate, DATE_TIME_FORMAT)}
-            className='max-640:hidden text-xs whitespace-nowrap text-gray-400'
+            className='max-640:text-[13px] max-520:text-xs whitespace-nowrap text-gray-400'
           >
-            {timeAgo(review.createdDate)}
+            <span className='max-640:hidden block'>
+              {timeAgo(review.createdDate)}
+            </span>
+            <span className='max-640:block hidden'>
+              {timeAgo(review.createdDate, true)}
+            </span>
           </span>
         </div>
         <div
@@ -154,12 +159,6 @@ export default function ReviewItem({
         </div>
         <div className='max-640:mt-3 relative mt-4 flex items-center gap-4'>
           <div className='flex items-center gap-2'>
-            <span
-              title={convertUTCToLocal(review.createdDate, DATE_TIME_FORMAT)}
-              className='max-640:block max-640:min-w-6 max-640:text-[13px] max-520:text-xs hidden text-gray-400'
-            >
-              {timeAgo(review.createdDate, true)}
-            </span>
             <div className='flex items-center gap-4'>
               <div className='max-640:gap-1.5 flex items-center gap-2'>
                 <LikeIcon

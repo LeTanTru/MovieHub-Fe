@@ -164,7 +164,7 @@ export default function ReviewModal({
               <div className='max-640:mt-3 max-480:mt-2 relative mt-4'>
                 <TextAreaField
                   control={form.control}
-                  className='scrollbar-none max-640:text-[13px] block h-auto min-h-8.75 min-h-25 w-full resize-none rounded-md border border-solid bg-transparent px-5 py-4 leading-normal font-normal text-white transition-all duration-200 ease-linear focus:border-white'
+                  className='scrollbar-none max-640:text-[13px] block h-auto min-h-8.75 min-h-25 w-full resize-none rounded-md border border-solid bg-transparent px-5 py-4 text-sm leading-normal font-normal text-white transition-all duration-200 ease-linear focus:border-white'
                   rows={100}
                   cols={3}
                   placeholder='Viết đánh giá của bạn...'

@@ -124,6 +124,46 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
     }
 
     useEffect(() => {
+      let rafId: number;
+
+      const setPointerFine = () => {
+        const player = playerRef.current;
+        if (!player) return;
+        // Set via internal state signal so vidstack's reactive system reflects 'fine'
+        (player.$state as any).pointer?.set?.('fine');
+      };
+
+      const setup = () => {
+        const el = playerRef.current?.el;
+        if (!el) return false;
+
+        // Apply immediately for the current connection
+        setPointerFine();
+
+        // Re-apply every time vidstack reconnects (e.g. modal open/close).
+        // 'media-player-connect' is dispatched at the end of onConnect,
+        // after #onPointerChange has already set pointer to 'coarse'.
+        el.addEventListener('media-player-connect', setPointerFine);
+        return true;
+      };
+
+      let el: HTMLElement | null | undefined;
+      if (!setup()) {
+        rafId = requestAnimationFrame(() => {
+          setup();
+          el = playerRef.current?.el;
+        });
+      } else {
+        el = playerRef.current?.el;
+      }
+
+      return () => {
+        cancelAnimationFrame(rafId);
+        el?.removeEventListener('media-player-connect', setPointerFine);
+      };
+    }, []);
+
+    useEffect(() => {
       setShowSkipIntro(false);
       setShowSkipOutro(false);
     }, [duration, introEnd, introStart, onNextClick, outroStart, skipOutro]);
@@ -188,6 +228,7 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
             ))}
           </MediaProvider>
           <DefaultVideoLayout
+            smallLayoutWhen={false}
             thumbnails={vttUrl}
             icons={defaultLayoutIcons}
             slots={{

@@ -267,7 +267,7 @@ export default function CommentItem({
           </div>
           <span
             title={convertUTCToLocal(comment.createdDate, DATE_TIME_FORMAT)}
-            className='max-640:hidden text-xs whitespace-nowrap text-gray-400'
+            className='max-640:hidden whitespace-nowrap text-gray-400'
           >
             {timeAgo(comment.createdDate)}
           </span>
@@ -283,7 +283,7 @@ export default function CommentItem({
           <Activity visible={comment.createdDate !== comment.modifiedDate}>
             <span
               title={convertUTCToLocal(comment.modifiedDate, DATE_TIME_FORMAT)}
-              className='text-xs whitespace-nowrap text-gray-400'
+              className='max-640:text-[13px] max-520:text-xs whitespace-nowrap text-gray-400'
             >
               (đã chỉnh sửa)
             </span>
@@ -507,12 +507,25 @@ export default function CommentItem({
           )}
         </AnimatePresence>
 
-        <Activity visible={isActiveParent && commentList.length > 0}>
-          <div className='mt-4 flex flex-col gap-4'>
-            {renderChildren(commentList, level + 1, rootId)}
-          </div>
-          {commentLoadMoreLoading && <VerticalBarLoading className='py-10' />}
-        </Activity>
+        <AnimatePresence initial={false}>
+          {isActiveParent && commentList.length > 0 && (
+            <motion.div
+              key='replies-container'
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.1, ease: 'linear' }}
+              style={{ overflow: 'hidden' }}
+            >
+              <div className='mt-4 flex flex-col gap-4'>
+                {renderChildren(commentList, level + 1, rootId)}
+              </div>
+              {commentLoadMoreLoading && (
+                <VerticalBarLoading className='py-10' />
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <Activity visible={comment.totalChildren > 0}>
           {!isActiveParent ? (

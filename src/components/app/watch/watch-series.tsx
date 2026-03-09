@@ -86,7 +86,7 @@ export default function WatchSeries() {
       <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex justify-between gap-8'>
         <div className='relative' ref={dropdownRef}>
           <div
-            className='max-640:border-none max-800:text-xl max-640:text-lg max-520:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-2xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
+            className='max-640:border-none max-1280:text-xl max-640:text-lg max-520:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-2xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
             onClick={handleDropdownToggle}
           >
             <FaBarsStaggered className='text-golden-glow' />

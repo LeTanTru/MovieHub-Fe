@@ -111,7 +111,7 @@ export default function CommentForm({
             <TextAreaField
               control={form.control}
               name='content'
-              className='dark:bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent leading-normal font-normal text-white'
+              className='dark:bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block h-30! min-h-30! w-full resize-none rounded-md! border border-solid border-transparent text-sm leading-normal font-normal text-white'
               placeholder='Viết bình luận'
               maxLength={1000}
             />
