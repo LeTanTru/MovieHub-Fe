@@ -26,6 +26,7 @@ import { useCommentStore, useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import CommentItemSkeleton from './comment-item-skeleton';
 import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function CommentList({
   commentList,
@@ -184,27 +185,37 @@ export default function CommentList({
   ) => {
     return commentList
       .filter((comment) => comment?.id)
-      .map((comment) => (
-        <CommentItem
+      .map((comment, index) => (
+        <motion.div
           key={comment.id}
-          comment={comment}
-          editingComment={editingComment}
-          isAuthenticated={isAuthenticated}
-          isVoteLoading={voteCommentLoading}
-          level={level}
-          openParentIds={openParentIds}
-          replyingComment={replyingComment}
-          rootId={rootId ?? comment.id}
-          userId={profile?.id || ''}
-          voteMap={voteMap}
-          closeReply={closeReply}
-          onDelete={() => handleDeleteComment(comment)}
-          onVote={handleVote}
-          openReply={openReply}
-          renderChildren={renderChildren}
-          setEditingComment={setEditingComment}
-          setOpenParentIds={setOpenParentIds}
-        />
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 0.1,
+            ease: 'linear',
+            delay: index * 0.05
+          }}
+        >
+          <CommentItem
+            comment={comment}
+            editingComment={editingComment}
+            isAuthenticated={isAuthenticated}
+            isVoteLoading={voteCommentLoading}
+            level={level}
+            openParentIds={openParentIds}
+            replyingComment={replyingComment}
+            rootId={rootId ?? comment.id}
+            userId={profile?.id || ''}
+            voteMap={voteMap}
+            closeReply={closeReply}
+            onDelete={() => handleDeleteComment(comment)}
+            onVote={handleVote}
+            openReply={openReply}
+            renderChildren={renderChildren}
+            setEditingComment={setEditingComment}
+            setOpenParentIds={setOpenParentIds}
+          />
+        </motion.div>
       ));
   };
 
@@ -230,20 +241,22 @@ export default function CommentList({
 
   return (
     <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
-      {renderChildren(commentList, 0)}
+      <AnimatePresence initial={false}>
+        {renderChildren(commentList, 0)}
+      </AnimatePresence>
       {hasMore && (
         <div className='flex justify-center'>
-          <Button
-            className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
-            variant='ghost'
-            onClick={onLoadMore}
-          >
-            {isLoadMoreLoading ? (
-              <VerticalBarLoading />
-            ) : (
-              remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`
-            )}
-          </Button>
+          {isLoadMoreLoading ? (
+            <VerticalBarLoading className='py-10' />
+          ) : (
+            <Button
+              className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
+              variant='ghost'
+              onClick={onLoadMore}
+            >
+              {remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`}
+            </Button>
+          )}
         </div>
       )}
     </div>

@@ -27,6 +27,7 @@ import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
 import ReviewItemSkeleton from './review-item-skeleton';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function ReviewList({
   reviewList,
@@ -221,22 +222,34 @@ export default function ReviewList({
 
   return (
     <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
-      {reviewList
-        .filter((review) => review?.id)
-        .map((review) => (
-          <ReviewItem
-            key={review.id}
-            review={review}
-            reviewRatingMaps={reviewRatingMaps}
-            isAuthor={profile?.id === review.author?.id}
-            isAuthenticated={isAuthenticated}
-            isVoteLoading={voteReviewLoading}
-            onLike={handleLikeReview}
-            onDislike={handleDislikeReview}
-            onDelete={handleDeleteReview}
-            voteType={voteMaps[review.id]}
-          />
-        ))}
+      <AnimatePresence initial={false}>
+        {reviewList
+          .filter((review) => review?.id)
+          .map((review, index) => (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.1,
+                ease: 'linear',
+                delay: index * 0.05
+              }}
+              key={review.id}
+            >
+              <ReviewItem
+                review={review}
+                reviewRatingMaps={reviewRatingMaps}
+                isAuthor={profile?.id === review.author?.id}
+                isAuthenticated={isAuthenticated}
+                isVoteLoading={voteReviewLoading}
+                onLike={handleLikeReview}
+                onDislike={handleDislikeReview}
+                onDelete={handleDeleteReview}
+                voteType={voteMaps[review.id]}
+              />
+            </motion.div>
+          ))}
+      </AnimatePresence>
       {hasMore && (
         <div className='flex justify-center'>
           <Button

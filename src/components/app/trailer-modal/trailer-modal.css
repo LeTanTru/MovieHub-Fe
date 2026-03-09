@@ -11,6 +11,10 @@
     max-height: 100vh;
     min-height: auto;
 
+    @media screen and (max-width: 1280px) {
+      width: 95vw;
+    }
+
     & .header-title {
       position: absolute;
       top: 4px;

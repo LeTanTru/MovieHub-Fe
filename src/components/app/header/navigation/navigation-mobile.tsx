@@ -82,7 +82,7 @@ export default function NavigationMobile({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-charade max-768:w-90 absolute top-15 w-110 rounded-lg p-4'
+            className='bg-charade max-768:w-100 max-480:w-[95%] absolute top-15 w-110 rounded-lg p-4'
           >
             {!profile ? (
               <div className='flex justify-center'>
@@ -124,7 +124,7 @@ export default function NavigationMobile({
                       <ListItem
                         key={item.link}
                         className={cn(
-                          'max-768:px-2 flex items-center gap-x-2 gap-y-4 rounded-lg border px-4 py-2',
+                          'max-768:px-2 max-480:text-[13px] flex items-center gap-x-2 gap-y-4 rounded-lg border px-4 py-2',
                           {
                             'text-golden-glow border-golden-glow':
                               pathname === item.link
@@ -142,12 +142,12 @@ export default function NavigationMobile({
                 <Separator />
               </>
             )}
-            <List className='mt-4 grid w-full grid-cols-2 gap-2'>
+            <List className='max-480:mt-1 mt-4 grid w-full grid-cols-2 gap-2'>
               {navigationList.map((item) =>
                 item.submenu ? (
                   <ListItem
                     key={item.label}
-                    className='relative flex cursor-pointer gap-2 p-2 select-none'
+                    className='max-480:text-[13px] relative flex cursor-pointer gap-2 p-2 select-none'
                     onClick={() =>
                       setOpenSub((prev) =>
                         prev === item.label ? null : item.label
@@ -177,7 +177,7 @@ export default function NavigationMobile({
                             <Link
                               key={sub.label}
                               href={sub.href as string}
-                              className='text-muted-foreground hover:text-primary flex cursor-pointer items-center gap-2 py-2 whitespace-nowrap'
+                              className='text-muted-foreground hover:text-primary max-480:text-[13px] flex cursor-pointer items-center gap-2 py-2 whitespace-nowrap'
                             >
                               {sub.icon && <sub.icon className='size-4' />}
                               <span className='line-clamp-1 font-medium'>
@@ -191,10 +191,13 @@ export default function NavigationMobile({
                   </ListItem>
                 ) : (
                   <ListItem className='p-2' key={item.label}>
-                    <Link href={item.href as string} className='relative'>
+                    <Link
+                      href={item.href as string}
+                      className='max-480:text-[13px] relative'
+                    >
                       {item.label}
                       {item.isNew && (
-                        <div className='bg-golden-glow text-main-background absolute -top-4 -right-7 rounded px-1 text-xs'>
+                        <div className='bg-golden-glow text-main-background absolute -top-3 -right-7 rounded px-1 text-xs'>
                           Mới
                         </div>
                       )}
