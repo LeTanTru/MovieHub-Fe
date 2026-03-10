@@ -18,7 +18,7 @@ export default function GoogleCallback() {
 
       window.close();
     } else {
-      navigate('/');
+      navigate.push('/');
     }
   }, [callbackUrl, navigate]);
 

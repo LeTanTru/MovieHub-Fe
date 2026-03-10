@@ -1,35 +1,44 @@
 'use client';
 
 import { caption } from '@/assets';
-import { useQueryParams } from '@/hooks';
+import { useNavigate, useQueryParams } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { renderImageUrl } from '@/utils';
+import { notify, renderImageUrl } from '@/utils';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useShallow } from 'zustand/shallow';
 
 export default function WatchSingle() {
+  const navigate = useNavigate();
   const { searchParams } = useQueryParams<{ season: string }>();
-
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
   const seasons = movie?.seasons || [];
 
+  const handleSeasonClick = (season: (typeof seasons)[0]) => {
+    if (season.label === searchParams.season) {
+      notify.info('Bản này đang được phát');
+      return;
+    }
+    navigate.replace(
+      `${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`
+    );
+  };
+
   return (
     <>
-      <h3 className='max-1120:mb-4 max-800:text-xl max-640:text-lg max-640:mb-3 max-520:text-base mb-6 text-2xl font-semibold'>
+      <h3 className='max-1120:mb-4 max-640:text-lg max-480:text-base max-640:mb-3 mb-6 text-xl font-semibold'>
         Các bản chiếu
       </h3>
       {movie && seasons && seasons.length > 0 ? (
         <div className='max-990:grid-cols-2 max-520:grid-cols-1 grid grid-cols-3 gap-4'>
           {seasons.map((season) => (
-            <Link
-              href={`${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`}
+            <button
+              onClick={() => handleSeasonClick(season)}
               key={season.id}
               className={cn(
-                'bg-mid-gray relative w-full max-w-137.5 overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1',
+                'bg-mid-gray relative w-full max-w-137.5 cursor-pointer overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1',
                 {
                   'border-golden-glow border-2':
                     season.label === searchParams.season
@@ -45,7 +54,7 @@ export default function WatchSingle() {
                   sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
                 />
               </div>
-              <div className='max-990:w-7/10 relative z-2 flex w-9/10 flex-col justify-center justify-start gap-4 p-6'>
+              <div className='max-990:w-7/10 relative z-2 flex w-9/10 flex-col items-start justify-center gap-4 p-6'>
                 <div className='inline-flex items-center gap-2'>
                   <Image
                     src={caption}
@@ -54,14 +63,14 @@ export default function WatchSingle() {
                   />
                   <span>Phụ đề</span>
                 </div>
-                <div className='text-base leading-normal font-semibold'>
+                <span className='text-base leading-normal font-semibold'>
                   {season?.title}
-                </div>
+                </span>
                 <div className='inline-flex min-h-7.5 w-fit items-center justify-center rounded-sm bg-white px-3 py-2 text-xs font-medium text-black transition-all duration-200 ease-linear hover:opacity-80'>
                   Xem bản này
                 </div>
               </div>
-            </Link>
+            </button>
           ))}
         </div>
       ) : (

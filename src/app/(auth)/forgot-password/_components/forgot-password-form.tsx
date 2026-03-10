@@ -242,7 +242,7 @@ export default function ForgotPasswordForm() {
             if (res.result) {
               notify.success('Đặt lại mật khẩu thành công');
               handleClearForgotPasswordData();
-              navigate(route.login.path);
+              navigate.push(route.login.path);
             } else {
               const errorCode = res.code;
               if (errorCode) {

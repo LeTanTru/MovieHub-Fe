@@ -87,7 +87,7 @@ export default function NavigationMobile({
             {!profile ? (
               <div className='flex justify-center'>
                 <Button
-                  onClick={() => navigate(route.login.path)}
+                  onClick={() => navigate.push(route.login.path)}
                   className='w-full rounded-full'
                 >
                   Đăng nhập

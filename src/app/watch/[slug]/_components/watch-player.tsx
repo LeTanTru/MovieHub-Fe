@@ -9,7 +9,7 @@ import {
   MOVIE_TYPE_SINGLE,
   VIDEO_SOURCE_TYPE_INTERNAL
 } from '@/constants';
-import { useAuth, useDisclosure, useQueryParams } from '@/hooks';
+import { useAuth, useDisclosure, useNavigate, useQueryParams } from '@/hooks';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import {
@@ -22,7 +22,6 @@ import {
   isTabletDevice
 } from '@/utils';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { FaChevronLeft } from 'react-icons/fa6';
 import { Button } from '@/components/form';
@@ -52,7 +51,7 @@ import {
 import envConfig from '@/config';
 
 export default function WatchPlayer() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
@@ -242,7 +241,7 @@ export default function WatchPlayer() {
 
     if (nextEpisode && season && movie) {
       const nextUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${nextEpisode.label}`;
-      router.push(nextUrl);
+      navigate.replace(nextUrl);
     }
   }, [
     autoNextEpisode,
@@ -252,8 +251,7 @@ export default function WatchPlayer() {
     selectedEpisode,
     currentEpisodeIndex,
     episodes,
-    movie,
-    router
+    movie
   ]);
 
   // Handle navigate to previous episode
@@ -265,7 +263,7 @@ export default function WatchPlayer() {
 
     if (prevEpisode) {
       const prevUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${prevEpisode.label}`;
-      router.push(prevUrl);
+      navigate.replace(prevUrl);
     }
   }, [
     isSeries,
@@ -274,7 +272,7 @@ export default function WatchPlayer() {
     movie,
     currentEpisodeIndex,
     episodes,
-    router
+    navigate
   ]);
 
   // Handle navigate to next episode
@@ -286,7 +284,7 @@ export default function WatchPlayer() {
 
     if (nextEpisode) {
       const nextUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${nextEpisode.label}`;
-      router.push(nextUrl);
+      navigate.replace(nextUrl);
     }
   }, [
     isSeries,
@@ -295,7 +293,7 @@ export default function WatchPlayer() {
     movie,
     currentEpisodeIndex,
     episodes,
-    router
+    navigate
   ]);
 
   // Track when user leaves page (beforeunload, navigation, etc)

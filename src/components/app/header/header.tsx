@@ -35,7 +35,7 @@ export default function Header() {
   }, []);
 
   const handleLogin = () => {
-    navigate(route.login.path);
+    navigate.push(route.login.path);
   };
 
   return (

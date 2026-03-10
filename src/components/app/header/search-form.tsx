@@ -138,7 +138,7 @@ export default function SearchForm({
   const onSubmit = (values: SearchType) => {
     if (!values.keyword || values.keyword.trim() === '' || isSearchPage) return;
 
-    navigate(
+    navigate.push(
       `${route.search.path}?${serializeParams({
         keyword: values.keyword
       })}`

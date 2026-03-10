@@ -162,7 +162,7 @@ export default function VerifyOtpForm() {
       storageKeys.RESEND_OTP_TIME,
       storageKeys.LAST_RESEND_TIME
     ]);
-    navigate(route.register.path);
+    navigate.back();
   };
 
   const handleClearData = () => {
@@ -183,7 +183,7 @@ export default function VerifyOtpForm() {
           notify.success('Xác thực OTP thành công');
           removeData(storageKeys.EMAIL);
           handleClearData();
-          navigate(route.login.path);
+          navigate.push(route.login.path);
         } else {
           const errorCode = res.code;
           if (errorCode) {
