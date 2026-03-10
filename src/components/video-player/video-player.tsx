@@ -246,12 +246,16 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
               captionButton: <CaptionButton />,
               beforeSettingsMenu: (
                 <>
-                  {prev && onPrevClick && (
-                    <PreviousButton onClick={onPrevClick} />
-                  )}
-                  {next && onNextClick && <NextButton onClick={onNextClick} />}
-                  <SeekBackwardButton />
-                  <SeekForwardButton />
+                  <div className='max-640:hidden contents'>
+                    {prev && onPrevClick && (
+                      <PreviousButton onClick={onPrevClick} />
+                    )}
+                    {next && onNextClick && (
+                      <NextButton onClick={onNextClick} />
+                    )}
+                    <SeekBackwardButton />
+                    <SeekForwardButton />
+                  </div>
                 </>
               ),
               googleCastButton: null,
