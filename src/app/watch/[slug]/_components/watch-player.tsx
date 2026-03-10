@@ -468,7 +468,7 @@ export default function WatchPlayer() {
                   autoPlay={autoPlay}
                   slots={{
                     topControlsGroupStart: !isFullscreen ? (
-                      <span className='text-base font-medium'>
+                      <span className='max-800:hidden text-base font-medium'>
                         {videoTitle}
                       </span>
                     ) : null,
@@ -477,7 +477,7 @@ export default function WatchPlayer() {
                         <Button
                           variant='ghost'
                           className={cn(
-                            `dark:hover:text-golden-glow font-medium dark:hover:bg-transparent`,
+                            `dark:hover:text-golden-glow max-800:hidden font-medium dark:hover:bg-transparent`,
                             {
                               'dark:text-golden-glow': isEpisodeListOpen
                             }
@@ -508,7 +508,6 @@ export default function WatchPlayer() {
                 <WatchAskContinueModal
                   opened={isShowContinueModal}
                   lastWatchedSeconds={lastWatchedSeconds}
-                  onClose={closeContinueModal}
                   onContinueWatching={handleContinueWatching}
                   onStartOver={handleStartOver}
                 />
