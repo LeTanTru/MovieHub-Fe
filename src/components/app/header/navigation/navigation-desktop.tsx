@@ -109,7 +109,7 @@ export default function NavigationDesktop({
               className='hover:text-golden-glow relative p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear'
             >
               {item.isNew && (
-                <div className='bg-golden-glow text-main-background absolute -top-2.5 -right-2 rounded p-0.5 text-xs'>
+                <div className='bg-golden-glow text-main-background absolute -top-2.5 -right-4 rounded p-0.5 text-xs'>
                   Mới
                 </div>
               )}
