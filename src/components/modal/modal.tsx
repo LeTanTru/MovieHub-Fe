@@ -8,6 +8,7 @@ import { useIsMounted } from '@/hooks';
 import { X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/form';
 import { Activity } from '@/components/activity';
+import { isMobileDevice } from '@/utils';
 
 export type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   children: ReactNode;
@@ -86,9 +87,12 @@ export default function Modal({
 
   useEffect(() => {
     if (!open) return;
-    document.body.classList.add('body-lock');
+
+    if (isMobileDevice()) document.body.classList.add('body-lock', 'mobile');
+    else document.body.classList.add('body-lock');
     return () => {
       document.body.classList.remove('body-lock');
+      document.body.classList.remove('body-lock', 'mobile');
     };
   }, [open]);
 

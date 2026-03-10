@@ -19,6 +19,7 @@ import {
 } from 'react';
 import { useImageStatus, useIsMounted } from '@/hooks';
 import { createPortal } from 'react-dom';
+import { isMobileDevice } from '@/utils';
 
 type ImageFieldProps = {
   src?: string;
@@ -143,10 +144,11 @@ export default function ImageField({
   useEffect(() => {
     if (!open) return;
 
-    document.body.classList.add('body-lock');
-
+    if (isMobileDevice()) document.body.classList.add('body-lock', 'mobile');
+    else document.body.classList.add('body-lock');
     return () => {
       document.body.classList.remove('body-lock');
+      document.body.classList.remove('body-lock', 'mobile');
     };
   }, [open]);
 

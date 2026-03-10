@@ -242,11 +242,11 @@
     backdrop-filter: blur(15px);
   }
 
-  .body-lock {
+  .body-lock:not(.mobile) {
     overflow: hidden;
     margin-right: 15px;
 
-    .header {
+    & .header {
       padding-right: 15px;
     }
   }

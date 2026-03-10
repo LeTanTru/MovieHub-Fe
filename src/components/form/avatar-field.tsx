@@ -17,6 +17,7 @@ import {
 import { defaultAvatar } from '@/assets';
 import { useImageStatus, useIsMounted } from '@/hooks';
 import { createPortal } from 'react-dom';
+import { isMobileDevice } from '@/utils';
 
 type AvatarFieldProps = {
   size?: number;
@@ -129,10 +130,11 @@ export default function AvatarField({
   useEffect(() => {
     if (!open) return;
 
-    document.body.classList.add('body-lock');
-
+    if (isMobileDevice()) document.body.classList.add('body-lock', 'mobile');
+    else document.body.classList.add('body-lock');
     return () => {
       document.body.classList.remove('body-lock');
+      document.body.classList.remove('body-lock', 'mobile');
     };
   }, [open]);
 
