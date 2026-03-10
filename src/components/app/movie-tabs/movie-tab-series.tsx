@@ -1,7 +1,7 @@
 'use client';
 
 import { ButtonToggle } from '@/components/app/button-toggle';
-import { useClickOutside } from '@/hooks';
+import { useClickOutside, useNavigate } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
@@ -9,7 +9,6 @@ import { MetadataType, MovieResType } from '@/types';
 import { parseJSON, renderImageUrl } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
@@ -18,6 +17,7 @@ import { ScheduleBadge } from '@/components/app/schedule-badge';
 export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
   const ANIMATION_DURATION = 300;
 
+  const navigate = useNavigate();
   const [toggle, setToggle] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -73,6 +73,12 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
     }
   }, [latestSeason, setSelectedSeason]);
 
+  const handleEpisodeClick = (episode: (typeof episodes)[0]) => {
+    navigate.push(
+      `${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`
+    );
+  };
+
   return (
     <>
       {/* <ScheduleBadge /> */}
@@ -80,7 +86,7 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
       <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex justify-between gap-8'>
         <div className='relative' ref={dropdownRef}>
           <div
-            className='max-640:border-none max-1280:text-xl max-640:text-lg max-520:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-2xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
+            className='max-640:border-none max-640:text-lg max-480:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
             onClick={handleDropdownToggle}
           >
             <FaBarsStaggered className='text-golden-glow' />
@@ -158,10 +164,10 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
             }}
             className='translate-z-0 will-change-transform'
           >
-            <Link
-              href={`${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`}
-              className={cn('group block', {
-                'bg-charade hover:text-golden-glow max-640:h-10.5 flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
+            <button
+              onClick={() => handleEpisodeClick(episode)}
+              className={cn('group block w-full', {
+                'bg-charade hover:text-golden-glow max-640:h-10.5 flex h-12.5 w-full cursor-pointer items-center justify-center gap-2 rounded-sm px-[3.5px]':
                   toggle
               })}
             >
@@ -198,7 +204,7 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
                   Tập {index + 1}
                 </div>
               </div>
-            </Link>
+            </button>
           </motion.div>
         ))}
       </motion.div>

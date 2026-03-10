@@ -4,6 +4,7 @@ import { NoData } from '@/components/no-data';
 import { useCollectionTopicListQuery } from '@/queries';
 import { MAX_PAGE_SIZE } from '@/constants';
 import { TopicItemSkeleton, TopicItem } from '@/components/app/topic-item';
+import { useRef } from 'react';
 
 export default function TopicList() {
   const skeletonCount = 14;
@@ -16,7 +17,11 @@ export default function TopicList() {
 
   const topicList = topicListData?.data?.content || [];
 
-  const isSwitched = Math.random() < 0.5;
+  const isSwitchedRef = useRef<boolean | null>(null);
+  if (isSwitchedRef.current === null) {
+    isSwitchedRef.current = Math.random() < 0.5;
+  }
+  const isSwitched = isSwitchedRef.current;
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>

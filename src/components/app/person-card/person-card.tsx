@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Activity } from '@/components/activity';
 import { motion, Transition, Variants } from 'framer-motion';
 import { useQueryParams } from '@/hooks';
+import { EMPTY_OBJECT } from '@/constants';
 
 type Dir = 'up' | 'down';
 
@@ -37,7 +38,7 @@ export default function PersonCard({
   willNavigate,
   dir = 'up',
   onDelete,
-  params = {}
+  params = EMPTY_OBJECT
 }: {
   person: PersonResType;
   showFullName?: boolean;
@@ -121,6 +122,7 @@ export default function PersonCard({
       </div>
       {onDelete && (
         <div
+          role='button'
           className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
           onClick={() => onDelete(person.id)}
           aria-label='Remove from favourite'

@@ -4,7 +4,7 @@ import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
 import { AnimatePresence, motion } from 'framer-motion';
 import { BaseForm } from '@/components/form/base-form';
 import { cn } from '@/lib';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { FormEvent } from 'react';
 import { InputField } from '@/components/form';
 import { MetadataType, MovieResType, SearchType } from '@/types';
@@ -138,7 +138,7 @@ export default function SearchForm({
   const onSubmit = (values: SearchType) => {
     if (!values.keyword || values.keyword.trim() === '' || isSearchPage) return;
 
-    navigate(
+    navigate.push(
       `${route.search.path}?${serializeParams({
         keyword: values.keyword
       })}`

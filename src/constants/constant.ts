@@ -93,3 +93,6 @@ export const STYLE_CINEMA = 3;
 export const STYLE_COMING_SOON = 4;
 export const STYLE_LATEST_BY_COUNTRY = 5;
 export const STYLE_ANIME = 6;
+
+export const EMPTY_OBJECT = {};
+export const EMPTY_ARRAY = [];

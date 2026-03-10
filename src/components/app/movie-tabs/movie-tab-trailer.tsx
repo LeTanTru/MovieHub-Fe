@@ -87,7 +87,7 @@ export default function MovieTabTrailer({ direction }: { direction: number }) {
     <>
       <MotionWrapper uniqueKey={MOVIE_TAB_TRAILER} direction={direction}>
         <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex justify-between'>
-          <h3 className='max-800:text-xl max-640:text-lg max-520:text-base text-2xl leading-normal font-semibold'>
+          <h3 className='max-640:text-lg max-480:text-base text-xl font-semibold'>
             Trailer phim {movie.title}
           </h3>
           <div className='grow'></div>

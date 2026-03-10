@@ -1,9 +1,10 @@
 'use client';
 
+import { useNavigate } from '@/hooks';
 import { useProfileQuery } from '@/queries';
 import { useAppLoadingStore, useAuthStore } from '@/store';
 import { getAccessTokenFromLocalStorage, getData, removeDatas } from '@/utils';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function AppProvider({
@@ -11,7 +12,7 @@ export default function AppProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const pathname = usePathname();
   const accessToken = getAccessTokenFromLocalStorage();
   const setProfile = useAuthStore((s) => s.setProfile);
@@ -39,10 +40,10 @@ export default function AppProvider({
     if (pathname !== '/intro') {
       const hasValidAccess = checkAccessExpiry();
       if (!hasValidAccess) {
-        router.replace('/intro');
+        navigate.replace('/intro');
       }
     }
-  }, [pathname, router]);
+  }, [pathname, navigate]);
 
   useEffect(() => {
     const hasScroll = document.body.scrollHeight > window.innerHeight;

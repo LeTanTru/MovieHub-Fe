@@ -4,6 +4,7 @@ import { useCollectionTopicListQuery } from '@/queries';
 import { MAX_PAGE_SIZE } from '@/constants';
 import { TopicItem, TopicItemMore } from '@/components/app/topic-item';
 import { VerticalBarLoading } from '@/components/loading';
+import { useRef } from 'react';
 
 export default function TopicList() {
   const { data: topicListData, isLoading: topicListLoading } =
@@ -15,7 +16,11 @@ export default function TopicList() {
   const topicList = topicListData?.data?.content?.slice(0, 6) || [];
   const totalElements = topicListData?.data?.totalElements || 0;
 
-  const isSwitched = Math.random() < 0.5;
+  const isSwitchedRef = useRef<boolean | null>(null);
+  if (isSwitchedRef.current === null) {
+    isSwitchedRef.current = Math.random() < 0.5;
+  }
+  const isSwitched = isSwitchedRef.current;
 
   const moreCount = totalElements - topicList.length;
 

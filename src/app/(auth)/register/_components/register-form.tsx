@@ -44,7 +44,7 @@ export default function RegisterForm() {
       if (res.result) {
         notify.success('Đăng ký thành công');
         setData(storageKeys.EMAIL, values.email);
-        navigate(route.verifyOtp.path);
+        navigate.push(route.verifyOtp.path);
       } else {
         const errorCode = res.code;
         if (errorCode) {

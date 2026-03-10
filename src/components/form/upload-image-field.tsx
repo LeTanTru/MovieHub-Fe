@@ -442,8 +442,8 @@ export default function UploadImageField<T extends FieldValues>({
               <div className='flex w-full justify-between'>
                 <div className='flex items-center gap-4'>
                   <label
-                    id='crop-image'
                     className='flex cursor-pointer items-center gap-2'
+                    htmlFor='crop-image'
                   >
                     <Checkbox
                       id='crop-image'
@@ -463,8 +463,8 @@ export default function UploadImageField<T extends FieldValues>({
                   </label>
                   {originalSize && (
                     <label
-                      id='keep-original-size'
                       className='flex cursor-pointer items-center gap-2'
+                      htmlFor='keep-original-size'
                     >
                       <Checkbox
                         id='keep-original-size'

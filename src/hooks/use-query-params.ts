@@ -1,9 +1,10 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import useNavigate from '@/hooks/use-navigate';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const useQueryParams = <S extends Record<string, any>>() => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -26,14 +27,14 @@ const useQueryParams = <S extends Record<string, any>>() => {
       if (v !== null) sortedParams.set(k, v);
     });
 
-    router.push(
+    navigate.push(
       `${pathname}?${serializeParams(Object.fromEntries(sortedParams.entries()) as Record<string, any>)}`
     );
   };
 
   const setQueryParams = (newParams: Partial<S>) => {
     const queryString = serializeParams(newParams as Record<string, any>);
-    router.push(queryString ? `${pathname}?${queryString}` : pathname);
+    navigate.push(queryString ? `${pathname}?${queryString}` : pathname);
   };
 
   const serializeParams = (obj: Record<string, any>) => {

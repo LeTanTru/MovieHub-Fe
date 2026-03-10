@@ -219,6 +219,7 @@ export default function ImageField({
                 alt={alt}
                 fill
                 className={cn('rounded object-cover', imageClassName)}
+                sizes='(max-width: 768px) 100vw, 50vw'
                 unoptimized
               />
             </AspectRatio>
@@ -328,6 +329,7 @@ export default function ImageField({
                             transform: `scale(${scale})`,
                             transformOrigin: 'center center'
                           }}
+                          sizes='(max-width: 768px) 100vw, 50vw'
                           unoptimized
                         />
                       </div>

@@ -20,7 +20,7 @@ import {
   MAX_PLAYLIST_COUNT
 } from '@/constants';
 import { cn } from '@/lib';
-import { debounce } from 'lodash';
+import debounce from 'lodash/debounce';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
 import { PlaylistItemBodyType } from '@/types';
@@ -174,9 +174,9 @@ export default function ButtonAddToPlaylist({
       <AnimatePresence mode='wait'>
         {opened && (
           <motion.div
-            initial={{ opacity: 0, scale: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.15, ease: 'linear' }}
             style={{ transformOrigin: '50% 0%' }}
             className='absolute top-full left-1/2 z-10 flex w-50 -translate-x-1/2 flex-col gap-4 rounded bg-white p-4 shadow-lg shadow-black/50'

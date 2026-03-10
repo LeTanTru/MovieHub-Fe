@@ -16,6 +16,7 @@ import {
   renderImageUrl,
   sanitizeText
 } from '@/utils';
+import Image from 'next/image';
 import Link from 'next/link';
 
 type MovieItemProps = {
@@ -67,10 +68,16 @@ export default function AnimeItem({
       <Link href={movieLink} className='slide-url'></Link>
       <div className='cover-fade'>
         <div className='cover-image'>
-          <img
-            src={renderImageUrl(movie.thumbnailUrl)}
-            alt={`${movie.title} - ${movie.originalTitle}`}
-          />
+          <div className='cover-image'>
+            <Image
+              src={renderImageUrl(movie.thumbnailUrl)}
+              alt={`${movie.title} - ${movie.originalTitle}`}
+              fill
+              className='object-cover'
+              sizes='(max-width: 768px) 100vw, 50vw'
+              unoptimized
+            />
+          </div>
         </div>
       </div>
       <div
@@ -83,10 +90,13 @@ export default function AnimeItem({
           <div className='media-item'>
             <div className='media-title-image'>
               <Link title={movie.title} href={movieLink}>
-                <img
+                <Image
                   src={renderImageUrl(movie.imageTitleUrl)}
                   alt={movie.title}
                   className='bg-transparent'
+                  width={200}
+                  height={80}
+                  unoptimized
                 />
               </Link>
             </div>

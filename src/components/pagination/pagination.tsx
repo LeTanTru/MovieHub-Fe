@@ -166,7 +166,7 @@ export default function Pagination({
       {pages.map((p, i) =>
         p === '...' ? (
           <span
-            key={`dots-${i}`}
+            key={`dots-${i === 1 ? 'start' : 'end'}`}
             className='text-muted-foreground flex h-10 w-10 items-center justify-center'
           >
             …

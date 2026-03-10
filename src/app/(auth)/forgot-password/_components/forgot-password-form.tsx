@@ -102,6 +102,12 @@ export default function ForgotPasswordForm() {
     }
   }, []);
 
+  const setResendDataToLS = (count: number, timestamp: number) => {
+    // count: store how many times which resend has been done
+    // timestamp: store the time which resend has been done
+    setData(storageKeys.RESEND_OTP_TIME, JSON.stringify({ count, timestamp }));
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
@@ -124,12 +130,6 @@ export default function ForgotPasswordForm() {
 
     return () => clearInterval(interval);
   }, [resendData.count, lastResendTime]);
-
-  const setResendDataToLS = (count: number, timestamp: number) => {
-    // count: store how many times which resend has been done
-    // timestamp: store the time which resend has been done
-    setData(storageKeys.RESEND_OTP_TIME, JSON.stringify({ count, timestamp }));
-  };
 
   const handleResendOtp = async () => {
     const email = getData(storageKeys.EMAIL);
@@ -242,7 +242,7 @@ export default function ForgotPasswordForm() {
             if (res.result) {
               notify.success('Đặt lại mật khẩu thành công');
               handleClearForgotPasswordData();
-              navigate(route.login.path);
+              navigate.push(route.login.path);
             } else {
               const errorCode = res.code;
               if (errorCode) {

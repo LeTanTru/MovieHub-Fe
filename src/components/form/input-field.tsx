@@ -22,6 +22,7 @@ import {
 } from 'react';
 import { Check } from 'lucide-react';
 import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
+import { EMPTY_ARRAY } from '@/constants';
 
 type InputFieldProps<T extends FieldValues> = {
   control: Control<T>;
@@ -61,7 +62,7 @@ function InputFieldInner<T extends FieldValues>(
     readOnly = false,
     prefixIcon,
     suffixIcon,
-    options = [],
+    options = EMPTY_ARRAY,
     allowCustomInput = true,
     onOptionSelect,
     ...inputProps

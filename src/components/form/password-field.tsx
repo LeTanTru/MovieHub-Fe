@@ -139,7 +139,6 @@ export default function PasswordField<T extends FieldValues>({
                   type={isVisible ? 'text' : type}
                   disabled={disabled}
                   readOnly={readOnly}
-                  autoFocus={false}
                   autoComplete='off'
                   {...field}
                   value={value}
