@@ -5,7 +5,6 @@ import { storageKeys } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useLogoutMutation, useRemoveCookieServerMutation } from '@/queries';
-import { route } from '@/routes';
 import { useAuthStore } from '@/store';
 import { notify, removeDatas } from '@/utils';
 import { LogOutIcon } from 'lucide-react';
@@ -33,7 +32,7 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
         setProfile(null);
         notify.success('Đăng xuất thành công');
         setTimeout(() => {
-          window.location.href = route.home.path;
+          window.location.reload();
         }, 500);
       } else {
         notify.error('Đăng xuất thất bại');

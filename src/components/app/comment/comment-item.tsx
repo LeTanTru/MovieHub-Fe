@@ -296,6 +296,7 @@ export default function CommentItem({
         </div>
 
         <div
+          role='button'
           className={cn(
             'max-640:text-[13px] relative mt-2 break-all text-white',
             {

@@ -251,7 +251,8 @@ export default function WatchPlayer() {
     selectedEpisode,
     currentEpisodeIndex,
     episodes,
-    movie
+    movie,
+    navigate
   ]);
 
   // Handle navigate to previous episode
