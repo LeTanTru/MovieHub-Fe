@@ -17,7 +17,9 @@ import {
   renderVideoUrl,
   renderVttUrl,
   setData,
-  getData
+  getData,
+  isMobileDevice,
+  isTabletDevice
 } from '@/utils';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -490,7 +492,11 @@ export default function WatchPlayer() {
                       ) : null
                   }}
                   volume={
-                    envConfig.NEXT_PUBLIC_NODE_ENV === 'development' ? 0 : 0.5
+                    envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
+                      ? 0
+                      : isMobileDevice() || isTabletDevice()
+                        ? 1
+                        : 0.5
                   }
                   prev={isSeries && !isFirstEpisode}
                   next={isSeries && !isLastEpisode}
