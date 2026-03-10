@@ -336,7 +336,12 @@ export default function WatchPlayer() {
   }, [movieItemId, showContinueModal, watchHistories]);
 
   useEffect(() => {
-    setAutoPlay(!isAuthenticated || lastWatchedSeconds === 0);
+    if (!isAuthenticated) {
+      setAutoPlay(true);
+      return;
+    }
+
+    setAutoPlay(lastWatchedSeconds === 0);
   }, [isAuthenticated, lastWatchedSeconds]);
 
   const handleContinueWatching = () => {
