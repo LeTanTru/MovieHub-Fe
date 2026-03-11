@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useImperativeHandle } from 'react';
-import { motion, useAnimate } from 'framer-motion';
+import { domAnimation, LazyMotion, m, useAnimate } from 'framer-motion';
 import { FaCircleInfo } from 'react-icons/fa6';
 import { AnimatedIconHandle, AnimatedIconProps } from '@/types';
 
@@ -47,22 +47,24 @@ const InfoIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     };
 
     return (
-      <motion.div
-        ref={scope}
-        onClick={handleClick}
-        className={`${className} cursor-pointer`}
-        style={{
-          transformOrigin: 'center',
-          fontSize: size,
-          color,
-          cursor: 'pointer',
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <FaCircleInfo className={iconClassName} />
-      </motion.div>
+      <LazyMotion features={domAnimation}>
+        <m.div
+          ref={scope}
+          onClick={handleClick}
+          className={`${className} cursor-pointer`}
+          style={{
+            transformOrigin: 'center',
+            fontSize: size,
+            color,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <FaCircleInfo className={iconClassName} />
+        </m.div>
+      </LazyMotion>
     );
   }
 );

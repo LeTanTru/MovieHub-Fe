@@ -26,7 +26,7 @@ import { useCommentStore, useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import CommentItemSkeleton from './comment-item-skeleton';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 
 export default function CommentList({
   commentList,
@@ -186,7 +186,7 @@ export default function CommentList({
     return commentList
       .filter((comment) => comment?.id)
       .map((comment, index) => (
-        <motion.div
+        <m.div
           key={comment.id}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -215,7 +215,7 @@ export default function CommentList({
             setEditingComment={setEditingComment}
             setOpenParentIds={setOpenParentIds}
           />
-        </motion.div>
+        </m.div>
       ));
   };
 
@@ -240,25 +240,27 @@ export default function CommentList({
     );
 
   return (
-    <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
-      <AnimatePresence initial={false}>
-        {renderChildren(commentList, 0)}
-      </AnimatePresence>
-      {hasMore && (
-        <div className='flex justify-center'>
-          {isLoadMoreLoading ? (
-            <VerticalBarLoading className='py-10' />
-          ) : (
-            <Button
-              className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
-              variant='ghost'
-              onClick={onLoadMore}
-            >
-              {remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`}
-            </Button>
-          )}
-        </div>
-      )}
-    </div>
+    <LazyMotion features={domAnimation}>
+      <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
+        <AnimatePresence initial={false}>
+          {renderChildren(commentList, 0)}
+        </AnimatePresence>
+        {hasMore && (
+          <div className='flex justify-center'>
+            {isLoadMoreLoading ? (
+              <VerticalBarLoading className='py-10' />
+            ) : (
+              <Button
+                className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
+                variant='ghost'
+                onClick={onLoadMore}
+              >
+                {remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`}
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+    </LazyMotion>
   );
 }

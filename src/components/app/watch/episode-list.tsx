@@ -6,7 +6,7 @@ import { EpisodeResType, SeasonResType } from '@/types';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 import { FaBarsStaggered, FaCaretDown } from 'react-icons/fa6';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { useClickOutside, useQueryParams } from '@/hooks';
 import Image from 'next/image';
 import { renderImageUrl } from '@/utils';
@@ -132,46 +132,48 @@ export default function EpisodeList({
             Phần {selectedSeason}
             <FaCaretDown />
           </div>
-          <AnimatePresence>
-            {showDropdown && (
-              <motion.div
-                initial={{
-                  opacity: 0.5,
-                  scale: 0.8,
-                  transformOrigin: '30% 0%'
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1
-                }}
-                exit={{
-                  opacity: 0.5,
-                  scale: 0.8
-                }}
-                transition={{ duration: 0.05, ease: 'linear' }}
-                className='absolute top-12 z-10 min-w-40 overflow-hidden rounded-sm bg-white/10 py-2 shadow-[0px_0px_10px_2px_var(--gray-200)] backdrop-blur-xs'
-              >
-                {seasonIndices.map((seasonIndex) => (
-                  <div
-                    key={`season-${seasonIndex}`}
-                    className={cn(
-                      'flex cursor-pointer items-center gap-2 px-4 py-2 leading-6 text-white transition-all duration-200 ease-linear hover:bg-white/20',
-                      {
-                        'text-golden-glow bg-white/25 font-semibold':
-                          seasonIndex.toString() === selectedSeason.toString()
-                      }
-                    )}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleSelectSeason(seasonIndex);
-                    }}
-                  >
-                    Phần {seasonIndex}
-                  </div>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <LazyMotion features={domAnimation}>
+            <AnimatePresence>
+              {showDropdown && (
+                <m.div
+                  initial={{
+                    opacity: 0.5,
+                    scale: 0.8,
+                    transformOrigin: '30% 0%'
+                  }}
+                  animate={{
+                    opacity: 1,
+                    scale: 1
+                  }}
+                  exit={{
+                    opacity: 0.5,
+                    scale: 0.8
+                  }}
+                  transition={{ duration: 0.05, ease: 'linear' }}
+                  className='absolute top-12 z-10 min-w-40 overflow-hidden rounded-sm bg-white/10 py-2 shadow-[0px_0px_10px_2px_var(--gray-200)] backdrop-blur-xs'
+                >
+                  {seasonIndices.map((seasonIndex) => (
+                    <div
+                      key={`season-${seasonIndex}`}
+                      className={cn(
+                        'flex cursor-pointer items-center gap-2 px-4 py-2 leading-6 text-white transition-all duration-200 ease-linear hover:bg-white/20',
+                        {
+                          'text-golden-glow bg-white/25 font-semibold':
+                            seasonIndex.toString() === selectedSeason.toString()
+                        }
+                      )}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectSeason(seasonIndex);
+                      }}
+                    >
+                      Phần {seasonIndex}
+                    </div>
+                  ))}
+                </m.div>
+              )}
+            </AnimatePresence>
+          </LazyMotion>
         </div>
         <div className='min-h-0 flex-1 overflow-auto'>
           {season?.episodes.map((episode) => (

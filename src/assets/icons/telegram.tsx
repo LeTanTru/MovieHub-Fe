@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useImperativeHandle } from 'react';
-import { motion, useAnimate } from 'framer-motion';
+import { domAnimation, LazyMotion, m, useAnimate } from 'framer-motion';
 import { AnimatedIconHandle, AnimatedIconProps } from '@/types';
 import { RiTelegram2Fill } from 'react-icons/ri';
 
@@ -45,22 +45,24 @@ const TelegramIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     };
 
     return (
-      <motion.div
-        ref={scope}
-        onClick={handleClick}
-        className={className}
-        style={{
-          transformOrigin: 'center',
-          fontSize: size,
-          color,
-          cursor: 'pointer',
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <RiTelegram2Fill className={iconClassName} />
-      </motion.div>
+      <LazyMotion features={domAnimation}>
+        <m.div
+          ref={scope}
+          onClick={handleClick}
+          className={className}
+          style={{
+            transformOrigin: 'center',
+            fontSize: size,
+            color,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <RiTelegram2Fill className={iconClassName} />
+        </m.div>
+      </LazyMotion>
     );
   }
 );

@@ -16,6 +16,7 @@ import { ButtonInfo } from '@/components/app/button-info';
 import { useClickAnimation } from '@/hooks';
 import { HeartIcon } from '@/assets';
 import { cn } from '@/lib';
+import Image from 'next/image';
 
 type SliderItemProps = {
   slider: SidebarResType;
@@ -71,7 +72,7 @@ export default function SliderItem({
       ></div>
       <div className='cover-fade'>
         <div className='cover-image'>
-          <img
+          <Image
             title={`${slider.movie.title} - ${slider.movie.originalTitle}`}
             loading={slider.ordering === 0 ? 'eager' : 'lazy'}
             src={renderImageUrl(slider.webThumbnailUrl)}
@@ -96,7 +97,7 @@ export default function SliderItem({
                 title={slider.movie.title}
                 href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
               >
-                <img
+                <Image
                   className='bg-transparent'
                   title={slider.movie.title}
                   src={renderImageUrl(slider.movie.imageTitleUrl)}

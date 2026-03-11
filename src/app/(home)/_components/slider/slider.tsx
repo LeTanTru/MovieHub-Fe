@@ -22,6 +22,7 @@ import Link from 'next/link';
 import { logger } from '@/logger';
 import { getQueryClient } from '@/components/providers';
 import { VerticalBarLoading } from '@/components/loading';
+import Image from 'next/image';
 
 export default function Slider() {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
@@ -179,7 +180,7 @@ export default function Slider() {
         >
           {sidebarList.map((slider) => (
             <SwiperSlide key={slider.id}>
-              <img
+              <Image
                 src={renderImageUrl(slider.webThumbnailUrl)}
                 alt={slider.movie.title}
                 draggable={false}

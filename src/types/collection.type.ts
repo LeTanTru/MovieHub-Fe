@@ -23,3 +23,8 @@ export type CollectionResType = {
 
 export type CollectionSearchType = z.infer<typeof collectionSearchSchema> &
   BaseSearchType;
+
+export type CollectionCountryGroupType = {
+  groupKey: string;
+  collections: CollectionResType[];
+};

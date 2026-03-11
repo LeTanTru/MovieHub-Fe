@@ -1,7 +1,13 @@
 'use client';
 
 import { MovieResType } from '@/types';
-import { motion, Variants, Transition } from 'framer-motion';
+import {
+  domAnimation,
+  LazyMotion,
+  m,
+  Variants,
+  Transition
+} from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -91,65 +97,67 @@ export default function LatestCountryMovieCard({
 
   return (
     <>
-      <motion.div
-        key={movie.id}
-        ref={cardRef}
-        variants={itemVariants}
-        initial='initial'
-        animate='animate'
-        exit='exit'
-        transition={itemTransition}
-        className='group relative flex flex-col gap-3'
-      >
-        <Link
-          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[56%]'
-          href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-          onPointerEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          onClick={() => {
-            if (hoverTimeout.current) {
-              clearTimeout(hoverTimeout.current);
-              hoverTimeout.current = null;
-            }
-            setModalPos(null);
-          }}
+      <LazyMotion features={domAnimation}>
+        <m.div
+          key={movie.id}
+          ref={cardRef}
+          variants={itemVariants}
+          initial='initial'
+          animate='animate'
+          exit='exit'
+          transition={itemTransition}
+          className='group relative flex flex-col gap-3'
         >
-          <Image
-            alt={`${movie.title} - ${movie.originalTitle}`}
-            className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
-            fill
-            src={renderImageUrl(movie.thumbnailUrl)}
-            unoptimized
-            sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-          />
-        </Link>
-
-        <div className='min-h-10.5 text-center'>
-          <h4
-            className={cn(
-              'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
-              {
-                'featured-title': movie.isFeatured
+          <Link
+            className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[56%]'
+            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+            onPointerEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => {
+              if (hoverTimeout.current) {
+                clearTimeout(hoverTimeout.current);
+                hoverTimeout.current = null;
               }
-            )}
+              setModalPos(null);
+            }}
           >
-            <Link
-              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-              title={movie.title}
+            <Image
+              alt={`${movie.title} - ${movie.originalTitle}`}
+              className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
+              fill
+              src={renderImageUrl(movie.thumbnailUrl)}
+              unoptimized
+              sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+            />
+          </Link>
+
+          <div className='min-h-10.5 text-center'>
+            <h4
+              className={cn(
+                'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
+                {
+                  'featured-title': movie.isFeatured
+                }
+              )}
             >
-              {movie.title}
-            </Link>
-          </h4>
-          <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
-            <Link
-              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-              title={movie.originalTitle}
-            >
-              {movie.originalTitle}
-            </Link>
-          </h4>
-        </div>
-      </motion.div>
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.title}
+              >
+                {movie.title}
+              </Link>
+            </h4>
+            <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.originalTitle}
+              >
+                {movie.originalTitle}
+              </Link>
+            </h4>
+          </div>
+        </m.div>
+      </LazyMotion>
 
       {isMounted &&
         isDesktop &&

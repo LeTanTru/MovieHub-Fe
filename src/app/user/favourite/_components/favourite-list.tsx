@@ -16,7 +16,7 @@ import {
 import { cn } from '@/lib';
 import { useDeleteFavouriteMutation, useFavouriteListQuery } from '@/queries';
 import { notify } from '@/utils';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export default function FavouriteList() {
@@ -109,78 +109,80 @@ export default function FavouriteList() {
           </Button>
         ))}
       </div>
-      <AnimatePresence mode='popLayout'>
-        <motion.div
-          key={activeTab}
-          initial={{
-            opacity: 0.5
-          }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{
-            opacity: 0.5
-          }}
-          transition={{ duration: 0.1, ease: 'linear' }}
-          className='block w-full'
-        >
-          <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
-            {isLoading ? (
-              <MovieGridSkeleton
-                className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
-                skeletonCount={12}
-              />
-            ) : movieList.length === 0 ? (
-              <NoData
-                className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
-                imageClassName='max-640:size-40 max-480:size-30'
-                content='Bạn chưa có phim yêu thích nào'
-              />
-            ) : (
-              <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
-                {movieList.map((movie) => (
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                    onDelete={handleDeleteFavourite}
-                  />
-                ))}
-              </div>
-            )}
-          </Activity>
-          <Activity visible={activeTab === FAVOURITE_TYPE_PERSON}>
-            {isLoading ? (
-              <PersonGridSkeleton
-                className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
-                skeletonCount={12}
-              />
-            ) : personList.length === 0 ? (
-              <NoData
-                className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
-                imageClassName='max-640:size-40 max-480:size-30'
-                content='Bạn chưa có diễn viên yêu thích nào'
-              />
-            ) : (
-              <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
-                {personList.map((person) => (
-                  <PersonCard
-                    person={person}
-                    key={person.id}
-                    willNavigate
-                    onDelete={handleDeleteFavourite}
-                  />
-                ))}
-              </div>
-            )}
-          </Activity>
-        </motion.div>
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence mode='popLayout'>
+          <m.div
+            key={activeTab}
+            initial={{
+              opacity: 0.5
+            }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{
+              opacity: 0.5
+            }}
+            transition={{ duration: 0.1, ease: 'linear' }}
+            className='block w-full'
+          >
+            <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
+              {isLoading ? (
+                <MovieGridSkeleton
+                  className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
+                  skeletonCount={12}
+                />
+              ) : movieList.length === 0 ? (
+                <NoData
+                  className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
+                  imageClassName='max-640:size-40 max-480:size-30'
+                  content='Bạn chưa có phim yêu thích nào'
+                />
+              ) : (
+                <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
+                  {movieList.map((movie) => (
+                    <MovieCard
+                      key={movie.id}
+                      movie={movie}
+                      onDelete={handleDeleteFavourite}
+                    />
+                  ))}
+                </div>
+              )}
+            </Activity>
+            <Activity visible={activeTab === FAVOURITE_TYPE_PERSON}>
+              {isLoading ? (
+                <PersonGridSkeleton
+                  className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
+                  skeletonCount={12}
+                />
+              ) : personList.length === 0 ? (
+                <NoData
+                  className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
+                  imageClassName='max-640:size-40 max-480:size-30'
+                  content='Bạn chưa có diễn viên yêu thích nào'
+                />
+              ) : (
+                <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
+                  {personList.map((person) => (
+                    <PersonCard
+                      person={person}
+                      key={person.id}
+                      willNavigate
+                      onDelete={handleDeleteFavourite}
+                    />
+                  ))}
+                </div>
+              )}
+            </Activity>
+          </m.div>
 
-        <Activity visible={!!totalPages}>
-          <Pagination
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            page={page}
-          />
-        </Activity>
-      </AnimatePresence>
+          <Activity visible={!!totalPages}>
+            <Pagination
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              page={page}
+            />
+          </Activity>
+        </AnimatePresence>
+      </LazyMotion>
     </div>
   );
 }
