@@ -3,11 +3,16 @@
 import { TelegramIcon } from '@/assets';
 import { Button } from '@/components/form';
 import { useClickAnimation } from '@/hooks';
+import { cn } from '@/lib';
 import { notify } from '@/utils';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function ButtonSharePerson() {
+export default function ButtonSharePerson({
+  className
+}: {
+  className?: string;
+}) {
   const pathname = usePathname();
   const [link, setLink] = useState('');
   const { iconRef, startAnimation } = useClickAnimation();
@@ -24,7 +29,10 @@ export default function ButtonSharePerson() {
 
   return (
     <Button
-      className='dark:hover:text-golden-glow dark:hover:border-golden-glow rounded-full'
+      className={cn(
+        'dark:hover:text-golden-glow dark:hover:border-golden-glow rounded-full',
+        className
+      )}
       variant='outline'
       onClick={handleCopyLink}
     >

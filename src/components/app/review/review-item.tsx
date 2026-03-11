@@ -18,7 +18,7 @@ import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
 import { ReviewResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import Image, { StaticImageData } from 'next/image';
 import { useState } from 'react';
 import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';
@@ -214,58 +214,60 @@ export default function ReviewItem({
                 <FaEllipsis /> <span>Thêm</span>
               </button>
             )}
-            <AnimatePresence>
-              {showDropdown && (
-                <motion.div
-                  initial={{
-                    opacity: 0,
-                    scale: 0.8,
-                    transformOrigin: '0% -50%'
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0.8
-                  }}
-                  transition={{ duration: 0.1, ease: 'linear' }}
-                  className='max-640:min-w-36 absolute top-5 -left-5 z-10 min-w-40 origin-[10px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg'
-                >
-                  {isHiddenReview && (
-                    <button
-                      className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
-                      onClick={handleToggleBlurredContent}
-                    >
-                      {showBlurredContent ? (
-                        <>
-                          <FaEyeSlash />
-                          Ẩn nội dung
-                        </>
-                      ) : (
-                        <>
-                          <FaEye />
-                          Xem nội dung
-                        </>
-                      )}
-                    </button>
-                  )}
-                  {isAuthor && (
-                    <button
-                      className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
-                      onClick={() => {
-                        setShowDropdown(false);
-                        onDelete(review.id);
-                      }}
-                    >
-                      <FaTrash />
-                      Xoá đánh giá
-                    </button>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <LazyMotion features={domAnimation}>
+              <AnimatePresence>
+                {showDropdown && (
+                  <m.div
+                    initial={{
+                      opacity: 0,
+                      scale: 0.8,
+                      transformOrigin: '0% -50%'
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.8
+                    }}
+                    transition={{ duration: 0.1, ease: 'linear' }}
+                    className='max-640:min-w-36 absolute top-5 -left-5 z-10 min-w-40 origin-[10px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg'
+                  >
+                    {isHiddenReview && (
+                      <button
+                        className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                        onClick={handleToggleBlurredContent}
+                      >
+                        {showBlurredContent ? (
+                          <>
+                            <FaEyeSlash />
+                            Ẩn nội dung
+                          </>
+                        ) : (
+                          <>
+                            <FaEye />
+                            Xem nội dung
+                          </>
+                        )}
+                      </button>
+                    )}
+                    {isAuthor && (
+                      <button
+                        className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
+                        onClick={() => {
+                          setShowDropdown(false);
+                          onDelete(review.id);
+                        }}
+                      >
+                        <FaTrash />
+                        Xoá đánh giá
+                      </button>
+                    )}
+                  </m.div>
+                )}
+              </AnimatePresence>
+            </LazyMotion>
           </div>
         </div>
       </div>

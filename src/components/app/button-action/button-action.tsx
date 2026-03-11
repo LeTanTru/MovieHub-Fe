@@ -1,6 +1,6 @@
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
-import { motion } from 'framer-motion';
+import { domMax, LazyMotion, m } from 'framer-motion';
 
 export default function ButtonAction({
   action,
@@ -19,13 +19,15 @@ export default function ButtonAction({
 
   return (
     <div className='relative flex-1'>
-      {isActive && (
-        <motion.div
-          layoutId='tab-bg'
-          className='absolute inset-0 rounded bg-white'
-          transition={{ duration: 0.1, ease: 'linear' }}
-        />
-      )}
+      <LazyMotion features={domMax}>
+        {isActive && (
+          <m.div
+            layoutId='tab-bg'
+            className='absolute inset-0 rounded bg-white'
+            transition={{ duration: 0.1, ease: 'linear' }}
+          />
+        )}
+      </LazyMotion>
 
       <Button
         variant='ghost'

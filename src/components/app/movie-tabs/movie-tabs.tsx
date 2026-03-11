@@ -12,7 +12,7 @@ import {
 } from '@/constants';
 import { AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib';
-import { useRef, useState, useEffect, TransitionEvent } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import MovieTabEpisode from './movie-tab-episode';
 import MovieTabPerson from './movie-tab-person';
 import MovieTabsSkeleton from './movie-tabs-skeleton';
@@ -107,13 +107,8 @@ export default function MovieTabs({
           style={{
             left: `${indicatorStyle.left}px`,
             width: `${indicatorStyle.width}px`,
-            transform: 'translateZ(0)'
-          }}
-          onTransitionStart={(e: TransitionEvent<HTMLDivElement>) => {
-            e.currentTarget.style.willChange = 'left, width';
-          }}
-          onTransitionEnd={(e: TransitionEvent<HTMLDivElement>) => {
-            e.currentTarget.style.willChange = 'auto';
+            transform: 'translateZ(0)',
+            willChange: 'left, width'
           }}
         />
       </div>

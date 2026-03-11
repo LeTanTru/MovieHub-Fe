@@ -10,7 +10,7 @@ import {
 } from '@/constants';
 import { formatDate, renderImageUrl, sanitizeText } from '@/utils';
 import { X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { FaArrowDown } from 'react-icons/fa6';
 import { useDisclosure, useQueryParams } from '@/hooks';
 import { usePersonQuery } from '@/queries';
@@ -66,114 +66,126 @@ export default function PersonSidebar() {
   if (personLoading) return <PersonSidebarSkeleton />;
 
   return (
-    <div className='border-r-transparent-white w-110 shrink-0 border-r pr-10'>
+    <div className='border-r-transparent-white max-1600:w-85 max-1120:border-none max-1120:pr-0 max-1120:pb-5 max-1120:w-full max-1120:items-center w-110 shrink-0 border-r pr-10'>
       <AvatarField
-        size={160}
+        size={120}
         src={renderImageUrl(person?.avatarPath)}
         alt={person?.otherName}
         className='mx-auto'
+        breakpoints={[
+          {
+            breakpoint: 640,
+            size: 160
+          }
+        ]}
       />
-      <h2 className='mt-4 mb-2 text-center text-2xl font-semibold text-white'>
+      <h2 className='max-800:text-xl max-640:text-lg max-640:mb-0 max-640:mt-2 mt-4 mb-2 text-center text-2xl font-semibold text-white'>
         {person?.otherName}
       </h2>
-      <p className='text-foreground/80 mb-2 text-center text-sm'>
-        {person?.name}
-      </p>
+      <p className='text-foreground/80 mb-2 text-center'>{person?.name}</p>
 
-      <div className='mb-4 flex justify-center gap-2'>
+      <div className='max-640:gap-2 mb-4 flex justify-center gap-4'>
         {kind === PERSON_KIND_ACTOR ||
         person?.kinds.includes(PERSON_KIND_ACTOR) ? (
-          <ButtonLike targetId={id} variant='person' />
-        ) : null}
-        <ButtonSharePerson />
-      </div>
-
-      <div className='mb-2 flex'>
-        Giới tính:&nbsp;
-        <p className='text-foreground/80'>
-          {genderOptions.find((item) => item.value === person?.gender)?.label ??
-            'Đang cập nhật'}
-        </p>
-      </div>
-      <div className='mb-2 flex'>
-        Ngày sinh:&nbsp;
-        <p className='text-foreground/80'>
-          {formatDate(person?.dateOfBirth, DEFAULT_DATE_FORMAT) ??
-            'Đang cập nhật'}
-        </p>
-      </div>
-      <div className='mb-2 flex'>
-        Vai trò:&nbsp;
-        <p className='text-foreground/80'>
-          {role?.charAt(0).toUpperCase() + role?.slice(1)?.toLowerCase() ||
-            'Đang cập nhật'}
-        </p>
-      </div>
-      <div>
-        Giới thiệu:
-        <div className='text-foreground/80 line-clamp-10 text-justify'>
-          <div
-            className='text-foreground/80'
-            dangerouslySetInnerHTML={{ __html: sanitizedBio }}
+          <ButtonLike
+            className='max-640:text-[13px] max-480:text-xs'
+            targetId={id}
+            variant='person'
           />
-        </div>
-        {person?.bio && (
-          <Button
-            onClick={handleOpenModal}
-            className='dark:hover:bg-main-background mt-2 ml-auto block border-none dark:bg-white/5 dark:text-white'
-            variant='secondary'
-          >
-            Xem thêm
-          </Button>
-        )}
+        ) : null}
+        <ButtonSharePerson className='max-640:text-[13px] max-480:text-xs' />
       </div>
 
-      <AnimatePresence>
-        {opened && (
-          <motion.div
-            className='fixed inset-0 z-50 flex items-center justify-center bg-black/80'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={handleCloseModal}
-          >
-            <motion.div
-              ref={modalContentRef}
-              className='scrollbar-none bg-bunker relative max-h-[80vh] w-[90%] max-w-2xl overflow-y-auto rounded-lg p-6'
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
+      <div className='max-1120:bg-[rgba(0,0,0,.2)] max-1120:p-4 max-1120:rounded-md'>
+        <div className='mb-2 flex'>
+          Giới tính:&nbsp;
+          <p className='text-foreground/80'>
+            {genderOptions.find((item) => item.value === person?.gender)
+              ?.label ?? 'Đang cập nhật'}
+          </p>
+        </div>
+        <div className='mb-2 flex'>
+          Ngày sinh:&nbsp;
+          <p className='text-foreground/80'>
+            {formatDate(person?.dateOfBirth, DEFAULT_DATE_FORMAT) ??
+              'Đang cập nhật'}
+          </p>
+        </div>
+        <div className='mb-2 flex'>
+          Vai trò:&nbsp;
+          <p className='text-foreground/80'>
+            {role?.charAt(0).toUpperCase() + role?.slice(1)?.toLowerCase() ||
+              'Đang cập nhật'}
+          </p>
+        </div>
+        <div>
+          Giới thiệu:
+          <div className='text-foreground/80 line-clamp-10 text-justify'>
+            <div
+              className='text-foreground/80'
+              dangerouslySetInnerHTML={{ __html: sanitizedBio }}
+            />
+          </div>
+          {person?.bio && (
+            <Button
+              onClick={handleOpenModal}
+              className='dark:hover:bg-main-background max-1120:mx-auto mt-2 ml-auto block border-none dark:bg-white/5 dark:text-white'
+              variant='secondary'
             >
-              <Button
-                variant='ghost'
-                className='absolute top-2 right-0 dark:hover:bg-transparent'
-                onClick={handleCloseModal}
+              Xem thêm
+            </Button>
+          )}
+        </div>
+      </div>
+
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence>
+          {opened && (
+            <m.div
+              className='fixed inset-0 z-50 flex items-center justify-center bg-black/80'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCloseModal}
+            >
+              <m.div
+                ref={modalContentRef}
+                className='scrollbar-none bg-bunker relative max-h-[80vh] w-[90%] max-w-2xl overflow-y-auto rounded-lg p-6'
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
               >
-                <X className='size-5' />
-              </Button>
-              <h2 className='mb-4 text-xl font-semibold'>
-                {person?.otherName}
-              </h2>
-              <div
-                className='text-foreground/80 text-justify'
-                dangerouslySetInnerHTML={{ __html: sanitizedBio }}
-              />
-              <motion.div
-                className='bg-accent absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce rounded-full p-2'
-                initial={{ bottom: -30, display: 'none' }}
-                animate={{
-                  bottom: showScrollIcon ? 30 : -30,
-                  display: showScrollIcon ? 'block' : 'none'
-                }}
-                transition={{ duration: 0.2, ease: 'linear' }}
-              >
-                <FaArrowDown className='h-6 w-6 text-white' />
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <Button
+                  variant='ghost'
+                  className='absolute top-2 right-0 dark:hover:bg-transparent'
+                  onClick={handleCloseModal}
+                >
+                  <X className='size-5' />
+                </Button>
+                <h2 className='mb-4 text-xl font-semibold'>
+                  {person?.otherName}
+                </h2>
+                <div
+                  className='text-foreground/80 text-justify'
+                  dangerouslySetInnerHTML={{ __html: sanitizedBio }}
+                />
+                <m.div
+                  className='bg-accent absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce rounded-full p-2'
+                  initial={{ bottom: -30, display: 'none' }}
+                  animate={{
+                    bottom: showScrollIcon ? 30 : -30,
+                    display: showScrollIcon ? 'block' : 'none'
+                  }}
+                  transition={{ duration: 0.2, ease: 'linear' }}
+                >
+                  <FaArrowDown className='h-6 w-6 text-white' />
+                </m.div>
+              </m.div>
+            </m.div>
+          )}
+        </AnimatePresence>
+      </LazyMotion>
     </div>
   );
 }

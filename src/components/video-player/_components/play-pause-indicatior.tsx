@@ -3,7 +3,7 @@
 import { useIndicator } from '@/components/video-player/video-player';
 import { useMediaState } from '@vidstack/react';
 import { PauseIcon, PlayIcon } from '@vidstack/react/icons';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export default function PlayPauseIndicator() {
@@ -30,7 +30,7 @@ export default function PlayPauseIndicator() {
   return (
     <AnimatePresence>
       {showIndicator && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.4 }}
@@ -47,7 +47,7 @@ export default function PlayPauseIndicator() {
               <PauseIcon className='h-8 w-8 fill-white md:h-12 md:w-12' />
             )}
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

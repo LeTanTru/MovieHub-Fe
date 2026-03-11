@@ -163,7 +163,7 @@ export default function AvatarField({
         style={{ width: resolvedWidth, height: resolvedHeight }}
       >
         <Avatar
-          className={cn('bg-charade shadow-sm', {
+          className={cn('bg-image-fill shadow-sm', {
             'transition-all duration-200 ease-linear hover:scale-105 hover:opacity-90':
               !shouldDisablePreview
           })}

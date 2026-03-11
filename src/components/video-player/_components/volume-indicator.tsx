@@ -2,7 +2,7 @@
 
 import { useIndicator } from '@/components/video-player/video-player';
 import { useMediaState } from '@vidstack/react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export default function VolumeIndicator() {
@@ -27,7 +27,7 @@ export default function VolumeIndicator() {
   return (
     <AnimatePresence>
       {showIndicator && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.4 }}
@@ -42,7 +42,7 @@ export default function VolumeIndicator() {
           <div className='flex aspect-video items-center justify-center gap-1 rounded-lg bg-black/60 px-4 py-2 text-base font-semibold text-white backdrop-blur-sm md:px-8 md:py-4 md:text-xl'>
             {Math.round(volume * 100)}%
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

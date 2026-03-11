@@ -44,7 +44,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
         className='topic-detail-background'
         style={{ backgroundImage: getGradientStyle() }}
       ></div>
-      <div className='max-1120:mb-5 max-990:mb-4 max-640:mb-3 max-480:mb-2 mb-6'>
+      <div className='max-1120:mb-5 max-990:mb-4 mb-6'>
         {collectionLoading ? (
           <Skeleton className='skeleton max-640:mb-4 max-480:mb-2 max-640:h-8 mb-6 h-10 w-50' />
         ) : (

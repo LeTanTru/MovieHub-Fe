@@ -74,9 +74,9 @@
   /* --color-main-background: #2b2b35; */
   --color-primary-button: #ffd875;
   --color-top-slider: #202331;
-  /* Color */
+  --color-image-fill: #282b3a;
+  /* Color */ /* Break point */
 
-  /* Break point */
   --breakpoint-1024: 1024px;
   --breakpoint-1120: 1120px;
   --breakpoint-1280: 1280px;

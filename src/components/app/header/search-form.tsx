@@ -1,7 +1,7 @@
 'use client';
 
 import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
 import { BaseForm } from '@/components/form/base-form';
 import { cn } from '@/lib';
 import debounce from 'lodash/debounce';
@@ -190,43 +190,45 @@ export default function SearchForm({
           </>
         )}
       </BaseForm>
-      <AnimatePresence>
-        {keyword && !isSearchPage && showMovieList && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className='bg-gunmetal-black shadow-gunmetal-blue absolute top-[calc(100%+5px)] left-0 w-full rounded p-4 shadow-[0px_0px_10px_1px]'
-          >
-            <div className='mb-3 flex items-center justify-between text-neutral-400'>
-              Danh sách phim
-            </div>
-            <div className='scrollbar-none max-h-125 overflow-y-auto'>
-              {isLoading ? (
-                <div className='py-10'>
-                  <CircleLoading />
-                </div>
-              ) : movieList.length === 0 ? (
-                <NoData
-                  className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
-                  imageClassName='max-640:size-40 max-480:size-30'
-                  content={
-                    <>
-                      Không tìm thấy phim nào
-                      <br /> phù hợp với từ khóa của bạn
-                    </>
-                  }
-                />
-              ) : (
-                movieList.map((movie) => (
-                  <MovieItem key={movie.id} movie={movie} />
-                ))
-              )}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <LazyMotion features={domAnimation}>
+        <AnimatePresence>
+          {keyword && !isSearchPage && showMovieList && (
+            <m.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className='bg-gunmetal-black shadow-gunmetal-blue absolute top-[calc(100%+5px)] left-0 w-full rounded p-4 shadow-[0px_0px_10px_1px]'
+            >
+              <div className='mb-3 flex items-center justify-between text-neutral-400'>
+                Danh sách phim
+              </div>
+              <div className='scrollbar-none max-h-125 overflow-y-auto'>
+                {isLoading ? (
+                  <div className='py-10'>
+                    <CircleLoading />
+                  </div>
+                ) : movieList.length === 0 ? (
+                  <NoData
+                    className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
+                    imageClassName='max-640:size-40 max-480:size-30'
+                    content={
+                      <>
+                        Không tìm thấy phim nào
+                        <br /> phù hợp với từ khóa của bạn
+                      </>
+                    }
+                  />
+                ) : (
+                  movieList.map((movie) => (
+                    <MovieItem key={movie.id} movie={movie} />
+                  ))
+                )}
+              </div>
+            </m.div>
+          )}
+        </AnimatePresence>
+      </LazyMotion>
     </div>
   );
 }

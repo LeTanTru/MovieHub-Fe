@@ -17,6 +17,7 @@ import { NoData } from '@/components/no-data';
 import Link from 'next/link';
 import { route } from '@/routes';
 import { VerticalBarLoading } from '@/components/loading';
+import Image from 'next/image';
 
 export default function ScheduleList() {
   const nextRef = useRef<HTMLDivElement>(null);
@@ -67,7 +68,7 @@ export default function ScheduleList() {
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
       {/* Header */}
-      <div className='max-1120:mb-5 max-990:mb-4 max-640:mb-3 max-480:mb-2 mb-6'>
+      <div className='max-1120:mb-5 max-990:mb-4 mb-6'>
         <div className='max-990:text-2xl max-640:text-[22px] max-480:text-xl max-990:gap-2 flex items-center gap-4 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           <FaRegCalendarCheck className='max-990:text-[28px] max-640:text-[22px] text-[32px]' />
           Lịch chiếu
@@ -184,7 +185,7 @@ export default function ScheduleList() {
                   >
                     <div className='w-12.5 shrink-0'>
                       <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-sm pb-[150%]'>
-                        <img
+                        <Image
                           src={renderImageUrl(item.movie.posterUrl)}
                           alt={`${item.movie.title} - ${item.movie.originalTitle}`}
                           className='absolute inset-0 size-full object-cover'
@@ -192,6 +193,7 @@ export default function ScheduleList() {
                           height={75}
                           loading='lazy'
                           decoding='async'
+                          unoptimized
                         />
                       </div>
                     </div>
