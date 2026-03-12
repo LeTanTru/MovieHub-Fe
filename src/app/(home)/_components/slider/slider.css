@@ -61,7 +61,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-image: url(/dotted.png);
+            background-image: url(/dotted.webp);
             background-repeat: repeat;
             opacity: 0.2;
             z-index: 1;

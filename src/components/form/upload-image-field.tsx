@@ -196,6 +196,8 @@ export default function UploadImageField<T extends FieldValues>({
 
     if (shouldCrop && croppedAreaPixels) {
       blob = await getCroppedImg(previewUrl, croppedAreaPixels, outputType);
+    } else if (files[0]?.file instanceof File) {
+      blob = files[0].file;
     } else {
       const image = await createImage(previewUrl);
       const canvas = document.createElement('canvas');

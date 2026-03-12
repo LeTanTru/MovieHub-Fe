@@ -3,6 +3,7 @@
 import { useMovieStore } from '@/store';
 import WatchPlayer from './watch-player';
 import WatchContainer from './watch-container';
+import WatchSkeleton from './watch-skeleton';
 import { useShallow } from 'zustand/shallow';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useEffect, useMemo } from 'react';
@@ -14,7 +15,7 @@ export default function Watch({ id }: { id: string }) {
       setMoviePersons: s.setMoviePersons
     }))
   );
-  const { data: movieData } = useMovieQuery(id);
+  const { data: movieData, isLoading: movieLoading } = useMovieQuery(id);
   const movie = movieData?.data;
 
   const { data: moviePersonData } = useMoviePersonListQuery({
@@ -34,7 +35,7 @@ export default function Watch({ id }: { id: string }) {
     setMoviePersons(moviePersons);
   }, [movie, moviePersons, setMovie, setMoviePersons]);
 
-  if (!movie) return null;
+  if (movieLoading || !movie) return <WatchSkeleton />;
 
   return (
     <>

@@ -171,7 +171,9 @@ export default function ScheduleList() {
                     <span className='font-semibold'>
                       {formatDate(date, DATE_SHORT)}
                     </span>
-                    . Vui lòng chọn ngày khác.
+                    .
+                    <br />
+                    Vui lòng chọn ngày khác.
                   </>
                 }
               />
