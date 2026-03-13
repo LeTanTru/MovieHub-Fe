@@ -4,25 +4,37 @@ import { useCollectionTopicListQuery } from '@/queries';
 import { MAX_PAGE_SIZE } from '@/constants';
 import { TopicItem, TopicItemMore } from '@/components/app/topic-item';
 import { VerticalBarLoading } from '@/components/loading';
-import { useRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CollectionListHeading } from '@/components/app/heading';
 import { route } from '@/routes';
 
 export default function TopicList() {
+  const [isSwitched, setIsSwitched] = useState(false);
+
   const { data: topicListData, isLoading: topicListLoading } =
     useCollectionTopicListQuery({
       enabled: true,
       params: { size: MAX_PAGE_SIZE }
     });
 
-  const topicList = topicListData?.data?.content?.slice(0, 6) || [];
+  const topicList = useMemo(
+    () => topicListData?.data?.content || [],
+    [topicListData?.data?.content]
+  );
   const totalElements = topicListData?.data?.totalElements || 0;
 
-  const isSwitchedRef = useRef<boolean | null>(null);
-  if (isSwitchedRef.current === null) {
-    isSwitchedRef.current = Math.random() < 0.5;
-  }
-  const isSwitched = isSwitchedRef.current;
+  useEffect(() => {
+    if (!topicList.length) return;
+
+    const randomTopic = topicList[Math.floor(Math.random() * topicList.length)];
+
+    const digitSum = (randomTopic?.id?.toString().match(/\d/g) || []).reduce(
+      (sum, digit) => sum + Number(digit),
+      0
+    );
+
+    setIsSwitched(digitSum % 2 === 0);
+  }, [topicList]);
 
   const moreCount = totalElements - topicList.length;
 

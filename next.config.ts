@@ -6,7 +6,7 @@ import path from 'path';
 const nextConfig: NextConfig = {
   output: 'standalone',
   images: {
-    deviceSizes: [640, 768, 1024, 1280, 1536, 1920],
+    deviceSizes: [320, 640, 768, 1024, 1280, 1536, 1920, 2048],
     imageSizes: [32, 48, 64, 96, 128, 192, 256],
     qualities: [50, 75, 85, 100],
     remotePatterns: [
