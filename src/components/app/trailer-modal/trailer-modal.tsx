@@ -3,10 +3,17 @@
 import './trailer-modal.css';
 import { Modal } from '@/components/modal';
 import { VideoPlayer } from '@/components/video-player';
+import envConfig from '@/config';
 import { VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
 import { useBodyHeight } from '@/hooks';
 import { VideoResType } from '@/types';
-import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
+import {
+  isMobileDevice,
+  isTabletDevice,
+  renderImageUrl,
+  renderVideoUrl,
+  renderVttUrl
+} from '@/utils';
 import { useEffect, useRef } from 'react';
 
 export default function TrailerModal({
@@ -69,7 +76,13 @@ export default function TrailerModal({
           outroStart={video.outroStart}
           className='rounded-md!'
           token={token}
-          volume={0}
+          volume={
+            envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
+              ? 0
+              : isMobileDevice() || isTabletDevice()
+                ? 1
+                : 0.5
+          }
         />
       </div>
     </Modal>
