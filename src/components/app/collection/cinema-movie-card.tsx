@@ -2,13 +2,7 @@
 
 import { ageRatings } from '@/constants';
 import { MetadataType, MovieResType } from '@/types';
-import {
-  domAnimation,
-  LazyMotion,
-  m,
-  Variants,
-  Transition
-} from 'framer-motion';
+import { m, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -115,99 +109,97 @@ export default function CinemaMovieCard({
 
   return (
     <>
-      <LazyMotion features={domAnimation}>
-        <m.div
-          key={movie.id}
-          ref={cardRef}
-          variants={itemVariants}
-          initial='initial'
-          animate='animate'
-          exit='exit'
-          transition={itemTransition}
-          className='group relative w-full'
+      <m.div
+        key={movie.id}
+        ref={cardRef}
+        variants={itemVariants}
+        initial='initial'
+        animate='animate'
+        exit='exit'
+        transition={itemTransition}
+        className='group relative w-full'
+      >
+        <Link
+          href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[55%]'
+          onPointerEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={() => {
+            if (hoverTimeout.current) {
+              clearTimeout(hoverTimeout.current);
+              hoverTimeout.current = null;
+            }
+            setModalPos(null);
+          }}
         >
-          <Link
-            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-            className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[55%]'
-            onPointerEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => {
-              if (hoverTimeout.current) {
-                clearTimeout(hoverTimeout.current);
-                hoverTimeout.current = null;
-              }
-              setModalPos(null);
-            }}
-          >
-            <div>
+          <div>
+            <Image
+              alt={`${movie.title} - ${movie.originalTitle}`}
+              className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
+              fill
+              src={renderImageUrl(movie.thumbnailUrl)}
+              unoptimized
+              sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+            />
+          </div>
+        </Link>
+        <div className='relative z-2 flex items-start justify-between gap-5 px-5 py-4'>
+          <div className='-mt-15 w-20 shrink-0'>
+            <Link
+              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+              className='bg-gunmetal-blue relative block h-0 w-full shrink-0 overflow-hidden rounded-md pb-[150%] shadow-[0_0_10px_5x_rgba(0,0,0,0.1)]'
+            >
               <Image
                 alt={`${movie.title} - ${movie.originalTitle}`}
-                className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
-                fill
-                src={renderImageUrl(movie.thumbnailUrl)}
+                className='absolute inset-0 h-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
+                src={renderImageUrl(movie.posterUrl)}
                 unoptimized
-                sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                height={120}
+                width={80}
               />
-            </div>
-          </Link>
-          <div className='relative z-2 flex items-start justify-between gap-5 px-5 py-4'>
-            <div className='-mt-15 w-20 shrink-0'>
+            </Link>
+          </div>
+          <div className='grow'>
+            <h4
+              className={cn(
+                'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
+                {
+                  'featured-title': movie.isFeatured
+                }
+              )}
+            >
               <Link
                 href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                className='bg-gunmetal-blue relative block h-0 w-full shrink-0 overflow-hidden rounded-md pb-[150%] shadow-[0_0_10px_5x_rgba(0,0,0,0.1)]'
+                title={movie.title}
               >
-                <Image
-                  alt={`${movie.title} - ${movie.originalTitle}`}
-                  className='absolute inset-0 h-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
-                  src={renderImageUrl(movie.posterUrl)}
-                  unoptimized
-                  height={120}
-                  width={80}
-                />
+                {movie.title}
               </Link>
-            </div>
-            <div className='grow'>
-              <h4
-                className={cn(
-                  'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
-                  {
-                    'featured-title': movie.isFeatured
-                  }
-                )}
+            </h4>
+            <h4 className='text-dark-gray mb-1.25 line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.originalTitle}
               >
-                <Link
-                  href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                  title={movie.title}
-                >
-                  {movie.title}
-                </Link>
-              </h4>
-              <h4 className='text-dark-gray mb-1.25 line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
-                <Link
-                  href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                  title={movie.originalTitle}
-                >
-                  {movie.originalTitle}
-                </Link>
-              </h4>
-              <div className='flex items-center gap-4'>
-                <div
-                  className='text-dark-gray inline text-xs whitespace-nowrap'
-                  title={ageRating?.mean}
-                >
-                  <strong>{ageRating?.label}</strong>
-                </div>
-                <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-                  {releaseYear}
-                </div>
-                <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-                  {formatDuration(duration)}
-                </div>
+                {movie.originalTitle}
+              </Link>
+            </h4>
+            <div className='flex items-center gap-4'>
+              <div
+                className='text-dark-gray inline text-xs whitespace-nowrap'
+                title={ageRating?.mean}
+              >
+                <strong>{ageRating?.label}</strong>
+              </div>
+              <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+                {releaseYear}
+              </div>
+              <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+                {formatDuration(duration)}
               </div>
             </div>
           </div>
-        </m.div>
-      </LazyMotion>
+        </div>
+      </m.div>
 
       {isMounted &&
         isDesktop &&

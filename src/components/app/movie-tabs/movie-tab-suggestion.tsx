@@ -6,6 +6,7 @@ import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { useParams } from 'next/navigation';
 import { useSuggestionMovieListQuery } from '@/queries';
 import MotionWrapper from './motion-wrapper';
+import { MovieTabHeading } from '@/components/app/heading';
 
 export default function MovieTabSuggestion({
   direction
@@ -24,9 +25,11 @@ export default function MovieTabSuggestion({
 
   return (
     <MotionWrapper uniqueKey={MOVIE_TAB_SUGGESTION} direction={direction}>
-      <h3 className='max-1120:mb-4 max-640:text-lg max-480:text-base max-640:mb-3 mb-6 text-xl font-semibold'>
-        {suggestionMovieList.length === 0 ? 'Đề xuất' : 'Có thể bạn sẽ thích'}
-      </h3>
+      <MovieTabHeading
+        title={
+          suggestionMovieList.length === 0 ? 'Đề xuất' : 'Có thể bạn sẽ thích'
+        }
+      />
       {suggestionMovieListLoading ? (
         <MovieGridSkeleton className='max-1600:grid-cols-5 max-1360:gap-5 max-1280:grid-cols-4 max-1280:gap-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-3 max-520:grid-cols-2 grid grid-cols-6 gap-6' />
       ) : suggestionMovieList.length === 0 ? (

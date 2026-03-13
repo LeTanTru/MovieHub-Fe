@@ -1,13 +1,7 @@
 'use client';
 
 import { MovieResType } from '@/types';
-import {
-  domAnimation,
-  LazyMotion,
-  m,
-  Variants,
-  Transition
-} from 'framer-motion';
+import { m, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -100,80 +94,78 @@ export default function ComingSoonMovieCard({
 
   return (
     <>
-      <LazyMotion features={domAnimation}>
-        <m.div
-          key={movie.id}
-          ref={cardRef}
-          variants={itemVariants}
-          initial='initial'
-          animate='animate'
-          exit='exit'
-          transition={itemTransition}
-          className='relative flex flex-col gap-3'
+      <m.div
+        key={movie.id}
+        ref={cardRef}
+        variants={itemVariants}
+        initial='initial'
+        animate='animate'
+        exit='exit'
+        transition={itemTransition}
+        className='relative flex flex-col gap-3'
+      >
+        <Link
+          className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[56%]'
+          href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+          onPointerEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={() => {
+            if (hoverTimeout.current) {
+              clearTimeout(hoverTimeout.current);
+              hoverTimeout.current = null;
+            }
+            setModalPos(null);
+          }}
         >
-          <Link
-            className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[56%]'
-            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-            onPointerEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => {
-              if (hoverTimeout.current) {
-                clearTimeout(hoverTimeout.current);
-                hoverTimeout.current = null;
-              }
-              setModalPos(null);
-            }}
-          >
-            <div className='absolute bottom-0 left-4 z-3 overflow-hidden rounded-tl-sm rounded-tr-sm bg-white px-2 py-1 text-xs font-medium text-[#333] shadow-[0_0_5px_2px_rgba(0,0,0,.1)]'>
-              Sắp chiếu
-            </div>
-            <Image
-              alt={`${movie.title} - ${movie.originalTitle}`}
-              className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
-              fill
-              src={renderImageUrl(movie.thumbnailUrl)}
-              unoptimized
-              sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-            />
-          </Link>
-
-          <div className='min-h-10.5 text-left'>
-            <h4
-              className={cn(
-                'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
-                {
-                  'featured-title': movie.isFeatured
-                }
-              )}
-            >
-              <Link
-                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                title={movie.title}
-              >
-                {movie.title}
-              </Link>
-            </h4>
-            <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
-              <Link
-                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                title={movie.originalTitle}
-              >
-                {movie.originalTitle}
-              </Link>
-            </h4>
+          <div className='absolute bottom-0 left-4 z-3 overflow-hidden rounded-tl-sm rounded-tr-sm bg-white px-2 py-1 text-xs font-medium text-[#333] shadow-[0_0_5px_2px_rgba(0,0,0,.1)]'>
+            Sắp chiếu
           </div>
+          <Image
+            alt={`${movie.title} - ${movie.originalTitle}`}
+            className='absolute inset-0 h-full w-full object-cover transition-transform duration-200 ease-linear hover:scale-105'
+            fill
+            src={renderImageUrl(movie.thumbnailUrl)}
+            unoptimized
+            sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+          />
+        </Link>
 
-          {onDelete && (
-            <button
-              aria-label='Remove from favourite'
-              className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
-              onClick={() => onDelete(movie.id)}
+        <div className='min-h-10.5 text-left'>
+          <h4
+            className={cn(
+              'hover:text-golden-glow mb-1 line-clamp-1 text-sm leading-5 font-normal text-white transition-colors duration-200 ease-linear',
+              {
+                'featured-title': movie.isFeatured
+              }
+            )}
+          >
+            <Link
+              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+              title={movie.title}
             >
-              <X className='size-4' />
-            </button>
-          )}
-        </m.div>
-      </LazyMotion>
+              {movie.title}
+            </Link>
+          </h4>
+          <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
+            <Link
+              href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+              title={movie.originalTitle}
+            >
+              {movie.originalTitle}
+            </Link>
+          </h4>
+        </div>
+
+        {onDelete && (
+          <button
+            aria-label='Remove from favourite'
+            className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
+            onClick={() => onDelete(movie.id)}
+          >
+            <X className='size-4' />
+          </button>
+        )}
+      </m.div>
 
       {isMounted &&
         isDesktop &&

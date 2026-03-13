@@ -9,13 +9,7 @@ import { User, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Activity } from '@/components/activity';
-import {
-  domAnimation,
-  LazyMotion,
-  m,
-  Transition,
-  Variants
-} from 'framer-motion';
+import { m, Transition, Variants } from 'framer-motion';
 import { useQueryParams } from '@/hooks';
 import { EMPTY_OBJECT } from '@/constants';
 
@@ -62,82 +56,80 @@ export default function PersonCard({
   }
 
   return (
-    <LazyMotion features={domAnimation}>
-      <m.div
-        key={person.id}
-        variants={itemVariants}
-        initial='initial'
-        animate='animate'
-        exit='exit'
-        transition={itemTransition}
-        className='relative overflow-hidden rounded-lg p-0'
-      >
-        <div className='flex flex-col items-center justify-center gap-0'>
-          {willNavigate ? (
-            <Link
-              href={link}
-              className='image-mask relative mb-2 w-full shrink-0 overflow-hidden rounded-none pb-[calc(100%+40px)]'
-            >
-              {person.avatarPath ? (
-                <Image
-                  alt={person.name}
-                  className='absolute top-0 right-0 bottom-0 left-0 rounded-lg object-cover transition-all duration-200 ease-linear hover:scale-105'
-                  fill
-                  sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                  src={renderImageUrl(person.avatarPath)}
-                  unoptimized
-                />
-              ) : (
-                <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                  <User className='size-15' />
-                </div>
-              )}
-            </Link>
-          ) : (
-            <div className='image-mask relative mb-2 w-full shrink-0 overflow-hidden rounded-none pb-[calc(100%+40px)]'>
-              {person.avatarPath ? (
-                <Image
-                  alt={person.name}
-                  className='absolute top-0 right-0 bottom-0 left-0 rounded-lg object-cover transition-all duration-200 ease-linear hover:scale-105'
-                  fill
-                  sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                  src={renderImageUrl(person.avatarPath)}
-                  unoptimized
-                />
-              ) : (
-                <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-                  <User className='size-15' />
-                </div>
-              )}
-            </div>
-          )}
-          <div className='relative z-2 -mt-10 px-2 py-3 text-center'>
-            <h4
-              className={cn({
-                'mb-1.5': showFullName
-              })}
-              title={person.otherName}
-            >
-              {person.otherName}
-            </h4>
-            <Activity visible={!!showFullName}>
-              <span title={person.name} className='text-pinkest text-xs'>
-                {person.name}
-              </span>
-            </Activity>
-          </div>
-        </div>
-        {onDelete && (
-          <div
-            role='button'
-            className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
-            onClick={() => onDelete(person.id)}
-            aria-label='Remove from favourite'
+    <m.div
+      key={person.id}
+      variants={itemVariants}
+      initial='initial'
+      animate='animate'
+      exit='exit'
+      transition={itemTransition}
+      className='relative overflow-hidden rounded-lg p-0'
+    >
+      <div className='flex flex-col items-center justify-center gap-0'>
+        {willNavigate ? (
+          <Link
+            href={link}
+            className='image-mask relative mb-2 w-full shrink-0 overflow-hidden rounded-none pb-[calc(100%+40px)]'
           >
-            <X className='size-4' />
+            {person.avatarPath ? (
+              <Image
+                alt={person.name}
+                className='absolute top-0 right-0 bottom-0 left-0 rounded-lg object-cover transition-all duration-200 ease-linear hover:scale-105'
+                fill
+                sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                src={renderImageUrl(person.avatarPath)}
+                unoptimized
+              />
+            ) : (
+              <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+                <User className='size-15' />
+              </div>
+            )}
+          </Link>
+        ) : (
+          <div className='image-mask relative mb-2 w-full shrink-0 overflow-hidden rounded-none pb-[calc(100%+40px)]'>
+            {person.avatarPath ? (
+              <Image
+                alt={person.name}
+                className='absolute top-0 right-0 bottom-0 left-0 rounded-lg object-cover transition-all duration-200 ease-linear hover:scale-105'
+                fill
+                sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                src={renderImageUrl(person.avatarPath)}
+                unoptimized
+              />
+            ) : (
+              <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+                <User className='size-15' />
+              </div>
+            )}
           </div>
         )}
-      </m.div>
-    </LazyMotion>
+        <div className='relative z-2 -mt-10 px-2 py-3 text-center'>
+          <h4
+            className={cn({
+              'mb-1.5': showFullName
+            })}
+            title={person.otherName}
+          >
+            {person.otherName}
+          </h4>
+          <Activity visible={!!showFullName}>
+            <span title={person.name} className='text-pinkest text-xs'>
+              {person.name}
+            </span>
+          </Activity>
+        </div>
+      </div>
+      {onDelete && (
+        <div
+          role='button'
+          className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
+          onClick={() => onDelete(person.id)}
+          aria-label='Remove from favourite'
+        >
+          <X className='size-4' />
+        </div>
+      )}
+    </m.div>
   );
 }

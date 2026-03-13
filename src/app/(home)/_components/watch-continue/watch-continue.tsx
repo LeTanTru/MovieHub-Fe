@@ -10,9 +10,7 @@ import {
   useMovieHistoryListQuery
 } from '@/queries';
 import { route } from '@/routes';
-import Link from 'next/link';
 import { Navigation } from 'swiper/modules';
-import { FaChevronRight } from 'react-icons/fa6';
 import { notify } from '@/utils';
 import { getQueryClient } from '@/components/providers';
 import { queryKeys } from '@/constants';
@@ -21,6 +19,7 @@ import { useAuth } from '@/hooks';
 import { useRef } from 'react';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { VerticalBarLoading } from '@/components/loading';
+import { CollectionListHeading } from '@/components/app/heading';
 
 export default function WatchContinue() {
   const queryClient = getQueryClient();
@@ -62,18 +61,10 @@ export default function WatchContinue() {
 
   return (
     <div className='watch-continue fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>
-      <div className='max-1120:mb-5 max-990:mb-4 max-480:justify-between relative mb-6 flex items-center justify-start gap-4'>
-        <h3 className='max-1600:text-2xl max-640:text-xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
-          Xem tiếp của bạn&nbsp;
-        </h3>
-        <Link
-          href={route.user.watchHistory.path}
-          className='group hover:text-golden-glow hover:border-golden-glow flex items-center gap-0.5 rounded-full border p-1 text-lg transition-all duration-200 ease-linear hover:w-auto hover:px-2.5'
-        >
-          <span className='hidden text-sm group-hover:block'>Xem thêm</span>
-          <FaChevronRight className='text-sm' />
-        </Link>
-      </div>
+      <CollectionListHeading
+        title='Xem tiếp của bạn'
+        link={route.user.watchHistory.path}
+      />
 
       <div className='swiper-container'>
         <div className='swiper-navigation'>

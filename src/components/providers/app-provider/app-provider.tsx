@@ -4,6 +4,7 @@ import { useNavigate } from '@/hooks';
 import { useProfileQuery } from '@/queries';
 import { useAppLoadingStore, useAuthStore } from '@/store';
 import { getAccessTokenFromLocalStorage, getData, removeDatas } from '@/utils';
+import { domAnimation, LazyMotion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -56,7 +57,11 @@ export default function AppProvider({
     );
   }, []);
 
-  return <>{children}</>;
+  return (
+    <LazyMotion features={domAnimation} strict>
+      {children}
+    </LazyMotion>
+  );
 }
 
 export const checkAccessExpiry = (): boolean => {

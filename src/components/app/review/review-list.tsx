@@ -27,7 +27,7 @@ import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
 import ReviewItemSkeleton from './review-item-skeleton';
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 
 export default function ReviewList({
   reviewList,
@@ -221,52 +221,50 @@ export default function ReviewList({
     );
 
   return (
-    <LazyMotion features={domAnimation}>
-      <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
-        <AnimatePresence initial={false}>
-          {reviewList
-            .filter((review) => review?.id)
-            .map((review, index) => (
-              <m.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  duration: 0.1,
-                  ease: 'linear',
-                  delay: index * 0.05
-                }}
-                key={review.id}
-              >
-                <ReviewItem
-                  review={review}
-                  reviewRatingMaps={reviewRatingMaps}
-                  isAuthor={profile?.id === review.author?.id}
-                  isAuthenticated={isAuthenticated}
-                  isVoteLoading={voteReviewLoading}
-                  onLike={handleLikeReview}
-                  onDislike={handleDislikeReview}
-                  onDelete={handleDeleteReview}
-                  voteType={voteMaps[review.id]}
-                />
-              </m.div>
-            ))}
-        </AnimatePresence>
-        {hasMore && (
-          <div className='flex justify-center'>
-            <Button
-              className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
-              variant='ghost'
-              onClick={onLoadMore}
+    <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
+      <AnimatePresence initial={false}>
+        {reviewList
+          .filter((review) => review?.id)
+          .map((review, index) => (
+            <m.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.1,
+                ease: 'linear',
+                delay: index * 0.05
+              }}
+              key={review.id}
             >
-              {isLoadMoreLoading ? (
-                <VerticalBarLoading />
-              ) : (
-                remainingCount > 0 && `Xem thêm ${remainingCount} đánh giá`
-              )}
-            </Button>
-          </div>
-        )}
-      </div>
-    </LazyMotion>
+              <ReviewItem
+                review={review}
+                reviewRatingMaps={reviewRatingMaps}
+                isAuthor={profile?.id === review.author?.id}
+                isAuthenticated={isAuthenticated}
+                isVoteLoading={voteReviewLoading}
+                onLike={handleLikeReview}
+                onDislike={handleDislikeReview}
+                onDelete={handleDeleteReview}
+                voteType={voteMaps[review.id]}
+              />
+            </m.div>
+          ))}
+      </AnimatePresence>
+      {hasMore && (
+        <div className='flex justify-center'>
+          <Button
+            className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
+            variant='ghost'
+            onClick={onLoadMore}
+          >
+            {isLoadMoreLoading ? (
+              <VerticalBarLoading />
+            ) : (
+              remainingCount > 0 && `Xem thêm ${remainingCount} đánh giá`
+            )}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }

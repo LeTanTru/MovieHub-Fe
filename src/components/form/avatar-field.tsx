@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { EyeIcon } from 'lucide-react';
 import Image from 'next/image';
-import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import {
   type HTMLAttributes,
@@ -206,67 +206,65 @@ export default function AvatarField({
       </div>
 
       {createPortal(
-        <LazyMotion features={domAnimation} strict>
-          <AnimatePresence>
-            {open && !shouldDisablePreview && (
+        <AnimatePresence>
+          {open && !shouldDisablePreview && (
+            <m.div
+              className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setScale(1);
+                setOpen(false);
+              }}
+            >
               <m.div
-                className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setScale(1);
-                  setOpen(false);
+                ref={previewRef}
+                className={cn(
+                  'relative cursor-zoom-in rounded',
+                  previewClassName
+                )}
+                style={{
+                  width: previewSize * previewAspect,
+                  height: previewSize
                 }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                onClick={(e) => e.stopPropagation()}
               >
-                <m.div
-                  ref={previewRef}
-                  className={cn(
-                    'relative cursor-zoom-in rounded',
-                    previewClassName
-                  )}
-                  style={{
-                    width: previewSize * previewAspect,
-                    height: previewSize
-                  }}
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.8, opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {src && (
-                    <div
-                      className='relative'
+                {src && (
+                  <div
+                    className='relative'
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      overflow: 'visible'
+                    }}
+                  >
+                    <Image
+                      src={src}
+                      alt='Preview'
+                      fill
+                      className={cn(
+                        'rounded-full object-cover transition-transform duration-100',
+                        imagePreviewClassName
+                      )}
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        overflow: 'visible'
+                        transform: `scale(${scale})`,
+                        transformOrigin: 'center center'
                       }}
-                    >
-                      <Image
-                        src={src}
-                        alt='Preview'
-                        fill
-                        className={cn(
-                          'rounded-full object-cover transition-transform duration-100',
-                          imagePreviewClassName
-                        )}
-                        style={{
-                          transform: `scale(${scale})`,
-                          transformOrigin: 'center center'
-                        }}
-                        sizes='(max-width: 768px) 100vw, 50vw'
-                        unoptimized
-                      />
-                    </div>
-                  )}
-                </m.div>
+                      sizes='(max-width: 768px) 100vw, 50vw'
+                      unoptimized
+                    />
+                  </div>
+                )}
               </m.div>
-            )}
-          </AnimatePresence>
-        </LazyMotion>,
+            </m.div>
+          )}
+        </AnimatePresence>,
         document.body
       )}
     </>

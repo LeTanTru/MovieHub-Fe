@@ -1,13 +1,7 @@
 'use client';
 import './top-movie-card.css';
 import { MetadataType, MovieResType } from '@/types';
-import {
-  domAnimation,
-  LazyMotion,
-  m,
-  Variants,
-  Transition
-} from 'framer-motion';
+import { m, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
@@ -116,115 +110,113 @@ export default function TopMovieCard({
 
   return (
     <>
-      <LazyMotion features={domAnimation}>
-        <m.div
-          key={movie.id}
-          ref={cardRef}
-          variants={itemVariants}
-          initial='initial'
-          animate='animate'
-          exit='exit'
-          transition={itemTransition}
-          className='group relative flex flex-col gap-3'
+      <m.div
+        key={movie.id}
+        ref={cardRef}
+        variants={itemVariants}
+        initial='initial'
+        animate='animate'
+        exit='exit'
+        transition={itemTransition}
+        className='group relative flex flex-col gap-3'
+      >
+        <Link
+          className='top-movie-card relative block h-0 w-full overflow-hidden rounded-md pb-[150%] transition-all duration-200 ease-linear'
+          href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+          onPointerEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={() => {
+            if (hoverTimeout.current) {
+              clearTimeout(hoverTimeout.current);
+              hoverTimeout.current = null;
+            }
+            setModalPos(null);
+          }}
         >
-          <Link
-            className='top-movie-card relative block h-0 w-full overflow-hidden rounded-md pb-[150%] transition-all duration-200 ease-linear'
-            href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-            onPointerEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onClick={() => {
-              if (hoverTimeout.current) {
-                clearTimeout(hoverTimeout.current);
-                hoverTimeout.current = null;
+          <div
+            className={cn(
+              'mask absolute inset-0 bg-transparent transition-all duration-200 ease-linear',
+              {
+                left: index % 2 === 0,
+                right: index % 2 !== 0
               }
-              setModalPos(null);
-            }}
-          >
-            <div
-              className={cn(
-                'mask absolute inset-0 bg-transparent transition-all duration-200 ease-linear',
-                {
-                  left: index % 2 === 0,
-                  right: index % 2 !== 0
-                }
-              )}
-            ></div>
-            <Image
-              alt={`${movie.title} - ${movie.originalTitle}`}
-              className={cn(
-                'image absolute h-full w-full object-cover transition-all duration-200 ease-linear',
-                {
-                  left: index % 2 === 0,
-                  right: index % 2 !== 0
-                }
-              )}
-              fill
-              src={renderImageUrl(movie.posterUrl)}
-              unoptimized
-              sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-            />
-          </Link>
+            )}
+          ></div>
+          <Image
+            alt={`${movie.title} - ${movie.originalTitle}`}
+            className={cn(
+              'image absolute h-full w-full object-cover transition-all duration-200 ease-linear',
+              {
+                left: index % 2 === 0,
+                right: index % 2 !== 0
+              }
+            )}
+            fill
+            src={renderImageUrl(movie.posterUrl)}
+            unoptimized
+            sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+          />
+        </Link>
 
-          <div className='relative flex min-h-10.5 gap-2'>
-            <div
+        <div className='relative flex min-h-10.5 gap-2'>
+          <div
+            className={cn(
+              'from-golden-glow to-golden-tainoi max-640:text-[28px] max-640:text-center max-640:min-w-7.5 min-w-12.5 shrink-0 bg-linear-[135deg] bg-clip-text text-left text-[58px] leading-none font-extrabold text-transparent italic',
+              {
+                'min-w-18': (index + 1).toString().length > 1
+              }
+            )}
+          >
+            {index + 1}
+          </div>
+          <div>
+            <h4
               className={cn(
-                'from-golden-glow to-golden-tainoi max-640:text-[28px] max-640:text-center max-640:min-w-7.5 min-w-12.5 shrink-0 bg-linear-[135deg] bg-clip-text text-left text-[58px] leading-none font-extrabold text-transparent italic',
+                'hover:text-golden-glow max-640:mb-0 mb-1 line-clamp-1 font-normal text-white transition-colors duration-200 ease-linear',
                 {
-                  'min-w-18': (index + 1).toString().length > 1
+                  'featured-title': movie.isFeatured
                 }
               )}
             >
-              {index + 1}
-            </div>
-            <div>
-              <h4
-                className={cn(
-                  'hover:text-golden-glow max-640:mb-0 mb-1 line-clamp-1 font-normal text-white transition-colors duration-200 ease-linear',
-                  {
-                    'featured-title': movie.isFeatured
-                  }
-                )}
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.title}
               >
-                <Link
-                  href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                  title={movie.title}
-                >
-                  {movie.title}
-                </Link>
-              </h4>
-              <h4 className='text-dark-gray max-640:mb-0 mb-1.25 line-clamp-1 text-xs leading-5.5 transition-colors duration-200 ease-linear hover:text-white'>
-                <Link
-                  href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-                  title={movie.originalTitle}
-                >
-                  {movie.originalTitle}
-                </Link>
-              </h4>
-              <div className='flex items-center gap-4'>
-                <div
-                  className='text-dark-gray inline text-xs whitespace-nowrap'
-                  title={ageRating?.mean}
-                >
-                  <strong>{ageRating?.label}</strong>
-                </div>
-                <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-                  {releaseYear}
-                </div>
-                {latestSeason?.label !== '1' && (
-                  <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-                    Phần {latestSeason?.label}
-                  </div>
-                )}
-                {isSeries && (
-                  <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-                    Tập {latestEpisode?.label}
-                  </div>
-                )}
+                {movie.title}
+              </Link>
+            </h4>
+            <h4 className='text-dark-gray max-640:mb-0 mb-1.25 line-clamp-1 text-xs leading-5.5 transition-colors duration-200 ease-linear hover:text-white'>
+              <Link
+                href={`${route.movie.path}/${movie.slug}.${movie.id}`}
+                title={movie.originalTitle}
+              >
+                {movie.originalTitle}
+              </Link>
+            </h4>
+            <div className='flex items-center gap-4'>
+              <div
+                className='text-dark-gray inline text-xs whitespace-nowrap'
+                title={ageRating?.mean}
+              >
+                <strong>{ageRating?.label}</strong>
               </div>
+              <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+                {releaseYear}
+              </div>
+              {latestSeason?.label !== '1' && (
+                <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+                  Phần {latestSeason?.label}
+                </div>
+              )}
+              {isSeries && (
+                <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+                  Tập {latestEpisode?.label}
+                </div>
+              )}
             </div>
           </div>
-        </m.div>
-      </LazyMotion>
+        </div>
+      </m.div>
 
       {isMounted &&
         isDesktop &&

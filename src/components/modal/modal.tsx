@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useRef, useState, useEffect } from 'react';
-import { AnimatePresence, m, HTMLMotionProps } from 'framer-motion';
+import { AnimatePresence, HTMLMotionProps, m } from 'framer-motion';
 import { cn } from '@/lib';
 import { createPortal } from 'react-dom';
 import { useIsMounted } from '@/hooks';
@@ -139,7 +139,7 @@ export default function Modal({
           )}
           <m.div
             className={cn(
-              'fixed inset-0 z-20 flex items-center justify-center',
+              'fixed inset-0 z-50 flex items-center justify-center',
               className
             )}
             initial={{ opacity: 0 }}

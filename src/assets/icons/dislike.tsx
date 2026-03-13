@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useImperativeHandle } from 'react';
-import { domAnimation, LazyMotion, m, useAnimate } from 'framer-motion';
+import { m, useAnimate } from 'framer-motion';
 import { FaCircleDown } from 'react-icons/fa6';
 import { AnimatedIconHandle, AnimatedIconProps } from '@/types';
 
@@ -48,24 +48,22 @@ const DislikeIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     };
 
     return (
-      <LazyMotion features={domAnimation}>
-        <m.div
-          ref={scope}
-          onClick={handleClick}
-          className={className}
-          style={{
-            transformOrigin: 'center',
-            fontSize: size,
-            color,
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <FaCircleDown className={iconClassName} />
-        </m.div>
-      </LazyMotion>
+      <m.div
+        ref={scope}
+        onClick={handleClick}
+        className={className}
+        style={{
+          transformOrigin: 'center',
+          fontSize: size,
+          color,
+          cursor: 'pointer',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <FaCircleDown className={iconClassName} />
+      </m.div>
     );
   }
 );
