@@ -18,7 +18,7 @@ export default function TopicList() {
     });
 
   const topicList = useMemo(
-    () => topicListData?.data?.content || [],
+    () => topicListData?.data?.content?.slice(0, 6) || [],
     [topicListData?.data?.content]
   );
   const totalElements = topicListData?.data?.totalElements || 0;
