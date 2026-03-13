@@ -37,14 +37,14 @@ export default function AppProvider({
     }
   }, [profile?.data, profile?.result, setProfile]);
 
-  useEffect(() => {
-    if (pathname !== '/intro') {
-      const hasValidAccess = checkAccessExpiry();
-      if (!hasValidAccess) {
-        navigate.replace('/intro');
-      }
-    }
-  }, [pathname, navigate]);
+  // useEffect(() => {
+  //   if (pathname !== '/intro') {
+  //     const hasValidAccess = checkAccessExpiry();
+  //     if (!hasValidAccess) {
+  //       navigate.replace('/intro');
+  //     }
+  //   }
+  // }, [pathname, navigate]);
 
   useEffect(() => {
     const hasScroll = document.body.scrollHeight > window.innerHeight;
