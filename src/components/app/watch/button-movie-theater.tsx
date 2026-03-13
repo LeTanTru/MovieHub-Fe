@@ -29,15 +29,13 @@ export default function ButtonMovieTheater({
   return (
     <Button
       variant='ghost'
-      className={
-        (cn(
-          'button-movie-theater dark:hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear dark:hover:bg-white/10',
-          {
-            'bg-white/10': isMovieTheater
-          }
-        ),
-        className)
-      }
+      className={cn(
+        'button-movie-theater dark:hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear dark:hover:bg-white/10',
+        {
+          'bg-white/10': isMovieTheater
+        },
+        className
+      )}
       onClick={handleToggleMovieTheater}
     >
       Rạp phim

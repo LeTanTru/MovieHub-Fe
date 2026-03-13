@@ -1,5 +1,6 @@
 'use client';
 
+import { MovieTabHeading } from '@/components/app/heading';
 import MotionWrapper from './motion-wrapper';
 import { PersonCard } from '@/components/app/person-card';
 import {
@@ -32,9 +33,7 @@ export default function MovieTabPerson({
 
   return (
     <MotionWrapper uniqueKey={key} direction={direction}>
-      <h3 className='max-1120:mb-4 max-640:text-lg max-480:text-base max-640:mb-3 mb-6 text-xl font-semibold'>
-        {title}
-      </h3>
+      <MovieTabHeading title={title} />
 
       {personList.length === 0 ? (
         <p className='text-gray-400'>

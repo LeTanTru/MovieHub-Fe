@@ -81,7 +81,7 @@ export default function SliderItem({
             height={1080}
             decoding='async'
             fetchPriority='high'
-            preload
+            preload={slider.ordering === 0}
           />
         </div>
       </div>
@@ -107,7 +107,7 @@ export default function SliderItem({
                   width={400}
                   height={130}
                   decoding='async'
-                  preload
+                  preload={slider.ordering === 0}
                 />
               </Link>
             </div>

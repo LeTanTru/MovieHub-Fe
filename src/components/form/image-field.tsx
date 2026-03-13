@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { EyeIcon } from 'lucide-react';
 import Image from 'next/image';
-import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { AiOutlineFileImage } from 'react-icons/ai';
 import {
@@ -253,92 +253,90 @@ export default function ImageField({
         )}
       </div>
       {createPortal(
-        <LazyMotion features={domAnimation} strict>
-          <AnimatePresence>
-            {open && !shouldDisablePreview && (
+        <AnimatePresence>
+          {open && !shouldDisablePreview && (
+            <m.div
+              className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={(e) => {
+                setScale(1);
+                setOpen(false);
+                e.stopPropagation();
+              }}
+            >
               <m.div
-                className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={(e) => {
-                  setScale(1);
-                  setOpen(false);
-                  e.stopPropagation();
-                }}
+                ref={previewRef}
+                className={cn(
+                  'relative cursor-zoom-in rounded',
+                  previewClassName
+                )}
+                // freePreviewAspect: omit explicit width/height so the
+                // container sizes naturally around the image
+                style={
+                  freePreviewAspect
+                    ? { maxWidth: '90vw', maxHeight: '90vh' }
+                    : {
+                        width: previewSize * previewAspect,
+                        height: previewSize
+                      }
+                }
+                initial={{ scale: 0.85, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.85, opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                onClick={(e) => e.stopPropagation()}
               >
-                <m.div
-                  ref={previewRef}
-                  className={cn(
-                    'relative cursor-zoom-in rounded',
-                    previewClassName
-                  )}
-                  // freePreviewAspect: omit explicit width/height so the
-                  // container sizes naturally around the image
-                  style={
-                    freePreviewAspect
-                      ? { maxWidth: '90vw', maxHeight: '90vh' }
-                      : {
-                          width: previewSize * previewAspect,
-                          height: previewSize
-                        }
-                  }
-                  initial={{ scale: 0.85, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.85, opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {src &&
-                    (freePreviewAspect ? (
-                      // freePreviewAspect: render at natural size capped to viewport
+                {src &&
+                  (freePreviewAspect ? (
+                    // freePreviewAspect: render at natural size capped to viewport
+                    <Image
+                      src={src}
+                      alt='Preview'
+                      width={0}
+                      height={0}
+                      sizes='90vw'
+                      className={cn(
+                        'h-auto max-h-[90vh] w-auto max-w-[90vw] rounded object-contain transition-transform duration-100',
+                        imagePreviewClassName
+                      )}
+                      style={{
+                        transform: `scale(${scale})`,
+                        transformOrigin: 'center center'
+                      }}
+                      unoptimized
+                    />
+                  ) : (
+                    <div
+                      className='relative'
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        overflow: 'visible'
+                      }}
+                    >
                       <Image
                         src={src}
                         alt='Preview'
-                        width={0}
-                        height={0}
-                        sizes='90vw'
+                        fill
                         className={cn(
-                          'h-auto max-h-[90vh] w-auto max-w-[90vw] rounded object-contain transition-transform duration-100',
+                          'rounded object-cover transition-transform duration-100',
                           imagePreviewClassName
                         )}
                         style={{
                           transform: `scale(${scale})`,
                           transformOrigin: 'center center'
                         }}
+                        sizes='(max-width: 768px) 100vw, 50vw'
                         unoptimized
                       />
-                    ) : (
-                      <div
-                        className='relative'
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          overflow: 'visible'
-                        }}
-                      >
-                        <Image
-                          src={src}
-                          alt='Preview'
-                          fill
-                          className={cn(
-                            'rounded object-cover transition-transform duration-100',
-                            imagePreviewClassName
-                          )}
-                          style={{
-                            transform: `scale(${scale})`,
-                            transformOrigin: 'center center'
-                          }}
-                          sizes='(max-width: 768px) 100vw, 50vw'
-                          unoptimized
-                        />
-                      </div>
-                    ))}
-                </m.div>
+                    </div>
+                  ))}
               </m.div>
-            )}
-          </AnimatePresence>
-        </LazyMotion>,
+            </m.div>
+          )}
+        </AnimatePresence>,
         document.body
       )}
     </>

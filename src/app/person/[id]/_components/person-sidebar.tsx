@@ -10,7 +10,7 @@ import {
 } from '@/constants';
 import { formatDate, renderImageUrl, sanitizeText } from '@/utils';
 import { X } from 'lucide-react';
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { FaArrowDown } from 'react-icons/fa6';
 import { useDisclosure, useQueryParams } from '@/hooks';
 import { usePersonQuery } from '@/queries';
@@ -138,54 +138,52 @@ export default function PersonSidebar() {
         </div>
       </div>
 
-      <LazyMotion features={domAnimation}>
-        <AnimatePresence>
-          {opened && (
+      <AnimatePresence>
+        {opened && (
+          <m.div
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/80'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleCloseModal}
+          >
             <m.div
-              className='fixed inset-0 z-50 flex items-center justify-center bg-black/80'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={handleCloseModal}
+              ref={modalContentRef}
+              className='scrollbar-none bg-bunker relative max-h-[80vh] w-[90%] max-w-2xl overflow-y-auto rounded-lg p-6'
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
             >
-              <m.div
-                ref={modalContentRef}
-                className='scrollbar-none bg-bunker relative max-h-[80vh] w-[90%] max-w-2xl overflow-y-auto rounded-lg p-6'
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }}
-                onClick={(e) => e.stopPropagation()}
+              <Button
+                variant='ghost'
+                className='absolute top-2 right-0 dark:hover:bg-transparent'
+                onClick={handleCloseModal}
               >
-                <Button
-                  variant='ghost'
-                  className='absolute top-2 right-0 dark:hover:bg-transparent'
-                  onClick={handleCloseModal}
-                >
-                  <X className='size-5' />
-                </Button>
-                <h2 className='mb-4 text-xl font-semibold'>
-                  {person?.otherName}
-                </h2>
-                <div
-                  className='text-foreground/80 text-justify'
-                  dangerouslySetInnerHTML={{ __html: sanitizedBio }}
-                />
-                <m.div
-                  className='bg-accent absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce rounded-full p-2'
-                  initial={{ bottom: -30, display: 'none' }}
-                  animate={{
-                    bottom: showScrollIcon ? 30 : -30,
-                    display: showScrollIcon ? 'block' : 'none'
-                  }}
-                  transition={{ duration: 0.2, ease: 'linear' }}
-                >
-                  <FaArrowDown className='h-6 w-6 text-white' />
-                </m.div>
+                <X className='size-5' />
+              </Button>
+              <h2 className='mb-4 text-xl font-semibold'>
+                {person?.otherName}
+              </h2>
+              <div
+                className='text-foreground/80 text-justify'
+                dangerouslySetInnerHTML={{ __html: sanitizedBio }}
+              />
+              <m.div
+                className='bg-accent absolute bottom-2 left-1/2 -translate-x-1/2 animate-bounce rounded-full p-2'
+                initial={{ bottom: -30, display: 'none' }}
+                animate={{
+                  bottom: showScrollIcon ? 30 : -30,
+                  display: showScrollIcon ? 'block' : 'none'
+                }}
+                transition={{ duration: 0.2, ease: 'linear' }}
+              >
+                <FaArrowDown className='h-6 w-6 text-white' />
               </m.div>
             </m.div>
-          )}
-        </AnimatePresence>
-      </LazyMotion>
+          </m.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

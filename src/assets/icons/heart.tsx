@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, useImperativeHandle } from 'react';
-import { domAnimation, LazyMotion, m, useAnimate } from 'framer-motion';
+import { m, useAnimate } from 'framer-motion';
 import { FaHeart } from 'react-icons/fa6';
 import { AnimatedIconHandle, AnimatedIconProps } from '@/types';
 
@@ -47,24 +47,22 @@ const HeartIcon = forwardRef<AnimatedIconHandle, AnimatedIconProps>(
     };
 
     return (
-      <LazyMotion features={domAnimation}>
-        <m.div
-          ref={scope}
-          onClick={handleClick}
-          className={`${className} cursor-pointer`}
-          style={{
-            transformOrigin: 'center',
-            fontSize: size,
-            color,
-            cursor: 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          <FaHeart className={iconClassName} />
-        </m.div>
-      </LazyMotion>
+      <m.div
+        ref={scope}
+        onClick={handleClick}
+        className={`${className} cursor-pointer`}
+        style={{
+          transformOrigin: 'center',
+          fontSize: size,
+          color,
+          cursor: 'pointer',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        <FaHeart className={iconClassName} />
+      </m.div>
     );
   }
 );

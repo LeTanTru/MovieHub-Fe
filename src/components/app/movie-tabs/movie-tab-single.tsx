@@ -1,6 +1,7 @@
 'use client';
 
 import { caption } from '@/assets';
+import { MovieTabHeading } from '@/components/app/heading';
 import { useNavigate } from '@/hooks';
 import { route } from '@/routes';
 import { MovieResType } from '@/types';
@@ -18,9 +19,7 @@ export default function MovieTabSingle({ movie }: { movie: MovieResType }) {
 
   return (
     <>
-      <h3 className='max-1120:mb-4 max-640:text-lg max-480:text-base max-640:mb-3 mb-6 text-xl font-semibold'>
-        Các bản chiếu
-      </h3>
+      <MovieTabHeading title='Các bản chiếu' />
       {movie && movie.seasons && movie.seasons.length > 0 ? (
         <div className='max-990:grid-cols-2 max-520:grid-cols-1 grid grid-cols-3 gap-4'>
           {movie.seasons.map((season) => (

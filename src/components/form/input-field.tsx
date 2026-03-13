@@ -21,7 +21,7 @@ import {
   useState
 } from 'react';
 import { Check } from 'lucide-react';
-import { LazyMotion, domAnimation, m, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { EMPTY_ARRAY } from '@/constants';
 
 type InputFieldProps<T extends FieldValues> = {
@@ -165,70 +165,68 @@ function InputFieldInner<T extends FieldValues>(
                   }
                 }}
               />
-              <LazyMotion features={domAnimation} strict>
-                {/* Options Dropdown */}
-                <AnimatePresence>
-                  {showOptions &&
-                    filteredOptions.length > 0 &&
-                    !disabled &&
-                    !readOnly && (
-                      <m.div
-                        initial={{
-                          opacity: 0,
-                          rotateX: -15,
-                          scale: 0.95
-                        }}
-                        animate={{
-                          opacity: 1,
-                          rotateX: 0,
-                          scale: 1
-                        }}
-                        exit={{
-                          opacity: 0,
-                          rotateX: -15,
-                          scale: 0.95
-                        }}
-                        transition={{
-                          duration: 0.2,
-                          ease: 'linear'
-                        }}
-                        style={{
-                          transformPerspective: 1000,
-                          transformOrigin: 'top center'
-                        }}
-                        className='absolute top-full left-0 z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white p-1 shadow-[0px_0px_10px_5px] shadow-gray-200'
-                      >
-                        {filteredOptions.map((option, index) => (
-                          <div
-                            key={index}
-                            className={cn(
-                              'relative flex cursor-pointer items-center rounded p-2 text-sm transition-all duration-200 ease-linear hover:bg-gray-100',
-                              field.value === option && 'bg-gray-50'
-                            )}
-                            onClick={() => {
-                              field.onChange(option);
-                              onOptionSelect?.(option);
-                              setShowOptions(false);
-                            }}
-                          >
-                            <span className='flex-1'>{option}</span>
-                            {field.value === option && (
-                              <Check className='text-main-color h-4 w-4' />
-                            )}
-                          </div>
-                        ))}
-                        {allowCustomInput &&
-                          field.value &&
-                          !filteredOptions.includes(field.value) && (
-                            <div className='border-t border-gray-200 px-3 py-2 text-sm text-gray-500'>
-                              Press Enter to use:{' '}
-                              <span className='font-medium'>{field.value}</span>
-                            </div>
+              {/* Options Dropdown */}
+              <AnimatePresence>
+                {showOptions &&
+                  filteredOptions.length > 0 &&
+                  !disabled &&
+                  !readOnly && (
+                    <m.div
+                      initial={{
+                        opacity: 0,
+                        rotateX: -15,
+                        scale: 0.95
+                      }}
+                      animate={{
+                        opacity: 1,
+                        rotateX: 0,
+                        scale: 1
+                      }}
+                      exit={{
+                        opacity: 0,
+                        rotateX: -15,
+                        scale: 0.95
+                      }}
+                      transition={{
+                        duration: 0.2,
+                        ease: 'linear'
+                      }}
+                      style={{
+                        transformPerspective: 1000,
+                        transformOrigin: 'top center'
+                      }}
+                      className='absolute top-full left-0 z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white p-1 shadow-[0px_0px_10px_5px] shadow-gray-200'
+                    >
+                      {filteredOptions.map((option, index) => (
+                        <div
+                          key={index}
+                          className={cn(
+                            'relative flex cursor-pointer items-center rounded p-2 text-sm transition-all duration-200 ease-linear hover:bg-gray-100',
+                            field.value === option && 'bg-gray-50'
                           )}
-                      </m.div>
-                    )}
-                </AnimatePresence>
-              </LazyMotion>
+                          onClick={() => {
+                            field.onChange(option);
+                            onOptionSelect?.(option);
+                            setShowOptions(false);
+                          }}
+                        >
+                          <span className='flex-1'>{option}</span>
+                          {field.value === option && (
+                            <Check className='text-main-color h-4 w-4' />
+                          )}
+                        </div>
+                      ))}
+                      {allowCustomInput &&
+                        field.value &&
+                        !filteredOptions.includes(field.value) && (
+                          <div className='border-t border-gray-200 px-3 py-2 text-sm text-gray-500'>
+                            Press Enter to use:{' '}
+                            <span className='font-medium'>{field.value}</span>
+                          </div>
+                        )}
+                    </m.div>
+                  )}
+              </AnimatePresence>
               {suffixIcon && (
                 <div className='text-muted-foreground absolute top-1/2 right-3 -translate-y-1/2'>
                   {suffixIcon}

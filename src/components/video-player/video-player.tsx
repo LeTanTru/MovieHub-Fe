@@ -3,7 +3,7 @@
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
-import { LazyMotion, domAnimation } from 'framer-motion';
+
 import {
   BufferingIndicator,
   CaptionButton,
@@ -199,108 +199,103 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
     };
 
     return (
-      <LazyMotion features={domAnimation} strict>
-        <IndicatorContext.Provider value={{ currentAction, setCurrentAction }}>
-          <MediaPlayer
-            ref={playerRef}
-            viewType='video'
-            streamType='on-demand'
-            logLevel='silent'
-            crossOrigin
-            playsInline
-            preferNativeHLS={false}
-            autoPlay={autoPlay}
-            fullscreenOrientation={'none'}
-            volume={volume}
-            className={cn(
-              'video-player relative h-full rounded-none! border-none!',
-              className
-            )}
-            onProviderChange={
-              auth ? (provider) => onProviderChange(provider, token) : undefined
-            }
-            onPlay={() => setCurrentAction('play-pause')}
-            onPause={() => setCurrentAction('play-pause')}
-            onVolumeChange={() => setCurrentAction('volume')}
-            onTimeUpdate={handleTimeChange}
-            onSeeked={onSeeked}
-            onEnded={onEnded}
-            {...mediaPlayerProps}
-          >
-            <MediaProvider slot='media' className='cursor-pointer'>
-              <Poster className='vds-poster' src={thumbnailUrl} />
-              {textTracks?.map((track) => (
-                <Track {...(track as any)} key={track.src} />
-              ))}
-            </MediaProvider>
-            <DefaultVideoLayout
-              smallLayoutWhen={false}
-              thumbnails={vttUrl}
-              icons={defaultLayoutIcons}
-              slots={{
-                playButton: <PlayToggleButton />,
-                muteButton: <VolumeToggleButton />,
-                fullscreenButton: <FullscreenToggleButton />,
-                pipButton: <PiPToggleButton />,
-                settingsMenu: (
-                  <SettingMenu placement='top end' tooltipPlacement='top' />
-                ),
-                captionButton: <CaptionButton />,
-                beforeSettingsMenu: (
+      <IndicatorContext.Provider value={{ currentAction, setCurrentAction }}>
+        <MediaPlayer
+          ref={playerRef}
+          viewType='video'
+          streamType='on-demand'
+          logLevel='silent'
+          crossOrigin
+          playsInline
+          preferNativeHLS={false}
+          autoPlay={autoPlay}
+          fullscreenOrientation={'none'}
+          volume={volume}
+          className={cn(
+            'video-player relative h-full rounded-none! border-none!',
+            className
+          )}
+          onProviderChange={
+            auth ? (provider) => onProviderChange(provider, token) : undefined
+          }
+          onPlay={() => setCurrentAction('play-pause')}
+          onPause={() => setCurrentAction('play-pause')}
+          onVolumeChange={() => setCurrentAction('volume')}
+          onTimeUpdate={handleTimeChange}
+          onSeeked={onSeeked}
+          onEnded={onEnded}
+          {...mediaPlayerProps}
+        >
+          <MediaProvider slot='media' className='cursor-pointer'>
+            <Poster className='vds-poster' src={thumbnailUrl} />
+            {textTracks?.map((track) => (
+              <Track {...(track as any)} key={track.src} />
+            ))}
+          </MediaProvider>
+          <DefaultVideoLayout
+            smallLayoutWhen={false}
+            thumbnails={vttUrl}
+            icons={defaultLayoutIcons}
+            slots={{
+              playButton: <PlayToggleButton />,
+              muteButton: <VolumeToggleButton />,
+              fullscreenButton: <FullscreenToggleButton />,
+              pipButton: <PiPToggleButton />,
+              settingsMenu: (
+                <SettingMenu placement='top end' tooltipPlacement='top' />
+              ),
+              captionButton: <CaptionButton />,
+              beforeSettingsMenu: (
+                <>
+                  <div className='max-640:hidden contents'>
+                    {prev && onPrevClick && (
+                      <PreviousButton onClick={onPrevClick} />
+                    )}
+                    {next && onNextClick && (
+                      <NextButton onClick={onNextClick} />
+                    )}
+                    <SeekBackwardButton />
+                    <SeekForwardButton />
+                  </div>
+                </>
+              ),
+              googleCastButton: null,
+              afterTimeSlider:
+                showSkipIntro || showSkipOutro ? (
                   <>
-                    <div className='max-640:hidden contents'>
-                      {prev && onPrevClick && (
-                        <PreviousButton onClick={onPrevClick} />
-                      )}
-                      {next && onNextClick && (
-                        <NextButton onClick={onNextClick} />
-                      )}
-                      <SeekBackwardButton />
-                      <SeekForwardButton />
-                    </div>
+                    {showSkipIntro && (
+                      <SkipIntroButton
+                        onClick={() => {
+                          if (playerRef.current && introEnd) {
+                            playerRef.current.currentTime = introEnd;
+                          }
+                        }}
+                      />
+                    )}
+                    {showSkipOutro && <SkipOutroButton onClick={onNextClick} />}
                   </>
-                ),
-                googleCastButton: null,
-                afterTimeSlider:
-                  showSkipIntro || showSkipOutro ? (
-                    <>
-                      {showSkipIntro && (
-                        <SkipIntroButton
-                          onClick={() => {
-                            if (playerRef.current && introEnd) {
-                              playerRef.current.currentTime = introEnd;
-                            }
-                          }}
-                        />
-                      )}
-                      {showSkipOutro && (
-                        <SkipOutroButton onClick={onNextClick} />
-                      )}
-                    </>
-                  ) : null,
-                timeSlider: (
-                  <TimeSlider
-                    introStart={introStart}
-                    introEnd={introEnd}
-                    duration={duration}
-                    outroStart={outroStart}
-                    vttUrl={vttUrl}
-                  />
-                ),
-                centerControlsGroupCenter: (
-                  <>
-                    <PlayPauseIndicator />
-                    <VolumeIndicator />
-                  </>
-                ),
-                topControlsGroupCenter: <></>,
-                bufferingIndicator: <BufferingIndicator />,
-                ...slots
-              }}
-            />
-          </MediaPlayer>
-        </IndicatorContext.Provider>
-      </LazyMotion>
+                ) : null,
+              timeSlider: (
+                <TimeSlider
+                  introStart={introStart}
+                  introEnd={introEnd}
+                  duration={duration}
+                  outroStart={outroStart}
+                  vttUrl={vttUrl}
+                />
+              ),
+              centerControlsGroupCenter: (
+                <>
+                  <PlayPauseIndicator />
+                  <VolumeIndicator />
+                </>
+              ),
+              bufferingIndicator: <BufferingIndicator />,
+              ...slots
+            }}
+          />
+        </MediaPlayer>
+      </IndicatorContext.Provider>
     );
   }
 );

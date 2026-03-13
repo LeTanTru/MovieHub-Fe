@@ -41,7 +41,7 @@ export default function TrailerModal({
       title={video.name}
       open={opened}
       onClose={onClose}
-      className='trailer-modal overflow-hidden'
+      className='trailer-modal'
       aria-labelledby='video-modal-title'
       aria-label={`Phát video ${video.name}`}
       bodyRef={bodyRef}
@@ -69,6 +69,7 @@ export default function TrailerModal({
           outroStart={video.outroStart}
           className='rounded-md!'
           token={token}
+          volume={0}
         />
       </div>
     </Modal>

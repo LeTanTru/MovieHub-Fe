@@ -2,7 +2,7 @@
 
 import { useMoviePersonListQuery } from '@/queries';
 import { useState } from 'react';
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import {
   MAX_PAGE_SIZE,
   MOVIE_LIST_TAB_ALL,
@@ -65,47 +65,45 @@ export default function MovieList() {
               </div>
             )}
           </div>
-          <LazyMotion features={domAnimation}>
-            <AnimatePresence mode='popLayout'>
-              <m.div
-                key={activeKey}
-                initial={{
-                  opacity: 0,
-                  y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
-                }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{
-                  opacity: 0,
-                  y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
-                }}
-                className='block'
-              >
-                {movieListLoading ? (
-                  <MovieGridSkeleton
-                    className='max-1600:gap-4 max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-x-2 max-640:gap-y-6 max-480:grid-cols-2 grid-cols-6 gap-6'
-                    skeletonCount={12}
-                  />
-                ) : movieList.length === 0 ? (
-                  <NoData
-                    className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
-                    imageClassName='max-640:size-40 max-480:size-30'
-                    content='Diễn viên này chưa tham gia phim nào'
-                  />
-                ) : activeKey === MOVIE_LIST_TAB_ALL ? (
-                  <MovieGrid
-                    movieList={movieList}
-                    dir='down'
-                    className='max-1600:gap-4 max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-x-2 max-640:gap-y-6 max-480:grid-cols-2 grid-cols-6 gap-6'
-                  />
-                ) : (
-                  <MovieGridByYear
-                    movieList={movieList}
-                    className='max-1600:gap-4 max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-x-2 max-640:gap-y-6 max-480:grid-cols-2 grid-cols-6 gap-6'
-                  />
-                )}
-              </m.div>
-            </AnimatePresence>
-          </LazyMotion>
+          <AnimatePresence mode='popLayout'>
+            <m.div
+              key={activeKey}
+              initial={{
+                opacity: 0,
+                y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
+              }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{
+                opacity: 0,
+                y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
+              }}
+              className='block'
+            >
+              {movieListLoading ? (
+                <MovieGridSkeleton
+                  className='max-1600:gap-4 max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-x-2 max-640:gap-y-6 max-480:grid-cols-2 grid-cols-6 gap-6'
+                  skeletonCount={12}
+                />
+              ) : movieList.length === 0 ? (
+                <NoData
+                  className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
+                  imageClassName='max-640:size-40 max-480:size-30'
+                  content='Diễn viên này chưa tham gia phim nào'
+                />
+              ) : activeKey === MOVIE_LIST_TAB_ALL ? (
+                <MovieGrid
+                  movieList={movieList}
+                  dir='down'
+                  className='max-1600:gap-4 max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-x-2 max-640:gap-y-6 max-480:grid-cols-2 grid-cols-6 gap-6'
+                />
+              ) : (
+                <MovieGridByYear
+                  movieList={movieList}
+                  className='max-1600:gap-4 max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-x-2 max-640:gap-y-6 max-480:grid-cols-2 grid-cols-6 gap-6'
+                />
+              )}
+            </m.div>
+          </AnimatePresence>
         </div>
       </div>
     </div>

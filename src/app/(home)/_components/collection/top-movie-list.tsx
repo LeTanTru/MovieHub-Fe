@@ -8,6 +8,9 @@ import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { TopMovieCard } from '@/components/app/collection';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
+import { CollectionListHeading } from '@/components/app/heading';
+import { route } from '@/routes';
+import { generateSlug } from '@/utils';
 
 export default function TopMovieList({
   collection
@@ -22,11 +25,10 @@ export default function TopMovieList({
   return (
     <div className='collection-movie-list fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>
       <>
-        <div className='max-1120:mb-5 max-990:mb-4 max-480:justify-between relative mb-6 flex items-center justify-start gap-4'>
-          <h3 className='max-1600:text-2xl max-640:text-xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
-            {collection.name}&nbsp;
-          </h3>
-        </div>
+        <CollectionListHeading
+          title={collection.name}
+          link={`${route.topic.path}/${generateSlug(collection.name)}.${collection.id}`}
+        />
         <div className='swiper-container'>
           <div className='swiper-navigation'>
             <div ref={nextRef} className='swiper-button swiper-next-button'>

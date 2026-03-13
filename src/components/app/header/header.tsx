@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import DropdownAvatar from './dropdown-avatar';
 import NavigationMenu from './navigation';
 import DropdownNotification from './dropdown-notification';
@@ -85,111 +85,109 @@ export default function Header() {
         />
 
         {/* Mobile search — animated show/hide */}
-        <LazyMotion features={domAnimation}>
-          <AnimatePresence>
-            {showSearch && (
+        <AnimatePresence>
+          {showSearch && (
+            <m.div
+              key='mobile-search-form'
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
+              style={{ transformOrigin: 'top center' }}
+              className='max-1360:absolute max-1360:left-2.5 max-1360:right-12.5 max-1360:z-50 max-1360:block max-640:right-10 hidden w-auto'
+            >
+              <SearchForm
+                className='max-1360:max-w-none max-1360:w-full'
+                formClassName='flex h-full w-full items-center bg-transparent p-0'
+              />
+            </m.div>
+          )}
+        </AnimatePresence>
+
+        {/* Right side */}
+        <div className='h-header max-1360:hidden max-1600:gap-2.5 flex grow items-center gap-8'>
+          <NavigationMenu mode='desktop' />
+          <div className='grow'></div>
+          <AnimatePresence mode='wait' initial={false}>
+            {loading ? (
               <m.div
-                key='mobile-search-form'
+                key='loading'
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
-                style={{ transformOrigin: 'top center' }}
-                className='max-1360:absolute max-1360:left-2.5 max-1360:right-12.5 max-1360:z-50 max-1360:block max-640:right-10 hidden w-auto'
+                transition={{ duration: 0.2 }}
+                style={{ marginRight: 24 }}
               >
-                <SearchForm
-                  className='max-1360:max-w-none max-1360:w-full'
-                  formClassName='flex h-full w-full items-center bg-transparent p-0'
-                />
+                <div className='skeleton h-10 w-10 rounded-full!' />
+              </m.div>
+            ) : !profile ? (
+              <m.div
+                key='auth'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <Button onClick={handleLogin} className='w-full rounded-full'>
+                  Đăng nhập
+                </Button>
+              </m.div>
+            ) : (
+              <div className='flex h-full items-center gap-x-5'>
+                <m.div
+                  key='notification'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <DropdownNotification />
+                </m.div>
+                <m.div
+                  key='avatar'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <DropdownAvatar profile={profile} />
+                </m.div>
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        <div className='max-1360:block hidden grow'></div>
+
+        {/* Mobile search toggle button */}
+        <div
+          className='mobile-search max-1360:flex max-640:size-6 max-640:pr-1 hidden size-10 items-center justify-center'
+          onClick={() => setShowSearch((prev) => !prev)}
+        >
+          <AnimatePresence mode='wait' initial={false}>
+            {!showSearch ? (
+              <m.div
+                key='icon-search'
+                initial={{ opacity: 0, scale: 0.8, rotate: -15 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.8, rotate: 15 }}
+                transition={{ duration: 0.1 }}
+              >
+                <FaSearch className='max-640:size-4 size-5 font-semibold' />
+              </m.div>
+            ) : (
+              <m.div
+                key='icon-close'
+                initial={{ opacity: 0, scale: 0.8, rotate: 15 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                exit={{ opacity: 0, scale: 0.8, rotate: -15 }}
+                transition={{ duration: 0.1 }}
+              >
+                <FaXmark className='max-640:size-5 size-6 font-semibold text-red-500' />
               </m.div>
             )}
           </AnimatePresence>
-
-          {/* Right side */}
-          <div className='h-header max-1360:hidden max-1600:gap-2.5 flex grow items-center gap-8'>
-            <NavigationMenu mode='desktop' />
-            <div className='grow'></div>
-            <AnimatePresence mode='wait' initial={false}>
-              {loading ? (
-                <m.div
-                  key='loading'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ marginRight: 24 }}
-                >
-                  <div className='skeleton h-10 w-10 rounded-full!' />
-                </m.div>
-              ) : !profile ? (
-                <m.div
-                  key='auth'
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Button onClick={handleLogin} className='w-full rounded-full'>
-                    Đăng nhập
-                  </Button>
-                </m.div>
-              ) : (
-                <div className='flex h-full items-center gap-x-5'>
-                  <m.div
-                    key='notification'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <DropdownNotification />
-                  </m.div>
-                  <m.div
-                    key='avatar'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <DropdownAvatar profile={profile} />
-                  </m.div>
-                </div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          <div className='max-1360:block hidden grow'></div>
-
-          {/* Mobile search toggle button */}
-          <div
-            className='mobile-search max-1360:flex max-640:size-6 max-640:pr-1 hidden size-10 items-center justify-center'
-            onClick={() => setShowSearch((prev) => !prev)}
-          >
-            <AnimatePresence mode='wait' initial={false}>
-              {!showSearch ? (
-                <m.div
-                  key='icon-search'
-                  initial={{ opacity: 0, scale: 0.8, rotate: -15 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, rotate: 15 }}
-                  transition={{ duration: 0.1 }}
-                >
-                  <FaSearch className='max-640:size-4 size-5 font-semibold' />
-                </m.div>
-              ) : (
-                <m.div
-                  key='icon-close'
-                  initial={{ opacity: 0, scale: 0.8, rotate: 15 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, rotate: -15 }}
-                  transition={{ duration: 0.1 }}
-                >
-                  <FaXmark className='max-640:size-5 size-6 font-semibold text-red-500' />
-                </m.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </LazyMotion>
+        </div>
       </div>
     </header>
   );

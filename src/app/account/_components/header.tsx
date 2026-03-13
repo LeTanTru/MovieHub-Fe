@@ -1,6 +1,6 @@
 'use client';
 
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import DropdownAvatar from './dropdown-avatar';
 import { useAppLoading, useAuth } from '@/hooks';
 import { route } from '@/routes';
@@ -33,34 +33,32 @@ export default function Header() {
         </div>
         <div className='grow'></div>
         <div className='flex items-center gap-2'>
-          <LazyMotion features={domAnimation}>
-            <AnimatePresence mode='wait' initial={false}>
-              {loading || !profile ? (
+          <AnimatePresence mode='wait' initial={false}>
+            {loading || !profile ? (
+              <m.div
+                key='loading'
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                style={{ marginRight: 24 }}
+              >
+                <div className='skeleton h-10 w-10 rounded-full!' />
+              </m.div>
+            ) : (
+              <div className='flex h-full items-center gap-x-5'>
                 <m.div
-                  key='loading'
+                  key='avatar'
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  style={{ marginRight: 24 }}
                 >
-                  <div className='skeleton h-10 w-10 rounded-full!' />
+                  <DropdownAvatar profile={profile} />
                 </m.div>
-              ) : (
-                <div className='flex h-full items-center gap-x-5'>
-                  <m.div
-                    key='avatar'
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <DropdownAvatar profile={profile} />
-                  </m.div>
-                </div>
-              )}
-            </AnimatePresence>
-          </LazyMotion>
+              </div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </header>

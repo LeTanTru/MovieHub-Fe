@@ -6,7 +6,6 @@ import 'swiper/css/navigation';
 import './anime-movie-list.css';
 import { CollectionResType } from '@/types';
 import { route } from '@/routes';
-import { FaChevronRight } from 'react-icons/fa6';
 import { generateSlug, notify, renderImageUrl } from '@/utils';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import { useState } from 'react';
@@ -22,6 +21,7 @@ import {
 import { logger } from '@/logger';
 import { AnimeItem } from '@/components/app/collection';
 import Image from 'next/image';
+import { CollectionListHeading } from '@/components/app/heading';
 
 export default function AnimeMovieList({
   collection
@@ -135,71 +135,61 @@ export default function AnimeMovieList({
 
   return (
     <div className='collection-movie-list anime-movie-list fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>
-      <>
-        <div className='max-1120:mb-5 max-990:mb-4 max-480:justify-between relative mb-6 flex items-center justify-start gap-4'>
-          <h3 className='max-1600:text-2xl max-640:text-xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
-            {collection.name}&nbsp;
-          </h3>
-          <Link
-            href={`${route.topic.path}/${generateSlug(collection.name)}.${collection.id}`}
-            className='group hover:text-golden-glow hover:border-golden-glow flex items-center gap-0.5 rounded-full border p-1 text-lg transition-all duration-200 ease-linear hover:w-auto hover:px-2.5'
-          >
-            <span className='hidden text-sm group-hover:block'>Xem thêm</span>
-            <FaChevronRight className='text-sm' />
-          </Link>
-        </div>
-        <div className='swiper-container'>
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            effect='fade'
-            slidesPerView={1}
-            loop={true}
-            grabCursor={true}
-            thumbs={{ swiper: thumbsSwiper }}
-            modules={[EffectFade, Thumbs, Autoplay]}
-            className='top-slide-main'
-          >
-            {movieList.map((movie) => (
-              <SwiperSlide key={movie.id}>
-                <AnimeItem
-                  movie={movie}
-                  isGrabbing={isGrabbing}
-                  onPointerDown={() => setIsGrabbing(true)}
-                  onPointerUp={() => setIsGrabbing(false)}
-                  handleLike={handleLike}
-                  handleRemoveLike={handleRemoveLike}
-                  isLiked={favouriteListIds.includes(movie.id)}
+      <CollectionListHeading
+        title={collection.name}
+        link={`${route.topic.path}/${generateSlug(collection.name)}.${collection.id}`}
+      />
+      <div className='swiper-container'>
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          effect='fade'
+          slidesPerView={1}
+          loop={true}
+          grabCursor={true}
+          thumbs={{ swiper: thumbsSwiper }}
+          modules={[EffectFade, Thumbs, Autoplay]}
+          className='top-slide-main'
+        >
+          {movieList.map((movie) => (
+            <SwiperSlide key={movie.id}>
+              <AnimeItem
+                movie={movie}
+                isGrabbing={isGrabbing}
+                onPointerDown={() => setIsGrabbing(true)}
+                onPointerUp={() => setIsGrabbing(false)}
+                handleLike={handleLike}
+                handleRemoveLike={handleRemoveLike}
+                isLiked={favouriteListIds.includes(movie.id)}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          spaceBetween={5}
+          slidesPerView={15}
+          allowTouchMove={false}
+          watchSlidesProgress
+          modules={[Thumbs]}
+          className='top-slide-small'
+        >
+          {movieList.map((movie) => (
+            <SwiperSlide key={movie.id}>
+              <div className='poster'>
+                <Image
+                  src={renderImageUrl(movie.posterUrl)}
+                  alt={`${movie.title} - ${movie.originalTitle}`}
+                  fill
+                  loading='lazy'
+                  sizes='(max-width: 768px) 100vw, 50vw'
+                  decoding='async'
+                  unoptimized
                 />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            spaceBetween={5}
-            slidesPerView={15}
-            allowTouchMove={false}
-            watchSlidesProgress
-            modules={[Thumbs]}
-            className='top-slide-small'
-          >
-            {movieList.map((movie) => (
-              <SwiperSlide key={movie.id}>
-                <div className='poster'>
-                  <Image
-                    src={renderImageUrl(movie.posterUrl)}
-                    alt={`${movie.title} - ${movie.originalTitle}`}
-                    fill
-                    loading='lazy'
-                    sizes='(max-width: 768px) 100vw, 50vw'
-                    decoding='async'
-                    unoptimized
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </div>
   );
 }

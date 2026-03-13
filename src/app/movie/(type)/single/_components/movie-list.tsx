@@ -1,6 +1,7 @@
 'use client';
 
 import { Activity } from '@/components/activity';
+import { ListHeading } from '@/components/app/heading';
 import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import { Pagination } from '@/components/pagination';
@@ -28,11 +29,7 @@ export default function MovieList() {
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
-      <div className='max-1120:mb-5 max-990:mb-4 mb-6'>
-        <h3 className='max-1600:text-2xl max-640:text-xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
-          Phim lẻ
-        </h3>
-      </div>
+      <ListHeading title='Phim lẻ' />
       {movieListLoading ? (
         <MovieGridSkeleton className='max-1600:gap-4 max-1360:grid-cols-6 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-640:gap-x-2 max-640:gap-y-4' />
       ) : movieList.length === 0 ? (

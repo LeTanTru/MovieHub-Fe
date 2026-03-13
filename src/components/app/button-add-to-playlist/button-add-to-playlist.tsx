@@ -12,7 +12,7 @@ import {
   usePlaylistListQuery,
   useUpdatePlaylistItemMutation
 } from '@/queries';
-import { AnimatePresence, domAnimation, LazyMotion, m } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { ButtonAddPlayList } from '@/components/app/button-playlist';
 import {
   ACTION_ADD_TO_PLAYLIST,
@@ -171,49 +171,47 @@ export default function ButtonAddToPlaylist({
           Thêm vào
         </span>
       </Button>
-      <LazyMotion features={domAnimation}>
-        <AnimatePresence mode='wait'>
-          {opened && (
-            <m.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.15, ease: 'linear' }}
-              style={{ transformOrigin: '50% 0%' }}
-              className='absolute top-full left-1/2 z-10 flex w-50 -translate-x-1/2 flex-col gap-4 rounded bg-white p-4 shadow-lg shadow-black/50'
-            >
-              <div className='flex justify-between text-black'>
-                <span>Danh sách phát</span>
-                <span>
-                  {playlist.length}/{MAX_PLAYLIST_COUNT}
-                </span>
-              </div>
-              {playlistLoading ? (
-                <PlaylistItemListSkeleton />
-              ) : (
-                playlist.map((playlist) => (
-                  <PlaylistItem
-                    key={playlist.id}
-                    playlist={playlist}
-                    checked={checkedPlaylist.includes(playlist.id)}
-                    onToggle={handleAddToPlaylist}
-                    disabled={
-                      updatePlaylistItemLoading && playlist.id === playlistId
-                    }
-                  />
-                ))
-              )}
-              {playlist.length < MAX_PLAYLIST_COUNT && (
-                <ButtonAddPlayList
-                  className='dark:bg-golden-glow dark:border-golden-glow dark:hover:bg-golden-glow/80 rounded dark:border-none dark:text-black dark:hover:text-black/80'
-                  text='Thêm mới'
-                  showText
+      <AnimatePresence mode='wait'>
+        {opened && (
+          <m.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.15, ease: 'linear' }}
+            style={{ transformOrigin: '50% 0%' }}
+            className='absolute top-full left-1/2 z-10 flex w-50 -translate-x-1/2 flex-col gap-4 rounded bg-white p-4 shadow-lg shadow-black/50'
+          >
+            <div className='flex justify-between text-black'>
+              <span>Danh sách phát</span>
+              <span>
+                {playlist.length}/{MAX_PLAYLIST_COUNT}
+              </span>
+            </div>
+            {playlistLoading ? (
+              <PlaylistItemListSkeleton />
+            ) : (
+              playlist.map((playlist) => (
+                <PlaylistItem
+                  key={playlist.id}
+                  playlist={playlist}
+                  checked={checkedPlaylist.includes(playlist.id)}
+                  onToggle={handleAddToPlaylist}
+                  disabled={
+                    updatePlaylistItemLoading && playlist.id === playlistId
+                  }
                 />
-              )}
-            </m.div>
-          )}
-        </AnimatePresence>
-      </LazyMotion>
+              ))
+            )}
+            {playlist.length < MAX_PLAYLIST_COUNT && (
+              <ButtonAddPlayList
+                className='dark:bg-golden-glow dark:border-golden-glow dark:hover:bg-golden-glow/80 rounded dark:border-none dark:text-black dark:hover:text-black/80'
+                text='Thêm mới'
+                showText
+              />
+            )}
+          </m.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

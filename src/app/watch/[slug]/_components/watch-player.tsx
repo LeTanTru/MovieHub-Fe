@@ -1,34 +1,18 @@
 'use client';
 
 import './watch-player.css';
-import { ButtonLike } from '@/components/app/button-like';
-import { ButtonShareMovie } from '@/components/app/button-share';
-import { VideoPlayer } from '@/components/video-player';
+import { MOVIE_TYPE_SERIES, MOVIE_TYPE_SINGLE, storageKeys } from '@/constants';
 import {
-  MOVIE_TYPE_SERIES,
-  MOVIE_TYPE_SINGLE,
-  VIDEO_SOURCE_TYPE_INTERNAL
-} from '@/constants';
-import { useAuth, useDisclosure, useNavigate, useQueryParams } from '@/hooks';
+  useAuth,
+  useDisclosure,
+  useGetAnonymousToken,
+  useNavigate,
+  useQueryParams
+} from '@/hooks';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import {
-  renderImageUrl,
-  renderVideoUrl,
-  renderVttUrl,
-  setData,
-  getData,
-  isMobileDevice,
-  isTabletDevice
-} from '@/utils';
-import Link from 'next/link';
+import { setData, getData } from '@/utils';
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { FaChevronLeft } from 'react-icons/fa6';
-import { Button } from '@/components/form';
-import { getAnonymousToken } from '@/app/actions/anonymous';
-import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
-import { PlaylistIcon } from '@/assets';
-import { cn } from '@/lib';
 import { useShallow } from 'zustand/shallow';
 import {
   useWatchHistoryTrackingMutation,
@@ -40,15 +24,10 @@ import {
   MediaPlayerInstance
 } from '@vidstack/react';
 import {
-  ButtonAutoNextEpisode,
-  ButtonMovieTheater,
-  ButtonReport,
-  ButtonSkipIntro,
-  ButtonWatchTogether,
-  EpisodeList,
-  WatchAskContinueModal
+  WatchPlayerControls,
+  WatchPlayerHeader,
+  WatchPlayerVideoArea
 } from '@/components/app/watch';
-import envConfig from '@/config';
 
 export default function WatchPlayer() {
   const navigate = useNavigate();
@@ -62,23 +41,14 @@ export default function WatchPlayer() {
     episode: string;
   }>();
 
-  const [token, setToken] = useState<string>('');
-  const [isLoadingToken, setIsLoadingToken] = useState<boolean>(true);
+  const { token, isLoadingToken } = useGetAnonymousToken();
   const [lastWatchedSeconds, setLastWatchedSeconds] = useState<number>(0);
   const [autoPlay, setAutoPlay] = useState<boolean>(false);
   const [autoNextEpisode, setAutoNextEpisode] = useState<boolean>(false);
   const [skipIntro, setSkipIntro] = useState<boolean>(false);
   const [introSkipped, setIntroSkipped] = useState<boolean>(false);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const currentSecondsRef = useRef<number>(0);
   const playerRef = useRef<MediaPlayerInstance>(null);
-  const hasFetchedTokenRef = useRef<boolean>(false);
-
-  const {
-    opened: isEpisodeListOpen,
-    open: openEpisodeList,
-    close: closeEpisodeList
-  } = useDisclosure();
 
   const {
     opened: isShowContinueModal,
@@ -167,8 +137,9 @@ export default function WatchPlayer() {
 
   // Load settings from localStorage on mount
   useEffect(() => {
-    const savedAutoNextEpisode = getData('watch_auto_next_episode') === 'true';
-    const savedSkipIntro = getData('watch_skip_intro') === 'true';
+    const savedAutoNextEpisode =
+      getData(storageKeys.WATCH_AUTO_NEXT_EPISODE) === 'true';
+    const savedSkipIntro = getData(storageKeys.WATCH_SKIP_INTRO) === 'true';
     setAutoNextEpisode(savedAutoNextEpisode);
     setSkipIntro(savedSkipIntro);
   }, []);
@@ -177,14 +148,14 @@ export default function WatchPlayer() {
   const handleToggleAutoNextEpisode = () => {
     const newValue = !autoNextEpisode;
     setAutoNextEpisode(newValue);
-    setData('watch_auto_next_episode', String(newValue));
+    setData(storageKeys.WATCH_AUTO_NEXT_EPISODE, String(newValue));
   };
 
   // Toggle skip intro
   const handleToggleSkipIntro = () => {
     const newValue = !skipIntro;
     setSkipIntro(newValue);
-    setData('watch_skip_intro', String(newValue));
+    setData(storageKeys.WATCH_SKIP_INTRO, String(newValue));
   };
 
   // Track current position (no API calls during playback)
@@ -417,161 +388,47 @@ export default function WatchPlayer() {
     }
   }, [skipIntro, video?.introEnd, video?.introStart, introSkipped]);
 
-  useEffect(() => {
-    if (hasFetchedTokenRef.current) return;
-    hasFetchedTokenRef.current = true;
-
-    const handleGetToken = async () => {
-      const anonymousToken = await getAnonymousToken();
-      setToken(anonymousToken?.access_token || '');
-      setIsLoadingToken(false);
-    };
-
-    handleGetToken();
-
-    const interval = setInterval(handleGetToken, 14 * 60 * 1000); // Refresh token every 14 minutes
-
-    return () => clearInterval(interval);
-  }, []);
-
   if (!movie) return null;
 
   return (
     <div className='watch-player max-800:max-w-none max-800:w-full max-800:px-0 max-640:-mt-10 max-640:flex max-640:flex-col-reverse relative mx-auto max-w-410 px-5'>
-      <div className='max-1360:mb-4 max-1360:px-6 max-1120:px-4 max-800:mb-2 max-640:mt-4 max-640:mb-0 mb-6 inline-flex w-full items-center gap-2 px-8'>
-        <Link
-          href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-          className='max-1120:p-1.5 max-640:p-1 rounded-full border border-solid border-gray-200 p-2 opacity-50 transition-all duration-200 ease-linear hover:opacity-100'
-        >
-          <FaChevronLeft />
-        </Link>
-        <h3 className='max-1120:font-semibold max-1120:text-lg max-640:text-sm text-xl font-bold'>
-          Xem phim {videoTitle}
-        </h3>
-      </div>
-      <div className='watch-player-wrapper'>
-        {video ? (
-          <div className='max-800:rounded-none relative aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px]'>
-            {isLoadingToken ? (
-              <div className='flex h-full w-full items-center justify-center bg-black'>
-                <div className='h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
-              </div>
-            ) : (
-              <>
-                <VideoPlayer
-                  ref={playerRef}
-                  auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
-                  duration={video.duration}
-                  introEnd={video.introEnd}
-                  introStart={video.introStart}
-                  src={renderVideoUrl(video.content)}
-                  thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
-                  vttUrl={renderVttUrl(video.vttUrl)}
-                  outroStart={video.outroStart}
-                  token={token}
-                  title={videoTitle}
-                  className='w-full'
-                  autoPlay={autoPlay}
-                  slots={{
-                    topControlsGroupStart: !isFullscreen ? (
-                      <span className='max-800:hidden text-base font-medium'>
-                        {videoTitle}
-                      </span>
-                    ) : null,
-                    topControlsGroupEnd:
-                      !isFullscreen && isSeries ? (
-                        <Button
-                          variant='ghost'
-                          className={cn(
-                            `dark:hover:text-golden-glow max-800:hidden font-medium dark:hover:bg-transparent`,
-                            {
-                              'dark:text-golden-glow': isEpisodeListOpen
-                            }
-                          )}
-                          onClick={openEpisodeList}
-                        >
-                          <PlaylistIcon className='h-6! w-6!' />
-                          Danh sách tập
-                        </Button>
-                      ) : null
-                  }}
-                  volume={
-                    envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
-                      ? 0
-                      : isMobileDevice() || isTabletDevice()
-                        ? 1
-                        : 0.5
-                  }
-                  prev={isSeries && !isFirstEpisode}
-                  next={isSeries && !isLastEpisode}
-                  skipOutro={isSeries && !isLastEpisode}
-                  onPrevClick={handlePrevEpisode}
-                  onNextClick={handleNextEpisode}
-                  onTimeUpdate={handleWatchHistoryTimeUpdate}
-                  onSeeked={handleSeeked}
-                  onEnded={handleVideoEnded}
-                  onLoadedMetadata={handlePlayerCanPlay}
-                  onFullscreenChange={(isFullscreen) =>
-                    setIsFullscreen(isFullscreen)
-                  }
-                />
-                <WatchAskContinueModal
-                  opened={isShowContinueModal}
-                  lastWatchedSeconds={lastWatchedSeconds}
-                  onContinueWatching={handleContinueWatching}
-                  onStartOver={handleStartOver}
-                />
-              </>
-            )}
-            {isSeries && (
-              <EpisodeList
-                seasons={movie.seasons}
-                isOpen={isEpisodeListOpen}
-                onToggle={closeEpisodeList}
-              />
-            )}
-          </div>
-        ) : (
-          <div className='aspect-video rounded-tl rounded-tr bg-black'>
-            <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-400'>
-              Video cho phim này đang được cập nhật. Vui lòng quay lại sau.
-            </p>
-          </div>
-        )}
-        <div className='player-controls bg-covert-black max-990:h-13.5 max-800:rounded-none flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
-          <div className='max-1280:px-0 max-640:gap-0 max-640:px-0.5 max-1280:gap-0 max-520:px-4 max-520:gap-4 flex w-full items-center gap-2 px-4 select-none'>
-            <ButtonLike
-              className='max-640:px-2! max-520:px-4!'
-              targetId={movie.id}
-              variant='watch'
-              text='Yêu thích'
-            />
-            <ButtonAddToPlaylist
-              className='max-640:px-2! max-520:px-4!'
-              movieId={movie.id}
-              variant='watch'
-            />
-            <ButtonAutoNextEpisode
-              autoNextEpisode={autoNextEpisode}
-              handleToggleAutoNextEpisode={handleToggleAutoNextEpisode}
-              className='max-990:hidden'
-            />
-            <ButtonSkipIntro
-              handleToggleSkipIntro={handleToggleSkipIntro}
-              skipIntro={skipIntro}
-              className='max-990:hidden'
-            />
-            <ButtonMovieTheater className='max-1120:hidden' />
-            <div className='backdrop-movie-theater'></div>
-            <ButtonShareMovie
-              variant='watch'
-              className='max-640:px-2! max-520:px-4!'
-            />
-            <ButtonWatchTogether className='max-640:px-2! max-520:px-4!' />
-            <div className='grow'></div>
-            <ButtonReport className='max-640:px-2! max-520:px-4!' />
-          </div>
-        </div>
+      <WatchPlayerHeader movie={movie} videoTitle={videoTitle} />
+      <div className='watch-player-container'>
+        <WatchPlayerVideoArea
+          video={video}
+          isLoadingToken={isLoadingToken}
+          autoPlay={autoPlay}
+          token={token}
+          videoTitle={videoTitle}
+          movie={movie}
+          playerRef={playerRef}
+          episode={{
+            isSeries,
+            isFirstEpisode,
+            isLastEpisode,
+            onPrev: handlePrevEpisode,
+            onNext: handleNextEpisode
+          }}
+          continueModal={{
+            isOpen: isShowContinueModal,
+            lastWatchedSeconds,
+            onContinue: handleContinueWatching,
+            onStartOver: handleStartOver
+          }}
+          callbacks={{
+            onTimeUpdate: handleWatchHistoryTimeUpdate,
+            onSeeked: handleSeeked,
+            onEnded: handleVideoEnded,
+            onCanPlay: handlePlayerCanPlay
+          }}
+        />
+        <WatchPlayerControls
+          movie={movie}
+          autoNextEpisode={autoNextEpisode}
+          skipIntro={skipIntro}
+          handleToggleAutoNextEpisode={handleToggleAutoNextEpisode}
+          handleToggleSkipIntro={handleToggleSkipIntro}
+        />
       </div>
     </div>
   );
