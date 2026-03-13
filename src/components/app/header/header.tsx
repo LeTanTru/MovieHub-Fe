@@ -141,7 +141,7 @@ export default function Header() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <DropdownNotification />
+                  {/* <DropdownNotification /> */}
                 </m.div>
                 <m.div
                   key='avatar'

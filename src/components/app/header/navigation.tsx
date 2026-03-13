@@ -46,11 +46,11 @@ export default function NavigationMenu({
       label: 'Phim bộ',
       href: `${route.movieType.series.path}`
     },
-    {
-      label: 'Xem chung',
-      href: '#',
-      isNew: true
-    },
+    // {
+    //   label: 'Xem chung',
+    //   href: '#',
+    //   isNew: true
+    // },
     {
       label: 'Quốc gia',
       submenu: true,
