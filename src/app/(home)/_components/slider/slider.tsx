@@ -20,7 +20,7 @@ import { FAVOURITE_TYPE_MOVIE, queryKeys } from '@/constants';
 import { route } from '@/routes';
 import Link from 'next/link';
 import { logger } from '@/logger';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { VerticalBarLoading } from '@/components/loading';
 import Image from 'next/image';
 

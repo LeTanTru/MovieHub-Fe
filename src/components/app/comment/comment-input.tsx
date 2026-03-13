@@ -1,7 +1,7 @@
 'use client';
 
 import { BaseForm } from '@/components/form/base-form';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { MOVIE_TYPE_SINGLE, queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateCommentMutation } from '@/queries';

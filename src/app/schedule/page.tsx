@@ -1,6 +1,6 @@
 import { ScheduleList } from '@/app/schedule/_components';
 import { Container } from '@/components/layout';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
 

@@ -7,7 +7,7 @@ import {
 import { Metadata } from 'next';
 import { generateSlug, getIdFromSlug } from '@/utils';
 import { MovieSearchType } from '@/types';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { movieApiRequest } from '@/api-requests';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { MovieList } from '@/app/country/[slug]/_components';

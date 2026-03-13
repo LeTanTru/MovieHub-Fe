@@ -4,7 +4,7 @@ import { MovieCard } from '@/components/app/movie-card';
 import { MovieGridSkeleton } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import { Pagination } from '@/components/pagination';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import {

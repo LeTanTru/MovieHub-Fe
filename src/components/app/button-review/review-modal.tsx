@@ -3,7 +3,7 @@
 import { Button, Col, Row, TextAreaField } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { Modal } from '@/components/modal';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys, reviewRatings } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';

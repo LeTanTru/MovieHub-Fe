@@ -1,6 +1,6 @@
 import { Search } from '@/app/search/_components';
 import { Container } from '@/components/layout';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 

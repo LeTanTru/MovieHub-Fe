@@ -2,7 +2,7 @@
 
 import { Button, Col, Row, ToolTip } from '@/components/form';
 import { Modal } from '@/components/modal';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { useDisclosure } from '@/hooks';
 import { logger } from '@/logger';

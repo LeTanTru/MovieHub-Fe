@@ -1,7 +1,7 @@
 import { categoryApiRequest, movieApiRequest } from '@/api-requests';
 import type { Metadata } from 'next';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { ApiResponse, MovieSearchType } from '@/types';
 import { MovieList } from '@/app/category/[slug]/_components';
