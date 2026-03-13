@@ -11,7 +11,7 @@ import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';
 import { useState } from 'react';
 import { Autoplay, EffectFade, Thumbs } from 'swiper/modules';
 import { FAVOURITE_TYPE_MOVIE, queryKeys } from '@/constants';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { useAuth } from '@/hooks';
 import {
   useDeleteFavouriteMutation,

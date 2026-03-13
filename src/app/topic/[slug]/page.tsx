@@ -4,7 +4,7 @@ import { Container } from '@/components/layout';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getIdFromSlug } from '@/utils';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/topic/[slug]/_components';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';

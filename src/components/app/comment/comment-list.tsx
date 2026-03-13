@@ -17,7 +17,7 @@ import {
 } from '@/queries';
 import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
 import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';

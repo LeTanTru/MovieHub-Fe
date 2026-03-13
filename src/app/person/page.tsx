@@ -1,7 +1,7 @@
 import { personApiRequest } from '@/api-requests';
 import { PersonList } from '@/app/person/_components';
 import { Container } from '@/components/layout';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import {
   DEFAULT_PAGE_START,
   DEFAULT_PAGE_SIZE,

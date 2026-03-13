@@ -2,7 +2,7 @@ import { movieApiRequest } from '@/api-requests';
 import { Sidebar } from '@/app/user/_components';
 import { WatchHistory } from '@/app/user/watch-history/_components';
 import { Container } from '@/components/layout';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';

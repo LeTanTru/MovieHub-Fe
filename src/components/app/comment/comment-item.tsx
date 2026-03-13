@@ -36,7 +36,7 @@ import { AiOutlineEdit } from 'react-icons/ai';
 import { commentApiRequest } from '@/api-requests';
 import CommentForm from './comment-form';
 import { VerticalBarLoading } from '@/components/loading';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { Pin } from 'lucide-react';
 
 export default function CommentItem({

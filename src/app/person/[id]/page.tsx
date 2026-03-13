@@ -11,7 +11,7 @@ import {
 import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
 import { MovieList, PersonSidebar } from '@/app/person/[id]/_components';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { ApiResponse, MoviePersonSearchType } from '@/types';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/layout';

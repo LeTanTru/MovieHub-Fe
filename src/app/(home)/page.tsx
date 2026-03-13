@@ -2,7 +2,7 @@ import { collectionApiRequest, sidebarApiRequest } from '@/api-requests';
 import { CollectionSearchType, SidebarSearchType } from '@/types';
 import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
 import { Slider } from '@/app/(home)/_components/slider';
 import { TopicList } from '@/app/(home)/_components/topic-list';

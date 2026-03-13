@@ -2,7 +2,7 @@ import { playlistApiRequest } from '@/api-requests';
 import { Sidebar } from '@/app/user/_components';
 import { MovieList, Playlist } from '@/app/user/playlist/_components';
 import { Container } from '@/components/layout';
-import { getQueryClient } from '@/components/providers';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import { ApiResponse, PlaylistResType, PlaylistSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
