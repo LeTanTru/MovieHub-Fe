@@ -4,11 +4,12 @@ import { NoData } from '@/components/no-data';
 import { useCollectionTopicListQuery } from '@/queries';
 import { MAX_PAGE_SIZE } from '@/constants';
 import { TopicItemSkeleton, TopicItem } from '@/components/app/topic-item';
-import { useRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ListHeading } from '@/components/app/heading';
 
 export default function TopicList() {
   const skeletonCount = 14;
+  const [isSwitched, setIsSwitched] = useState(false);
 
   const { data: topicListData, isLoading: topicListLoading } =
     useCollectionTopicListQuery({
@@ -16,13 +17,23 @@ export default function TopicList() {
       params: { size: MAX_PAGE_SIZE }
     });
 
-  const topicList = topicListData?.data?.content || [];
+  const topicList = useMemo(
+    () => topicListData?.data?.content || [],
+    [topicListData?.data?.content]
+  );
 
-  const isSwitchedRef = useRef<boolean | null>(null);
-  if (isSwitchedRef.current === null) {
-    isSwitchedRef.current = Math.random() < 0.5;
-  }
-  const isSwitched = isSwitchedRef.current;
+  useEffect(() => {
+    if (!topicList.length) return;
+
+    const randomTopic = topicList[Math.floor(Math.random() * topicList.length)];
+
+    const digitSum = (randomTopic?.id?.toString().match(/\d/g) || []).reduce(
+      (sum, digit) => sum + Number(digit),
+      0
+    );
+
+    setIsSwitched(digitSum % 2 === 0);
+  }, [topicList]);
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
