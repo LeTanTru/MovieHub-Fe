@@ -66,18 +66,6 @@ function Slider({
     }
   }, [showTooltip, handlePointerUp]);
 
-  const thumbs = React.useMemo(() => {
-    const seen = new Map<number, number>();
-    return internalValues.map((sliderValue) => {
-      const occurrence = (seen.get(sliderValue) ?? 0) + 1;
-      seen.set(sliderValue, occurrence);
-      return {
-        sliderValue,
-        key: `thumb-${sliderValue}-${occurrence}`
-      };
-    });
-  }, [internalValues]);
-
   const renderThumb = (value: number) => {
     const thumb = (
       <SliderPrimitive.Thumb
@@ -132,8 +120,10 @@ function Slider({
           )}
         />
       </SliderPrimitive.Track>
-      {thumbs.map(({ sliderValue, key }) => (
-        <React.Fragment key={key}>{renderThumb(sliderValue)}</React.Fragment>
+      {Array.from({ length: internalValues.length }, (_, index) => (
+        <React.Fragment key={index}>
+          {renderThumb(internalValues[index])}
+        </React.Fragment>
       ))}
     </SliderPrimitive.Root>
   );
