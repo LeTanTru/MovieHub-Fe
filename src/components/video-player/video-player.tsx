@@ -81,6 +81,7 @@ type VideoPlayerProps = Omit<
   onNextClick?: () => void;
   onPrevClick?: () => void;
   onSeeked?: (currentTime: number) => void;
+  hideVolumeIndicator?: boolean;
 };
 
 const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
@@ -102,6 +103,7 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
       onNextClick,
       onPrevClick,
       onSeeked,
+      hideVolumeIndicator = false,
       onTimeUpdate,
       onEnded,
       autoPlay = true,
@@ -284,13 +286,13 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
                   vttUrl={vttUrl}
                 />
               ),
-              centerControlsGroupCenter: (
+              bufferingIndicator: (
                 <>
                   <PlayPauseIndicator />
-                  <VolumeIndicator />
+                  <BufferingIndicator />
+                  {!hideVolumeIndicator && <VolumeIndicator />}
                 </>
               ),
-              bufferingIndicator: <BufferingIndicator />,
               ...slots
             }}
           />

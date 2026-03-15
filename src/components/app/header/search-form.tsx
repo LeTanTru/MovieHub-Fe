@@ -184,7 +184,7 @@ export default function SearchForm({
                 autoComplete='off'
                 control={form.control}
                 name='keyword'
-                placeholder='Tìm kiếm phim, diễn viên'
+                placeholder='Tìm kiếm phim'
               />
             </div>
           </>

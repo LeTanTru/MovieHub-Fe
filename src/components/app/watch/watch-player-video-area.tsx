@@ -123,6 +123,7 @@ export default function WatchPlayerVideoArea({
             title={videoTitle}
             className='w-full'
             autoPlay={autoPlay}
+            hideVolumeIndicator={isShowContinueModal}
             slots={{
               topControlsGroupStart: !isFullscreen ? (
                 <span className='max-800:hidden text-base font-medium'>

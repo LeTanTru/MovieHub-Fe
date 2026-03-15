@@ -75,8 +75,9 @@
   --color-primary-button: #ffd875;
   --color-top-slider: #202331;
   --color-image-fill: #282b3a;
-  /* Color */ /* Break point */
+  /* Color */
 
+  /* Break point */
   --breakpoint-1024: 1024px;
   --breakpoint-1120: 1121px;
   --breakpoint-1280: 1280px;
