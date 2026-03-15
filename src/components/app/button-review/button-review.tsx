@@ -65,7 +65,8 @@ export default function ButtonReview({
           className
         )}
       >
-        <div
+        <button
+          type='button'
           className='bg-dark-conflower-blue flex cursor-pointer items-center rounded-full px-2.5 py-2 transition-all duration-200 ease-linear hover:opacity-80'
           onClick={handleOpenReviewModal}
         >
@@ -78,7 +79,7 @@ export default function ButtonReview({
               Đánh giá
             </span>
           )}
-        </div>
+        </button>
       </div>
       <ReviewModal opened={opened} onClose={close} />
     </>

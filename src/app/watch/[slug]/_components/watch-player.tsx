@@ -344,25 +344,27 @@ export default function WatchPlayer() {
   };
 
   // Handle player ready - skip intro immediately if enabled
+  const introStart = video?.introStart;
+  const introEnd = video?.introEnd;
+
   const handlePlayerCanPlay = useCallback(() => {
     if (
       !skipIntro ||
       !playerRef.current ||
-      typeof video?.introEnd !== 'number' ||
+      typeof introEnd !== 'number' ||
       introSkipped
     ) {
       return;
     }
 
     const currentTime = playerRef.current.currentTime;
-    const introStartTime = video.introStart ?? 0;
+    const introStartTime = introStart ?? 0;
 
-    // If starting from the beginning and intro starts at 0, skip immediately
-    if (currentTime >= introStartTime && currentTime < video.introEnd) {
-      playerRef.current.currentTime = video.introEnd;
+    if (currentTime >= introStartTime && currentTime < introEnd) {
+      playerRef.current.currentTime = introEnd;
       setIntroSkipped(true);
     }
-  }, [skipIntro, video?.introStart, video?.introEnd, introSkipped]);
+  }, [skipIntro, introStart, introEnd, introSkipped]);
 
   // Auto-skip intro when skipIntro setting is enabled and player is ready
   useEffect(() => {

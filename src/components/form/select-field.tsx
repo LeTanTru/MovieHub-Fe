@@ -157,6 +157,9 @@ export default function SelectField<
                   variant='outline'
                   role='combobox'
                   aria-label='Select'
+                  aria-expanded={open}
+                  aria-controls={`select-field-listbox-${name}`}
+                  aria-haspopup='listbox'
                   disabled={disabled}
                   className={cn(
                     'hover:border-input dark:hover:border-input dark:bg-input/30 dark:border-input w-full justify-between border px-3! py-0 text-black hover:text-black focus-visible:border-transparent dark:text-white dark:hover:text-white',
@@ -180,7 +183,17 @@ export default function SelectField<
 
                   {selectedOption && allowClear ? (
                     <span
+                      role='button'
+                      tabIndex={0}
                       onClick={handleClear}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          field.onChange(null);
+                          onValueChange?.(null);
+                          setOpen(false);
+                        }
+                      }}
                       className='bg-accent ml-2 flex h-4 w-4 items-center justify-center rounded-full hover:opacity-80'
                     >
                       <X className='size-3' />
@@ -242,6 +255,8 @@ export default function SelectField<
                   </CommandEmpty>
 
                   <CommandGroup
+                    id={`select-field-listbox-${name}`}
+                    role='listbox'
                     className='max-h-100 overflow-y-auto'
                     onMouseLeave={() => {
                       setHighlightedIndex(-1);

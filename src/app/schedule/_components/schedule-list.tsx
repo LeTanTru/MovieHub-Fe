@@ -138,7 +138,8 @@ export default function ScheduleList() {
 
                 return (
                   <SwiperSlide key={currentDate.toString()}>
-                    <div
+                    <button
+                      type='button'
                       className={cn(`schedule-item`, {
                         active: isSelected
                       })}
@@ -150,7 +151,7 @@ export default function ScheduleList() {
                       <span className='day'>
                         {DAY_LABELS[currentDate.getDay()]}
                       </span>
-                    </div>
+                    </button>
                   </SwiperSlide>
                 );
               })}

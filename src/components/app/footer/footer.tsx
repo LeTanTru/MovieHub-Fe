@@ -13,61 +13,75 @@ import {
   FaXTwitter,
   FaYoutube
 } from 'react-icons/fa6';
+import type { IconType } from 'react-icons/lib';
 
 export default function Footer() {
-  const socialLinks = [
+  const socialLinks: { key: string; icon: IconType; url: string }[] = [
     {
+      key: 'telegram',
       icon: FaTelegramPlane,
       url: '#'
     },
     {
+      key: 'discord',
       icon: FaDiscord,
       url: '#'
     },
     {
+      key: 'twitter',
       icon: FaXTwitter,
       url: '#'
     },
     {
+      key: 'facebook',
       icon: FaFacebook,
       url: '#'
     },
     {
+      key: 'tiktok',
       icon: FaTiktok,
       url: '#'
     },
     {
+      key: 'youtube',
       icon: FaYoutube,
       url: '#'
     },
     {
+      key: 'threads',
       icon: FaThreads,
       url: '#'
     },
     {
+      key: 'instagram',
       icon: FaInstagram,
       url: '#'
     }
   ];
 
-  const infoLinks = [
+  const infoLinks: { key: string; title: string; url: string }[] = [
     {
+      key: 'faq',
       title: 'Hỏi đáp',
       url: '#'
     },
     {
+      key: 'privacy-policy',
       title: 'Chính sách bảo mật',
       url: '#'
     },
     {
+      key: 'terms-of-use',
       title: 'Điều khoản sử dụng',
       url: '#'
     },
     {
+      key: 'introduction',
       title: 'Giới thiệu',
       url: '#'
     },
     {
+      key: 'contact',
       title: 'Liên hệ',
       url: '#'
     }
@@ -120,9 +134,9 @@ export default function Footer() {
                 />
               </Link>
               <div className='max-1120:border-none max-480:grid max-1120:grid-cols-4 max-1120:pl-0 max-1120:justify-center flex items-center gap-3 border-l border-solid pl-12'>
-                {socialLinks.map(({ icon: Icon, url }, index) => (
+                {socialLinks.map(({ key, icon: Icon, url }) => (
                   <Link
-                    key={index}
+                    key={key}
                     href={url}
                     className='bg-charade flex size-10 items-center justify-center rounded-full'
                     target='_blank'
@@ -134,11 +148,11 @@ export default function Footer() {
               </div>
             </div>
             <div className='max-1120:justify-center max-1120:flex-wrap mb-4 flex gap-4'>
-              {infoLinks.map(({ title, url }, index) => (
+              {infoLinks.map(({ key, title, url }) => (
                 <Link
                   className='hover:text-golden-glow transition-all duration-200 ease-linear'
                   href={url}
-                  key={index}
+                  key={key}
                 >
                   {title}
                 </Link>

@@ -2,7 +2,6 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import DropdownAvatar from './dropdown-avatar';
-import NavigationMenu from './navigation';
 import DropdownNotification from './dropdown-notification';
 import SearchForm from './search-form';
 import Link from 'next/link';
@@ -15,6 +14,7 @@ import { useAppLoading, useAuth, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 import { FaSearch } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
+import { NavigationMenu } from './navigation';
 
 export default function Header() {
   const { profile } = useAuth();
@@ -29,7 +29,7 @@ export default function Header() {
       setIsFixed(scrollTop > 0);
     };
 
-    window.addEventListener('scroll', handleOnScroll);
+    window.addEventListener('scroll', handleOnScroll, { passive: true });
 
     return () => window.removeEventListener('scroll', handleOnScroll);
   }, []);
@@ -160,7 +160,8 @@ export default function Header() {
         <div className='max-1360:block hidden grow'></div>
 
         {/* Mobile search toggle button */}
-        <div
+        <button
+          type='button'
           className='mobile-search max-1360:flex max-640:size-6 max-640:pr-1 hidden size-10 items-center justify-center'
           onClick={() => setShowSearch((prev) => !prev)}
         >
@@ -187,7 +188,7 @@ export default function Header() {
               </m.div>
             )}
           </AnimatePresence>
-        </div>
+        </button>
       </div>
     </header>
   );

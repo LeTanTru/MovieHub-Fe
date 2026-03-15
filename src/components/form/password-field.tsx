@@ -210,8 +210,11 @@ export default function PasswordField<T extends FieldValues>({
                   className='space-y-1.5'
                   aria-label='Password requirements'
                 >
-                  {strength.map((req, index) => (
-                    <ListItem key={index} className='flex items-center gap-2'>
+                  {strength.map((req) => (
+                    <ListItem
+                      key={req.text}
+                      className='flex items-center gap-2'
+                    >
                       {req.met ? (
                         <CheckIcon
                           size={16}

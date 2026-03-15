@@ -124,14 +124,15 @@ export default function EpisodeList({
           </Button>
         </div>
         <div className='relative px-4 py-2' ref={dropdownRef}>
-          <div
+          <button
+            type='button'
             className='flex max-w-30 cursor-pointer items-center justify-start gap-2.5 rounded border border-solid border-white p-2 text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
             onClick={handleDropdownToggle}
           >
             <FaBarsStaggered />
             Phần {selectedSeason}
             <FaCaretDown />
-          </div>
+          </button>
           <AnimatePresence>
             {showDropdown && (
               <m.div
@@ -152,7 +153,8 @@ export default function EpisodeList({
                 className='absolute top-12 z-10 min-w-40 overflow-hidden rounded-sm bg-white/10 py-2 shadow-[0px_0px_10px_2px_var(--gray-200)] backdrop-blur-xs'
               >
                 {seasonIndices.map((seasonIndex) => (
-                  <div
+                  <button
+                    type='button'
                     key={`season-${seasonIndex}`}
                     className={cn(
                       'flex cursor-pointer items-center gap-2 px-4 py-2 leading-6 text-white transition-all duration-200 ease-linear hover:bg-white/20',
@@ -167,7 +169,7 @@ export default function EpisodeList({
                     }}
                   >
                     Phần {seasonIndex}
-                  </div>
+                  </button>
                 ))}
               </m.div>
             )}
@@ -188,6 +190,8 @@ export default function EpisodeList({
       </div>
 
       <div
+        role='button'
+        tabIndex={isOpen ? 0 : -1}
         className={cn(
           `episode-sidebar-backdrop absolute top-0 left-0 z-20 h-full w-full cursor-pointer bg-black/50 transition-opacity duration-300 ease-linear`,
           {
@@ -196,6 +200,12 @@ export default function EpisodeList({
           }
         )}
         onClick={onToggle}
+        onKeyDown={(e) => {
+          if ((e.key === 'Enter' || e.key === ' ') && isOpen) {
+            e.preventDefault();
+            onToggle?.();
+          }
+        }}
       />
     </>
   );

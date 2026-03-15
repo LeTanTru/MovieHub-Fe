@@ -120,8 +120,6 @@ export default function ImageField({
     (e: WheelEvent) => {
       if (!zoomOnScroll) return;
 
-      e.preventDefault();
-
       setScale((prev) => {
         let next = prev + (e.deltaY > 0 ? -0.1 : 0.1);
         next = Math.max(1, Math.min(3, next));
@@ -135,7 +133,7 @@ export default function ImageField({
     if (!open || !previewRef.current) return;
 
     const node = previewRef.current;
-    node.addEventListener('wheel', handleWheel, { passive: false });
+    node.addEventListener('wheel', handleWheel, { passive: true });
 
     return () => node.removeEventListener('wheel', handleWheel);
   }, [handleWheel, open]);
@@ -169,6 +167,14 @@ export default function ImageField({
       <div
         {...props}
         onClick={props?.onClick ?? openPreview}
+        role='button'
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (!shouldDisablePreview) setOpen(true);
+          }
+        }}
         className={cn(
           'relative rounded border bg-gray-100 shadow-sm select-none',
           {

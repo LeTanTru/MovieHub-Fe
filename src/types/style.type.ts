@@ -1,7 +1,3 @@
-import { styleSearchSchema } from '@/schemaValidations';
-import { BaseSearchType } from '@/types/search.type';
-import { z } from 'zod';
-
 export type StyleResType = {
   createdDate: string;
   description: string;
@@ -13,6 +9,3 @@ export type StyleResType = {
   status: number;
   type: number;
 };
-
-export type StyleSearchType = z.infer<typeof styleSearchSchema> &
-  BaseSearchType;

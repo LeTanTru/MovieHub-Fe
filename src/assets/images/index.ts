@@ -1,8 +1,6 @@
-import authBackground from './auth-background.webp';
 import bell from './bell.webp';
 import caption from './caption.webp';
 import defaultAvatar from './avatar-default.webp';
-import defaultMovie from './default-movie.webp';
 import emptyData from './empty-data.svg';
 import emptyDiscussion from './empty-discussion.svg';
 import footerIcon from './footer-icon.svg';
@@ -18,11 +16,9 @@ import routeNotFound from './404-route.svg';
 import vnFlag from './vn-flag.svg';
 
 export {
-  authBackground,
   bell,
   caption,
   defaultAvatar,
-  defaultMovie,
   emptyData,
   emptyDiscussion,
   footerIcon,

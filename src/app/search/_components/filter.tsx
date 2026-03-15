@@ -155,13 +155,14 @@ export default function Filter({
     <div className='tab-list max-990:mb-6 max-640:mb-4 mb-8' role='tablist'>
       <div className='tab-content' role='tab-content'>
         <div className='block'>
-          <div
+          <button
+            type='button'
             className='bg-black-denim max-640:px-0 inline-flex h-7.5 cursor-pointer items-center gap-2 rounded pr-3 pl-2 font-medium text-white'
             onClick={handleShowFilter}
           >
             <FaFilter className='size-5' />
             <span>Bộ lọc</span>
-          </div>
+          </button>
           <AnimatePresence>
             {showFilter && (
               <m.div
@@ -242,7 +243,8 @@ export default function Filter({
                         };
 
                         return (
-                          <div
+                          <button
+                            type='button'
                             key={value.value}
                             className={cn(
                               'hover:text-golden-glow cursor-pointer rounded border border-solid border-transparent px-2.5 py-1.25 transition-all duration-200 ease-linear',
@@ -254,7 +256,7 @@ export default function Filter({
                             onClick={handleClick}
                           >
                             {value.label}
-                          </div>
+                          </button>
                         );
                       })}
                     </div>

@@ -197,9 +197,10 @@ function InputFieldInner<T extends FieldValues>(
                       }}
                       className='absolute top-full left-0 z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white p-1 shadow-[0px_0px_10px_5px] shadow-gray-200'
                     >
-                      {filteredOptions.map((option, index) => (
-                        <div
-                          key={index}
+                      {filteredOptions.map((option) => (
+                        <button
+                          type='button'
+                          key={`option-${option}`}
                           className={cn(
                             'relative flex cursor-pointer items-center rounded p-2 text-sm transition-all duration-200 ease-linear hover:bg-gray-100',
                             field.value === option && 'bg-gray-50'
@@ -214,7 +215,7 @@ function InputFieldInner<T extends FieldValues>(
                           {field.value === option && (
                             <Check className='text-main-color h-4 w-4' />
                           )}
-                        </div>
+                        </button>
                       ))}
                       {allowCustomInput &&
                         field.value &&

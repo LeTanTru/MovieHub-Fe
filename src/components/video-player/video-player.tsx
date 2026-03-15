@@ -42,6 +42,7 @@ import {
 import {
   createContext,
   useContext,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -113,18 +114,23 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
     },
     ref
   ) {
-    const playerRef = useRef<MediaPlayerInstance>(null);
+    const playerRef = useRef<MediaPlayerInstance | null>(null);
     const [showSkipIntro, setShowSkipIntro] = useState<boolean>(false);
     const [showSkipOutro, setShowSkipOutro] = useState<boolean>(false);
     const [currentAction, setCurrentAction] =
       useState<IndicatorAction>('initial');
 
-    // Expose internal ref to parent
-    if (typeof ref === 'function') {
-      ref(playerRef.current);
-    } else if (ref) {
-      ref.current = playerRef.current;
-    }
+    const setPlayerRefs = useCallback(
+      (instance: MediaPlayerInstance | null) => {
+        playerRef.current = instance;
+        if (typeof ref === 'function') {
+          ref(instance);
+        } else if (ref) {
+          ref.current = instance;
+        }
+      },
+      [ref]
+    );
 
     /*
     * Set pointer to 'fine' for both touch and mouse devices
@@ -203,7 +209,7 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
     return (
       <IndicatorContext.Provider value={{ currentAction, setCurrentAction }}>
         <MediaPlayer
-          ref={playerRef}
+          ref={setPlayerRefs}
           viewType='video'
           streamType='on-demand'
           logLevel='silent'

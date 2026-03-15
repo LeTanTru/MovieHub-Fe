@@ -123,8 +123,15 @@ export default function PersonCard({
       {onDelete && (
         <div
           role='button'
+          tabIndex={0}
           className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
           onClick={() => onDelete(person.id)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onDelete(person.id);
+            }
+          }}
           aria-label='Remove from favourite'
         >
           <X className='size-4' />

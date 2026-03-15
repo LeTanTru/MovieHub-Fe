@@ -85,14 +85,15 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
       {/* Header */}
       <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex items-center justify-between'>
         <div className='relative' ref={dropdownRef}>
-          <div
+          <button
+            type='button'
             className='max-640:border-none max-640:text-lg max-480:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
             onClick={handleDropdownToggle}
           >
             <FaBarsStaggered className='text-golden-glow' />
             Phần {selectedSeason}
             <FaCaretDown />
-          </div>
+          </button>
           <AnimatePresence>
             {showDropdown && (
               <m.div
@@ -116,7 +117,8 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
                   Danh sách phần
                 </h3>
                 {Array.from({ length: seasonCount }).map((_, index) => (
-                  <div
+                  <button
+                    type='button'
                     key={`season-${index}`}
                     className={cn(
                       'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
@@ -128,7 +130,7 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
                     onClick={() => handleSelectSeason(index)}
                   >
                     Phần {index + 1}
-                  </div>
+                  </button>
                 ))}
               </m.div>
             )}
