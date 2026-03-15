@@ -1,1 +1,1 @@
-export { default as InfoForm } from './intro-form';
+export { default as IntroForm } from './intro-form';

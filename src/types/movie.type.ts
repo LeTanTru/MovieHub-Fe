@@ -113,31 +113,6 @@ export type MovieHistoryResType = {
   userId: string;
 };
 
-export type MovieTopViewsResType = {
-  ageRating: number;
-  averageRating: number;
-  categories: CategoryResType[];
-  commentCount: number;
-  country: string;
-  createdDate: string;
-  description: string;
-  id: string;
-  isFeatured: boolean;
-  language: string;
-  modifiedDate: string;
-  originalTitle: string;
-  posterUrl: string;
-  releaseDate: string;
-  reviewCount: number;
-  seasons: SeasonResType[];
-  slug: string;
-  status: number;
-  thumbnailUrl: string;
-  title: string;
-  type: number;
-  viewCount: number;
-};
-
 export type MovieSearchType = z.infer<typeof movieSearchSchema> &
   BaseSearchType;
 

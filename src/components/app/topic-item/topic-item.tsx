@@ -1,3 +1,4 @@
+import './topic.css';
 import { route } from '@/routes';
 import { CollectionResType } from '@/types';
 import { generateSlug, getColorList } from '@/utils';

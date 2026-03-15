@@ -1,12 +1,10 @@
-import { useEffect, useState, useMemo, RefObject } from 'react';
+import { useEffect, useState, RefObject } from 'react';
 
 const useBodyHeight = <T extends HTMLElement>(
   ref: RefObject<T | null>,
   dependencies: any[] = []
 ) => {
   const [height, setHeight] = useState<number>(0);
-
-  const memoizedDependencies = useMemo(() => dependencies, [dependencies]);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -26,7 +24,7 @@ const useBodyHeight = <T extends HTMLElement>(
       clearTimeout(timeoutId);
       resizeObserver.disconnect();
     };
-  }, [ref, memoizedDependencies]);
+  }, [ref, dependencies]);
 
   return height;
 };

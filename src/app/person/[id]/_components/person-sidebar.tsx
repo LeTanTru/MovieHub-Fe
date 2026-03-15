@@ -46,7 +46,7 @@ export default function PersonSidebar() {
 
     checkScroll();
 
-    el.addEventListener('scroll', checkScroll);
+    el.addEventListener('scroll', checkScroll, { passive: true });
     window.addEventListener('resize', checkScroll);
 
     return () => {

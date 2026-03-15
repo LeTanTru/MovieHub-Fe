@@ -135,28 +135,21 @@ export default function ReviewItem({
             </span>
           </span>
         </div>
-        <div
-          className={cn(
-            'max-640:text-[13px] relative mt-2 break-all text-white',
-            {
-              'cursor-pointer': isHiddenReview && !showBlurredContent
-            }
-          )}
-          onClick={
-            isHiddenReview && !showBlurredContent
-              ? handleToggleBlurredContent
-              : undefined
-          }
-        >
-          <div
-            className={cn({
-              'max-640:text-[13px] blur-xs select-none':
-                isHiddenReview && !showBlurredContent
-            })}
+        {isHiddenReview && !showBlurredContent ? (
+          <button
+            type='button'
+            className='max-640:text-[13px] relative mt-2 w-full cursor-pointer p-0 text-left break-all text-white'
+            onClick={handleToggleBlurredContent}
           >
-            {review.content}
+            <div className='max-640:text-[13px] blur-xs select-none'>
+              {review.content}
+            </div>
+          </button>
+        ) : (
+          <div className='max-640:text-[13px] relative mt-2 break-all text-white'>
+            <div>{review.content}</div>
           </div>
-        </div>
+        )}
         <div className='max-640:mt-3 relative mt-4 flex items-center gap-4'>
           <div className='flex items-center gap-2'>
             <div className='flex items-center gap-4'>

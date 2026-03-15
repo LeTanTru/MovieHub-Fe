@@ -102,9 +102,16 @@ export default function WatchSkeleton() {
           <div className='border-t border-solid border-white/10 pt-7.5'>
             <Skeleton className='skeleton mb-8 h-6 w-24' />
             <div className='max-1120:grid-cols-6 max-640:grid-cols-3 max-800:grid-cols-5 max-480:grid-cols-2 max-640:text-[13px] max-520:text-xs grid grid-cols-3 gap-x-2.5 gap-y-6'>
-              {[...Array(6)].map((_, i) => (
+              {[
+                'actor-1',
+                'actor-2',
+                'actor-3',
+                'actor-4',
+                'actor-5',
+                'actor-6'
+              ].map((actorKey) => (
                 <div
-                  key={i}
+                  key={actorKey}
                   className='flex flex-col items-center gap-3 text-center'
                 >
                   <Skeleton className='skeleton h-20 w-20 rounded-full!' />
@@ -118,16 +125,18 @@ export default function WatchSkeleton() {
           <div className='border-t border-solid border-white/10 pt-7.5'>
             <Skeleton className='skeleton mb-4 h-7 w-40' />
             <div className='flex flex-col gap-4'>
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className='flex gap-3'>
-                  <Skeleton className='skeleton h-24 w-16 shrink-0' />
-                  <div className='flex flex-1 flex-col gap-2'>
-                    <Skeleton className='skeleton h-5 w-3/4' />
-                    <Skeleton className='skeleton h-4 w-1/2' />
-                    <Skeleton className='skeleton h-4 w-1/3' />
+              {['suggestion-1', 'suggestion-2', 'suggestion-3'].map(
+                (suggestionKey) => (
+                  <div key={suggestionKey} className='flex gap-3'>
+                    <Skeleton className='skeleton h-24 w-16 shrink-0' />
+                    <div className='flex flex-1 flex-col gap-2'>
+                      <Skeleton className='skeleton h-5 w-3/4' />
+                      <Skeleton className='skeleton h-4 w-1/2' />
+                      <Skeleton className='skeleton h-4 w-1/3' />
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           </div>
         </div>

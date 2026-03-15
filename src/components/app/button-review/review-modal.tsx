@@ -135,7 +135,8 @@ export default function ReviewModal({
                   .slice()
                   .reverse()
                   .map((rating) => (
-                    <div
+                    <button
+                      type='button'
                       onClick={() => handleSelectRating(+rating.value)}
                       className={cn(
                         'max-640:bg-[rgba(0,0,0,0.3)] max-640:flex-row max-640:py-2.5 flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-4 whitespace-nowrap text-white grayscale-100 transition-all duration-200 ease-linear select-none hover:grayscale-0',
@@ -159,7 +160,7 @@ export default function ReviewModal({
                       <span className='max-640:text-[13px] max-520:text-xs'>
                         {rating.label}
                       </span>
-                    </div>
+                    </button>
                   ))}
               </div>
               <div className='max-640:mt-3 max-480:mt-2 relative mt-4'>

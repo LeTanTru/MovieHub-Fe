@@ -10,7 +10,6 @@ export { default as useGetAnonymousToken } from './use-get-anonymous-token';
 export { default as useImageStatus } from './use-image-status';
 export { default as useIsMounted } from './use-is-mounted';
 export { default as useLoadMore } from './use-load-more';
-export { default as useMobile } from './use-mobile';
 export { default as useNavigate } from './use-navigate';
 export { default as useQueryParams } from './use-query-params';
 export { useFileUpload } from './use-file-upload';

@@ -185,7 +185,7 @@ export default function MovieSide({
         <div className='mb-5'>
           <div className='mb-2 block font-medium text-white'>Giới thiệu:</div>
           <div
-            className='text-foreground/80!'
+            className='text-foreground/80'
             dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
           />
         </div>

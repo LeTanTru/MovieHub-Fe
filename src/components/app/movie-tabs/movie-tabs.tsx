@@ -82,11 +82,15 @@ export default function MovieTabs({
         ref={containerRef}
         className='max-800:justify-center max-480:justify-evenly max-420:justify-center max-640:gap-4 max-520:-mx-4 relative flex flex-nowrap gap-6 border-b border-solid'
         role='tablist'
+        aria-label='Movie tabs'
       >
         {movieTabs.map((tab) => (
           <div
             role='tab'
             key={tab.key}
+            id={`movie-tab-${tab.key}`}
+            aria-controls={`movie-tabpanel-${tab.key}`}
+            aria-selected={tab.key === activeKey}
             ref={(el) => {
               tabRefs.current[tab.key] = el;
             }}
@@ -97,6 +101,13 @@ export default function MovieTabs({
               }
             )}
             onClick={() => handleClick(tab.key)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleClick(tab.key);
+              }
+            }}
+            tabIndex={tab.key === activeKey ? 0 : -1}
           >
             {tab.label}
           </div>
@@ -107,14 +118,15 @@ export default function MovieTabs({
           style={{
             left: `${indicatorStyle.left}px`,
             width: `${indicatorStyle.width}px`,
-            transform: 'translateZ(0)',
-            willChange: 'left, width'
+            transform: 'translateZ(0)'
           }}
         />
       </div>
 
       <div
         role='tabpanel'
+        id={`movie-tabpanel-${activeKey}`}
+        aria-labelledby={`movie-tab-${activeKey}`}
         className='max-1120:pt-7.5 max-1120:pb-5 max-640:py-5 max-520:py-4 py-7.5'
       >
         <AnimatePresence mode='wait'>{activeTabContent}</AnimatePresence>

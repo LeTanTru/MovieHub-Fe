@@ -29,13 +29,15 @@ export default function ButtonToggle({
       )}
       aria-disabled={disabled}
     >
-      <div
+      <button
+        type='button'
         className={cn(
           'relative h-5 w-7.5 shrink-0 cursor-pointer rounded-full border border-solid border-white opacity-30 transition-all duration-150 ease-linear',
           {
             'border-golden-glow opacity-100': toggle
           }
         )}
+        disabled={disabled}
         onClick={handleToggle}
       >
         <div
@@ -47,7 +49,7 @@ export default function ButtonToggle({
             }
           )}
         ></div>
-      </div>
+      </button>
       <div className='whitespace-nowrap text-white'>{text}</div>
     </div>
   );

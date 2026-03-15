@@ -17,10 +17,11 @@ export default function DropdownNotification() {
   const handleToggle = () => toggle();
 
   return (
-    <div className='relative' onClick={handleToggle} ref={dropdownRef}>
+    <div className='relative' ref={dropdownRef}>
       <Button
         variant='outline'
         className='group h-11 w-11 rounded-full p-0! focus:outline-none focus-visible:ring-0 dark:border-white dark:text-white dark:hover:border-white/50 dark:hover:text-white/50'
+        onClick={handleToggle}
       >
         <FaBell className='size-5 stroke-2' />
         <div className='text-accent absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-white transition-opacity duration-200 ease-linear group-hover:opacity-80'>
@@ -47,7 +48,7 @@ export default function DropdownNotification() {
               duration: 0.12,
               ease: 'linear'
             }}
-            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
             className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-50 w-100 flex-col justify-between rounded shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11 h-2 w-4'>

@@ -297,6 +297,7 @@ export default function CommentItem({
 
         <div
           role='button'
+          tabIndex={isHiddenComment && !showBlurredContent ? 0 : undefined}
           className={cn(
             'max-640:text-[13px] relative mt-2 break-all text-white',
             {
@@ -306,6 +307,16 @@ export default function CommentItem({
           onClick={
             isHiddenComment && !showBlurredContent
               ? handleToggleBlurredContent
+              : undefined
+          }
+          onKeyDown={
+            isHiddenComment && !showBlurredContent
+              ? (e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleToggleBlurredContent();
+                  }
+                }
               : undefined
           }
         >

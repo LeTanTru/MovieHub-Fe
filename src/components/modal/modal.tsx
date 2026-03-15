@@ -10,7 +10,7 @@ import { Button } from '@/components/form';
 import { Activity } from '@/components/activity';
 import { isMobileDevice } from '@/utils';
 
-export type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
+type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   children: ReactNode;
   open: boolean;
   onClose?: () => void;
@@ -76,7 +76,7 @@ export default function Modal({
 
     checkOverflow();
     const scrollElement = scrollRef.current;
-    scrollElement?.addEventListener('scroll', checkOverflow);
+    scrollElement?.addEventListener('scroll', checkOverflow, { passive: true });
     window.addEventListener('resize', checkOverflow);
 
     return () => {

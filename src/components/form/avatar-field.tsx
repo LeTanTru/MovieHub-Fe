@@ -110,7 +110,6 @@ export default function AvatarField({
   const handleWheel = useCallback(
     (e: WheelEvent) => {
       if (!zoomOnScroll) return;
-      e.preventDefault();
       setScale((prev) => {
         const next = prev + (e.deltaY > 0 ? -0.1 : 0.1);
         return Math.max(1, Math.min(3, next));
@@ -122,7 +121,7 @@ export default function AvatarField({
   useEffect(() => {
     if (!open || !previewRef.current) return;
     const node = previewRef.current;
-    node.addEventListener('wheel', handleWheel, { passive: false });
+    node.addEventListener('wheel', handleWheel, { passive: true });
     return () => node.removeEventListener('wheel', handleWheel);
   }, [handleWheel, open]);
 
@@ -155,6 +154,14 @@ export default function AvatarField({
       <div
         {...props}
         onClick={props?.onClick ?? handleClick}
+        role='button'
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (!shouldDisablePreview) setOpen(true);
+          }
+        }}
         className={cn(
           'relative',
           { 'cursor-pointer': !shouldDisablePreview },

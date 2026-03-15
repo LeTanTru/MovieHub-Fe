@@ -29,6 +29,8 @@ export default function PlaylistCard({
 
   return (
     <div
+      role='button'
+      tabIndex={0}
       className={cn(
         'max-520:w-50 max-520:shrink-0 cursor-pointer rounded-md border-2 p-4 shadow-[inset_0_0_0_3px_#ffffff03] transition-all duration-200 ease-linear',
         {
@@ -36,6 +38,12 @@ export default function PlaylistCard({
         }
       )}
       onClick={handleSelectPlaylist}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleSelectPlaylist();
+        }
+      }}
     >
       <h3 className='max-520:mb-2 mb-4 font-semibold'>{playlist.name}</h3>
       <div className='flex items-center justify-between'>

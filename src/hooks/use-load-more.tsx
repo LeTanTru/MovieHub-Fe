@@ -5,7 +5,7 @@ import { ApiResponseList, BaseSearchType } from '@/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
 
-export type LoadMoreMode = 'scroll' | 'click' | 'both';
+type LoadMoreMode = 'scroll' | 'click' | 'both';
 
 const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
   queryKey,

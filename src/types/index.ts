@@ -3,7 +3,6 @@ export * from './animation.type';
 export * from './api.type';
 export * from './app-loading.type';
 export * from './auth.type';
-export * from './breadcrumb.type';
 export * from './category.type';
 export * from './collection-item.type';
 export * from './collection.type';
