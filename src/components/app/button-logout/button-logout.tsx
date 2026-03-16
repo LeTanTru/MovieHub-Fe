@@ -11,7 +11,10 @@ import { LogOutIcon } from 'lucide-react';
 
 type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function ButtonLogout(props: ButtonLogoutProps) {
+export default function ButtonLogout({
+  className,
+  ...props
+}: ButtonLogoutProps) {
   const setProfile = useAuthStore((s) => s.setProfile);
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();
@@ -50,7 +53,8 @@ export default function ButtonLogout(props: ButtonLogoutProps) {
         {
           'justify-start': !logoutLoading && !removeCookieLoading,
           'pointer-events-none': logoutLoading || removeCookieLoading
-        }
+        },
+        className
       )}
       onClick={handleLogout}
       loading={logoutLoading || removeCookieLoading}
