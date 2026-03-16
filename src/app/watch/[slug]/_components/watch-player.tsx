@@ -12,7 +12,7 @@ import {
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { setData, getData } from '@/utils';
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useCallback, useMemo, useReducer } from 'react';
 import { useShallow } from 'zustand/shallow';
 import {
   useWatchHistoryTrackingMutation,
@@ -29,6 +29,62 @@ import {
   WatchPlayerVideoArea
 } from '@/components/app/watch';
 
+type PlayerSettings = {
+  autoNextEpisode: boolean;
+  skipIntro: boolean;
+};
+
+type PlayerSettingsAction =
+  | { type: 'TOGGLE_AUTO_NEXT_EPISODE' }
+  | { type: 'TOGGLE_SKIP_INTRO' }
+  | { type: 'LOAD_SETTINGS'; payload: PlayerSettings };
+
+type PlaybackState = {
+  lastWatchedSeconds: number;
+  autoPlay: boolean;
+  introSkipped: boolean;
+};
+
+type PlaybackAction =
+  | { type: 'SET_LAST_WATCHED'; seconds: number }
+  | { type: 'SET_AUTO_PLAY'; value: boolean }
+  | { type: 'SET_INTRO_SKIPPED'; value: boolean }
+  | { type: 'RESET_SESSION' };
+
+function playerSettingsReducer(
+  state: PlayerSettings,
+  action: PlayerSettingsAction
+): PlayerSettings {
+  switch (action.type) {
+    case 'TOGGLE_AUTO_NEXT_EPISODE':
+      return { ...state, autoNextEpisode: !state.autoNextEpisode };
+    case 'TOGGLE_SKIP_INTRO':
+      return { ...state, skipIntro: !state.skipIntro };
+    case 'LOAD_SETTINGS':
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function playbackReducer(
+  state: PlaybackState,
+  action: PlaybackAction
+): PlaybackState {
+  switch (action.type) {
+    case 'SET_LAST_WATCHED':
+      return { ...state, lastWatchedSeconds: action.seconds };
+    case 'SET_AUTO_PLAY':
+      return { ...state, autoPlay: action.value };
+    case 'SET_INTRO_SKIPPED':
+      return { ...state, introSkipped: action.value };
+    case 'RESET_SESSION':
+      return { ...state, introSkipped: false };
+    default:
+      return state;
+  }
+}
+
 export default function WatchPlayer() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
@@ -42,11 +98,21 @@ export default function WatchPlayer() {
   }>();
 
   const { token, isLoadingToken } = useGetAnonymousToken();
-  const [lastWatchedSeconds, setLastWatchedSeconds] = useState<number>(0);
-  const [autoPlay, setAutoPlay] = useState<boolean>(false);
-  const [autoNextEpisode, setAutoNextEpisode] = useState<boolean>(false);
-  const [skipIntro, setSkipIntro] = useState<boolean>(false);
-  const [introSkipped, setIntroSkipped] = useState<boolean>(false);
+
+  const [settings, dispatchSettings] = useReducer(playerSettingsReducer, {
+    autoNextEpisode: false,
+    skipIntro: false
+  });
+
+  const [playback, dispatchPlayback] = useReducer(playbackReducer, {
+    lastWatchedSeconds: 0,
+    autoPlay: false,
+    introSkipped: false
+  });
+
+  const { autoNextEpisode, skipIntro } = settings;
+  const { lastWatchedSeconds, autoPlay, introSkipped } = playback;
+
   const currentSecondsRef = useRef<number>(0);
   const playerRef = useRef<MediaPlayerInstance>(null);
 
@@ -137,25 +203,26 @@ export default function WatchPlayer() {
 
   // Load settings from localStorage on mount
   useEffect(() => {
-    const savedAutoNextEpisode =
-      getData(storageKeys.WATCH_AUTO_NEXT_EPISODE) === 'true';
-    const savedSkipIntro = getData(storageKeys.WATCH_SKIP_INTRO) === 'true';
-    setAutoNextEpisode(savedAutoNextEpisode);
-    setSkipIntro(savedSkipIntro);
+    dispatchSettings({
+      type: 'LOAD_SETTINGS',
+      payload: {
+        autoNextEpisode:
+          getData(storageKeys.WATCH_AUTO_NEXT_EPISODE) === 'true',
+        skipIntro: getData(storageKeys.WATCH_SKIP_INTRO) === 'true'
+      }
+    });
   }, []);
 
   // Toggle auto next episode
   const handleToggleAutoNextEpisode = () => {
-    const newValue = !autoNextEpisode;
-    setAutoNextEpisode(newValue);
-    setData(storageKeys.WATCH_AUTO_NEXT_EPISODE, String(newValue));
+    dispatchSettings({ type: 'TOGGLE_AUTO_NEXT_EPISODE' });
+    setData(storageKeys.WATCH_AUTO_NEXT_EPISODE, String(!autoNextEpisode));
   };
 
   // Toggle skip intro
   const handleToggleSkipIntro = () => {
-    const newValue = !skipIntro;
-    setSkipIntro(newValue);
-    setData(storageKeys.WATCH_SKIP_INTRO, String(newValue));
+    dispatchSettings({ type: 'TOGGLE_SKIP_INTRO' });
+    setData(storageKeys.WATCH_SKIP_INTRO, String(!skipIntro));
   };
 
   // Track current position (no API calls during playback)
@@ -170,7 +237,7 @@ export default function WatchPlayer() {
         if (playerRef.current) {
           playerRef.current.currentTime = video.introEnd;
         }
-        setIntroSkipped(true);
+        dispatchPlayback({ type: 'SET_INTRO_SKIPPED', value: true });
       }
     }
   };
@@ -286,7 +353,7 @@ export default function WatchPlayer() {
   useEffect(() => {
     saveWatchHistory().then(() => {
       currentSecondsRef.current = 0;
-      setIntroSkipped(false);
+      dispatchPlayback({ type: 'SET_INTRO_SKIPPED', value: false });
     });
   }, [movieItemId, saveWatchHistory]);
 
@@ -300,25 +367,31 @@ export default function WatchPlayer() {
     );
 
     if (watchHistory) {
-      setLastWatchedSeconds(watchHistory.lastWatchSeconds);
+      dispatchPlayback({
+        type: 'SET_LAST_WATCHED',
+        seconds: watchHistory.lastWatchSeconds
+      });
       showContinueModal();
     }
   }, [movieItemId, showContinueModal, watchHistories]);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      setAutoPlay(true);
+      dispatchPlayback({ type: 'SET_AUTO_PLAY', value: true });
       return;
     }
 
-    setAutoPlay(lastWatchedSeconds === 0);
+    dispatchPlayback({
+      type: 'SET_AUTO_PLAY',
+      value: lastWatchedSeconds === 0
+    });
   }, [isAuthenticated, lastWatchedSeconds]);
 
   const handleContinueWatching = () => {
     if (playerRef.current && lastWatchedSeconds > 0) {
       playerRef.current.currentTime = lastWatchedSeconds;
     }
-    setAutoPlay(true);
+    dispatchPlayback({ type: 'SET_AUTO_PLAY', value: true });
     closeContinueModal();
     playerRef.current?.play();
   };
@@ -330,7 +403,7 @@ export default function WatchPlayer() {
         const introStartTime = video.introStart ?? 0;
         if (introStartTime === 0) {
           playerRef.current.currentTime = video.introEnd;
-          setIntroSkipped(true);
+          dispatchPlayback({ type: 'SET_INTRO_SKIPPED', value: true });
         } else {
           playerRef.current.currentTime = 0;
         }
@@ -338,7 +411,7 @@ export default function WatchPlayer() {
         playerRef.current.currentTime = 0;
       }
     }
-    setAutoPlay(true);
+    dispatchPlayback({ type: 'SET_AUTO_PLAY', value: true });
     closeContinueModal();
     playerRef.current?.play();
   };
@@ -362,7 +435,7 @@ export default function WatchPlayer() {
 
     if (currentTime >= introStartTime && currentTime < introEnd) {
       playerRef.current.currentTime = introEnd;
-      setIntroSkipped(true);
+      dispatchPlayback({ type: 'SET_INTRO_SKIPPED', value: true });
     }
   }, [skipIntro, introStart, introEnd, introSkipped]);
 
@@ -385,7 +458,7 @@ export default function WatchPlayer() {
       // Skip intro if at the beginning and intro is enabled
       if (currentTime >= introStartTime && currentTime < video.introEnd) {
         playerRef.current.currentTime = video.introEnd;
-        setIntroSkipped(true);
+        dispatchPlayback({ type: 'SET_INTRO_SKIPPED', value: true });
       }
     }
   }, [skipIntro, video?.introEnd, video?.introStart, introSkipped]);

@@ -2,7 +2,6 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import DropdownAvatar from './dropdown-avatar';
-import DropdownNotification from './dropdown-notification';
 import SearchForm from './search-form';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,11 +11,15 @@ import { cn } from '@/lib';
 import { Button } from '@/components/form';
 import { useAppLoading, useAuth, useNavigate } from '@/hooks';
 import { route } from '@/routes';
-import { FaSearch } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 import { NavigationMenu } from './navigation';
+import { AiOutlineSearch } from 'react-icons/ai';
+import { usePathname } from 'next/navigation';
+import { setData } from '@/utils';
+import { storageKeys } from '@/constants';
 
 export default function Header() {
+  const pathname = usePathname();
   const { profile } = useAuth();
   const loading = useAppLoading();
   const navigate = useNavigate();
@@ -35,6 +38,7 @@ export default function Header() {
   }, []);
 
   const handleLogin = () => {
+    setData(storageKeys.REDIRECT_PATH_AFTER_LOGIN, pathname);
     navigate.push(route.login.path);
   };
 
@@ -162,7 +166,7 @@ export default function Header() {
         {/* Mobile search toggle button */}
         <button
           type='button'
-          className='mobile-search max-1360:flex max-640:size-6 max-640:pr-1 hidden size-10 items-center justify-center'
+          className='mobile-search max-1360:flex max-640:size-6 max-640:pr-1 hidden size-10 items-center justify-end'
           onClick={() => setShowSearch((prev) => !prev)}
         >
           <AnimatePresence mode='wait' initial={false}>
@@ -174,7 +178,7 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.8, rotate: 15 }}
                 transition={{ duration: 0.1 }}
               >
-                <FaSearch className='max-640:size-4 size-5 font-semibold' />
+                <AiOutlineSearch className='size-6 font-semibold' />
               </m.div>
             ) : (
               <m.div
@@ -184,7 +188,7 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.8, rotate: -15 }}
                 transition={{ duration: 0.1 }}
               >
-                <FaXmark className='max-640:size-5 size-6 font-semibold text-red-500' />
+                <FaXmark className='size-6 font-semibold text-red-500' />
               </m.div>
             )}
           </AnimatePresence>

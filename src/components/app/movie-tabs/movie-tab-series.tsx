@@ -121,7 +121,7 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
                     type='button'
                     key={`season-${index}`}
                     className={cn(
-                      'flex cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
+                      'block flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
                       {
                         'bg-golden-glow':
                           (index + 1).toString() === selectedSeason

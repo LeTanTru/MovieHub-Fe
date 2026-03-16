@@ -202,7 +202,7 @@ function InputFieldInner<T extends FieldValues>(
                           type='button'
                           key={`option-${option}`}
                           className={cn(
-                            'relative flex cursor-pointer items-center rounded p-2 text-sm transition-all duration-200 ease-linear hover:bg-gray-100',
+                            'relative flex w-full cursor-pointer items-center rounded p-2 text-sm transition-all duration-200 ease-linear hover:bg-gray-100',
                             field.value === option && 'bg-gray-50'
                           )}
                           onClick={() => {

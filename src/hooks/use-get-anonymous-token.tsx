@@ -1,9 +1,41 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import { getAnonymousToken } from '@/app/actions/anonymous';
 
+type AnonymousTokenState = {
+  token: string;
+  isLoadingToken: boolean;
+};
+
+type AnonymousTokenAction = {
+  type: 'resolved';
+  payload: string;
+};
+
+const initialState: AnonymousTokenState = {
+  token: '',
+  isLoadingToken: true
+};
+
+function anonymousTokenReducer(
+  _state: AnonymousTokenState,
+  action: AnonymousTokenAction
+): AnonymousTokenState {
+  switch (action.type) {
+    case 'resolved':
+      return {
+        token: action.payload,
+        isLoadingToken: false
+      };
+    default:
+      return _state;
+  }
+}
+
 const useGetAnonymousToken = () => {
-  const [token, setToken] = useState<string>('');
-  const [isLoadingToken, setIsLoadingToken] = useState<boolean>(true);
+  const [{ token, isLoadingToken }, dispatch] = useReducer(
+    anonymousTokenReducer,
+    initialState
+  );
   const hasFetchedTokenRef = useRef<boolean>(false);
 
   useEffect(() => {
@@ -12,8 +44,10 @@ const useGetAnonymousToken = () => {
 
     const handleGetToken = async () => {
       const anonymousToken = await getAnonymousToken();
-      setToken(anonymousToken?.access_token || '');
-      setIsLoadingToken(false);
+      dispatch({
+        type: 'resolved',
+        payload: anonymousToken?.access_token || ''
+      });
     };
 
     handleGetToken();

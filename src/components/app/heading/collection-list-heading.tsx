@@ -10,7 +10,7 @@ export default function CollectionListHeading({
 }) {
   return (
     <div className='max-1120:mb-5 max-990:mb-4 max-480:justify-between relative mb-6 flex items-center justify-start gap-4'>
-      <h3 className='max-1600:text-2xl max-640:text-xl text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+      <h3 className='max-1600:text-2xl max-640:text-xl max-420:text-base text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
         {title}
       </h3>
       {link && (

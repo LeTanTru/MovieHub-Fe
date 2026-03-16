@@ -5,8 +5,8 @@ import {
   type ReactNode,
   useCallback,
   useEffect,
-  useRef,
-  useState
+  useReducer,
+  useRef
 } from 'react';
 import { UploadIcon, XIcon, ZoomInIcon, ZoomOutIcon } from 'lucide-react';
 
@@ -58,6 +58,81 @@ const ASPECT_RATIOS = [
 ] as const;
 
 type Area = { x: number; y: number; width: number; height: number };
+
+type CropState = {
+  dialogOpen: boolean;
+  croppedAreaPixels: Area | null;
+  shouldCrop: boolean;
+  zoom: number;
+  customAspect: number;
+  keepOriginalSize: boolean;
+};
+
+type CropAction =
+  | { type: 'OPEN_DIALOG'; aspect: number }
+  | { type: 'CLOSE_DIALOG' }
+  | { type: 'SET_DIALOG_OPEN'; open: boolean }
+  | { type: 'SET_CROP_AREA'; pixels: Area | null }
+  | { type: 'SET_ZOOM'; zoom: number }
+  | { type: 'SET_ASPECT'; aspect: number }
+  | { type: 'TOGGLE_CROP'; checked: boolean; aspect: number }
+  | { type: 'TOGGLE_ORIGINAL_SIZE'; checked: boolean; aspect: number };
+
+function isSameArea(a: Area | null, b: Area | null) {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  return (
+    a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height
+  );
+}
+
+function cropReducer(state: CropState, action: CropAction): CropState {
+  switch (action.type) {
+    case 'OPEN_DIALOG':
+      return {
+        ...state,
+        dialogOpen: true,
+        zoom: 1,
+        croppedAreaPixels: null,
+        customAspect: action.aspect
+      };
+    case 'CLOSE_DIALOG':
+      if (!state.dialogOpen) return state;
+      return { ...state, dialogOpen: false };
+    case 'SET_DIALOG_OPEN':
+      if (state.dialogOpen === action.open) return state;
+      return { ...state, dialogOpen: action.open };
+    case 'SET_CROP_AREA':
+      if (isSameArea(state.croppedAreaPixels, action.pixels)) return state;
+      return { ...state, croppedAreaPixels: action.pixels };
+    case 'SET_ZOOM':
+      if (state.zoom === action.zoom) return state;
+      return { ...state, zoom: action.zoom };
+    case 'SET_ASPECT':
+      if (state.customAspect === action.aspect) return state;
+      return { ...state, customAspect: action.aspect };
+    case 'TOGGLE_CROP':
+      return {
+        ...state,
+        shouldCrop: action.checked,
+        keepOriginalSize: false,
+        ...(action.checked
+          ? {}
+          : { zoom: 1, customAspect: action.aspect, keepOriginalSize: true })
+      };
+    case 'TOGGLE_ORIGINAL_SIZE':
+      return {
+        ...state,
+        keepOriginalSize: action.checked,
+        shouldCrop: false,
+        ...(action.checked
+          ? {}
+          : { zoom: 1, customAspect: action.aspect, shouldCrop: true })
+      };
+    default:
+      return state;
+  }
+}
 
 const createImage = (url: string): Promise<HTMLImageElement> =>
   new Promise((resolve, reject) => {
@@ -149,15 +224,24 @@ export default function UploadImageField<T extends FieldValues>({
   uploadImageFn,
   deleteImageFn
 }: UploadImageFieldProps<T>) {
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-  const [shouldCrop, setShouldCrop] = useState<boolean>(
-    showCrop && defaultCrop && !originalSize
-  );
-  const [zoom, setZoom] = useState<number>(1);
-  const [customAspect, setCustomAspect] = useState<number>(aspect);
-  const [keepOriginalSize, setKeepOriginalSize] =
-    useState<boolean>(originalSize);
+  const [cropState, dispatch] = useReducer(cropReducer, {
+    dialogOpen: false,
+    croppedAreaPixels: null,
+    shouldCrop: showCrop && defaultCrop && !originalSize,
+    zoom: 1,
+    customAspect: aspect,
+    keepOriginalSize: originalSize
+  });
+
+  const {
+    dialogOpen,
+    croppedAreaPixels,
+    shouldCrop,
+    zoom,
+    customAspect,
+    keepOriginalSize
+  } = cropState;
+
   const {
     field: { value: fieldValue, onChange: fieldOnChange },
     fieldState: { error }
@@ -182,7 +266,7 @@ export default function UploadImageField<T extends FieldValues>({
   const previousFileIdRef = useRef<string | null>(null);
 
   const handleCropChange = useCallback((pixels: Area | null) => {
-    setCroppedAreaPixels(pixels);
+    dispatch({ type: 'SET_CROP_AREA', pixels });
   }, []);
 
   const handleApply = async () => {
@@ -219,7 +303,7 @@ export default function UploadImageField<T extends FieldValues>({
       const uploadedUrl = await uploadImageFn(blob);
       onChange?.(uploadedUrl);
       fieldOnChange(uploadedUrl);
-      setDialogOpen(false);
+      dispatch({ type: 'CLOSE_DIALOG' });
     } catch (error) {
       logger.error('Error while uploading image:', error);
     }
@@ -242,10 +326,7 @@ export default function UploadImageField<T extends FieldValues>({
   useEffect(() => {
     if (fileId && fileId !== previousFileIdRef.current) {
       if (showCrop) {
-        setDialogOpen(true);
-        setZoom(1);
-        setCroppedAreaPixels(null);
-        setCustomAspect(aspect);
+        dispatch({ type: 'OPEN_DIALOG', aspect });
       } else {
         // Upload directly without showing dialog when showCrop is false
         handleApply();
@@ -356,7 +437,10 @@ export default function UploadImageField<T extends FieldValues>({
       </div>
 
       {showCrop && (
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => dispatch({ type: 'SET_DIALOG_OPEN', open })}
+        >
           <DialogContent
             className='gap-0 overflow-hidden rounded-tl-sm rounded-tr-sm border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
             showCloseButton={false}
@@ -378,7 +462,9 @@ export default function UploadImageField<T extends FieldValues>({
                   image={previewUrl}
                   zoom={zoom}
                   onCropChange={handleCropChange}
-                  onZoomChange={setZoom}
+                  onZoomChange={(value) =>
+                    dispatch({ type: 'SET_ZOOM', zoom: value })
+                  }
                 >
                   <CropperDescription />
                   <CropperImage />
@@ -407,7 +493,9 @@ export default function UploadImageField<T extends FieldValues>({
                     min={1}
                     max={3}
                     step={0.01}
-                    onValueChange={(val) => setZoom(val[0])}
+                    onValueChange={(val) =>
+                      dispatch({ type: 'SET_ZOOM', zoom: val[0] })
+                    }
                     showTooltip
                     className='cursor-pointer [&_span[role="slider"]]:bg-gray-500'
                   />
@@ -422,7 +510,9 @@ export default function UploadImageField<T extends FieldValues>({
                   </span>
                   <Select
                     value={customAspect.toString()}
-                    onValueChange={(val) => setCustomAspect(parseFloat(val))}
+                    onValueChange={(val) =>
+                      dispatch({ type: 'SET_ASPECT', aspect: parseFloat(val) })
+                    }
                   >
                     <SelectTrigger className='w-24'>
                       <SelectValue placeholder='Chọn tỉ lệ' />
@@ -452,13 +542,11 @@ export default function UploadImageField<T extends FieldValues>({
                       className='mb-0! cursor-pointer border-gray-200 border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
                       checked={shouldCrop}
                       onCheckedChange={(checked) => {
-                        setShouldCrop(!!checked);
-                        setKeepOriginalSize(false);
-                        if (!checked) {
-                          setZoom(1);
-                          setCustomAspect(aspect);
-                          setKeepOriginalSize(true);
-                        }
+                        dispatch({
+                          type: 'TOGGLE_CROP',
+                          checked: !!checked,
+                          aspect
+                        });
                       }}
                     />
                     <span className='text-sm'>Cắt ảnh</span>
@@ -473,13 +561,11 @@ export default function UploadImageField<T extends FieldValues>({
                         className='mb-0! cursor-pointer border-gray-200 border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
                         checked={keepOriginalSize}
                         onCheckedChange={(checked) => {
-                          setKeepOriginalSize(!!checked);
-                          setShouldCrop(false);
-                          if (!checked) {
-                            setZoom(1);
-                            setCustomAspect(aspect);
-                            setShouldCrop(true);
-                          }
+                          dispatch({
+                            type: 'TOGGLE_ORIGINAL_SIZE',
+                            checked: !!checked,
+                            aspect
+                          });
                         }}
                       />
                       <span className='text-sm'>Gốc</span>
@@ -493,7 +579,7 @@ export default function UploadImageField<T extends FieldValues>({
                     variant='outline'
                     size='icon'
                     className='hover:border-destructive/80 text-destructive border-destructive dark:border-destructive dark:text-destructive dark:hover:border-destructive/80 hover:text-destructive/80 dark:hover:text-destructive/80 -my-1 w-25'
-                    onClick={() => setDialogOpen(false)}
+                    onClick={() => dispatch({ type: 'CLOSE_DIALOG' })}
                   >
                     Đóng
                   </Button>
