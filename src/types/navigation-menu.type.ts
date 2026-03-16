@@ -1,6 +1,7 @@
 export type SubmenuProps = {
   href?: string;
-  label?: string;
+  label: string;
+  key: string;
   [key: string]: any;
 };
 
@@ -12,4 +13,5 @@ export type ItemProps = {
   subItems?: SubmenuProps[];
   isDropdown?: boolean;
   isNew?: boolean;
+  key: string;
 };

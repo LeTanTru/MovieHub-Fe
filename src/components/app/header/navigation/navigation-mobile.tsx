@@ -20,7 +20,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { RiMenu2Line } from 'react-icons/ri';
 
 export default function NavigationMobile({
@@ -32,41 +32,24 @@ export default function NavigationMobile({
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   const { profile } = useAuth();
-  const [openSub, setOpenSub] = useState<string | null>(null);
-  const [submenuOffset, setSubmenuOffset] = useState<Record<string, number>>(
-    {}
-  );
-
-  const listItemRefs = useRef<Record<string, HTMLLIElement | null>>({});
+  const [selectedItem, setSelectedItem] = useState<{
+    key: string;
+    index: number;
+  } | null>(null);
+  const [dropdownTop, setDropdownTop] = useState<number>(0);
 
   const menuRef = useClickOutside<HTMLDivElement>(() => {
-    setOpenSub(null);
+    setSelectedItem(null);
   });
 
   const navMobileList = userSidebarList.filter(
     (item) => item.link !== route.user.notification.path
   );
 
-  const handleSubmenuToggle = (label: string) => {
-    setOpenSub((prev) => {
-      const next = prev === label ? null : label;
-
-      if (next) {
-        const el = listItemRefs.current[label];
-        if (el) {
-          const triggerRect = el.getBoundingClientRect();
-          const submenuWidth = Math.min(720, window.innerWidth * 0.9);
-          const overflow =
-            triggerRect.left + submenuWidth - (window.innerWidth - 8);
-          setSubmenuOffset((prev) => ({
-            ...prev,
-            [label]: overflow > 0 ? -overflow : 0
-          }));
-        }
-      }
-
-      return next;
-    });
+  const handleSubmenuToggle = (key: string, index: number) => {
+    setSelectedItem((prev) =>
+      prev?.key === key && prev?.index === index ? null : { key, index }
+    );
   };
 
   return (
@@ -74,7 +57,7 @@ export default function NavigationMobile({
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}
-        className='group flex size-fit! items-center justify-center p-0! dark:hover:bg-transparent'
+        className='group flex size-6 items-center justify-center p-0! dark:hover:bg-transparent'
         aria-label='Open menu'
       >
         <AnimatePresence mode='wait' initial={false}>
@@ -110,7 +93,7 @@ export default function NavigationMobile({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-charade max-768:w-100 max-420:w-[95%] absolute top-15 w-110 rounded-lg p-4'
+            className='bg-charade max-480:w-[95%] absolute top-15 w-110 rounded-md p-4'
           >
             {!profile ? (
               <div className='flex justify-center'>
@@ -152,7 +135,7 @@ export default function NavigationMobile({
                       <ListItem
                         key={item.link}
                         className={cn(
-                          'max-768:px-2 max-480:text-[13px] flex items-center gap-x-2 gap-y-4 rounded-lg border px-4 py-2',
+                          'max-480:px-2 max-480:text-[13px] flex items-center gap-x-2 gap-y-4 rounded-md border px-4 py-2',
                           {
                             'text-golden-glow border-golden-glow':
                               pathname === item.link
@@ -164,23 +147,24 @@ export default function NavigationMobile({
                         <Link href={item.link}>{item.title}</Link>
                       </ListItem>
                     ))}
-                    <ButtonLogout className='justify-start border' />
+                    <ButtonLogout className='max-480:text-[13px] max-480:px-2! justify-start rounded-md border' />
                   </List>
                 </div>
                 <Separator />
               </>
             )}
 
-            <List className='max-480:mt-1 mt-4 grid w-full grid-cols-2 gap-2'>
-              {navigationList.map((item) =>
+            <List className='max-480:mt-1 max-480:gap-1 mt-4 grid w-full grid-cols-2 gap-2'>
+              {navigationList.map((item, index) =>
                 item.submenu ? (
                   <ListItem
-                    key={item.label}
-                    ref={(el) => {
-                      listItemRefs.current[item.label] = el;
-                    }}
+                    key={item.key}
                     className='max-480:text-[13px] relative flex cursor-pointer gap-2 p-2 select-none'
-                    onClick={() => handleSubmenuToggle(item.label)}
+                    onClick={(e) => {
+                      const coords = e.currentTarget.getBoundingClientRect();
+                      setDropdownTop(coords.top - coords.height);
+                      handleSubmenuToggle(item.key, index);
+                    }}
                   >
                     {item.label}
                     <ChevronDown className='size-5' />
@@ -189,38 +173,6 @@ export default function NavigationMobile({
                         Mới
                       </div>
                     )}
-                    <AnimatePresence>
-                      {openSub === item.label && (
-                        <m.div
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.8 }}
-                          transition={{ duration: 0.15, ease: 'linear' }}
-                          className='bg-gunmetal-blue scrollbar-none max-1024:w-160 max-990:w-130 max-990:grid-cols-3 max-800:grid-cols-2 max-800:w-100 max-800:max-w-[90vw] max-800:p-4 absolute top-8 z-60 grid max-h-[50vh] w-180 grid-cols-4 gap-2 overflow-y-auto rounded-sm p-2 px-6 py-4 shadow-lg'
-                          style={{
-                            left: (submenuOffset[item.label] ?? 0) - 5,
-                            transformOrigin: `${Math.abs(submenuOffset[item.label] ?? 0) ?? 0}px 0%`
-                          }}
-                        >
-                          {item.subItems?.map((sub) => (
-                            <Link
-                              key={sub.label}
-                              href={sub.href as string}
-                              className='text-muted-foreground hover:text-primary max-480:text-[13px] flex cursor-pointer items-center gap-2 py-2 whitespace-nowrap'
-                              onClick={() => {
-                                setOpen(false);
-                                setOpenSub(null);
-                              }}
-                            >
-                              {sub.icon && <sub.icon className='size-4' />}
-                              <span className='line-clamp-1 font-medium'>
-                                {sub.label}
-                              </span>
-                            </Link>
-                          ))}
-                        </m.div>
-                      )}
-                    </AnimatePresence>
                   </ListItem>
                 ) : (
                   <ListItem className='p-2' key={item.label}>
@@ -239,6 +191,43 @@ export default function NavigationMobile({
                 )
               )}
             </List>
+            <AnimatePresence>
+              {selectedItem && (
+                <m.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className={cn(
+                    'dropdown bg-gunmetal-blue scrollbar-none max-800:p-4 max-768:w-150 max-768:grid-cols-3 max-640:grid-cols-2 max-640:w-[95%] max-480:left-1/2 max-480:-translate-x-1/2 absolute left-4 z-50 grid max-h-[50vh] w-180 grid-cols-4 gap-2 overflow-y-auto rounded-sm p-4 shadow-lg transition-all duration-150 ease-out',
+                    {
+                      'max-640:-left-0.5 -left-2': selectedItem.index % 2 === 0
+                    }
+                  )}
+                  style={{
+                    top: dropdownTop + 10,
+                    transformOrigin:
+                      selectedItem.index % 2 == 0 ? '24px 0px' : '240px 0px'
+                  }}
+                >
+                  {navigationList
+                    .find((item) => item.key === selectedItem.key)
+                    ?.subItems?.map((sub) => (
+                      <Link
+                        key={sub.label}
+                        href={sub.href as string}
+                        className='max-480:text-[13px] flex cursor-pointer items-center gap-2 py-2 whitespace-nowrap'
+                        onClick={() => {
+                          setOpen(false);
+                          setSelectedItem(null);
+                        }}
+                      >
+                        {sub.icon && <sub.icon className='size-4' />}
+                        <span className='line-clamp-1'>{sub.label}</span>
+                      </Link>
+                    ))}
+                </m.div>
+              )}
+            </AnimatePresence>
           </m.div>
         )}
       </AnimatePresence>
