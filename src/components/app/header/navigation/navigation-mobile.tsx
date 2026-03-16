@@ -196,7 +196,7 @@ export default function NavigationMobile({
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.8 }}
                           transition={{ duration: 0.15, ease: 'linear' }}
-                          className='dropdown-mobile bg-gunmetal-blue scrollbar-none max-1024:w-160 max-990:w-130 max-990:grid-cols-3 max-800:grid-cols-2 max-800:w-100 max-800:max-w-[90vw] max-800:p-4 absolute top-8 z-60 grid max-h-[50vh] w-180 grid-cols-4 gap-2 overflow-y-auto rounded-sm p-2 px-6 py-4 shadow-lg'
+                          className='bg-gunmetal-blue scrollbar-none max-1024:w-160 max-990:w-130 max-990:grid-cols-3 max-800:grid-cols-2 max-800:w-100 max-800:max-w-[90vw] max-800:p-4 absolute top-8 z-60 grid max-h-[50vh] w-180 grid-cols-4 gap-2 overflow-y-auto rounded-sm p-2 px-6 py-4 shadow-lg'
                           style={{
                             left: (submenuOffset[item.label] ?? 0) - 5,
                             transformOrigin: `${Math.abs(submenuOffset[item.label] ?? 0) ?? 0}px 0%`
