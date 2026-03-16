@@ -3,7 +3,13 @@
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import { notify, removeDatas, setMultipleData } from '@/utils';
+import {
+  getData,
+  notify,
+  removeData,
+  removeDatas,
+  setMultipleData
+} from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
@@ -54,7 +60,9 @@ export default function LoginForm() {
           setProfile(profileData);
         }
         setTimeout(() => {
-          window.location.href = route.home.path;
+          const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
+          removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
+          window.location.href = redirectPath || route.home.path;
         }, 500);
       } else {
         notify.error('Email hoặc mật khẩu không đúng');

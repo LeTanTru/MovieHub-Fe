@@ -140,7 +140,7 @@ export default function ScheduleList() {
                   <SwiperSlide key={currentDate.toString()}>
                     <button
                       type='button'
-                      className={cn(`schedule-item`, {
+                      className={cn('schedule-item', {
                         active: isSelected
                       })}
                       onClick={() => setDate(formattedDateForState)}

@@ -33,6 +33,7 @@ export default async function RootLayout({
   return (
     <html suppressHydrationWarning lang='vi' data-scroll-behavior='smooth'>
       <body
+        suppressHydrationWarning
         className={`${beVietnamPro.variable} ${beVietnamPro.className} antialiased`}
       >
         <BodyLoad />

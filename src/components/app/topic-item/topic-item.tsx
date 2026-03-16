@@ -24,7 +24,7 @@ export default function TopicItem({
       className={cn(
         'topic-item max-480:w-35 max-480:shrink-0 relative top-0 overflow-hidden transition-all duration-200 ease-linear hover:-translate-y-2',
         {
-          'topic bg-background/50 group max-1280:p-5 rounded-md pt-5 pr-10 pb-5 pl-6':
+          'topic bg-background/50 group max-1280:p-5 rounded-md px-4 py-5':
             isSwitched,
           'bg-main-background/50 max-1280:p-4 flex rounded-tl-[20px] rounded-tr-[40px] rounded-br-[20px] rounded-bl-[40px] px-6 py-5 after:absolute after:inset-0 after:z-3 after:rounded-tl-[64px] after:rounded-tr-[40px] after:rounded-br-[64px] after:rounded-bl-[40px] after:shadow-[inset_0_-10px_20px_0_#fff2] after:content-[""]':
             !isSwitched

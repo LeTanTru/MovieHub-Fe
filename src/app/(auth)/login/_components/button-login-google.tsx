@@ -15,7 +15,7 @@ import { route } from '@/routes';
 import { useAuthStore } from '@/store';
 import { notify, setMultipleData } from '@/utils';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export default function ButtonLoginGoogle() {
   const setProfile = useAuthStore((s) => s.setProfile);
@@ -36,6 +36,51 @@ export default function ButtonLoginGoogle() {
 
   const loading =
     isLoading || isFetching || loginGoogleLoading || setCookieServerLoading;
+
+  const handleLogin = useCallback(
+    async (code: string) => {
+      try {
+        const res = await loginGoogleMutate(code);
+        if (res.result) {
+          setMultipleData({
+            [storageKeys.ACCESS_TOKEN]: res.access_token,
+            [storageKeys.REFRESH_TOKEN]: res.refresh_token,
+            [storageKeys.USER_KIND]: String(res.user_kind)
+          });
+          await setCookieServerMutate(res);
+          notify.success('Đăng nhập thành công');
+          const profile = await getProfile();
+          const profileData = profile.data?.data;
+
+          if (profileData) {
+            setProfile(profileData);
+          }
+
+          setTimeout(() => {
+            window.location.href = route.home.path;
+          }, 500);
+        } else {
+          notify.error('Đăng nhập thất bại');
+        }
+      } catch (error) {
+        logger.error('Error during Google login:', error);
+        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      }
+    },
+    [getProfile, loginGoogleMutate, setCookieServerMutate, setProfile]
+  );
+
+  const handleMessage = useCallback(
+    async (event: MessageEvent) => {
+      if (event.origin !== envConfig.NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK) {
+        return;
+      }
+      if (event.data?.code) {
+        await handleLogin(event.data.code);
+      }
+    },
+    [handleLogin]
+  );
 
   const handleGetGoogleLoginUrl = async () => {
     try {
@@ -69,47 +114,9 @@ export default function ButtonLoginGoogle() {
   };
 
   useEffect(() => {
-    const handleLogin = async (code: string) => {
-      try {
-        const res = await loginGoogleMutate(code);
-        if (res.result) {
-          setMultipleData({
-            [storageKeys.ACCESS_TOKEN]: res.access_token,
-            [storageKeys.REFRESH_TOKEN]: res.refresh_token,
-            [storageKeys.USER_KIND]: String(res.user_kind)
-          });
-          await setCookieServerMutate(res);
-          notify.success('Đăng nhập thành công');
-          const profile = await getProfile();
-          const profileData = profile.data?.data;
-
-          if (profileData) {
-            setProfile(profileData);
-          }
-
-          setTimeout(() => {
-            window.location.href = route.home.path;
-          }, 500);
-        } else {
-          notify.error('Đăng nhập thất bại');
-        }
-      } catch (error) {
-        logger.error('Error during Google login:', error);
-        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
-      }
-    };
-
-    const handleMessage = async (event: MessageEvent) => {
-      if (event.origin !== envConfig.NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK)
-        return;
-      if (event.data?.code) {
-        await handleLogin(event.data.code);
-      }
-    };
-
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [getProfile, loginGoogleMutate, setCookieServerMutate, setProfile]);
+  }, [handleMessage]);
 
   return (
     <Button

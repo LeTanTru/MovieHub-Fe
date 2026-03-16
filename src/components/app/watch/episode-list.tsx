@@ -157,7 +157,7 @@ export default function EpisodeList({
                     type='button'
                     key={`season-${seasonIndex}`}
                     className={cn(
-                      'flex cursor-pointer items-center gap-2 px-4 py-2 leading-6 text-white transition-all duration-200 ease-linear hover:bg-white/20',
+                      'block flex w-full cursor-pointer items-center gap-2 px-4 py-2 leading-6 text-white transition-all duration-200 ease-linear hover:bg-white/20',
                       {
                         'text-golden-glow bg-white/25 font-semibold':
                           seasonIndex.toString() === selectedSeason.toString()

@@ -1,6 +1,5 @@
 'use client';
 
-import './navigation-mobile.css';
 import { ButtonLogout } from '@/components/app/button-logout';
 import { AvatarField, Button } from '@/components/form';
 import { List, ListItem } from '@/components/list';
@@ -18,10 +17,11 @@ import { route } from '@/routes';
 import { ItemProps } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
-import { ChevronDown, MenuIcon, X } from 'lucide-react';
+import { ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { RiMenu2Line } from 'react-icons/ri';
 
 export default function NavigationMobile({
   navigationList
@@ -33,6 +33,12 @@ export default function NavigationMobile({
   const [open, setOpen] = useState<boolean>(false);
   const { profile } = useAuth();
   const [openSub, setOpenSub] = useState<string | null>(null);
+  const [submenuOffset, setSubmenuOffset] = useState<Record<string, number>>(
+    {}
+  );
+
+  const listItemRefs = useRef<Record<string, HTMLLIElement | null>>({});
+
   const menuRef = useClickOutside<HTMLDivElement>(() => {
     setOpenSub(null);
   });
@@ -41,12 +47,34 @@ export default function NavigationMobile({
     (item) => item.link !== route.user.notification.path
   );
 
+  const handleSubmenuToggle = (label: string) => {
+    setOpenSub((prev) => {
+      const next = prev === label ? null : label;
+
+      if (next) {
+        const el = listItemRefs.current[label];
+        if (el) {
+          const triggerRect = el.getBoundingClientRect();
+          const submenuWidth = Math.min(720, window.innerWidth * 0.9);
+          const overflow =
+            triggerRect.left + submenuWidth - (window.innerWidth - 8);
+          setSubmenuOffset((prev) => ({
+            ...prev,
+            [label]: overflow > 0 ? -overflow : 0
+          }));
+        }
+      }
+
+      return next;
+    });
+  };
+
   return (
     <>
       <Button
         variant='ghost'
         onClick={() => setOpen((prev) => !prev)}
-        className='group flex size-10 items-center justify-center dark:hover:bg-transparent'
+        className='group flex size-fit! items-center justify-center p-0! dark:hover:bg-transparent'
         aria-label='Open menu'
       >
         <AnimatePresence mode='wait' initial={false}>
@@ -58,7 +86,7 @@ export default function NavigationMobile({
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.1 }}
             >
-              <X className='max-640:size-7 size-8' />
+              <X className='size-6' />
             </m.div>
           ) : (
             <m.div
@@ -68,7 +96,7 @@ export default function NavigationMobile({
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.1 }}
             >
-              <MenuIcon className='max-640:size-7 size-8' />
+              <RiMenu2Line className='size-6' />
             </m.div>
           )}
         </AnimatePresence>
@@ -82,7 +110,7 @@ export default function NavigationMobile({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className='bg-charade max-768:w-100 max-480:w-[95%] absolute top-15 w-110 rounded-lg p-4'
+            className='bg-charade max-768:w-100 max-420:w-[95%] absolute top-15 w-110 rounded-lg p-4'
           >
             {!profile ? (
               <div className='flex justify-center'>
@@ -142,17 +170,17 @@ export default function NavigationMobile({
                 <Separator />
               </>
             )}
+
             <List className='max-480:mt-1 mt-4 grid w-full grid-cols-2 gap-2'>
               {navigationList.map((item) =>
                 item.submenu ? (
                   <ListItem
                     key={item.label}
+                    ref={(el) => {
+                      listItemRefs.current[item.label] = el;
+                    }}
                     className='max-480:text-[13px] relative flex cursor-pointer gap-2 p-2 select-none'
-                    onClick={() =>
-                      setOpenSub((prev) =>
-                        prev === item.label ? null : item.label
-                      )
-                    }
+                    onClick={() => handleSubmenuToggle(item.label)}
                   >
                     {item.label}
                     <ChevronDown className='size-5' />
@@ -164,20 +192,25 @@ export default function NavigationMobile({
                     <AnimatePresence>
                       {openSub === item.label && (
                         <m.div
-                          initial={{
-                            opacity: 0,
-                            scale: 0.8
-                          }}
+                          initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.8 }}
                           transition={{ duration: 0.15, ease: 'linear' }}
-                          className='bg-gunmetal-blue scrollbar-none dropdown-mobile absolute top-10 left-0 z-10 grid max-h-[50vh] w-180 origin-[5%_0%] grid-cols-4 gap-2 overflow-y-auto rounded-sm p-2 px-6 py-4 shadow-lg'
+                          className='dropdown-mobile bg-gunmetal-blue scrollbar-none max-1024:w-160 max-990:w-130 max-990:grid-cols-3 max-800:grid-cols-2 max-800:w-100 max-800:max-w-[90vw] max-800:p-4 absolute top-8 z-60 grid max-h-[50vh] w-180 grid-cols-4 gap-2 overflow-y-auto rounded-sm p-2 px-6 py-4 shadow-lg'
+                          style={{
+                            left: (submenuOffset[item.label] ?? 0) - 5,
+                            transformOrigin: `${Math.abs(submenuOffset[item.label] ?? 0) ?? 0}px 0%`
+                          }}
                         >
                           {item.subItems?.map((sub) => (
                             <Link
                               key={sub.label}
                               href={sub.href as string}
                               className='text-muted-foreground hover:text-primary max-480:text-[13px] flex cursor-pointer items-center gap-2 py-2 whitespace-nowrap'
+                              onClick={() => {
+                                setOpen(false);
+                                setOpenSub(null);
+                              }}
                             >
                               {sub.icon && <sub.icon className='size-4' />}
                               <span className='line-clamp-1 font-medium'>

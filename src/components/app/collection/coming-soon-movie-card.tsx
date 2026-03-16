@@ -10,7 +10,6 @@ import { route } from '@/routes';
 import { isDesktopDevice, renderImageUrl } from '@/utils';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
-import { X } from 'lucide-react';
 import { MovieModal } from '@/components/app/movie-card';
 
 type Dir = 'up' | 'down';
@@ -37,12 +36,10 @@ const EDGE_PADDING = 20;
 
 export default function ComingSoonMovieCard({
   movie,
-  dir = 'up',
-  onDelete
+  dir = 'up'
 }: {
   movie: MovieResType;
   dir?: Dir;
-  onDelete?: (id: string) => void;
 }) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
@@ -155,16 +152,6 @@ export default function ComingSoonMovieCard({
             </Link>
           </h4>
         </div>
-
-        {onDelete && (
-          <button
-            aria-label='Remove from favourite'
-            className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
-            onClick={() => onDelete(movie.id)}
-          >
-            <X className='size-4' />
-          </button>
-        )}
       </m.div>
 
       {isMounted &&

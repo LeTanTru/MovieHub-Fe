@@ -54,7 +54,7 @@ function LatestCountryMovieItem({
     <div className='max-1360:flex-col max-1360:gap-4 flex items-center justify-between gap-4 p-4'>
       <div className='max-1360:flex-row max-1360:w-full max-1360:p-0 max-1360:items-center max-1360:justify-between relative z-3 flex w-50 grow flex-col gap-6 pr-4 pl-2 text-center'>
         <h3
-          className='max-1360:text-2xl max-640:text-xl max-1360:flex-1 max-1360:text-left bg-clip-text text-[28px] leading-[1.3] font-semibold text-transparent text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'
+          className='max-1360:text-2xl max-640:text-xl max-1360:flex-1 max-1360:text-left max-420:text-base bg-clip-text text-[28px] leading-[1.3] font-semibold text-transparent text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'
           style={{
             backgroundImage: getGradientStyle('to bottom')
           }}

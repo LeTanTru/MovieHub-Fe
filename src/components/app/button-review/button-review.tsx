@@ -71,7 +71,11 @@ export default function ButtonReview({
           onClick={handleOpenReviewModal}
         >
           <FaStar className='mr-2 size-4' />
-          <span className='rating mr-2 font-bold'>
+          <span
+            className={cn('rating font-bold', {
+              'mr-2': !isReviewed
+            })}
+          >
             {formatRating(movie?.averageRating || 0)}
           </span>
           {!isReviewed && (

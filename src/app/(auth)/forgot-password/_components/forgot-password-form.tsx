@@ -24,7 +24,7 @@ import {
   setData
 } from '@/utils';
 import { BaseForm } from '@/components/form/base-form';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { logger } from '@/logger';
 import {
   useForgotPasswordMutation,
@@ -43,16 +43,94 @@ const MAX_RESEND = 3; // RESEND LIMIT EACH 10 MINUTES
 const RESEND_INTERVAL = 10 * 60 * 1000; // TIME TO RESEND AFTER REACH LIMIT
 const COOLDOWN_TIME = 60 * 1000; // COOL DOWN BETWEEN EACH RESENDS
 
+type ResendState = {
+  resendData: {
+    count: number;
+    timestamp: number;
+  };
+  countdown: number;
+  cooldownRemaining: number;
+  lastResendTime: number;
+};
+
+type ResendAction =
+  | {
+      type: 'init';
+      payload: {
+        resendData: ResendState['resendData'];
+        lastResendTime: number;
+      };
+    }
+  | {
+      type: 'tick';
+      payload: {
+        countdown: number;
+        cooldownRemaining: number;
+        resetResendData: boolean;
+      };
+    }
+  | {
+      type: 'set-last-resend-time';
+      payload: number;
+    }
+  | {
+      type: 'resend-success';
+      payload: {
+        count: number;
+        timestamp: number;
+      };
+    };
+
+const initialResendState: ResendState = {
+  resendData: { count: 0, timestamp: 0 },
+  countdown: 0,
+  cooldownRemaining: 0,
+  lastResendTime: 0
+};
+
+function resendReducer(state: ResendState, action: ResendAction): ResendState {
+  switch (action.type) {
+    case 'init':
+      return {
+        ...state,
+        resendData: action.payload.resendData,
+        lastResendTime: action.payload.lastResendTime
+      };
+    case 'tick':
+      return {
+        ...state,
+        countdown: action.payload.countdown,
+        cooldownRemaining: action.payload.cooldownRemaining,
+        resendData: action.payload.resetResendData
+          ? { count: 0, timestamp: 0 }
+          : state.resendData
+      };
+    case 'set-last-resend-time':
+      return {
+        ...state,
+        lastResendTime: action.payload
+      };
+    case 'resend-success':
+      return {
+        ...state,
+        resendData: {
+          count: action.payload.count,
+          timestamp: action.payload.timestamp
+        },
+        lastResendTime: action.payload.timestamp
+      };
+    default:
+      return state;
+  }
+}
+
 export default function ForgotPasswordForm() {
   const navigate = useNavigate();
   const [step, setStep] = useState<ForgotPasswordStepType>(1);
-  const [resendData, setResendData] = useState<{
-    count: number;
-    timestamp: number;
-  }>({ count: 0, timestamp: 0 });
-  const [countdown, setCountdown] = useState<number>(0); // Store cooldown time if reaching resend limitation
-  const [cooldownRemaining, setCooldownRemaining] = useState<number>(0); // Store remaining time for next resend time
-  const [lastResendTime, setLastResendTime] = useState<number>(0); // Store last resend time OTP successfully
+  const [
+    { resendData, countdown, cooldownRemaining, lastResendTime },
+    dispatch
+  ] = useReducer(resendReducer, initialResendState);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
 
   const {
@@ -76,14 +154,34 @@ export default function ForgotPasswordForm() {
   };
 
   useEffect(() => {
+    let nextLastResendTime = 0;
+
     if (getData(storageKeys.EMAIL)) {
       setStep(2);
       // Load last resend time when returning to step 2
       const lastTime = getData(storageKeys.LAST_RESEND_TIME);
       if (lastTime) {
-        setLastResendTime(parseInt(lastTime));
+        nextLastResendTime = parseInt(lastTime);
       }
     }
+
+    const lastTime = getData(storageKeys.LAST_RESEND_TIME);
+    if (lastTime) {
+      nextLastResendTime = parseInt(lastTime);
+    }
+
+    const resendRaw = getData(storageKeys.RESEND_OTP_TIME);
+    const nextResendData = resendRaw
+      ? JSON.parse(resendRaw)
+      : { count: 0, timestamp: 0 };
+
+    dispatch({
+      type: 'init',
+      payload: {
+        resendData: nextResendData,
+        lastResendTime: nextLastResendTime
+      }
+    });
   }, []);
 
   const getResendData = () => {
@@ -91,16 +189,6 @@ export default function ForgotPasswordForm() {
     if (!data) return { count: 0, timestamp: 0 };
     return JSON.parse(data);
   };
-
-  useEffect(() => {
-    const data = getResendData();
-    setResendData(data);
-
-    const lastTime = getData(storageKeys.LAST_RESEND_TIME);
-    if (lastTime) {
-      setLastResendTime(parseInt(lastTime));
-    }
-  }, []);
 
   const setResendDataToLS = (count: number, timestamp: number) => {
     // count: store how many times which resend has been done
@@ -113,19 +201,23 @@ export default function ForgotPasswordForm() {
       const now = Date.now();
       const { timestamp } = getResendData();
       const remaining = RESEND_INTERVAL - (now - timestamp);
-      setCountdown(remaining > 0 ? remaining : 0);
+      const shouldResetResendData = remaining <= 0 && resendData.count > 0;
 
-      if (remaining <= 0 && resendData.count > 0) {
+      if (shouldResetResendData) {
         setResendDataToLS(0, 0);
-        setResendData({ count: 0, timestamp: 0 });
       }
 
-      if (lastResendTime > 0) {
-        const cooldown = COOLDOWN_TIME - (now - lastResendTime);
-        setCooldownRemaining(cooldown > 0 ? cooldown : 0);
-      } else {
-        setCooldownRemaining(0);
-      }
+      const cooldown =
+        lastResendTime > 0 ? COOLDOWN_TIME - (now - lastResendTime) : 0;
+
+      dispatch({
+        type: 'tick',
+        payload: {
+          countdown: remaining > 0 ? remaining : 0,
+          cooldownRemaining: cooldown > 0 ? cooldown : 0,
+          resetResendData: shouldResetResendData
+        }
+      });
     }, 1000);
 
     return () => clearInterval(interval);
@@ -164,8 +256,10 @@ export default function ForgotPasswordForm() {
             count += 1;
             timestamp = now;
             setResendDataToLS(count, timestamp);
-            setResendData({ count, timestamp });
-            setLastResendTime(now);
+            dispatch({
+              type: 'resend-success',
+              payload: { count, timestamp }
+            });
             setData(storageKeys.LAST_RESEND_TIME, now.toString());
           } else {
             notify.error('Gửi lại OTP thất bại');
@@ -210,7 +304,7 @@ export default function ForgotPasswordForm() {
           if (res.result) {
             notify.success('Mã OTP đã được gửi đến email của bạn');
             const now = Date.now();
-            setLastResendTime(now);
+            dispatch({ type: 'set-last-resend-time', payload: now });
             setData(storageKeys.LAST_RESEND_TIME, now.toString());
             setStep(2);
           } else {
