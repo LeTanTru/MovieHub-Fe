@@ -16,13 +16,7 @@ import {
 } from '@/schemaValidations';
 import { ForgotPasswordBodyType } from '@/types';
 import { forgotPasswordErrorMaps, storageKeys } from '@/constants';
-import {
-  applyFormErrors,
-  getData,
-  notify,
-  removeDatas,
-  setData
-} from '@/utils';
+import { applyFormErrors, getData, notify, removeData, setData } from '@/utils';
 import { BaseForm } from '@/components/form/base-form';
 import { useEffect, useReducer, useState } from 'react';
 import { logger } from '@/logger';
@@ -281,12 +275,12 @@ export default function ForgotPasswordForm() {
   };
 
   const handleBack = () => {
-    removeDatas([storageKeys.RESEND_OTP_TIME, storageKeys.LAST_RESEND_TIME]);
+    removeData([storageKeys.RESEND_OTP_TIME, storageKeys.LAST_RESEND_TIME]);
     setStep(1);
   };
 
   const handleClearForgotPasswordData = () => {
-    removeDatas([
+    removeData([
       storageKeys.EMAIL,
       storageKeys.RESEND_OTP_TIME,
       storageKeys.LAST_RESEND_TIME

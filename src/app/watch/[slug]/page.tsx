@@ -15,7 +15,6 @@ import {
   queryKeys
 } from '@/constants';
 import {
-  ApiResponse,
   ApiResponseList,
   CommentResType,
   CommentSearchType,
@@ -23,10 +22,9 @@ import {
   ReviewResType,
   ReviewSearchType
 } from '@/types';
-import { getIdFromSlug, stripHtml } from '@/utils';
+import { getIdFromSlug, sanitizeText } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
-import { notFound } from 'next/navigation';
 
 export const revalidate = 60;
 
@@ -56,12 +54,12 @@ export async function generateMetadata(
     title: res.data
       ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
       : 'Không tìm thấy phim',
-    description: stripHtml(res.data?.description || 'Thông tin phim'),
+    description: sanitizeText(res.data?.description || 'Thông tin phim'),
     openGraph: {
       title: res.data
         ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
         : 'Không tìm thấy phim',
-      description: stripHtml(res.data?.description || 'Thông tin phim'),
+      description: sanitizeText(res.data?.description || 'Thông tin phim'),
       images
     },
     twitter: {
@@ -69,7 +67,7 @@ export async function generateMetadata(
       title: res.data
         ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
         : 'Không tìm thấy phim',
-      description: stripHtml(res.data?.description || 'Thông tin phim'),
+      description: sanitizeText(res.data?.description || 'Thông tin phim'),
       images
     },
     alternates: {
@@ -102,25 +100,11 @@ export default async function WatchPage({
 
   const queryClient = getQueryClient();
 
-  try {
-    await queryClient.prefetchQuery({
+  await Promise.all([
+    queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE, id],
       queryFn: () => movieApiRequest.getById(id)
-    });
-
-    const movieData: ApiResponse<any> | undefined = queryClient.getQueryData([
-      queryKeys.MOVIE,
-      id
-    ]);
-
-    if (!movieData?.result) {
-      notFound();
-    }
-  } catch (_) {
-    notFound();
-  }
-
-  await Promise.all([
+    }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
       queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)

@@ -18,7 +18,7 @@ import {
   getRefreshTokenFromCookie,
   setAccessTokenToCookie,
   setRefreshTokenToCookie,
-  removeDatas
+  removeData
 } from '@/utils';
 import axios, {
   AxiosError,
@@ -137,7 +137,7 @@ axiosInstance.interceptors.response.use(
           error?.response?.data?.message?.includes('Invalid refresh token') &&
           error?.response?.data?.data?.includes('invalid_request')
         ) {
-          removeDatas([
+          removeData([
             storageKeys.ACCESS_TOKEN,
             storageKeys.REFRESH_TOKEN,
             storageKeys.USER_KIND

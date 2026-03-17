@@ -2,15 +2,16 @@
 
 import './topic-detail.css';
 import { Activity } from '@/components/activity';
-import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
-import { NoData } from '@/components/no-data';
-import { Skeleton } from '@/components/ui/skeleton';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
-import { useQueryParams } from '@/hooks';
-import { useCollectionItemListQuery, useCollectionQuery } from '@/queries';
-import { Pagination } from '@/components/pagination';
-import { MovieResType } from '@/types';
 import { getColorList } from '@/utils';
+import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
+import { MovieResType } from '@/types';
+import { NoData } from '@/components/no-data';
+import { Pagination } from '@/components/pagination';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useCollectionItemListQuery, useCollectionQuery } from '@/queries';
+import { useQueryParams } from '@/hooks';
+import NotFound from './not-found';
 
 export default function MovieList({ collectionId }: { collectionId: string }) {
   const {
@@ -37,6 +38,10 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
 
   const getGradientStyle = (dir: string = 'to bottom') =>
     `linear-gradient(${dir}, ${colors.join(', ')})`;
+
+  if (!collection) {
+    return <NotFound />;
+  }
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>

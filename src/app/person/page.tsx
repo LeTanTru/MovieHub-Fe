@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PersonPage() {
-  const defaultFilters: PersonSearchType = {
+  const movieFilters: PersonSearchType = {
     page: DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
     kind: PERSON_KIND_ACTOR
@@ -26,8 +26,8 @@ export default async function PersonPage() {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [queryKeys.PERSON_LIST, defaultFilters],
-    queryFn: () => personApiRequest.getList(defaultFilters)
+    queryKey: [queryKeys.PERSON_LIST, movieFilters],
+    queryFn: () => personApiRequest.getList(movieFilters)
   });
 
   return (

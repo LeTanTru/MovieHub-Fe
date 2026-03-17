@@ -3,7 +3,7 @@
 import { useNavigate } from '@/hooks';
 import { useProfileQuery } from '@/queries';
 import { useAppLoadingStore, useAuthStore } from '@/store';
-import { getAccessTokenFromLocalStorage, getData, removeDatas } from '@/utils';
+import { getAccessTokenFromLocalStorage, getData, removeData } from '@/utils';
 import { domAnimation, LazyMotion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
@@ -76,7 +76,7 @@ export const checkAccessExpiry = (): boolean => {
   const expiry = new Date(expiryDate);
 
   if (now > expiry) {
-    removeDatas(['intro_access_granted', 'intro_access_expiry']);
+    removeData(['intro_access_granted', 'intro_access_expiry']);
     return false;
   }
 

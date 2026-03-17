@@ -13,21 +13,22 @@ import { X } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { FaArrowDown } from 'react-icons/fa6';
 import { useDisclosure, useQueryParams } from '@/hooks';
-import { usePersonQuery } from '@/queries';
 import PersonSidebarSkeleton from './person-sidebar-skeleton';
 import { ButtonLike } from '@/components/app/button-like';
 import { ButtonSharePerson } from '@/components/app/button-share';
-import { useParams } from 'next/navigation';
-import { PersonSearchType } from '@/types';
+import { PersonResType, PersonSearchType } from '@/types';
 
-export default function PersonSidebar() {
-  const { id } = useParams<{ id: string }>();
+export default function PersonSidebar({
+  person,
+  loading
+}: {
+  person: PersonResType;
+  loading: boolean;
+}) {
   const { opened, open, close } = useDisclosure();
   const [showScrollIcon, setShowScrollIcon] = useState<boolean>(false);
   const modalContentRef = useRef<HTMLDivElement>(null);
   const { searchParams } = useQueryParams<PersonSearchType>();
-  const { data: personData, isLoading: personLoading } = usePersonQuery(id);
-  const person = personData?.data;
   const kind = searchParams.kind;
 
   const handleOpenModal = () => open();
@@ -63,7 +64,7 @@ export default function PersonSidebar() {
       ?.sort((a, b) => a.localeCompare(b))
       .join(', ') || '';
 
-  if (personLoading) return <PersonSidebarSkeleton />;
+  if (loading) return <PersonSidebarSkeleton />;
 
   return (
     <div className='border-r-transparent-white max-1600:w-85 max-1120:border-none max-1120:pr-0 max-1120:pb-5 max-1120:w-full max-1120:items-center w-110 shrink-0 border-r pr-10'>
@@ -89,7 +90,7 @@ export default function PersonSidebar() {
         person?.kinds.includes(PERSON_KIND_ACTOR) ? (
           <ButtonLike
             className='max-640:text-[13px] max-480:text-xs'
-            targetId={id}
+            targetId={person.id}
             variant='person'
           />
         ) : null}

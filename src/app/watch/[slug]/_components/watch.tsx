@@ -1,12 +1,13 @@
 'use client';
 
-import { useMovieStore } from '@/store';
-import WatchPlayer from './watch-player';
-import WatchContainer from './watch-container';
-import WatchSkeleton from './watch-skeleton';
-import { useShallow } from 'zustand/shallow';
-import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useEffect, useMemo } from 'react';
+import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
+import { useMovieStore } from '@/store';
+import { useShallow } from 'zustand/shallow';
+import NotFound from './not-found';
+import WatchContainer from './watch-container';
+import WatchPlayer from './watch-player';
+import WatchSkeleton from './watch-skeleton';
 
 export default function Watch({ id }: { id: string }) {
   const { setMovie, setMoviePersons } = useMovieStore(
@@ -35,7 +36,9 @@ export default function Watch({ id }: { id: string }) {
     setMoviePersons(moviePersons);
   }, [movie, moviePersons, setMovie, setMoviePersons]);
 
-  if (movieLoading || !movie) return <WatchSkeleton />;
+  if (movieLoading) return <WatchSkeleton />;
+
+  if (!movie) return <NotFound />;
 
   return (
     <>
