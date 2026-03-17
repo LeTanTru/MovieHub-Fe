@@ -1,13 +1,12 @@
 import { categoryApiRequest, movieApiRequest } from '@/api-requests';
-import type { Metadata } from 'next';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
-import { getQueryClient } from '@/components/providers/query-provider';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { ApiResponse, MovieSearchType } from '@/types';
-import { MovieList } from '@/app/category/[slug]/_components';
-import { getIdFromSlug } from '@/utils';
-import { notFound } from 'next/navigation';
 import { Container } from '@/components/layout';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { getIdFromSlug } from '@/utils';
+import { getQueryClient } from '@/components/providers/query-provider';
+import { MovieList } from '@/app/category/[slug]/_components';
+import { MovieSearchType } from '@/types';
+import type { Metadata } from 'next';
 
 export const revalidate = 60;
 
@@ -31,7 +30,7 @@ export async function generateMetadata({
   const category = res.data;
 
   return {
-    title: category?.name || 'Danh mục'
+    title: category?.name || 'Thể loại phim'
   };
 }
 
@@ -42,34 +41,23 @@ export default async function CategoryPage({
 }) {
   const { slug } = await params;
   const id = getIdFromSlug(slug);
-  const defaultFilters: MovieSearchType = {
+  const movieFilters: MovieSearchType = {
     page: DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
     categoryIds: id
   };
   const queryClient = getQueryClient();
 
-  try {
-    await queryClient.prefetchQuery({
+  await Promise.all([
+    queryClient.prefetchQuery({
       queryKey: [queryKeys.CATEGORY, id],
       queryFn: () => categoryApiRequest.getById(id)
-    });
-
-    const categoryData: ApiResponse<any> | undefined = queryClient.getQueryData(
-      [queryKeys.CATEGORY, id]
-    );
-
-    if (!categoryData?.result) {
-      notFound();
-    }
-  } catch (_) {
-    notFound();
-  }
-
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.MOVIE_LIST, defaultFilters],
-    queryFn: () => movieApiRequest.getList(defaultFilters)
-  });
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE_LIST, movieFilters],
+      queryFn: () => movieApiRequest.getList(movieFilters)
+    })
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

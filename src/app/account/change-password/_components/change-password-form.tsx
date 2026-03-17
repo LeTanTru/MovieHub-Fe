@@ -12,7 +12,7 @@ import {
 import { route } from '@/routes';
 import { changePasswordSchema } from '@/schemaValidations';
 import { ChangePasswordBodyType } from '@/types';
-import { applyFormErrors, notify, removeDatas } from '@/utils';
+import { applyFormErrors, notify, removeData } from '@/utils';
 import { UseFormReturn } from 'react-hook-form';
 
 export default function ChangePasswordForm() {
@@ -48,7 +48,7 @@ export default function ChangePasswordForm() {
         form.reset();
         await logoutMutate();
         await removeCookieMutate();
-        removeDatas([
+        removeData([
           storageKeys.ACCESS_TOKEN,
           storageKeys.REFRESH_TOKEN,
           storageKeys.USER_KIND

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default async function MovieSeriesPage() {
-  const defaultFilters: MovieSearchType = {
+  const movieFilters: MovieSearchType = {
     page: DEFAULT_PAGE_START,
     type: movieTypes.MOVIE_TYPE_SERIES,
     size: DEFAULT_PAGE_SIZE
@@ -27,8 +27,8 @@ export default async function MovieSeriesPage() {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [queryKeys.MOVIE_LIST, defaultFilters],
-    queryFn: () => movieApiRequest.getList(defaultFilters)
+    queryKey: [queryKeys.MOVIE_LIST, movieFilters],
+    queryFn: () => movieApiRequest.getList(movieFilters)
   });
 
   return (

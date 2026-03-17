@@ -3,13 +3,7 @@
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import {
-  getData,
-  notify,
-  removeData,
-  removeDatas,
-  setMultipleData
-} from '@/utils';
+import { getData, notify, removeData, setMultipleData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
@@ -74,7 +68,7 @@ export default function LoginForm() {
   };
 
   const handleClearForgotPasswordData = () => {
-    removeDatas([
+    removeData([
       storageKeys.EMAIL,
       storageKeys.RESEND_OTP_TIME,
       storageKeys.LAST_RESEND_TIME

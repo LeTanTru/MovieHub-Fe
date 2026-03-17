@@ -1,15 +1,16 @@
 'use client';
 
 import './movie.css';
-import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
-import { useEffect, useMemo } from 'react';
+import { Container } from '@/components/layout';
+import { MovieMain } from '@/components/app/movie-main';
+import { MovieSide } from '@/components/app/movie-side';
 import { renderImageUrl } from '@/utils';
+import { useEffect, useMemo } from 'react';
+import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import { Skeleton } from '@/components/ui/skeleton';
-import { MovieSide } from '@/components/app/movie-side';
-import { MovieMain } from '@/components/app/movie-main';
-import { Container } from '@/components/layout';
+import MovieSkeleton from './movie-skeleton';
+import NotFound from './not-found';
 
 export default function Movie({ id }: { id: string }) {
   const { setMovie, setMoviePersons } = useMovieStore(
@@ -38,20 +39,9 @@ export default function Movie({ id }: { id: string }) {
     setMoviePersons(moviePersons);
   }, [movie, moviePersons, setMovie, setMoviePersons]);
 
-  if (movieLoading || !movie)
-    return (
-      <div className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
-        <div className='relative h-0 w-full pb-[40%]'>
-          <Skeleton className='skeleton absolute inset-0' />
-        </div>
-        <Container className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
-          <div className='max-1900:-mt-25 max-1120:flex-col max-1120:-mt-37.5 max-640:-mt-30 max-640:px-4 max-640:py-0 max-1120:flex-col relative z-3 mx-auto -mt-50 flex w-full max-w-410 items-stretch justify-between px-5'>
-            <MovieSide isLoading />
-            <MovieMain isLoading />
-          </div>
-        </Container>
-      </div>
-    );
+  if (movieLoading) return <MovieSkeleton />;
+
+  if (!movie) return <NotFound />;
 
   return (
     <>

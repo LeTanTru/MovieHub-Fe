@@ -6,7 +6,7 @@ import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useLogoutMutation, useRemoveCookieServerMutation } from '@/queries';
 import { useAuthStore } from '@/store';
-import { notify, removeDatas } from '@/utils';
+import { notify, removeData } from '@/utils';
 import { LogOutIcon } from 'lucide-react';
 
 type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -26,7 +26,7 @@ export default function ButtonLogout({
     try {
       const res = await logoutMutate();
       if (res.result) {
-        removeDatas([
+        removeData([
           storageKeys.ACCESS_TOKEN,
           storageKeys.REFRESH_TOKEN,
           storageKeys.USER_KIND

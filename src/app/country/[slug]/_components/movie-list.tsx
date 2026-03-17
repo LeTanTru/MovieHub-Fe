@@ -1,13 +1,14 @@
 'use client';
 
-import { NoData } from '@/components/no-data';
-import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
-import { useMovieListQuery } from '@/queries';
-import { countries, DEFAULT_PAGE_SIZE } from '@/constants';
-import { useQueryParams } from '@/hooks';
 import { Activity } from '@/components/activity';
-import { Pagination } from '@/components/pagination';
+import { countries, DEFAULT_PAGE_SIZE } from '@/constants';
 import { ListHeading } from '@/components/app/heading';
+import { MovieGrid, MovieGridSkeleton } from '@/components/app/movie-grid';
+import { NoData } from '@/components/no-data';
+import { Pagination } from '@/components/pagination';
+import { useMovieListQuery } from '@/queries';
+import { useQueryParams } from '@/hooks';
+import NotFound from './not-found';
 
 export default function MovieList({ countryCode }: { countryCode: string }) {
   const {
@@ -30,6 +31,10 @@ export default function MovieList({ countryCode }: { countryCode: string }) {
 
   const movieList = movieListData?.data?.content || [];
   const totalPages = movieListData?.data?.totalPages || 0;
+
+  if (!countryName) {
+    return <NotFound />;
+  }
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>

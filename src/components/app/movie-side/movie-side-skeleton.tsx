@@ -84,14 +84,12 @@ export default function MovieSideSkeleton() {
           {Array.from({ length: 3 }).map((_, index) => (
             <div
               key={`top-view-skeleton-${index}`}
-              className='flex items-center justify-between'
+              className='flex items-center justify-between gap-2'
             >
               <Skeleton className='skeleton h-14 w-15 shrink-0' />
               <div className='flex grow items-center justify-between rounded bg-white/5 p-2.5'>
                 <div className='w-20 shrink-0'>
-                  <div className='bg-gunmetal-blue relative block h-0 w-full rounded pb-[150%]'>
-                    <Skeleton className='skeleton absolute inset-0 h-full w-full rounded!' />
-                  </div>
+                  <Skeleton className='skeleton h-full w-full rounded! pb-[150%]' />
                 </div>
                 <div className='grow px-4'>
                   <Skeleton className='skeleton mb-1.5 h-4 w-3/4' />

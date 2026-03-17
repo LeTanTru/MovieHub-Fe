@@ -20,17 +20,13 @@ export const setMultipleData = (data: Record<string, string>): void => {
   }
 };
 
-export const removeData = (key: string): void => {
+export const removeData = (key: string | string[]): void => {
   if (isBrowser()) {
-    localStorage.removeItem(key);
-  }
-};
-
-export const removeDatas = (keys: string[]): void => {
-  if (isBrowser()) {
-    keys.forEach((key) => {
-      removeData(key);
-    });
+    if (Array.isArray(key)) {
+      key.forEach((k) => localStorage.removeItem(k));
+    } else {
+      localStorage.removeItem(key);
+    }
   }
 };
 

@@ -13,13 +13,13 @@ export const metadata: Metadata = {
 
 export default async function TopicPage() {
   const queryClient = getQueryClient();
-  const defaultFilters: CollectionSearchType = {
+  const movieFilters: CollectionSearchType = {
     size: MAX_PAGE_SIZE
   };
 
   await queryClient.prefetchQuery({
-    queryKey: [queryKeys.COLLECTION_TOPIC_LIST, defaultFilters],
-    queryFn: () => collectionApiRequest.getTopicList(defaultFilters)
+    queryKey: [queryKeys.COLLECTION_TOPIC_LIST, movieFilters],
+    queryFn: () => collectionApiRequest.getTopicList(movieFilters)
   });
 
   return (

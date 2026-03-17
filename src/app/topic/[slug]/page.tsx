@@ -1,12 +1,11 @@
-import { ApiResponse, CollectionItemSearchType } from '@/types';
 import { collectionApiRequest, collectionItemApiRequest } from '@/api-requests';
+import { CollectionItemSearchType } from '@/types';
 import { Container } from '@/components/layout';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getIdFromSlug } from '@/utils';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/topic/[slug]/_components';
-import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const revalidate = 60;
@@ -42,32 +41,22 @@ export default async function TopicDetailPage({
   const collectionId = getIdFromSlug(slug);
   const queryClient = getQueryClient();
 
-  const defaultFilters: CollectionItemSearchType = {
+  const collectionItemFilters: CollectionItemSearchType = {
     collectionId,
     page: DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE
   };
 
-  try {
-    await queryClient.prefetchQuery({
+  await Promise.all([
+    queryClient.prefetchQuery({
       queryKey: [queryKeys.COLLECTION, collectionId],
       queryFn: () => collectionApiRequest.getById(collectionId)
-    });
-
-    const collectionData: ApiResponse<any> | undefined =
-      queryClient.getQueryData([queryKeys.COLLECTION, collectionId]);
-
-    if (!collectionData?.result) {
-      notFound();
-    }
-  } catch (_) {
-    notFound();
-  }
-
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.COLLECTION_ITEM_LIST, defaultFilters],
-    queryFn: () => collectionItemApiRequest.getList(defaultFilters)
-  });
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.COLLECTION_ITEM_LIST, collectionItemFilters],
+      queryFn: () => collectionItemApiRequest.getList(collectionItemFilters)
+    })
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

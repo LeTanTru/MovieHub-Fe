@@ -20,10 +20,10 @@ export default function NotFound() {
             />
           </div>
           <div className='mb-4 text-3xl leading-normal font-bold text-white'>
-            Lỗi 404 - Không tìm thấy danh mục này
+            Lỗi 404 - Không tìm thấy thể loại này
           </div>
           <div className='text-statuary mb-12 text-sm'>
-            Danh mục phim bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra
+            Thể loại phim bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra
             đường dẫn hoặc quay về trang chủ.
           </div>
           <Link className='block w-full' href={route.home.path}>

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 export default async function FavouritePage() {
   const pageSize = 12;
 
-  const defaultFilters: FavouriteSearchType = {
+  const movieFilters: FavouriteSearchType = {
     type: FAVOURITE_TYPE_MOVIE,
     page: DEFAULT_PAGE_START,
     size: pageSize
@@ -29,8 +29,8 @@ export default async function FavouritePage() {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: [queryKeys.FAVOURITE_LIST, defaultFilters],
-    queryFn: () => favouriteApiRequest.getList(defaultFilters)
+    queryKey: [queryKeys.FAVOURITE_LIST, movieFilters],
+    queryFn: () => favouriteApiRequest.getList(movieFilters)
   });
 
   return (

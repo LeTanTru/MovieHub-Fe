@@ -20,7 +20,7 @@ export default async function HomePage() {
 
   const sidebarFilters: SidebarSearchType = {};
 
-  const defaultFilters: CollectionSearchType = {
+  const collectionFilters: CollectionSearchType = {
     size: MAX_PAGE_SIZE
   };
 
@@ -30,8 +30,8 @@ export default async function HomePage() {
       queryFn: () => sidebarApiRequest.getList(sidebarFilters)
     }),
     queryClient.prefetchQuery({
-      queryKey: [queryKeys.COLLECTION_TOPIC_LIST, defaultFilters],
-      queryFn: () => collectionApiRequest.getTopicList(defaultFilters)
+      queryKey: [queryKeys.COLLECTION_TOPIC_LIST, collectionFilters],
+      queryFn: () => collectionApiRequest.getTopicList(collectionFilters)
     })
   ]);
 
