@@ -23,7 +23,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
 
   const collection = collectionData?.data;
 
-  const { data: movieListData, isLoading: collectionItemListLoading } =
+  const { data: collectionItemListData, isLoading: collectionItemListLoading } =
     useCollectionItemListQuery({
       params: {
         page: page ? Number(page) - 1 : 0,
@@ -32,8 +32,8 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
       }
     });
 
-  const movieList = movieListData?.data?.content || [];
-  const totalPages = movieListData?.data?.totalPages || 0;
+  const movieList = collectionItemListData?.data?.content || [];
+  const totalPages = collectionItemListData?.data?.totalPages || 0;
   const colors = getColorList(collection?.color || '[]');
 
   const getGradientStyle = (dir: string = 'to bottom') =>
@@ -59,7 +59,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
               backgroundImage: getGradientStyle('to right')
             }}
           >
-            {collection?.name}
+            {collection.name}
           </h3>
         )}
       </div>
@@ -73,7 +73,7 @@ export default function MovieList({ collectionId }: { collectionId: string }) {
           content={
             <>
               Không có phim nào trong chủ đề&nbsp;
-              <span className='font-semibold'>{collection?.name}</span>
+              <span className='font-semibold'>{collection.name}</span>
             </>
           }
         />

@@ -40,7 +40,7 @@ export default function MovieList({ id }: { id: string }) {
       {categoryLoading ? (
         <Skeleton className='skeleton max-640:mb-4 max-480:mb-2 max-640:h-8 mb-6 h-10 w-50' />
       ) : (
-        <ListHeading title={category?.name || 'Thể loại phim'} />
+        <ListHeading title={category.name} />
       )}
       {movieListLoading ? (
         <MovieGridSkeleton className='max-1600:gap-4 max-1360:grid-cols-6 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-640:gap-x-2 max-640:gap-y-4' />
@@ -51,7 +51,7 @@ export default function MovieList({ id }: { id: string }) {
           content={
             <>
               Không có phim nào trong thể loại&nbsp;
-              <span className='font-semibold'>{category?.name}</span>
+              <span className='font-semibold'>{category.name}</span>
             </>
           }
         />

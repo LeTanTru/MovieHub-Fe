@@ -33,16 +33,11 @@ import { useShallow } from 'zustand/shallow';
 import ActorList from './actor-list';
 import Image from 'next/image';
 import Link from 'next/link';
-import MovieSideSkeleton from './movie-side-skeleton';
 import TopViewList from './top-view-list';
 import { MetadataType } from '@/types';
 import { MovieProgress } from '@/components/app/movie-progress';
 
-export default function MovieSide({
-  isLoading = false
-}: {
-  isLoading?: boolean;
-}) {
+export default function MovieSide() {
   const { movie, moviePersons, selectedSeason } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,
@@ -110,10 +105,6 @@ export default function MovieSide({
       metadata?.latestSeason?.releaseDate ||
       movie?.releaseDate
   );
-
-  if (isLoading) {
-    return <MovieSideSkeleton />;
-  }
 
   if (!movie)
     return (

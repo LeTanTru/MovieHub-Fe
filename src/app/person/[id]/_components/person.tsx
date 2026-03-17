@@ -17,7 +17,7 @@ export default function Person() {
   return (
     <>
       <PersonSidebar person={person} loading={personLoading} />
-      <MovieList />
+      <MovieList personId={id} />
     </>
   );
 }

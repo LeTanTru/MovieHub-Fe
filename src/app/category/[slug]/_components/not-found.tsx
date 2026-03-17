@@ -8,7 +8,7 @@ import { FaChevronLeft } from 'react-icons/fa6';
 export default function NotFound() {
   return (
     <>
-      <div className='min-h-[calc(100vh-400px)] pt-20 pb-20'>
+      <div className='min-h-[calc(100vh-400px)]'>
         <div className='mx-auto my-24 w-full max-w-200 px-0 py-7.5 text-center'>
           <div className='mb-8'>
             <Image

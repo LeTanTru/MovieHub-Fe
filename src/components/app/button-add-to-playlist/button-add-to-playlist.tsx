@@ -1,5 +1,4 @@
 'use client';
-
 import { Button } from '@/components/form';
 import {
   useAuth,
@@ -20,17 +19,17 @@ import {
   MAX_PLAYLIST_COUNT
 } from '@/constants';
 import { cn } from '@/lib';
-import debounce from 'lodash/debounce';
+import { cva, VariantProps } from 'class-variance-authority';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
 import { PlaylistItemBodyType } from '@/types';
+import { PlusICon } from '@/assets';
 import { route } from '@/routes';
 import { useEffect, useMemo, useState } from 'react';
+import debounce from 'lodash/debounce';
 import Link from 'next/link';
 import PlaylistItem from './playlist-item';
-import PlaylistItemListSkeleton from './playlist-item-list-skeleton';
-import { PlusICon } from '@/assets';
-import { cva, VariantProps } from 'class-variance-authority';
+import PlaylistItemSkeleton from './playlist-item-skeleton';
 
 const variants = cva('', {
   variants: {
@@ -188,7 +187,11 @@ export default function ButtonAddToPlaylist({
               </span>
             </div>
             {playlistLoading ? (
-              <PlaylistItemListSkeleton />
+              <div className='flex flex-col gap-4'>
+                {Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, index) => (
+                  <PlaylistItemSkeleton key={index} />
+                ))}
+              </div>
             ) : (
               playlist.map((playlist) => (
                 <PlaylistItem
