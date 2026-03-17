@@ -1,6 +1,6 @@
 'use client';
 
-import { MovieSkeletonCard } from '@/components/app/movie-card';
+import { MovieCardSkeleton } from '@/components/app/movie-card';
 import { cn } from '@/lib';
 
 export default function MovieGridSkeleton({
@@ -13,7 +13,7 @@ export default function MovieGridSkeleton({
   return (
     <div className={cn('grid w-full grid-cols-8 gap-6', className)}>
       {Array.from({ length: skeletonCount }).map((_, i) => (
-        <MovieSkeletonCard key={i} />
+        <MovieCardSkeleton key={i} />
       ))}
     </div>
   );

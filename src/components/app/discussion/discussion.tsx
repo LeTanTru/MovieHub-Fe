@@ -20,7 +20,6 @@ import { Element } from 'react-scroll';
 import { ReviewList } from '@/components/app/review';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth, useLoadMore } from '@/hooks';
-import DiscussionSkeleton from './discussion-skeleton';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import { commentApiRequest, reviewApiRequest } from '@/api-requests';
@@ -33,12 +32,10 @@ import {
 import { cn } from '@/lib';
 
 export default function Discussion({
-  isLoading = false,
   toId,
   className,
   variant = 'detail'
 }: {
-  isLoading?: boolean;
   toId: string;
   className?: string;
   variant?: 'detail' | 'watch';
@@ -68,7 +65,7 @@ export default function Discussion({
       size: DEFAULT_PAGE_SIZE
     },
     queryFn: commentApiRequest.getList,
-    enabled: !isLoading && !!id && discussionTab === DISCUSSION_TAB_COMMENT,
+    enabled: !!id && discussionTab === DISCUSSION_TAB_COMMENT,
     mode: 'click'
   });
 
@@ -86,7 +83,7 @@ export default function Discussion({
       size: DEFAULT_PAGE_SIZE
     },
     queryFn: reviewApiRequest.getList,
-    enabled: !isLoading && !!id && discussionTab === DISCUSSION_TAB_REVIEW,
+    enabled: !!id && discussionTab === DISCUSSION_TAB_REVIEW,
     mode: 'click'
   });
 
@@ -116,8 +113,6 @@ export default function Discussion({
 
   const isCommentTab = discussionTab === DISCUSSION_TAB_COMMENT;
   const isReviewTab = discussionTab === DISCUSSION_TAB_REVIEW;
-
-  if (isLoading) return <DiscussionSkeleton />;
 
   return (
     <Element name={toId} id={toId}>

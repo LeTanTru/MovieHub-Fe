@@ -15,15 +15,10 @@ import { cn } from '@/lib';
 import { useRef, useState, useEffect } from 'react';
 import MovieTabEpisode from './movie-tab-episode';
 import MovieTabPerson from './movie-tab-person';
-import MovieTabsSkeleton from './movie-tabs-skeleton';
 import MovieTabSuggestion from './movie-tab-suggestion';
 import MovieTabTrailer from './movie-tab-trailer';
 
-export default function MovieTabs({
-  isLoading = false
-}: {
-  isLoading?: boolean;
-}) {
+export default function MovieTabs() {
   const [activeKey, setActiveKey] = useState<string>(MOVIE_TAB_EPISODE);
   const [direction, setDirection] = useState<number>(0);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
@@ -73,8 +68,6 @@ export default function MovieTabs({
         return null;
     }
   })();
-
-  if (isLoading) return <MovieTabsSkeleton />;
 
   return (
     <div className='max-1120:px-5 max-800:px-0 flex flex-col px-10'>

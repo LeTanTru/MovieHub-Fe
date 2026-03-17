@@ -16,19 +16,17 @@ import {
   MovieGridSkeleton
 } from '@/components/app/movie-grid';
 import { ButtonAction } from '@/components/app/button-action';
-import { useParams } from 'next/navigation';
 import { NoData } from '@/components/no-data';
 import { useQueryParams } from '@/hooks';
 
-export default function MovieList() {
-  const { id } = useParams<{ id: string }>();
+export default function MovieList({ personId }: { personId: string }) {
   const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
   const { searchParams } = useQueryParams<PersonSearchType>();
 
   const { data: moviePersonListData, isLoading: movieListLoading } =
     useMoviePersonListQuery({
       params: {
-        personId: id,
+        personId,
         kind: searchParams.kind || PERSON_KIND_ACTOR,
         size: MAX_PAGE_SIZE
       },

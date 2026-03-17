@@ -3,16 +3,12 @@ import { MovieActionBar } from '@/components/app/movie-action-bar';
 import { MovieTabs } from '@/components/app/movie-tabs';
 import { MOVIE_DETAIL_DISCUSSION_ID } from '@/constants';
 
-export default function MovieMain({
-  isLoading = false
-}: {
-  isLoading?: boolean;
-}) {
+export default function MovieMain() {
   return (
     <div className='bg-main-background/60 max-1120:bg-transparent max-1120:rounded-none max-1120:backdrop-blur-none flex grow flex-col rounded-tl-[48px] rounded-tr-[20px] rounded-br-[20px] rounded-bl-[20px] backdrop-blur-[20px]'>
-      <MovieActionBar isLoading={isLoading} />
-      <MovieTabs isLoading={isLoading} />
-      <Discussion isLoading={isLoading} toId={MOVIE_DETAIL_DISCUSSION_ID} />
+      <MovieActionBar />
+      <MovieTabs />
+      <Discussion toId={MOVIE_DETAIL_DISCUSSION_ID} />
     </div>
   );
 }
