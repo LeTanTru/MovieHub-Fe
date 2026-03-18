@@ -89,3 +89,48 @@ jobs:
               ${{ secrets.DOCKER_USERNAME }}/fe-moviehub:latest
 
           EOF
+
+      - name: Notify Discord (Success)
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "embeds": [{
+                "title": "✅ Deploy thành công!",
+                "color": 3066993,
+                "fields": [
+                  { "name": "📦 Project",  "value": "fe-moviehub",                                          "inline": true },
+                  { "name": "🌿 Branch",   "value": "${{ github.ref_name }}",                               "inline": true },
+                  { "name": "👤 Author",   "value": "${{ github.actor }}",                                  "inline": true },
+                  { "name": "📝 Commit",   "value": "[`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})", "inline": false },
+                  { "name": "💬 Message",  "value": "${{ github.event.head_commit.message }}",              "inline": false }
+                ],
+                "footer": { "text": "GitHub Actions" },
+                "timestamp": "${{ github.event.head_commit.timestamp }}"
+              }]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Notify Discord (Failure)
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d '{
+              "embeds": [{
+                "title": "❌ Deploy thất bại!",
+                "color": 15158332,
+                "fields": [
+                  { "name": "📦 Project",  "value": "fe-moviehub",                                          "inline": true },
+                  { "name": "🌿 Branch",   "value": "${{ github.ref_name }}",                               "inline": true },
+                  { "name": "👤 Author",   "value": "${{ github.actor }}",                                  "inline": true },
+                  { "name": "📝 Commit",   "value": "[`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})", "inline": false },
+                  { "name": "💬 Message",  "value": "${{ github.event.head_commit.message }}",              "inline": false },
+                  { "name": "🔗 Logs",     "value": "[${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false }
+                ],
+                "footer": { "text": "GitHub Actions" },
+                "timestamp": "${{ github.event.head_commit.timestamp }}"
+              }]
+            }' \
+            ${{ secrets.DISCORD_WEBHOOK_URL }}
