@@ -92,45 +92,86 @@ jobs:
 
       - name: Notify Discord (Success)
         if: success()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          COMMIT_SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          BRANCH: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+          SERVER_URL: ${{ github.server_url }}
+          RUN_ID: ${{ github.run_id }}
+          TIMESTAMP: ${{ github.event.head_commit.timestamp }}
         run: |
-          curl -H "Content-Type: application/json" \
-            -X POST \
-            -d '{
-              "embeds": [{
-                "title": "✅ Deploy thành công!",
-                "color": 3066993,
-                "fields": [
-                  { "name": "📦 Project",  "value": "fe-moviehub",                                          "inline": true },
-                  { "name": "🌿 Branch",   "value": "${{ github.ref_name }}",                               "inline": true },
-                  { "name": "👤 Author",   "value": "${{ github.actor }}",                                  "inline": true },
-                  { "name": "📝 Commit",   "value": "[`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})", "inline": false },
-                  { "name": "💬 Message",  "value": "${{ github.event.head_commit.message }}",              "inline": false }
+          PAYLOAD=$(jq -n \
+            --arg title "✅ Deploy thành công!" \
+            --arg branch "$BRANCH" \
+            --arg actor "$ACTOR" \
+            --arg sha "${COMMIT_SHA:0:7}" \
+            --arg commit_url "$SERVER_URL/$REPO/commit/$COMMIT_SHA" \
+            --arg msg "$COMMIT_MSG" \
+            --arg ts "$TIMESTAMP" \
+            '{
+              embeds: [{
+                title: $title,
+                color: 3066993,
+                fields: [
+                  { name: "📦 Project", value: "fe-moviehub", inline: true },
+                  { name: "🌿 Branch",  value: $branch,       inline: true },
+                  { name: "👤 Author",  value: $actor,        inline: true },
+                  { name: "📝 Commit",  value: ("[`\($sha)`](\($commit_url))"), inline: false },
+                  { name: "💬 Message", value: $msg,          inline: false }
                 ],
-                "footer": { "text": "GitHub Actions" },
-                "timestamp": "${{ github.event.head_commit.timestamp }}"
+                footer: { text: "GitHub Actions" },
+                timestamp: $ts
               }]
-            }' \
-            ${{ secrets.DISCORD_WEBHOOK_URL }}
+            }')
+          curl -s -o /dev/null -w "%{http_code}" \
+            -H "Content-Type: application/json" \
+            -X POST \
+            -d "$PAYLOAD" \
+            "$DISCORD_WEBHOOK_URL"
 
       - name: Notify Discord (Failure)
         if: failure()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          COMMIT_SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          BRANCH: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+          SERVER_URL: ${{ github.server_url }}
+          RUN_ID: ${{ github.run_id }}
+          TIMESTAMP: ${{ github.event.head_commit.timestamp }}
         run: |
-          curl -H "Content-Type: application/json" \
-            -X POST \
-            -d '{
-              "embeds": [{
-                "title": "❌ Deploy thất bại!",
-                "color": 15158332,
-                "fields": [
-                  { "name": "📦 Project",  "value": "fe-moviehub",                                          "inline": true },
-                  { "name": "🌿 Branch",   "value": "${{ github.ref_name }}",                               "inline": true },
-                  { "name": "👤 Author",   "value": "${{ github.actor }}",                                  "inline": true },
-                  { "name": "📝 Commit",   "value": "[`${{ github.sha }}`](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})", "inline": false },
-                  { "name": "💬 Message",  "value": "${{ github.event.head_commit.message }}",              "inline": false },
-                  { "name": "🔗 Logs",     "value": "[${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})", "inline": false }
+          PAYLOAD=$(jq -n \
+            --arg title "❌ Deploy thất bại!" \
+            --arg branch "$BRANCH" \
+            --arg actor "$ACTOR" \
+            --arg sha "${COMMIT_SHA:0:7}" \
+            --arg commit_url "$SERVER_URL/$REPO/commit/$COMMIT_SHA" \
+            --arg msg "$COMMIT_MSG" \
+            --arg logs_url "$SERVER_URL/$REPO/actions/runs/$RUN_ID" \
+            --arg ts "$TIMESTAMP" \
+            '{
+              embeds: [{
+                title: $title,
+                color: 15158332,
+                fields: [
+                  { name: "📦 Project", value: "fe-moviehub", inline: true },
+                  { name: "🌿 Branch",  value: $branch,       inline: true },
+                  { name: "👤 Author",  value: $actor,        inline: true },
+                  { name: "📝 Commit",  value: ("[`\($sha)`](\($commit_url))"), inline: false },
+                  { name: "💬 Message", value: $msg,          inline: false },
+                  { name: "🔗 Logs",    value: ("[View Logs](\($logs_url))"),   inline: false }
                 ],
-                "footer": { "text": "GitHub Actions" },
-                "timestamp": "${{ github.event.head_commit.timestamp }}"
+                footer: { text: "GitHub Actions" },
+                timestamp: $ts
               }]
-            }' \
-            ${{ secrets.DISCORD_WEBHOOK_URL }}
+            }')
+          curl -s -o /dev/null -w "%{http_code}" \
+            -H "Content-Type: application/json" \
+            -X POST \
+            -d "$PAYLOAD" \
+            "$DISCORD_WEBHOOK_URL"
