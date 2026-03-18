@@ -60,7 +60,7 @@ export default function MovieList({
               slidesPerView: 7.2
             },
             1600: {
-              slidesPerView: 7
+              slidesPerView: 8
             }
           }}
           onSwiper={(swiper) => {
