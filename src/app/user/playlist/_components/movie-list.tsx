@@ -1,4 +1,5 @@
 'use client';
+
 import { Activity } from '@/components/activity';
 import { MovieCard } from '@/components/app/movie-card';
 import { MovieGridSkeleton } from '@/components/app/movie-grid';

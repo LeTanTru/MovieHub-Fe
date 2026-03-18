@@ -69,7 +69,7 @@ export default function ComingSoonList({
         >
           {movieList.map((movie) => (
             <SwiperSlide key={movie.id}>
-              <ComingSoonMovieCard movie={movie} dir='down' />
+              <ComingSoonMovieCard movie={movie} />
             </SwiperSlide>
           ))}
         </Swiper>

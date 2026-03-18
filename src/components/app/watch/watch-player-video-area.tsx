@@ -14,7 +14,7 @@ import { PlaylistIcon } from '@/assets';
 import { cn } from '@/lib';
 import { EpisodeList, WatchAskContinueModal } from '@/components/app/watch';
 import { MovieResType, VideoResType } from '@/types';
-import {
+import type {
   MediaPlayerInstance,
   MediaTimeUpdateEventDetail
 } from '@vidstack/react';

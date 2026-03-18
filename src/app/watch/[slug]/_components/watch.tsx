@@ -32,9 +32,12 @@ export default function Watch({ id }: { id: string }) {
   );
 
   useEffect(() => {
-    setMovie(movie);
-    setMoviePersons(moviePersons);
-  }, [movie, moviePersons, setMovie, setMoviePersons]);
+    if (movie) setMovie(movie);
+  }, [movie, setMovie]);
+
+  useEffect(() => {
+    if (moviePersons.length > 0) setMoviePersons(moviePersons);
+  }, [moviePersons, setMoviePersons]);
 
   if (movieLoading) return <WatchSkeleton />;
 

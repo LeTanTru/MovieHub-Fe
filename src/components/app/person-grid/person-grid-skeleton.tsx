@@ -18,8 +18,8 @@ export default function PersonGridSkeleton({
   return (
     <div className={cn('grid w-full grid-cols-8 gap-6', className)}>
       <AnimatePresence mode='popLayout' initial={false}>
-        {Array.from({ length: skeletonCount }).map((_, i) => (
-          <PersonCardSkeleton key={i} />
+        {Array.from({ length: skeletonCount }).map((_, index) => (
+          <PersonCardSkeleton key={index} />
         ))}
       </AnimatePresence>
     </div>

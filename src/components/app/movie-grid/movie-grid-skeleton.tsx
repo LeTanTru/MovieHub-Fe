@@ -12,8 +12,8 @@ export default function MovieGridSkeleton({
 }) {
   return (
     <div className={cn('grid w-full grid-cols-8 gap-6', className)}>
-      {Array.from({ length: skeletonCount }).map((_, i) => (
-        <MovieCardSkeleton key={i} />
+      {Array.from({ length: skeletonCount }).map((_, index) => (
+        <MovieCardSkeleton key={index} />
       ))}
     </div>
   );

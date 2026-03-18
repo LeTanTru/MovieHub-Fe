@@ -78,7 +78,7 @@ export default function MovieList({
         >
           {movieList.map((movie) => (
             <SwiperSlide key={movie.id}>
-              <MovieCard movie={movie} dir='down' />
+              <MovieCard movie={movie} />
             </SwiperSlide>
           ))}
         </Swiper>

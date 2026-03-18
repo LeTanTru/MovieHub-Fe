@@ -150,6 +150,7 @@ export default function FavouriteList() {
                       key={movie.id}
                       movie={movie}
                       onDelete={handleDeleteFavourite}
+                      dir='down'
                     />
                   ))}
                 </div>
