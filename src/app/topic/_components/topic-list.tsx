@@ -40,8 +40,8 @@ export default function TopicList() {
       <ListHeading title='Các chủ đề' />
       {topicListLoading ? (
         <div className='max-1600:grid-cols-6 max-1280:grid-cols-5 max-990:grid-cols-4 max-800:grid-cols-3 max-1120:gap-3 max-480:grid-cols-2 max-640:gap-2 max-480:[&_.topic-item]:w-full grid grid-cols-7 gap-4'>
-          {Array.from({ length: skeletonCount }).map((_, i) => (
-            <TopicItemSkeleton key={i} />
+          {Array.from({ length: skeletonCount }).map((_, index) => (
+            <TopicItemSkeleton key={index} />
           ))}
         </div>
       ) : topicList.length > 0 ? (

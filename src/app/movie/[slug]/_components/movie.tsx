@@ -1,5 +1,4 @@
 'use client';
-
 import './movie.css';
 import { Container } from '@/components/layout';
 import { MovieMain } from '@/components/app/movie-main';
@@ -19,6 +18,7 @@ export default function Movie({ id }: { id: string }) {
       setMoviePersons: s.setMoviePersons
     }))
   );
+
   const { data: movieData, isLoading: movieLoading } = useMovieQuery(id);
   const movie = movieData?.data;
 
@@ -35,9 +35,12 @@ export default function Movie({ id }: { id: string }) {
   );
 
   useEffect(() => {
-    setMovie(movie);
-    setMoviePersons(moviePersons);
-  }, [movie, moviePersons, setMovie, setMoviePersons]);
+    if (movie) setMovie(movie);
+  }, [movie, setMovie]);
+
+  useEffect(() => {
+    if (moviePersons.length > 0) setMoviePersons(moviePersons);
+  }, [moviePersons, setMoviePersons]);
 
   if (movieLoading) return <MovieSkeleton />;
 

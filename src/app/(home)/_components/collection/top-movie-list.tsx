@@ -79,7 +79,7 @@ export default function TopMovieList({
           >
             {movieList.map((movie, index) => (
               <SwiperSlide key={movie.id}>
-                <TopMovieCard movie={movie} dir='down' index={index} />
+                <TopMovieCard movie={movie} index={index} />
               </SwiperSlide>
             ))}
           </Swiper>

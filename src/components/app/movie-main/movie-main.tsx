@@ -1,7 +1,7 @@
 import { Discussion } from '@/components/app/discussion';
+import { MOVIE_DETAIL_DISCUSSION_ID } from '@/constants';
 import { MovieActionBar } from '@/components/app/movie-action-bar';
 import { MovieTabs } from '@/components/app/movie-tabs';
-import { MOVIE_DETAIL_DISCUSSION_ID } from '@/constants';
 
 export default function MovieMain() {
   return (

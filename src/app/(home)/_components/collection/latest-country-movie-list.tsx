@@ -111,7 +111,7 @@ function LatestCountryMovieItem({
           >
             {movieList.map((movie) => (
               <SwiperSlide key={movie.id}>
-                <LatestCountryMovieCard movie={movie} dir='down' />
+                <LatestCountryMovieCard movie={movie} />
               </SwiperSlide>
             ))}
           </Swiper>

@@ -80,7 +80,7 @@ export default function CinemaMovieList({
         >
           {movieList.map((movie) => (
             <SwiperSlide key={movie.id}>
-              <CinemaMovieCard movie={movie} dir='down' />
+              <CinemaMovieCard movie={movie} />
             </SwiperSlide>
           ))}
         </Swiper>

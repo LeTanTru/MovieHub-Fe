@@ -18,8 +18,8 @@ import {
   useWatchHistoryTrackingMutation,
   useWatchHistoryListQuery
 } from '@/queries';
-import { WatchHistoryType } from '@/types';
-import {
+import type { WatchHistoryType } from '@/types';
+import type {
   MediaTimeUpdateEventDetail,
   MediaPlayerInstance
 } from '@vidstack/react';
