@@ -9,6 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { AppProvider } from '@/components/providers/app-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
+import { GoToTopButton } from '@/components/app/go-to-top-button';
 
 const beVietnamPro = Be_Vietnam_Pro({
   weight: ['400', '500', '600', '700', '800'],
@@ -48,6 +49,7 @@ export default async function RootLayout({
               {/* <WebVitals /> */}
               <NextTopLoader showSpinner={false} />
               <Suspense>{children}</Suspense>
+              <GoToTopButton />
               <PerformanceMonitor />
             </ThemeProvider>
             <ToastContainer />
