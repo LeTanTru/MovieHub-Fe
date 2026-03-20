@@ -40,17 +40,15 @@
       & > div > *:not(.backdrop-movie-theater) {
         opacity: 0;
       }
-
-      & .button-movie-theater {
-        transition: all 1s linear;
+      & > div > .button-movie-theater {
+        position: relative;
+        z-index: 102;
       }
     }
 
     &:hover {
       & .player-controls > div > .button-movie-theater {
         opacity: 1;
-        position: relative;
-        z-index: 102;
       }
     }
   }

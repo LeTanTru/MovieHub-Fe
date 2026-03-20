@@ -18,7 +18,12 @@ import {
   useWatchHistoryTrackingMutation,
   useWatchHistoryListQuery
 } from '@/queries';
-import type { WatchHistoryType } from '@/types';
+import type {
+  MovieItemResType,
+  MovieResType,
+  VideoResType,
+  WatchHistoryType
+} from '@/types';
 import type {
   MediaTimeUpdateEventDetail,
   MediaPlayerInstance
@@ -85,17 +90,195 @@ function playbackReducer(
   }
 }
 
-export default function WatchPlayer() {
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+type WatchPlayerDerivedData = {
+  isSeries: boolean;
+  season: MovieResType['seasons'][number] | null;
+  selectedEpisode: MovieItemResType | null;
+  episodes: MovieItemResType[];
+  currentEpisodeIndex: number;
+  isFirstEpisode: boolean;
+  isLastEpisode: boolean;
+  video: VideoResType | null | undefined;
+  videoTitle: string;
+  movieItemId: string | undefined;
+};
 
-  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
-
-  // Selected season and episode from movie detail page
+function useWatchPlayerDerivedData(
+  movie: MovieResType | null
+): WatchPlayerDerivedData {
   const { searchParams } = useQueryParams<{
     season: string;
     episode: string;
   }>();
+
+  const currentSeason = searchParams.season;
+  const currentEpisode = searchParams.episode;
+  const isSingle = movie?.type === MOVIE_TYPE_SINGLE;
+  const isSeries = movie?.type === MOVIE_TYPE_SERIES;
+
+  const season = (() => {
+    if (!movie?.seasons?.length) return null;
+    if (!currentSeason) return movie.seasons[movie.seasons.length - 1];
+    return (
+      movie.seasons.find((item) => item.label === currentSeason) ||
+      movie.seasons[movie.seasons.length - 1]
+    );
+  })();
+
+  const selectedEpisode = (() => {
+    if (!isSeries) return null;
+    const episodeList = (season?.episodes || []) as MovieItemResType[];
+    if (!episodeList.length) return null;
+    if (!currentEpisode) return episodeList[episodeList.length - 1];
+    return (
+      episodeList.find((item) => item.label === currentEpisode) ||
+      episodeList[episodeList.length - 1]
+    );
+  })();
+
+  const episodes = useMemo(
+    () => (season?.episodes || []) as MovieItemResType[],
+    [season?.episodes]
+  );
+
+  const currentEpisodeIndex = (() => {
+    if (!selectedEpisode || !episodes.length) return -1;
+    return episodes.findIndex((ep) => ep.label === selectedEpisode.label);
+  })();
+
+  const isFirstEpisode = currentEpisodeIndex === 0;
+  const isLastEpisode = currentEpisodeIndex === episodes.length - 1;
+
+  const video = (() => {
+    if (isSeries) return selectedEpisode?.video;
+    if (isSingle) return season?.video;
+    return season?.video || selectedEpisode?.video || null;
+  })();
+
+  const videoTitle = (() => {
+    if (!movie) return '';
+    if (isSeries && season && selectedEpisode) {
+      return `${season.title} - Phần ${season.label} - Tập ${selectedEpisode.label}. ${selectedEpisode.title}`;
+    }
+    return `${movie.title} - ${movie.originalTitle}`;
+  })();
+
+  const movieItemId = isSeries ? selectedEpisode?.id : season?.id;
+
+  return {
+    isSeries,
+    season,
+    selectedEpisode,
+    episodes,
+    currentEpisodeIndex,
+    isFirstEpisode,
+    isLastEpisode,
+    video,
+    videoTitle,
+    movieItemId
+  };
+}
+
+function useEpisodeNavigation({
+  autoNextEpisode,
+  isSeries,
+  isFirstEpisode,
+  isLastEpisode,
+  season,
+  selectedEpisode,
+  currentEpisodeIndex,
+  episodes,
+  movie,
+  navigate
+}: {
+  autoNextEpisode: boolean;
+  isSeries: boolean;
+  isFirstEpisode: boolean;
+  isLastEpisode: boolean;
+  season: MovieResType['seasons'][number] | null;
+  selectedEpisode: MovieItemResType | null;
+  currentEpisodeIndex: number;
+  episodes: MovieItemResType[];
+  movie: MovieResType | null;
+  navigate: ReturnType<typeof useNavigate>;
+}) {
+  const buildEpisodeUrl = useCallback(
+    (episodeLabel: string) => {
+      if (!season || !movie) return '';
+      return `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${episodeLabel}`;
+    },
+    [season, movie]
+  );
+
+  const handleVideoEnded = useCallback(() => {
+    if (
+      !autoNextEpisode ||
+      !isSeries ||
+      isLastEpisode ||
+      !season ||
+      !selectedEpisode
+    ) {
+      return;
+    }
+
+    const nextEpisode = episodes[currentEpisodeIndex + 1];
+    if (!nextEpisode) return;
+    const nextUrl = buildEpisodeUrl(nextEpisode.label);
+    if (nextUrl) navigate.replace(nextUrl);
+  }, [
+    autoNextEpisode,
+    isSeries,
+    isLastEpisode,
+    season,
+    selectedEpisode,
+    episodes,
+    currentEpisodeIndex,
+    buildEpisodeUrl,
+    navigate
+  ]);
+
+  const handlePrevEpisode = useCallback(() => {
+    if (!isSeries || isFirstEpisode || !season || !movie) return;
+    const prevEpisode = episodes[currentEpisodeIndex - 1];
+    if (!prevEpisode) return;
+    const prevUrl = buildEpisodeUrl(prevEpisode.label);
+    if (prevUrl) navigate.replace(prevUrl);
+  }, [
+    isSeries,
+    isFirstEpisode,
+    season,
+    movie,
+    episodes,
+    currentEpisodeIndex,
+    buildEpisodeUrl,
+    navigate
+  ]);
+
+  const handleNextEpisode = useCallback(() => {
+    if (!isSeries || isLastEpisode || !season || !movie) return;
+    const nextEpisode = episodes[currentEpisodeIndex + 1];
+    if (!nextEpisode) return;
+    const nextUrl = buildEpisodeUrl(nextEpisode.label);
+    if (nextUrl) navigate.replace(nextUrl);
+  }, [
+    isSeries,
+    isLastEpisode,
+    season,
+    movie,
+    episodes,
+    currentEpisodeIndex,
+    buildEpisodeUrl,
+    navigate
+  ]);
+
+  return { handleVideoEnded, handlePrevEpisode, handleNextEpisode };
+}
+
+function useWatchPlayerState() {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
   const { token, isLoadingToken } = useGetAnonymousToken();
 
@@ -136,70 +319,18 @@ export default function WatchPlayer() {
     [watchHistoryData?.data?.watchHistories]
   );
 
-  const currentSeason = searchParams.season;
-  const currentEpisode = searchParams.episode;
-  const isSingle = movie?.type === MOVIE_TYPE_SINGLE; // if the movie type is single
-  const isSeries = movie?.type === MOVIE_TYPE_SERIES; // if the movie type is series
-
-  // Get the season of the movie, if not season in search params, default to the latest season
-  const season = (() => {
-    // Not found any season, return null
-    if (!movie?.seasons?.length) return null;
-
-    // If not season in search params, default to the lastest season
-    if (!currentSeason) return movie.seasons[movie.seasons.length - 1];
-
-    // Find season by label, if not found, default to the lastest season
-    return (
-      movie.seasons.find((item) => item.label === currentSeason) ||
-      movie.seasons[movie.seasons.length - 1]
-    );
-  })();
-
-  // Get the episode of the season, if not episode in search params, default to the latest episode
-  const selectedEpisode = (() => {
-    if (!isSeries) return null;
-    const episodes = season?.episodes || [];
-    if (!episodes.length) return null;
-    // If not episode in search params, default to lastest episode
-    if (!currentEpisode) return episodes[episodes.length - 1];
-
-    // Find episode by label, if not found, default to lastest episode
-    return (
-      episodes.find((item) => item.label === currentEpisode) ||
-      episodes[episodes.length - 1]
-    );
-  })();
-
-  // Episodes of current season, if not season, return empty array
-  const episodes = useMemo(() => season?.episodes || [], [season?.episodes]);
-
-  // Find index of current episode in episodes array, if not found, return -1
-  const currentEpisodeIndex = (() => {
-    if (!selectedEpisode || !episodes.length) return -1;
-    return episodes.findIndex((ep) => ep.label === selectedEpisode.label);
-  })();
-
-  const isFirstEpisode = currentEpisodeIndex === 0; // To show prev button
-  const isLastEpisode = currentEpisodeIndex === episodes.length - 1; // To show next button
-
-  // Get video to play
-  const video = (() => {
-    if (isSeries) return selectedEpisode?.video;
-    if (isSingle) return season?.video;
-    return season?.video || selectedEpisode?.video || null;
-  })();
-
-  // Build video title
-  const videoTitle = (() => {
-    if (!movie) return '';
-    if (isSeries && season && selectedEpisode) {
-      return `${season.title} - Phần ${season.label} - Tập ${selectedEpisode.label}. ${selectedEpisode.title}`;
-    }
-    return `${movie.title} - ${movie.originalTitle}`;
-  })();
-
-  const movieItemId = isSeries ? selectedEpisode?.id : season?.id;
+  const {
+    isSeries,
+    season,
+    selectedEpisode,
+    episodes,
+    currentEpisodeIndex,
+    isFirstEpisode,
+    isLastEpisode,
+    video,
+    videoTitle,
+    movieItemId
+  } = useWatchPlayerDerivedData(movie);
 
   // Load settings from localStorage on mount
   useEffect(() => {
@@ -262,78 +393,19 @@ export default function WatchPlayer() {
     saveWatchHistory();
   };
 
-  // Handle video ended - auto play next episode if enabled
-  const handleVideoEnded = useCallback(() => {
-    if (
-      !autoNextEpisode ||
-      !isSeries ||
-      isLastEpisode ||
-      !season ||
-      !selectedEpisode
-    ) {
-      return;
-    }
-
-    const nextEpisodeIndex = currentEpisodeIndex + 1;
-    const nextEpisode = episodes[nextEpisodeIndex];
-
-    if (nextEpisode && season && movie) {
-      const nextUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${nextEpisode.label}`;
-      navigate.replace(nextUrl);
-    }
-  }, [
-    autoNextEpisode,
-    isSeries,
-    isLastEpisode,
-    season,
-    selectedEpisode,
-    currentEpisodeIndex,
-    episodes,
-    movie,
-    navigate
-  ]);
-
-  // Handle navigate to previous episode
-  const handlePrevEpisode = useCallback(() => {
-    if (!isSeries || isFirstEpisode || !season || !movie) return;
-
-    const prevEpisodeIndex = currentEpisodeIndex - 1;
-    const prevEpisode = episodes[prevEpisodeIndex];
-
-    if (prevEpisode) {
-      const prevUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${prevEpisode.label}`;
-      navigate.replace(prevUrl);
-    }
-  }, [
-    isSeries,
-    isFirstEpisode,
-    season,
-    movie,
-    currentEpisodeIndex,
-    episodes,
-    navigate
-  ]);
-
-  // Handle navigate to next episode
-  const handleNextEpisode = useCallback(() => {
-    if (!isSeries || isLastEpisode || !season || !movie) return;
-
-    const nextEpisodeIndex = currentEpisodeIndex + 1;
-    const nextEpisode = episodes[nextEpisodeIndex];
-
-    if (nextEpisode) {
-      const nextUrl = `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}&episode=${nextEpisode.label}`;
-      navigate.replace(nextUrl);
-    }
-  }, [
-    isSeries,
-    isLastEpisode,
-    season,
-    movie,
-    currentEpisodeIndex,
-    episodes,
-    navigate
-  ]);
+  const { handleVideoEnded, handlePrevEpisode, handleNextEpisode } =
+    useEpisodeNavigation({
+      autoNextEpisode,
+      isSeries,
+      isFirstEpisode,
+      isLastEpisode,
+      season,
+      selectedEpisode,
+      currentEpisodeIndex,
+      episodes,
+      movie,
+      navigate
+    });
 
   // Track when user leaves page (beforeunload, navigation, etc)
   useEffect(() => {
@@ -463,46 +535,77 @@ export default function WatchPlayer() {
     }
   }, [skipIntro, video?.introEnd, video?.introStart, introSkipped]);
 
-  if (!movie) return null;
+  return {
+    movie,
+    videoTitle,
+    video,
+    isLoadingToken,
+    autoPlay,
+    token,
+    playerRef,
+    isSeries,
+    isFirstEpisode,
+    isLastEpisode,
+    handlePrevEpisode,
+    handleNextEpisode,
+    isShowContinueModal,
+    lastWatchedSeconds,
+    handleContinueWatching,
+    handleStartOver,
+    handleWatchHistoryTimeUpdate,
+    handleSeeked,
+    handleVideoEnded,
+    handlePlayerCanPlay,
+    autoNextEpisode,
+    skipIntro,
+    handleToggleAutoNextEpisode,
+    handleToggleSkipIntro
+  };
+}
+
+export default function WatchPlayer() {
+  const state = useWatchPlayerState();
+
+  if (!state.movie) return null;
 
   return (
     <div className='watch-player max-800:max-w-none max-800:w-full max-800:px-0 max-640:-mt-10 max-640:flex max-640:flex-col-reverse relative mx-auto max-w-410 px-5'>
-      <WatchPlayerHeader movie={movie} videoTitle={videoTitle} />
+      <WatchPlayerHeader movie={state.movie} videoTitle={state.videoTitle} />
       <div className='watch-player-container'>
         <WatchPlayerVideoArea
-          video={video}
-          isLoadingToken={isLoadingToken}
-          autoPlay={autoPlay}
-          token={token}
-          videoTitle={videoTitle}
-          movie={movie}
-          playerRef={playerRef}
+          video={state.video}
+          isLoadingToken={state.isLoadingToken}
+          autoPlay={state.autoPlay}
+          token={state.token}
+          videoTitle={state.videoTitle}
+          movie={state.movie}
+          playerRef={state.playerRef}
           episode={{
-            isSeries,
-            isFirstEpisode,
-            isLastEpisode,
-            onPrev: handlePrevEpisode,
-            onNext: handleNextEpisode
+            isSeries: state.isSeries,
+            isFirstEpisode: state.isFirstEpisode,
+            isLastEpisode: state.isLastEpisode,
+            onPrev: state.handlePrevEpisode,
+            onNext: state.handleNextEpisode
           }}
           continueModal={{
-            isOpen: isShowContinueModal,
-            lastWatchedSeconds,
-            onContinue: handleContinueWatching,
-            onStartOver: handleStartOver
+            isOpen: state.isShowContinueModal,
+            lastWatchedSeconds: state.lastWatchedSeconds,
+            onContinue: state.handleContinueWatching,
+            onStartOver: state.handleStartOver
           }}
           callbacks={{
-            onTimeUpdate: handleWatchHistoryTimeUpdate,
-            onSeeked: handleSeeked,
-            onEnded: handleVideoEnded,
-            onCanPlay: handlePlayerCanPlay
+            onTimeUpdate: state.handleWatchHistoryTimeUpdate,
+            onSeeked: state.handleSeeked,
+            onEnded: state.handleVideoEnded,
+            onCanPlay: state.handlePlayerCanPlay
           }}
         />
         <WatchPlayerControls
-          movie={movie}
-          autoNextEpisode={autoNextEpisode}
-          skipIntro={skipIntro}
-          handleToggleAutoNextEpisode={handleToggleAutoNextEpisode}
-          handleToggleSkipIntro={handleToggleSkipIntro}
+          movie={state.movie}
+          autoNextEpisode={state.autoNextEpisode}
+          skipIntro={state.skipIntro}
+          handleToggleAutoNextEpisode={state.handleToggleAutoNextEpisode}
+          handleToggleSkipIntro={state.handleToggleSkipIntro}
         />
       </div>
     </div>
