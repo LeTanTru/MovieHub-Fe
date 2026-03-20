@@ -118,6 +118,187 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
   }
 }
 
+function ForgotPasswordHeader({ step }: { step: ForgotPasswordStepType }) {
+  return (
+    <div className='mb-4 flex flex-col items-center gap-2'>
+      <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>
+      <Activity visible={step === 1}>
+        <p className='text-muted-foreground text-center text-sm'>
+          Nhập email tài khoản để yêu cầu mật khẩu mới
+        </p>
+      </Activity>
+      <Activity visible={step === 2}>
+        <p className='text-muted-foreground text-center text-sm'>
+          Nhập OTP đã được gửi đến email và mật khẩu mới
+        </p>
+      </Activity>
+    </div>
+  );
+}
+
+function StepOneFormSection({
+  form,
+  loading,
+  isFormChanged
+}: {
+  form: UseFormReturn<ForgotPasswordBodyType>;
+  loading: boolean;
+  isFormChanged: boolean;
+}) {
+  return (
+    <Activity visible>
+      <Row>
+        <Col className='w-full'>
+          <InputField
+            control={form.control}
+            name='email'
+            label='Email'
+            placeholder='Nhập email của bạn'
+            required
+          />
+        </Col>
+      </Row>
+      <Button
+        type='submit'
+        variant='primary'
+        className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 w-full'
+        disabled={loading || !isFormChanged}
+        loading={loading}
+      >
+        Gửi yêu cầu
+      </Button>
+    </Activity>
+  );
+}
+
+function StepTwoFormSection({
+  form,
+  resendDataCount,
+  countdown,
+  cooldownRemaining,
+  isResendDisabled,
+  resendOtpLoading,
+  forgotPasswordLoading,
+  onResendOtp,
+  onBack,
+  formatCountdown
+}: {
+  form: UseFormReturn<ForgotPasswordBodyType>;
+  resendDataCount: number;
+  countdown: number;
+  cooldownRemaining: number;
+  isResendDisabled: boolean;
+  resendOtpLoading: boolean;
+  forgotPasswordLoading: boolean;
+  onResendOtp: () => void;
+  onBack: () => void;
+  formatCountdown: (ms: number) => string;
+}) {
+  return (
+    <Activity visible>
+      <Row className='mb-6'>
+        <Col className='w-full'>
+          <OtpInputField
+            name='otp'
+            control={form.control}
+            label='Nhập OTP'
+            required
+            description={
+              <span className='text-center text-sm'>
+                Mã OTP đã được gửi đến email của bạn, <br /> có thời hạn sử dụng
+                trong vòng 5 phút.
+              </span>
+            }
+          />
+        </Col>
+      </Row>
+      <Row className='flex-col'>
+        <Col className='my-2 w-full'>
+          <Button
+            type='button'
+            variant='primary'
+            className='mx-auto'
+            onClick={onResendOtp}
+            disabled={isResendDisabled}
+            loading={resendOtpLoading}
+          >
+            Gửi lại OTP
+          </Button>
+        </Col>
+        <Col className='w-full'>
+          <span className='block text-center text-sm text-gray-500'>
+            Số lần đã gửi: {resendDataCount} / {MAX_RESEND}
+            {countdown > 0 && resendDataCount >= MAX_RESEND && (
+              <>
+                <br />
+                Bạn có thể gửi lại sau: {formatCountdown(countdown)}
+              </>
+            )}
+            {cooldownRemaining > 0 && (
+              <>
+                <br />
+                Vui lòng đợi {Math.ceil(cooldownRemaining / 1000)} giây để gửi
+                lại
+              </>
+            )}
+          </span>
+        </Col>
+      </Row>
+      <Separator
+        orientation='horizontal'
+        className='mb-4 h-[0.5px]! bg-gray-500'
+      />
+      <Row>
+        <Col className='w-full'>
+          <PasswordField
+            name='password'
+            control={form.control}
+            label='Mật khẩu'
+            placeholder='Nhập mật khẩu...'
+            required
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col className='w-full'>
+          <PasswordField
+            name='confirmPassword'
+            control={form.control}
+            label='Nhập lại mật khẩu'
+            placeholder='Nhập lại mật khẩu...'
+            required
+          />
+        </Col>
+      </Row>
+      <Row className='mb-4'>
+        <Col className='w-full'>
+          <Button
+            type='submit'
+            variant='primary'
+            className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
+            disabled={forgotPasswordLoading || !form.formState.isValid}
+            loading={forgotPasswordLoading}
+          >
+            Đặt lại mật khẩu
+          </Button>
+        </Col>
+      </Row>
+      <Row className='mb-0'>
+        <Col className='w-full'>
+          <Button
+            type='button'
+            variant='secondary'
+            onClick={onBack}
+            className='dark:border-none'
+          >
+            Quay lại
+          </Button>
+        </Col>
+      </Row>
+    </Activity>
+  );
+}
+
 export default function ForgotPasswordForm() {
   const navigate = useNavigate();
   const [step, setStep] = useState<ForgotPasswordStepType>(1);
@@ -356,19 +537,7 @@ export default function ForgotPasswordForm() {
 
   return (
     <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
-      <div className='mb-4 flex flex-col items-center gap-2'>
-        <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>
-        <Activity visible={step == 1}>
-          <p className='text-muted-foreground text-center text-sm'>
-            Nhập email tài khoản để yêu cầu mật khẩu mới
-          </p>
-        </Activity>
-        <Activity visible={step == 2}>
-          <p className='text-muted-foreground text-center text-sm'>
-            Nhập OTP đã được gửi đến email và mật khẩu mới
-          </p>
-        </Activity>
-      </div>
+      <ForgotPasswordHeader step={step} />
 
       <BaseForm
         schema={
@@ -383,133 +552,25 @@ export default function ForgotPasswordForm() {
           return (
             <>
               <Activity visible={step === 1}>
-                <Row>
-                  <Col className='w-full'>
-                    <InputField
-                      control={form.control}
-                      name='email'
-                      label='Email'
-                      placeholder='Nhập email của bạn'
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Button
-                  type='submit'
-                  variant='primary'
-                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 w-full'
-                  disabled={requestForgotPasswordLoading || !isFormChanged}
+                <StepOneFormSection
+                  form={form}
                   loading={requestForgotPasswordLoading}
-                >
-                  Gửi yêu cầu
-                </Button>
+                  isFormChanged={isFormChanged}
+                />
               </Activity>
               <Activity visible={step === 2}>
-                <Row className='mb-6'>
-                  <Col className='w-full'>
-                    <OtpInputField
-                      name='otp'
-                      control={form.control}
-                      label='Nhập OTP'
-                      required
-                      description={
-                        <>
-                          <span className='text-center text-sm'>
-                            Mã OTP đã được gửi đến email của bạn, <br /> có thời
-                            hạn sử dụng trong vòng 5 phút.
-                          </span>
-                        </>
-                      }
-                    />
-                  </Col>
-                </Row>
-                <Row className='flex-col'>
-                  <Col className='my-2 w-full'>
-                    <Button
-                      type='button'
-                      variant='primary'
-                      className='mx-auto'
-                      onClick={handleResendOtp}
-                      disabled={isResendDisabled}
-                      loading={resendOtpLoading}
-                    >
-                      Gửi lại OTP
-                    </Button>
-                  </Col>
-                  <Col className='w-full'>
-                    <span className='block text-center text-sm text-gray-500'>
-                      Số lần đã gửi: {resendData.count} / {MAX_RESEND}
-                      {countdown > 0 && resendData.count >= MAX_RESEND && (
-                        <>
-                          <br />
-                          Bạn có thể gửi lại sau: {formatCountdown(countdown)}
-                        </>
-                      )}
-                      {cooldownRemaining > 0 && (
-                        <>
-                          <br />
-                          Vui lòng đợi {Math.ceil(
-                            cooldownRemaining / 1000
-                          )}{' '}
-                          giây để gửi lại
-                        </>
-                      )}
-                    </span>
-                  </Col>
-                </Row>
-                <Separator
-                  orientation='horizontal'
-                  className='mb-4 h-[0.5px]! bg-gray-500'
+                <StepTwoFormSection
+                  form={form}
+                  resendDataCount={resendData.count}
+                  countdown={countdown}
+                  cooldownRemaining={cooldownRemaining}
+                  isResendDisabled={isResendDisabled}
+                  resendOtpLoading={resendOtpLoading}
+                  forgotPasswordLoading={forgotPasswordLoading}
+                  onResendOtp={handleResendOtp}
+                  onBack={handleBack}
+                  formatCountdown={formatCountdown}
                 />
-                <Row>
-                  <Col className='w-full'>
-                    <PasswordField
-                      name='password'
-                      control={form.control}
-                      label='Mật khẩu'
-                      placeholder='Nhập mật khẩu...'
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col className='w-full'>
-                    <PasswordField
-                      name='confirmPassword'
-                      control={form.control}
-                      label='Nhập lại mật khẩu'
-                      placeholder='Nhập lại mật khẩu...'
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Row className='mb-4'>
-                  <Col className='w-full'>
-                    <Button
-                      type='submit'
-                      variant='primary'
-                      className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
-                      disabled={
-                        forgotPasswordLoading || !form.formState.isValid
-                      }
-                      loading={forgotPasswordLoading}
-                    >
-                      Đặt lại mật khẩu
-                    </Button>
-                  </Col>
-                </Row>
-                <Row className='mb-0'>
-                  <Col className='w-full'>
-                    <Button
-                      type='button'
-                      variant='secondary'
-                      onClick={handleBack}
-                      className='dark:border-none'
-                    >
-                      Quay lại
-                    </Button>
-                  </Col>
-                </Row>
               </Activity>
             </>
           );
