@@ -1,70 +1,67 @@
 # MovieHub Frontend
 
-MovieHub Frontend is a modern movie streaming web application built with Next.js App Router.  
-It provides discovery, browsing, and watching experiences for movies and series, plus user-focused features such as favorites, playlists, watch history, reviews, and comments.
+MovieHub Frontend is a movie streaming client built with Next.js 16 (App Router), React 19, and TypeScript.  
+It delivers discovery and playback flows for movies/series, including authentication, personalized user pages, and a dedicated video player experience.
 
-## Highlights
+## Project Summary
 
-- Built with `Next.js 16`, `React 19`, and `TypeScript`
-- App Router architecture with route-level metadata and static params for movie/watch pages
-- Server + client data fetching with `@tanstack/react-query` hydration
-- Authentication flows: login, register, forgot password, OTP verification, Google callback
-- Token lifecycle handling with automatic refresh and cookie/local storage synchronization
-- Personalized user areas: profile, change password, favorites, playlist, watch history, notifications
-- Video watching experience with dedicated player components and watch controls
-- UI stack based on `Tailwind CSS v4`, Radix UI primitives, and reusable app components
+This project focuses on a scalable, production-ready frontend architecture:
 
-## Core Tech Stack
+- **App Router structure** with route groups and dynamic pages for movie detail and watch flows.
+- **Layered data access**: API contracts (`constants`) -> request wrappers (`api-requests`) -> React Query hooks (`queries`).
+- **SSR + hydration pattern** using TanStack Query (`HydrationBoundary`, `dehydrate`) for fast initial page loads.
+- **Centralized auth/network handling** in HTTP utilities with token refresh and cookie synchronization.
+- **Modern UI system** with Tailwind CSS v4, reusable components, Radix primitives, and Vidstack-based media player.
 
-- Framework: `next`, `react`, `react-dom`
-- Language: `TypeScript`
-- Styling: `tailwindcss`, `tw-animate-css`, custom CSS modules/files
-- Data fetching/caching: `@tanstack/react-query`, `axios`
-- State management: `zustand`
-- Forms/validation: `react-hook-form`, `zod`
-- Media/player: `@vidstack/react`, `hls.js`
+## Main Features
 
-## Project Structure
+- Browse movies by categories, countries, people, and curated collections.
+- View movie details and watch pages using a `slug.id` URL convention.
+- User account experience: profile, favorites, playlists, watch history, notifications.
+- Auth flows: login, register, forgot password, OTP verification, social callback support.
+- Responsive design and reusable component-driven UI.
+
+## Core Stack
+
+- **Framework**: `next`, `react`, `react-dom`
+- **Language**: `TypeScript`
+- **Data**: `@tanstack/react-query`, `axios`
+- **State**: `zustand`
+- **Forms/Validation**: `react-hook-form`, `zod`
+- **Styling**: `tailwindcss` v4, `tw-animate-css`
+- **Player**: `@vidstack/react`, `hls.js`
+
+## Directory Overview
 
 ```text
 src/
-  app/                # App Router pages, layouts, API routes
-  api-requests/       # API request modules per domain
-  queries/            # React Query hooks and query abstractions
-  components/         # Shared UI, app widgets, providers, video player
+  app/                # App Router pages, layouts, and API routes
+  api-requests/       # Domain-based request modules
+  queries/            # React Query hooks and query logic
+  components/         # Shared UI, app features, providers, player components
   store/              # Zustand stores
-  utils/              # HTTP client, storage, device, text/time helpers
-  constants/          # API config, keys, shared constants
-  routes/             # Typed route definitions
+  constants/          # API endpoints, query keys, global constants
+  utils/              # HTTP client, helpers, shared utilities
+  routes/             # Route definitions/helpers
   types/              # Shared TypeScript types
 ```
 
 ## Getting Started
 
-### 1) Install dependencies
+1. Install dependencies:
 
 ```bash
 yarn install
 ```
 
-Or use:
-
-```bash
-npm install
-pnpm install
-```
-
-### 2) Configure environment variables
-
-Create a `.env.local` file in the project root and provide:
+2. Create `.env.local` and set:
 
 ```env
-NEXT_PUBLIC_API_META_ENDPOINT_URL=
 NEXT_PUBLIC_NODE_ENV=
+NEXT_PUBLIC_AUTH_API_URL=
 NEXT_PUBLIC_API_ENDPOINT_URL=
-NEXT_PUBLIC_API_MEDIA_ENDPOINT_URL=
-NEXT_PUBLIC_TENANT_ID=
-NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK=
+NEXT_PUBLIC_API_MEDIA_URL=
+NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL=
 NEXT_PUBLIC_URL=
 NEXT_PUBLIC_TINYMCE_URL=
 NEXT_PUBLIC_APP_USERNAME=
@@ -75,9 +72,9 @@ NEXT_PUBLIC_ACCESS_KEY=
 NEXT_PUBLIC_CLIENT_TYPE=
 ```
 
-> These variables are validated at startup in `src/config.ts`. Invalid/missing values will fail startup.
+> Environment variables are validated in `src/config.ts`. Invalid or missing values fail startup/build.
 
-### 3) Run development server
+3. Start development server:
 
 ```bash
 yarn dev
@@ -85,20 +82,14 @@ yarn dev
 
 Open `http://localhost:3000`.
 
-## Available Scripts
+## Scripts
 
-- `yarn dev` - start development server on port `3000` (Turbopack)
-- `yarn clean-dev` - remove `.next` and start dev server
-- `yarn build` - create production build
+- `yarn dev` - start dev server (port 3000, Turbopack)
+- `yarn clean-dev` - clear `.next` and start dev server
+- `yarn build` - build production bundle
 - `yarn start` - run production server
 - `yarn lint` - run ESLint
-- `yarn format` - run Prettier formatting
-
-## Authentication and Access Notes
-
-- Route guarding is handled through `src/proxy.ts`
-- `/user/*` and `/account/*` require a valid access token cookie
-- Server API routes under `src/app/api/auth/*` are used to set/remove auth cookies
+- `yarn format` - run Prettier
 
 ## License
 
