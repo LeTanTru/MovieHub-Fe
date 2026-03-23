@@ -42,8 +42,7 @@ export default function LoginForm() {
       if (res.access_token) {
         setMultipleData({
           [storageKeys.ACCESS_TOKEN]: res.access_token,
-          [storageKeys.REFRESH_TOKEN]: res.refresh_token,
-          [storageKeys.USER_KIND]: String(res.user_kind)
+          [storageKeys.REFRESH_TOKEN]: res.refresh_token
         });
         await setCookieServerMutate(res);
         notify.success('Đăng nhập thành công');

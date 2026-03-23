@@ -1,11 +1,9 @@
 import { authApiRequest } from '@/api-requests';
 import envConfig from '@/config';
-import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import {
   isAxiosError,
   setAccessTokenToCookie,
-  setCookieData,
   setRefreshTokenToCookie
 } from '@/utils';
 import { HttpStatusCode } from 'axios';
@@ -20,7 +18,6 @@ export async function POST(request: Request) {
     if (res.access_token) {
       const accessToken = res.access_token;
       const refreshToken = res.refresh_token;
-      const userKind = res.user_kind;
 
       setAccessTokenToCookie(accessToken, {
         path: '/',
@@ -31,14 +28,6 @@ export async function POST(request: Request) {
       });
 
       setRefreshTokenToCookie(refreshToken, {
-        path: '/',
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
-        maxAge
-      });
-
-      setCookieData(storageKeys.USER_KIND, String(userKind), {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',

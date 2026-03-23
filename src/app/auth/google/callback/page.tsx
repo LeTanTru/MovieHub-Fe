@@ -7,7 +7,7 @@ import { useNavigate } from '@/hooks';
 
 export default function GoogleCallback() {
   const navigate = useNavigate();
-  const callbackUrl = envConfig.NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK;
+  const callbackUrl = envConfig.NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);

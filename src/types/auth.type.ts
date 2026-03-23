@@ -28,11 +28,6 @@ export type LoginResType = {
   refresh_token: string;
   expires_in: number;
   scope: string;
-  user_kind: number;
-  tenant_info: string;
-  user_id: string;
-  grant_type: string;
-  additional_info: string;
   jti: string;
 };
 
@@ -42,11 +37,6 @@ export type RefreshTokenResType = {
   refresh_token: string;
   expires_in: number;
   scope: string;
-  user_kind: number;
-  tenant_info: string;
-  user_id: string;
-  grant_type: string;
-  additional_info: string;
   jti: string;
 };
 

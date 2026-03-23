@@ -14,7 +14,6 @@ export async function POST(request: Request) {
   try {
     const accessToken = req.access_token;
     const refreshToken = req.refresh_token;
-    const userKind = String(req.user_kind);
 
     const makeCookieOption = (maxAge: number): Partial<ResponseCookie> => ({
       path: '/',
@@ -33,12 +32,6 @@ export async function POST(request: Request) {
     await setCookieData(
       storageKeys.REFRESH_TOKEN,
       refreshToken,
-      makeCookieOption(maxAgeRefreshToken)
-    );
-
-    await setCookieData(
-      storageKeys.USER_KIND,
-      userKind,
       makeCookieOption(maxAgeRefreshToken)
     );
 

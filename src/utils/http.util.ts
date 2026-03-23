@@ -164,7 +164,6 @@ export const sendRequest = async <T>(
     headers,
     method,
     ignoreAuth,
-    isRequiredTenantId,
     isRequiredXClientType,
     isUpload
   } = apiConfig;
@@ -178,7 +177,6 @@ export const sendRequest = async <T>(
   } = payload;
 
   let accessToken: string | null = '';
-  let tenantId: string | null | undefined = '';
   let clientType: string | null | undefined = '';
 
   if (!ignoreAuth) {
@@ -186,15 +184,6 @@ export const sendRequest = async <T>(
       accessToken = getAccessTokenFromLocalStorage();
     } else {
       accessToken = await getAccessTokenFromCookie();
-    }
-  }
-
-  if (isRequiredTenantId) {
-    if (isClient()) {
-      tenantId =
-        getData(storageKeys.X_TENANT) || envConfig.NEXT_PUBLIC_TENANT_ID;
-    } else {
-      tenantId = envConfig.NEXT_PUBLIC_TENANT_ID;
     }
   }
 
@@ -215,10 +204,6 @@ export const sendRequest = async <T>(
 
   if (authorization) {
     baseHeader['Authorization'] = authorization;
-  }
-
-  if (tenantId) {
-    baseHeader[storageKeys.X_TENANT] = tenantId;
   }
 
   if (clientType) {

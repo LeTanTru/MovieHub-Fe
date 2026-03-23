@@ -42,8 +42,7 @@ export default function ButtonLoginGoogle() {
       if (res.result) {
         setMultipleData({
           [storageKeys.ACCESS_TOKEN]: res.access_token,
-          [storageKeys.REFRESH_TOKEN]: res.refresh_token,
-          [storageKeys.USER_KIND]: String(res.user_kind)
+          [storageKeys.REFRESH_TOKEN]: res.refresh_token
         });
         await setCookieServerMutate(res);
         notify.success('Đăng nhập thành công');
@@ -87,7 +86,7 @@ export default function ButtonLoginGoogle() {
       );
 
       const onMessage = async (event: MessageEvent) => {
-        if (event.origin !== envConfig.NEXT_PUBLIC_API_GOOGLE_LOGIN_CALLBACK)
+        if (event.origin !== envConfig.NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL)
           return;
         if (event.data?.code) {
           window.removeEventListener('message', onMessage);
