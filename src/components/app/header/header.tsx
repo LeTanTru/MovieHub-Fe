@@ -17,6 +17,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { usePathname } from 'next/navigation';
 import { setData } from '@/utils';
 import { storageKeys } from '@/constants';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Header() {
   const pathname = usePathname();
@@ -122,7 +123,7 @@ export default function Header() {
                 transition={{ duration: 0.2 }}
                 style={{ marginRight: 24 }}
               >
-                <div className='skeleton h-10 w-10 rounded-full!' />
+                <Skeleton className='skeleton h-10 w-10 rounded-full!' />
               </m.div>
             ) : !profile ? (
               <m.div

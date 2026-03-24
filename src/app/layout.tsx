@@ -37,7 +37,7 @@ export default async function RootLayout({
         suppressHydrationWarning
         className={`${beVietnamPro.variable} ${beVietnamPro.className} antialiased`}
       >
-        <BodyLoad />
+        {/* <BodyLoad /> */}
         <QueryProvider>
           <AppProvider>
             <ThemeProvider

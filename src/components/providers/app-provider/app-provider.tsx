@@ -19,15 +19,13 @@ export default function AppProvider({
   const setProfile = useAuthStore((s) => s.setProfile);
   const setLoading = useAppLoadingStore((s) => s.setLoading);
 
-  const {
-    data: profile,
-    isLoading,
-    isFetching
-  } = useProfileQuery({ enabled: !!accessToken });
+  const { data: profile, isLoading } = useProfileQuery({
+    enabled: !!accessToken
+  });
 
   useEffect(() => {
-    setLoading(isLoading || isFetching);
-  }, [isFetching, isLoading, setLoading]);
+    setLoading(isLoading);
+  }, [isLoading, setLoading]);
 
   useEffect(() => {
     if (!profile?.data) return;
