@@ -15,7 +15,7 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { useAuth } from '@/hooks';
 import {
   useDeleteFavouriteMutation,
-  useFavouriteGetListIdsQuery,
+  useFavouriteListIdsQuery,
   useFavouriteMutation
 } from '@/queries';
 import { logger } from '@/logger';
@@ -42,14 +42,14 @@ export default function AnimeMovieList({
   const { mutateAsync: removeFavourite, isPending: removeFavouriteLoading } =
     useDeleteFavouriteMutation();
 
-  const { data: favouriteListIdsData } = useFavouriteGetListIdsQuery({
+  const { data: favouriteListIdsData } = useFavouriteListIdsQuery({
     params: {
       type: FAVOURITE_TYPE_MOVIE
     },
     enabled: isAuthenticated
   });
 
-  const favouriteListIds = favouriteListIdsData?.data || [];
+  const favouriteListIds = favouriteListIdsData?.data?.ids || [];
 
   const handleLike = async (targetId: string) => {
     if (!isAuthenticated) {

@@ -60,3 +60,7 @@ export type FavouriteDeleteType = {
 
 export type FavouriteSearchType = z.infer<typeof favouriteSearchSchema> &
   BaseSearchType;
+
+export type FavouriteListIdsResType = {
+  ids: string[];
+};

@@ -3,6 +3,7 @@ import {
   ApiResponse,
   ApiResponseList,
   PlaylistBodyType,
+  PlaylistIdsResType,
   PlaylistItemBodyType,
   PlaylistMovieResType,
   PlaylistResType,
@@ -38,9 +39,12 @@ const playlistApiRequest = {
   getList: () =>
     http.get<ApiResponse<PlaylistResType[]>>(apiConfig.playlist.getList),
   getListByMovie: (movieId: string) =>
-    http.get<ApiResponse<string[]>>(apiConfig.playlist.getListByMovie, {
-      pathParams: { movieId }
-    }),
+    http.get<ApiResponse<PlaylistIdsResType>>(
+      apiConfig.playlist.getListByMovie,
+      {
+        pathParams: { movieId }
+      }
+    ),
   removeItem: (params: RemoveItemSearchType) =>
     http.delete<ApiResponseList<any>>(apiConfig.playlist.removeItem, {
       params

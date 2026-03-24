@@ -9,7 +9,7 @@ import { EffectFade, Thumbs, Autoplay } from 'swiper/modules';
 import { useState } from 'react';
 import {
   useDeleteFavouriteMutation,
-  useFavouriteGetListIdsQuery,
+  useFavouriteListIdsQuery,
   useFavouriteMutation,
   useSidebarListQuery
 } from '@/queries';
@@ -43,14 +43,14 @@ export default function Slider() {
   const { mutateAsync: removeFavourite, isPending: removeFavouriteLoading } =
     useDeleteFavouriteMutation();
 
-  const { data: favouriteListIdsData } = useFavouriteGetListIdsQuery({
+  const { data: favouriteListIdsData } = useFavouriteListIdsQuery({
     params: {
       type: FAVOURITE_TYPE_MOVIE
     },
     enabled: isAuthenticated
   });
 
-  const favouriteListIds = favouriteListIdsData?.data || [];
+  const favouriteListIds = favouriteListIdsData?.data?.ids || [];
 
   const handleLike = async (targetId: string) => {
     if (!isAuthenticated) {

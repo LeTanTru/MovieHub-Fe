@@ -35,3 +35,7 @@ type PlaylistAction = {
 };
 
 export type PlaylistStoreType = PlaylistState & PlaylistAction;
+
+export type PlaylistIdsResType = {
+  ids: string[];
+};

@@ -17,7 +17,7 @@ import { cn } from '@/lib';
 import { useDeleteFavouriteMutation, useFavouriteListQuery } from '@/queries';
 import { notify } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function FavouriteList() {
   const [activeTab, setActiveTab] = useState(FAVOURITE_TYPE_MOVIE);
@@ -55,6 +55,7 @@ export default function FavouriteList() {
 
   const handleTabChange = (type: number) => {
     setActiveTab(type);
+    setPage(1);
   };
 
   const handleDeleteFavourite = async (targetId: string) => {
@@ -80,10 +81,6 @@ export default function FavouriteList() {
   const handlePageChange = (page: number) => {
     setPage(page);
   };
-
-  useEffect(() => {
-    setPage(1);
-  }, [activeTab]);
 
   return (
     <div className='mb-8 flex flex-col items-start justify-between gap-4'>
