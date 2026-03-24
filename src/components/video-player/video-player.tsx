@@ -43,13 +43,14 @@ import {
   createContext,
   useContext,
   useCallback,
-  useEffect,
   useRef,
   useState,
   forwardRef,
   ComponentProps
 } from 'react';
 import { cn } from '@/lib';
+
+import './video-player.css';
 
 type IndicatorAction = 'initial' | 'play-pause' | 'volume' | 'none';
 const IndicatorContext = createContext<{
@@ -176,11 +177,6 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
     }, []);
     */
 
-    useEffect(() => {
-      setShowSkipIntro(false);
-      setShowSkipOutro(false);
-    }, [duration, introEnd, introStart, onNextClick, outroStart, skipOutro]);
-
     const handleTimeChange = (
       detail: MediaTimeUpdateEventDetail,
       nativeEvent: MediaTimeUpdateEvent
@@ -217,12 +213,9 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
           playsInline
           preferNativeHLS={false}
           autoPlay={autoPlay}
-          fullscreenOrientation={'none'}
+          fullscreenOrientation='none'
           volume={volume}
-          className={cn(
-            'video-player relative h-full rounded-none! border-none!',
-            className
-          )}
+          className={cn('video-player', className)}
           onProviderChange={
             auth ? (provider) => onProviderChange(provider, token) : undefined
           }

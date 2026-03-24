@@ -70,19 +70,14 @@ function InputFieldInner<T extends FieldValues>(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [showOptions, setShowOptions] = useState<boolean>(false);
-  const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
+  const [filterQuery, setFilterQuery] = useState<string>('');
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleFilterOptions = (inputValue: string) => {
-    if (!inputValue) {
-      setFilteredOptions(options);
-    } else {
-      const filtered = options.filter((option) =>
-        option.toLowerCase().includes(inputValue.toLowerCase())
-      );
-      setFilteredOptions(filtered);
-    }
-  };
+  const filteredOptions = filterQuery
+    ? options.filter((option) =>
+        option.toLowerCase().includes(filterQuery.toLowerCase())
+      )
+    : options;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -154,13 +149,13 @@ function InputFieldInner<T extends FieldValues>(
                     type === 'number' ? toNumberIfPossible(raw) : raw;
                   field.onChange(transformed);
                   if (options.length > 0) {
-                    handleFilterOptions(raw);
+                    setFilterQuery(raw);
                     setShowOptions(true);
                   }
                 }}
                 onFocus={() => {
                   if (options.length > 0) {
-                    handleFilterOptions(field.value || '');
+                    setFilterQuery(field.value || '');
                     setShowOptions(true);
                   }
                 }}

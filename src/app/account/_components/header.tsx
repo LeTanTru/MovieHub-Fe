@@ -7,6 +7,7 @@ import { route } from '@/routes';
 import Link from 'next/link';
 import Image from 'next/image';
 import { logoWithText } from '@/assets';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Header() {
   const { profile } = useAuth();
@@ -43,7 +44,7 @@ export default function Header() {
                 transition={{ duration: 0.2 }}
                 style={{ marginRight: 24 }}
               >
-                <div className='skeleton h-10 w-10 rounded-full!' />
+                <Skeleton className='skeleton h-10 w-10 rounded-full!' />
               </m.div>
             ) : (
               <div className='flex h-full items-center gap-x-5'>
