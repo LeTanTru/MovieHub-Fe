@@ -51,7 +51,7 @@ export const useFavouriteListQuery = ({
   });
 };
 
-export const useFavouriteGetListIdsQuery = ({
+export const useFavouriteListIdsQuery = ({
   params = {},
   enabled
 }: {

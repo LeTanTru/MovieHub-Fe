@@ -25,7 +25,7 @@ import { notify } from '@/utils';
 import { PlaylistItemBodyType } from '@/types';
 import { PlusICon } from '@/assets';
 import { route } from '@/routes';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import debounce from 'lodash/debounce';
 import Link from 'next/link';
 import PlaylistItem from './playlist-item';
@@ -57,6 +57,7 @@ export default function ButtonAddToPlaylist({
   const containerRef = useClickOutside<HTMLDivElement>(close);
   const [checkedPlaylist, setCheckedPlaylist] = useState<string[]>([]);
   const [playlistId, setPlaylistId] = useState<string>('');
+  const [hasTouchedSelection, setHasTouchedSelection] = useState(false);
   const { isAuthenticated } = useAuth();
   const { iconRef, startAnimation } = useClickAnimation();
 
@@ -78,8 +79,8 @@ export default function ButtonAddToPlaylist({
   const playlist = playlistData?.data || [];
 
   const playlistByMovie = useMemo(
-    () => playlistByMovieData?.data || [],
-    [playlistByMovieData]
+    () => playlistByMovieData?.data?.ids || [],
+    [playlistByMovieData?.data?.ids]
   );
 
   const handleOpen = () => {
@@ -98,23 +99,30 @@ export default function ButtonAddToPlaylist({
       );
       return;
     }
+    if (!opened) {
+      setCheckedPlaylist(playlistByMovie);
+      setHasTouchedSelection(false);
+    }
     startAnimation();
     toggle();
   };
 
   const handleAddToPlaylist = debounce(async (playlistId: string) => {
-    const isInPlaylist = checkedPlaylist.includes(playlistId);
+    const currentCheckedPlaylist = hasTouchedSelection
+      ? checkedPlaylist
+      : playlistByMovie;
+    const isInPlaylist = currentCheckedPlaylist.includes(playlistId);
     const action = isInPlaylist
       ? ACTION_DELETE_FROM_PLAYLIST
       : ACTION_ADD_TO_PLAYLIST;
 
     setPlaylistId(playlistId);
 
-    setCheckedPlaylist((prev) =>
-      isInPlaylist
-        ? prev.filter((id) => id !== playlistId)
-        : [...prev, playlistId]
-    );
+    const nextCheckedPlaylist = isInPlaylist
+      ? currentCheckedPlaylist.filter((id) => id !== playlistId)
+      : [...currentCheckedPlaylist, playlistId];
+    setHasTouchedSelection(true);
+    setCheckedPlaylist(nextCheckedPlaylist);
 
     const payload: PlaylistItemBodyType = {
       actions: [
@@ -150,9 +158,9 @@ export default function ButtonAddToPlaylist({
     });
   });
 
-  useEffect(() => {
-    setCheckedPlaylist(playlistByMovie);
-  }, [playlistByMovie]);
+  const currentCheckedPlaylist = hasTouchedSelection
+    ? checkedPlaylist
+    : playlistByMovie;
 
   return (
     <div className='relative' ref={containerRef}>
@@ -197,7 +205,7 @@ export default function ButtonAddToPlaylist({
                 <PlaylistItem
                   key={playlist.id}
                   playlist={playlist}
-                  checked={checkedPlaylist.includes(playlist.id)}
+                  checked={currentCheckedPlaylist.includes(playlist.id)}
                   onToggle={handleAddToPlaylist}
                   disabled={
                     updatePlaylistItemLoading && playlist.id === playlistId

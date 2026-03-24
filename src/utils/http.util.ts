@@ -61,7 +61,7 @@ const refreshToken = async () => {
   } else {
     token = await getRefreshTokenFromCookie();
   }
-  const res: ApiResponse<RefreshTokenResType> = await axios.post(
+  const res: ApiResponse<RefreshTokenResType> = await axiosInstance.post(
     apiConfig.user.refreshToken.baseUrl,
     {
       refresh_token: token,

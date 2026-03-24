@@ -6,7 +6,8 @@ import {
   FavouriteBodyType,
   FavouriteGetType,
   FavouriteResType,
-  FavouriteSearchType
+  FavouriteSearchType,
+  FavouriteListIdsResType
 } from '@/types';
 import { http } from '@/utils';
 
@@ -28,9 +29,12 @@ const favouriteApiRequest = {
       params
     }),
   getListIds: (params?: FavouriteSearchType) =>
-    http.get<ApiResponse<string[]>>(apiConfig.favourite.getListIds, {
-      params
-    })
+    http.get<ApiResponse<FavouriteListIdsResType>>(
+      apiConfig.favourite.getListIds,
+      {
+        params
+      }
+    )
 };
 
 export default favouriteApiRequest;
