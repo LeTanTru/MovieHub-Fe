@@ -3,40 +3,12 @@ import {
   reviewSearchSchema,
   reviewVoteSchema
 } from '@/schemaValidations';
+import { ProfileResType } from '@/types/account.type';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
 export type ReviewResType = {
-  author: {
-    avatarPath: string;
-    createdDate: string;
-    email: string;
-    fullName: string;
-    gender: number;
-    group: {
-      createdDate: string;
-      description: string;
-      id: string;
-      isSystemRole: boolean;
-      kind: number;
-      modifiedDate: string;
-      name: string;
-      permissions: {
-        createdDate: string;
-        id: string;
-        modifiedDate: string;
-        permissionCode: string;
-        status: number;
-      }[];
-      status: number;
-    };
-    id: string;
-    kind: number;
-    modifiedDate: string;
-    phone: string;
-    status: number;
-    username: string;
-  };
+  author: ProfileResType;
   content: string;
   createdDate: string;
   id: string;

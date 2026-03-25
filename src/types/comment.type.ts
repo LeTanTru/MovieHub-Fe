@@ -3,22 +3,13 @@ import {
   commentSearchSchema,
   voteCommentSchema
 } from '@/schemaValidations';
+import { ProfileResType } from '@/types/account.type';
 import { MovieItemResType } from '@/types/movie-item.type';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
-export type AuthorInfoType = {
-  avatarPath: string;
-  email: string;
-  fullName: string;
-  id: string;
-  kind: number;
-  gender: number;
-};
-
 export type CommentResType = {
-  authorId: string;
-  authorInfo: string;
+  author: ProfileResType;
   content: string;
   createdDate: string;
   id: string;
@@ -26,15 +17,14 @@ export type CommentResType = {
   modifiedDate: string;
   movieId: string;
   movieItem: MovieItemResType;
-  replyToId: string;
-  replyToInfo: string;
+  replyTo: ProfileResType;
   status: number;
   totalChildren: number;
   totalDislike: number;
   totalLike: number;
   parent: {
     id: string;
-    authorInfo: string;
+    author: ProfileResType;
   };
 };
 

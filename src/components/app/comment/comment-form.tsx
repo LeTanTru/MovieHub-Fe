@@ -5,7 +5,7 @@ import { logger } from '@/logger';
 import { useCreateCommentMutation, useUpdateCommentMutation } from '@/queries';
 import { commentSchema } from '@/schemaValidations';
 import { useCommentStore } from '@/store';
-import { AuthorInfoType, CreateCommentBodyType } from '@/types';
+import { CreateCommentBodyType } from '@/types';
 import { notify } from '@/utils';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { Button, TextAreaField } from '@/components/form';
@@ -35,9 +35,7 @@ export default function CommentForm({
       }))
     );
 
-  const authorInfo = replyingComment
-    ? (JSON.parse(replyingComment?.authorInfo) as AuthorInfoType)
-    : null;
+  const authorInfo = replyingComment?.author;
 
   const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =
     useCreateCommentMutation();

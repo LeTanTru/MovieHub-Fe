@@ -173,6 +173,9 @@ export default function PasswordField<T extends FieldValues>({
                     <EyeIcon size={16} aria-hidden='true' />
                   )}
                 </Button>
+                {description && (
+                  <FormDescription>{description}</FormDescription>
+                )}
                 {fieldState.error && (
                   <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
                     <FormMessage className='leading-5.5' />
@@ -180,7 +183,6 @@ export default function PasswordField<T extends FieldValues>({
                 )}
               </div>
             </FormControl>
-            {description && <FormDescription>{description}</FormDescription>}
 
             {showStrength && value && (
               <>
@@ -210,11 +212,8 @@ export default function PasswordField<T extends FieldValues>({
                   className='space-y-1.5'
                   aria-label='Password requirements'
                 >
-                  {strength.map((req) => (
-                    <ListItem
-                      key={req.text}
-                      className='flex items-center gap-2'
-                    >
+                  {strength.map((req, index) => (
+                    <ListItem key={index} className='flex items-center gap-2'>
                       {req.met ? (
                         <CheckIcon
                           size={16}

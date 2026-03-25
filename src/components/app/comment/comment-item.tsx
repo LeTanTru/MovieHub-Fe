@@ -18,7 +18,7 @@ import {
 } from '@/constants';
 import { useClickOutside, useLoadMore } from '@/hooks';
 import { cn } from '@/lib';
-import { AuthorInfoType, CommentResType, CommentSearchType } from '@/types';
+import { CommentResType, CommentSearchType, ProfileResType } from '@/types';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import { type ComponentType, ReactNode, useState } from 'react';
@@ -45,7 +45,7 @@ function CommentHeaderSection({
   kind,
   gender,
   GenderIcon,
-  authorInfo,
+  author,
   movieItem
 }: {
   comment: CommentResType;
@@ -58,7 +58,7 @@ function CommentHeaderSection({
     | undefined;
   gender: number;
   GenderIcon: ComponentType<{ className?: string }>;
-  authorInfo: AuthorInfoType;
+  author: ProfileResType;
   movieItem: CommentResType['movieItem'];
 }) {
   return (
@@ -77,7 +77,7 @@ function CommentHeaderSection({
         )}
         <div className='max-640:text-[13px] flex items-center'>
           <span className='max-990:max-w-90 max-800:max-w-80 max-768:max-w-70 max-720:max-w-50 max-640:max-w-45 max-480:max-w-40 max-420:max-w-20 line-clamp-1 block max-w-125 truncate'>
-            {authorInfo.fullName}
+            {author.fullName}
           </span>
           {isAuthor && (
             <span className='max-640:hidden text-golden-glow font-semibold'>
@@ -178,7 +178,7 @@ function CommentContentSection({
 function CommentReplyEditorSection({
   comment,
   rootId,
-  authorInfo,
+  author,
   replyingComment,
   editingComment,
   onReplySubmit,
@@ -186,7 +186,7 @@ function CommentReplyEditorSection({
 }: {
   comment: CommentResType;
   rootId: string;
-  authorInfo: AuthorInfoType;
+  author: ProfileResType;
   replyingComment: CommentResType | null;
   editingComment: CommentResType | null;
   onReplySubmit: () => Promise<void>;
@@ -207,7 +207,7 @@ function CommentReplyEditorSection({
             parentId={rootId}
             movieId={comment.movieId}
             mode={editingComment?.id === comment.id ? 'edit' : 'reply'}
-            defaultMention={`@${authorInfo.fullName}`}
+            defaultMention={`@${author.fullName}`}
             onSubmitted={onReplySubmit}
             onCancel={onCancel}
           />
@@ -544,15 +544,12 @@ export default function CommentItem({
   setEditingComment: (editingComment: CommentResType | null) => void;
   setOpenParentIds: (ids: string[] | ((prev: string[]) => string[])) => void;
 }) {
-  const authorInfo = JSON.parse(comment.authorInfo || '{}') as AuthorInfoType;
-  const isAuthor = userId && authorInfo.id ? userId === authorInfo.id : false;
-  const kind =
-    authorInfo.kind !== undefined ? kindMaps[authorInfo.kind] : undefined;
-  const replyToInfo = comment.replyToInfo
-    ? (JSON.parse(comment.replyToInfo) as AuthorInfoType)
-    : null;
+  const author = comment.author;
+  const isAuthor = userId && author.id ? userId === author.id : false;
+  const kind = author.kind !== undefined ? kindMaps[author.kind] : undefined;
+  const replyToInfo = comment.replyTo;
 
-  const gender = authorInfo.gender || GENDER_OTHER;
+  const gender = author.gender || GENDER_OTHER;
   const GenderIcon = genderIconMaps[gender];
 
   const movieItem = comment.movieItem;
@@ -685,9 +682,9 @@ export default function CommentItem({
     <div className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'>
       <div className='flex flex-col items-center gap-y-0.5'>
         <AvatarField
-          src={renderImageUrl(authorInfo.avatarPath)}
+          src={renderImageUrl(author.avatarPath)}
           size={45}
-          alt={authorInfo.fullName}
+          alt={author.fullName}
           breakpoints={[{ breakpoint: 640, size: 50 }]}
         />
         {isAuthor && (
@@ -703,7 +700,7 @@ export default function CommentItem({
           kind={kind}
           gender={gender}
           GenderIcon={GenderIcon}
-          authorInfo={authorInfo}
+          author={author}
           movieItem={movieItem}
         />
 
@@ -737,7 +734,7 @@ export default function CommentItem({
         <CommentReplyEditorSection
           comment={comment}
           rootId={rootId}
-          authorInfo={authorInfo}
+          author={author}
           replyingComment={replyingComment}
           editingComment={editingComment}
           onReplySubmit={handleReplySubmit}

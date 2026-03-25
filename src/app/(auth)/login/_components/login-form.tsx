@@ -93,7 +93,7 @@ export default function LoginForm() {
         {(form) => (
           <>
             <Row>
-              <Col className='w-full'>
+              <Col span={24}>
                 <InputField
                   control={form.control}
                   name='email'
@@ -104,7 +104,7 @@ export default function LoginForm() {
               </Col>
             </Row>
             <Row className='my-4'>
-              <Col className='w-full'>
+              <Col span={24}>
                 <PasswordField
                   control={form.control}
                   name='password'
@@ -115,7 +115,7 @@ export default function LoginForm() {
               </Col>
             </Row>
             <Row>
-              <Col className='w-full'>
+              <Col span={24}>
                 <div className='text-right'>
                   <Link
                     onClick={handleClearForgotPasswordData}

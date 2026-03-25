@@ -57,7 +57,10 @@ export default function IntroForm() {
             </Col>
           </Row>
           <Row className='w-full justify-center'>
-            <Col className='max-800:w-2/3 max-600:w-4/5 max-520:w-full w-1/2'>
+            <Col
+              span={24}
+              className='max-800:w-2/3 max-600:w-4/5 max-520:w-full w-1/2'
+            >
               <PasswordField
                 control={form.control}
                 name='key'

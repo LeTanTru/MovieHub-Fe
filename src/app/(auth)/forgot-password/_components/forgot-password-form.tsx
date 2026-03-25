@@ -148,7 +148,7 @@ function StepOneFormSection({
   return (
     <Activity visible>
       <Row>
-        <Col className='w-full'>
+        <Col span={24}>
           <InputField
             control={form.control}
             name='email'
@@ -158,15 +158,19 @@ function StepOneFormSection({
           />
         </Col>
       </Row>
-      <Button
-        type='submit'
-        variant='primary'
-        className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 w-full'
-        disabled={loading || !isFormChanged}
-        loading={loading}
-      >
-        Gửi yêu cầu
-      </Button>
+      <Row className='mb-0'>
+        <Col span={24}>
+          <Button
+            type='submit'
+            variant='primary'
+            className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 w-full'
+            disabled={loading || !isFormChanged}
+            loading={loading}
+          >
+            Gửi yêu cầu
+          </Button>
+        </Col>
+      </Row>
     </Activity>
   );
 }
@@ -197,14 +201,14 @@ function StepTwoFormSection({
   return (
     <Activity visible>
       <Row className='mb-6'>
-        <Col className='w-full'>
+        <Col span={24}>
           <OtpInputField
             name='otp'
             control={form.control}
             label='Nhập OTP'
             required
             description={
-              <span className='text-center text-sm'>
+              <span className='mt-2 inline-block text-center'>
                 Mã OTP đã được gửi đến email của bạn, <br /> có thời hạn sử dụng
                 trong vòng 5 phút.
               </span>
@@ -213,7 +217,7 @@ function StepTwoFormSection({
         </Col>
       </Row>
       <Row className='flex-col'>
-        <Col className='my-2 w-full'>
+        <Col span={24}>
           <Button
             type='button'
             variant='primary'
@@ -225,7 +229,7 @@ function StepTwoFormSection({
             Gửi lại OTP
           </Button>
         </Col>
-        <Col className='w-full'>
+        <Col span={24}>
           <span className='block text-center text-sm text-gray-500'>
             Số lần đã gửi: {resendDataCount} / {MAX_RESEND}
             {countdown > 0 && resendDataCount >= MAX_RESEND && (
@@ -249,7 +253,7 @@ function StepTwoFormSection({
         className='mb-4 h-[0.5px]! bg-gray-500'
       />
       <Row>
-        <Col className='w-full'>
+        <Col span={24}>
           <PasswordField
             name='password'
             control={form.control}
@@ -260,7 +264,7 @@ function StepTwoFormSection({
         </Col>
       </Row>
       <Row>
-        <Col className='w-full'>
+        <Col span={24}>
           <PasswordField
             name='confirmPassword'
             control={form.control}
@@ -271,7 +275,7 @@ function StepTwoFormSection({
         </Col>
       </Row>
       <Row className='mb-4'>
-        <Col className='w-full'>
+        <Col span={24}>
           <Button
             type='submit'
             variant='primary'
@@ -284,7 +288,7 @@ function StepTwoFormSection({
         </Col>
       </Row>
       <Row className='mb-0'>
-        <Col className='w-full'>
+        <Col span={24}>
           <Button
             type='button'
             variant='secondary'
@@ -301,7 +305,7 @@ function StepTwoFormSection({
 
 export default function ForgotPasswordForm() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<ForgotPasswordStepType>(1);
+  const [step, setStep] = useState<ForgotPasswordStepType>(2);
   const [
     { resendData, countdown, cooldownRemaining, lastResendTime },
     dispatch

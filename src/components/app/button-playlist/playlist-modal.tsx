@@ -102,7 +102,7 @@ export default function PlaylistModal({
         {(form) => (
           <>
             <Row className='mb-6'>
-              <Col className='w-full'>
+              <Col span={24}>
                 <InputField
                   control={form.control}
                   name='name'

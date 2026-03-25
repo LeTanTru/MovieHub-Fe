@@ -88,7 +88,7 @@ export default function ChangePasswordForm() {
           return (
             <>
               <Row>
-                <Col className='w-full'>
+                <Col span={24}>
                   <PasswordField
                     control={form.control}
                     name='oldPassword'
@@ -100,7 +100,7 @@ export default function ChangePasswordForm() {
                 </Col>
               </Row>
               <Row>
-                <Col className='w-full'>
+                <Col span={24}>
                   <PasswordField
                     control={form.control}
                     name='newPassword'
@@ -112,7 +112,7 @@ export default function ChangePasswordForm() {
                 </Col>
               </Row>
               <Row>
-                <Col className='w-full'>
+                <Col span={24}>
                   <PasswordField
                     control={form.control}
                     name='confirmNewPassword'
@@ -124,7 +124,7 @@ export default function ChangePasswordForm() {
                 </Col>
               </Row>
               <Row className='max-640:mb-0 max-600:flex-col-reverse max-600:gap-6 mb-2 flex justify-end'>
-                <Col className='max-600:w-full my-0 w-1/2'>
+                <Col>
                   <Button
                     type='button'
                     variant='outline'
@@ -134,7 +134,7 @@ export default function ChangePasswordForm() {
                     Hủy
                   </Button>
                 </Col>
-                <Col className='max-600:w-full my-0 w-1/2'>
+                <Col>
                   <Button
                     type='submit'
                     variant='primary'

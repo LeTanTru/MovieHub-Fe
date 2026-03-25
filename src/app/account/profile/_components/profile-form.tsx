@@ -24,7 +24,7 @@ import {
 } from '@/queries';
 import { updateProfileSchema } from '@/schemaValidations';
 import { useAuthStore } from '@/store';
-import { ProfileResType, UpdateProfileType } from '@/types';
+import { UpdateProfileBodyType } from '@/types';
 import { applyFormErrors, notify, renderImageUrl } from '@/utils';
 import type { UseFormReturn } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
@@ -44,7 +44,7 @@ export default function ProfileForm() {
     onOpen: true
   });
 
-  const defaultValues: ProfileResType = {
+  const defaultValues: UpdateProfileBodyType = {
     id: '',
     fullName: '',
     email: '',
@@ -65,8 +65,8 @@ export default function ProfileForm() {
   };
 
   const onSubmit = async (
-    values: UpdateProfileType,
-    form: UseFormReturn<UpdateProfileType>
+    values: UpdateProfileBodyType,
+    form: UseFormReturn<UpdateProfileBodyType>
   ) => {
     await imageManager.handleSubmit();
     try {
@@ -90,7 +90,7 @@ export default function ProfileForm() {
     }
   };
 
-  const handleCancel = async (form: UseFormReturn<UpdateProfileType>) => {
+  const handleCancel = async (form: UseFormReturn<UpdateProfileBodyType>) => {
     await imageManager.handleCancel(false);
     form.clearErrors();
     form.reset(initialValues);
@@ -113,7 +113,7 @@ export default function ProfileForm() {
           return (
             <>
               <Row className='max-640:mb-4 flex-col gap-2'>
-                <Col className='mx-auto'>
+                <Col span={24} className='mx-auto'>
                   <UploadImageField
                     value={renderImageUrl(imageManager.currentUrl)}
                     control={form.control}
@@ -133,7 +133,7 @@ export default function ProfileForm() {
                 </Col>
               </Row>
               <Row className='max-640:gap-6'>
-                <Col className='max-640:w-full w-1/2'>
+                <Col>
                   <InputField
                     control={form.control}
                     name='fullName'
@@ -143,7 +143,7 @@ export default function ProfileForm() {
                     className='text-sm'
                   />
                 </Col>
-                <Col className='max-640:w-full w-1/2'>
+                <Col>
                   <InputField
                     control={form.control}
                     name='email'
@@ -151,11 +151,12 @@ export default function ProfileForm() {
                     required
                     placeholder='Nhập email'
                     className='text-sm disabled:border-gray-500 disabled:opacity-100'
+                    disabled
                   />
                 </Col>
               </Row>
               <Row className='max-640:gap-6'>
-                <Col className='max-640:w-full w-1/2'>
+                <Col>
                   <InputField
                     control={form.control}
                     name='username'
@@ -165,7 +166,7 @@ export default function ProfileForm() {
                     className='text-sm'
                   />
                 </Col>
-                <Col className='max-640:w-full w-1/2'>
+                <Col>
                   <InputField
                     control={form.control}
                     name='phone'
@@ -177,7 +178,7 @@ export default function ProfileForm() {
                 </Col>
               </Row>
               <Row className='max-640:gap-6'>
-                <Col className='max-640:w-full w-1/2'>
+                <Col>
                   <SelectField
                     control={form.control}
                     options={genderOptions}
@@ -190,7 +191,7 @@ export default function ProfileForm() {
                 </Col>
               </Row>
               <Row className='max-480:mb-0 max-480:flex-col-reverse max-480:gap-6 mb-2 flex justify-end'>
-                <Col className='max-768:w-1/2 max-480:w-full my-0 w-1/4'>
+                <Col className='max-768:w-1/2 max-480:w-full'>
                   <Button
                     type='button'
                     variant='outline'
@@ -200,7 +201,7 @@ export default function ProfileForm() {
                     Hủy
                   </Button>
                 </Col>
-                <Col className='max-768:w-1/2 max-480:w-full my-0 w-1/4'>
+                <Col className='max-768:w-1/2 max-480:w-full'>
                   <Button
                     type='submit'
                     variant='primary'

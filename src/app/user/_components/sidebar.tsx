@@ -10,7 +10,7 @@ import {
 import { ButtonLogout } from '@/components/app/button-logout';
 import { cn } from '@/lib';
 import { List, ListItem } from '@/components/list';
-import { ProfileType } from '@/types';
+import { ProfileResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -59,7 +59,7 @@ export default function Sidebar() {
   );
 }
 
-const ProfileSection = ({ profile }: { profile: ProfileType }) => {
+const ProfileSection = ({ profile }: { profile: ProfileResType }) => {
   const GenderIcon = genderIconMaps[profile.gender || GENDER_OTHER];
 
   return (

@@ -80,7 +80,7 @@ export default function RegisterForm() {
         {(form) => (
           <>
             <Row>
-              <Col className='w-full'>
+              <Col span={24}>
                 <InputField
                   control={form.control}
                   name='email'
@@ -91,7 +91,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col className='w-full'>
+              <Col span={24}>
                 <InputField
                   control={form.control}
                   name='fullName'
@@ -102,7 +102,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col className='w-full'>
+              <Col span={24}>
                 <PasswordField
                   control={form.control}
                   name='password'
@@ -113,7 +113,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col className='w-full'>
+              <Col span={24}>
                 <PasswordField
                   control={form.control}
                   name='confirmPassword'
@@ -124,7 +124,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col className='w-full'>
+              <Col span={24}>
                 <CheckboxField
                   control={form.control}
                   name='terms'
@@ -140,7 +140,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col className='mt-1 w-full'>
+              <Col span={24}>
                 <Button
                   type='submit'
                   variant='primary'

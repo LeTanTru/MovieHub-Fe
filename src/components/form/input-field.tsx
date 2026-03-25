@@ -70,14 +70,19 @@ function InputFieldInner<T extends FieldValues>(
   ref: ForwardedRef<HTMLInputElement>
 ) {
   const [showOptions, setShowOptions] = useState<boolean>(false);
-  const [filterQuery, setFilterQuery] = useState<string>('');
+  const [filteredOptions, setFilteredOptions] = useState<string[]>(options);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const filteredOptions = filterQuery
-    ? options.filter((option) =>
-        option.toLowerCase().includes(filterQuery.toLowerCase())
-      )
-    : options;
+  const handleFilterOptions = (inputValue: string) => {
+    if (!inputValue) {
+      setFilteredOptions(options);
+    } else {
+      const filtered = options.filter((option) =>
+        option.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      setFilteredOptions(filtered);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -132,11 +137,11 @@ function InputFieldInner<T extends FieldValues>(
                 ref={ref}
                 className={cn(
                   className,
-                  'text-sm font-normal shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
+                  'text-sm font-normal shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
                   {
                     'pl-10': prefixIcon,
                     'pr-10': suffixIcon,
-                    'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/50 text-gray-500':
+                    'cursor-not-allowed border border-solid border-gray-300 bg-gray-200/50 text-gray-500 dark:border-zinc-500/50':
                       disabled,
                     'border-red-500 focus-visible:ring-red-500':
                       !!fieldState.error,
@@ -149,13 +154,13 @@ function InputFieldInner<T extends FieldValues>(
                     type === 'number' ? toNumberIfPossible(raw) : raw;
                   field.onChange(transformed);
                   if (options.length > 0) {
-                    setFilterQuery(raw);
+                    handleFilterOptions(raw);
                     setShowOptions(true);
                   }
                 }}
                 onFocus={() => {
                   if (options.length > 0) {
-                    setFilterQuery(field.value || '');
+                    handleFilterOptions(field.value || '');
                     setShowOptions(true);
                   }
                 }}
@@ -192,12 +197,11 @@ function InputFieldInner<T extends FieldValues>(
                       }}
                       className='absolute top-full left-0 z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white p-1 shadow-[0px_0px_10px_5px] shadow-gray-200'
                     >
-                      {filteredOptions.map((option) => (
-                        <button
-                          type='button'
-                          key={`option-${option}`}
+                      {filteredOptions.map((option, index) => (
+                        <div
+                          key={index}
                           className={cn(
-                            'relative flex w-full cursor-pointer items-center rounded p-2 text-sm transition-all duration-200 ease-linear hover:bg-gray-100',
+                            'relative flex cursor-pointer items-center rounded p-2 text-sm transition-all duration-200 ease-linear hover:bg-gray-100',
                             field.value === option && 'bg-gray-50'
                           )}
                           onClick={() => {
@@ -210,7 +214,7 @@ function InputFieldInner<T extends FieldValues>(
                           {field.value === option && (
                             <Check className='text-main-color h-4 w-4' />
                           )}
-                        </button>
+                        </div>
                       ))}
                       {allowCustomInput &&
                         field.value &&
@@ -228,6 +232,7 @@ function InputFieldInner<T extends FieldValues>(
                   {suffixIcon}
                 </div>
               )}
+              {description && <FormDescription>{description}</FormDescription>}
               {fieldState.error && (
                 <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
                   <FormMessage className='leading-5.5' />
@@ -235,7 +240,6 @@ function InputFieldInner<T extends FieldValues>(
               )}
             </div>
           </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
         </FormItem>
       )}
     />
