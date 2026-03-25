@@ -1,7 +1,7 @@
 import {
   ChangePasswordBodyType,
   ForgotPasswordBodyType,
-  ProfileType,
+  UpdateProfileBodyType,
   RegisterType,
   VerifyOtpBodyType
 } from '@/types';
@@ -28,7 +28,7 @@ export const registerErrorMaps: ErrorMaps<RegisterType> = {
   ]
 };
 
-export const profileErrorMaps: ErrorMaps<ProfileType> = {
+export const profileErrorMaps: ErrorMaps<UpdateProfileBodyType> = {
   [ErrorCode.USER_ERROR_USERNAME_EXISTED]: [
     ['username', { type: 'manual', message: 'Tên hiển thị đã tồn tại' }]
   ],

@@ -3,7 +3,7 @@
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
 import { dropdownAvatarAccountList } from '@/constants';
-import { ProfileType } from '@/types';
+import { ProfileResType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import { cn } from '@/lib';
 import { ButtonLogout } from '@/components/app/button-logout';
 
 type DropdownAvatarProps = {
-  profile: ProfileType;
+  profile: ProfileResType;
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
@@ -23,6 +23,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
   const { opened, close, toggle } = useDisclosure();
   const dropdownRef = useClickOutside<HTMLDivElement>(close);
 
+  const handleClose = () => close();
   const handleToggle = () => toggle();
 
   return (
@@ -79,10 +80,9 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
             <Separator />
             <List>
               {dropdownAvatarAccountList.map((item) => (
-                <ListItem key={item.link} onClick={handleToggle}>
+                <ListItem key={item.link} onClick={handleClose}>
                   <Link
                     href={item.link}
-                    onClick={handleToggle}
                     className={cn(
                       'hover:text-accent-foreground flex h-9 w-full cursor-pointer items-center justify-start gap-2 rounded-none px-4 text-sm opacity-70 transition-all duration-200 ease-linear hover:bg-black/20 hover:opacity-100 focus:outline-none focus-visible:ring-0',
                       {

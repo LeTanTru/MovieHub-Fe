@@ -3,7 +3,7 @@
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
 import { dropdownAvatarList } from '@/constants';
-import { ProfileType } from '@/types';
+import { ProfileResType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import { cn } from '@/lib';
 import { ButtonLogout } from '@/components/app/button-logout';
 
 type DropdownAvatarProps = {
-  profile: ProfileType;
+  profile: ProfileResType;
 };
 
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {

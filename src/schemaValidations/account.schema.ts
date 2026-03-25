@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const profileSchema = z.object({
+export const updateProfileSchema = z.object({
   id: z.string(),
   avatarPath: z.string().optional(),
   email: z
@@ -26,7 +26,3 @@ const profileSchema = z.object({
     .trim()
     .regex(/^\d{10}$/, 'Số điện thoại không hợp lệ')
 });
-
-const updateProfileSchema = profileSchema;
-
-export { profileSchema, updateProfileSchema };

@@ -44,6 +44,7 @@ type ImageFieldProps = {
   previewClassName?: string;
   imagePreviewClassName?: string;
   hoverIcon?: ComponentType<SVGProps<SVGSVGElement>>;
+  hoverIconClassName?: string;
   zoomOnScroll?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
@@ -66,6 +67,7 @@ export default function ImageField({
   previewClassName,
   imagePreviewClassName,
   hoverIcon: HoverIcon = EyeIcon,
+  hoverIconClassName,
   zoomOnScroll = true,
   ...props
 }: ImageFieldProps) {
@@ -176,7 +178,7 @@ export default function ImageField({
           }
         }}
         className={cn(
-          'relative rounded border bg-gray-100 shadow-sm select-none',
+          'relative rounded border bg-gray-100 shadow-sm select-none dark:bg-black/15',
           {
             'cursor-pointer': !shouldDisablePreview,
             'flex items-center justify-center bg-black': originalSize
@@ -254,7 +256,12 @@ export default function ImageField({
 
         {!shouldDisablePreview && (
           <div className='absolute inset-0 flex items-center justify-center rounded bg-black/30 opacity-0 transition-opacity hover:opacity-100'>
-            <HoverIcon className='h-7 w-7 text-white' />
+            <HoverIcon
+              className={cn(
+                'max-h-1/2 max-w-1/2 text-white',
+                hoverIconClassName
+              )}
+            />
           </div>
         )}
       </div>

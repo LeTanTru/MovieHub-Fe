@@ -45,8 +45,8 @@ export default function ReviewItem({
   onDelete: (id: string) => void;
 }) {
   const author = review.author;
-  const gender = author?.gender || GENDER_OTHER;
-  const kind = author?.kind !== undefined ? kindMaps[author.kind] : undefined;
+  const gender = author.gender || GENDER_OTHER;
+  const kind = author.kind !== undefined ? kindMaps[author.kind] : undefined;
   const rate = review.rate;
   const ratingInfo = rate !== undefined ? reviewRatingMaps[rate] : null;
   const GenderIcon = genderIconMaps[gender];

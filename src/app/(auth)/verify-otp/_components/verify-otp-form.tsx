@@ -292,7 +292,7 @@ export default function VerifyOtpForm() {
           return (
             <>
               <Row>
-                <Col className='w-full'>
+                <Col span={24}>
                   <OtpInputField
                     name='otp'
                     control={form.control}
@@ -310,7 +310,7 @@ export default function VerifyOtpForm() {
                 </Col>
               </Row>
               <Row className='flex-col'>
-                <Col className='my-2 w-full'>
+                <Col span={24}>
                   <Button
                     type='button'
                     className='mx-auto'
@@ -322,7 +322,7 @@ export default function VerifyOtpForm() {
                     Gửi lại OTP
                   </Button>
                 </Col>
-                <Col className='w-full'>
+                <Col span={24}>
                   <span className='block text-center text-sm text-gray-500'>
                     Số lần đã gửi: {resendData.count} / {MAX_RESEND}
                     {countdown > 0 && resendData.count >= MAX_RESEND && (
@@ -344,7 +344,7 @@ export default function VerifyOtpForm() {
 
               <div className='bg-accent mb-4 h-px w-full'></div>
               <Row className='mb-4'>
-                <Col className='w-full'>
+                <Col span={24}>
                   <Button
                     type='submit'
                     variant='primary'
@@ -357,7 +357,7 @@ export default function VerifyOtpForm() {
                 </Col>
               </Row>
               <Row className='mb-0'>
-                <Col className='w-full'>
+                <Col span={24}>
                   <Button
                     type='button'
                     variant='secondary'
