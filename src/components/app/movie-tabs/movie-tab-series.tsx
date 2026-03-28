@@ -81,7 +81,7 @@ export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
 
   return (
     <>
-      {/* <ScheduleBadge /> */}
+      <ScheduleBadge />
       {/* Header */}
       <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex items-center justify-between'>
         <div className='relative' ref={dropdownRef}>

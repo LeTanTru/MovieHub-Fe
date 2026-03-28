@@ -77,3 +77,11 @@ export const useScheduleMovieListQuery = ({
     enabled
   });
 };
+
+export const useMovieNextEpisodeQuery = (id: string) => {
+  return useQuery({
+    queryKey: [queryKeys.MOVIE_NEXT_EPISODE, id],
+    queryFn: () => movieApiRequest.getNextEpisode(id),
+    enabled: !!id
+  });
+};

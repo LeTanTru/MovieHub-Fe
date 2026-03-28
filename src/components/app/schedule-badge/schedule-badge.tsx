@@ -1,9 +1,19 @@
 'use client';
 
 import { bell } from '@/assets';
+import { DEFAULT_DATE_FORMAT } from '@/constants';
+import { useMovieNextEpisodeQuery } from '@/queries';
+import { useMovieStore } from '@/store';
+import { formatDate } from '@/utils';
 import Image from 'next/image';
 
 export default function ScheduleBadge() {
+  const movie = useMovieStore((s) => s.movie);
+  const { data: nextEpisodeData } = useMovieNextEpisodeQuery(movie?.id || '');
+  const nextEpisode = nextEpisodeData?.data;
+
+  if (!nextEpisode) return null;
+
   return (
     <div className='mb-8'>
       <div className='bg-blue-party relative flex items-center gap-4 rounded-md bg-[linear-gradient(90deg,#4158D0,#C850C0)] px-4 py-2 text-white'>
@@ -18,8 +28,14 @@ export default function ScheduleBadge() {
           />
         </div>
         <div>
-          <strong>Tập 5</strong> sẽ phát sóng <strong> ngày 18-02-2026</strong>.
-          Các bạn nhớ đón xem nhé 😚
+          <strong>
+            Tập {nextEpisode.label}: {nextEpisode.title}
+          </strong>
+          &nbsp;sẽ phát sóng&nbsp;
+          <strong>
+            {formatDate(nextEpisode.releaseDate, DEFAULT_DATE_FORMAT)}
+          </strong>
+          . Các bạn nhớ đón xem nhé 😚
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import {
   ApiResponse,
   ApiResponseList,
   MovieHistoryResType,
+  MovieNextEpisodeResType,
   MovieResType,
   MovieScheduleResType,
   MovieSearchType
@@ -39,6 +40,15 @@ const movieApiRequest = {
       apiConfig.movie.getScheduleList,
       {
         params
+      }
+    ),
+  getNextEpisode: (id: string) =>
+    http.get<ApiResponse<MovieNextEpisodeResType>>(
+      apiConfig.movie.getNextEpisode,
+      {
+        pathParams: {
+          id
+        }
       }
     )
 };

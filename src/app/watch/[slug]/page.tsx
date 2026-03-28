@@ -140,6 +140,10 @@ export default async function WatchPage({
         lastPage: ApiResponseList<ReviewResType>,
         pages: ApiResponseList<ReviewResType>[]
       ) => (pages.length < lastPage.data.totalPages ? pages.length : undefined)
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE_NEXT_EPISODE, id],
+      queryFn: () => movieApiRequest.getNextEpisode(id)
     })
   ]);
 

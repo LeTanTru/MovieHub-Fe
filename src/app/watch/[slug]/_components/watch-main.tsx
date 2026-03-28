@@ -1,5 +1,3 @@
-'use client';
-
 import { Discussion } from '@/components/app/discussion';
 import { ScheduleBadge } from '@/components/app/schedule-badge';
 import { WatchEpisode, WatchInfo } from '@/components/app/watch';
@@ -10,7 +8,7 @@ export default function WatchMain() {
     <div className='max-990:p-5 max-640:px-4 flex grow flex-col gap-10 p-7.5'>
       <WatchInfo />
       <div>
-        {/* <ScheduleBadge /> */}
+        <ScheduleBadge />
         <WatchEpisode />
         <Discussion
           toId={MOVIE_WATCH_DISCUSSION_ID}
