@@ -216,6 +216,14 @@ const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.apiUrl}/v1/movie/schedule`,
       method: 'GET',
       headers: baseHeader,
+      ignoreAuth: true,
+      isRequiredXClientType: true
+    },
+    getNextEpisode: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/next-episode/:id`,
+      method: 'GET',
+      headers: baseHeader,
+      ignoreAuth: true,
       isRequiredXClientType: true
     }
   },

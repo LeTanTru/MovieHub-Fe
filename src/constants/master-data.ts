@@ -283,7 +283,8 @@ export const queryKeys = {
   WATCH_HISTORY_TRACKING: 'watch-history-tracking',
   COLLECTION_LIST: 'collection-list',
   FAVOURITE_GET_LIST_IDS: 'favourite-get-list-ids',
-  MOVIE_SCHEDULE_LIST: 'movie-schedule-list'
+  MOVIE_SCHEDULE_LIST: 'movie-schedule-list',
+  MOVIE_NEXT_EPISODE: 'movie-next-episode'
 };
 
 export const countries = [

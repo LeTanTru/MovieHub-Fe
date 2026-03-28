@@ -143,6 +143,14 @@ export type MovieScheduleResType = {
   totalEpisode: number;
 };
 
+export type MovieNextEpisodeResType = {
+  id: string;
+  title: string;
+  kind: number;
+  label: string;
+  releaseDate: string;
+};
+
 type MovieAction = {
   setMovie: (movie?: MovieResType | null) => void;
   setMovieItem: (movieItem?: MovieItemResType | null) => void;
