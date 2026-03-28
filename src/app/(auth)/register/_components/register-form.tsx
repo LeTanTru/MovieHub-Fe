@@ -62,10 +62,10 @@ export default function RegisterForm() {
   };
 
   return (
-    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg p-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Đăng ký</h3>
-        <p className='text-muted-foreground text-center text-sm'>
+        <p className='text-muted-foreground max-420:hidden text-center text-sm'>
           Đăng ký để bắt đầu sử dụng dịch vụ của chúng tôi.
         </p>
       </div>
@@ -80,7 +80,7 @@ export default function RegisterForm() {
         {(form) => (
           <>
             <Row>
-              <Col span={24}>
+              <Col className='grid-c-12'>
                 <InputField
                   control={form.control}
                   name='email'
@@ -91,7 +91,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='grid-c-12'>
                 <InputField
                   control={form.control}
                   name='fullName'
@@ -102,7 +102,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='grid-c-12'>
                 <PasswordField
                   control={form.control}
                   name='password'
@@ -113,7 +113,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='grid-c-12'>
                 <PasswordField
                   control={form.control}
                   name='confirmPassword'
@@ -124,14 +124,14 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='grid-c-12'>
                 <CheckboxField
                   control={form.control}
                   name='terms'
                   label={
                     <span>
                       Tôi đồng ý với{' '}
-                      <Link href='/terms' className='text-primary underline'>
+                      <Link href='/terms' className='underline'>
                         các điều khoản và điều kiện
                       </Link>
                     </span>
@@ -140,7 +140,7 @@ export default function RegisterForm() {
               </Col>
             </Row>
             <Row>
-              <Col span={24}>
+              <Col className='grid-c-12'>
                 <Button
                   type='submit'
                   variant='primary'

@@ -45,22 +45,19 @@ export default function IntroForm() {
       {(form) => (
         <>
           <Row>
-            <Col className='w-full'>
+            <Col className='grid-c-12 grid-col-no-gutters'>
               <Image
                 src={logo}
                 alt='Logo'
                 width={100}
                 height={100}
                 unoptimized
-                className='max-600:size-20'
+                className='max-600:size-20 mx-auto'
               />
             </Col>
           </Row>
           <Row className='w-full justify-center'>
-            <Col
-              span={24}
-              className='max-800:w-2/3 max-600:w-4/5 max-520:w-full w-1/2'
-            >
+            <Col className='max-800:grid-c-8 max-600:grid-c-10 max-520:grid-c-12 grid-c-6'>
               <PasswordField
                 control={form.control}
                 name='key'
@@ -71,7 +68,7 @@ export default function IntroForm() {
             </Col>
           </Row>
           <Row className='w-full justify-center'>
-            <Col className='max-800:w-2/3 max-600:w-4/5 max-520:w-full w-1/2'>
+            <Col className='max-800:grid-c-8 max-600:grid-c-10 max-520:grid-c-12 grid-c-6'>
               <Button disabled={!form.formState.isDirty} type='submit'>
                 Truy cập
               </Button>

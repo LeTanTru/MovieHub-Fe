@@ -124,12 +124,12 @@ function ForgotPasswordHeader({ step }: { step: ForgotPasswordStepType }) {
       <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>
       <Activity visible={step === 1}>
         <p className='text-muted-foreground text-center text-sm'>
-          Nhập email tài khoản để yêu cầu mật khẩu mới
+          Nhập email để nhận mã OTP
         </p>
       </Activity>
       <Activity visible={step === 2}>
         <p className='text-muted-foreground text-center text-sm'>
-          Nhập OTP đã được gửi đến email và mật khẩu mới
+          Nhập OTP đã được gửi đến email
         </p>
       </Activity>
     </div>
@@ -148,7 +148,7 @@ function StepOneFormSection({
   return (
     <Activity visible>
       <Row>
-        <Col span={24}>
+        <Col className='grid-c-12'>
           <InputField
             control={form.control}
             name='email'
@@ -159,7 +159,7 @@ function StepOneFormSection({
         </Col>
       </Row>
       <Row className='mb-0'>
-        <Col span={24}>
+        <Col className='grid-c-12'>
           <Button
             type='submit'
             variant='primary'
@@ -201,7 +201,7 @@ function StepTwoFormSection({
   return (
     <Activity visible>
       <Row className='mb-6'>
-        <Col span={24}>
+        <Col className='grid-c-12'>
           <OtpInputField
             name='otp'
             control={form.control}
@@ -216,20 +216,8 @@ function StepTwoFormSection({
           />
         </Col>
       </Row>
-      <Row className='flex-col'>
-        <Col span={24}>
-          <Button
-            type='button'
-            variant='primary'
-            className='mx-auto'
-            onClick={onResendOtp}
-            disabled={isResendDisabled}
-            loading={resendOtpLoading}
-          >
-            Gửi lại OTP
-          </Button>
-        </Col>
-        <Col span={24}>
+      <Row className='mb-2'>
+        <Col className='grid-c-12'>
           <span className='block text-center text-sm text-gray-500'>
             Số lần đã gửi: {resendDataCount} / {MAX_RESEND}
             {countdown > 0 && resendDataCount >= MAX_RESEND && (
@@ -248,12 +236,26 @@ function StepTwoFormSection({
           </span>
         </Col>
       </Row>
+      <Row>
+        <Col className='grid-c-12'>
+          <Button
+            type='button'
+            variant='primary'
+            className='mx-auto'
+            onClick={onResendOtp}
+            disabled={isResendDisabled}
+            loading={resendOtpLoading}
+          >
+            Gửi lại OTP
+          </Button>
+        </Col>
+      </Row>
       <Separator
         orientation='horizontal'
         className='mb-4 h-[0.5px]! bg-gray-500'
       />
       <Row>
-        <Col span={24}>
+        <Col className='grid-c-12'>
           <PasswordField
             name='password'
             control={form.control}
@@ -264,7 +266,7 @@ function StepTwoFormSection({
         </Col>
       </Row>
       <Row>
-        <Col span={24}>
+        <Col className='grid-c-12'>
           <PasswordField
             name='confirmPassword'
             control={form.control}
@@ -275,7 +277,7 @@ function StepTwoFormSection({
         </Col>
       </Row>
       <Row className='mb-4'>
-        <Col span={24}>
+        <Col className='grid-c-12'>
           <Button
             type='submit'
             variant='primary'
@@ -288,7 +290,7 @@ function StepTwoFormSection({
         </Col>
       </Row>
       <Row className='mb-0'>
-        <Col span={24}>
+        <Col className='grid-c-12'>
           <Button
             type='button'
             variant='secondary'
@@ -540,7 +542,7 @@ export default function ForgotPasswordForm() {
     (resendData.count >= MAX_RESEND && countdown > 0) || cooldownRemaining > 0;
 
   return (
-    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg p-4'>
       <ForgotPasswordHeader step={step} />
 
       <BaseForm

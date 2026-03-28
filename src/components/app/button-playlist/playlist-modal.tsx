@@ -102,7 +102,7 @@ export default function PlaylistModal({
         {(form) => (
           <>
             <Row className='mb-6'>
-              <Col span={24}>
+              <Col className='grid-c-12'>
                 <InputField
                   control={form.control}
                   name='name'
@@ -115,7 +115,7 @@ export default function PlaylistModal({
               </Col>
             </Row>
             <Row className='mb-0 justify-center'>
-              <Col className='max-640:w-2/5 max-480:w-1/2 max-480:px-1 mb-0 w-1/3'>
+              <Col className='grid-c-4 max-640:grid-c-6'>
                 <Button
                   variant='primary'
                   className='max-640:text-[13px]'
@@ -124,7 +124,7 @@ export default function PlaylistModal({
                   Đóng
                 </Button>
               </Col>
-              <Col className='max-640:w-2/5 max-480:w-1/2 max-480:px-1 mb-0 w-1/3'>
+              <Col className='grid-c-4 max-640:grid-c-6'>
                 <Button
                   className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
                   variant='primary'

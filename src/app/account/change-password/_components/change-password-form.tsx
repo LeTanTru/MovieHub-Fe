@@ -72,7 +72,7 @@ export default function ChangePasswordForm() {
   };
 
   return (
-    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg p-4'>
       <h3 className='text-center text-xl font-medium'>Đổi mật khẩu</h3>
       <p className='mt-2 text-center text-sm text-slate-400'>
         Cập nhật mật khẩu tài khoản <br /> để đảm bảo an toàn cho tài khoản của
@@ -88,7 +88,7 @@ export default function ChangePasswordForm() {
           return (
             <>
               <Row>
-                <Col span={24}>
+                <Col className='grid-c-12'>
                   <PasswordField
                     control={form.control}
                     name='oldPassword'
@@ -100,7 +100,7 @@ export default function ChangePasswordForm() {
                 </Col>
               </Row>
               <Row>
-                <Col span={24}>
+                <Col className='grid-c-12'>
                   <PasswordField
                     control={form.control}
                     name='newPassword'
@@ -112,7 +112,7 @@ export default function ChangePasswordForm() {
                 </Col>
               </Row>
               <Row>
-                <Col span={24}>
+                <Col className='grid-c-12'>
                   <PasswordField
                     control={form.control}
                     name='confirmNewPassword'
@@ -123,8 +123,8 @@ export default function ChangePasswordForm() {
                   />
                 </Col>
               </Row>
-              <Row className='max-640:mb-0 max-600:flex-col-reverse max-600:gap-6 mb-2 flex justify-end'>
-                <Col>
+              <Row className='max-640:mb-0 max-480:flex-col-reverse max-480:gap-6 mb-2 flex justify-end'>
+                <Col className='grid-c-6 max-480:grid-c-12'>
                   <Button
                     type='button'
                     variant='outline'
@@ -134,7 +134,7 @@ export default function ChangePasswordForm() {
                     Hủy
                   </Button>
                 </Col>
-                <Col>
+                <Col className='grid-c-6 max-480:grid-c-12'>
                   <Button
                     type='submit'
                     variant='primary'

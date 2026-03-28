@@ -122,7 +122,7 @@ const TextAreaField = <T extends FieldValues>(
                     floatLabel && 'bg-background pt-6',
                     'focus-visible:ring-main-color min-h-40 w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 aria-invalid:ring-transparent',
                     {
-                      'focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-red-500':
+                      'border-red-500 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-red-500':
                         !!fieldState.error
                     },
                     className
