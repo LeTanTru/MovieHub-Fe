@@ -51,7 +51,7 @@ export default function WatchAskContinueModal({
               </p>
               <p>Bạn muốn tiếp tục xem hay bắt đầu lại?</p>
               <Row className='max-640:mt-2 mt-3 mb-0 justify-center'>
-                <Col className='mb-0 w-1/2'>
+                <Col className='grid-c-6'>
                   <Button
                     variant='primary'
                     className='max-640:text-[13px]'
@@ -60,7 +60,7 @@ export default function WatchAskContinueModal({
                     Bắt đầu lại
                   </Button>
                 </Col>
-                <Col className='mb-0 w-1/2'>
+                <Col className='grid-c-6'>
                   <Button
                     variant='primary'
                     className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 max-640:text-[13px] dark:text-black'

@@ -139,10 +139,12 @@ export default function ReviewModal({
                       type='button'
                       onClick={() => handleSelectRating(+rating.value)}
                       className={cn(
-                        'max-640:bg-[rgba(0,0,0,0.3)] max-640:flex-row max-640:py-2.5 flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-4 whitespace-nowrap text-white grayscale-100 transition-all duration-200 ease-linear select-none hover:grayscale-0',
+                        'max-640:flex-row max-640:py-2.5 flex cursor-pointer flex-col items-center justify-center gap-2.5 rounded-lg px-2.5 py-4 whitespace-nowrap text-white grayscale-100 transition-all duration-200 ease-linear select-none hover:grayscale-0',
                         {
                           'bg-dark-conflower-blue grayscale-0':
-                            selectedRating === rating.value
+                            selectedRating === rating.value,
+                          'max-640:bg-[rgba(0,0,0,0.3)]':
+                            selectedRating !== rating.value
                         }
                       )}
                       key={rating.label}
@@ -176,7 +178,7 @@ export default function ReviewModal({
               </div>
             </div>
             <Row className='max-480:-mx-1 mb-0 flex items-center justify-center'>
-              <Col className='max-640:w-2/5 max-480:w-1/2 max-480:px-1 mb-0 w-1/3'>
+              <Col className='grid-c-4 max-640:grid-c-6'>
                 <Button
                   type='button'
                   className='max-640:text-[13px]'
@@ -185,7 +187,7 @@ export default function ReviewModal({
                   Đóng
                 </Button>
               </Col>
-              <Col className='max-640:w-2/5 max-480:w-1/2 max-480:px-1 mb-0 w-1/3'>
+              <Col className='grid-c-4 max-640:grid-c-6'>
                 <Button
                   className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
                   variant='primary'

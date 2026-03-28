@@ -75,10 +75,10 @@ export default function LoginForm() {
   };
 
   return (
-    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg p-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Đăng nhập</h3>
-        <p className='text-muted-foreground text-center'>
+        <p className='text-muted-foreground max-420:hidden text-center'>
           Đăng nhập để có trải nghiệm tốt nhất với MovieHub
         </p>
       </div>
@@ -93,7 +93,7 @@ export default function LoginForm() {
         {(form) => (
           <>
             <Row>
-              <Col span={24}>
+              <Col className='grid-c-12'>
                 <InputField
                   control={form.control}
                   name='email'
@@ -103,8 +103,8 @@ export default function LoginForm() {
                 />
               </Col>
             </Row>
-            <Row className='my-4'>
-              <Col span={24}>
+            <Row>
+              <Col className='grid-c-12'>
                 <PasswordField
                   control={form.control}
                   name='password'
@@ -112,19 +112,6 @@ export default function LoginForm() {
                   placeholder='Nhập mật khẩu của bạn'
                   required
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24}>
-                <div className='text-right'>
-                  <Link
-                    onClick={handleClearForgotPasswordData}
-                    href={route.forgotPassword.path}
-                    className='text-muted-foreground hover:text-golden-glow transition-all duration-200 ease-linear'
-                  >
-                    Quên mật khẩu?
-                  </Link>
-                </div>
               </Col>
             </Row>
 
@@ -139,6 +126,20 @@ export default function LoginForm() {
             >
               Đăng nhập
             </Button>
+
+            <Row className='my-4'>
+              <Col className='grid-c-12'>
+                <div className='text-right'>
+                  <Link
+                    onClick={handleClearForgotPasswordData}
+                    href={route.forgotPassword.path}
+                    className='text-muted-foreground hover:text-golden-glow transition-all duration-200 ease-linear'
+                  >
+                    Quên mật khẩu?
+                  </Link>
+                </div>
+              </Col>
+            </Row>
           </>
         )}
       </BaseForm>
@@ -149,12 +150,13 @@ export default function LoginForm() {
         <div className='bg-border h-px flex-1'></div>
       </div>
 
-      <ButtonLoginGoogle />
+      <Row className='mb-4'>
+        <Col className='grid-c-12'>
+          <ButtonLoginGoogle />
+        </Col>
+      </Row>
 
-      <Separator
-        orientation='horizontal'
-        className='mt-4 h-[0.5px]! bg-gray-500'
-      />
+      <Separator orientation='horizontal' className='h-[0.5px]! bg-gray-500' />
 
       <div className='text-muted-foreground mt-4 text-center'>
         Chưa có tài khoản? &nbsp;

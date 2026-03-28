@@ -66,10 +66,10 @@ const route = defineRoute({
     path: '/login'
   },
   register: {
-    path: 'register'
+    path: '/register'
   },
   forgotPassword: {
-    path: 'forgot-password'
+    path: '/forgot-password'
   },
   verifyOtp: {
     path: 'verify-otp'

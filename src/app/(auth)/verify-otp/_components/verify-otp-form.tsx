@@ -1,6 +1,7 @@
 'use client';
 import { Button, Col, OtpInputField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
+import { Separator } from '@/components/ui/separator';
 import { storageKeys, verifyOtpErrorMaps } from '@/constants';
 import { useNavigate } from '@/hooks';
 import { logger } from '@/logger';
@@ -221,21 +222,17 @@ export default function VerifyOtpForm() {
     return `${minutes}:${seconds}`;
   };
 
-  const handleBack = () => {
-    removeData([
-      storageKeys.EMAIL,
-      storageKeys.RESEND_OTP_TIME,
-      storageKeys.LAST_RESEND_TIME
-    ]);
-    navigate.back();
-  };
-
   const handleClearData = () => {
     removeData([
       storageKeys.EMAIL,
       storageKeys.RESEND_OTP_TIME,
       storageKeys.LAST_RESEND_TIME
     ]);
+  };
+
+  const handleBack = () => {
+    handleClearData();
+    navigate.push(route.register.path);
   };
 
   const onSubmit = async (
@@ -273,7 +270,7 @@ export default function VerifyOtpForm() {
     (resendData.count >= MAX_RESEND && countdown > 0) || cooldownRemaining > 0;
 
   return (
-    <section className='bg-vintage-blue max-520:px-4 rounded-lg px-6 py-4'>
+    <section className='bg-vintage-blue max-520:px-4 rounded-lg p-4'>
       <div className='mb-4 flex flex-col items-center gap-2'>
         <h2 className='text-xl font-semibold'>Xác thực email</h2>
         <p className='text-muted-foreground text-center text-sm'>
@@ -288,89 +285,93 @@ export default function VerifyOtpForm() {
         onChange={() => setIsFormChanged(true)}
         className='bg-transparent p-0'
       >
-        {(form) => {
-          return (
-            <>
-              <Row>
-                <Col span={24}>
-                  <OtpInputField
-                    name='otp'
-                    control={form.control}
-                    label='Nhập OTP'
-                    required
-                    description={
-                      <>
-                        <span className='text-center text-sm'>
-                          Mã OTP đã được gửi đến email của bạn, <br /> có thời
-                          hạn sử dụng trong vòng 5 phút.
-                        </span>
-                      </>
-                    }
-                  />
-                </Col>
-              </Row>
-              <Row className='flex-col'>
-                <Col span={24}>
-                  <Button
-                    type='button'
-                    className='mx-auto'
-                    onClick={handleResendOtp}
-                    disabled={isResendDisabled}
-                    loading={resendOtpLoading}
-                    variant='primary'
-                  >
-                    Gửi lại OTP
-                  </Button>
-                </Col>
-                <Col span={24}>
-                  <span className='block text-center text-sm text-gray-500'>
-                    Số lần đã gửi: {resendData.count} / {MAX_RESEND}
-                    {countdown > 0 && resendData.count >= MAX_RESEND && (
-                      <>
-                        <br />
-                        Bạn có thể gửi lại sau: {formatCountdown(countdown)}
-                      </>
-                    )}
-                    {cooldownRemaining > 0 && (
-                      <>
-                        <br />
-                        Vui lòng đợi {Math.ceil(cooldownRemaining / 1000)} giây
-                        để gửi lại
-                      </>
-                    )}
-                  </span>
-                </Col>
-              </Row>
+        {(form) => (
+          <>
+            <Row>
+              <Col className='grid-c-12'>
+                <OtpInputField
+                  name='otp'
+                  control={form.control}
+                  label='Nhập OTP'
+                  required
+                  description={
+                    <>
+                      <span className='mt-2 inline-block text-center'>
+                        Mã OTP đã được gửi đến email của bạn, <br /> có thời hạn
+                        sử dụng trong vòng 5 phút.
+                      </span>
+                    </>
+                  }
+                />
+              </Col>
+            </Row>
+            <Row className='mb-2'>
+              <Col className='grid-c-12'>
+                <span className='block text-center text-sm text-gray-300'>
+                  Số lần đã gửi: {resendData.count} / {MAX_RESEND}
+                  {countdown > 0 && resendData.count >= MAX_RESEND && (
+                    <>
+                      <br />
+                      Bạn có thể gửi lại sau: {formatCountdown(countdown)}
+                    </>
+                  )}
+                  {cooldownRemaining > 0 && (
+                    <>
+                      <br />
+                      Vui lòng đợi {Math.ceil(cooldownRemaining / 1000)} giây để
+                      gửi lại
+                    </>
+                  )}
+                </span>
+              </Col>
+            </Row>
+            <Row>
+              <Col className='grid-c-12'>
+                <Button
+                  type='button'
+                  className='mx-auto'
+                  onClick={handleResendOtp}
+                  disabled={isResendDisabled}
+                  loading={resendOtpLoading}
+                  variant='primary'
+                >
+                  Gửi lại OTP
+                </Button>
+              </Col>
+            </Row>
 
-              <div className='bg-accent mb-4 h-px w-full'></div>
-              <Row className='mb-4'>
-                <Col span={24}>
-                  <Button
-                    type='submit'
-                    variant='primary'
-                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
-                    disabled={verifyOtpLoading || !isFormChanged}
-                    loading={verifyOtpLoading}
-                  >
-                    Xác thực OTP
-                  </Button>
-                </Col>
-              </Row>
-              <Row className='mb-0'>
-                <Col span={24}>
-                  <Button
-                    type='button'
-                    variant='secondary'
-                    onClick={handleBack}
-                    className='dark:border-none'
-                  >
-                    Quay lại
-                  </Button>
-                </Col>
-              </Row>
-            </>
-          );
-        }}
+            <Separator
+              orientation='horizontal'
+              className='my-4 h-[0.5px]! bg-gray-500'
+            />
+
+            <Row className='mb-4'>
+              <Col className='grid-c-12'>
+                <Button
+                  type='submit'
+                  variant='primary'
+                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
+                  disabled={verifyOtpLoading || !isFormChanged}
+                  loading={verifyOtpLoading}
+                >
+                  Xác thực OTP
+                </Button>
+              </Col>
+            </Row>
+            <Row className='mb-0'>
+              <Col className='grid-c-12'>
+                <Button
+                  type='button'
+                  variant='secondary'
+                  onClick={handleBack}
+                  className='dark:border-none'
+                >
+                  Quay lại
+                </Button>
+              </Col>
+            </Row>
+          </>
+        )}
       </BaseForm>
     </section>
   );
