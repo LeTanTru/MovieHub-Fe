@@ -33,12 +33,7 @@ export type CommentVoteResType = {
   type: number;
 };
 
-export type CreateCommentBodyType = z.infer<typeof commentSchema>;
-
-export type UpdateCommentBodyType = Pick<
-  CreateCommentBodyType,
-  'id' | 'content'
->;
+export type CommentBodyType = z.infer<typeof commentSchema>;
 
 export type VoteCommentBodyType = z.infer<typeof voteCommentSchema>;
 
