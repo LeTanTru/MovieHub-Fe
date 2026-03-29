@@ -5,8 +5,7 @@ import {
   CommentResType,
   CommentSearchType,
   CommentVoteResType,
-  CreateCommentBodyType,
-  UpdateCommentBodyType,
+  CommentBodyType,
   VoteCommentBodyType
 } from '@/types';
 import { http } from '@/utils';
@@ -16,7 +15,7 @@ const commentApiRequest = {
     http.get<ApiResponseList<CommentResType>>(apiConfig.comment.getList, {
       params
     }),
-  create: (body: CreateCommentBodyType) =>
+  create: (body: CommentBodyType) =>
     http.post<ApiResponse<any>>(apiConfig.comment.create, {
       body
     }),
@@ -24,7 +23,7 @@ const commentApiRequest = {
     http.delete<ApiResponse<any>>(apiConfig.comment.delete, {
       pathParams: { id }
     }),
-  update: (body: UpdateCommentBodyType) =>
+  update: (body: CommentBodyType) =>
     http.put<ApiResponse<any>>(apiConfig.comment.update, {
       body
     }),

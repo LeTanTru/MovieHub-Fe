@@ -2,8 +2,7 @@ import { commentApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import {
   CommentSearchType,
-  CreateCommentBodyType,
-  UpdateCommentBodyType,
+  CommentBodyType,
   VoteCommentBodyType
 } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -25,7 +24,7 @@ export const useCommentListQuery = ({
 export const useCreateCommentMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.CREATE_COMMENT],
-    mutationFn: (body: CreateCommentBodyType) => commentApiRequest.create(body)
+    mutationFn: (body: CommentBodyType) => commentApiRequest.create(body)
   });
 };
 
@@ -39,7 +38,7 @@ export const useDeleteCommentMutation = () => {
 export const useUpdateCommentMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.UPDATE_COMMENT],
-    mutationFn: (body: UpdateCommentBodyType) => commentApiRequest.update(body)
+    mutationFn: (body: CommentBodyType) => commentApiRequest.update(body)
   });
 };
 
