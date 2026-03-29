@@ -258,7 +258,6 @@ function CommentRepliesSection({
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            style={{ overflow: 'hidden' }}
           >
             <div className='mt-4 flex flex-col gap-4'>
               {renderChildren(commentList, level + 1, rootId)}

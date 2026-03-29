@@ -43,6 +43,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
+    "emoji-picker-element": "^1.29.1",
     "framer-motion": "^12.23.24",
     "hls.js": "^1.6.15",
     "input-otp": "^1.4.2",
@@ -108,9 +109,5 @@
     "*.{json,md,css,scss}": [
       "prettier --write"
     ]
-  },
-  "./css": {
-    "types": "./global.d.ts",
-    "default": "./global.css"
   }
 }
