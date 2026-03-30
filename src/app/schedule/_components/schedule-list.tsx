@@ -11,7 +11,7 @@ import { FaRegCalendarCheck } from 'react-icons/fa6';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { addDays, format, subDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
 import { cn } from '@/lib';
 import { NoData } from '@/components/no-data';
 import Link from 'next/link';
@@ -137,16 +137,15 @@ export default function ScheduleList() {
                 const isSelected = date === formattedDateForState;
 
                 return (
-                  <SwiperSlide key={currentDate.toString()}>
+                  <SwiperSlide key={formattedDateForState}>
                     <button
-                      type='button'
                       className={cn('schedule-item', {
                         active: isSelected
                       })}
                       onClick={() => setDate(formattedDateForState)}
                     >
                       <span className='time'>
-                        {format(currentDate, DATE_SHORT)}
+                        {formatDate(formattedDateForState, DATE_SHORT)}
                       </span>
                       <span className='day'>
                         {DAY_LABELS[currentDate.getDay()]}
@@ -169,12 +168,10 @@ export default function ScheduleList() {
                 content={
                   <>
                     Không có lịch chiếu nào cho ngày&nbsp;
-                    <span className='font-semibold'>
-                      {formatDate(date, DATE_SHORT)}
-                    </span>
+                    <b>{formatDate(date, DATE_SHORT)}</b>
                     .
                     <br />
-                    Vui lòng chọn ngày khác.
+                    Bạn thử xem ngày khác nhé 😊
                   </>
                 }
               />
@@ -202,11 +199,12 @@ export default function ScheduleList() {
                     </div>
                     <div className='grow'>
                       <h4 className='mb-1 text-white'>{item.movie.title}</h4>
-                      <div className='block'>
-                        <span className='text-dark-gray inline text-xs whitespace-nowrap'>
-                          Tập {item.label} - {item.title}
-                        </span>
-                      </div>
+                      <span
+                        className='text-dark-gray line-clamp-2 text-xs'
+                        title={`Tập ${item.label} - ${item.title}`}
+                      >
+                        Tập {item.label}: {item.title}
+                      </span>
                     </div>
                   </Link>
                 ))}

@@ -48,7 +48,13 @@ export default function Playlist() {
         <NoData
           className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
           imageClassName='max-640:size-40 max-480:size-30'
-          content='Bạn chưa có danh sách phát nào'
+          content={
+            <>
+              Bạn chưa có danh sách phát nào
+              <br />
+              Hãy tạo danh phát đầu tiên và thêm phim vào nhé 😊
+            </>
+          }
         />
       ) : (
         <div className='max-1360:gap-4 max-1360:grid-cols-4 max-990:grid-cols-3 max-768:grid-cols-2 max-520:flex max-520:flex-nowrap max-520:overflow-x-auto scrollbar-none max-520:gap-2 grid w-full grid-cols-5 gap-6'>

@@ -57,8 +57,10 @@ export default function WatchHistory() {
           imageClassName='max-640:size-40 max-480:size-30'
           content={
             <>
-              Bạn chưa xem phim nào. Hãy khám phá và xem những bộ phim yêu thích
-              của bạn ngay bây giờ 😉
+              Bạn chưa xem phim nào.
+              <br />
+              Hãy khám phá và xem những bộ phim yêu thích của bạn ngay bây giờ
+              😉
             </>
           }
         />

@@ -24,7 +24,7 @@ export default function GoogleCallback() {
 
   return (
     <div className='bg-accent flex h-screen items-center justify-center'>
-      <CircleLoading className='size-10' />
+      <CircleLoading />
     </div>
   );
 }

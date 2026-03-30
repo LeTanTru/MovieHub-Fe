@@ -39,7 +39,7 @@ export default function PersonList() {
           content={
             <>
               Không có diễn viên nào trong danh mục&nbsp;
-              <span className='font-semibold'>diễn viên</span>
+              <b>diễn viên</b>
             </>
           }
         />
