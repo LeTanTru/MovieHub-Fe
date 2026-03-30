@@ -205,16 +205,18 @@ export default function SearchForm({
             <div className='scrollbar-none max-h-125 overflow-y-auto'>
               {isLoading ? (
                 <div className='py-10'>
-                  <CircleLoading />
+                  <CircleLoading className='mx-auto' />
                 </div>
               ) : movieList.length === 0 ? (
                 <NoData
                   className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
-                  imageClassName='max-640:size-40 max-480:size-30'
+                  imageClassName='size-30 max-640:size-20'
                   content={
                     <>
-                      Không tìm thấy phim nào
-                      <br /> phù hợp với từ khóa của bạn
+                      Không có phim nào tương ứng với từ khóa&nbsp;
+                      <b>{keyword}</b>
+                      <br />
+                      Bạn thử tìm kiếm từ khóa khác nhé 😊
                     </>
                   }
                 />

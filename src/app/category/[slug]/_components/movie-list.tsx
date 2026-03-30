@@ -51,7 +51,9 @@ export default function MovieList({ id }: { id: string }) {
           content={
             <>
               Không có phim nào trong thể loại&nbsp;
-              <span className='font-semibold'>{category.name}</span>
+              <b>{category.name}</b>
+              <br />
+              Bạn thử xem thể loại khác nhé 😊
             </>
           }
         />

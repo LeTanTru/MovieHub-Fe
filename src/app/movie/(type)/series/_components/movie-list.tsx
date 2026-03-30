@@ -39,7 +39,9 @@ export default function MovieList() {
           content={
             <>
               Không có phim nào trong danh mục&nbsp;
-              <span className='font-semibold'>Phim bộ</span>
+              <b>Phim bộ</b>
+              <br />
+              Bạn thử xem danh mục khác nhé 😊
             </>
           }
         />

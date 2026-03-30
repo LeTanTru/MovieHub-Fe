@@ -90,6 +90,8 @@ export default function MovieList() {
             <>
               Danh sách <span className='font-semibold'>{playlist.name}</span>
               &nbsp;trống
+              <br />
+              Hãy tìm kiếm và thêm phim vào danh sách phát nhé 😊
             </>
           }
         />

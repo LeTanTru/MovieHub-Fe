@@ -86,7 +86,13 @@ export default function MovieList({ personId }: { personId: string }) {
                 <NoData
                   className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
                   imageClassName='max-640:size-40 max-480:size-30'
-                  content='Diễn viên này chưa tham gia phim nào'
+                  content={
+                    <>
+                      Diễn viên này chưa tham gia phim nào
+                      <br />
+                      Bạn thử xem diễn viên khác nhé 😊
+                    </>
+                  }
                 />
               ) : activeKey === MOVIE_LIST_TAB_ALL ? (
                 <MovieGrid

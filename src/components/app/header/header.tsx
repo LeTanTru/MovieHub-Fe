@@ -52,7 +52,7 @@ export default function Header() {
     >
       <div
         className={cn(
-          'max-1600:px-5 max-1600:gap-6 max-640:px-2 max-640:gap-2 max-1360:gap-4 max-1360:px-4 max-640:h-14 flex items-center gap-8 pr-10 pl-8 transition-all duration-200 ease-linear',
+          'max-1600:px-5 max-1600:gap-6 max-640:px-2 max-640:gap-2 max-1360:gap-4 max-1360:px-4 max-640:h-14 max-480:gap-2 flex items-center gap-8 pr-10 pl-8 transition-all duration-200 ease-linear',
           {
             'bg-fixed-header h-fixed-header max-640:h-15 max-1360:h-17.5':
               isFixed,
@@ -99,7 +99,7 @@ export default function Header() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
               style={{ transformOrigin: 'top center' }}
-              className='max-1360:absolute max-1360:left-2.5 max-1360:right-12.5 max-1360:z-50 max-1360:block max-640:right-10 hidden w-auto'
+              className='max-1360:absolute max-1360:left-2.5 max-1360:right-12.5 max-1360:z-50 max-1360:block max-640:right-10 max-480:right-8 hidden w-auto'
             >
               <SearchForm
                 className='max-1360:max-w-none max-1360:w-full'
@@ -167,7 +167,7 @@ export default function Header() {
         {/* Mobile search toggle button */}
         <button
           type='button'
-          className='mobile-search max-1360:flex max-640:size-6 max-640:pr-1 hidden size-10 items-center justify-end'
+          className='mobile-search max-1360:flex max-640:size-6 max-640:pr-0 hidden size-10 items-center justify-end'
           onClick={() => setShowSearch((prev) => !prev)}
         >
           <AnimatePresence mode='wait' initial={false}>
@@ -179,7 +179,7 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.8, rotate: 15 }}
                 transition={{ duration: 0.1 }}
               >
-                <AiOutlineSearch className='size-6 font-semibold' />
+                <AiOutlineSearch className='max-480:size-5 size-6 font-semibold' />
               </m.div>
             ) : (
               <m.div
@@ -189,7 +189,7 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.8, rotate: -15 }}
                 transition={{ duration: 0.1 }}
               >
-                <FaXmark className='size-6 font-semibold text-red-500' />
+                <FaXmark className='max-480:size-5 size-6 font-semibold text-red-500' />
               </m.div>
             )}
           </AnimatePresence>

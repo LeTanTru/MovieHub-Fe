@@ -32,7 +32,9 @@ export default function MovieList({
           content={
             <>
               Không có phim nào tương ứng với từ khóa&nbsp;
-              <span className='font-semibold'>{keyword}</span>
+              <b>{keyword}</b>
+              <br />
+              Bạn thử tìm kiếm từ khóa khác nhé 😊
             </>
           }
         />

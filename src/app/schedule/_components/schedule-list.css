@@ -44,7 +44,6 @@
           display: flex;
           flex-direction: column;
           gap: 12px;
-          font-size: 14px;
           padding: 16px 20px;
           position: relative;
           cursor: pointer;
@@ -69,16 +68,9 @@
           & .time {
             width: 100%;
             height: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            line-height: 1;
             white-space: nowrap;
             color: #fffff080;
-
-            @media screen and (max-width: 989px) {
-              font-weight: 500;
-            }
+            font-weight: 500;
 
             @media screen and (max-width: 640px) {
               font-size: 12px;
@@ -87,13 +79,12 @@
 
           & .day {
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 500;
             line-height: 1;
             white-space: nowrap;
             color: #fff;
 
             @media screen and (max-width: 989px) {
-              font-weight: 500;
               font-size: 16px;
             }
           }
