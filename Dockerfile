@@ -1,23 +1,13 @@
-# ============================================================
 # Stage 1: Dependencies
-# ============================================================
 FROM node:20-alpine AS deps
-
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --prefer-offline && yarn cache clean
 
-RUN yarn config set ignore-scripts true && \
-    yarn install --frozen-lockfile --prefer-offline && \
-    yarn cache clean
-
-
-# ============================================================
 # Stage 2: Builder
-# ============================================================
 FROM node:20-alpine AS builder
-
 WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
@@ -25,7 +15,6 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Build-time public variables (safe to bake — exposed to browser anyway)
 ARG NEXT_PUBLIC_NODE_ENV
 ARG NEXT_PUBLIC_AUTH_API_URL
 ARG NEXT_PUBLIC_API_ENDPOINT_URL
@@ -33,7 +22,11 @@ ARG NEXT_PUBLIC_API_MEDIA_URL
 ARG NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL
 ARG NEXT_PUBLIC_URL
 ARG NEXT_PUBLIC_TINYMCE_URL
+ARG NEXT_PUBLIC_APP_USERNAME
+ARG NEXT_PUBLIC_APP_PASSWORD
+ARG NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN
 ARG NEXT_PUBLIC_MEDIA_HOST
+ARG NEXT_PUBLIC_ACCESS_KEY
 ARG NEXT_PUBLIC_CLIENT_TYPE
 
 ENV NEXT_PUBLIC_NODE_ENV=$NEXT_PUBLIC_NODE_ENV
@@ -43,24 +36,24 @@ ENV NEXT_PUBLIC_API_MEDIA_URL=$NEXT_PUBLIC_API_MEDIA_URL
 ENV NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL=$NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL
 ENV NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL
 ENV NEXT_PUBLIC_TINYMCE_URL=$NEXT_PUBLIC_TINYMCE_URL
+ENV NEXT_PUBLIC_APP_USERNAME=$NEXT_PUBLIC_APP_USERNAME
+ENV NEXT_PUBLIC_APP_PASSWORD=$NEXT_PUBLIC_APP_PASSWORD
+ENV NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN=$NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN
 ENV NEXT_PUBLIC_MEDIA_HOST=$NEXT_PUBLIC_MEDIA_HOST
+ENV NEXT_PUBLIC_ACCESS_KEY=$NEXT_PUBLIC_ACCESS_KEY
 ENV NEXT_PUBLIC_CLIENT_TYPE=$NEXT_PUBLIC_CLIENT_TYPE
 
-RUN yarn build
+RUN yarn config set ignore-scripts true && yarn build
 
-
-# ============================================================
 # Stage 3: Runner
-# ============================================================
 FROM node:20-alpine AS runner
-
 WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
