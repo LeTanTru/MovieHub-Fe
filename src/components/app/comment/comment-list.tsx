@@ -159,7 +159,7 @@ export default function CommentList({
         onSuccess: async (res) => {
           if (res.result) {
             notify.success(
-              `${type === REACTION_TYPE_LIKE ? 'Đã thích' : 'Đã không thích'} bình luận`
+              `${type === REACTION_TYPE_LIKE ? 'Thích' : 'Bỏ thích'} bình luận thành công`
             );
             await Promise.all([
               queryClient.invalidateQueries({

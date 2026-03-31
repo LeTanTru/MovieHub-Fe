@@ -136,7 +136,7 @@ export default function ReviewList({
       {
         onSuccess: async (res) => {
           if (res.result) {
-            notify.success('Đã thích đánh giá');
+            notify.success('Thích đánh giá thành công');
             await Promise.all([
               queryClient.invalidateQueries({
                 queryKey: [queryKeys.REVIEW_LIST]
@@ -181,7 +181,7 @@ export default function ReviewList({
       {
         onSuccess: async (res) => {
           if (res.result) {
-            notify.success('Đã không thích đánh giá');
+            notify.success('Bỏ thích đánh giá thành công');
             await Promise.all([
               queryClient.invalidateQueries({
                 queryKey: [queryKeys.REVIEW_LIST]
