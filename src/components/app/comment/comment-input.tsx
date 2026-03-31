@@ -101,7 +101,7 @@ export default function CommentInput({
     await createCommentMutate(values, {
       onSuccess: async (res) => {
         if (res.result) {
-          notify.success('Bình luận thành công !');
+          notify.success('Bình luận thành công');
           await queryClient.invalidateQueries({
             queryKey: [queryKeys.COMMENT_LIST]
           });
@@ -136,7 +136,7 @@ export default function CommentInput({
       picker.style.zIndex = '1000';
       picker.style.opacity = '0';
       picker.style.visibility = 'hidden';
-      picker.style.right = '120px';
+      picker.style.right = '110px';
       picker.style.top = '0px';
       picker.style.transition = 'all 0.2s linear';
       picker.style.setProperty('--border-radius', '8px');
@@ -169,13 +169,8 @@ export default function CommentInput({
     const pickerEl = pickerContainerRef.current?.querySelector('emoji-picker');
 
     if (pickerEl) {
-      if (!showPicker) {
-        pickerEl.style.opacity = '0';
-        pickerEl.style.visibility = 'hidden';
-      } else {
-        pickerEl.style.opacity = '1';
-        pickerEl.style.visibility = 'visible';
-      }
+      pickerEl.style.opacity = showPicker ? '1' : '0';
+      pickerEl.style.visibility = showPicker ? 'visible' : 'hidden';
     }
   }, [showPicker]);
 
@@ -217,22 +212,21 @@ export default function CommentInput({
             <Row className='mb-0 items-center gap-2'>
               <Col className='grid-c-12'>
                 <div
-                  className='relative ml-auto flex w-fit items-center'
+                  className='relative ml-auto flex w-fit items-center gap-6'
                   ref={wrapperRef}
                 >
-                  <div className='grow'></div>
                   <div ref={pickerContainerRef} />
                   <Button
                     type='button'
                     onClick={() => setShowPicker((prev) => !prev)}
-                    className='flex h-fit items-center justify-center py-0 hover:bg-transparent'
+                    className='flex h-fit items-center justify-center px-0! py-0 hover:bg-transparent'
                     variant='ghost'
                     disabled={form.formState.isSubmitting}
                   >
-                    <FaRegFaceGrinBeam className='text-golden-glow' />
+                    <FaRegFaceGrinBeam className='text-golden-glow size-5' />
                   </Button>
                   <Button
-                    className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:pr-2! max-640:py-0 h-fit gap-2 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent'
+                    className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:pr-2! max-640:py-0 h-fit gap-2 px-0! py-0 font-medium dark:bg-transparent dark:hover:bg-transparent'
                     disabled={createCommentLoading || !form.formState.isDirty}
                     type='submit'
                     variant='ghost'

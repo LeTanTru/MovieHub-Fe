@@ -70,7 +70,7 @@ export default function ReviewModal({
       {
         onSuccess: async (res) => {
           if (res.result) {
-            notify.success('Đánh giá phim thành công!');
+            notify.success('Đánh giá phim thành công');
             await Promise.all([
               queryClient.invalidateQueries({
                 queryKey: [queryKeys.REVIEW_LIST]
