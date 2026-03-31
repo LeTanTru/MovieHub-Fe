@@ -442,7 +442,7 @@ function CommentActionsSection({
               }}
               transition={{ duration: 0.1, ease: 'linear' }}
               className={cn(
-                'max-640:min-w-36 absolute top-5 -left-5 z-10 min-w-40 origin-[10px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg',
+                'max-640:min-w-36 absolute top-5 -left-5 z-10 min-w-40 origin-[20px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg',
                 {
                   'max-420:-left-12.5 max-420:origin-[40px_-50%] max-480:-left-10 max-480:origin-[40px_-50%]':
                     level === 0,
@@ -491,7 +491,7 @@ function CommentActionsSection({
                   onClick={onDelete}
                 >
                   <FaTrash />
-                  Xoá bình luận
+                  Xóa bình luận
                 </button>
               )}
             </m.div>

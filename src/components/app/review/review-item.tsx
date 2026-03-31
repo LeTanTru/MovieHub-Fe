@@ -253,7 +253,7 @@ export default function ReviewItem({
                       }}
                     >
                       <FaTrash />
-                      Xoá đánh giá
+                      Xóa đánh giá
                     </button>
                   )}
                 </m.div>

@@ -22,7 +22,11 @@ export const updateProfileSchema = z.object({
     .min(1, 'Tên đăng nhập không được để trống')
     .max(50, 'Tên đăng nhập không được quá 50 ký tự'),
   phone: z
-    .string({ error: 'Số điện thoại không được để trống' })
-    .trim()
-    .regex(/^\d{10}$/, 'Số điện thoại không hợp lệ')
+    .string()
+    .nonempty('Số điện thoại không được để trống')
+    .regex(/^\d{10}$/, 'Số điện thoại phải gồm 10 chữ số')
+    .regex(
+      /^0[35789][0-9]{8}$/,
+      'Số điện thoại phải bắt đầu bằng 03, 05, 07, 08 hoặc 09'
+    )
 });

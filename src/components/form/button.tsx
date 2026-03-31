@@ -15,7 +15,7 @@ export const buttonVariants = cva(
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/80 focus-visible:ring-destructive/20 hover:opacity-80 disabled:bg-destructive/80 disabled:hover:bg-destructive/80',
         outline:
-          'border border-input bg-transparent hover:text-gray-400 hover:border-input/50 disabled:hover:text-black disabled:hover:bg-transparent disabled:border-gray-200 disabled:hover:border-gray-200 dark:hover:text-white dark:disabled:border-gray-400 dark:border-gray-200 dark:hover:border-gray-400 dark:hover:text-gray-400 dark:disabled:hover:text-gray-400 dark:disabled:text-gray-400',
+          'border border-input bg-transparent hover:text-gray-400 hover:border-input/50 disabled:hover:text-black disabled:hover:bg-transparent disabled:border-gray-200 disabled:hover:border-gray-200 dark:hover:text-white dark:disabled:border-gray-400 dark:border-gray-300 dark:hover:border-gray-400 dark:hover:text-gray-400 dark:disabled:hover:text-gray-400 dark:disabled:text-gray-400',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-gray-400 disabled:text-gray-400',
         ghost:
@@ -45,11 +45,13 @@ export default function Button({
   asChild = false,
   loading = false,
   children,
+  iconClassName,
   ...props
 }: ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
     loading?: boolean;
+    iconClassName?: string;
   }) {
   const Comp = asChild ? Slot : 'button';
 
@@ -61,7 +63,10 @@ export default function Button({
       {...props}
     >
       {loading ? (
-        <CircleLoading className='size-5 stroke-2' aria-hidden='true' />
+        <CircleLoading
+          className={cn('size-5 stroke-2', iconClassName)}
+          aria-hidden='true'
+        />
       ) : (
         children
       )}

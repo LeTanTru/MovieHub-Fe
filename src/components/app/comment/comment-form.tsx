@@ -101,6 +101,9 @@ export default function CommentForm({
     await mutate(payload, {
       onSuccess: async (res) => {
         if (res.result) {
+          notify.success(
+            `${editingComment ? 'Chỉnh sửa' : 'Trả lời'} bình luận thành công`
+          );
           setEditingComment(null);
           onSubmitted?.();
           form?.reset(initialValues);
@@ -133,7 +136,7 @@ export default function CommentForm({
       picker.style.zIndex = '1000';
       picker.style.opacity = '0';
       picker.style.visibility = 'hidden';
-      picker.style.right = '180px';
+      picker.style.right = '160px';
       picker.style.top = '0px';
       picker.style.transition = 'all 0.2s linear';
       picker.style.setProperty('--border-radius', '8px');
@@ -209,30 +212,29 @@ export default function CommentForm({
             <Row className='max-640:gap-2 mb-0 flex items-center gap-2'>
               <Col className='grid-c-12'>
                 <div
-                  className='relative ml-auto flex w-fit items-center'
+                  className='relative ml-auto flex w-fit items-center gap-6'
                   ref={wrapperRef}
                 >
-                  <div className='grow'></div>
                   <div ref={pickerContainerRef} />
                   <Button
                     type='button'
                     onClick={() => setShowPicker((prev) => !prev)}
-                    className='flex h-fit items-center justify-center py-0 hover:bg-transparent'
+                    className='flex h-fit items-center justify-center px-0! py-0 hover:bg-transparent'
                     variant='ghost'
                     disabled={form.formState.isSubmitting}
                   >
-                    <FaRegFaceGrinBeam className='text-golden-glow' />
+                    <FaRegFaceGrinBeam className='text-golden-glow size-5' />
                   </Button>
                   <Button
                     type='button'
                     variant='ghost'
                     onClick={onCancel}
-                    className='dark:hover:text-destructive max-640:text-[13px] max-520:text-xs max-640:p-0 h-fit py-0 dark:hover:bg-transparent'
+                    className='dark:hover:text-destructive max-640:text-[13px] max-520:text-xs max-640:p-0 h-fit px-0! py-0 dark:hover:bg-transparent'
                   >
                     Hủy
                   </Button>
                   <Button
-                    className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:px-2! max-640:gap-1 h-fit gap-2 py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
+                    className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:px-2! max-640:gap-1 h-fit gap-2 px-0! py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
                     disabled={mutationLoading || !form.formState.isDirty}
                     type='submit'
                     variant='ghost'

@@ -91,7 +91,7 @@ export default function CommentList({
     await deleteCommentMutate(comment.id, {
       onSuccess: async (res) => {
         if (res.result) {
-          notify.success('Xoá bình luận thành công');
+          notify.success('Xóa bình luận thành công');
 
           // Invalidate comment list and movie data for updating total comments
           await Promise.all([
@@ -119,7 +119,7 @@ export default function CommentList({
           const newMovie = newMovieData?.data;
           setMovie(newMovie);
         } else {
-          notify.error('Xoá bình luận thất bại');
+          notify.error('Xóa bình luận thất bại');
         }
       },
       onError: (error) => {
@@ -158,6 +158,9 @@ export default function CommentList({
       {
         onSuccess: async (res) => {
           if (res.result) {
+            notify.success(
+              `${type === REACTION_TYPE_LIKE ? 'Đã thích' : 'Đã không thích'} bình luận`
+            );
             await Promise.all([
               queryClient.invalidateQueries({
                 queryKey: [queryKeys.COMMENT_VOTE_LIST, movie?.id]

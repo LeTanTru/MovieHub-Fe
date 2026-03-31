@@ -83,7 +83,7 @@ export default function ReviewList({
     await deleteReviewMutate(id, {
       onSuccess: async (res) => {
         if (res.result) {
-          notify.success('Xoá đánh giá thành công');
+          notify.success('Xóa đánh giá thành công');
 
           await Promise.all([
             queryClient.invalidateQueries({
@@ -102,7 +102,7 @@ export default function ReviewList({
           const newMovie = newMovieData?.data;
           setMovie(newMovie);
         } else {
-          notify.error('Xoá đánh giá thất bại');
+          notify.error('Xóa đánh giá thất bại');
         }
       },
       onError: (error) => {
@@ -136,6 +136,7 @@ export default function ReviewList({
       {
         onSuccess: async (res) => {
           if (res.result) {
+            notify.success('Đã thích đánh giá');
             await Promise.all([
               queryClient.invalidateQueries({
                 queryKey: [queryKeys.REVIEW_LIST]
@@ -180,6 +181,7 @@ export default function ReviewList({
       {
         onSuccess: async (res) => {
           if (res.result) {
+            notify.success('Đã không thích đánh giá');
             await Promise.all([
               queryClient.invalidateQueries({
                 queryKey: [queryKeys.REVIEW_LIST]
