@@ -177,10 +177,10 @@ export default function ImageField({
           }
         }}
         className={cn(
-          'relative flex items-center justify-center rounded bg-gray-100 select-none dark:bg-black/15',
+          'flex-center relative rounded bg-gray-100 select-none dark:bg-black/15',
           {
             'cursor-pointer': !shouldDisablePreview,
-            'flex items-center justify-center bg-black': originalSize,
+            'flex-center bg-black': originalSize,
             'size-full border': !src || imageError
           },
           className
@@ -255,7 +255,7 @@ export default function ImageField({
         )}
 
         {!shouldDisablePreview && (
-          <div className='absolute inset-0 flex items-center justify-center rounded bg-black/30 opacity-0 transition-opacity duration-200 ease-linear hover:opacity-100'>
+          <div className='flex-center absolute inset-0 rounded bg-black/30 opacity-0 transition-opacity duration-200 ease-linear hover:opacity-100'>
             <HoverIcon
               className={cn(
                 'max-h-1/2 max-w-1/2 text-white',
@@ -269,7 +269,7 @@ export default function ImageField({
         <AnimatePresence>
           {open && !shouldDisablePreview && (
             <m.div
-              className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs'
+              className='flex-center fixed inset-0 z-50 bg-black/50 backdrop-blur-xs'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

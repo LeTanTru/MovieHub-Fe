@@ -12,6 +12,7 @@ export * from './person.schema';
 export * from './playlist.schema';
 export * from './review.schema';
 export * from './search.schema';
+export * from './setting.schema';
 export * from './sidebar.schema';
 export * from './style.schema';
 export * from './watch-history.schema';

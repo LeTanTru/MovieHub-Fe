@@ -124,7 +124,7 @@ export default function ReviewModal({
             </div>
             <div className='max-768:mb-6 max-640:mb-4 mb-8'>
               <div className='max-640:mb-4 max-480:mb-2 mb-6 block text-center'>
-                <div className='flex items-center justify-center'>
+                <div className='flex-center'>
                   <div className='h-10 w-10 bg-[url("/logo.webp")] bg-cover bg-position-[50%]'></div>
                   <strong>{formatRating(movie?.averageRating || 0)}</strong>
                   <span>&nbsp;/ {movie?.reviewCount || 0} lượt đánh giá</span>
@@ -177,7 +177,7 @@ export default function ReviewModal({
                 />
               </div>
             </div>
-            <Row className='max-480:-mx-1 mb-0 flex items-center justify-center'>
+            <Row className='max-480:-mx-1 flex-center mb-0'>
               <Col className='grid-c-4 max-640:grid-c-6'>
                 <Button
                   type='button'

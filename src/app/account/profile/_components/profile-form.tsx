@@ -197,7 +197,7 @@ export default function ProfileForm() {
                     type='button'
                     variant='outline'
                     onClick={() => handleCancel(form)}
-                    disabled={!form.formState.isDirty}
+                    disabled={!form.formState.isDirty || updateProfileLoading}
                   >
                     Hủy
                   </Button>
@@ -208,7 +208,7 @@ export default function ProfileForm() {
                     variant='primary'
                     className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
                     loading={updateProfileLoading}
-                    disabled={!form.formState.isDirty}
+                    disabled={!form.formState.isDirty || updateProfileLoading}
                   >
                     Cập nhật
                   </Button>

@@ -1,4 +1,5 @@
 export { default as AvatarField } from './avatar-field';
+export { default as BooleanField } from './boolean-field';
 export { default as Button } from './button';
 export { default as CheckboxField } from './checkbox-field';
 export { default as Col } from './col';
@@ -8,6 +9,7 @@ export { default as OtpInputField } from './otp-input-field';
 export { default as PasswordField } from './password-field';
 export { default as Row } from './row';
 export { default as SelectField } from './select-field';
+export { default as SliderField } from './slider-field';
 export { default as TextAreaField } from './text-area-field';
 export { default as ToolTip } from './tooltip';
 export { default as UploadImageField } from './upload-image-field';

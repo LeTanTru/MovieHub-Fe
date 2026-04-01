@@ -128,6 +128,12 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       ignoreAuth: true,
       isRequiredXClientType: true
+    },
+    updateSetting: {
+      baseUrl: `${AppConstants.authApiUrl}/v1/user/update-settings`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredXClientType: true
     }
   },
   file: {
@@ -224,6 +230,13 @@ const apiConfig = defineApiConfig({
       method: 'GET',
       headers: baseHeader,
       ignoreAuth: true,
+      isRequiredXClientType: true
+    },
+    getSurveyList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/list-survey`,
+      method: 'GET',
+      headers: baseHeader,
+      ignoreAuth: false,
       isRequiredXClientType: true
     }
   },

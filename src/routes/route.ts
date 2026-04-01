@@ -23,14 +23,11 @@ const route = defineRoute({
     playlist: {
       path: '/user/playlist'
     },
-    profile: {
-      path: '/account/profile'
-    },
     watchHistory: {
       path: '/user/watch-history'
     },
-    changePassword: {
-      path: '/account/change-password'
+    setting: {
+      path: '/user/setting'
     }
   },
   category: {
@@ -76,6 +73,14 @@ const route = defineRoute({
   },
   search: {
     path: '/search'
+  },
+  account: {
+    profile: {
+      path: '/account/profile'
+    },
+    changePassword: {
+      path: '/account/change-password'
+    }
   }
 });
 

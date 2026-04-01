@@ -63,7 +63,7 @@ function LatestCountryMovieItem({
         </h3>
         <Link
           href={`${route.topic.path}/${generateSlug(collection.name)}.${collection.id}`}
-          className='hover:text-golden-glow flex items-center justify-center gap-0.5 transition-all duration-200 ease-linear'
+          className='hover:text-golden-glow flex-center gap-0.5 transition-all duration-200 ease-linear'
         >
           <span className='max-640:hidden'>Xem toàn bộ</span>
           <FaChevronRight className='text-sm' />

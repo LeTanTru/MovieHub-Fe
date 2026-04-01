@@ -212,7 +212,7 @@ export default function AvatarField({
         </Avatar>
 
         {!shouldDisablePreview && (
-          <div className='absolute inset-0 flex items-center justify-center rounded-full bg-black/30 opacity-0 transition-all duration-200 ease-linear hover:opacity-100'>
+          <div className='flex-center absolute inset-0 rounded-full bg-black/30 opacity-0 transition-all duration-200 ease-linear hover:opacity-100'>
             <HoverIcon
               className={cn(
                 'max-h-1/2 max-w-1/2 text-white',
@@ -227,7 +227,7 @@ export default function AvatarField({
         <AnimatePresence>
           {open && !shouldDisablePreview && (
             <m.div
-              className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs'
+              className='flex-center fixed inset-0 z-50 bg-black/50 backdrop-blur-xs'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

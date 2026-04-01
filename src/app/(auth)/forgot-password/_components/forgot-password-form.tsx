@@ -307,7 +307,7 @@ function StepTwoFormSection({
 
 export default function ForgotPasswordForm() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<ForgotPasswordStepType>(2);
+  const [step, setStep] = useState<ForgotPasswordStepType>(1);
   const [
     { resendData, countdown, cooldownRemaining, lastResendTime },
     dispatch
@@ -591,7 +591,7 @@ export default function ForgotPasswordForm() {
       <div className='text-muted-foreground mt-4 text-center text-sm'>
         <Link
           href={route.login.path}
-          className='hover:text-golden-glow flex items-center justify-center gap-x-2 transition-all duration-200 ease-linear'
+          className='hover:text-golden-glow flex-center gap-x-2 transition-all duration-200 ease-linear'
           onClick={handleClearForgotPasswordData}
         >
           <ArrowLeft />
