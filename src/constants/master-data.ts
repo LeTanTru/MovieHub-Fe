@@ -51,7 +51,7 @@ import {
   OptionType,
   UserSidebarItemType
 } from '@/types';
-import { LockKeyhole } from 'lucide-react';
+import { LockKeyhole, Settings } from 'lucide-react';
 import type { StaticImageData } from 'next/image';
 import { FaHistory } from 'react-icons/fa';
 import {
@@ -103,13 +103,13 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
     title: 'Xem tiếp'
   },
   {
-    link: route.user.profile.path,
+    link: route.account.profile.path,
     icon: FaUser,
     className: 'size-4',
     title: 'Tài khoản'
   },
   {
-    link: route.user.changePassword.path,
+    link: route.account.changePassword.path,
     icon: LockKeyhole,
     className: 'size-4',
     title: 'Đổi mật khẩu'
@@ -118,13 +118,13 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
 
 export const dropdownAvatarAccountList: DropdownAvatarItemType[] = [
   {
-    link: route.user.profile.path,
+    link: route.account.profile.path,
     icon: FaUser,
     className: 'size-4',
     title: 'Tài khoản'
   },
   {
-    link: route.user.changePassword.path,
+    link: route.account.changePassword.path,
     icon: LockKeyhole,
     className: 'size-4',
     title: 'Đổi mật khẩu'
@@ -157,13 +157,19 @@ export const userSidebarList: UserSidebarItemType[] = [
     title: 'Thông báo'
   },
   {
-    link: route.user.profile.path,
+    link: route.user.setting.path,
+    icon: Settings,
+    className: 'size-4',
+    title: 'Cài đặt'
+  },
+  {
+    link: route.account.profile.path,
     icon: FaUser,
     className: 'size-4',
     title: 'Tài khoản'
   },
   {
-    link: route.user.changePassword.path,
+    link: route.account.changePassword.path,
     icon: LockKeyhole,
     className: 'size-4',
     title: 'Đổi mật khẩu'
@@ -285,10 +291,11 @@ export const queryKeys = {
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
+  UPDATE_SETTING: 'update-setting'
 };
 
-export const countries = [
+export const countries: OptionType[] = [
   {
     value: 'SA',
     label: 'Ả Rập Xê Út'
@@ -1135,7 +1142,7 @@ export const countries = [
   }
 ];
 
-export const languages = [
+export const languages: OptionType[] = [
   {
     value: 'ar',
     label: 'Tiếng Ả Rập'

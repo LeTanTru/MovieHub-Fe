@@ -15,6 +15,8 @@ export type ProfileResType = {
     id: string;
     name: string;
     kind: number;
+    color: string;
   };
   gender: number;
+  settings: string;
 };

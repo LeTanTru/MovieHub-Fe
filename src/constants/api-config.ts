@@ -128,6 +128,12 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       ignoreAuth: true,
       isRequiredXClientType: true
+    },
+    updateSetting: {
+      baseUrl: `${AppConstants.authApiUrl}/v1/user/update-settings`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredXClientType: true
     }
   },
   file: {
