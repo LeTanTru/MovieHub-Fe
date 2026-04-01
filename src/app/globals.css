@@ -214,7 +214,7 @@
     background-repeat: no-repeat;
     background-size: 200% 100%;
     background-position-x: -50%;
-    animation: skeleton 1.2s ease-in-out infinite;
+    animation: skeleton 1.2s ease-in-out infinite alternate;
     border-radius: 8px;
   }
 
@@ -267,6 +267,10 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
 }
 
 @keyframes skeleton {

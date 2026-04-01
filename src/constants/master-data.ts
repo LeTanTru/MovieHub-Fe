@@ -222,6 +222,7 @@ export const queryKeys = {
   CHECK_MOVIE: 'check-movie',
   COLLECTION_ITEM_LIST: 'collection-item-list',
   COLLECTION_ITEM: 'collection-item',
+  COLLECTION_LIST: 'collection-list',
   COLLECTION_TOPIC_LIST: 'collection-topic-list',
   COLLECTION: 'collection',
   COMMENT_LIST: 'comment-list',
@@ -233,6 +234,7 @@ export const queryKeys = {
   DELETE_COMMENT: 'delete-comment',
   DELETE_FAVOURITE: 'delete-favourite',
   DELETE_REVIEW: 'delete-review',
+  FAVOURITE_GET_LIST_IDS: 'favourite-get-list-ids',
   FAVOURITE_LIST: 'favourite-list',
   FAVOURITE: 'favourite',
   FILE_DELETE: 'delete-file',
@@ -247,9 +249,12 @@ export const queryKeys = {
   MOVIE_ITEM_LIST: 'movie-item-list',
   MOVIE_ITEM: 'movie-item',
   MOVIE_LIST: 'movie-list',
+  MOVIE_NEXT_EPISODE: 'movie-next-episode',
   MOVIE_PERSON_LIST: 'movie-person-list',
   MOVIE_PERSON: 'movie-person',
+  MOVIE_SCHEDULE_LIST: 'movie-schedule-list',
   MOVIE_SUGGESTION_LIST: 'suggestion-movie-list',
+  MOVIE_SURVEY_LIST: 'movie-survey-list',
   MOVIE_TOP_VIEW_LIST: 'movie-top-view-list',
   MOVIE: 'movie',
   PERSON_LIST: 'person-list',
@@ -280,11 +285,7 @@ export const queryKeys = {
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
-  COLLECTION_LIST: 'collection-list',
-  FAVOURITE_GET_LIST_IDS: 'favourite-get-list-ids',
-  MOVIE_SCHEDULE_LIST: 'movie-schedule-list',
-  MOVIE_NEXT_EPISODE: 'movie-next-episode'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
 };
 
 export const countries = [

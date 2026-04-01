@@ -514,7 +514,7 @@ export default function UploadImageField<T extends FieldValues>({
                   )}
                 </div>
 
-                <div className='flex items-center justify-center gap-2'>
+                <div className='flex-center gap-2'>
                   <Button
                     type='button'
                     variant='outline'

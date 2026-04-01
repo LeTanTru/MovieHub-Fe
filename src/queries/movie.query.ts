@@ -85,3 +85,11 @@ export const useMovieNextEpisodeQuery = (id: string) => {
     enabled: !!id
   });
 };
+
+export const useSurveyMovieListQuery = (enabled: boolean = false) => {
+  return useQuery({
+    queryKey: [queryKeys.MOVIE_SURVEY_LIST],
+    queryFn: () => movieApiRequest.getSurveyList(),
+    enabled
+  });
+};

@@ -113,6 +113,13 @@ export type MovieHistoryResType = {
   userId: string;
 };
 
+export type MovieSurveyResType = {
+  id: string;
+  title: string;
+  thumbnailUrl: string;
+  posterUrl: string;
+};
+
 export type MovieSearchType = z.infer<typeof movieSearchSchema> &
   BaseSearchType;
 
