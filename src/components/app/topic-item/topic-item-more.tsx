@@ -1,6 +1,9 @@
 import { route } from '@/routes';
 import { cn } from '@/lib';
 import Link from 'next/link';
+import { m } from 'framer-motion';
+
+const MotionLink = m(Link);
 
 export default function TopicItemMore({
   moreCount,
@@ -10,10 +13,17 @@ export default function TopicItemMore({
   isSwitched: boolean;
 }) {
   return (
-    <Link
+    <MotionLink
+      whileHover={{
+        y: -10
+      }}
+      whileTap={{
+        scale: 0.95,
+        y: 0
+      }}
       href={route.topic.path}
       className={cn(
-        'max-480:w-35 max-480:shrink-0 relative top-0 overflow-hidden transition-all duration-200 ease-linear hover:-translate-y-2',
+        'max-480:w-35 max-480:shrink-0 relative top-0 overflow-hidden',
         {
           'topic bg-background/50 group max-1280:p-5 rounded-md pt-5 pr-10 pb-5 pl-6':
             isSwitched,
@@ -44,6 +54,6 @@ export default function TopicItemMore({
           +{moreCount} chủ đề
         </h3>
       </div>
-    </Link>
+    </MotionLink>
   );
 }

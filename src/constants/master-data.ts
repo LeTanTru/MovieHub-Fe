@@ -128,6 +128,12 @@ export const dropdownAvatarAccountList: DropdownAvatarItemType[] = [
     icon: LockKeyhole,
     className: 'size-4',
     title: 'Đổi mật khẩu'
+  },
+  {
+    link: route.account.settings.path,
+    icon: Settings,
+    className: 'size-4',
+    title: 'Cài đặt'
   }
 ];
 

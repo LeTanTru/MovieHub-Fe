@@ -10,7 +10,7 @@ import { route } from '@/routes';
 import { isDesktopDevice, renderImageUrl } from '@/utils';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
-import { MovieModal } from '@/components/app/movie-card';
+import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 
@@ -100,6 +100,9 @@ export default function LatestCountryMovieCard({
         exit='exit'
         transition={itemTransition}
         className='group relative flex flex-col gap-3'
+        whileTap={{
+          scale: 0.95
+        }}
       >
         <Link
           className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[56%]'
