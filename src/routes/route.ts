@@ -25,9 +25,6 @@ const route = defineRoute({
     },
     watchHistory: {
       path: '/user/watch-history'
-    },
-    setting: {
-      path: '/user/setting'
     }
   },
   category: {
@@ -80,6 +77,9 @@ const route = defineRoute({
     },
     changePassword: {
       path: '/account/change-password'
+    },
+    settings: {
+      path: '/account/settings'
     }
   }
 });

@@ -50,7 +50,7 @@ const useEpisodeNavigation = ({
     const nextEpisode = episodes[currentEpisodeIndex + 1];
     if (!nextEpisode) return;
     const nextUrl = buildEpisodeUrl(nextEpisode.label);
-    if (nextUrl) navigate.replace(nextUrl);
+    if (nextUrl) navigate.push(nextUrl);
   }, [
     autoNextEpisode,
     isSeries,
@@ -68,7 +68,7 @@ const useEpisodeNavigation = ({
     const prevEpisode = episodes[currentEpisodeIndex - 1];
     if (!prevEpisode) return;
     const prevUrl = buildEpisodeUrl(prevEpisode.label);
-    if (prevUrl) navigate.replace(prevUrl);
+    if (prevUrl) navigate.push(prevUrl);
   }, [
     isSeries,
     isFirstEpisode,
@@ -85,7 +85,7 @@ const useEpisodeNavigation = ({
     const nextEpisode = episodes[currentEpisodeIndex + 1];
     if (!nextEpisode) return;
     const nextUrl = buildEpisodeUrl(nextEpisode.label);
-    if (nextUrl) navigate.replace(nextUrl);
+    if (nextUrl) navigate.push(nextUrl);
   }, [
     isSeries,
     isLastEpisode,

@@ -12,6 +12,6 @@ export * from './movie.query';
 export * from './person.query';
 export * from './playlist.query';
 export * from './review.query';
-export * from './setting.query';
+export * from './settings.query';
 export * from './sidebar.query';
 export * from './watch-history.query';

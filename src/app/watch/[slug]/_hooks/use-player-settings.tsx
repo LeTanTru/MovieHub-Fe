@@ -1,3 +1,4 @@
+import useUserSettings from './use-user-settings';
 import { storageKeys } from '@/constants';
 import { getData, setData } from '@/utils';
 import { useEffect, useReducer } from 'react';
@@ -29,9 +30,11 @@ function playerSettingsReducer(
 }
 
 const usePlayerSettings = () => {
+  const userSettings = useUserSettings();
+
   const [settings, dispatchSettings] = useReducer(playerSettingsReducer, {
-    autoNextEpisode: false,
-    skipIntro: false
+    autoNextEpisode: userSettings.autoNextEpisode || false,
+    skipIntro: userSettings.autoSkipIntro || false
   });
 
   const { autoNextEpisode, skipIntro } = settings;
@@ -41,11 +44,14 @@ const usePlayerSettings = () => {
       type: 'LOAD_SETTINGS',
       payload: {
         autoNextEpisode:
-          getData(storageKeys.WATCH_AUTO_NEXT_EPISODE) === 'true',
-        skipIntro: getData(storageKeys.WATCH_SKIP_INTRO) === 'true'
+          getData(storageKeys.WATCH_AUTO_NEXT_EPISODE) === 'true' ||
+          userSettings.autoNextEpisode,
+        skipIntro:
+          getData(storageKeys.WATCH_SKIP_INTRO) === 'true' ||
+          userSettings.autoSkipIntro
       }
     });
-  }, []);
+  }, [userSettings.autoNextEpisode, userSettings.autoSkipIntro]);
 
   const handleToggleAutoNextEpisode = () => {
     dispatchSettings({ type: 'TOGGLE_AUTO_NEXT_EPISODE' });

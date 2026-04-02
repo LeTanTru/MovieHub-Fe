@@ -13,6 +13,7 @@ import type {
 import usePlayerSettings from './use-player-settings';
 import useWatchHistory from './use-watch-history';
 import useIntroSkip from './use-intro-skip';
+import useOutroSkip from './use-outro-skip';
 import useContinueWatching from './use-continue-watching';
 import useWatchPlayerData from './use-watch-player-data';
 import useEpisodeNavigation from './use-episode-navigation';
@@ -148,13 +149,24 @@ const useWatchPlayer = () => {
       navigate
     });
 
-  // — Combined time update handler (position tracking + intro skip)
+  // — Outro skip (auto next episode)
+  const { handleTimeUpdate: handleOutroTimeUpdate } = useOutroSkip({
+    autoNextEpisode,
+    video,
+    playerRef,
+    isSeries,
+    isLastEpisode,
+    onNextEpisode: handleNextEpisode
+  });
+
+  // — Combined time update handler (position tracking + intro skip + outro skip)
   const handleWatchHistoryTimeUpdate = useCallback(
     (detail: MediaTimeUpdateEventDetail) => {
       currentSecondsRef.current = Math.floor(detail.currentTime || 0);
       handleTimeUpdate(detail);
+      handleOutroTimeUpdate(detail);
     },
-    [handleTimeUpdate]
+    [handleTimeUpdate, handleOutroTimeUpdate]
   );
 
   return {

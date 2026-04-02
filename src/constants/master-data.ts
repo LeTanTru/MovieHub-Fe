@@ -157,7 +157,7 @@ export const userSidebarList: UserSidebarItemType[] = [
     title: 'Thông báo'
   },
   {
-    link: route.user.setting.path,
+    link: route.account.settings.path,
     icon: Settings,
     className: 'size-4',
     title: 'Cài đặt'
@@ -292,7 +292,7 @@ export const queryKeys = {
   WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
   WATCH_HISTORY_TRACKING: 'watch-history-tracking',
-  UPDATE_SETTING: 'update-setting'
+  UPDATE_SETTING: 'update-settings'
 };
 
 export const countries: OptionType[] = [

@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const settingSchema = z.object({
+export const settingsSchema = z.object({
   audio: z.number(),
   autoNextEpisode: z.boolean(),
   autoSkipIntro: z.boolean(),
