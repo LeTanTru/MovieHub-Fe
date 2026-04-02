@@ -157,7 +157,7 @@ export const userSidebarList: UserSidebarItemType[] = [
     title: 'Thông báo'
   },
   {
-    link: route.user.settings.path,
+    link: route.account.settings.path,
     icon: Settings,
     className: 'size-4',
     title: 'Cài đặt'
