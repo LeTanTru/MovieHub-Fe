@@ -1,7 +1,7 @@
-import { settingSchema } from '@/schemaValidations';
+import { settingsSchema } from '@/schemaValidations/settings.schema';
 import z from 'zod';
 
-export type SettingBodyType = z.infer<typeof settingSchema>;
+export type SettingBodyType = z.infer<typeof settingsSchema>;
 
 export type SettingResType = {
   autoSkipIntro: boolean;

@@ -22,6 +22,7 @@ import { RefObject, useState } from 'react';
 import envConfig from '@/config';
 import { useDisclosure } from '@/hooks';
 import { Activity } from '@/components/activity';
+import { useUserSettings } from '@/app/watch/[slug]/_hooks';
 
 type EpisodeProps = {
   isSeries: boolean;
@@ -76,6 +77,7 @@ export default function WatchPlayerVideoArea({
     open: openEpisodeList,
     close: closeEpisodeList
   } = useDisclosure();
+  const userSettings = useUserSettings();
 
   const { isSeries, isFirstEpisode, isLastEpisode, onPrev, onNext } = episode;
   const {
@@ -148,12 +150,13 @@ export default function WatchPlayerVideoArea({
                 ) : null
             }}
             volume={
-              envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
+              envConfig.NEXT_PUBLIC_NODE_ENV === 'production'
                 ? 0
                 : isMobileDevice() || isTabletDevice()
-                  ? 1
-                  : 0.5
+                  ? userSettings.audio / 100 || 1
+                  : userSettings.audio / 100 || 0.5
             }
+            playbackRate={userSettings.playbackSpeed || 1}
             prev={isSeries && !isFirstEpisode}
             next={isSeries && !isLastEpisode}
             skipOutro={isSeries && !isLastEpisode}

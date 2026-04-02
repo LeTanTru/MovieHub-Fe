@@ -1,6 +1,5 @@
 'use client';
 
-import { Activity } from '@/components/activity';
 import { cn } from '@/lib';
 import { TimeSlider as BaseTimeSlider } from '@vidstack/react';
 
@@ -23,23 +22,21 @@ export default function TimeSlider({
         <BaseTimeSlider.TrackFill className='absolute h-full w-(--slider-fill) rounded-sm bg-[#f5f5f5] will-change-[width]' />
         <BaseTimeSlider.Progress className='absolute z-10 h-full w-(--slider-progress) rounded-sm bg-[#ffffff80] will-change-[width]' />
 
-        <Activity visible={duration > 0 && introEnd > introStart}>
+        {duration > 0 && introEnd > introStart && (
           <IntroRangeHighlight
             start={introStart || 0}
             end={introEnd}
             duration={duration}
           />
-        </Activity>
+        )}
 
-        <Activity
-          visible={duration > 0 && outroStart > 0 && outroStart < duration}
-        >
+        {duration > 0 && outroStart > 0 && outroStart < duration && (
           <IntroRangeHighlight
             start={outroStart}
             end={duration}
             duration={duration}
           />
-        </Activity>
+        )}
       </BaseTimeSlider.Track>
 
       <BaseTimeSlider.Preview

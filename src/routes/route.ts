@@ -26,8 +26,8 @@ const route = defineRoute({
     watchHistory: {
       path: '/user/watch-history'
     },
-    setting: {
-      path: '/user/setting'
+    settings: {
+      path: '/user/settings'
     }
   },
   category: {

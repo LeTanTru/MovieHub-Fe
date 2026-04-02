@@ -22,7 +22,7 @@ export default function WatchSingle() {
       notify.info('Bản này đang được phát');
       return;
     }
-    navigate.replace(
+    navigate.push(
       `${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`
     );
   };

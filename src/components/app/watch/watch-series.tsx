@@ -81,11 +81,14 @@ export default function WatchSeries() {
   if (!movie) return null;
 
   const handleEpisodeClick = (episode: (typeof episodes)[0]) => {
-    if (episode.label === searchParams.episode) {
+    if (
+      episode.label === searchParams.episode &&
+      currentSeason?.label === searchParams.season
+    ) {
       notify.info('Bản này đang được phát');
       return;
     }
-    navigate.replace(
+    navigate.push(
       `${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`
     );
   };

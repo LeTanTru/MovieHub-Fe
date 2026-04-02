@@ -11,20 +11,20 @@ import {
 import { BaseForm } from '@/components/form/base-form';
 import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
-import { useUpdateSettingMutation } from '@/queries';
-import { settingSchema } from '@/schemaValidations';
+import { useUpdateSettingsMutation } from '@/queries';
+import { settingsSchema } from '@/schemaValidations';
 import { SettingBodyType } from '@/types';
 import { notify } from '@/utils';
 import { useMemo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
-export default function Setting() {
+export default function SettingsForm() {
   const { profile } = useAuth();
 
   const settings = JSON.parse(profile?.settings || '{}');
 
   const { mutateAsync: updateSettingMutate, isPending } =
-    useUpdateSettingMutation();
+    useUpdateSettingsMutation();
 
   const defaultValues: SettingBodyType = {
     audio: 100,
@@ -66,7 +66,7 @@ export default function Setting() {
         }
       },
       onError: (error) => {
-        logger.error('Error while updating setting', error);
+        logger.error('Error while updating settings', error);
         notify.error('Cập nhật cài đặt thất bại');
       }
     });
@@ -76,7 +76,7 @@ export default function Setting() {
     <BaseForm
       defaultValues={defaultValues}
       initialValues={initialValues}
-      schema={settingSchema}
+      schema={settingsSchema}
       onSubmit={onSubmit}
       className='bg-transparent p-0'
     >
