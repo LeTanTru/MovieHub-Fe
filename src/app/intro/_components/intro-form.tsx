@@ -3,7 +3,7 @@
 import { logo } from '@/assets';
 import { Button, Col, PasswordField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import envConfig from '@/config';
+import { apiConfig } from '@/constants';
 import { setData } from '@/utils';
 import Image from 'next/image';
 import { UseFormReturn } from 'react-hook-form';
@@ -18,20 +18,30 @@ export default function IntroForm() {
     key: ''
   };
 
-  const onSubmit = (
+  const onSubmit = async (
     data: z.infer<typeof introSchema>,
     form: UseFormReturn<z.infer<typeof introSchema>>
   ) => {
-    if (data.key === envConfig.NEXT_PUBLIC_ACCESS_KEY) {
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 3);
-      // expiryDate.setSeconds(expiryDate.getSeconds() + 5);
+    try {
+      const res = await fetch(apiConfig.api.auth.validateIntro.baseUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: data.key })
+      });
 
-      setData('intro_access_granted', 'true');
-      setData('intro_access_expiry', expiryDate.toISOString());
-      window.location.href = '/';
-    } else {
-      form.setError('key', { message: 'Key không hợp lệ' });
+      if (res.ok) {
+        const expiryDate = new Date();
+        expiryDate.setDate(expiryDate.getDate() + 3);
+
+        setData('intro_access_granted', 'true');
+        setData('intro_access_expiry', expiryDate.toISOString());
+        window.location.href = '/';
+      } else {
+        const result = await res.json();
+        form.setError('key', { message: result.message || 'Key không hợp lệ' });
+      }
+    } catch {
+      form.setError('key', { message: 'Có lỗi xảy ra, vui lòng thử lại' });
     }
   };
 

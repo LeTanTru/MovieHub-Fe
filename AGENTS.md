@@ -25,6 +25,10 @@ Before committing: `yarn lint && yarn build`
 - **Forms**: React Hook Form + Zod validation
 - **UI**: shadcn/ui (new-york style) + Tailwind CSS v4
 
+### Root App Composition
+
+`src/app/layout.tsx` wraps pages with `QueryProvider`, `AppProvider`, `ThemeProvider`, top loader, and toast container.
+
 ### Canonical Data Flow
 
 ```
@@ -40,7 +44,7 @@ api-config.ts → *.api-request.ts → *.query.ts → Component
 
 ### Imports
 
-- Always use `@/*` alias for `src/*` imports (e.g., `@/hooks`, `@/utils`)
+- Always use `@/*` alias for `src/*` imports (configured in `tsconfig.json`)
 - Order: external libs → `@/` aliases → relative imports
 - Barrel exports via `index.ts` in: `api-requests/`, `queries/`, `hooks/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, `schemaValidations/`
 
@@ -60,10 +64,9 @@ api-config.ts → *.api-request.ts → *.query.ts → Component
 ### Component Patterns
 
 - Server components by default; mark client with `'use client'` at top
-- Use `cn()` from `@/lib` for conditional className composition
+- Use `cn()` from `@/lib` for conditional className composition (`twMerge(clsx(...))`)
 - Pages use server-side prefetch with `dehydrate`/`HydrationBoundary` pattern:
   ```tsx
-  // Server component (page.tsx)
   const dehydratedState = dehydrate(queryClient);
   return (
     <HydrationBoundary state={dehydratedState}>
@@ -88,6 +91,7 @@ api-config.ts → *.api-request.ts → *.query.ts → Component
   - Auto `X-Client-Type` header when required
   - 401 token refresh with request queue (prevents parallel refresh races)
   - FormData support for file uploads
+- Auth refresh relies on internal routes under `src/app/api/auth/*` — do not bypass
 - API response types: `ApiResponse<T>` or `ApiResponseList<T>`
 - Mutation pattern: `mutateAsync(payload, { onSuccess, onError })`
 
@@ -115,8 +119,8 @@ api-config.ts → *.api-request.ts → *.query.ts → Component
 
 ## Environment Variables
 
-Validated in `src/config.ts` with Zod. Required keys:
-`NEXT_PUBLIC_NODE_ENV`, `NEXT_PUBLIC_AUTH_API_URL`, `NEXT_PUBLIC_API_ENDPOINT_URL`, `NEXT_PUBLIC_API_MEDIA_URL`, `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_TINYMCE_URL`, `NEXT_PUBLIC_APP_USERNAME`, `NEXT_PUBLIC_APP_PASSWORD`, `NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN`, `NEXT_PUBLIC_MEDIA_HOST`, `NEXT_PUBLIC_ACCESS_KEY`, `NEXT_PUBLIC_CLIENT_TYPE`
+Validated in `src/config.ts` with Zod. Missing/invalid env fails startup/build. Required keys:
+`NEXT_PUBLIC_NODE_ENV`, `NEXT_PUBLIC_AUTH_API_URL`, `NEXT_PUBLIC_API_ENDPOINT_URL`, `NEXT_PUBLIC_API_MEDIA_URL`, `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_TINYMCE_URL`, `NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN`, `NEXT_PUBLIC_MEDIA_HOST`, `NEXT_PUBLIC_CLIENT_TYPE`
 
 ## Route Protection
 
@@ -133,3 +137,7 @@ Guarded by `src/proxy.ts`. Protected prefixes: `/user`, `/account`. Public auth 
 | API endpoints    | `src/constants/api-config.ts`              |
 | Query keys       | `src/constants/master-data.ts`             |
 | Video player     | `src/components/video-player/`             |
+
+## Restricted Files
+
+These files contain sensitive data and MUST NOT be read: `supersecrets.txt`, `credentials.json`, `.env`
