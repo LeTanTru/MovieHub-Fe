@@ -13,85 +13,44 @@ import { Button } from '@/components/form';
 import { PlaylistIcon } from '@/assets';
 import { cn } from '@/lib';
 import { EpisodeList, WatchAskContinueModal } from '@/components/app/watch';
-import { MovieResType, VideoResType } from '@/types';
-import type {
-  MediaPlayerInstance,
-  MediaTimeUpdateEventDetail
-} from '@vidstack/react';
-import { RefObject, useState } from 'react';
+import { useState } from 'react';
 import envConfig from '@/config';
 import { useDisclosure } from '@/hooks';
 import { Activity } from '@/components/activity';
-import { useUserSettings } from '@/app/watch/[slug]/_hooks';
+import { useUserSettings, useWatchPlayer } from '@/app/watch/[slug]/_hooks';
 
-type EpisodeProps = {
-  isSeries: boolean;
-  isFirstEpisode: boolean;
-  isLastEpisode: boolean;
-  onPrev: () => void;
-  onNext: () => void;
-};
-
-type ContinueModalProps = {
-  isOpen: boolean;
-  lastWatchedSeconds: number;
-  onContinue: () => void;
-  onStartOver: () => void;
-};
-
-type CallbackProps = {
-  onTimeUpdate: (detail: MediaTimeUpdateEventDetail) => void;
-  onSeeked: (currentTime: number) => void;
-  onEnded: () => void;
-  onCanPlay: () => void;
-};
-
-type Props = {
-  video: VideoResType | null | undefined;
-  isLoadingToken: boolean;
-  autoPlay: boolean;
-  token: string;
-  videoTitle: string;
-  movie: MovieResType;
-  playerRef: RefObject<MediaPlayerInstance | null>;
-  episode: EpisodeProps;
-  continueModal: ContinueModalProps;
-  callbacks: CallbackProps;
-};
-
-export default function WatchPlayerVideoArea({
-  video,
-  isLoadingToken,
-  autoPlay,
-  token,
-  videoTitle,
-  movie,
-  playerRef,
-  episode,
-  continueModal,
-  callbacks
-}: Props) {
+export default function WatchPlayerVideoArea() {
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const userSettings = useUserSettings();
+
   const {
     opened: isEpisodeListOpen,
     open: openEpisodeList,
     close: closeEpisodeList
   } = useDisclosure();
-  const userSettings = useUserSettings();
 
-  const { isSeries, isFirstEpisode, isLastEpisode, onPrev, onNext } = episode;
   const {
-    isOpen: isShowContinueModal,
+    movie,
+    videoTitle,
+    video,
+    isLoadingToken,
+    autoPlay,
+    token,
+    playerRef,
+    isSeries,
+    isFirstEpisode,
+    isLastEpisode,
+    handlePrevEpisode,
+    handleNextEpisode,
+    isShowContinueModal,
     lastWatchedSeconds,
-    onContinue: handleContinueWatching,
-    onStartOver: handleStartOver
-  } = continueModal;
-  const {
-    onTimeUpdate: handleWatchHistoryTimeUpdate,
-    onSeeked: handleSeeked,
-    onEnded: handleVideoEnded,
-    onCanPlay: handlePlayerCanPlay
-  } = callbacks;
+    handleContinueWatching,
+    handleStartOver,
+    handleWatchHistoryTimeUpdate,
+    handleSeeked,
+    handleVideoEnded,
+    handlePlayerCanPlay
+  } = useWatchPlayer();
 
   if (!video) {
     return (
@@ -150,7 +109,7 @@ export default function WatchPlayerVideoArea({
                 ) : null
             }}
             volume={
-              envConfig.NEXT_PUBLIC_NODE_ENV === 'production'
+              envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
                 ? 0
                 : isMobileDevice() || isTabletDevice()
                   ? userSettings.audio / 100 || 1
@@ -160,8 +119,8 @@ export default function WatchPlayerVideoArea({
             prev={isSeries && !isFirstEpisode}
             next={isSeries && !isLastEpisode}
             skipOutro={isSeries && !isLastEpisode}
-            onPrevClick={onPrev}
-            onNextClick={onNext}
+            onPrevClick={handlePrevEpisode}
+            onNextClick={handleNextEpisode}
             onTimeUpdate={handleWatchHistoryTimeUpdate}
             onSeeked={handleSeeked}
             onEnded={handleVideoEnded}
@@ -178,7 +137,7 @@ export default function WatchPlayerVideoArea({
       )}
       <Activity visible={isSeries}>
         <EpisodeList
-          seasons={movie.seasons}
+          seasons={movie?.seasons || []}
           isOpen={isEpisodeListOpen}
           onToggle={closeEpisodeList}
         />

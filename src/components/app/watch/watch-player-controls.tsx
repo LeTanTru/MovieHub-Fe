@@ -10,23 +10,19 @@ import {
   ButtonSkipIntro,
   ButtonWatchTogether
 } from '@/components/app/watch';
-import { MovieResType } from '@/types';
+import { useWatchPlayer } from '@/app/watch/[slug]/_hooks';
 
-type Props = {
-  movie: MovieResType;
-  autoNextEpisode: boolean;
-  skipIntro: boolean;
-  handleToggleAutoNextEpisode: () => void;
-  handleToggleSkipIntro: () => void;
-};
+export default function WatchPlayerControls() {
+  const {
+    movie,
+    autoNextEpisode,
+    skipIntro,
+    handleToggleAutoNextEpisode,
+    handleToggleSkipIntro
+  } = useWatchPlayer();
 
-export default function WatchPlayerControls({
-  movie,
-  autoNextEpisode,
-  skipIntro,
-  handleToggleAutoNextEpisode,
-  handleToggleSkipIntro
-}: Props) {
+  if (!movie) return null;
+
   return (
     <div className='player-controls bg-covert-black max-990:h-13.5 max-800:rounded-none flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
       <div className='max-1280:px-0 max-640:gap-0 max-640:px-0.5 max-1280:gap-0 max-520:px-4 max-520:gap-4 flex w-full items-center gap-2 px-4 select-none'>
