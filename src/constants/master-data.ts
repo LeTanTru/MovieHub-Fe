@@ -107,12 +107,6 @@ export const dropdownAvatarList: DropdownAvatarItemType[] = [
     icon: FaUser,
     className: 'size-4',
     title: 'Tài khoản'
-  },
-  {
-    link: route.account.changePassword.path,
-    icon: LockKeyhole,
-    className: 'size-4',
-    title: 'Đổi mật khẩu'
   }
 ];
 
@@ -163,22 +157,10 @@ export const userSidebarList: UserSidebarItemType[] = [
     title: 'Thông báo'
   },
   {
-    link: route.account.settings.path,
-    icon: Settings,
-    className: 'size-4',
-    title: 'Cài đặt'
-  },
-  {
     link: route.account.profile.path,
     icon: FaUser,
     className: 'size-4',
     title: 'Tài khoản'
-  },
-  {
-    link: route.account.changePassword.path,
-    icon: LockKeyhole,
-    className: 'size-4',
-    title: 'Đổi mật khẩu'
   }
 ];
 

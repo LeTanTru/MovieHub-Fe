@@ -133,15 +133,3 @@ Guarded by `src/proxy.ts`. Protected prefixes: `/user`, `/account`. Public auth 
 | API endpoints    | `src/constants/api-config.ts`              |
 | Query keys       | `src/constants/master-data.ts`             |
 | Video player     | `src/components/video-player/`             |
-
-## Key Files Reference
-
-| Purpose          | Location                                   |
-| ---------------- | ------------------------------------------ |
-| Root layout      | `src/app/layout.tsx`                       |
-| Route protection | `src/proxy.ts`                             |
-| HTTP client      | `src/utils/http.util.ts`                   |
-| Query provider   | `src/components/providers/query-provider/` |
-| API endpoints    | `src/constants/api-config.ts`              |
-| Query keys       | `src/constants/master-data.ts`             |
-| Video player     | `src/components/video-player/`             |
