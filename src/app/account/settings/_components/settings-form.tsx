@@ -54,22 +54,27 @@ export default function SettingsForm() {
     ]
   );
 
+  const playbackSpeeds = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+
   const onSubmit = async (
     values: SettingBodyType,
     form: UseFormReturn<SettingBodyType>
   ) => {
-    await updateSettingMutate(values, {
-      onSuccess: (res) => {
-        if (res.result) {
-          notify.success('Cập nhật cài đặt thành công');
-          form.reset(values);
+    await updateSettingMutate(
+      { ...values, playbackSpeed: playbackSpeeds[values.playbackSpeed - 1] },
+      {
+        onSuccess: (res) => {
+          if (res.result) {
+            notify.success('Cập nhật cài đặt thành công');
+            form.reset(values);
+          }
+        },
+        onError: (error) => {
+          logger.error('Error while updating settings', error);
+          notify.error('Cập nhật cài đặt thất bại');
         }
-      },
-      onError: (error) => {
-        logger.error('Error while updating settings', error);
-        notify.error('Cập nhật cài đặt thất bại');
       }
-    });
+    );
   };
 
   return (
@@ -117,9 +122,10 @@ export default function SettingsForm() {
                   name='playbackSpeed'
                   required
                   unit='x'
-                  min={0}
-                  max={2}
-                  step={0.25}
+                  min={1}
+                  max={8}
+                  step={1}
+                  markers={playbackSpeeds}
                 />
               </Col>
             </Row>

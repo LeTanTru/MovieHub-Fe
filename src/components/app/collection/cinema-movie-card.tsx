@@ -17,7 +17,7 @@ import {
 } from '@/utils';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
-import { MovieModal } from '@/components/app/movie-card';
+import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 
@@ -118,6 +118,9 @@ export default function CinemaMovieCard({
         exit='exit'
         transition={itemTransition}
         className='group relative w-full'
+        whileTap={{
+          scale: 0.95
+        }}
       >
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}

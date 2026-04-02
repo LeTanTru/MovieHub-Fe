@@ -5,6 +5,9 @@ import { generateSlug, getColorList } from '@/utils';
 import { cn } from '@/lib';
 import Link from 'next/link';
 import { FaAngleRight } from 'react-icons/fa6';
+import { m } from 'framer-motion';
+
+const MotionLink = m(Link);
 
 export default function TopicItem({
   topic,
@@ -19,10 +22,17 @@ export default function TopicItem({
     `linear-gradient(${dir}, ${colors.slice(0, 2).join(', ')})`;
 
   return (
-    <Link
+    <MotionLink
+      whileHover={{
+        y: -10
+      }}
+      whileTap={{
+        scale: 0.95,
+        y: 0
+      }}
       href={`${route.topic.path}/${generateSlug(topic.name)}.${topic.id}`}
       className={cn(
-        'topic-item max-480:w-35 max-480:shrink-0 relative top-0 overflow-hidden transition-all duration-200 ease-linear hover:-translate-y-2',
+        'topic-item max-480:w-35 max-480:shrink-0 relative top-0 overflow-hidden',
         {
           'topic bg-background/50 group max-1280:p-5 rounded-md px-4 py-5':
             isSwitched,
@@ -71,6 +81,6 @@ export default function TopicItem({
           <FaAngleRight strokeWidth={isSwitched ? undefined : 4} />
         </div>
       </div>
-    </Link>
+    </MotionLink>
   );
 }

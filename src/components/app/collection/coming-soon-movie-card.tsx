@@ -10,7 +10,7 @@ import { route } from '@/routes';
 import { isDesktopDevice, renderImageUrl } from '@/utils';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
-import { MovieModal } from '@/components/app/movie-card';
+import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 

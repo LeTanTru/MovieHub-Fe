@@ -64,6 +64,12 @@ export default function PersonCard({
       exit='exit'
       transition={itemTransition}
       className='relative overflow-hidden rounded-lg p-0'
+      whileHover={{
+        y: -10
+      }}
+      whileTap={{
+        scale: 0.95
+      }}
     >
       <div className='flex flex-col items-center justify-center gap-0'>
         {willNavigate ? (

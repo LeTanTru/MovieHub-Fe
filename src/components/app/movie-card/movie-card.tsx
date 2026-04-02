@@ -8,10 +8,10 @@ import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { route } from '@/routes';
 import { isDesktopDevice, renderImageUrl } from '@/utils';
-import MovieModal from './movie-modal';
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
 import { X } from 'lucide-react';
+import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 
@@ -103,6 +103,9 @@ export default function MovieCard({
         exit='exit'
         transition={itemTransition}
         className='relative flex flex-col gap-3'
+        whileTap={{
+          scale: 0.95
+        }}
       >
         <Link
           className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'

@@ -16,7 +16,7 @@ import {
 import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
 import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
-import { MovieModal } from '@/components/app/movie-card';
+import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 
@@ -119,6 +119,9 @@ export default function TopMovieCard({
         exit='exit'
         transition={itemTransition}
         className='group relative flex flex-col gap-3'
+        whileTap={{
+          scale: 0.95
+        }}
       >
         <Link
           className='top-movie-card relative block h-0 w-full overflow-hidden rounded-md pb-[150%] transition-all duration-200 ease-linear'
