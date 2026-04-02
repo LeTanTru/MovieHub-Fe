@@ -28,7 +28,7 @@ export default function Sidebar() {
       <h1 className='max-1120:mb-0 max-1120:text-center max-1360:text-lg max-1360:mb-6 max-1360:font-semibold max-1120:font-medium max-1120:p-4 max-640:pb-2 max-640:text-base max-480:pb-0 mb-8 text-xl font-bold'>
         Quản lý tài khoản
       </h1>
-      <List className='max-1120:flex-row max-1120:justify-center max-1120:gap-x-6 max-990:gap-x-4 max-800:gap-x-3 max-720:gap-x-1 max-640:flex-wrap max-640:grid max-640:grid-cols-4 max-520:grid-cols-3 max-640:justify-center flex flex-col'>
+      <List className='max-1120:flex-row max-1120:justify-center max-1120:gap-8 max-640:gap-4 max-640:justify-center max-520:gap-y-2 max-520:grid-cols-3 max-520:grid flex flex-col'>
         {userSidebarList.map((item) => (
           <ListItem
             key={item.link}
@@ -38,7 +38,7 @@ export default function Sidebar() {
           >
             <Link
               href={item.link}
-              className='max-1120:p-4 max-720:px-3 max-640:text-xs max-800:text-[13px] max-990:flex-col max-420:px-0 flex items-center gap-2 py-4'
+              className='max-768:flex-col max-640:text-[13px] max-640:px-1.5 max-480:text-xs flex items-center gap-2 px-2 py-4'
             >
               <item.icon className={item.className} />
               {item.title}

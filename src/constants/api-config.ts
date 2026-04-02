@@ -32,6 +32,18 @@ const apiConfig = defineApiConfig({
         method: 'POST',
         headers: baseHeader,
         ignoreAuth: true
+      },
+      refreshTokenExternal: {
+        baseUrl: '/api/auth/refresh-token-external',
+        method: 'POST',
+        headers: baseHeader,
+        ignoreAuth: true
+      },
+      validateIntro: {
+        baseUrl: '/api/intro/validate',
+        method: 'POST',
+        headers: baseHeader,
+        ignoreAuth: true
       }
     }
   },

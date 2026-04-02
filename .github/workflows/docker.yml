@@ -36,11 +36,11 @@ jobs:
             NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL=${{ secrets.NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL }}
             NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}
             NEXT_PUBLIC_TINYMCE_URL=${{ secrets.NEXT_PUBLIC_TINYMCE_URL }}
-            NEXT_PUBLIC_APP_USERNAME=${{ secrets.NEXT_PUBLIC_APP_USERNAME }}
-            NEXT_PUBLIC_APP_PASSWORD=${{ secrets.NEXT_PUBLIC_APP_PASSWORD }}
+            APP_USERNAME=${{ secrets.APP_USERNAME }}
+            APP_PASSWORD=${{ secrets.APP_PASSWORD }}
             NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN=${{ secrets.NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN }}
             NEXT_PUBLIC_MEDIA_HOST=${{ secrets.NEXT_PUBLIC_MEDIA_HOST }}
-            NEXT_PUBLIC_ACCESS_KEY=${{ secrets.NEXT_PUBLIC_ACCESS_KEY }}
+            ACCESS_KEY=${{ secrets.ACCESS_KEY }}
             NEXT_PUBLIC_CLIENT_TYPE=${{ secrets.NEXT_PUBLIC_CLIENT_TYPE }}
 
       - name: Show Image Size

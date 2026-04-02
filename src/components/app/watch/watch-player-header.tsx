@@ -1,14 +1,15 @@
+'use client';
+
 import Link from 'next/link';
 import { FaChevronLeft } from 'react-icons/fa6';
 import { route } from '@/routes';
-import { MovieResType } from '@/types';
+import { useWatchPlayer } from '@/app/watch/[slug]/_hooks';
 
-type Props = {
-  movie: MovieResType;
-  videoTitle: string;
-};
+export default function WatchPlayerHeader() {
+  const { movie, videoTitle } = useWatchPlayer();
 
-export default function WatchPlayerHeader({ movie, videoTitle }: Props) {
+  if (!movie) return null;
+
   return (
     <div className='max-1360:mb-4 max-1360:px-6 max-1120:px-4 max-800:mb-2 max-640:mt-4 max-640:mb-0 mb-6 inline-flex w-full items-center gap-2 px-8'>
       <Link
