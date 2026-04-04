@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useVideoQualityOptions } from '@vidstack/react';
 import { VIDEO_QUALITY_MAX } from '@/constants';
 
-type DefaultQualitySetterProps = {
+type DefaultQualityProps = {
   defaultQuality: number;
 };
 
@@ -16,9 +16,9 @@ const QUALITY_MAP: Record<number, number> = {
   4: 9999
 };
 
-export default function DefaultQualitySetter({
+export default function DefaultQuality({
   defaultQuality
-}: DefaultQualitySetterProps) {
+}: DefaultQualityProps) {
   const options = useVideoQualityOptions({ auto: true });
 
   useEffect(() => {

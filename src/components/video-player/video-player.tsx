@@ -7,7 +7,7 @@ import '@vidstack/react/player/styles/default/layouts/video.css';
 import {
   BufferingIndicator,
   CaptionButton,
-  DefaultQualitySetter,
+  DefaultQuality,
   FullscreenToggleButton,
   NextButton,
   PiPToggleButton,
@@ -192,7 +192,7 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
               <Track {...(track as any)} key={track.src} />
             ))}
           </MediaProvider>
-          <DefaultQualitySetter defaultQuality={defaultQuality} />
+          <DefaultQuality defaultQuality={defaultQuality} />
           <DefaultVideoLayout
             smallLayoutWhen={false}
             thumbnails={vttUrl}
