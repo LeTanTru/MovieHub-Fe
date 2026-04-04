@@ -43,7 +43,12 @@ import {
   REVIEW_RATING_GOOD,
   REVIEW_RATING_OK,
   REVIEW_RATING_WONDERFUL,
-  UPLOAD_AVATAR
+  UPLOAD_AVATAR,
+  VIDEO_QUALITY_1080,
+  VIDEO_QUALITY_1440,
+  VIDEO_QUALITY_720,
+  VIDEO_QUALITY_AUTO,
+  VIDEO_QUALITY_MAX
 } from '@/constants/constant';
 import { route } from '@/routes';
 import {
@@ -1649,4 +1654,12 @@ export const favouriteTabs = [
     key: FAVOURITE_TYPE_PERSON,
     label: 'Diễn viên'
   }
+];
+
+export const qualityOptions = [
+  { value: VIDEO_QUALITY_AUTO, label: 'Tự động' },
+  { value: VIDEO_QUALITY_720, label: '720p' },
+  { value: VIDEO_QUALITY_1080, label: '1080p' },
+  { value: VIDEO_QUALITY_1440, label: '1440p' },
+  { value: VIDEO_QUALITY_MAX, label: 'Tối đa' }
 ];

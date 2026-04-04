@@ -17,11 +17,11 @@ import { useState } from 'react';
 import envConfig from '@/config';
 import { useDisclosure } from '@/hooks';
 import { Activity } from '@/components/activity';
-import { useUserSettings, useWatchPlayer } from '@/app/watch/[slug]/_hooks';
+import { useWatchPlayer, usePlayerSettings } from '@/app/watch/[slug]/_hooks';
 
 export default function WatchPlayerVideoArea() {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const userSettings = useUserSettings();
+  const playerSettings = usePlayerSettings();
 
   const {
     opened: isEpisodeListOpen,
@@ -55,7 +55,7 @@ export default function WatchPlayerVideoArea() {
   if (!video) {
     return (
       <div className='aspect-video rounded-tl rounded-tr bg-black'>
-        <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-400'>
+        <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-base text-gray-300'>
           Video cho phim này đang được cập nhật. Vui lòng quay lại sau.
         </p>
       </div>
@@ -112,10 +112,11 @@ export default function WatchPlayerVideoArea() {
               envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
                 ? 0
                 : isMobileDevice() || isTabletDevice()
-                  ? userSettings.audio / 100 || 1
-                  : userSettings.audio / 100 || 0.5
+                  ? playerSettings.audio / 100 || 1
+                  : playerSettings.audio / 100 || 0.5
             }
-            playbackRate={userSettings.playbackSpeed || 1}
+            playbackRate={playerSettings.playbackSpeed || 1}
+            defaultQuality={playerSettings.resolution}
             prev={isSeries && !isFirstEpisode}
             next={isSeries && !isLastEpisode}
             skipOutro={isSeries && !isLastEpisode}

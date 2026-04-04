@@ -8,6 +8,7 @@ enum storageKeys {
   X_CLIENT_TYPE = 'X-Client-Type',
   WATCH_AUTO_NEXT_EPISODE = 'watch_auto_next_episode',
   WATCH_SKIP_INTRO = 'watch_skip_intro',
+  WATCH_RESOLUTION = 'watch_resolution',
   REDIRECT_PATH_AFTER_LOGIN = 'redirect_path_after_login'
 }
 
