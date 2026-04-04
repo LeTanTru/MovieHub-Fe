@@ -9,6 +9,7 @@ import {
   SliderField
 } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
+import { qualityOptions } from '@/constants';
 import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
 import { useUpdateSettingsMutation } from '@/queries';
@@ -134,13 +135,7 @@ export default function SettingsForm() {
                   name='resolution'
                   required
                   label='Độ phân giải'
-                  options={[
-                    { value: 0, label: 'Tự động' },
-                    { value: 1, label: '720p' },
-                    { value: 2, label: '1080p' },
-                    { value: 3, label: '1440p' },
-                    { value: 4, label: 'Tối đa' }
-                  ]}
+                  options={qualityOptions}
                 />
               </Col>
             </Row>

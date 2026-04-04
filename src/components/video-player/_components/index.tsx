@@ -1,5 +1,6 @@
 export { default as BufferingIndicator } from './buffering-indicator';
 export { default as CaptionButton } from './caption-button';
+export { default as DefaultQuality } from './default-quality';
 export { default as FullscreenToggleButton } from './full-screen-toggle-button';
 export { default as NextButton } from './next-button';
 export { default as PiPToggleButton } from './pip-toggle-button';

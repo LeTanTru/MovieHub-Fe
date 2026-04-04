@@ -1,5 +1,6 @@
-import useUserSettings from './use-user-settings';
 import { storageKeys } from '@/constants';
+import { useAuth } from '@/hooks';
+import { SettingResType } from '@/types';
 import { getData, setData } from '@/utils';
 import { useEffect, useReducer } from 'react';
 
@@ -30,7 +31,8 @@ function playerSettingsReducer(
 }
 
 const usePlayerSettings = () => {
-  const userSettings = useUserSettings();
+  const { profile } = useAuth();
+  const userSettings: SettingResType = JSON.parse(profile?.settings || '{}');
 
   const [settings, dispatchSettings] = useReducer(playerSettingsReducer, {
     autoNextEpisode: userSettings.autoNextEpisode || false,
@@ -69,6 +71,7 @@ const usePlayerSettings = () => {
   };
 
   return {
+    ...userSettings,
     autoNextEpisode,
     skipIntro,
     handleToggleAutoNextEpisode,
