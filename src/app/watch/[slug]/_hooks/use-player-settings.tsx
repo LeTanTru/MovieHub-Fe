@@ -40,15 +40,20 @@ const usePlayerSettings = () => {
   const { autoNextEpisode, skipIntro } = settings;
 
   useEffect(() => {
+    const storedAutoNext = getData(storageKeys.WATCH_AUTO_NEXT_EPISODE);
+    const storedSkipIntro = getData(storageKeys.WATCH_SKIP_INTRO);
+
     dispatchSettings({
       type: 'LOAD_SETTINGS',
       payload: {
         autoNextEpisode:
-          getData(storageKeys.WATCH_AUTO_NEXT_EPISODE) === 'true' ||
-          userSettings.autoNextEpisode,
+          storedAutoNext !== null
+            ? storedAutoNext === 'true'
+            : userSettings.autoNextEpisode,
         skipIntro:
-          getData(storageKeys.WATCH_SKIP_INTRO) === 'true' ||
-          userSettings.autoSkipIntro
+          storedSkipIntro !== null
+            ? storedSkipIntro === 'true'
+            : userSettings.autoSkipIntro
       }
     });
   }, [userSettings.autoNextEpisode, userSettings.autoSkipIntro]);
