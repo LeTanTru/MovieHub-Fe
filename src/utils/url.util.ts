@@ -20,27 +20,26 @@ export const generatePath = (
   });
 };
 
-export const renderVideoUrl = (url?: string) => {
-  if (!url) return '';
-  return url.startsWith('https') ? url : `${AppConstants.videoRootUrl}${url}`;
-};
-
-export const renderImageUrl = (
-  url: string | undefined | null,
-  defaultUrl?: string
-) => {
-  if (!url) return defaultUrl || '';
-  return url.startsWith('https') ? url : `${AppConstants.contentRootUrl}${url}`;
-};
-
-export const renderVttUrl = (url: string | undefined | null) => {
+export const renderVideoUrl = (host: string, url?: string) => {
   if (!url) return '';
   return url.startsWith('https')
     ? url
-    : `${AppConstants.publicContentUrl}${url}`;
+    : `https://${host}/v1/file/download-video-resource${url}`;
 };
 
-export const renderFileUrl = (url: string | undefined | null) => {
+export const renderImageUrl = (url: string | undefined | null) => {
+  if (!url) return '';
+  return url.startsWith('https') ? url : `${AppConstants.contentRootUrl}${url}`;
+};
+
+export const renderVttUrl = (host: string, url?: string) => {
+  if (!url) return '';
+  return url.startsWith('https')
+    ? url
+    : `https://${host}/v1/file/public-download${url}`;
+};
+
+export const renderFileUrl = (url?: string) => {
   if (!url) return '';
   return url.startsWith('https') ? url : `${AppConstants.contentRootUrl}${url}`;
 };

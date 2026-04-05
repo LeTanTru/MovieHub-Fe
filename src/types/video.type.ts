@@ -3,6 +3,7 @@ export type VideoResType = {
   createdDate: string;
   description: string;
   duration: number;
+  hostname: string;
   id: string;
   introEnd: number;
   introStart: number;
