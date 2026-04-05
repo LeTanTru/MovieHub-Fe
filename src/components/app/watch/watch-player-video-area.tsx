@@ -76,7 +76,7 @@ export default function WatchPlayerVideoArea() {
             duration={video.duration}
             introEnd={video.introEnd}
             introStart={video.introStart}
-            src={renderVideoUrl(video.content)}
+            src={renderVideoUrl(video.hostname, video.content)}
             thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
             vttUrl={renderVttUrl(video.vttUrl)}
             outroStart={video.outroStart}

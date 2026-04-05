@@ -16,8 +16,8 @@ export default function ScheduleBadge() {
 
   return (
     <div className='mb-8'>
-      <div className='bg-blue-party relative flex items-center gap-4 rounded-md bg-[linear-gradient(90deg,#4158D0,#C850C0)] px-4 py-2 text-white'>
-        <div className='flex h-10 w-10 items-center justify-center rounded-full bg-black/33 pb-1'>
+      <div className='bg-blue-party max-640:gap-2 max-640:px-2 relative flex items-center gap-4 rounded-md bg-[linear-gradient(90deg,#4158D0,#C850C0)] px-4 py-2 text-white'>
+        <div className='max-640:size-8 flex size-10 shrink-0 items-center justify-center rounded-full bg-black/33 pb-1'>
           <Image
             src={bell}
             alt='Bell'
