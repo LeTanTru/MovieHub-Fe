@@ -3,19 +3,21 @@
 import { cn } from '@/lib';
 import { TimeSlider as BaseTimeSlider } from '@vidstack/react';
 
+type TimeSliderProps = {
+  introStart: number;
+  introEnd: number;
+  outroStart: number;
+  duration: number;
+  vttUrl: string;
+};
+
 export default function TimeSlider({
   introStart,
   introEnd,
   outroStart,
   duration,
   vttUrl
-}: {
-  introStart: number;
-  introEnd: number;
-  outroStart: number;
-  duration: number;
-  vttUrl: string;
-}) {
+}: TimeSliderProps) {
   return (
     <BaseTimeSlider.Root className='group relative mx-[7.5px] inline-flex h-10 w-full cursor-pointer touch-none items-center rounded outline-none select-none aria-hidden:hidden'>
       <BaseTimeSlider.Track className='relative z-0 h-1.25 w-full overflow-hidden rounded-sm bg-white/30 ring-sky-400 group-data-focus:ring-[3px]'>
@@ -57,15 +59,17 @@ export default function TimeSlider({
   );
 }
 
+type IntroRangeHighlightProps = {
+  start: number;
+  end: number;
+  duration: number;
+};
+
 function IntroRangeHighlight({
   start,
   end,
   duration
-}: {
-  start: number;
-  end: number;
-  duration: number;
-}) {
+}: IntroRangeHighlightProps) {
   const left = (start / duration) * 100;
   const width = ((end - start) / duration) * 100;
   const styles = {

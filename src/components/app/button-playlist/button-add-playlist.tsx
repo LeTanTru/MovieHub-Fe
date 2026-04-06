@@ -6,15 +6,17 @@ import { useDisclosure } from '@/hooks';
 import { cn } from '@/lib';
 import { FaPlus } from 'react-icons/fa6';
 
+type ButtonAddPlayListProps = {
+  className?: string;
+  text?: string;
+  showText?: boolean;
+};
+
 export default function ButtonAddPlayList({
   className,
   text,
   showText
-}: {
-  className?: string;
-  text?: string;
-  showText?: boolean;
-}) {
+}: ButtonAddPlayListProps) {
   const { opened, open, close } = useDisclosure();
 
   const handleOpen = () => {

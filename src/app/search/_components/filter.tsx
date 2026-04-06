@@ -53,16 +53,7 @@ const isValueSelected = (
   return filter.value === value;
 };
 
-export default function Filter({
-  filters,
-  showFilter,
-  isAllFiltersDefault,
-  handleApplyFilters,
-  handleClearFilters,
-  handleCloseFilters,
-  handleFilterChange,
-  handleShowFilter
-}: {
+type FilterProps = {
   filters: { key: SearchKeys; value: string | number | string[] }[];
   showFilter: boolean;
   isAllFiltersDefault: boolean;
@@ -77,7 +68,18 @@ export default function Filter({
     value: string | number | string[];
   }) => void;
   handleShowFilter: () => void;
-}) {
+};
+
+export default function Filter({
+  filters,
+  showFilter,
+  isAllFiltersDefault,
+  handleApplyFilters,
+  handleClearFilters,
+  handleCloseFilters,
+  handleFilterChange,
+  handleShowFilter
+}: FilterProps) {
   const { data: categoryListData } = useCategoryListQuery({
     params: {
       size: MAX_PAGE_SIZE

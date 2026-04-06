@@ -4,17 +4,19 @@ import { Button, Col, Row } from '@/components/form';
 import { formatSecondsToHMS } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 
+type WatchAskContinueModalProps = {
+  lastWatchedSeconds: number;
+  opened: boolean;
+  onContinueWatching: () => void;
+  onStartOver: () => void;
+};
+
 export default function WatchAskContinueModal({
   opened,
   lastWatchedSeconds,
   onContinueWatching,
   onStartOver
-}: {
-  lastWatchedSeconds: number;
-  opened: boolean;
-  onContinueWatching: () => void;
-  onStartOver: () => void;
-}) {
+}: WatchAskContinueModalProps) {
   return (
     <AnimatePresence>
       {opened && (

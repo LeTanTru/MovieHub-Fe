@@ -32,6 +32,15 @@ const itemTransition: Transition = {
   default: { duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }
 };
 
+type PersonCardProps = {
+  person: PersonResType;
+  showFullName?: boolean;
+  willNavigate?: boolean;
+  dir?: Dir;
+  onDelete?: (id: string) => void;
+  params?: PersonSearchType;
+};
+
 export default function PersonCard({
   person,
   showFullName,
@@ -39,14 +48,7 @@ export default function PersonCard({
   dir = 'up',
   onDelete,
   params = EMPTY_OBJECT
-}: {
-  person: PersonResType;
-  showFullName?: boolean;
-  willNavigate?: boolean;
-  dir?: Dir;
-  onDelete?: (id: string) => void;
-  params?: PersonSearchType;
-}) {
+}: PersonCardProps) {
   const itemVariants = makeItemVariants(dir);
   const { serializeParams } = useQueryParams();
   let link = `${route.person.path}/${person.id}`;

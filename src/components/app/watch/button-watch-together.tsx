@@ -4,11 +4,13 @@ import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { CiStreamOn } from 'react-icons/ci';
 
+type ButtonWatchTogetherProps = {
+  className?: string;
+};
+
 export default function ButtonWatchTogether({
   className
-}: {
-  className?: string;
-}) {
+}: ButtonWatchTogetherProps) {
   return (
     <Button
       variant='ghost'

@@ -13,19 +13,21 @@ import { renderImageUrl } from '@/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+type EpisodeItemProps = {
+  episode: EpisodeResType;
+  watchUrl: string;
+  selectedSeason: string;
+  currentEpisode?: string;
+  onClick?: () => void;
+};
+
 function EpisodeItem({
   episode,
   watchUrl,
   selectedSeason,
   currentEpisode,
   onClick
-}: {
-  episode: EpisodeResType;
-  watchUrl: string;
-  selectedSeason: string;
-  currentEpisode?: string;
-  onClick?: () => void;
-}) {
+}: EpisodeItemProps) {
   return (
     <Link
       href={`${watchUrl}?season=${selectedSeason}&episode=${episode.label}`}
@@ -58,15 +60,17 @@ function EpisodeItem({
   );
 }
 
+type EpisodeListProps = {
+  isOpen?: boolean;
+  onToggle?: () => void;
+  seasons: SeasonResType[];
+};
+
 export default function EpisodeList({
   isOpen = false,
   onToggle,
   seasons
-}: {
-  isOpen?: boolean;
-  onToggle?: () => void;
-  seasons: SeasonResType[];
-}) {
+}: EpisodeListProps) {
   const pathname = usePathname();
   const { searchParams } = useQueryParams<{
     season: string;

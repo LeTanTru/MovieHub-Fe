@@ -16,17 +16,19 @@ import {
 } from '@/utils';
 import { useEffect, useRef } from 'react';
 
+type TrailerModalProps = {
+  video: VideoResType;
+  opened: boolean;
+  onClose: () => void;
+  token: string;
+};
+
 export default function TrailerModal({
   opened,
   video,
   onClose,
   token
-}: {
-  video: VideoResType;
-  opened: boolean;
-  onClose: () => void;
-  token: string;
-}) {
+}: TrailerModalProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
   const bodyHeight = useBodyHeight<HTMLDivElement>(bodyRef, [opened]);
 

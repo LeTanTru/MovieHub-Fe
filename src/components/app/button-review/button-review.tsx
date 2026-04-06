@@ -11,13 +11,15 @@ import Link from 'next/link';
 import { FaStar } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
+type ButtonReviewProps = {
+  movieId: string;
+  className?: string;
+};
+
 export default function ButtonReview({
   movieId,
   className
-}: {
-  movieId: string;
-  className?: string;
-}) {
+}: ButtonReviewProps) {
   const { opened, open, close } = useDisclosure();
   const { isAuthenticated } = useAuth();
 

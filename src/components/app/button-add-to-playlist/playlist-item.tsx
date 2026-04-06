@@ -2,17 +2,19 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib';
 import { PlaylistResType } from '@/types';
 
+type PlaylistItemProps = {
+  playlist: PlaylistResType;
+  checked: boolean;
+  disabled?: boolean;
+  onToggle: (playlistId: string) => void;
+};
+
 export default function PlaylistItem({
   playlist,
   checked,
   disabled = false,
   onToggle
-}: {
-  playlist: PlaylistResType;
-  checked: boolean;
-  disabled?: boolean;
-  onToggle: (playlistId: string) => void;
-}) {
+}: PlaylistItemProps) {
   const handleToggle = () => {
     if (disabled) {
       return;

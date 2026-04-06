@@ -19,7 +19,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 
-type MovieItemProps = {
+type AnimeItemProps = {
   movie: MovieResType;
   isGrabbing: boolean;
   onPointerDown: () => void;
@@ -37,7 +37,7 @@ export default function AnimeItem({
   handleLike,
   handleRemoveLike,
   isLiked
-}: MovieItemProps) {
+}: AnimeItemProps) {
   const movieLink = `${route.movie.path}/${movie.slug}.${movie.id}`;
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 

@@ -7,15 +7,14 @@ import Link from 'next/link';
 import { FaAngleRight } from 'react-icons/fa6';
 import { m } from 'framer-motion';
 
-const MotionLink = m(Link);
+const MotionLink = m.create(Link);
 
-export default function TopicItem({
-  topic,
-  isSwitched
-}: {
+type TopicItemProps = {
   topic: CollectionResType;
   isSwitched: boolean;
-}) {
+};
+
+export default function TopicItem({ topic, isSwitched }: TopicItemProps) {
   const colors = getColorList(topic.color || '[]');
 
   const getGradientStyle = (dir: string = 'to bottom') =>

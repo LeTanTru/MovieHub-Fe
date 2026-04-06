@@ -8,13 +8,15 @@ function PersonCardSkeleton() {
   );
 }
 
+type PersonGridSkeletonProps = {
+  className?: string;
+  skeletonCount?: number;
+};
+
 export default function PersonGridSkeleton({
   className,
   skeletonCount = 16
-}: {
-  className?: string;
-  skeletonCount?: number;
-}) {
+}: PersonGridSkeletonProps) {
   return (
     <div className={cn('grid w-full grid-cols-8 gap-6', className)}>
       <AnimatePresence mode='popLayout' initial={false}>

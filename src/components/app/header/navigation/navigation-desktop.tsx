@@ -9,11 +9,13 @@ import { cn } from '@/lib';
 import { List, ListItem } from '@/components/list';
 import { usePathname } from 'next/navigation';
 
+type NavigationDesktopProps = {
+  navigationList: ItemProps[];
+};
+
 export default function NavigationDesktop({
   navigationList
-}: {
-  navigationList: ItemProps[];
-}) {
+}: NavigationDesktopProps) {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<string | null>(null);
 

@@ -4,7 +4,11 @@ import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { FaFlag } from 'react-icons/fa6';
 
-export default function ButtonReport({ className }: { className?: string }) {
+type ButtonReportProps = {
+  className?: string;
+};
+
+export default function ButtonReport({ className }: ButtonReportProps) {
   return (
     <Button
       variant='ghost'

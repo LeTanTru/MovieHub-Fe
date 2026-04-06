@@ -32,7 +32,11 @@ type SearchFormProps = {
   formClassName?: string;
 };
 
-function MovieItem({ movie }: { movie: MovieResType }) {
+type MovieItemProps = {
+  movie: MovieResType;
+};
+
+function MovieItem({ movie }: MovieItemProps) {
   const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
 

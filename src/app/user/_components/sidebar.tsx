@@ -59,7 +59,11 @@ export default function Sidebar() {
   );
 }
 
-const ProfileSection = ({ profile }: { profile: ProfileResType }) => {
+type ProfileSectionProps = {
+  profile: ProfileResType;
+};
+
+const ProfileSection = ({ profile }: ProfileSectionProps) => {
   const GenderIcon = genderIconMaps[profile.gender || GENDER_OTHER];
 
   return (

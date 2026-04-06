@@ -1,11 +1,13 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib';
 
+type DiscussionSkeletonProps = {
+  className?: string;
+};
+
 export default function DiscussionSkeleton({
   className
-}: {
-  className?: string;
-}) {
+}: DiscussionSkeletonProps) {
   return (
     <div
       className={cn(

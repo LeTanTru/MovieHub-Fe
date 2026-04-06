@@ -14,7 +14,7 @@ import { VerticalBarLoading } from '@/components/loading';
 import Image from 'next/image';
 import { m } from 'framer-motion';
 
-const MotionLink = m(Link);
+const MotionLink = m.create(Link);
 
 export default function ScheduleList() {
   const [date, setDate] = useState<string>(() =>

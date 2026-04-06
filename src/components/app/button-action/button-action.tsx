@@ -2,19 +2,21 @@ import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { domMax, LazyMotion, m } from 'framer-motion';
 
+type ButtonActionProps = {
+  action: string;
+  label: string;
+  activeKey: string;
+  className?: string;
+  setActiveKey: (key: string) => void;
+};
+
 export default function ButtonAction({
   action,
   label,
   activeKey,
   className,
   setActiveKey
-}: {
-  action: string;
-  label: string;
-  activeKey: string;
-  className?: string;
-  setActiveKey: (key: string) => void;
-}) {
+}: ButtonActionProps) {
   const isActive = action === activeKey;
 
   return (

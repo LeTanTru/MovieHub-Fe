@@ -11,11 +11,11 @@ import { PlaylistResType } from '@/types';
 import { FaRegCirclePlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
-export default function PlaylistCard({
-  playlist
-}: {
+type PlaylistCardProps = {
   playlist: PlaylistResType;
-}) {
+};
+
+export default function PlaylistCard({ playlist }: PlaylistCardProps) {
   const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
     useShallow((s) => ({
       selectedPlaylist: s.selectedPlaylist,

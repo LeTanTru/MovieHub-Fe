@@ -4,17 +4,19 @@ import { m } from 'framer-motion';
 import { ReactNode } from 'react';
 import { cn } from '@/lib';
 
+type MotionWrapperProps = {
+  children: ReactNode;
+  uniqueKey?: string;
+  direction: number;
+  className?: string;
+};
+
 export default function MotionWrapper({
   children,
   uniqueKey,
   direction,
   className
-}: {
-  children: ReactNode;
-  uniqueKey?: string;
-  direction: number;
-  className?: string;
-}) {
+}: MotionWrapperProps) {
   return (
     <m.div
       key={uniqueKey}

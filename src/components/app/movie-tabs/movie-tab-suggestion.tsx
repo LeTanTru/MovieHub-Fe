@@ -8,11 +8,13 @@ import { useSuggestionMovieListQuery } from '@/queries';
 import MotionWrapper from './motion-wrapper';
 import { MovieTabHeading } from '@/components/app/heading';
 
+type MovieTabSuggestionProps = {
+  direction: number;
+};
+
 export default function MovieTabSuggestion({
   direction
-}: {
-  direction: number;
-}) {
+}: MovieTabSuggestionProps) {
   const { slug } = useParams<{ slug: string }>();
   const movieId = getIdFromSlug(slug);
 

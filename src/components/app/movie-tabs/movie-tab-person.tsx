@@ -12,13 +12,15 @@ import {
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 
+type MovieTabPersonProps = {
+  kind: number;
+  direction: number;
+};
+
 export default function MovieTabPerson({
   kind,
   direction
-}: {
-  kind: number;
-  direction: number;
-}) {
+}: MovieTabPersonProps) {
   const { moviePersons } = useMovieStore(
     useShallow((s) => ({ moviePersons: s.moviePersons }))
   );

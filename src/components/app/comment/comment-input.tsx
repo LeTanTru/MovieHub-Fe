@@ -20,11 +20,11 @@ import { type UseFormReturn } from 'react-hook-form';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaRegFaceGrinBeam } from 'react-icons/fa6';
 
-export default function CommentInput({
-  isLoading = false
-}: {
+type CommentInputProps = {
   isLoading?: boolean;
-}) {
+};
+
+export default function CommentInput({ isLoading = false }: CommentInputProps) {
   const { isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
   const formMethodsRef = useRef<UseFormReturn<CommentBodyType> | null>(null);

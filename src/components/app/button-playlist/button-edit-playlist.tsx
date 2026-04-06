@@ -6,11 +6,13 @@ import { useDisclosure } from '@/hooks';
 import { PlaylistResType } from '@/types';
 import { FaPen } from 'react-icons/fa6';
 
+type ButtonEditPlaylistProps = {
+  playlist: PlaylistResType;
+};
+
 export default function ButtonEditPlaylist({
   playlist
-}: {
-  playlist: PlaylistResType;
-}) {
+}: ButtonEditPlaylistProps) {
   const { opened, open, close } = useDisclosure();
 
   const handleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {

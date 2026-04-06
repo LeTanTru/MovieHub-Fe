@@ -1,13 +1,12 @@
 import { cn } from '@/lib';
 import Link from 'next/link';
 
-export const TagWrapper = ({
-  children,
-  className
-}: {
+type TagWrapperProps = {
   children: React.ReactNode;
   className?: string;
-}) => {
+};
+
+export const TagWrapper = ({ children, className }: TagWrapperProps) => {
   return (
     <div
       className={cn(
@@ -20,7 +19,11 @@ export const TagWrapper = ({
   );
 };
 
-export const TagIMDb = ({ value }: { value: string | number }) => {
+type TagIMDbProps = {
+  value: string | number;
+};
+
+export const TagIMDb = ({ value }: TagIMDbProps) => {
   return (
     <div className='border-golden-glow before:text-golden-glow inline-flex shrink-0 items-center rounded-[0.33rem] border border-solid bg-transparent px-[0.4rem] py-0 text-xs leading-6 text-white before:relative before:pr-1 before:text-[10px] before:font-medium before:content-["IMDb"]'>
       <span>{value}</span>
@@ -28,13 +31,12 @@ export const TagIMDb = ({ value }: { value: string | number }) => {
   );
 };
 
-export const TagAgeRating = ({
-  value,
-  className
-}: {
+type TagAgeRatingProps = {
   value: string | number;
   className?: string;
-}) => {
+};
+
+export const TagAgeRating = ({ value, className }: TagAgeRatingProps) => {
   return (
     <div
       className={cn(
@@ -49,13 +51,12 @@ export const TagAgeRating = ({
   );
 };
 
-export const TagNormal = ({
-  value,
-  className
-}: {
+type TagNormalProps = {
   value: string | number;
   className?: string;
-}) => {
+};
+
+export const TagNormal = ({ value, className }: TagNormalProps) => {
   return (
     <div
       className={cn(
@@ -68,13 +69,12 @@ export const TagNormal = ({
   );
 };
 
-export const TagCategory = ({
-  text,
-  className
-}: {
+type TagCategoryProps = {
   text: string;
   className?: string;
-}) => {
+};
+
+export const TagCategory = ({ text, className }: TagCategoryProps) => {
   return (
     <div
       className={cn(
@@ -87,13 +87,12 @@ export const TagCategory = ({
   );
 };
 
-export const TagCategoryLink = ({
-  href,
-  text
-}: {
+type TagCategoryLinkProps = {
   href: string;
   text: string;
-}) => {
+};
+
+export const TagCategoryLink = ({ href, text }: TagCategoryLinkProps) => {
   return (
     <Link
       href={href}

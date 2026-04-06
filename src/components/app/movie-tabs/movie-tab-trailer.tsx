@@ -17,7 +17,11 @@ import { useShallow } from 'zustand/shallow';
 import Image from 'next/image';
 import MotionWrapper from './motion-wrapper';
 
-export default function MovieTabTrailer({ direction }: { direction: number }) {
+type MovieTabTrailerProps = {
+  direction: number;
+};
+
+export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
   const [toggle, setToggle] = useState(true);
   const { opened, open, close } = useDisclosure();
   const [isFetching, setIsFetching] = useState(false);

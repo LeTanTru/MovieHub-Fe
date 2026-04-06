@@ -28,6 +28,15 @@ import CommentItemSkeleton from './comment-item-skeleton';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
 
+type CommentListProps = {
+  commentList: CommentResType[];
+  isLoading?: boolean;
+  hasMore?: boolean;
+  remainingCount?: number;
+  isLoadMoreLoading?: boolean;
+  onLoadMore?: () => void;
+};
+
 export default function CommentList({
   commentList,
   isLoading = false,
@@ -35,14 +44,7 @@ export default function CommentList({
   remainingCount = 0,
   isLoadMoreLoading = false,
   onLoadMore
-}: {
-  commentList: CommentResType[];
-  isLoading?: boolean;
-  hasMore?: boolean;
-  remainingCount?: number;
-  isLoadMoreLoading?: boolean;
-  onLoadMore?: () => void;
-}) {
+}: CommentListProps) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
 

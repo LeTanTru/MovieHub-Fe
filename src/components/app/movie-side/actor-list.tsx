@@ -5,7 +5,11 @@ import { PersonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import Link from 'next/link';
 
-const ActorCell = ({ actor }: { actor: PersonResType }) => {
+type ActorCellProps = {
+  actor: PersonResType;
+};
+
+const ActorCell = ({ actor }: ActorCellProps) => {
   return (
     <div className='flex flex-col items-center gap-3 text-center'>
       <Link
@@ -31,7 +35,11 @@ const ActorCell = ({ actor }: { actor: PersonResType }) => {
   );
 };
 
-export default function ActorList({ actors }: { actors: PersonResType[] }) {
+type ActorListProps = {
+  actors: PersonResType[];
+};
+
+export default function ActorList({ actors }: ActorListProps) {
   return (
     <div
       className={cn('max-1120:hidden mb-5 flex-wrap items-end gap-2', {

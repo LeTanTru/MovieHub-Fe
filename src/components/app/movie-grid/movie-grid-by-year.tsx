@@ -13,13 +13,15 @@ function groupByYear(list: MovieResType[]) {
   }, {});
 }
 
+type MovieGridByYearProps = {
+  movieList: MovieResType[];
+  className?: string;
+};
+
 export default function MovieGridByYear({
   movieList,
   className
-}: {
-  movieList: MovieResType[];
-  className?: string;
-}) {
+}: MovieGridByYearProps) {
   const grouped = groupByYear(movieList);
 
   return Object.keys(grouped)

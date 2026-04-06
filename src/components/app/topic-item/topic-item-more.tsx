@@ -3,15 +3,17 @@ import { cn } from '@/lib';
 import Link from 'next/link';
 import { m } from 'framer-motion';
 
-const MotionLink = m(Link);
+const MotionLink = m.create(Link);
+
+type TopicItemMoreProps = {
+  moreCount: number;
+  isSwitched: boolean;
+};
 
 export default function TopicItemMore({
   moreCount,
   isSwitched
-}: {
-  moreCount: number;
-  isSwitched: boolean;
-}) {
+}: TopicItemMoreProps) {
   return (
     <MotionLink
       whileHover={{

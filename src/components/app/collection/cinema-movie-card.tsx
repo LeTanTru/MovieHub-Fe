@@ -21,6 +21,11 @@ import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 
+type CinemaMovieCardProps = {
+  movie: MovieResType;
+  dir?: Dir;
+};
+
 const makeItemVariants = (dir: Dir): Variants => {
   const delta = 10;
   const from = dir === 'down' ? -delta : delta;
@@ -44,10 +49,7 @@ const EDGE_PADDING = 20;
 export default function CinemaMovieCard({
   movie,
   dir = 'up'
-}: {
-  movie: MovieResType;
-  dir?: Dir;
-}) {
+}: CinemaMovieCardProps) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
   const isDesktop = isDesktopDevice();

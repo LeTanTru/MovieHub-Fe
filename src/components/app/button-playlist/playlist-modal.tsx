@@ -15,15 +15,17 @@ import { PlaylistBodyType, PlaylistResType } from '@/types';
 import { notify } from '@/utils';
 import { useState } from 'react';
 
+type PlaylistModalProps = {
+  opened: boolean;
+  onClose: () => void;
+  playlist?: PlaylistResType;
+};
+
 export default function PlaylistModal({
   opened,
   onClose,
   playlist
-}: {
-  opened: boolean;
-  onClose: () => void;
-  playlist?: PlaylistResType;
-}) {
+}: PlaylistModalProps) {
   const queryClient = getQueryClient();
   const {
     mutateAsync: createPlaylistMutate,

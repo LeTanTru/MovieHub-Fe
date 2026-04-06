@@ -9,7 +9,11 @@ import WatchContainer from './watch-container';
 import WatchPlayer from './watch-player';
 import WatchSkeleton from './watch-skeleton';
 
-export default function Watch({ id }: { id: string }) {
+type WatchProps = {
+  id: string;
+};
+
+export default function Watch({ id }: WatchProps) {
   const { setMovie, setMoviePersons } = useMovieStore(
     useShallow((s) => ({
       setMovie: s.setMovie,

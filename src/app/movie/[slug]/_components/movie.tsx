@@ -11,7 +11,11 @@ import { useShallow } from 'zustand/shallow';
 import MovieSkeleton from './movie-skeleton';
 import NotFound from './not-found';
 
-export default function Movie({ id }: { id: string }) {
+type MovieProps = {
+  id: string;
+};
+
+export default function Movie({ id }: MovieProps) {
   const { setMovie, setMoviePersons } = useMovieStore(
     useShallow((s) => ({
       setMovie: s.setMovie,
