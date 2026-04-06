@@ -1,9 +1,10 @@
 'use client';
 
-import './latest-country-movie-list.css';
-import Link from 'next/link';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import './latest-country-movie-list.css';
+
+import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { CollectionResType } from '@/types';
 import { route } from '@/routes';

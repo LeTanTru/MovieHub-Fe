@@ -6,8 +6,7 @@ import {
   MovieNextEpisodeResType,
   MovieResType,
   MovieScheduleResType,
-  MovieSearchType,
-  MovieSurveyResType
+  MovieSearchType
 } from '@/types';
 import { http } from '@/utils';
 
@@ -51,9 +50,7 @@ const movieApiRequest = {
           id
         }
       }
-    ),
-  getSurveyList: () =>
-    http.get<ApiResponse<MovieSurveyResType[]>>(apiConfig.movie.getSurveyList)
+    )
 };
 
 export default movieApiRequest;

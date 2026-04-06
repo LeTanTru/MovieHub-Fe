@@ -13,7 +13,7 @@ import {
 } from '@/queries';
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
-import { getData, notify, removeData, setMultipleData } from '@/utils';
+import { getData, notify, removeData, setData } from '@/utils';
 import Image from 'next/image';
 
 export default function ButtonLoginGoogle() {
@@ -40,12 +40,13 @@ export default function ButtonLoginGoogle() {
     try {
       const res = await loginGoogleMutate(code);
       if (res.result) {
-        setMultipleData({
-          [storageKeys.ACCESS_TOKEN]: res.access_token,
-          [storageKeys.REFRESH_TOKEN]: res.refresh_token
-        });
+        setData(storageKeys.ACCESS_TOKEN, res.access_token);
+        setData(storageKeys.REFRESH_TOKEN, res.refresh_token);
+
         await setCookieServerMutate(res);
+
         notify.success('Đăng nhập thành công');
+
         const profile = await getProfile();
         const profileData = profile.data?.data;
 

@@ -2,7 +2,7 @@
 
 import { Col, Row } from '@/components/form';
 import SurveyInfo from './survey-info';
-import SurveyMovieList from './survey-movie-list';
+import SurveyList from './survey-list';
 import { logoWithText } from '@/assets';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -28,7 +28,7 @@ export default function Survey() {
           <SurveyInfo />
         </Col>
         <Col className='grid-c-8 pl-20'>
-          <SurveyMovieList />
+          <SurveyList />
         </Col>
       </Row>
     </div>

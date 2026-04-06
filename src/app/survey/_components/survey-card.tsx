@@ -1,21 +1,21 @@
 'use client';
 
-import { MovieSurveyResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import { m } from 'framer-motion';
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 import { cn } from '@/lib';
 import Tilt from 'react-parallax-tilt';
+import { SurveyResType } from '@/types';
 
-export default function SurveyMovieCard({
+export default function SurveyCard({
   movie,
   isSelected,
   onClick
 }: {
-  movie: MovieSurveyResType;
+  movie: SurveyResType;
   isSelected: boolean;
-  onClick: (movie: MovieSurveyResType) => void;
+  onClick: (movie: SurveyResType) => void;
 }) {
   return (
     <Tilt

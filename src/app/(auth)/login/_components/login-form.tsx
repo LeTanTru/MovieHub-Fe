@@ -3,7 +3,7 @@
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import { getData, notify, removeData, setMultipleData } from '@/utils';
+import { getData, notify, removeData, setData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
@@ -40,18 +40,20 @@ export default function LoginForm() {
     try {
       const res = await loginMutate(values);
       if (res.access_token) {
-        setMultipleData({
-          [storageKeys.ACCESS_TOKEN]: res.access_token,
-          [storageKeys.REFRESH_TOKEN]: res.refresh_token
-        });
+        setData(storageKeys.ACCESS_TOKEN, res.access_token);
+        setData(storageKeys.REFRESH_TOKEN, res.refresh_token);
+
         await setCookieServerMutate(res);
+
         notify.success('Đăng nhập thành công');
+
         const profile = await getProfile();
         const profileData = profile.data?.data;
 
         if (profileData) {
           setProfile(profileData);
         }
+
         setTimeout(() => {
           const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
           removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);

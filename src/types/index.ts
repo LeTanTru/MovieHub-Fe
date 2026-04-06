@@ -21,6 +21,7 @@ export * from './search.type';
 export * from './settings.type';
 export * from './sidebar.type';
 export * from './style.type';
+export * from './survey.type';
 export * from './upload.type';
 export * from './video.type';
 export * from './watch-history.type';

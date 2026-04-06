@@ -1,11 +1,8 @@
 import { authApiRequest } from '@/api-requests';
 import envConfig from '@/config';
+import { storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import {
-  isAxiosError,
-  setAccessTokenToCookie,
-  setRefreshTokenToCookie
-} from '@/utils';
+import { isAxiosError, setCookieData } from '@/utils';
 import { HttpStatusCode } from 'axios';
 
 const maxAge = 60 * 60 * 24 * 7;
@@ -19,7 +16,7 @@ export async function POST(request: Request) {
       const accessToken = res.access_token;
       const refreshToken = res.refresh_token;
 
-      setAccessTokenToCookie(accessToken, {
+      setCookieData(storageKeys.ACCESS_TOKEN, accessToken, {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',
@@ -27,7 +24,7 @@ export async function POST(request: Request) {
         maxAge
       });
 
-      setRefreshTokenToCookie(refreshToken, {
+      setCookieData(storageKeys.REFRESH_TOKEN, refreshToken, {
         path: '/',
         httpOnly: true,
         sameSite: 'lax',

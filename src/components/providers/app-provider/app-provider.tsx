@@ -1,9 +1,10 @@
 'use client';
 
+import { storageKeys } from '@/constants';
 import { useNavigate } from '@/hooks';
 import { useProfileQuery } from '@/queries';
 import { useAppLoadingStore, useAuthStore } from '@/store';
-import { getAccessTokenFromLocalStorage, getData, removeData } from '@/utils';
+import { getData, removeData } from '@/utils';
 import { domAnimation, LazyMotion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
@@ -15,7 +16,7 @@ export default function AppProvider({
 }) {
   const navigate = useNavigate();
   const pathname = usePathname();
-  const accessToken = getAccessTokenFromLocalStorage();
+  const accessToken = getData(storageKeys.ACCESS_TOKEN);
   const setProfile = useAuthStore((s) => s.setProfile);
   const setLoading = useAppLoadingStore((s) => s.setLoading);
 
