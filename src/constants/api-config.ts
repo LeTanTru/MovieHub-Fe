@@ -243,13 +243,6 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       ignoreAuth: true,
       isRequiredXClientType: true
-    },
-    getSurveyList: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie/list-survey`,
-      method: 'GET',
-      headers: baseHeader,
-      ignoreAuth: false,
-      isRequiredXClientType: true
     }
   },
   moviePerson: {
@@ -500,6 +493,20 @@ const apiConfig = defineApiConfig({
       method: 'GET',
       headers: baseHeader,
       ignoreAuth: true,
+      isRequiredXClientType: true
+    }
+  },
+  survey: {
+    getSurveyList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/list-survey`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    makeSurvey: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/make-survey`,
+      method: 'POST',
+      headers: baseHeader,
       isRequiredXClientType: true
     }
   }

@@ -9,16 +9,11 @@ import type {
   RefreshTokenResType
 } from '@/types';
 import {
-  getAccessTokenFromLocalStorage,
+  getCookieData,
   getData,
-  getRefreshTokenFromLocalStorage,
-  setAccessTokenToLocalStorage,
-  setRefreshTokenToLocalStorage,
-  getAccessTokenFromCookie,
-  getRefreshTokenFromCookie,
-  setAccessTokenToCookie,
-  setRefreshTokenToCookie,
-  removeData
+  removeData,
+  setCookieData,
+  setData
 } from '@/utils';
 import axios, {
   AxiosError,
@@ -57,9 +52,9 @@ const processQueue = (error: any, token: string | null = null) => {
 const refreshToken = async () => {
   let token: string | null = null;
   if (isClient()) {
-    token = getRefreshTokenFromLocalStorage();
+    token = getData(storageKeys.REFRESH_TOKEN);
   } else {
-    token = await getRefreshTokenFromCookie();
+    token = await getCookieData(storageKeys.REFRESH_TOKEN);
   }
   const res: ApiResponse<RefreshTokenResType> = await axiosInstance.post(
     apiConfig.api.auth.refreshTokenExternal.baseUrl,
@@ -74,11 +69,13 @@ const refreshToken = async () => {
     const newRefreshToken = data.refresh_token;
     await axiosInstance.post(apiConfig.api.auth.refreshToken.baseUrl, data);
     if (isClient()) {
-      if (newAccessToken) setAccessTokenToLocalStorage(newAccessToken);
-      if (newRefreshToken) setRefreshTokenToLocalStorage(newRefreshToken);
+      if (newAccessToken) setData(storageKeys.ACCESS_TOKEN, newAccessToken);
+      if (newRefreshToken) setData(storageKeys.REFRESH_TOKEN, newRefreshToken);
     } else {
-      if (newAccessToken) await setAccessTokenToCookie(newAccessToken);
-      if (newRefreshToken) await setRefreshTokenToCookie(newRefreshToken);
+      if (newAccessToken)
+        await setCookieData(storageKeys.ACCESS_TOKEN, newAccessToken);
+      if (newRefreshToken)
+        await setCookieData(storageKeys.REFRESH_TOKEN, newRefreshToken);
     }
   }
   return res.data?.access_token;
@@ -176,9 +173,9 @@ export const sendRequest = async <T>(
 
   if (!ignoreAuth) {
     if (isClient()) {
-      accessToken = getAccessTokenFromLocalStorage();
+      accessToken = getData(storageKeys.ACCESS_TOKEN);
     } else {
-      accessToken = await getAccessTokenFromCookie();
+      accessToken = await getCookieData(storageKeys.ACCESS_TOKEN);
     }
   }
 

@@ -14,4 +14,5 @@ export { default as playlistApiRequest } from './playlist.api-request';
 export { default as reviewApiRequest } from './review.api-request';
 export { default as settingsApiRequest } from './settings.api-request';
 export { default as sidebarApiRequest } from './sidebar.api-request';
+export { default as surveyApiRequest } from './survey.api-request';
 export { default as watchHistoryApiRequest } from './watch-history.api-request';

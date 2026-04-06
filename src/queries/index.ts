@@ -14,4 +14,5 @@ export * from './playlist.query';
 export * from './review.query';
 export * from './settings.query';
 export * from './sidebar.query';
+export * from './survey.query';
 export * from './watch-history.query';

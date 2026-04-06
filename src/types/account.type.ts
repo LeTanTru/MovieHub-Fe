@@ -19,4 +19,5 @@ export type ProfileResType = {
   };
   gender: number;
   settings: string;
+  isMakeSurvey: boolean;
 };
