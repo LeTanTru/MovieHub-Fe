@@ -83,7 +83,7 @@ const TextAreaField = <T extends FieldValues>(
 
   useEffect(() => {
     resizeTextarea();
-  }, [fieldValue]);
+  }, [fieldValue]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <FormField

@@ -5,13 +5,12 @@ import { getYearFromDate, parseJSON, renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function TopViewItem({
-  movie,
-  index
-}: {
+type TopViewItemProps = {
   movie: MovieResType;
   index: number;
-}) {
+};
+
+export default function TopViewItem({ movie, index }: TopViewItemProps) {
   const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
 

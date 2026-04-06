@@ -15,6 +15,12 @@ import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 
+type MovieCardProps = {
+  movie: MovieResType;
+  dir?: Dir;
+  onDelete?: (id: string) => void;
+};
+
 const makeItemVariants = (dir: Dir): Variants => {
   const delta = 10;
   const from = dir === 'down' ? -delta : delta;
@@ -39,11 +45,7 @@ export default function MovieCard({
   movie,
   dir = 'up',
   onDelete
-}: {
-  movie: MovieResType;
-  dir?: Dir;
-  onDelete?: (id: string) => void;
-}) {
+}: MovieCardProps) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
   const isDesktop = isDesktopDevice();

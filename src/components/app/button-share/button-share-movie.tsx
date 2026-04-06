@@ -23,12 +23,14 @@ const variants = cva('', {
   }
 });
 
+type ButtonShareMovieProps = {
+  className?: string;
+} & VariantProps<typeof variants>;
+
 export default function ButtonShareMovie({
   className,
   variant
-}: {
-  className?: string;
-} & VariantProps<typeof variants>) {
+}: ButtonShareMovieProps) {
   const pathname = usePathname();
   const [link, setLink] = useState('');
   const { iconRef, startAnimation } = useClickAnimation();

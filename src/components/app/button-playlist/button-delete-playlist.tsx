@@ -13,7 +13,13 @@ import { notify } from '@/utils';
 import { FaTrash } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
-export default function ButtonDeletePlaylist({ id }: { id: string }) {
+type ButtonDeletePlaylistProps = {
+  id: string;
+};
+
+export default function ButtonDeletePlaylist({
+  id
+}: ButtonDeletePlaylistProps) {
   const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
     useShallow((s) => ({
       selectedPlaylist: s.selectedPlaylist,

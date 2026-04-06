@@ -8,7 +8,11 @@ import { MovieResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import Image from 'next/image';
 
-export default function MovieTabSingle({ movie }: { movie: MovieResType }) {
+type MovieTabSingleProps = {
+  movie: MovieResType;
+};
+
+export default function MovieTabSingle({ movie }: MovieTabSingleProps) {
   const navigate = useNavigate();
 
   const handleSeasonClick = (season: (typeof movie.seasons)[0]) => {

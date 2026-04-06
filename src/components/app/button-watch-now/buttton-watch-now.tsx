@@ -20,14 +20,16 @@ const variants = cva('', {
   }
 });
 
+type ButtonWatchNowProps = {
+  href: string;
+  className?: string;
+} & VariantProps<typeof variants>;
+
 export default function ButtonWatchNow({
   href,
   className,
   variant
-}: {
-  href: string;
-  className?: string;
-} & VariantProps<typeof variants>) {
+}: ButtonWatchNowProps) {
   const { iconRef, startAnimation } = useClickAnimation();
 
   const handleClick = () => {

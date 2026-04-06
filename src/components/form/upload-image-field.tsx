@@ -257,7 +257,7 @@ export default function UploadImageField<T extends FieldValues>({
       }
     }
     previousFileIdRef.current = fileId;
-  }, [fileId]);
+  }, [fileId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

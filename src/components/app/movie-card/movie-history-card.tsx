@@ -13,6 +13,12 @@ import { X } from 'lucide-react';
 
 type Dir = 'up' | 'down';
 
+type MovieHistoryCardProps = {
+  movieHistory: MovieHistoryResType;
+  dir?: Dir;
+  onDelete?: (id: string) => void;
+};
+
 const makeItemVariants = (dir: Dir): Variants => {
   const delta = 10;
   const from = dir === 'down' ? -delta : delta;
@@ -34,11 +40,7 @@ export default function MovieHistoryCard({
   movieHistory,
   dir = 'up',
   onDelete
-}: {
-  movieHistory: MovieHistoryResType;
-  dir?: Dir;
-  onDelete?: (id: string) => void;
-}) {
+}: MovieHistoryCardProps) {
   const itemVariants = makeItemVariants(dir);
 
   const cardRef = useRef<HTMLDivElement | null>(null);

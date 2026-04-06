@@ -23,6 +23,18 @@ import Image, { StaticImageData } from 'next/image';
 import { useState } from 'react';
 import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';
 
+type ReviewItemProps = {
+  review: ReviewResType;
+  reviewRatingMaps: Record<number, { label: string; icon: StaticImageData }>;
+  isAuthor: boolean;
+  isAuthenticated: boolean;
+  isVoteLoading: boolean;
+  voteType: number;
+  onLike: (id: string) => void;
+  onDislike: (id: string) => void;
+  onDelete: (id: string) => void;
+};
+
 export default function ReviewItem({
   review,
   reviewRatingMaps,
@@ -33,17 +45,7 @@ export default function ReviewItem({
   onLike,
   onDislike,
   onDelete
-}: {
-  review: ReviewResType;
-  reviewRatingMaps: Record<number, { label: string; icon: StaticImageData }>;
-  isAuthor: boolean;
-  isAuthenticated: boolean;
-  isVoteLoading: boolean;
-  voteType: number;
-  onLike: (id: string) => void;
-  onDislike: (id: string) => void;
-  onDelete: (id: string) => void;
-}) {
+}: ReviewItemProps) {
   const author = review.author;
   const gender = author.gender || GENDER_OTHER;
   const kind = author.kind !== undefined ? kindMaps[author.kind] : undefined;

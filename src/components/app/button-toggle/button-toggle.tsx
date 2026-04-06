@@ -2,19 +2,21 @@
 
 import { cn } from '@/lib';
 
+type ButtonToggleProps = {
+  toggle: boolean;
+  handleToggle: () => void;
+  text: string;
+  disabled?: boolean;
+  className?: string;
+};
+
 export default function ButtonToggle({
   toggle,
   handleToggle,
   text,
   disabled,
   className
-}: {
-  toggle: boolean;
-  handleToggle: () => void;
-  text: string;
-  disabled?: boolean;
-  className?: string;
-}) {
+}: ButtonToggleProps) {
   return (
     <div
       role='switch'

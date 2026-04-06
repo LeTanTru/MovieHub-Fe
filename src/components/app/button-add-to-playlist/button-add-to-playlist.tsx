@@ -45,14 +45,16 @@ const variants = cva('', {
   }
 });
 
+type ButtonAddToPlaylistProps = {
+  movieId: string;
+  className?: string;
+} & VariantProps<typeof variants>;
+
 export default function ButtonAddToPlaylist({
   movieId,
   className,
   variant
-}: {
-  movieId: string;
-  className?: string;
-} & VariantProps<typeof variants>) {
+}: ButtonAddToPlaylistProps) {
   const { opened, toggle, close } = useDisclosure();
   const containerRef = useClickOutside<HTMLDivElement>(close);
   const [checkedPlaylist, setCheckedPlaylist] = useState<string[]>([]);

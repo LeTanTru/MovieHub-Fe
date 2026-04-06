@@ -23,14 +23,16 @@ const variants = cva(
   }
 );
 
+type ButtonViewReviewProps = {
+  to: string;
+  className?: string;
+} & VariantProps<typeof variants>;
+
 export default function ButtonViewReview({
   to,
   className,
   variant
-}: {
-  to: string;
-  className?: string;
-} & VariantProps<typeof variants>) {
+}: ButtonViewReviewProps) {
   const { iconRef, startAnimation } = useClickAnimation();
 
   const { setDiscussionTab } = useMovieStore(

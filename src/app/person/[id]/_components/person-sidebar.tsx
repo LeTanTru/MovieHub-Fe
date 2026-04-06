@@ -18,13 +18,12 @@ import { ButtonLike } from '@/components/app/button-like';
 import { ButtonSharePerson } from '@/components/app/button-share';
 import { PersonResType, PersonSearchType } from '@/types';
 
-export default function PersonSidebar({
-  person,
-  loading
-}: {
+type PersonSidebarProps = {
   person: PersonResType;
   loading: boolean;
-}) {
+};
+
+export default function PersonSidebar({ person, loading }: PersonSidebarProps) {
   const { opened, open, close } = useDisclosure();
   const [showScrollIcon, setShowScrollIcon] = useState<boolean>(false);
   const modalContentRef = useRef<HTMLDivElement>(null);

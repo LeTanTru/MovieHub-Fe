@@ -20,6 +20,12 @@ import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 
+type TopMovieCardProps = {
+  movie: MovieResType;
+  dir?: Dir;
+  index: number;
+};
+
 const makeItemVariants = (dir: Dir): Variants => {
   const delta = 10;
   const from = dir === 'down' ? -delta : delta;
@@ -44,11 +50,7 @@ export default function TopMovieCard({
   movie,
   dir = 'up',
   index
-}: {
-  movie: MovieResType;
-  dir?: Dir;
-  index: number;
-}) {
+}: TopMovieCardProps) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
   const isDesktop = isDesktopDevice();

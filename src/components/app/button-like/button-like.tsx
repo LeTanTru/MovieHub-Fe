@@ -53,6 +53,14 @@ const entityTypeLabels: Record<string, string> = {
   watch: 'phim'
 };
 
+type ButtonLikeProps = {
+  targetId: string;
+  className?: string;
+  refetch?: boolean;
+  text?: string;
+  showTooltip?: boolean;
+} & VariantProps<typeof buttonVariants>;
+
 export default function ButtonLike({
   targetId,
   className,
@@ -60,13 +68,7 @@ export default function ButtonLike({
   variant = 'detail',
   text,
   showTooltip = true
-}: {
-  targetId: string;
-  className?: string;
-  refetch?: boolean;
-  text?: string;
-  showTooltip?: boolean;
-} & VariantProps<typeof buttonVariants>) {
+}: ButtonLikeProps) {
   const { iconRef, startAnimation } = useClickAnimation();
   const [isLiked, setIsLiked] = useState(false);
   const { isAuthenticated } = useAuth();

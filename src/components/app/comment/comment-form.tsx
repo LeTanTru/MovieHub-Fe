@@ -15,6 +15,15 @@ import { useClickOutside } from '@/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type UseFormReturn } from 'react-hook-form';
 
+type CommentFormProps = {
+  parentId: string;
+  movieId: string;
+  mode?: 'reply' | 'edit';
+  defaultMention?: string;
+  onSubmitted?: () => void;
+  onCancel?: () => void;
+};
+
 export default function CommentForm({
   parentId,
   movieId,
@@ -22,14 +31,7 @@ export default function CommentForm({
   defaultMention,
   onSubmitted,
   onCancel
-}: {
-  parentId: string;
-  movieId: string;
-  mode?: 'reply' | 'edit';
-  defaultMention?: string;
-  onSubmitted?: () => void;
-  onCancel?: () => void;
-}) {
+}: CommentFormProps) {
   const { editingComment, replyingComment, setEditingComment } =
     useCommentStore(
       useShallow((s) => ({

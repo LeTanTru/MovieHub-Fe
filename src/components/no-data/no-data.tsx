@@ -2,6 +2,16 @@ import { emptyData } from '@/assets';
 import { cn } from '@/lib';
 import Image from 'next/image';
 
+type NoDataProps = {
+  className?: string;
+  imageClassName?: string;
+  content?: string | React.ReactNode;
+  width?: number;
+  height?: number;
+  size?: number;
+  src?: string;
+};
+
 export default function NoData({
   className,
   imageClassName,
@@ -10,15 +20,7 @@ export default function NoData({
   height = 80,
   size,
   src
-}: {
-  className?: string;
-  imageClassName?: string;
-  content?: string | React.ReactNode;
-  width?: number;
-  height?: number;
-  size?: number;
-  src?: string;
-}) {
+}: NoDataProps) {
   return (
     <div
       className={cn(

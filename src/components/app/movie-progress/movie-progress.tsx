@@ -2,15 +2,17 @@ import { CircleLoading } from '@/components/loading';
 import { cn } from '@/lib';
 import { FaCheckCircle } from 'react-icons/fa';
 
+type MovieProgressProps = {
+  isComplete: boolean;
+  currentTotalEpisode: number;
+  totalEpisode: number;
+};
+
 export default function MovieProgress({
   isComplete,
   currentTotalEpisode,
   totalEpisode
-}: {
-  isComplete: boolean;
-  currentTotalEpisode: number;
-  totalEpisode: number;
-}) {
+}: MovieProgressProps) {
   return (
     <div className='mb-3'>
       <div

@@ -7,13 +7,15 @@ import { useShallow } from 'zustand/shallow';
 import MovieTabSingle from './movie-tab-single';
 import MovieTabSeries from './movie-tab-series';
 
+type MovieTabEpisodeProps = {
+  direction?: number;
+  className?: string;
+};
+
 export default function MovieTabEpisode({
   direction = 0,
   className
-}: {
-  direction?: number;
-  className?: string;
-}) {
+}: MovieTabEpisodeProps) {
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
   const Tab = movie

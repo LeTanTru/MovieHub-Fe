@@ -8,15 +8,17 @@ import { cn } from '@/lib';
 import Tilt from 'react-parallax-tilt';
 import { SurveyResType } from '@/types';
 
+type SurveyCardProps = {
+  movie: SurveyResType;
+  isSelected: boolean;
+  onClick: (movie: SurveyResType) => void;
+};
+
 export default function SurveyCard({
   movie,
   isSelected,
   onClick
-}: {
-  movie: SurveyResType;
-  isSelected: boolean;
-  onClick: (movie: SurveyResType) => void;
-}) {
+}: SurveyCardProps) {
   return (
     <Tilt
       scale={1.1}

@@ -5,7 +5,11 @@ import { getYearFromDate, parseJSON, renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function SuggestionItem({ movie }: { movie: MovieResType }) {
+type SuggestionItemProps = {
+  movie: MovieResType;
+};
+
+export default function SuggestionItem({ movie }: SuggestionItemProps) {
   const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
 

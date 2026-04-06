@@ -14,7 +14,11 @@ import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 import { ScheduleBadge } from '@/components/app/schedule-badge';
 
-export default function MovieTabSeries({ movie }: { movie: MovieResType }) {
+type MovieTabSeriesProps = {
+  movie: MovieResType;
+};
+
+export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
   const ANIMATION_DURATION = 300;
 
   const navigate = useNavigate();

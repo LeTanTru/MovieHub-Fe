@@ -3,15 +3,17 @@
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
 
+type ButtonAutoNextEpisodeProps = {
+  autoNextEpisode: boolean;
+  handleToggleAutoNextEpisode: () => void;
+  className?: string;
+};
+
 export default function ButtonAutoNextEpisode({
   autoNextEpisode,
   className,
   handleToggleAutoNextEpisode
-}: {
-  autoNextEpisode: boolean;
-  handleToggleAutoNextEpisode: () => void;
-  className?: string;
-}) {
+}: ButtonAutoNextEpisodeProps) {
   return (
     <Button
       variant='ghost'

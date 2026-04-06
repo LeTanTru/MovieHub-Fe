@@ -8,11 +8,11 @@ import { generateSlug } from '@/utils';
 import NavigationMobile from './navigation-mobile';
 import NavigationDesktop from './navigation-desktop';
 
-export default function NavigationMenu({
-  mode
-}: {
+type NavigationMenuProps = {
   mode?: 'mobile' | 'desktop';
-}) {
+};
+
+export default function NavigationMenu({ mode }: NavigationMenuProps) {
   const { data: categoryListData } = useCategoryListQuery({
     params: {
       size: MAX_PAGE_SIZE

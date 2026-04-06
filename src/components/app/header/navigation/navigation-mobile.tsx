@@ -23,11 +23,13 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { RiMenu2Line } from 'react-icons/ri';
 
+type NavigationMobileProps = {
+  navigationList: ItemProps[];
+};
+
 export default function NavigationMobile({
   navigationList
-}: {
-  navigationList: ItemProps[];
-}) {
+}: NavigationMobileProps) {
   const pathname = usePathname();
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);

@@ -1,11 +1,13 @@
 import { cn } from '@/lib';
 import './vertical-bar-loading.css';
 
+type VerticalBarLoadingProps = {
+  className?: string;
+};
+
 export default function VerticalBarLoading({
   className
-}: {
-  className?: string;
-}) {
+}: VerticalBarLoadingProps) {
   return (
     <div className={cn('bar-list', className)}>
       <div className='mx-auto flex w-12 items-center justify-between overflow-hidden rounded-full bg-transparent'>

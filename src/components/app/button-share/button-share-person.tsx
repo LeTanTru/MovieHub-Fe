@@ -8,11 +8,13 @@ import { notify } from '@/utils';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+type ButtonSharePersonProps = {
+  className?: string;
+};
+
 export default function ButtonSharePerson({
   className
-}: {
-  className?: string;
-}) {
+}: ButtonSharePersonProps) {
   const pathname = usePathname();
   const [link, setLink] = useState('');
   const { iconRef, startAnimation } = useClickAnimation();

@@ -29,6 +29,15 @@ import Link from 'next/link';
 import ReviewItemSkeleton from './review-item-skeleton';
 import { AnimatePresence, m } from 'framer-motion';
 
+type ReviewListProps = {
+  reviewList: ReviewResType[];
+  isLoading?: boolean;
+  hasMore?: boolean;
+  remainingCount?: number;
+  isLoadMoreLoading?: boolean;
+  onLoadMore?: () => void;
+};
+
 export default function ReviewList({
   reviewList,
   isLoading = false,
@@ -36,14 +45,7 @@ export default function ReviewList({
   remainingCount = 0,
   isLoadMoreLoading = false,
   onLoadMore
-}: {
-  reviewList: ReviewResType[];
-  isLoading?: boolean;
-  hasMore?: boolean;
-  remainingCount?: number;
-  isLoadMoreLoading?: boolean;
-  onLoadMore?: () => void;
-}) {
+}: ReviewListProps) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
   const { movie, setMovie } = useMovieStore(

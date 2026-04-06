@@ -16,13 +16,12 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
-export default function ReviewModal({
-  opened,
-  onClose
-}: {
+type ReviewModalProps = {
   opened: boolean;
   onClose: () => void;
-}) {
+};
+
+export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const { movie, setMovie } = useMovieStore(

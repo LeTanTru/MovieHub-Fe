@@ -25,13 +25,12 @@ import { ButtonWatchNow } from '@/components/app/button-watch-now';
 import { Activity } from '@/components/activity';
 import { ButtonLike } from '@/components/app/button-like';
 
-export default function MovieModal({
-  movie,
-  pos
-}: {
+type MovieModalProps = {
   movie: MovieResType;
   pos: { x: number; y: number } | null;
-}) {
+};
+
+export default function MovieModal({ movie, pos }: MovieModalProps) {
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 
   const latestSeason = metadata?.latestSeason;

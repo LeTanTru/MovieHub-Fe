@@ -5,15 +5,17 @@ import { AnimatePresence } from 'framer-motion';
 
 type Dir = 'up' | 'down';
 
+type MovieGridProps = {
+  movieList: MovieResType[];
+  dir?: Dir;
+  className?: string;
+};
+
 export default function MovieGrid({
   movieList,
   dir = 'up',
   className
-}: {
-  movieList: MovieResType[];
-  dir?: Dir;
-  className?: string;
-}) {
+}: MovieGridProps) {
   return (
     <div className={cn('grid w-full grow grid-cols-8 gap-6', className)}>
       <AnimatePresence mode='popLayout'>

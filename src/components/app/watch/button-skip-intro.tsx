@@ -1,15 +1,17 @@
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
 
+type ButtonSkipIntroProps = {
+  skipIntro: boolean;
+  className?: string;
+  handleToggleSkipIntro: () => void;
+};
+
 export default function ButtonSkipIntro({
   skipIntro,
   className,
   handleToggleSkipIntro
-}: {
-  skipIntro: boolean;
-  className?: string;
-  handleToggleSkipIntro: () => void;
-}) {
+}: ButtonSkipIntroProps) {
   return (
     <Button
       variant='ghost'

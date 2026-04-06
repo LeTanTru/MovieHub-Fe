@@ -5,15 +5,17 @@ import { useClickAnimation } from '@/hooks';
 import { cn } from '@/lib';
 import Link from 'next/link';
 
+type ButtonPlayProps = {
+  href: string;
+  title?: string;
+  className?: string;
+};
+
 export default function ButtonPlay({
   href,
   title,
   className
-}: {
-  href: string;
-  title?: string;
-  className?: string;
-}) {
+}: ButtonPlayProps) {
   const { iconRef, startAnimation } = useClickAnimation();
 
   const handleClick = () => {

@@ -4,11 +4,13 @@ import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { useEffect, useState } from 'react';
 
+type ButtonMovieTheaterProps = {
+  className?: string;
+};
+
 export default function ButtonMovieTheater({
   className
-}: {
-  className?: string;
-}) {
+}: ButtonMovieTheaterProps) {
   const [isMovieTheater, setIsMovieTheater] = useState(false);
 
   useEffect(() => {

@@ -14,6 +14,11 @@ import { MovieModal } from '@/components/app/movie-modal';
 
 type Dir = 'up' | 'down';
 
+type LatestCountryMovieCardProps = {
+  movie: MovieResType;
+  dir?: Dir;
+};
+
 const makeItemVariants = (dir: Dir): Variants => {
   const delta = 10;
   const from = dir === 'down' ? -delta : delta;
@@ -37,10 +42,7 @@ const EDGE_PADDING = 20;
 export default function LatestCountryMovieCard({
   movie,
   dir = 'up'
-}: {
-  movie: MovieResType;
-  dir?: Dir;
-}) {
+}: LatestCountryMovieCardProps) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
   const isDesktop = isDesktopDevice();

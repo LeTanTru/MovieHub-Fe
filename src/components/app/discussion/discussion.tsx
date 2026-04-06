@@ -31,15 +31,17 @@ import {
 } from '@/types';
 import { cn } from '@/lib';
 
+type DiscussionProps = {
+  toId: string;
+  className?: string;
+  variant?: 'detail' | 'watch';
+};
+
 export default function Discussion({
   toId,
   className,
   variant = 'detail'
-}: {
-  toId: string;
-  className?: string;
-  variant?: 'detail' | 'watch';
-}) {
+}: DiscussionProps) {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
