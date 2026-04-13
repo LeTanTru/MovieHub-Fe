@@ -33,16 +33,16 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@vidstack/react'],
     optimizeCss: true
-  },
-  // Optimize bundle size
-  compiler: {
-    removeConsole:
-      process.env.NODE_ENV === 'production'
-        ? {
-            exclude: ['error', 'warn']
-          }
-        : false
   }
+  // Optimize bundle size
+  // compiler: {
+  //   removeConsole:
+  //     process.env.NODE_ENV === 'development'
+  //       ? {
+  //           exclude: ['log', 'warn']
+  //         }
+  //       : false
+  // }
 };
 
 const withBundleAnalyzer = createBundleAnalyzer({
