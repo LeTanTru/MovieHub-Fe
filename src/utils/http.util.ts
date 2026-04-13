@@ -122,23 +122,23 @@ axiosInstance.interceptors.response.use(
         return axiosInstance.request(originalConfig);
       } catch (error) {
         logger.error('Error while refreshing token', error);
-        // if (
-        //   error instanceof AxiosError &&
-        //   error?.response?.status === HttpStatusCode.BadRequest &&
-        //   error?.response?.data?.message &&
-        //   error?.response?.data?.message?.includes('Invalid refresh token') &&
-        //   error?.response?.data?.data?.includes('invalid_request')
-        // ) {
-        //   removeData([
-        //     storageKeys.ACCESS_TOKEN,
-        //     storageKeys.REFRESH_TOKEN,
-        //     storageKeys.USER_KIND
-        //   ]);
-        //   await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
-        //   window.location.href = route.login.path;
-        // }
-        // processQueue(error, null);
-        // isRefreshing = false;
+        if (
+          error instanceof AxiosError &&
+          error?.response?.status === HttpStatusCode.BadRequest &&
+          error?.response?.data?.message &&
+          error?.response?.data?.message?.includes('Invalid refresh token') &&
+          error?.response?.data?.data?.includes('invalid_request')
+        ) {
+          removeData([
+            storageKeys.ACCESS_TOKEN,
+            storageKeys.REFRESH_TOKEN,
+            storageKeys.USER_KIND
+          ]);
+          await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
+          window.location.href = route.login.path;
+        }
+        processQueue(error, null);
+        isRefreshing = false;
         return Promise.reject(error);
       }
     }
