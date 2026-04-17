@@ -165,7 +165,7 @@ export default function Footer() {
               Trung Quốc, Thái Lan, Nhật Bản, Âu Mỹ… đa dạng thể loại. Khám phá
               nền tảng phim trực tuyến hay nhất {currentYear} chất lượng 4K!
             </div>
-            <div className='flex items-center gap-2 text-gray-400'>
+            <div className='max-1120:justify-center flex items-center gap-2 text-gray-400'>
               <FaRegCopyright /> {currentYear} MovieHub
             </div>
           </div>

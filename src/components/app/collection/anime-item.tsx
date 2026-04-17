@@ -22,20 +22,20 @@ import Link from 'next/link';
 type AnimeItemProps = {
   movie: MovieResType;
   isGrabbing: boolean;
-  onPointerDown: () => void;
-  onPointerUp: () => void;
-  handleLike: (targetId: string) => void;
-  handleRemoveLike: (favouriteId: string) => void;
+  onPointerDownAction: () => void;
+  onPointerUpAction: () => void;
+  onLikeAction: (targetId: string) => void;
+  onRemoveLikeAction: (favouriteId: string) => void;
   isLiked: boolean;
 };
 
 export default function AnimeItem({
   movie,
   isGrabbing,
-  onPointerDown,
-  onPointerUp,
-  handleLike,
-  handleRemoveLike,
+  onPointerDownAction,
+  onPointerUpAction,
+  onLikeAction,
+  onRemoveLikeAction,
   isLiked
 }: AnimeItemProps) {
   const movieLink = `${route.movie.path}/${movie.slug}.${movie.id}`;
@@ -59,7 +59,7 @@ export default function AnimeItem({
   const handleClick = () => {
     startAnimation();
 
-    const action = isLiked ? handleRemoveLike : handleLike;
+    const action = isLiked ? onRemoveLikeAction : onLikeAction;
     action(movie.id);
   };
 
@@ -83,28 +83,32 @@ export default function AnimeItem({
       <div
         className='safe-area'
         style={{ cursor: isGrabbing ? 'grabbing' : 'grab' }}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
+        onPointerDown={onPointerDownAction}
+        onPointerUp={onPointerUpAction}
       >
         <div className='slide-content'>
           <div className='media-item'>
-            <div className='media-title-image'>
-              <Link title={movie.title} href={movieLink}>
-                <Image
-                  src={renderImageUrl(movie.imageTitleUrl)}
-                  alt={movie.title}
-                  className='bg-transparent'
-                  width={200}
-                  height={80}
-                  unoptimized
-                />
-              </Link>
-            </div>
-            <h3 className='media-title line-clamp-1'>
-              <Link title={movie.title} href={movieLink}>
-                {movie.title}
-              </Link>
-            </h3>
+            {movie.imageTitleUrl && (
+              <div className='media-title-image'>
+                <Link title={movie.title} href={movieLink}>
+                  <Image
+                    src={renderImageUrl(movie.imageTitleUrl)}
+                    alt={movie.title}
+                    className='bg-transparent'
+                    width={200}
+                    height={80}
+                    unoptimized
+                  />
+                </Link>
+              </div>
+            )}
+            {!movie.imageTitleUrl && (
+              <h3 className='media-title show line-clamp-1'>
+                <Link title={movie.title} href={movieLink}>
+                  {movie.title}
+                </Link>
+              </h3>
+            )}
             <h3 className='media-alias-title'>
               <Link title={movie.originalTitle} href={movieLink}>
                 {movie.originalTitle}

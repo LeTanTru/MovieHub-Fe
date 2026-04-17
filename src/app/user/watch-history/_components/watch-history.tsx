@@ -71,7 +71,7 @@ export default function WatchHistory() {
               key={movieHistory.id}
               movieHistory={movieHistory}
               dir='down'
-              onDelete={handleDeleteWatchHistory}
+              onDeleteAction={handleDeleteWatchHistory}
             />
           ))}
         </div>

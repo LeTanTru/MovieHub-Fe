@@ -1,4 +1,5 @@
 'use client';
+
 import './movie.css';
 import { Container } from '@/components/layout';
 import { MovieMain } from '@/components/app/movie-main';

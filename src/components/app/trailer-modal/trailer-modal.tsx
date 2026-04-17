@@ -19,14 +19,14 @@ import { useEffect, useRef } from 'react';
 type TrailerModalProps = {
   video: VideoResType;
   opened: boolean;
-  onClose: () => void;
+  onCloseAction: () => void;
   token: string;
 };
 
 export default function TrailerModal({
   opened,
   video,
-  onClose,
+  onCloseAction,
   token
 }: TrailerModalProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ export default function TrailerModal({
     <Modal
       title={video.name}
       open={opened}
-      onClose={onClose}
+      onClose={onCloseAction}
       className='trailer-modal'
       aria-labelledby='video-modal-title'
       aria-label={`Phát video ${video.name}`}
@@ -72,9 +72,9 @@ export default function TrailerModal({
           duration={video.duration}
           introEnd={video.introEnd}
           introStart={video.introStart}
-          src={renderVideoUrl(video.hostname, video.content)}
+          src={renderVideoUrl(video.hostname, video.content, video.sourceType)}
           thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
-          vttUrl={renderVttUrl(video.hostname, video.vttUrl)}
+          vttUrl={renderVttUrl(video.hostname, video.vttUrl, video.sourceType)}
           outroStart={video.outroStart}
           className='rounded-md!'
           token={token}

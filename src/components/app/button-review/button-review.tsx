@@ -87,7 +87,7 @@ export default function ButtonReview({
           )}
         </button>
       </div>
-      <ReviewModal opened={opened} onClose={close} />
+      <ReviewModal opened={opened} onCloseAction={close} />
     </>
   );
 }

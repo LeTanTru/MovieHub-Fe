@@ -3,14 +3,16 @@
 import { Button } from '@/components/form';
 
 type SkipOutroButtonProps = {
-  onClick?: () => void;
+  onClickAction?: () => void;
 };
 
-export default function SkipOutroButton({ onClick }: SkipOutroButtonProps) {
+export default function SkipOutroButton({
+  onClickAction
+}: SkipOutroButtonProps) {
   return (
     <Button
       type='button'
-      onClick={onClick}
+      onClick={onClickAction}
       variant='outline'
       className='absolute -top-15 right-5 border border-white hover:border-white/80'
       aria-label='Jump to the next episode'

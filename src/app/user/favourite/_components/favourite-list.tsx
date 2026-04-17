@@ -152,7 +152,7 @@ export default function FavouriteList() {
                     <MovieCard
                       key={movie.id}
                       movie={movie}
-                      onDelete={handleDeleteFavourite}
+                      onDeleteAction={handleDeleteFavourite}
                       dir='down'
                     />
                   ))}
@@ -190,7 +190,7 @@ export default function FavouriteList() {
                       person={person}
                       key={person.id}
                       willNavigate
-                      onDelete={handleDeleteFavourite}
+                      onDeleteAction={handleDeleteFavourite}
                     />
                   ))}
                 </div>
@@ -202,7 +202,7 @@ export default function FavouriteList() {
         <Activity visible={!!totalPages}>
           <Pagination
             totalPages={totalPages}
-            onPageChange={handlePageChange}
+            onChangeAction={handlePageChange}
             page={page}
           />
         </Activity>

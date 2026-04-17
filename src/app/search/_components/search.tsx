@@ -222,11 +222,11 @@ export default function Search() {
         filters={filters}
         showFilter={showFilter}
         isAllFiltersDefault={isAllFiltersDefault}
-        handleApplyFilters={handleApplyFilters}
-        handleClearFilters={handleClearFilters}
-        handleCloseFilters={handleCloseFilters}
-        handleFilterChange={handleFilterChange}
-        handleShowFilter={handleShowFilter}
+        onApplyFiltersAction={handleApplyFilters}
+        onClearFiltersAction={handleClearFilters}
+        onCloseFiltersAction={handleCloseFilters}
+        onFilterChangeAction={handleFilterChange}
+        onShowFilterAction={handleShowFilter}
       />
       <MovieList
         isLoading={isLoading}

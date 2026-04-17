@@ -3,14 +3,16 @@
 import { Button } from '@/components/form';
 
 type SkipIntroButtonProps = {
-  onClick?: () => void;
+  onClickAction?: () => void;
 };
 
-export default function SkipIntroButton({ onClick }: SkipIntroButtonProps) {
+export default function SkipIntroButton({
+  onClickAction
+}: SkipIntroButtonProps) {
   return (
     <Button
       type='button'
-      onClick={onClick}
+      onClick={onClickAction}
       variant='outline'
       className='absolute -top-15 right-5 border border-white hover:border-white/80'
       aria-label='Bỏ qua phần giới thiệu của video'

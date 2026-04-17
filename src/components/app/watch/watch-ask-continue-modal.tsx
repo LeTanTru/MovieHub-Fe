@@ -7,15 +7,15 @@ import { AnimatePresence, m } from 'framer-motion';
 type WatchAskContinueModalProps = {
   lastWatchedSeconds: number;
   opened: boolean;
-  onContinueWatching: () => void;
-  onStartOver: () => void;
+  onContinueWatchingAction: () => void;
+  onStartOverAction: () => void;
 };
 
 export default function WatchAskContinueModal({
   opened,
   lastWatchedSeconds,
-  onContinueWatching,
-  onStartOver
+  onContinueWatchingAction,
+  onStartOverAction
 }: WatchAskContinueModalProps) {
   return (
     <AnimatePresence>
@@ -57,7 +57,7 @@ export default function WatchAskContinueModal({
                   <Button
                     variant='primary'
                     className='max-640:text-[13px]'
-                    onClick={onStartOver}
+                    onClick={onStartOverAction}
                   >
                     Bắt đầu lại
                   </Button>
@@ -66,7 +66,7 @@ export default function WatchAskContinueModal({
                   <Button
                     variant='primary'
                     className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 max-640:text-[13px] dark:text-black'
-                    onClick={onContinueWatching}
+                    onClick={onContinueWatchingAction}
                   >
                     Tiếp tục xem
                   </Button>

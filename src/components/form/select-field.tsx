@@ -47,16 +47,16 @@ type SelectFieldProps<
   description?: string;
   className?: string;
   required?: boolean;
-  getLabel?: (option: TOption) => string | number;
-  getValue?: (option: TOption) => string | number;
-  getPrefix?: (option: TOption) => ReactNode;
+  getLabelAction?: (option: TOption) => string | number;
+  getValueAction?: (option: TOption) => string | number;
+  getPrefixAction?: (option: TOption) => ReactNode;
   allowClear?: boolean;
   searchText?: string;
   notFoundContent?: ReactNode;
   labelClassName?: string;
   disabled?: boolean;
-  onValueChange?: (value: string | number | null) => void;
-  renderOption?: (option: TOption) => ReactNode;
+  onValueChangeAction?: (value: string | number | null) => void;
+  renderOptionAction?: (option: TOption) => ReactNode;
 };
 
 const normalizeText = (text: string): string =>
@@ -93,11 +93,11 @@ export default function SelectField<
   notFoundContent = 'Không có kết quả nào',
   labelClassName,
   disabled = false,
-  renderOption,
-  getLabel = (opt) => opt.label,
-  getValue = (opt) => opt.value,
-  getPrefix = (opt) => opt.prefix,
-  onValueChange
+  renderOptionAction,
+  getLabelAction = (opt) => opt.label,
+  getValueAction = (opt) => opt.value,
+  getPrefixAction = (opt) => opt.prefix,
+  onValueChangeAction
 }: SelectFieldProps<TFieldValues, TOption>) {
   const [open, setOpen] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -105,7 +105,7 @@ export default function SelectField<
   const commandRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter((option) =>
-    fuzzyMatch(String(getLabel(option)), searchValue)
+    fuzzyMatch(String(getLabelAction(option)), searchValue)
   );
 
   useEffect(() => {
@@ -119,19 +119,19 @@ export default function SelectField<
       render={({ field, fieldState }) => {
         const selectedValue = field.value;
         const selectedOption = options.find(
-          (o) => getValue(o) === selectedValue
+          (o) => getValueAction(o) === selectedValue
         );
 
         const handleSelect = (val: string | number) => {
           field.onChange(val);
-          onValueChange?.(val);
+          onValueChangeAction?.(val);
           setOpen(false);
         };
 
         const handleClear = (e: MouseEvent | KeyboardEvent) => {
           e.stopPropagation();
           field.onChange(null);
-          onValueChange?.(null);
+          onValueChangeAction?.(null);
           setOpen(false);
         };
 
@@ -173,9 +173,9 @@ export default function SelectField<
                     >
                       {selectedOption ? (
                         <div className='flex min-w-0 flex-1 items-center gap-2'>
-                          {getPrefix?.(selectedOption)}
+                          {getPrefixAction?.(selectedOption)}
                           <span className='block truncate'>
-                            {getLabel(selectedOption)}
+                            {getLabelAction(selectedOption)}
                           </span>
                         </div>
                       ) : (
@@ -226,7 +226,8 @@ export default function SelectField<
                           } else if (e.key === 'Enter') {
                             e.preventDefault();
                             const selected = filteredOptions[highlightedIndex];
-                            if (selected) handleSelect(getValue(selected));
+                            if (selected)
+                              handleSelect(getValueAction(selected));
                           }
                         }}
                       />
@@ -259,7 +260,7 @@ export default function SelectField<
                         }}
                       >
                         {filteredOptions.map((opt, idx) => {
-                          const val = getValue(opt);
+                          const val = getValueAction(opt);
                           const isSelected = val === selectedValue;
                           return (
                             <CommandItem
@@ -276,16 +277,16 @@ export default function SelectField<
                                 }
                               )}
                             >
-                              {renderOption ? (
-                                renderOption(opt)
+                              {renderOptionAction ? (
+                                renderOptionAction(opt)
                               ) : (
                                 <>
-                                  {getPrefix?.(opt) && (
+                                  {getPrefixAction?.(opt) && (
                                     <span className='mr-1 font-mono text-xs opacity-70'>
-                                      {getPrefix(opt)}
+                                      {getPrefixAction(opt)}
                                     </span>
                                   )}
-                                  {getLabel(opt)}
+                                  {getLabelAction(opt)}
                                 </>
                               )}
                             </CommandItem>

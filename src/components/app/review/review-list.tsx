@@ -35,7 +35,7 @@ type ReviewListProps = {
   hasMore?: boolean;
   remainingCount?: number;
   isLoadMoreLoading?: boolean;
-  onLoadMore?: () => void;
+  onLoadMoreAction?: () => void;
 };
 
 export default function ReviewList({
@@ -44,7 +44,7 @@ export default function ReviewList({
   hasMore = false,
   remainingCount = 0,
   isLoadMoreLoading = false,
-  onLoadMore
+  onLoadMoreAction
 }: ReviewListProps) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
@@ -252,9 +252,9 @@ export default function ReviewList({
                 isAuthor={profile?.id === review.author?.id}
                 isAuthenticated={isAuthenticated}
                 isVoteLoading={voteReviewLoading}
-                onLike={handleLikeReview}
-                onDislike={handleDislikeReview}
-                onDelete={handleDeleteReview}
+                onLikeAction={handleLikeReview}
+                onDislikeAction={handleDislikeReview}
+                onDeleteAction={handleDeleteReview}
                 voteType={voteMaps[review.id]}
               />
             </m.div>
@@ -265,7 +265,7 @@ export default function ReviewList({
           <Button
             className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
             variant='ghost'
-            onClick={onLoadMore}
+            onClick={onLoadMoreAction}
           >
             {isLoadMoreLoading ? (
               <VerticalBarLoading />

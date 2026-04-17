@@ -160,10 +160,10 @@ export default function Slider() {
               <SliderItem
                 slider={slider}
                 isGrabbing={isGrabbing}
-                onPointerDown={() => setIsGrabbing(true)}
-                onPointerUp={() => setIsGrabbing(false)}
-                handleLike={handleLike}
-                handleRemoveLike={handleRemoveLike}
+                onPointerDownAction={() => setIsGrabbing(true)}
+                onPointerUpAction={() => setIsGrabbing(false)}
+                onLikeAction={handleLike}
+                onRemoveLikeAction={handleRemoveLike}
                 isLiked={favouriteListIds.includes(slider.movie.id)}
               />
             </SwiperSlide>

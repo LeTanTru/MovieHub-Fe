@@ -200,7 +200,7 @@ export default function Discussion({
             hasMore={!!hasMoreComments}
             remainingCount={remainingComments}
             isLoadMoreLoading={commentLoadMoreLoading}
-            onLoadMore={handleLoadMoreComments}
+            onLoadMoreAction={handleLoadMoreComments}
           />
         </Activity>
         <Activity visible={isReviewTab}>
@@ -210,7 +210,7 @@ export default function Discussion({
             hasMore={!!hasMoreReviews}
             remainingCount={remainingReviews}
             isLoadMoreLoading={reviewLoadMoreLoading}
-            onLoadMore={handleLoadMoreReviews}
+            onLoadMoreAction={handleLoadMoreReviews}
           />
         </Activity>
       </div>

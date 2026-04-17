@@ -39,7 +39,7 @@ export default function WatchPlayerControls() {
         />
         <ButtonAutoNextEpisode
           autoNextEpisode={autoNextEpisode}
-          handleToggleAutoNextEpisode={handleToggleAutoNextEpisode}
+          onClickAction={handleToggleAutoNextEpisode}
           className='max-990:hidden'
         />
         <ButtonSkipIntro

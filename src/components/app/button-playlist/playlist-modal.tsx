@@ -17,13 +17,13 @@ import { useState } from 'react';
 
 type PlaylistModalProps = {
   opened: boolean;
-  onClose: () => void;
+  onCloseAction: () => void;
   playlist?: PlaylistResType;
 };
 
 export default function PlaylistModal({
   opened,
-  onClose,
+  onCloseAction,
   playlist
 }: PlaylistModalProps) {
   const queryClient = getQueryClient();
@@ -52,7 +52,7 @@ export default function PlaylistModal({
   };
 
   const handleClose = () => {
-    onClose();
+    onCloseAction();
   };
 
   const handleSubmit = async (values: PlaylistBodyType) => {
@@ -88,7 +88,7 @@ export default function PlaylistModal({
   return (
     <Modal
       open={opened}
-      onClose={onClose}
+      onClose={onCloseAction}
       bodyWrapperClassName='bg-main-background w-75 max-480:w-[90%] max-990:w-100'
       confirmOnClose={isFormChanged}
       confirmClassName='dark:bg-charade'

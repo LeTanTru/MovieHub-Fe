@@ -76,9 +76,17 @@ export default function WatchPlayerVideoArea() {
             duration={video.duration}
             introEnd={video.introEnd}
             introStart={video.introStart}
-            src={renderVideoUrl(video.hostname, video.content)}
+            src={renderVideoUrl(
+              video.hostname,
+              video.content,
+              video.sourceType
+            )}
             thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
-            vttUrl={renderVttUrl(video.vttUrl)}
+            vttUrl={renderVttUrl(
+              video.hostname,
+              video.vttUrl,
+              video.sourceType
+            )}
             outroStart={video.outroStart}
             token={token}
             title={videoTitle}
@@ -131,8 +139,8 @@ export default function WatchPlayerVideoArea() {
           <WatchAskContinueModal
             opened={isShowContinueModal}
             lastWatchedSeconds={lastWatchedSeconds}
-            onContinueWatching={handleContinueWatching}
-            onStartOver={handleStartOver}
+            onContinueWatchingAction={handleContinueWatching}
+            onStartOverAction={handleStartOver}
           />
         </>
       )}
@@ -140,7 +148,7 @@ export default function WatchPlayerVideoArea() {
         <EpisodeList
           seasons={movie?.seasons || []}
           isOpen={isEpisodeListOpen}
-          onToggle={closeEpisodeList}
+          onToggleAction={closeEpisodeList}
         />
       </Activity>
     </div>

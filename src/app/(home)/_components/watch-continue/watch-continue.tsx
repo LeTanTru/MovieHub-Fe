@@ -118,7 +118,7 @@ export default function WatchContinue() {
             <SwiperSlide key={movieHistory.id}>
               <MovieHistoryCard
                 movieHistory={movieHistory}
-                onDelete={handleDeleteWatchHistory}
+                onDeleteAction={handleDeleteWatchHistory}
               />
             </SwiperSlide>
           ))}

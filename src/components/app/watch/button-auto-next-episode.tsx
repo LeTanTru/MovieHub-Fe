@@ -5,14 +5,14 @@ import { cn } from '@/lib';
 
 type ButtonAutoNextEpisodeProps = {
   autoNextEpisode: boolean;
-  handleToggleAutoNextEpisode: () => void;
+  onClickAction: () => void;
   className?: string;
 };
 
 export default function ButtonAutoNextEpisode({
   autoNextEpisode,
   className,
-  handleToggleAutoNextEpisode
+  onClickAction
 }: ButtonAutoNextEpisodeProps) {
   return (
     <Button
@@ -21,7 +21,7 @@ export default function ButtonAutoNextEpisode({
         'dark:hover:text-golden-glow group flex h-10! items-center justify-center gap-2 px-4 py-2.5 whitespace-nowrap transition-all duration-200 ease-linear dark:hover:bg-white/10',
         className
       )}
-      onClick={handleToggleAutoNextEpisode}
+      onClick={onClickAction}
     >
       Chuyển tập
       <span
