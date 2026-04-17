@@ -128,9 +128,9 @@ type UploadImageFieldProps<T extends FieldValues> = {
   originalSize?: boolean;
   allowCustomAspect?: boolean;
   avatar?: boolean;
-  onChange?: (url: string) => void;
-  uploadImageFn: (file: Blob) => Promise<string>;
-  deleteImageFn?: (url: string) => Promise<ApiResponse<any> | undefined>;
+  onChangeAction?: (url: string) => void;
+  onUploadAction: (file: Blob) => Promise<string>;
+  onDeleteAction?: (url: string) => Promise<ApiResponse<any> | undefined>;
 };
 
 export default function UploadImageField<T extends FieldValues>({
@@ -150,9 +150,9 @@ export default function UploadImageField<T extends FieldValues>({
   originalSize = false,
   allowCustomAspect = false,
   avatar = false,
-  onChange,
-  uploadImageFn,
-  deleteImageFn
+  onChangeAction,
+  onUploadAction,
+  onDeleteAction
 }: UploadImageFieldProps<T>) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
@@ -191,7 +191,7 @@ export default function UploadImageField<T extends FieldValues>({
   }, []);
 
   const handleApply = async () => {
-    if (!previewUrl || !fileId || !uploadImageFn) return;
+    if (!previewUrl || !fileId || !onUploadAction) return;
 
     const fileType =
       files[0]?.file instanceof File ? files[0].file.type : undefined;
@@ -221,8 +221,8 @@ export default function UploadImageField<T extends FieldValues>({
     if (!blob) return;
 
     try {
-      const uploadedUrl = await uploadImageFn(blob);
-      onChange?.(uploadedUrl);
+      const uploadedUrl = await onUploadAction(blob);
+      onChangeAction?.(uploadedUrl);
       fieldOnChange(uploadedUrl);
       setDialogOpen(false);
     } catch (error) {
@@ -233,13 +233,13 @@ export default function UploadImageField<T extends FieldValues>({
   const handleRemove = async (e: MouseEvent) => {
     e.stopPropagation();
     try {
-      if (deleteImageFn && fieldValue) {
-        await deleteImageFn(fieldValue);
+      if (onDeleteAction && fieldValue) {
+        await onDeleteAction(fieldValue);
       }
     } catch (err) {
       logger.error('Error while deleting image:', err);
     }
-    onChange?.('');
+    onChangeAction?.('');
     fieldOnChange('');
     clearFiles();
   };

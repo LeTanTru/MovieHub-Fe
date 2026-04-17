@@ -37,8 +37,8 @@ export default function CommentReply({
             movieId={comment.movieId}
             mode={editingComment?.id === comment.id ? 'edit' : 'reply'}
             defaultMention={`@${author.fullName}`}
-            onSubmitted={onReplySubmit}
-            onCancel={onCancel}
+            onSubmitAction={onReplySubmit}
+            onCancelAction={onCancel}
           />
         </m.div>
       )}

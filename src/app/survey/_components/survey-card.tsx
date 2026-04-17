@@ -11,13 +11,13 @@ import { SurveyResType } from '@/types';
 type SurveyCardProps = {
   movie: SurveyResType;
   isSelected: boolean;
-  onClick: (movie: SurveyResType) => void;
+  onClickAction: (movie: SurveyResType) => void;
 };
 
 export default function SurveyCard({
   movie,
   isSelected,
-  onClick
+  onClickAction
 }: SurveyCardProps) {
   return (
     <Tilt
@@ -35,7 +35,7 @@ export default function SurveyCard({
         whileTap={{
           scale: 0.98
         }}
-        onClick={() => onClick(movie)}
+        onClick={() => onClickAction(movie)}
       >
         <div
           className={cn(

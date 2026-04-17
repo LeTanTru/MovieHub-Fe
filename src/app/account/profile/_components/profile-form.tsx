@@ -119,15 +119,15 @@ export default function ProfileForm() {
                     control={form.control}
                     name='avatarPath'
                     label='Ảnh đại diện'
-                    onChange={imageManager.trackUpload}
-                    uploadImageFn={async (file: Blob) => {
+                    onChangeAction={imageManager.trackUpload}
+                    onUploadAction={async (file: Blob) => {
                       const res = await uploadImageMutate({
                         file
                       });
                       return res.data?.filePath ?? '';
                     }}
                     loading={uploadImageLoading}
-                    deleteImageFn={imageManager.handleDeleteOnClick}
+                    onDeleteAction={imageManager.handleDeleteOnClick}
                     size={100}
                     avatar
                   />

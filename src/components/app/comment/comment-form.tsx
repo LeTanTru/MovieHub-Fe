@@ -20,8 +20,8 @@ type CommentFormProps = {
   movieId: string;
   mode?: 'reply' | 'edit';
   defaultMention?: string;
-  onSubmitted?: () => void;
-  onCancel?: () => void;
+  onSubmitAction?: () => void;
+  onCancelAction?: () => void;
 };
 
 export default function CommentForm({
@@ -29,8 +29,8 @@ export default function CommentForm({
   movieId,
   mode = 'reply',
   defaultMention,
-  onSubmitted,
-  onCancel
+  onSubmitAction,
+  onCancelAction
 }: CommentFormProps) {
   const { editingComment, replyingComment, setEditingComment } =
     useCommentStore(
@@ -107,7 +107,7 @@ export default function CommentForm({
             `${editingComment ? 'Chỉnh sửa' : 'Trả lời'} bình luận thành công`
           );
           setEditingComment(null);
-          onSubmitted?.();
+          onSubmitAction?.();
           form?.reset(initialValues);
         } else {
           notify.error(
@@ -230,7 +230,7 @@ export default function CommentForm({
                   <Button
                     type='button'
                     variant='ghost'
-                    onClick={onCancel}
+                    onClick={onCancelAction}
                     className='dark:hover:text-destructive max-640:text-[13px] max-520:text-xs max-640:p-0 h-fit px-0! py-0 dark:hover:bg-transparent'
                   >
                     Hủy

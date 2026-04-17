@@ -102,3 +102,6 @@ export const VIDEO_QUALITY_720 = 1;
 export const VIDEO_QUALITY_1080 = 2;
 export const VIDEO_QUALITY_1440 = 3;
 export const VIDEO_QUALITY_MAX = 4;
+
+export const VIDEO_LIBRARY_SOURCE_TYPE_INTERNAL = 1;
+export const VIDEO_LIBRARY_SOURCE_TYPE_EXTERNAL = 2;

@@ -34,7 +34,7 @@ type CommentListProps = {
   hasMore?: boolean;
   remainingCount?: number;
   isLoadMoreLoading?: boolean;
-  onLoadMore?: () => void;
+  onLoadMoreAction?: () => void;
 };
 
 export default function CommentList({
@@ -43,7 +43,7 @@ export default function CommentList({
   hasMore = false,
   remainingCount = 0,
   isLoadMoreLoading = false,
-  onLoadMore
+  onLoadMoreAction
 }: CommentListProps) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
@@ -212,13 +212,13 @@ export default function CommentList({
             rootId={rootId ?? comment.id}
             userId={profile?.id || ''}
             voteMap={voteMap}
-            closeReply={closeReply}
-            onDelete={() => handleDeleteComment(comment)}
-            onVote={handleVote}
-            openReply={openReply}
-            renderChildren={renderChildren}
-            setEditingComment={setEditingComment}
-            setOpenParentIds={setOpenParentIds}
+            onCloseReplyAction={closeReply}
+            onDeleteAction={() => handleDeleteComment(comment)}
+            onVoteAction={handleVote}
+            openReplyAction={openReply}
+            renderChildrenAction={renderChildren}
+            setEditingCommentAction={setEditingComment}
+            setOpenParentIdsAction={setOpenParentIds}
           />
         </m.div>
       ));
@@ -263,7 +263,7 @@ export default function CommentList({
             <Button
               className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
               variant='ghost'
-              onClick={onLoadMore}
+              onClick={onLoadMoreAction}
             >
               {remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`}
             </Button>

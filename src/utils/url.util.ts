@@ -1,4 +1,4 @@
-import { AppConstants } from '@/constants';
+import { AppConstants, VIDEO_LIBRARY_SOURCE_TYPE_EXTERNAL } from '@/constants';
 import { removeAccents } from '@/utils/text.util';
 
 export const renderListPageUrl = (path: string, queryString: string) => {
@@ -20,11 +20,19 @@ export const generatePath = (
   });
 };
 
-export const renderVideoUrl = (host: string, url?: string) => {
-  if (!url) return '';
-  return url.startsWith('https')
-    ? url
-    : `https://${host}/v1/file/download-video-resource${url}`;
+export const renderVideoUrl = (
+  hostname: string,
+  url: string,
+  sourceType: number
+) => {
+  if (!hostname || !url) return '';
+
+  if (sourceType === VIDEO_LIBRARY_SOURCE_TYPE_EXTERNAL) return url;
+
+  if (hostname.startsWith('https'))
+    return `${hostname}/v1/file/download-video-resource${url}`;
+
+  return `https://${hostname}/v1/file/download-video-resource${url}`;
 };
 
 export const renderImageUrl = (url: string | undefined | null) => {
@@ -32,14 +40,22 @@ export const renderImageUrl = (url: string | undefined | null) => {
   return url.startsWith('https') ? url : `${AppConstants.contentRootUrl}${url}`;
 };
 
-export const renderVttUrl = (host: string, url?: string) => {
-  if (!url) return '';
-  return url.startsWith('https')
-    ? url
-    : `https://${host}/v1/file/public-download${url}`;
+export const renderVttUrl = (
+  hostname: string,
+  url: string,
+  sourceType: number
+) => {
+  if (!hostname || !url) return '';
+
+  if (sourceType === VIDEO_LIBRARY_SOURCE_TYPE_EXTERNAL) return url;
+
+  if (hostname.startsWith('https'))
+    return `${hostname}/v1/file/public-download${url}`;
+
+  return `https://${hostname}/v1/file/public-download${url}`;
 };
 
-export const renderFileUrl = (url?: string) => {
+export const renderFileUrl = (url: string) => {
   if (!url) return '';
   return url.startsWith('https') ? url : `${AppConstants.contentRootUrl}${url}`;
 };

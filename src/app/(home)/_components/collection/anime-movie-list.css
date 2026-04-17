@@ -182,6 +182,10 @@
               color: #fff;
               display: none;
 
+              &.show {
+                display: block;
+              }
+
               @media screen and (max-width: 1279px) {
                 font-size: 28px;
                 font-weight: 700;

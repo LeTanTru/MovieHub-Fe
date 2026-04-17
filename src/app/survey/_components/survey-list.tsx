@@ -76,7 +76,7 @@ export default function SurveyList() {
               <SurveyCard
                 key={movie.id}
                 movie={movie}
-                onClick={handleClick}
+                onClickAction={handleClick}
                 isSelected={selectedMovieIds.includes(movie.id)}
               />
             ))}

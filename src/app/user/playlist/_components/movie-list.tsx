@@ -101,7 +101,7 @@ export default function MovieList() {
             <MovieCard
               key={movie.id}
               movie={movie}
-              onDelete={handleDeleteMovieFromPlaylist}
+              onDeleteAction={handleDeleteMovieFromPlaylist}
               dir='down'
             />
           ))}
@@ -110,7 +110,7 @@ export default function MovieList() {
       <Activity visible={!!totalPages}>
         <Pagination
           totalPages={totalPages}
-          onPageChange={handlePageChange}
+          onChangeAction={handlePageChange}
           page={page}
         />
       </Activity>

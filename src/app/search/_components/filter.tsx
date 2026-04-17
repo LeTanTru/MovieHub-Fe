@@ -57,28 +57,28 @@ type FilterProps = {
   filters: { key: SearchKeys; value: string | number | string[] }[];
   showFilter: boolean;
   isAllFiltersDefault: boolean;
-  handleApplyFilters: () => void;
-  handleClearFilters: () => void;
-  handleCloseFilters: () => void;
-  handleFilterChange: ({
+  onApplyFiltersAction: () => void;
+  onClearFiltersAction: () => void;
+  onCloseFiltersAction: () => void;
+  onFilterChangeAction: ({
     key,
     value
   }: {
     key: SearchKeys;
     value: string | number | string[];
   }) => void;
-  handleShowFilter: () => void;
+  onShowFilterAction: () => void;
 };
 
 export default function Filter({
   filters,
   showFilter,
   isAllFiltersDefault,
-  handleApplyFilters,
-  handleClearFilters,
-  handleCloseFilters,
-  handleFilterChange,
-  handleShowFilter
+  onApplyFiltersAction,
+  onClearFiltersAction,
+  onCloseFiltersAction,
+  onFilterChangeAction,
+  onShowFilterAction
 }: FilterProps) {
   const { data: categoryListData } = useCategoryListQuery({
     params: {
@@ -160,7 +160,7 @@ export default function Filter({
           <button
             type='button'
             className='bg-black-denim max-640:px-0 inline-flex h-7.5 cursor-pointer items-center gap-2 rounded pr-3 pl-2 font-medium text-white'
-            onClick={handleShowFilter}
+            onClick={onShowFilterAction}
           >
             <FaFilter className='size-5' />
             <span>Bộ lọc</span>
@@ -211,7 +211,7 @@ export default function Filter({
                             if (valueStr === 'all') {
                               // If "all" is currently selected, deselect all. Otherwise, select all.
                               newValues = isSelected ? [] : ['all'];
-                              handleFilterChange({
+                              onFilterChangeAction({
                                 key: condition.key,
                                 value: newValues
                               });
@@ -227,7 +227,7 @@ export default function Filter({
                                 newValues = [...currentValues, valueStr];
                               }
                               // If any specific value is selected, ensure "all" is not selected. If no specific values are selected, select "all".
-                              handleFilterChange({
+                              onFilterChangeAction({
                                 key: condition.key,
                                 value:
                                   newValues.length > 0
@@ -237,7 +237,7 @@ export default function Filter({
                             }
                           } else {
                             // For single-select fields, simply set the selected value
-                            handleFilterChange({
+                            onFilterChangeAction({
                               key: condition.key,
                               value: value.value
                             });
@@ -270,7 +270,7 @@ export default function Filter({
                     <Button
                       variant='primary'
                       className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 max-640:text-[13px] min-h-10 rounded-full'
-                      onClick={handleApplyFilters}
+                      onClick={onApplyFiltersAction}
                     >
                       Lọc kết quả
                       <FaArrowRight />
@@ -280,7 +280,7 @@ export default function Filter({
                       className='max-640:text-[13px] min-h-10 rounded-full px-5 dark:hover:opacity-80 dark:disabled:opacity-50'
                       variant='outline'
                       disabled={isAllFiltersDefault}
-                      onClick={handleClearFilters}
+                      onClick={onClearFiltersAction}
                     >
                       Xóa bộ lọc
                     </Button>
@@ -288,7 +288,7 @@ export default function Filter({
                       type='button'
                       className='max-640:text-[13px] min-h-10 rounded-full px-5 dark:hover:opacity-80'
                       variant='outline'
-                      onClick={handleCloseFilters}
+                      onClick={onCloseFiltersAction}
                     >
                       Đóng
                     </Button>

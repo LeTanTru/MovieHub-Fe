@@ -21,20 +21,20 @@ import Image from 'next/image';
 type SliderItemProps = {
   slider: SidebarResType;
   isGrabbing: boolean;
-  onPointerDown: () => void;
-  onPointerUp: () => void;
-  handleLike: (targetId: string) => void;
-  handleRemoveLike: (favouriteId: string) => void;
+  onPointerDownAction: () => void;
+  onPointerUpAction: () => void;
+  onLikeAction: (targetId: string) => void;
+  onRemoveLikeAction: (favouriteId: string) => void;
   isLiked: boolean;
 };
 
 export default function SliderItem({
   slider,
   isGrabbing,
-  onPointerDown,
-  onPointerUp,
-  handleLike,
-  handleRemoveLike,
+  onPointerDownAction,
+  onPointerUpAction,
+  onLikeAction,
+  onRemoveLikeAction,
   isLiked
 }: SliderItemProps) {
   const movie = slider.movie;
@@ -54,7 +54,7 @@ export default function SliderItem({
   const handleClick = () => {
     startAnimation();
 
-    const action = isLiked ? handleRemoveLike : handleLike;
+    const action = isLiked ? onRemoveLikeAction : onLikeAction;
     action(slider.movie.id);
   };
 
@@ -88,37 +88,41 @@ export default function SliderItem({
       <div
         className='safe-area'
         style={{ cursor: isGrabbing ? 'grabbing' : 'grab' }}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
+        onPointerDown={onPointerDownAction}
+        onPointerUp={onPointerUpAction}
       >
         <div className='slide-content'>
           <div className='media-item'>
-            <div className='media-title-image'>
-              <Link
-                title={slider.movie.title}
-                href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-              >
-                <Image
-                  className='bg-transparent'
+            {slider.movie.imageTitleUrl && (
+              <div className='media-title-image'>
+                <Link
                   title={slider.movie.title}
-                  src={renderImageUrl(slider.movie.imageTitleUrl)}
-                  alt={slider.movie.title}
-                  loading={slider.ordering === 0 ? 'eager' : 'lazy'}
-                  width={400}
-                  height={130}
-                  decoding='async'
-                  preload={slider.ordering === 0}
-                />
-              </Link>
-            </div>
-            <h3 className='media-title'>
-              <Link
-                title={slider.movie.title}
-                href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
-              >
-                {slider.movie.title}
-              </Link>
-            </h3>
+                  href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
+                >
+                  <Image
+                    className='bg-transparent'
+                    title={slider.movie.title}
+                    src={renderImageUrl(slider.movie.imageTitleUrl)}
+                    alt={slider.movie.title}
+                    loading={slider.ordering === 0 ? 'eager' : 'lazy'}
+                    width={400}
+                    height={130}
+                    decoding='async'
+                    preload={slider.ordering === 0}
+                  />
+                </Link>
+              </div>
+            )}
+            {!slider.movie.imageTitleUrl && (
+              <h3 className='media-title show'>
+                <Link
+                  title={slider.movie.title}
+                  href={`${route.movie.path}/${slider.movie.slug}.${slider.movie.id}`}
+                >
+                  {slider.movie.title}
+                </Link>
+              </h3>
+            )}
             <h3 className='media-alias-title'>
               <Link
                 title={slider.movie.originalTitle}

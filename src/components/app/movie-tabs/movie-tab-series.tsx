@@ -143,7 +143,7 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
         <div className='grow'></div>
         <ButtonToggle
           toggle={toggle}
-          handleToggle={handleToggle}
+          onToggleAction={handleToggle}
           text='Rút gọn'
           className='max-640:hidden'
         />

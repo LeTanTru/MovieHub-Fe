@@ -3,12 +3,13 @@ import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { Metadata } from 'next';
 
 export async function generateMetadata({
   searchParams
 }: {
   searchParams: Promise<{ keyword: string }>;
-}) {
+}): Promise<Metadata> {
   const { keyword } = await searchParams;
   return {
     title: keyword ? `Tìm kiếm phim ${keyword}` : 'Tìm kiếm phim',

@@ -29,8 +29,8 @@ type FileUploadOptions = {
   accept?: string;
   multiple?: boolean; // Defaults to false
   initialFiles?: FileMetadata[];
-  onFilesChange?: (files: FileWithPreview[]) => void; // Callback when files change
-  onFilesAdded?: (addedFiles: FileWithPreview[]) => void; // Callback when new files are added
+  onFilesChangeAction?: (files: FileWithPreview[]) => void; // Callback when files change
+  onFilesAddedAction?: (addedFiles: FileWithPreview[]) => void; // Callback when new files are added
 };
 
 type FileUploadState = {
@@ -66,8 +66,8 @@ export const useFileUpload = (
     accept = '*',
     multiple = false,
     initialFiles = [],
-    onFilesChange,
-    onFilesAdded
+    onFilesChangeAction,
+    onFilesAddedAction
   } = options;
 
   const [state, setState] = useState<FileUploadState>({
@@ -160,10 +160,10 @@ export const useFileUpload = (
         errors: []
       };
 
-      onFilesChange?.(newState.files);
+      onFilesChangeAction?.(newState.files);
       return newState;
     });
-  }, [onFilesChange]);
+  }, [onFilesChangeAction]);
 
   const addFiles = useCallback(
     (newFiles: FileList | File[]) => {
@@ -233,13 +233,13 @@ export const useFileUpload = (
       // Only update state if we have valid files to add
       if (validFiles.length > 0) {
         // Call the onFilesAdded callback with the newly added valid files
-        onFilesAdded?.(validFiles);
+        onFilesAddedAction?.(validFiles);
 
         setState((prev) => {
           const newFiles = !multiple
             ? validFiles
             : [...prev.files, ...validFiles];
-          onFilesChange?.(newFiles);
+          onFilesChangeAction?.(newFiles);
           return {
             ...prev,
             files: newFiles,
@@ -267,8 +267,8 @@ export const useFileUpload = (
       createPreview,
       generateUniqueId,
       clearFiles,
-      onFilesChange,
-      onFilesAdded
+      onFilesChangeAction,
+      onFilesAddedAction
     ]
   );
 
@@ -286,7 +286,7 @@ export const useFileUpload = (
         }
 
         const newFiles = prev.files.filter((file) => file.id !== id);
-        onFilesChange?.(newFiles);
+        onFilesChangeAction?.(newFiles);
 
         return {
           ...prev,
@@ -295,7 +295,7 @@ export const useFileUpload = (
         };
       });
     },
-    [onFilesChange]
+    [onFilesChangeAction]
   );
 
   const clearErrors = useCallback(() => {

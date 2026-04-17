@@ -1,4 +1,5 @@
 'use client';
+
 import './top-movie-card.css';
 import { MetadataType, MovieResType } from '@/types';
 import { m, Variants, Transition } from 'framer-motion';

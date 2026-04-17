@@ -155,10 +155,10 @@ export default function AnimeMovieList({
               <AnimeItem
                 movie={movie}
                 isGrabbing={isGrabbing}
-                onPointerDown={() => setIsGrabbing(true)}
-                onPointerUp={() => setIsGrabbing(false)}
-                handleLike={handleLike}
-                handleRemoveLike={handleRemoveLike}
+                onPointerDownAction={() => setIsGrabbing(true)}
+                onPointerUpAction={() => setIsGrabbing(false)}
+                onLikeAction={handleLike}
+                onRemoveLikeAction={handleRemoveLike}
                 isLiked={favouriteListIds.includes(movie.id)}
               />
             </SwiperSlide>

@@ -62,13 +62,13 @@ function EpisodeItem({
 
 type EpisodeListProps = {
   isOpen?: boolean;
-  onToggle?: () => void;
+  onToggleAction?: () => void;
   seasons: SeasonResType[];
 };
 
 export default function EpisodeList({
   isOpen = false,
-  onToggle,
+  onToggleAction,
   seasons
 }: EpisodeListProps) {
   const pathname = usePathname();
@@ -120,7 +120,7 @@ export default function EpisodeList({
           <Button
             variant='ghost'
             className='rounded-full p-0 text-gray-400 hover:bg-transparent hover:text-white'
-            onClick={onToggle}
+            onClick={onToggleAction}
           >
             <span>
               <X />
@@ -187,7 +187,7 @@ export default function EpisodeList({
               selectedSeason={selectedSeason as string}
               currentEpisode={currentEpisode}
               watchUrl={pathname}
-              onClick={onToggle}
+              onClick={onToggleAction}
             />
           ))}
         </div>
@@ -203,11 +203,11 @@ export default function EpisodeList({
             'pointer-events-none opacity-0': !isOpen
           }
         )}
-        onClick={onToggle}
+        onClick={onToggleAction}
         onKeyDown={(e) => {
           if ((e.key === 'Enter' || e.key === ' ') && isOpen) {
             e.preventDefault();
-            onToggle?.();
+            onToggleAction?.();
           }
         }}
       />

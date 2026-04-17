@@ -32,17 +32,19 @@ type CommentItemProps = {
   rootId: string;
   userId: string;
   voteMap: Record<string, number>;
-  closeReply: () => void;
-  onDelete: (id: string) => void;
-  onVote: (id: string, type: number, onSuccess?: () => void) => void;
-  openReply: (replyingComment: CommentResType | null) => void;
-  renderChildren: (
+  onCloseReplyAction: () => void;
+  onDeleteAction: (id: string) => void;
+  onVoteAction: (id: string, type: number, onSuccess?: () => void) => void;
+  openReplyAction: (replyingComment: CommentResType | null) => void;
+  renderChildrenAction: (
     list: CommentResType[],
     level: number,
     rootId?: string
   ) => ReactNode;
-  setEditingComment: (editingComment: CommentResType | null) => void;
-  setOpenParentIds: (ids: string[] | ((prev: string[]) => string[])) => void;
+  setEditingCommentAction: (editingComment: CommentResType | null) => void;
+  setOpenParentIdsAction: (
+    ids: string[] | ((prev: string[]) => string[])
+  ) => void;
 };
 
 export default function CommentItem({
@@ -56,13 +58,13 @@ export default function CommentItem({
   rootId,
   userId,
   voteMap,
-  closeReply,
-  onDelete,
-  onVote,
-  openReply,
-  renderChildren,
-  setEditingComment,
-  setOpenParentIds
+  onCloseReplyAction,
+  onDeleteAction,
+  onVoteAction,
+  openReplyAction,
+  renderChildrenAction,
+  setEditingCommentAction,
+  setOpenParentIdsAction
 }: CommentItemProps) {
   const author = comment.author;
   const isAuthor = userId && author.id ? userId === author.id : false;
@@ -108,12 +110,12 @@ export default function CommentItem({
   };
 
   const handleReplySubmit = async () => {
-    closeReply();
+    onCloseReplyAction();
     await queryClient.invalidateQueries({
       queryKey: [queryKeys.COMMENT_LIST]
     });
     const parentIdToInvalidate = level === 0 ? comment.id : rootId;
-    setOpenParentIds((prev) => [...prev, parentIdToInvalidate]);
+    setOpenParentIdsAction((prev) => [...prev, parentIdToInvalidate]);
     await queryClient.invalidateQueries({
       queryKey: [`${queryKeys.COMMENT_LIST}-replies-${parentIdToInvalidate}`]
     });
@@ -121,38 +123,38 @@ export default function CommentItem({
 
   const handleReplyComment = () => {
     if (replyingComment?.id === comment.id) {
-      closeReply();
+      onCloseReplyAction();
     } else {
-      openReply(comment);
+      openReplyAction(comment);
     }
-    setEditingComment(null);
+    setEditingCommentAction(null);
   };
 
   const handleEditComment = (comment: CommentResType) => {
     setShowDropdown(false);
     if (editingComment?.id === comment.id) {
-      setEditingComment(null);
+      setEditingCommentAction(null);
       return;
     }
-    setEditingComment(comment);
-    closeReply();
+    setEditingCommentAction(comment);
+    onCloseReplyAction();
   };
 
   const handleDeleteComment = () => {
     setShowDropdown(false);
-    onDelete(comment.id);
+    onDeleteAction(comment.id);
     // If the comment list has only one element, it means it's the last comment
     // So we need to close the parent comment after deleting the comment
     if (commentList.length === 1) {
-      setOpenParentIds((prev) =>
+      setOpenParentIdsAction((prev) =>
         prev.filter((id) => id !== (level === 0 ? comment.id : rootId))
       );
     }
   };
 
   const handleCancel = () => {
-    closeReply();
-    setEditingComment(null);
+    onCloseReplyAction();
+    setEditingCommentAction(null);
   };
 
   const renderMention = () => {
@@ -171,11 +173,13 @@ export default function CommentItem({
   };
 
   const handleViewReplies = (parentId: string) => {
-    setOpenParentIds((prev) => [...prev, parentId]);
+    setOpenParentIdsAction((prev) => [...prev, parentId]);
   };
 
   const handleHideReplies = (parentId: string) => {
-    setOpenParentIds((prev) => prev.filter((value) => value !== parentId));
+    setOpenParentIdsAction((prev) =>
+      prev.filter((value) => value !== parentId)
+    );
   };
 
   const handleToggleBlurredContent = () => {
@@ -184,7 +188,7 @@ export default function CommentItem({
   };
 
   const handleVote = (id: string, type: number) => {
-    onVote(id, type, async () => {
+    onVoteAction(id, type, async () => {
       if (comment.parent)
         await queryClient.invalidateQueries({
           queryKey: [`${queryKeys.COMMENT_LIST}-replies-${comment.parent?.id}`]
@@ -273,7 +277,7 @@ export default function CommentItem({
           onViewReplies={() => handleViewReplies(comment.id)}
           onHideReplies={() => handleHideReplies(comment.id)}
           onFetchMoreReplies={handleFetchNextPage}
-          renderChildren={renderChildren}
+          renderChildren={renderChildrenAction}
         />
       </div>
     </div>

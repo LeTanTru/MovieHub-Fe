@@ -30,9 +30,9 @@ type ReviewItemProps = {
   isAuthenticated: boolean;
   isVoteLoading: boolean;
   voteType: number;
-  onLike: (id: string) => void;
-  onDislike: (id: string) => void;
-  onDelete: (id: string) => void;
+  onLikeAction: (id: string) => void;
+  onDislikeAction: (id: string) => void;
+  onDeleteAction: (id: string) => void;
 };
 
 export default function ReviewItem({
@@ -42,9 +42,9 @@ export default function ReviewItem({
   isAuthenticated,
   isVoteLoading,
   voteType,
-  onLike,
-  onDislike,
-  onDelete
+  onLikeAction,
+  onDislikeAction,
+  onDeleteAction
 }: ReviewItemProps) {
   const author = review.author;
   const gender = author.gender || GENDER_OTHER;
@@ -158,7 +158,7 @@ export default function ReviewItem({
               <div className='max-640:gap-1.5 flex items-center gap-2'>
                 <LikeIcon
                   size={16}
-                  onClick={() => onLike(review.id)}
+                  onClick={() => onLikeAction(review.id)}
                   iconClassName={cn(
                     'transition-colors duration-200 ease-linear',
                     {
@@ -179,7 +179,7 @@ export default function ReviewItem({
               <div className='max-640:gap-1.5 flex items-center gap-2'>
                 <DislikeIcon
                   size={16}
-                  onClick={() => onDislike(review.id)}
+                  onClick={() => onDislikeAction(review.id)}
                   iconClassName={cn(
                     'transition-colors duration-200 ease-linear',
                     {
@@ -251,7 +251,7 @@ export default function ReviewItem({
                       className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
                       onClick={() => {
                         setShowDropdown(false);
-                        onDelete(review.id);
+                        onDeleteAction(review.id);
                       }}
                     >
                       <FaTrash />

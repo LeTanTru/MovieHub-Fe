@@ -97,7 +97,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
           <div className='grow'></div>
           <ButtonToggle
             toggle={toggle}
-            handleToggle={handleToggle}
+            onToggleAction={handleToggle}
             text='Rút gọn'
             disabled={isFetching}
             className='max-640:hidden'
@@ -179,7 +179,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
 
       <TrailerModal
         opened={opened}
-        onClose={handleCloseTrailer}
+        onCloseAction={handleCloseTrailer}
         video={trailer.video}
         token={token}
       />
