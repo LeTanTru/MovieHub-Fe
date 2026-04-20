@@ -7,6 +7,8 @@ export type CategoryResType = {
   status: number;
   name: string;
   slug: string;
+  modifiedDate: string;
+  createdDate: string;
 };
 
 type CategoryState = {
