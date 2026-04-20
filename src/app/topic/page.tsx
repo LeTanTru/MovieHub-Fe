@@ -6,9 +6,25 @@ import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
 import { CollectionSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import envConfig from '@/config';
 
 export const metadata: Metadata = {
-  title: 'Chủ đề'
+  title: 'Chủ đề',
+  description: 'Khám phá các chủ đề phim được tuyển chọn trên MovieHub.',
+  openGraph: {
+    title: 'Chủ đề phim',
+    description: 'Khám phá các chủ đề phim được tuyển chọn trên MovieHub.',
+    url: `${envConfig.NEXT_PUBLIC_URL}/topic`,
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Chủ đề phim',
+    description: 'Khám phá các chủ đề phim được tuyển chọn trên MovieHub.'
+  },
+  alternates: {
+    canonical: `${envConfig.NEXT_PUBLIC_URL}/topic`
+  }
 };
 
 export default async function TopicPage() {

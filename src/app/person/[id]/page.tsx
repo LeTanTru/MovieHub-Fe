@@ -51,7 +51,8 @@ export async function generateMetadata(
         ? `Diễn viên ${res.data?.otherName}`
         : 'Không tìm thấy diễn viên',
       description: sanitizeText(res.data?.bio ?? 'Thông tin diễn viên'),
-      images
+      images,
+      url: `${envConfig.NEXT_PUBLIC_URL}/person/${id}`
     },
     twitter: {
       card: 'summary_large_image',

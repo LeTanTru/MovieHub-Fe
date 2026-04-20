@@ -3,10 +3,25 @@ import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
+import envConfig from '@/config';
 
 export const metadata: Metadata = {
   title: 'Lịch chiếu',
-  description: 'Xem lịch chiếu phim'
+  description: 'Xem lịch chiếu phim.',
+  openGraph: {
+    title: 'Lịch chiếu',
+    description: 'Xem lịch chiếu phim trên MovieHub.',
+    url: `${envConfig.NEXT_PUBLIC_URL}/schedule`,
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Lịch chiếu',
+    description: 'Xem lịch chiếu phim trên MovieHub.'
+  },
+  alternates: {
+    canonical: `${envConfig.NEXT_PUBLIC_URL}/schedule`
+  }
 };
 
 export default function SchedulePage() {

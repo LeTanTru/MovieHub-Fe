@@ -7,6 +7,7 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/category/[slug]/_components';
 import { MovieSearchType } from '@/types';
 import type { Metadata } from 'next';
+import envConfig from '@/config';
 
 export const revalidate = 60;
 
@@ -28,9 +29,27 @@ export async function generateMetadata({
   const id = getIdFromSlug(slug);
   const res = await categoryApiRequest.getById(id);
   const category = res.data;
+  const categoryName = category?.name || 'thể loại';
+  const title = category?.name || 'Thể loại phim';
+  const description = `Khám phá danh sách phim ${categoryName.toLowerCase()} mới nhất trên MovieHub.`;
 
   return {
-    title: category?.name || 'Thể loại phim'
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${envConfig.NEXT_PUBLIC_URL}/category/${slug}`,
+      type: 'website'
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description
+    },
+    alternates: {
+      canonical: `${envConfig.NEXT_PUBLIC_URL}/category/${slug}`
+    }
   };
 }
 
