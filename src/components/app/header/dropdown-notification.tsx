@@ -82,12 +82,18 @@ export default function DropdownNotification() {
                   </Button>
                 </div>
               </div>
-              <TabsContent value='tab-1' className='flex-center'>
+              <TabsContent
+                value='tab-1'
+                className='flex items-center justify-center'
+              >
                 <div className='text-muted-foreground p-4 text-center text-sm'>
                   Không có thông báo nào 1
                 </div>
               </TabsContent>
-              <TabsContent value='tab-2' className='flex-center'>
+              <TabsContent
+                value='tab-2'
+                className='flex items-center justify-center'
+              >
                 <p className='text-muted-foreground p-4 text-center text-sm'>
                   Không có thông báo nào 2
                 </p>

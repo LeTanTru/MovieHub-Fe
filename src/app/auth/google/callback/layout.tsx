@@ -1,7 +1,7 @@
+type GoogleCallbackLayoutProps = { children: React.ReactNode };
+
 export default function GoogleCallbackLayout({
   children
-}: {
-  children: React.ReactNode;
-}) {
+}: GoogleCallbackLayoutProps) {
   return <>{children}</>;
 }

@@ -26,11 +26,9 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function RootLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type RootLayoutProps = { children: React.ReactNode };
+
+export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html suppressHydrationWarning lang='vi' data-scroll-behavior='smooth'>
       <body

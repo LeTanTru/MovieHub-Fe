@@ -32,11 +32,11 @@ export async function generateMetadata({
   return { title: topic?.name || 'Chủ đề' };
 }
 
+type TopicDetailPageProps = { params: Promise<{ slug: string }> };
+
 export default async function TopicDetailPage({
   params
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+}: TopicDetailPageProps) {
   const { slug } = await params;
   const collectionId = getIdFromSlug(slug);
   const queryClient = getQueryClient();

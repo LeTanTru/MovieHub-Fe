@@ -118,7 +118,11 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
   }
 }
 
-function ForgotPasswordHeader({ step }: { step: ForgotPasswordStepType }) {
+type ForgotPasswordHeaderProps = {
+  step: ForgotPasswordStepType;
+};
+
+function ForgotPasswordHeader({ step }: ForgotPasswordHeaderProps) {
   return (
     <div className='mb-4 flex flex-col items-center gap-2'>
       <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>
@@ -136,15 +140,17 @@ function ForgotPasswordHeader({ step }: { step: ForgotPasswordStepType }) {
   );
 }
 
+type StepOneFormSectionProps = {
+  form: UseFormReturn<ForgotPasswordBodyType>;
+  loading: boolean;
+  isFormChanged: boolean;
+};
+
 function StepOneFormSection({
   form,
   loading,
   isFormChanged
-}: {
-  form: UseFormReturn<ForgotPasswordBodyType>;
-  loading: boolean;
-  isFormChanged: boolean;
-}) {
+}: StepOneFormSectionProps) {
   return (
     <Activity visible>
       <Row>
@@ -175,6 +181,19 @@ function StepOneFormSection({
   );
 }
 
+type StepTwoFormSectionProps = {
+  form: UseFormReturn<ForgotPasswordBodyType>;
+  resendDataCount: number;
+  countdown: number;
+  cooldownRemaining: number;
+  isResendDisabled: boolean;
+  resendOtpLoading: boolean;
+  forgotPasswordLoading: boolean;
+  onResendOtp: () => void;
+  onBack: () => void;
+  formatCountdown: (ms: number) => string;
+};
+
 function StepTwoFormSection({
   form,
   resendDataCount,
@@ -186,18 +205,7 @@ function StepTwoFormSection({
   onResendOtp,
   onBack,
   formatCountdown
-}: {
-  form: UseFormReturn<ForgotPasswordBodyType>;
-  resendDataCount: number;
-  countdown: number;
-  cooldownRemaining: number;
-  isResendDisabled: boolean;
-  resendOtpLoading: boolean;
-  forgotPasswordLoading: boolean;
-  onResendOtp: () => void;
-  onBack: () => void;
-  formatCountdown: (ms: number) => string;
-}) {
+}: StepTwoFormSectionProps) {
   return (
     <Activity visible>
       <Row className='mb-6'>
@@ -591,7 +599,7 @@ export default function ForgotPasswordForm() {
       <div className='text-muted-foreground mt-4 text-center text-sm'>
         <Link
           href={route.login.path}
-          className='hover:text-golden-glow flex-center gap-x-2 transition-all duration-200 ease-linear'
+          className='hover:text-golden-glow flex items-center justify-center gap-x-2 transition-all duration-200 ease-linear'
           onClick={handleClearForgotPasswordData}
         >
           <ArrowLeft />

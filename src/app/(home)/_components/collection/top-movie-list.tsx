@@ -12,11 +12,11 @@ import { CollectionListHeading } from '@/components/app/heading';
 import { route } from '@/routes';
 import { generateSlug } from '@/utils';
 
-export default function TopMovieList({
-  collection
-}: {
+type TopMovieListProps = {
   collection: CollectionResType;
-}) {
+};
+
+export default function TopMovieList({ collection }: TopMovieListProps) {
   const movieList = collection?.movies || [];
 
   const nextRef = useRef<HTMLDivElement>(null);

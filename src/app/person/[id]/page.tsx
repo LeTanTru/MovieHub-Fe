@@ -67,11 +67,11 @@ export async function generateMetadata(
   };
 }
 
+type PersonDetailPageProps = { params: Promise<{ id: string }> };
+
 export default async function PersonDetailPage({
   params
-}: {
-  params: Promise<{ id: string }>;
-}) {
+}: PersonDetailPageProps) {
   const { id } = await params;
   const queryClient = getQueryClient();
   const moviePersonFilters: MoviePersonSearchType = {

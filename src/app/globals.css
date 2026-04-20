@@ -269,10 +269,6 @@
   }
 }
 
-@utility flex-center {
-  @apply flex items-center justify-center;
-}
-
 @keyframes skeleton {
   0% {
     background-position-x: 150%;

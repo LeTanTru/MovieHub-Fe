@@ -10,7 +10,11 @@ import { useMovieListQuery } from '@/queries';
 import { useQueryParams } from '@/hooks';
 import NotFound from './not-found';
 
-export default function MovieList({ countryCode }: { countryCode: string }) {
+type MovieListProps = {
+  countryCode: string;
+};
+
+export default function MovieList({ countryCode }: MovieListProps) {
   const {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();

@@ -13,7 +13,11 @@ import { useCollectionItemListQuery, useCollectionQuery } from '@/queries';
 import { useQueryParams } from '@/hooks';
 import NotFound from './not-found';
 
-export default function MovieList({ collectionId }: { collectionId: string }) {
+type MovieListProps = {
+  collectionId: string;
+};
+
+export default function MovieList({ collectionId }: MovieListProps) {
   const {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();

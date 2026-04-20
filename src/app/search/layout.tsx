@@ -1,11 +1,9 @@
 import { Footer } from '@/components/app/footer';
 import { Header } from '@/components/app/header';
 
-export default function SearchLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type SearchLayoutProps = { children: React.ReactNode };
+
+export default function SearchLayout({ children }: SearchLayoutProps) {
   return (
     <>
       <Header />

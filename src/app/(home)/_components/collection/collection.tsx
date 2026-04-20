@@ -140,7 +140,7 @@ export default function Collection() {
       })}
       <div
         ref={loadMoreRef}
-        className={cn('vertical-loading flex-center', {
+        className={cn('vertical-loading flex items-center justify-center', {
           'pt-20': isLoading || isFetchingNextPage
         })}
       >
