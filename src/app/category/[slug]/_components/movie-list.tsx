@@ -11,7 +11,11 @@ import { useCategoryQuery, useMovieListQuery } from '@/queries';
 import { useQueryParams } from '@/hooks';
 import NotFound from './not-found';
 
-export default function MovieList({ id }: { id: string }) {
+type MovieListProps = {
+  id: string;
+};
+
+export default function MovieList({ id }: MovieListProps) {
   const {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();

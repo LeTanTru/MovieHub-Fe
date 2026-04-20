@@ -76,11 +76,9 @@ export async function generateMetadata(
   };
 }
 
-export default async function WatchPage({
-  params
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+type WatchPageProps = { params: Promise<{ slug: string }> };
+
+export default async function WatchPage({ params }: WatchPageProps) {
   const { slug } = await params;
   const id = getIdFromSlug(slug);
 

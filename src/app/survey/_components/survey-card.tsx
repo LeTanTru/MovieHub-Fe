@@ -39,7 +39,7 @@ export default function SurveyCard({
       >
         <div
           className={cn(
-            'flex-center absolute inset-0 z-10 transition-all duration-200 ease-linear',
+            'absolute inset-0 z-10 flex items-center justify-center transition-all duration-200 ease-linear',
             {
               'bg-black/50': isSelected,
               'bg-transparent': !isSelected

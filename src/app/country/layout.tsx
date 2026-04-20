@@ -1,11 +1,9 @@
 import { Footer } from '@/components/app/footer';
 import { Header } from '@/components/app/header';
 
-export default function CountryLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type CountryLayoutProps = { children: React.ReactNode };
+
+export default function CountryLayout({ children }: CountryLayoutProps) {
   return (
     <>
       <Header />

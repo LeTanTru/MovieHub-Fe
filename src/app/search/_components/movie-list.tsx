@@ -8,19 +8,21 @@ import { MovieResType } from '@/types';
 import { Element } from 'react-scroll';
 import { SEARCH_MOVIE_LIST_ID } from '@/constants';
 
+type MovieListProps = {
+  movieList: MovieResType[];
+  isLoading: boolean;
+  totalPages: number;
+  listKey?: string;
+  keyword?: string;
+};
+
 export default function MovieList({
   movieList,
   isLoading,
   totalPages,
   listKey,
   keyword
-}: {
-  movieList: MovieResType[];
-  isLoading: boolean;
-  totalPages: number;
-  listKey?: string;
-  keyword?: string;
-}) {
+}: MovieListProps) {
   return (
     <Element name={SEARCH_MOVIE_LIST_ID}>
       {isLoading ? (

@@ -75,7 +75,7 @@ export default function PlayPauseIndicator() {
             opacity: { duration: 0.2 },
             scale: { duration: 0.2, ease: 'easeOut' }
           }}
-          className='flex-center pointer-events-none absolute inset-0'
+          className='pointer-events-none absolute inset-0 flex items-center justify-center'
         >
           <div className='rounded-full bg-black/60 p-4 backdrop-blur-sm md:p-6'>
             {lastAction === 'pause' ? (

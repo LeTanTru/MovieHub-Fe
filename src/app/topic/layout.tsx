@@ -1,11 +1,9 @@
 import { Footer } from '@/components/app/footer';
 import { Header } from '@/components/app/header';
 
-export default function TopicLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type TopicLayoutProps = { children: React.ReactNode };
+
+export default function TopicLayout({ children }: TopicLayoutProps) {
   return (
     <>
       <Header />

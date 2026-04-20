@@ -12,11 +12,11 @@ import { MovieCard } from '@/components/app/movie-card';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { CollectionListHeading } from '@/components/app/heading';
 
-export default function MovieList({
-  collection
-}: {
+type MovieListProps = {
   collection: CollectionResType;
-}) {
+};
+
+export default function MovieList({ collection }: MovieListProps) {
   const movieList = collection?.movies || [];
 
   const nextRef = useRef<HTMLDivElement>(null);

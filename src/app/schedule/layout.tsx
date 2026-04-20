@@ -1,11 +1,9 @@
 import { Footer } from '@/components/app/footer';
 import { Header } from '@/components/app/header';
 
-export default function ScheduleLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type ScheduleLayoutProps = { children: React.ReactNode };
+
+export default function ScheduleLayout({ children }: ScheduleLayoutProps) {
   return (
     <>
       <Header />

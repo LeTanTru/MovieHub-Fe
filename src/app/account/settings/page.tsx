@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function SettingsPage() {
   return (
     <div className='max-990:w-120 max-768:max-w-[95%] mx-auto flex w-full max-w-150 flex-col text-white'>
-      <div className='flex-center'>
+      <div className='flex items-center justify-center'>
         <Link href='/' className='inline-block'>
           <Image
             src={logo.src}

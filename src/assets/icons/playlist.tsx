@@ -1,4 +1,8 @@
-const PlaylistIcon = ({ className }: { className?: string }) => {
+type PlaylistIconProps = {
+  className?: string;
+};
+
+const PlaylistIcon = ({ className }: PlaylistIconProps) => {
   return (
     <svg
       height='512'

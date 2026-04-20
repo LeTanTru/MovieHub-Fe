@@ -138,7 +138,10 @@ export default function Modal({
             />
           )}
           <m.div
-            className={cn('flex-center fixed inset-0 z-50', className)}
+            className={cn(
+              'fixed inset-0 z-50 flex items-center justify-center',
+              className
+            )}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -215,7 +218,7 @@ export default function Modal({
               <AnimatePresence>
                 {showConfirm && (
                   <m.div
-                    className='flex-center absolute inset-0 z-10 rounded-lg bg-black/40'
+                    className='absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black/40'
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}

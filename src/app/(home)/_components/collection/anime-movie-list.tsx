@@ -23,11 +23,11 @@ import { AnimeItem } from '@/components/app/collection';
 import Image from 'next/image';
 import { CollectionListHeading } from '@/components/app/heading';
 
-export default function AnimeMovieList({
-  collection
-}: {
+type AnimeMovieListProps = {
   collection: CollectionResType;
-}) {
+};
+
+export default function AnimeMovieList({ collection }: AnimeMovieListProps) {
   const movieList = collection?.movies || [];
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const [isGrabbing, setIsGrabbing] = useState<boolean>(false);

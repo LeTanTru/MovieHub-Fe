@@ -1,11 +1,9 @@
 import { Footer } from '@/components/app/footer';
 import { Header } from '@/components/app/header';
 
-export default function WatchLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type WatchLayoutProps = { children: React.ReactNode };
+
+export default function WatchLayout({ children }: WatchLayoutProps) {
   return (
     <>
       <Header />

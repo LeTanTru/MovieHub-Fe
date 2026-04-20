@@ -15,11 +15,13 @@ import { generateSlug, getColorList } from '@/utils';
 import { LatestCountryMovieCard } from '@/components/app/collection';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
+type LastestCountryMovieListProps = {
+  collectionList: CollectionResType[];
+};
+
 export default function LastestCountryMovieList({
   collectionList
-}: {
-  collectionList: CollectionResType[];
-}) {
+}: LastestCountryMovieListProps) {
   return (
     <div className='collection-movie-list latest-country-movie-list fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>
       <div className='bg-charade rounded-md'>
@@ -37,11 +39,11 @@ export default function LastestCountryMovieList({
   );
 }
 
-function LatestCountryMovieItem({
-  collection
-}: {
+type LatestCountryMovieItemProps = {
   collection: CollectionResType;
-}) {
+};
+
+function LatestCountryMovieItem({ collection }: LatestCountryMovieItemProps) {
   const nextRef = useRef<HTMLDivElement>(null);
   const prevRef = useRef<HTMLDivElement>(null);
 
@@ -64,7 +66,7 @@ function LatestCountryMovieItem({
         </h3>
         <Link
           href={`${route.topic.path}/${generateSlug(collection.name)}.${collection.id}`}
-          className='hover:text-golden-glow flex-center gap-0.5 transition-all duration-200 ease-linear'
+          className='hover:text-golden-glow flex items-center justify-center gap-0.5 transition-all duration-200 ease-linear'
         >
           <span className='max-640:hidden'>Xem toàn bộ</span>
           <FaChevronRight className='text-sm' />

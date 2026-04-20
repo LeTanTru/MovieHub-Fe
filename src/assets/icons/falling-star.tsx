@@ -1,4 +1,8 @@
-const FallingStarIcon = ({ className }: { className?: string }) => {
+type FallingStarIconProps = {
+  className?: string;
+};
+
+const FallingStarIcon = ({ className }: FallingStarIconProps) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

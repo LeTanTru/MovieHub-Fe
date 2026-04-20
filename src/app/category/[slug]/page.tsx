@@ -34,11 +34,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({
-  params
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+type CategoryPageProps = { params: Promise<{ slug: string }> };
+
+export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params;
   const id = getIdFromSlug(slug);
   const movieFilters: MovieSearchType = {

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function ChangePasswordPage() {
   return (
     <div className='max-520:w-[95%] text-whit mx-auto flex w-full max-w-125 flex-col'>
-      <div className='flex-center'>
+      <div className='flex items-center justify-center'>
         <Link href='/' className='inline-block'>
           <Image
             src={logo.src}

@@ -76,11 +76,9 @@ export async function generateMetadata(
   };
 }
 
-export default async function MoviePage({
-  params
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+type MoviePageProps = { params: Promise<{ slug: string }> };
+
+export default async function MoviePage({ params }: MoviePageProps) {
   const { slug } = await params;
   const id = getIdFromSlug(slug);
 

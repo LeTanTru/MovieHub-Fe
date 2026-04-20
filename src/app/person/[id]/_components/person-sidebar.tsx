@@ -141,7 +141,7 @@ export default function PersonSidebar({ person, loading }: PersonSidebarProps) {
       <AnimatePresence>
         {opened && (
           <m.div
-            className='flex-center fixed inset-0 z-50 bg-black/80'
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/80'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

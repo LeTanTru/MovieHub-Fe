@@ -12,11 +12,11 @@ import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { ComingSoonMovieCard } from '@/components/app/collection';
 import { CollectionListHeading } from '@/components/app/heading';
 
-export default function ComingSoonList({
-  collection
-}: {
+type ComingSoonListProps = {
   collection: CollectionResType;
-}) {
+};
+
+export default function ComingSoonList({ collection }: ComingSoonListProps) {
   const movieList = collection?.movies || [];
 
   const nextRef = useRef<HTMLDivElement>(null);

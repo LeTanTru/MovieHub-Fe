@@ -163,6 +163,8 @@ export default function UploadImageField<T extends FieldValues>({
   const [customAspect, setCustomAspect] = useState<number>(aspect);
   const [keepOriginalSize, setKeepOriginalSize] =
     useState<boolean>(originalSize);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+
   const {
     field: { value: fieldValue, onChange: fieldOnChange },
     fieldState: { error }
@@ -221,12 +223,15 @@ export default function UploadImageField<T extends FieldValues>({
     if (!blob) return;
 
     try {
+      setIsUploading(true);
       const uploadedUrl = await onUploadAction(blob);
       onChangeAction?.(uploadedUrl);
       fieldOnChange(uploadedUrl);
       setDialogOpen(false);
     } catch (error) {
       logger.error('Error while uploading image:', error);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -281,10 +286,10 @@ export default function UploadImageField<T extends FieldValues>({
             className={cn(
               'group relative inline-flex cursor-pointer items-center justify-center rounded',
               {
-                'border-input border-2 border-dashed transition-all transition-colors duration-200 ease-linear hover:bg-gray-100 dark:hover:bg-gray-800':
+                'border-input border-2 border-dashed transition-all transition-colors duration-200 ease-linear hover:bg-gray-100':
                   !value,
                 'rounded-full': avatar,
-                'border-gray-300 bg-gray-100 dark:bg-gray-800': isDragging,
+                'border-gray-300 bg-gray-100': isDragging,
                 'border-red-500': !!error
               }
             )}
@@ -348,7 +353,7 @@ export default function UploadImageField<T extends FieldValues>({
                 )}
               </div>
             ) : loading && !showCrop ? (
-              <CircleLoading className='stroke-main-color dark:stroke-white' />
+              <CircleLoading className='stroke-main-color' />
             ) : avatar ? (
               <CircleUserRoundIcon
                 strokeWidth={1}
@@ -382,10 +387,16 @@ export default function UploadImageField<T extends FieldValues>({
       </div>
 
       {showCrop && (
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <Dialog
+          open={dialogOpen}
+          onOpenChange={(open) => {
+            if (isUploading) return;
+            setDialogOpen(open);
+          }}
+        >
           <DialogContent
             className='gap-0 overflow-hidden rounded-tl-sm rounded-tr-sm border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
-            showCloseButton={false}
+            showCloseButton={!isUploading}
           >
             <DialogHeader className='text-left'>
               <DialogTitle className='border-none p-0 outline-none'></DialogTitle>
@@ -393,7 +404,7 @@ export default function UploadImageField<T extends FieldValues>({
 
             <AspectRatio
               ratio={customAspect < 1 ? 1 : customAspect}
-              className={cn('bg-muted h-full dark:bg-black', {
+              className={cn('bg-muted h-full', {
                 'bg-black': keepOriginalSize && !shouldCrop
               })}
             >
@@ -420,6 +431,7 @@ export default function UploadImageField<T extends FieldValues>({
                       'object-contain': keepOriginalSize && !shouldCrop,
                       'object-cover': !keepOriginalSize && shouldCrop
                     })}
+                    sizes='(max-width: 768px) 100vw, 50vw'
                   />
                 )
               )}
@@ -514,13 +526,14 @@ export default function UploadImageField<T extends FieldValues>({
                   )}
                 </div>
 
-                <div className='flex-center gap-2'>
+                <div className='flex items-center justify-center gap-2'>
                   <Button
                     type='button'
                     variant='outline'
                     size='icon'
-                    className='hover:border-destructive/80 text-destructive border-destructive dark:border-destructive dark:text-destructive dark:hover:border-destructive/80 hover:text-destructive/80 dark:hover:text-destructive/80 -my-1 w-25'
+                    className='hover:border-destructive/80 text-destructive border-destructive hover:text-destructive/80 disabled:border-destructive/80 -my-1 w-25'
                     onClick={() => setDialogOpen(false)}
+                    disabled={isUploading}
                   >
                     Đóng
                   </Button>
@@ -529,8 +542,8 @@ export default function UploadImageField<T extends FieldValues>({
                     variant='primary'
                     className='-my-1 w-25'
                     onClick={handleApply}
-                    disabled={!previewUrl || loading}
-                    loading={loading}
+                    disabled={!previewUrl || loading || isUploading}
+                    loading={loading || isUploading}
                   >
                     Áp dụng
                   </Button>

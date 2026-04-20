@@ -37,11 +37,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function CountryPage({
-  params
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+type CountryPageProps = { params: Promise<{ slug: string }> };
+
+export default async function CountryPage({ params }: CountryPageProps) {
   const { slug } = await params;
   const countryCode = getIdFromSlug(slug);
 

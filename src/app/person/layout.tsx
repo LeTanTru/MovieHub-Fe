@@ -1,11 +1,9 @@
 import { Footer } from '@/components/app/footer';
 import { Header } from '@/components/app/header';
 
-export default function PersonLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type PersonLayoutProps = { children: React.ReactNode };
+
+export default function PersonLayout({ children }: PersonLayoutProps) {
   return (
     <>
       <Header />

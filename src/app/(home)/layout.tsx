@@ -1,11 +1,9 @@
 import { Footer } from '@/components/app/footer';
 import { Header } from '@/components/app/header';
 
-export default function HomeLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type HomeLayoutProps = { children: React.ReactNode };
+
+export default function HomeLayout({ children }: HomeLayoutProps) {
   return (
     <>
       <Header />

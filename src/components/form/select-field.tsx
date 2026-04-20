@@ -160,10 +160,12 @@ export default function SelectField<
                       type='button'
                       variant='outline'
                       role='combobox'
+                      aria-controls='combobox'
+                      aria-expanded={open}
                       aria-label='Select'
                       disabled={disabled}
                       className={cn(
-                        'hover:border-input focus-visible:border-input dark:hover:border-input dark:bg-input/30 dark:border-input focus-visible:ring-main-color w-full justify-between border px-3! py-0 text-black hover:text-black focus-visible:border-transparent focus-visible:ring-2 dark:text-white dark:hover:text-white',
+                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color w-full justify-between border px-3! py-0 text-black hover:text-black focus-visible:border-transparent focus-visible:ring-2',
                         {
                           'ring-main-color border-transparent! ring-2': open,
                           '[&>div>span]:text-gray-300': fieldState.invalid,
@@ -185,11 +187,11 @@ export default function SelectField<
                       {selectedOption && allowClear ? (
                         <span
                           role='button'
+                          aria-label='Clear selection'
                           onClick={handleClear}
                           onKeyDown={(e) => e.key === 'Enter' && handleClear(e)}
                           className='bg-accent ml-2 flex h-4 w-4 items-center justify-center rounded-full hover:opacity-80'
                           tabIndex={0}
-                          aria-label='Clear selection'
                         >
                           <X className='size-3' />
                         </span>
@@ -200,11 +202,11 @@ export default function SelectField<
                   </PopoverTrigger>
                   <PopoverContent
                     sideOffset={8}
-                    className='dark:bg-charade w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-gray-200 dark:shadow-neutral-800'
+                    className='w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-gray-200'
                   >
                     <Command
                       ref={commandRef}
-                      className='dark:bg-input/30 bg-background'
+                      className='bg-background'
                       shouldFilter={false}
                     >
                       <CommandInput
@@ -268,12 +270,11 @@ export default function SelectField<
                               onMouseEnter={() => setHighlightedIndex(idx)}
                               onSelect={() => handleSelect(val)}
                               className={cn(
-                                'dark:hover:bg-main-color/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                                'block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                                 {
-                                  'bg-accent text-accent-foreground dark:bg-main-color/10':
+                                  'bg-accent text-accent-foreground':
                                     highlightedIndex === idx,
-                                  'dark:bg-main-color/30 bg-main-color/10':
-                                    isSelected
+                                  'bg-main-color/10': isSelected
                                 }
                               )}
                             >

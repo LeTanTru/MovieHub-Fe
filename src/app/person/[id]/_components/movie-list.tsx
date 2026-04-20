@@ -19,7 +19,11 @@ import { ButtonAction } from '@/components/app/button-action';
 import { NoData } from '@/components/no-data';
 import { useQueryParams } from '@/hooks';
 
-export default function MovieList({ personId }: { personId: string }) {
+type MovieListProps = {
+  personId: string;
+};
+
+export default function MovieList({ personId }: MovieListProps) {
   const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
   const { searchParams } = useQueryParams<PersonSearchType>();
 

@@ -9,11 +9,9 @@ import { domAnimation, LazyMotion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function AppProvider({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+type AppProviderProps = { children: React.ReactNode };
+
+export default function AppProvider({ children }: AppProviderProps) {
   const navigate = useNavigate();
   const pathname = usePathname();
   const accessToken = getData(storageKeys.ACCESS_TOKEN);

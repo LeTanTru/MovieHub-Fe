@@ -7,6 +7,15 @@ import { useCallback, useEffect, useRef } from 'react';
 
 type LoadMoreMode = 'scroll' | 'click' | 'both';
 
+type UseLoadMoreProps<T extends HTMLElement, S extends BaseSearchType, R> = {
+  queryKey: string;
+  params: S;
+  queryFn: (params: S) => Promise<ApiResponseList<R>>;
+  enabled?: boolean;
+  mode?: LoadMoreMode;
+  threshold?: number;
+};
+
 const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
   queryKey,
   params,
@@ -14,14 +23,7 @@ const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
   enabled,
   mode = 'scroll',
   threshold = 1
-}: {
-  queryKey: string;
-  params: S;
-  queryFn: (params: S) => Promise<ApiResponseList<R>>;
-  enabled?: boolean;
-  mode?: LoadMoreMode;
-  threshold?: number;
-}) => {
+}: UseLoadMoreProps<T, S, R>) => {
   const loadMoreRef = useRef<T | null>(null);
 
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
