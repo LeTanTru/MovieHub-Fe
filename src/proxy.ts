@@ -1,13 +1,20 @@
 import { storageKeys } from '@/constants';
 import { NextRequest, NextResponse } from 'next/server';
 
-const publicPaths = ['/login', '/register', '/forgot-password', '/verify-otp'];
-const privatePaths = ['/user', '/account', '/survey'];
+const authPaths = [
+  '/forgot-password',
+  '/intro',
+  '/login',
+  '/register',
+  '/verify-otp'
+];
+
+const privatePaths = ['/account', '/survey', '/user'];
 
 export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const accessToken = request.cookies.get(storageKeys.ACCESS_TOKEN)?.value;
-  if (accessToken && publicPaths.includes(pathname)) {
+  if (accessToken && authPaths.includes(pathname)) {
     return NextResponse.redirect(new URL('/', request.nextUrl));
   }
   if (privatePaths.some((p) => pathname.startsWith(p))) {
@@ -21,14 +28,17 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
-    '/user/:path*',
-    '/',
-    '/user',
+    '/forgot-password',
+    '/intro',
     '/login',
     '/register',
-    '/forgot-password',
     '/verify-otp',
+
+    '/user',
+    '/user/:path*',
     '/account',
-    '/account/:path*'
+    '/account/:path*',
+    '/survey',
+    '/survey/:path*'
   ]
 };

@@ -4,16 +4,43 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
+import envConfig from '@/config';
 
 export async function generateMetadata({
   searchParams
 }: {
-  searchParams: Promise<{ keyword: string }>;
+  searchParams: Promise<{ keyword?: string }>;
 }): Promise<Metadata> {
   const { keyword } = await searchParams;
+  const normalizedKeyword = keyword?.trim();
+  const title = normalizedKeyword
+    ? `Tìm kiếm phim ${normalizedKeyword}`
+    : 'Tìm kiếm phim';
+  const description = normalizedKeyword
+    ? `Kết quả tìm kiếm cho "${normalizedKeyword}" trên MovieHub.`
+    : 'Tìm kiếm phim theo tên, thể loại và quốc gia trên MovieHub.';
+
   return {
-    title: keyword ? `Tìm kiếm phim ${keyword}` : 'Tìm kiếm phim',
-    description: `Kết quả tìm kiếm cho "${keyword}" trên MovieHub.`
+    title,
+    description,
+    robots: {
+      index: false,
+      follow: true
+    },
+    alternates: {
+      canonical: `${envConfig.NEXT_PUBLIC_URL}/search`
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${envConfig.NEXT_PUBLIC_URL}/search`,
+      type: 'website'
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description
+    }
   };
 }
 

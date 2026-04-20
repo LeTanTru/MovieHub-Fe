@@ -7,6 +7,7 @@ import { getIdFromSlug } from '@/utils';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/topic/[slug]/_components';
 import type { Metadata } from 'next';
+import envConfig from '@/config';
 
 export const revalidate = 60;
 
@@ -28,8 +29,29 @@ export async function generateMetadata({
   const id = getIdFromSlug(slug);
   const res = await collectionApiRequest.getById(id);
   const topic = res.data;
+  const title = topic?.name || 'Chủ đề';
+  const description = topic?.name
+    ? `Xem danh sách phim thuộc chủ đề ${topic.name} trên MovieHub.`
+    : 'Xem danh sách phim theo chủ đề trên MovieHub.';
 
-  return { title: topic?.name || 'Chủ đề' };
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${envConfig.NEXT_PUBLIC_URL}/topic/${slug}`,
+      type: 'website'
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description
+    },
+    alternates: {
+      canonical: `${envConfig.NEXT_PUBLIC_URL}/topic/${slug}`
+    }
+  };
 }
 
 type TopicDetailPageProps = { params: Promise<{ slug: string }> };

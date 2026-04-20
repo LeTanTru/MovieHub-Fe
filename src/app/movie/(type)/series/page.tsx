@@ -11,10 +11,25 @@ import {
 import { MovieSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import envConfig from '@/config';
 
 export const metadata: Metadata = {
   title: 'Phim bộ',
-  description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.'
+  description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.',
+  openGraph: {
+    title: 'Phim bộ',
+    description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.',
+    url: `${envConfig.NEXT_PUBLIC_URL}/movie/series`,
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Phim bộ',
+    description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.'
+  },
+  alternates: {
+    canonical: `${envConfig.NEXT_PUBLIC_URL}/movie/series`
+  }
 };
 
 export default async function MovieSeriesPage() {

@@ -11,10 +11,25 @@ import {
 import { PersonSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
+import envConfig from '@/config';
 
 export const metadata: Metadata = {
   title: 'Diễn viên',
-  description: 'Trang danh sách diễn viên MovieHub'
+  description: 'Trang danh sách diễn viên MovieHub.',
+  openGraph: {
+    title: 'Diễn viên',
+    description: 'Khám phá danh sách diễn viên nổi bật trên MovieHub.',
+    url: `${envConfig.NEXT_PUBLIC_URL}/person`,
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Diễn viên',
+    description: 'Khám phá danh sách diễn viên nổi bật trên MovieHub.'
+  },
+  alternates: {
+    canonical: `${envConfig.NEXT_PUBLIC_URL}/person`
+  }
 };
 
 export default async function PersonPage() {

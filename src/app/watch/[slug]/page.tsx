@@ -60,12 +60,13 @@ export async function generateMetadata(
         ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
         : 'Không tìm thấy phim',
       description: sanitizeText(res.data?.description || 'Thông tin phim'),
-      images
+      images,
+      url: `${envConfig.NEXT_PUBLIC_URL}/watch/${slug}`
     },
     twitter: {
       card: 'summary_large_image',
       title: res.data
-        ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
+        ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
         : 'Không tìm thấy phim',
       description: sanitizeText(res.data?.description || 'Thông tin phim'),
       images

@@ -12,6 +12,7 @@ import { movieApiRequest } from '@/api-requests';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { MovieList } from '@/app/country/[slug]/_components';
 import { Container } from '@/components/layout';
+import envConfig from '@/config';
 
 export const revalidate = 60;
 
@@ -31,9 +32,28 @@ export async function generateMetadata({
   const countryName = countries.find(
     (country) => country.value === countryCode
   )?.label;
+  const title = countryName ? `Phim ${countryName}` : 'Phim theo quốc gia';
+  const description = countryName
+    ? `Xem danh sách phim ${countryName} mới nhất trên MovieHub.`
+    : 'Xem danh sách phim theo quốc gia mới nhất trên MovieHub.';
 
   return {
-    title: `Phim ${countryName}`
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${envConfig.NEXT_PUBLIC_URL}/country/${slug}`,
+      type: 'website'
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description
+    },
+    alternates: {
+      canonical: `${envConfig.NEXT_PUBLIC_URL}/country/${slug}`
+    }
   };
 }
 

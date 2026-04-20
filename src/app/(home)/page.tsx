@@ -9,10 +9,29 @@ import { TopicList } from '@/app/(home)/_components/topic-list';
 import { WatchContinue } from '@/app/(home)/_components/watch-continue';
 import type { Metadata } from 'next';
 import { Collection } from '@/app/(home)/_components/collection';
+import envConfig from '@/config';
 
 export const metadata: Metadata = {
+  title: 'Trang chủ',
   description:
-    'Xem phim trực tuyến miễn phí với chất lượng cao tại MovieHub. Khám phá kho phim đa dạng, từ hành động, hài hước đến lãng mạn. Trải nghiệm xem phim mượt mà trên mọi thiết bị, không quảng cáo phiền phức. Cập nhật phim mới hàng ngày, đảm bảo bạn luôn có những lựa chọn giải trí tốt nhất. Thưởng thức thế giới điện ảnh tại MovieHub ngay hôm nay !'
+    'Xem phim trực tuyến miễn phí với chất lượng cao tại MovieHub. Khám phá kho phim đa dạng, cập nhật phim mới hàng ngày.',
+  openGraph: {
+    title: 'MovieHub - Xem phim trực tuyến miễn phí',
+    description:
+      'Khám phá kho phim đa dạng, cập nhật phim mới hàng ngày tại MovieHub.',
+    url: envConfig.NEXT_PUBLIC_URL,
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MovieHub - Xem phim trực tuyến miễn phí',
+    description:
+      'Khám phá kho phim đa dạng, cập nhật phim mới hàng ngày tại MovieHub.',
+    images: [`${envConfig.NEXT_PUBLIC_URL}/logo.webp`]
+  },
+  alternates: {
+    canonical: envConfig.NEXT_PUBLIC_URL
+  }
 };
 
 export default async function HomePage() {

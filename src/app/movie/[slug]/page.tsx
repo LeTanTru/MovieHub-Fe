@@ -60,7 +60,8 @@ export async function generateMetadata(
         ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
         : 'Không tìm thấy phim',
       description: sanitizeText(res.data?.description || 'Thông tin phim'),
-      images
+      images,
+      url: `${envConfig.NEXT_PUBLIC_URL}/movie/${slug}`
     },
     twitter: {
       card: 'summary_large_image',
