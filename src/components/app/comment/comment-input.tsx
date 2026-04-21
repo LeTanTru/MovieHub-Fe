@@ -176,8 +176,8 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
 
   if (isLoading)
     return (
-      <div className='bg-transparent-white flex flex-col gap-2 rounded-md p-2'>
-        <Skeleton className='skeleton h-40 w-full' />
+      <div className='bg-transparent-white flex flex-col gap-2 rounded-md border border-zinc-600/50 p-2'>
+        <Skeleton className='skeleton h-45 w-full' />
         <div className='flex items-center gap-4'>
           <Skeleton className='skeleton h-8 w-24' />
           <div className='grow'></div>
@@ -192,7 +192,7 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='bg-transparent-white max-640:p-2 flex flex-col gap-2 rounded-md p-2.5'
+      className='bg-transparent-white max-640:p-2 flex flex-col gap-2 rounded-md border border-zinc-600/50 p-2.5'
     >
       {(form) => {
         formMethodsRef.current = form;
