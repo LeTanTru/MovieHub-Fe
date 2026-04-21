@@ -116,7 +116,7 @@ export default function ReviewModal({
         initialValues={initialValues}
         schema={reviewSchema}
         onSubmit={handleSubmit}
-        className='max-640:px-6 max-480:px-4 max-480:pb-4 max-480:pt-0 max-480:pt-0 bg-transparent px-8 pb-5'
+        className='max-640:px-6 max-480:px-4 max-480:pb-4 max-480:pt-0 max-480:pt-0 border-zinc-600/50 bg-transparent px-8 pb-5'
         onFormChange={setIsFormChanged}
       >
         {(form) => (

@@ -187,7 +187,7 @@ export default function CommentForm({
       initialValues={initialValues}
       schema={commentSchema}
       onSubmit={(values, form) => handleSubmit(values, form)}
-      className='bg-transparent-white max-640:p-2 mt-4 flex flex-col gap-2 rounded-md p-2.5'
+      className='bg-transparent-white max-640:p-2 mt-4 flex flex-col gap-2 rounded-md border-zinc-600/50 p-2.5'
     >
       {(form) => {
         formMethodsRef.current = form;
