@@ -165,17 +165,17 @@ export default function Modal({
               <Activity visible={!!title || !!showClose}>
                 <div
                   className={cn(
-                    'header-title flex h-10 items-center justify-between border-b border-none border-solid border-gray-200 py-2 pr-2 pl-4 dark:border-none dark:text-white',
+                    'header-title flex h-10 items-center justify-between border-none text-white',
                     headerClassName
                   )}
                 >
-                  <div className='font-semibold text-gray-800 dark:text-white'>
+                  <div className='font-semibold text-gray-800 text-white'>
                     {title}
                   </div>
 
                   <Activity visible={showClose && onClose !== undefined}>
                     <Button
-                      className='h-fit! p-0! text-gray-500 transition hover:bg-transparent hover:text-black dark:text-gray-400 dark:hover:text-white'
+                      className='text-gray-400 hover:bg-transparent hover:text-black'
                       onClick={handleCloseRequest}
                       variant='ghost'
                     >
@@ -236,19 +236,19 @@ export default function Modal({
                       exit={{ scale: 0.85, opacity: 0 }}
                       transition={{ duration: 0.05, ease: 'linear' }}
                     >
-                      <p className='text-center text-sm font-medium text-gray-700 dark:text-gray-200'>
+                      <p className='text-center text-gray-200'>
                         {confirmOnCloseMessage}
                       </p>
                       <div className='flex gap-3'>
                         <Button
                           variant='outline'
-                          className='w-20 border-red-500 text-red-500 transition-all duration-200 ease-linear hover:border-red-500/80 hover:bg-transparent hover:text-red-500/80 dark:border-red-500 dark:hover:border-red-500/80 dark:hover:text-red-500/80'
+                          className='border-red-500 hover:border-red-500/80 hover:bg-transparent hover:text-red-500/80'
                           onClick={handleConfirmNo}
                         >
                           Không
                         </Button>
                         <Button
-                          className='bg-main-color hover:bg-main-color/80 dark:bg-primary-button dark:hover:bg-primary-button/80 w-20 text-white dark:text-black'
+                          className='bg-primary-button hover:bg-primary-button/80'
                           onClick={handleConfirmYes}
                         >
                           Có

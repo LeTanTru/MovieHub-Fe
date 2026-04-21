@@ -127,12 +127,12 @@ function ForgotPasswordHeader({ step }: ForgotPasswordHeaderProps) {
     <div className='mb-4 flex flex-col items-center gap-2'>
       <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>
       <Activity visible={step === 1}>
-        <p className='text-muted-foreground text-center text-sm'>
+        <p className='text-muted-foreground text-center'>
           Nhập email để nhận mã OTP
         </p>
       </Activity>
       <Activity visible={step === 2}>
-        <p className='text-muted-foreground text-center text-sm'>
+        <p className='text-muted-foreground text-center'>
           Nhập OTP đã được gửi đến email
         </p>
       </Activity>
@@ -169,7 +169,7 @@ function StepOneFormSection({
           <Button
             type='submit'
             variant='primary'
-            className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 w-full'
+            className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 w-full'
             disabled={loading || !isFormChanged}
             loading={loading}
           >
@@ -226,7 +226,7 @@ function StepTwoFormSection({
       </Row>
       <Row className='mb-2'>
         <Col className='grid-c-12'>
-          <span className='block text-center text-sm text-gray-500'>
+          <span className='block text-center text-gray-500'>
             Số lần đã gửi: {resendDataCount} / {MAX_RESEND}
             {countdown > 0 && resendDataCount >= MAX_RESEND && (
               <>
@@ -289,7 +289,7 @@ function StepTwoFormSection({
           <Button
             type='submit'
             variant='primary'
-            className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
+            className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
             disabled={forgotPasswordLoading || !form.formState.isValid}
             loading={forgotPasswordLoading}
           >
@@ -303,7 +303,7 @@ function StepTwoFormSection({
             type='button'
             variant='secondary'
             onClick={onBack}
-            className='dark:border-none'
+            className='border-none'
           >
             Quay lại
           </Button>
@@ -315,7 +315,7 @@ function StepTwoFormSection({
 
 export default function ForgotPasswordForm() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<ForgotPasswordStepType>(1);
+  const [step, setStep] = useState<ForgotPasswordStepType>(2);
   const [
     { resendData, countdown, cooldownRemaining, lastResendTime },
     dispatch
@@ -474,7 +474,7 @@ export default function ForgotPasswordForm() {
     setStep(1);
   };
 
-  const handleClearForgotPasswordData = () => {
+  const handleClearForgotPassword = () => {
     removeData([
       storageKeys.EMAIL,
       storageKeys.RESEND_OTP_TIME,
@@ -524,7 +524,7 @@ export default function ForgotPasswordForm() {
           onSuccess: (res) => {
             if (res.result) {
               notify.success('Đặt lại mật khẩu thành công');
-              handleClearForgotPasswordData();
+              handleClearForgotPassword();
               navigate.push(route.login.path);
             } else {
               const errorCode = res.code;
@@ -596,11 +596,11 @@ export default function ForgotPasswordForm() {
         className='mt-4 h-[0.5px]! bg-gray-500'
       />
 
-      <div className='text-muted-foreground mt-4 text-center text-sm'>
+      <div className='mt-4 flex items-center justify-center text-center'>
         <Link
           href={route.login.path}
-          className='hover:text-golden-glow flex items-center justify-center gap-x-2 transition-all duration-200 ease-linear'
-          onClick={handleClearForgotPasswordData}
+          className='hover:text-golden-glow text-muted-foreground inline-flex items-center justify-center gap-2 transition-all duration-200 ease-linear'
+          onClick={handleClearForgotPassword}
         >
           <ArrowLeft />
           Đăng nhập ngay

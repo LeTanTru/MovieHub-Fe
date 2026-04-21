@@ -136,7 +136,7 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
       picker.style.zIndex = '1000';
       picker.style.opacity = '0';
       picker.style.visibility = 'hidden';
-      picker.style.right = '110px';
+      picker.style.right = '130px';
       picker.style.top = '0px';
       picker.style.transition = 'all 0.2s linear';
       picker.style.setProperty('--border-radius', '8px');
@@ -203,7 +203,7 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
                 <TextAreaField
                   control={form.control}
                   name='content'
-                  className='dark:bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block w-full resize-none rounded-md border border-solid border-transparent text-sm leading-normal font-normal text-white'
+                  className='bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block w-full resize-none rounded-md border border-solid border-transparent text-sm leading-normal font-normal text-white'
                   placeholder='Viết bình luận'
                   maxLength={1000}
                 />
@@ -226,7 +226,7 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
                     <FaRegFaceGrinBeam className='text-golden-glow size-5' />
                   </Button>
                   <Button
-                    className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:pr-2! max-640:py-0 h-fit gap-2 px-0! py-0 font-medium dark:bg-transparent dark:hover:bg-transparent'
+                    className='text-golden-glow hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:pr-2! max-640:py-0 h-fit gap-2 bg-transparent px-2! py-0 font-medium hover:bg-transparent'
                     disabled={createCommentLoading || !form.formState.isDirty}
                     type='submit'
                     variant='ghost'

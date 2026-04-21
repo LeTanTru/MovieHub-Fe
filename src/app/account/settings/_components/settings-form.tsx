@@ -168,6 +168,7 @@ export default function SettingsForm() {
                 <Button
                   variant='outline'
                   disabled={isPending || !form.formState.isDirty}
+                  className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                 >
                   Hủy
                 </Button>
@@ -178,7 +179,7 @@ export default function SettingsForm() {
                   type='submit'
                   disabled={isPending || !form.formState.isDirty}
                   loading={isPending}
-                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
+                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                 >
                   Cập nhật
                 </Button>

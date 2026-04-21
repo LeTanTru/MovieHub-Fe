@@ -1,21 +1,17 @@
 'use client';
 
-import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
 import { AnimatePresence, m } from 'framer-motion';
 import { BaseForm } from '@/components/form/base-form';
 import { cn } from '@/lib';
 import debounce from 'lodash/debounce';
-import { FormEvent } from 'react';
+import type { FormEvent } from 'react';
 import { InputField } from '@/components/form';
-import { MetadataType, MovieResType, SearchType } from '@/types';
+import type { SearchType } from '@/types';
 import { NoData } from '@/components/no-data';
-import { getYearFromDate, parseJSON, renderImageUrl } from '@/utils';
 import { route } from '@/routes';
-import { Search, XCircle } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { searchSchema } from '@/schemaValidations';
 import { useMovieListQuery } from '@/queries';
-import Image from 'next/image';
-import Link from 'next/link';
 import {
   useClickOutside,
   useDisclosure,
@@ -25,76 +21,13 @@ import {
 import { useSearchStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import { usePathname } from 'next/navigation';
-import { CircleLoading } from '@/components/loading';
+import { VerticalBarLoading } from '@/components/loading';
+import MovieItem from './movie-item';
 
 type SearchFormProps = {
   className?: string;
   formClassName?: string;
 };
-
-type MovieItemProps = {
-  movie: MovieResType;
-};
-
-function MovieItem({ movie }: MovieItemProps) {
-  const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
-  const isSeries = movie.type === MOVIE_TYPE_SERIES;
-
-  const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
-
-  const latestSeason = metadata?.latestSeason;
-  const latestEpisode = metadata?.latestEpisode;
-  const releaseYear = getYearFromDate(
-    latestSeason?.releaseDate || movie.releaseDate
-  );
-
-  return (
-    <Link
-      key={movie.id}
-      href={`${route.movie.path}/${movie.slug}.${movie.id}`}
-      className='flex items-center justify-between gap-4 rounded p-2.5 transition-colors duration-200 ease-linear hover:bg-white/5'
-    >
-      <div className='w-12.5 shrink-0'>
-        <div className='bg-gunmetal-blue relative block h-0 w-full rounded pb-[135%]'>
-          <Image
-            src={renderImageUrl(movie.posterUrl)}
-            alt={`${movie.title} - ${movie.originalTitle}`}
-            width={50}
-            height={70}
-            className='absolute inset-0 size-full object-cover'
-          />
-        </div>
-      </div>
-      <div className='grow'>
-        <h3 className='mb-1 line-clamp-2 leading-normal text-white'>
-          {movie.title}
-        </h3>
-        <div className='mb-1 line-clamp-1 text-xs leading-normal text-neutral-400'>
-          {movie.originalTitle}
-        </div>
-        <div className='flex items-center gap-4'>
-          <div
-            className='inline text-xs whitespace-nowrap text-neutral-400'
-            title={ageRating?.mean}
-          >
-            <strong>{ageRating?.label}</strong>
-          </div>
-          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-            <strong>{releaseYear}</strong>
-          </div>
-          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-            <strong>Phần {latestSeason?.label}</strong>
-          </div>
-          {isSeries && (
-            <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-              <strong>Tập {latestEpisode?.label}</strong>
-            </div>
-          )}
-        </div>
-      </div>
-    </Link>
-  );
-}
 
 export default function SearchForm({
   className,
@@ -110,11 +43,15 @@ export default function SearchForm({
     open: openMovieList,
     close: closeMovieList
   } = useDisclosure();
-  const movieListRef = useClickOutside<HTMLDivElement>(closeMovieList);
+  const movieListRef = useClickOutside<HTMLDivElement>(() => {
+    closeMovieList();
+    setKeyword('');
+  });
 
   const { searchParams, setQueryParam, serializeParams } = useQueryParams<{
     keyword: string;
   }>();
+
   const { keyword, setKeyword } = useSearchStore(
     useShallow((s) => ({
       keyword: s.keyword,
@@ -175,9 +112,9 @@ export default function SearchForm({
                 prefixIcon={<Search size={16} className='text-white' />}
                 suffixIcon={
                   keyword ? (
-                    <XCircle
+                    <X
                       size={16}
-                      className='cursor-pointer text-white'
+                      className='cursor-pointer text-white transition-colors duration-200 ease-linear hover:text-white/50'
                       onClick={() => {
                         setKeyword('');
                         form.reset();
@@ -209,7 +146,7 @@ export default function SearchForm({
             <div className='scrollbar-none max-h-125 overflow-y-auto'>
               {isLoading ? (
                 <div className='py-10'>
-                  <CircleLoading className='mx-auto' />
+                  <VerticalBarLoading className='mx-auto' />
                 </div>
               ) : movieList.length === 0 ? (
                 <NoData
@@ -226,7 +163,11 @@ export default function SearchForm({
                 />
               ) : (
                 movieList.map((movie) => (
-                  <MovieItem key={movie.id} movie={movie} />
+                  <MovieItem
+                    key={movie.id}
+                    movie={movie}
+                    onClick={() => setKeyword('')}
+                  />
                 ))
               )}
             </div>

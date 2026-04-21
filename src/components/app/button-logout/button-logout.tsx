@@ -49,7 +49,7 @@ export default function ButtonLogout({
     <Button
       variant='ghost'
       className={cn(
-        'w-full rounded-none rounded-br rounded-bl dark:hover:bg-black/20',
+        'w-full rounded-none rounded-br rounded-bl hover:bg-black/20',
         {
           'justify-start': !logoutLoading && !removeCookieLoading,
           'pointer-events-none': logoutLoading || removeCookieLoading

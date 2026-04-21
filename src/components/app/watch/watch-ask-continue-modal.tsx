@@ -65,7 +65,7 @@ export default function WatchAskContinueModal({
                 <Col className='grid-c-6'>
                   <Button
                     variant='primary'
-                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 max-640:text-[13px] dark:text-black'
+                    className='bg-golden-glow hover:bg-golden-glow/80 max-640:text-[13px] max-520:text-xs text-black'
                     onClick={onContinueWatchingAction}
                   >
                     Tiếp tục xem

@@ -109,7 +109,7 @@ export default function ReviewModal({
       onClose={onCloseAction}
       bodyWrapperClassName='bg-vintage-navi w-160 max-768:w-150 max-640:w-[95%]'
       confirmOnClose={isFormChanged}
-      confirmClassName='dark:bg-charade'
+      confirmClassName='bg-charade'
     >
       <BaseForm
         defaultValues={defaultValues}
@@ -124,7 +124,7 @@ export default function ReviewModal({
             <div className='max-640:mb-0 mb-2 text-center text-xl leading-normal font-semibold text-white'>
               <h3>{movie?.title}</h3>
             </div>
-            <div className='max-768:mb-6 max-640:mb-4 mb-8'>
+            <div className='max-640:mb-4 mb-6'>
               <div className='max-640:mb-4 max-480:mb-2 mb-6 block text-center'>
                 <div className='flex items-center justify-center'>
                   <div className='h-10 w-10 bg-[url("/logo.webp")] bg-cover bg-position-[50%]'></div>
@@ -171,7 +171,7 @@ export default function ReviewModal({
                 <TextAreaField
                   control={form.control}
                   className='scrollbar-none max-640:text-[13px] block h-auto min-h-8.75 min-h-25 w-full resize-none rounded-md border border-solid bg-transparent px-5 py-4 text-sm leading-normal font-normal text-white transition-all duration-200 ease-linear focus:border-white'
-                  rows={100}
+                  rows={4}
                   cols={3}
                   placeholder='Viết đánh giá của bạn...'
                   maxLength={1000}
@@ -191,7 +191,7 @@ export default function ReviewModal({
               </Col>
               <Col className='grid-c-4 max-640:grid-c-6'>
                 <Button
-                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
+                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
                   variant='primary'
                   loading={createReviewLoading}
                   disabled={

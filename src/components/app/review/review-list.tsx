@@ -263,7 +263,7 @@ export default function ReviewList({
       {hasMore && (
         <div className='flex justify-center'>
           <Button
-            className='dark:hover:text-golden-glow min-w-45 text-sm dark:hover:bg-transparent'
+            className='hover:text-golden-glow hover:bg-transparent'
             variant='ghost'
             onClick={onLoadMoreAction}
           >

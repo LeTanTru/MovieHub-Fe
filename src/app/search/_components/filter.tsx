@@ -269,7 +269,7 @@ export default function Filter({
                   <div className='max-640:gap-2 flex grow items-center gap-4'>
                     <Button
                       variant='primary'
-                      className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 max-640:text-[13px] min-h-10 rounded-full'
+                      className='bg-golden-glow hover:bg-golden-glow/80 max-640:text-[13px] min-h-10 rounded-full'
                       onClick={onApplyFiltersAction}
                     >
                       Lọc kết quả
@@ -277,7 +277,7 @@ export default function Filter({
                     </Button>
                     <Button
                       type='button'
-                      className='max-640:text-[13px] min-h-10 rounded-full px-5 dark:hover:opacity-80 dark:disabled:opacity-50'
+                      className='max-640:text-[13px] min-h-10 rounded-full border-gray-200 px-5 text-white hover:border-gray-200/80 hover:text-white/80 hover:opacity-80 disabled:border-gray-200/80 disabled:text-white/80 disabled:opacity-50 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                       variant='outline'
                       disabled={isAllFiltersDefault}
                       onClick={onClearFiltersAction}
@@ -286,7 +286,7 @@ export default function Filter({
                     </Button>
                     <Button
                       type='button'
-                      className='max-640:text-[13px] min-h-10 rounded-full px-5 dark:hover:opacity-80'
+                      className='max-640:text-[13px] min-h-10 rounded-full px-5 hover:opacity-80'
                       variant='outline'
                       onClick={onCloseFiltersAction}
                     >

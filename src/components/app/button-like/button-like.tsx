@@ -21,13 +21,12 @@ const buttonVariants = cva('', {
   variants: {
     variant: {
       detail:
-        'dark:hover:text-golden-glow h-fit min-w-20 flex-col px-2 dark:hover:bg-white/10',
+        'hover:text-golden-glow h-fit min-w-20 flex-col px-2 hover:bg-white/10',
       person:
-        'dark:hover:text-golden-glow dark:hover:border-golden-glow rounded-full py-2 text-white',
+        'hover:text-golden-glow hover:border-golden-glow rounded-full py-2 text-white',
       popup:
-        'dark:hover:border-golden-glow dark:hover:text-golden-glow border dark:border-white/50 dark:text-white hover:bg-transparent',
-      watch:
-        'dark:hover:text-golden-glow dark:border-none dark:bg-transparent dark:text-white'
+        'hover:border-golden-glow hover:text-golden-glow border border-white/50 text-white hover:bg-transparent',
+      watch: 'hover:text-golden-glow border-none bg-transparent text-white'
     }
   }
 });
@@ -191,8 +190,8 @@ export default function ButtonLike({
       className={cn(
         buttonVariants({ variant }),
         {
-          'dark:text-golden-glow dark:border-golden-glow': isLiked,
-          'dark:text-golden-glow dark:border-golden-glow dark:disabled:opacity-80':
+          'text-golden-glow border-golden-glow': isLiked,
+          'text-golden-glow border-golden-glow disabled:opacity-80':
             isLiked && (variant === 'person' || variant === 'popup')
         },
         className

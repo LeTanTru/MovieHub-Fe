@@ -1,10 +1,8 @@
 'use client';
 
-import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { scroller } from 'react-scroll';
 
@@ -17,26 +15,6 @@ type PaginationProps = {
 };
 
 export default function Pagination({
-  totalPages,
-  page,
-  to,
-  scrollOptions,
-  onChangeAction
-}: PaginationProps) {
-  return (
-    <Suspense fallback={<Skeleton className='h-10 w-10' />}>
-      <PaginationContent
-        totalPages={totalPages}
-        page={page}
-        to={to}
-        scrollOptions={scrollOptions}
-        onChangeAction={onChangeAction}
-      />
-    </Suspense>
-  );
-}
-
-function PaginationContent({
   totalPages,
   page,
   to,
