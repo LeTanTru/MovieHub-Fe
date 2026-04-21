@@ -165,7 +165,7 @@ export default function SelectField<
                       aria-label='Select'
                       disabled={disabled}
                       className={cn(
-                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color w-full justify-between border px-3! py-0 text-black hover:text-black focus-visible:border-transparent focus-visible:ring-2',
+                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2',
                         {
                           'ring-main-color border-transparent! ring-2': open,
                           '[&>div>span]:text-gray-300': fieldState.invalid,
@@ -202,11 +202,11 @@ export default function SelectField<
                   </PopoverTrigger>
                   <PopoverContent
                     sideOffset={8}
-                    className='w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-gray-200'
+                    className='bg-charade w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-neutral-800'
                   >
                     <Command
                       ref={commandRef}
-                      className='bg-background'
+                      className='bg-input'
                       shouldFilter={false}
                     >
                       <CommandInput
@@ -270,11 +270,11 @@ export default function SelectField<
                               onMouseEnter={() => setHighlightedIndex(idx)}
                               onSelect={() => handleSelect(val)}
                               className={cn(
-                                'block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                                'hover:bg-main-color/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                                 {
-                                  'bg-accent text-accent-foreground':
+                                  'text-accent-foreground dark:bg-main-color/10':
                                     highlightedIndex === idx,
-                                  'bg-main-color/10': isSelected
+                                  'bg-main-color/30': isSelected
                                 }
                               )}
                             >

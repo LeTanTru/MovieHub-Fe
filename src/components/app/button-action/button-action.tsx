@@ -34,10 +34,10 @@ export default function ButtonAction({
       <Button
         variant='ghost'
         className={cn(
-          'relative flex h-6.5 cursor-pointer items-center rounded-none! px-2 transition-all duration-200 ease-linear dark:hover:bg-transparent',
+          'relative flex h-6.5 cursor-pointer items-center rounded-none! px-2 transition-all duration-200 ease-linear hover:bg-transparent',
           {
-            'dark:text-gray-200 dark:hover:opacity-80': !isActive,
-            'dark:text-black dark:hover:text-black': isActive
+            'text-gray-200 hover:opacity-80': !isActive,
+            'text-black hover:text-black': isActive
           },
           className
         )}

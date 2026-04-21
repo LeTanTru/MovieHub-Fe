@@ -351,7 +351,7 @@ export default function VerifyOtpForm() {
                 <Button
                   type='submit'
                   variant='primary'
-                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
+                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                   disabled={verifyOtpLoading || !isFormChanged}
                   loading={verifyOtpLoading}
                 >
@@ -361,12 +361,7 @@ export default function VerifyOtpForm() {
             </Row>
             <Row className='mb-0'>
               <Col className='grid-c-12'>
-                <Button
-                  type='button'
-                  variant='secondary'
-                  onClick={handleBack}
-                  className='dark:border-none'
-                >
+                <Button type='button' variant='secondary' onClick={handleBack}>
                   Quay lại
                 </Button>
               </Col>

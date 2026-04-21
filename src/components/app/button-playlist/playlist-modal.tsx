@@ -91,7 +91,7 @@ export default function PlaylistModal({
       onClose={onCloseAction}
       bodyWrapperClassName='bg-main-background w-75 max-480:w-[90%] max-990:w-100'
       confirmOnClose={isFormChanged}
-      confirmClassName='dark:bg-charade'
+      confirmClassName='bg-charade'
     >
       <BaseForm
         schema={playlistSchema}
@@ -128,7 +128,7 @@ export default function PlaylistModal({
               </Col>
               <Col className='grid-c-4 max-640:grid-c-6'>
                 <Button
-                  className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
+                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
                   variant='primary'
                   disabled={!form.formState.isDirty || loading}
                   type='submit'

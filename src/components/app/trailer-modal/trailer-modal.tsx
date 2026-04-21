@@ -56,7 +56,7 @@ export default function TrailerModal({
       bodyRef={bodyRef}
       confirmOnClose
       confirmOnCloseMessage='Bạn có chắc chắn muốn đóng không?'
-      confirmClassName='dark:bg-charade'
+      confirmClassName='bg-charade'
     >
       <div
         style={

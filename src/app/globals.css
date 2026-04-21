@@ -252,13 +252,6 @@
       padding-right: 15px;
     }
   }
-
-  @media (min-height: 1px) {
-    body[data-scroll-locked] {
-      margin-right: 0 !important;
-      padding-right: var(--scroll-padding, 0px) !important;
-    }
-  }
 }
 
 @utility scrollbar-none {

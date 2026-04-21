@@ -6,7 +6,5 @@ type CircleLoadingProps = {
 };
 
 export default function CircleLoading({ className }: CircleLoadingProps) {
-  return (
-    <Spinner className={cn('size-6 stroke-2 dark:stroke-white', className)} />
-  );
+  return <Spinner className={cn('size-6 stroke-white stroke-2', className)} />;
 }

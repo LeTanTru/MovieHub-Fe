@@ -151,7 +151,7 @@ export default function ProfileForm() {
                     label='Email'
                     required
                     placeholder='Nhập email'
-                    className='text-sm disabled:border-gray-500 disabled:opacity-100'
+                    className='text-sm disabled:opacity-100'
                     disabled
                   />
                 </Col>
@@ -198,6 +198,7 @@ export default function ProfileForm() {
                     variant='outline'
                     onClick={() => handleCancel(form)}
                     disabled={!form.formState.isDirty || updateProfileLoading}
+                    className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                   >
                     Hủy
                   </Button>
@@ -206,7 +207,7 @@ export default function ProfileForm() {
                   <Button
                     type='submit'
                     variant='primary'
-                    className='dark:bg-golden-glow dark:hover:bg-golden-glow/80 dark:disabled:bg-golden-glow/80 dark:disabled:hover:bg-golden-glow/80'
+                    className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                     loading={updateProfileLoading}
                     disabled={!form.formState.isDirty || updateProfileLoading}
                   >

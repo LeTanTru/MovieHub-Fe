@@ -30,7 +30,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
     <div className='group relative' ref={dropdownRef}>
       <Button
         variant='ghost'
-        className='size-full rounded-full p-0! focus:outline-none focus-visible:ring-0 dark:hover:bg-transparent'
+        className='size-full rounded-full p-0! hover:bg-transparent focus:outline-none focus-visible:ring-0'
         onClick={handleToggle}
       >
         <AvatarField

@@ -87,7 +87,7 @@ export default function ButtonDeletePlaylist({
         className='bg-transparent'
         bodyWrapperClassName='bg-main-background w-fit max-640:w-[80vw] max-480:w-[90vw]'
         bodyClassName='p-4 pt-0'
-        confirmClassName='dark:bg-charade'
+        confirmClassName='bg-charade'
       >
         <h3 className='max-520:text-[13px]'>
           Bạn có chắc chắn muốn xóa danh sách phát này không?
@@ -104,7 +104,7 @@ export default function ButtonDeletePlaylist({
           </Col>
           <Col className='grid-c-4 max-640:grid-c-6'>
             <Button
-              className='max-520:text-[13px] dark:bg-red-500'
+              className='max-520:text-[13px] bg-rose-500'
               variant='destructive'
               disabled={isPending}
               loading={isPending}

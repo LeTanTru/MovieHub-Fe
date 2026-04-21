@@ -32,7 +32,7 @@ export default function ButtonSharePerson({
   return (
     <Button
       className={cn(
-        'dark:hover:text-golden-glow dark:hover:border-golden-glow rounded-full',
+        'hover:text-golden-glow hover:border-golden-glow rounded-full',
         className
       )}
       variant='outline'

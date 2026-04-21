@@ -20,7 +20,7 @@ export default function DropdownNotification() {
     <div className='relative' ref={dropdownRef}>
       <Button
         variant='outline'
-        className='group h-11 w-11 rounded-full p-0! focus:outline-none focus-visible:ring-0 dark:border-white dark:text-white dark:hover:border-white/50 dark:hover:text-white/50'
+        className='group h-11 w-11 rounded-full border-white p-0! text-white hover:border-white/50 hover:text-white/50 focus:outline-none focus-visible:ring-0'
         onClick={handleToggle}
       >
         <FaBell className='size-5 stroke-2' />
@@ -75,7 +75,7 @@ export default function DropdownNotification() {
                 <div>
                   <Button
                     variant='ghost'
-                    className='dark:text-slate-400 dark:hover:bg-transparent dark:hover:text-white'
+                    className='text-slate-400 hover:bg-transparent hover:text-white'
                   >
                     <CheckCheck />
                     Đã đọc

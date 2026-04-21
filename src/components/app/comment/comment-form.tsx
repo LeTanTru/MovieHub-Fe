@@ -138,7 +138,7 @@ export default function CommentForm({
       picker.style.zIndex = '1000';
       picker.style.opacity = '0';
       picker.style.visibility = 'hidden';
-      picker.style.right = '160px';
+      picker.style.right = '180px';
       picker.style.top = '0px';
       picker.style.transition = 'all 0.2s linear';
       picker.style.setProperty('--border-radius', '8px');
@@ -205,7 +205,7 @@ export default function CommentForm({
                 <TextAreaField
                   control={form.control}
                   name='content'
-                  className='dark:bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block w-full resize-none rounded-md! border border-solid border-transparent text-sm leading-normal font-normal text-white'
+                  className='bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block w-full resize-none rounded-md! border border-solid border-transparent text-sm leading-normal font-normal text-white'
                   placeholder='Viết bình luận'
                   maxLength={1000}
                 />
@@ -231,12 +231,12 @@ export default function CommentForm({
                     type='button'
                     variant='ghost'
                     onClick={onCancelAction}
-                    className='dark:hover:text-destructive max-640:text-[13px] max-520:text-xs max-640:p-0 h-fit px-0! py-0 dark:hover:bg-transparent'
+                    className='hover:text-destructive max-640:text-[13px] max-520:text-xs max-640:p-0 h-fit px-0! py-0 hover:bg-transparent'
                   >
                     Hủy
                   </Button>
                   <Button
-                    className='dark:text-golden-glow dark:hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:px-2! max-640:gap-1 h-fit gap-2 px-0! py-0 font-medium dark:bg-transparent dark:hover:bg-transparent dark:hover:opacity-80'
+                    className='text-golden-glow hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:pr-2! max-640:py-0 h-fit gap-2 bg-transparent px-2! py-0 font-medium hover:bg-transparent'
                     disabled={mutationLoading || !form.formState.isDirty}
                     type='submit'
                     variant='ghost'

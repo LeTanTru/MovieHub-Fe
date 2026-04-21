@@ -104,9 +104,9 @@ export default function WatchPlayerVideoArea() {
                   <Button
                     variant='ghost'
                     className={cn(
-                      `dark:hover:text-golden-glow max-800:hidden font-medium dark:hover:bg-transparent`,
+                      `hover:text-golden-glow max-800:hidden font-medium hover:bg-transparent`,
                       {
-                        'dark:text-golden-glow': isEpisodeListOpen
+                        'text-golden-glow': isEpisodeListOpen
                       }
                     )}
                     onClick={openEpisodeList}
