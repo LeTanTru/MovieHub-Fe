@@ -2,14 +2,14 @@
 
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
-import { dropdownAvatarList } from '@/constants';
+import { dropdownAvatarList, storageKeys } from '@/constants';
 import { ProfileResType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';
-import { renderImageUrl } from '@/utils';
+import { renderImageUrl, setData } from '@/utils';
 import { List, ListItem } from '@/components/list';
-import { useClickOutside, useDisclosure } from '@/hooks';
+import { useClickOutside, useDisclosure, useQueryParams } from '@/hooks';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib';
 import { ButtonLogout } from '@/components/app/button-logout';
@@ -21,9 +21,15 @@ type DropdownAvatarProps = {
 export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
   const { opened, close, toggle } = useDisclosure();
   const pathname = usePathname();
+  const { queryString } = useQueryParams();
   const dropdownRef = useClickOutside<HTMLDivElement>(close);
 
   const handleToggle = () => toggle();
+
+  const handleClick = () => {
+    const fullPath = queryString ? `${pathname}?${queryString}` : pathname;
+    setData(storageKeys.PREVIOUS_PATH, fullPath);
+  };
 
   return (
     <div className='group relative' ref={dropdownRef}>
@@ -82,6 +88,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
                 <ListItem key={item.link} onClick={handleToggle}>
                   <Link
                     href={item.link}
+                    onClick={handleClick}
                     className={cn(
                       'hover:text-accent-foreground flex h-9 w-full cursor-pointer items-center justify-start gap-2 rounded-none px-4 text-sm opacity-70 transition-all duration-200 ease-linear hover:bg-black/20 hover:opacity-100 focus:outline-none focus-visible:ring-0',
                       {
