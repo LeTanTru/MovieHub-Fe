@@ -9,7 +9,8 @@ enum storageKeys {
   WATCH_AUTO_NEXT_EPISODE = 'watch_auto_next_episode',
   WATCH_SKIP_INTRO = 'watch_skip_intro',
   WATCH_RESOLUTION = 'watch_resolution',
-  REDIRECT_PATH_AFTER_LOGIN = 'redirect_path_after_login'
+  REDIRECT_PATH_AFTER_LOGIN = 'redirect_path_after_login',
+  PREVIOUS_PATH = 'previous_path'
 }
 
 export default storageKeys;
