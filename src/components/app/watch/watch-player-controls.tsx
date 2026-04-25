@@ -10,7 +10,7 @@ import {
   ButtonSkipIntro,
   ButtonWatchTogether
 } from '@/components/app/watch';
-import { useWatchPlayer } from '@/app/watch/[slug]/_hooks';
+import { useWatchPlayerContext } from '@/app/watch/[slug]/_hooks';
 
 export default function WatchPlayerControls() {
   const {
@@ -19,7 +19,7 @@ export default function WatchPlayerControls() {
     skipIntro,
     handleToggleAutoNextEpisode,
     handleToggleSkipIntro
-  } = useWatchPlayer();
+  } = useWatchPlayerContext();
 
   if (!movie) return null;
 

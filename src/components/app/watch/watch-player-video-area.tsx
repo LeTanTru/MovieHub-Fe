@@ -17,7 +17,10 @@ import { useState } from 'react';
 import envConfig from '@/config';
 import { useDisclosure } from '@/hooks';
 import { Activity } from '@/components/activity';
-import { useWatchPlayer, usePlayerSettings } from '@/app/watch/[slug]/_hooks';
+import {
+  usePlayerSettings,
+  useWatchPlayerContext
+} from '@/app/watch/[slug]/_hooks';
 
 export default function WatchPlayerVideoArea() {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -50,7 +53,7 @@ export default function WatchPlayerVideoArea() {
     handleSeeked,
     handleVideoEnded,
     handlePlayerCanPlay
-  } = useWatchPlayer();
+  } = useWatchPlayerContext();
 
   if (!video) {
     return (

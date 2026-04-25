@@ -62,7 +62,9 @@ const refreshToken = async () => {
       refresh_token: token
     }
   );
+
   const data = res.data;
+
   if (data) {
     const newAccessToken = data.access_token;
     const newRefreshToken = data.refresh_token;
