@@ -1,3 +1,4 @@
+import { WatchPlayerProvider } from '@/app/watch/[slug]/_context';
 import './watch-player.css';
 
 import {
@@ -5,7 +6,6 @@ import {
   WatchPlayerHeader,
   WatchPlayerVideoArea
 } from '@/components/app/watch';
-import { WatchPlayerProvider } from '@/app/watch/[slug]/_hooks';
 
 export default function WatchPlayer() {
   return (
