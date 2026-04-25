@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { FaChevronLeft } from 'react-icons/fa6';
 import { route } from '@/routes';
-import { useWatchPlayer } from '@/app/watch/[slug]/_hooks';
+import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 
 export default function WatchPlayerHeader() {
   const { movie, videoTitle } = useWatchPlayer();

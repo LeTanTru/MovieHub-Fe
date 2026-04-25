@@ -1,22 +1,34 @@
+'use client';
+
+import {
+  createContext,
+  useContext,
+  useCallback,
+  useMemo,
+  useReducer,
+  useRef
+} from 'react';
 import { useAuth, useGetAnonymousToken, useNavigate } from '@/hooks';
 import {
   useWatchHistoryTrackingMutation,
   useWatchHistoryListQuery
 } from '@/queries';
 import { useMovieStore } from '@/store';
-import { useCallback, useMemo, useReducer, useRef } from 'react';
 import { useShallow } from 'zustand/shallow';
 import type {
   MediaTimeUpdateEventDetail,
   MediaPlayerInstance
 } from '@vidstack/react';
-import usePlayerSettings from './use-player-settings';
-import useWatchHistory from './use-watch-history';
-import useIntroSkip from './use-intro-skip';
-import useOutroSkip from './use-outro-skip';
-import useContinueWatching from './use-continue-watching';
-import useWatchPlayerData from './use-watch-player-data';
-import useEpisodeNavigation from './use-episode-navigation';
+import {
+  useContinueWatching,
+  useEpisodeNavigation,
+  useIntroSkip,
+  useOutroSkip,
+  usePlayerSettings,
+  useWatchHistory,
+  useWatchPlayerData
+} from '@/app/watch/[slug]/_hooks';
+import { MovieResType, VideoResType } from '@/types';
 
 type PlaybackState = {
   introSkipped: boolean;
@@ -40,7 +52,40 @@ function playbackReducer(
   }
 }
 
-const useWatchPlayer = () => {
+type WatchPlayerContextType = {
+  movie: MovieResType | null;
+  videoTitle: string;
+  video: VideoResType | null | undefined;
+  isLoadingToken: boolean;
+  autoPlay: boolean;
+  token?: string;
+  playerRef: React.RefObject<MediaPlayerInstance | null>;
+  isSeries: boolean;
+  isFirstEpisode: boolean;
+  isLastEpisode: boolean;
+  handlePrevEpisode: () => void;
+  handleNextEpisode: () => void;
+  isShowContinueModal: boolean;
+  lastWatchedSeconds: number;
+  handleContinueWatching: () => void;
+  handleStartOver: () => void;
+  handleWatchHistoryTimeUpdate: (detail: MediaTimeUpdateEventDetail) => void;
+  handleSeeked: (currentTime: number) => void;
+  handleVideoEnded: () => void;
+  handlePlayerCanPlay: () => void;
+  autoNextEpisode: boolean;
+  skipIntro: boolean;
+  handleToggleAutoNextEpisode: () => void;
+  handleToggleSkipIntro: () => void;
+};
+
+const WatchPlayerContext = createContext<WatchPlayerContextType | null>(null);
+
+export default function WatchPlayerProvider({
+  children
+}: {
+  children: React.ReactNode;
+}) {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
@@ -168,33 +213,44 @@ const useWatchPlayer = () => {
     },
     [handleTimeUpdate, handleOutroTimeUpdate]
   );
+  return (
+    <WatchPlayerContext.Provider
+      value={{
+        movie,
+        videoTitle,
+        video,
+        isLoadingToken,
+        autoPlay,
+        token,
+        playerRef,
+        isSeries,
+        isFirstEpisode,
+        isLastEpisode,
+        handlePrevEpisode,
+        handleNextEpisode,
+        isShowContinueModal,
+        lastWatchedSeconds,
+        handleContinueWatching,
+        handleStartOver,
+        handleWatchHistoryTimeUpdate,
+        handleSeeked,
+        handleVideoEnded,
+        handlePlayerCanPlay,
+        autoNextEpisode,
+        skipIntro,
+        handleToggleAutoNextEpisode,
+        handleToggleSkipIntro
+      }}
+    >
+      {children}
+    </WatchPlayerContext.Provider>
+  );
+}
 
-  return {
-    movie,
-    videoTitle,
-    video,
-    isLoadingToken,
-    autoPlay,
-    token,
-    playerRef,
-    isSeries,
-    isFirstEpisode,
-    isLastEpisode,
-    handlePrevEpisode,
-    handleNextEpisode,
-    isShowContinueModal,
-    lastWatchedSeconds,
-    handleContinueWatching,
-    handleStartOver,
-    handleWatchHistoryTimeUpdate,
-    handleSeeked,
-    handleVideoEnded,
-    handlePlayerCanPlay,
-    autoNextEpisode,
-    skipIntro,
-    handleToggleAutoNextEpisode,
-    handleToggleSkipIntro
-  };
+export const useWatchPlayer = () => {
+  const context = useContext(WatchPlayerContext);
+  if (!context) {
+    throw new Error('useWatchPlayer must be used within a WatchPlayerProvider');
+  }
+  return context;
 };
-
-export default useWatchPlayer;

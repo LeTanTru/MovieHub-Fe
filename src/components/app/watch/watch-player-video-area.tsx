@@ -17,7 +17,8 @@ import { useState } from 'react';
 import envConfig from '@/config';
 import { useDisclosure } from '@/hooks';
 import { Activity } from '@/components/activity';
-import { useWatchPlayer, usePlayerSettings } from '@/app/watch/[slug]/_hooks';
+import { usePlayerSettings } from '@/app/watch/[slug]/_hooks';
+import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 
 export default function WatchPlayerVideoArea() {
   const [isFullscreen, setIsFullscreen] = useState(false);

@@ -10,7 +10,7 @@ import {
   ButtonSkipIntro,
   ButtonWatchTogether
 } from '@/components/app/watch';
-import { useWatchPlayer } from '@/app/watch/[slug]/_hooks';
+import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 
 export default function WatchPlayerControls() {
   const {

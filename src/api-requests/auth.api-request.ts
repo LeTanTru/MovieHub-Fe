@@ -1,6 +1,5 @@
 import { apiConfig } from '@/constants';
 import {
-  AnonymousResType,
   ApiResponse,
   ChangePasswordBodyType,
   ForgotPasswordBodyType,
@@ -59,9 +58,6 @@ const authApiRequest = {
     http.post<ApiResponse<any>>(apiConfig.user.verifyOtp, {
       body
     }),
-
-  getAnonymousToken: () =>
-    http.post<AnonymousResType>(apiConfig.user.getAnonymousToken),
 
   changePassword: (body: Omit<ChangePasswordBodyType, 'confirmNewPassword'>) =>
     http.post<ApiResponse<any>>(apiConfig.user.changePassword, { body })
