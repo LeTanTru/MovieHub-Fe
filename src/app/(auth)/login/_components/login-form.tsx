@@ -9,12 +9,7 @@ import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import Link from 'next/link';
 import { useState } from 'react';
-import { logger } from '@/logger';
-import {
-  useLoginMutation,
-  useProfileQuery,
-  useSetCookieServerMutation
-} from '@/queries';
+import { useLoginMutation, useProfileQuery } from '@/queries';
 import ButtonLoginGoogle from './button-login-google';
 import { route } from '@/routes';
 import { Separator } from '@/components/ui/separator';
@@ -24,11 +19,6 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending: loginLoading } =
     useLoginMutation();
 
-  const {
-    mutateAsync: setCookieServerMutate,
-    isPending: setCookieServerLoading
-  } = useSetCookieServerMutation();
-
   const setProfile = useAuthStore((s) => s.setProfile);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const defaultValues: LoginType = {
@@ -37,13 +27,10 @@ export default function LoginForm() {
   };
 
   const onSubmit = async (values: LoginBodyType) => {
-    try {
-      const res = await loginMutate(values);
-      if (res.access_token) {
-        setData(storageKeys.ACCESS_TOKEN, res.access_token);
-        setData(storageKeys.REFRESH_TOKEN, res.refresh_token);
-
-        await setCookieServerMutate(res);
+    await loginMutate(values, {
+      onSuccess: async (res) => {
+        setData(storageKeys.ACCESS_TOKEN, res.data?.access_token as string);
+        setData(storageKeys.REFRESH_TOKEN, res.data?.refresh_token as string);
 
         notify.success('Đăng nhập thành công');
 
@@ -59,13 +46,11 @@ export default function LoginForm() {
           removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
           window.location.href = redirectPath || route.home.path;
         }, 500);
-      } else {
+      },
+      onError: () => {
         notify.error('Email hoặc mật khẩu không đúng');
       }
-    } catch (error) {
-      logger.error('Error while logging in', error);
-      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
-    }
+    });
   };
 
   const handleClearForgotPasswordData = () => {
@@ -121,10 +106,8 @@ export default function LoginForm() {
               type='submit'
               variant='primary'
               className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 w-full'
-              disabled={
-                !isFormChanged || loginLoading || setCookieServerLoading
-              }
-              loading={loginLoading || setCookieServerLoading}
+              disabled={!isFormChanged || loginLoading}
+              loading={loginLoading}
             >
               Đăng nhập
             </Button>

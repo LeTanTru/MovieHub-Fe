@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     if (isAxiosError(error)) {
-      logger.error('Error while login', error?.response?.data);
+      logger.error('Error while logging in', error?.response?.data);
       return Response.json(error?.response?.data, {
         status: HttpStatusCode.BadGateway
       });

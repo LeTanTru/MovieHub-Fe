@@ -57,17 +57,16 @@ const refreshToken = async () => {
     token = await getCookieData(storageKeys.REFRESH_TOKEN);
   }
   const res: ApiResponse<RefreshTokenResType> = await axiosInstance.post(
-    apiConfig.api.auth.refreshTokenExternal.baseUrl,
+    apiConfig.api.auth.refreshToken.baseUrl,
     {
-      refresh_token: token,
-      grant_type: envConfig.NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN
+      refresh_token: token
     }
   );
   const data = res.data;
   if (data) {
     const newAccessToken = data.access_token;
     const newRefreshToken = data.refresh_token;
-    await axiosInstance.post(apiConfig.api.auth.refreshToken.baseUrl, data);
+
     if (isClient()) {
       if (newAccessToken) setData(storageKeys.ACCESS_TOKEN, newAccessToken);
       if (newRefreshToken) setData(storageKeys.REFRESH_TOKEN, newRefreshToken);
@@ -129,11 +128,7 @@ axiosInstance.interceptors.response.use(
           error?.response?.data?.message?.includes('Invalid refresh token') &&
           error?.response?.data?.data?.includes('invalid_request')
         ) {
-          removeData([
-            storageKeys.ACCESS_TOKEN,
-            storageKeys.REFRESH_TOKEN,
-            storageKeys.USER_KIND
-          ]);
+          removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
           await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
           window.location.href = route.login.path;
         }
@@ -251,9 +246,8 @@ export const sendRequest = async <T>(
 
     const res: AxiosResponse = await axiosInstance.request<T>(axiosConfig);
     return res.data;
-  } catch (error: any) {
-    const err = error as AxiosError;
-    throw err;
+  } catch (error) {
+    throw error;
   }
 };
 

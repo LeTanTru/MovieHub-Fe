@@ -1,20 +1,42 @@
-import { storageKeys } from '@/constants';
+import { apiConfig, storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import { removeCookieData } from '@/utils';
+import { ApiResponse } from '@/types';
+import { http, isAxiosError, removeCookieData } from '@/utils';
 import { HttpStatusCode } from 'axios';
+import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {
-    await removeCookieData(storageKeys.ACCESS_TOKEN);
-    await removeCookieData(storageKeys.REFRESH_TOKEN);
+    const res = await http.post<ApiResponse<any>>(apiConfig.user.logout);
 
-    return Response.json({ result: true }, { status: HttpStatusCode.Ok });
+    if (res.result) {
+      await removeCookieData(storageKeys.ACCESS_TOKEN);
+      await removeCookieData(storageKeys.REFRESH_TOKEN);
+
+      return NextResponse.json({ ...res }, { status: HttpStatusCode.Ok });
+    }
   } catch (error) {
-    logger.error('Error while logging out', error);
+    if (isAxiosError(error)) {
+      const response = error.response?.data;
 
-    return Response.json(
-      { result: false, message: 'Logout failed' },
-      { status: HttpStatusCode.BadRequest }
-    );
+      logger.error('[LOGOUT_ERROR]', response);
+
+      if (response) {
+        return NextResponse.json(
+          {
+            result: false,
+            ...response
+          },
+          { status: error.response?.status }
+        );
+      }
+
+      return NextResponse.json(
+        { result: false, message: 'Logout failed' },
+        { status: error.response?.status }
+      );
+    }
+
+    logger.error('[LOGOUT_ERROR]', error);
   }
 }
