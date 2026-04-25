@@ -4,7 +4,7 @@ import { Button } from '@/components/form';
 import { storageKeys } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
-import { useLogoutMutation, useRemoveCookieServerMutation } from '@/queries';
+import { useLogoutMutation } from '@/queries';
 import { useAuthStore } from '@/store';
 import { notify, removeData } from '@/utils';
 import { LogOutIcon } from 'lucide-react';
@@ -19,19 +19,11 @@ export default function ButtonLogout({
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();
 
-  const { mutateAsync: removeCookieMutate, isPending: removeCookieLoading } =
-    useRemoveCookieServerMutation();
-
   const handleLogout = async () => {
     try {
       const res = await logoutMutate();
       if (res.result) {
-        removeData([
-          storageKeys.ACCESS_TOKEN,
-          storageKeys.REFRESH_TOKEN,
-          storageKeys.USER_KIND
-        ]);
-        await removeCookieMutate();
+        removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
         setProfile(null);
         notify.success('Đăng xuất thành công');
         setTimeout(() => {
@@ -51,13 +43,13 @@ export default function ButtonLogout({
       className={cn(
         'w-full rounded-none rounded-br rounded-bl hover:bg-black/20',
         {
-          'justify-start': !logoutLoading && !removeCookieLoading,
-          'pointer-events-none': logoutLoading || removeCookieLoading
+          'justify-start': !logoutLoading,
+          'pointer-events-none': logoutLoading
         },
         className
       )}
       onClick={handleLogout}
-      loading={logoutLoading || removeCookieLoading}
+      loading={logoutLoading}
       {...props}
     >
       <LogOutIcon size={16} className='opacity-60' />

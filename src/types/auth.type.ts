@@ -50,8 +50,6 @@ type AuthAction = {
 
 export type AuthStoreType = AuthState & AuthAction;
 
-export type CookieServerBodyType = LoginResType;
-
 export type AnonymousResType = {
   access_token: string;
   token_type: string;

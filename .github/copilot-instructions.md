@@ -1,82 +1,57 @@
 # Copilot instructions for MovieHub-FE
 
-## Build, lint, and verification commands
+## Build, test, and lint commands
 
-- Install deps: `yarn install`
+- Install dependencies: `yarn install`
 - Dev server (port 3000, Turbopack): `yarn dev`
-- Clean + dev: `yarn clean-dev`
-- Lint full repo: `yarn lint`
+- Clean cache + dev: `yarn clean-dev`
+- Lint all files: `yarn lint`
 - Build production bundle: `yarn build`
+- Build with bundle analyzer: `yarn build:analyze`
 - Start production server: `yarn start`
-- Format: `yarn format`
+- Format code: `yarn format`
 
-There is currently **no automated test script** in `package.json` and no Jest/Vitest/Playwright test config in this repository.
+There is no test runner configured in this repository (`package.json` has no test script, and no Jest/Vitest/Playwright config).
 
-Single-test command: not available (no test runner is configured).
+Single-test command: not available.
 
-For focused verification on one file, run ESLint via the existing lint script with a file argument:
+Closest focused check:
 
 - `yarn lint -- src/path/to/file.tsx`
 
-When changing dependencies or build config, run:
+When changing dependencies, Docker, or build config, run:
 
 - `yarn lint && yarn build`
 
 ## High-level architecture
 
-- Framework: Next.js 16 App Router (`src/app`) with route groups (e.g. `src/app/(home)`) and dynamic routes (`[slug]`, `[id]`).
-- Root app composition is in `src/app/layout.tsx`, wrapping pages with `QueryProvider`, `AppProvider`, `ThemeProvider`, top loader, and toast container.
-- Data flow is layered:
-  - API endpoint contracts: `src/constants/api-config.ts`
-  - Domain request wrappers: `src/api-requests/*.api-request.ts`
-  - React Query hooks: `src/queries/*.query.ts`
-- Server components prefetch with TanStack Query and hydrate on the client via `HydrationBoundary` + `dehydrate` (see `src/app/(home)/page.tsx`, `src/app/movie/[slug]/page.tsx`, `src/app/watch/[slug]/page.tsx`).
-- Movie detail and watch routes use a `slug.id` URL convention and resolve the id using `getIdFromSlug` before querying APIs.
-- Authentication/network behavior is centralized in `src/utils/http.util.ts`:
-  - Injects `Authorization`, and `X-Client-Type` headers.
-  - Handles 401 token refresh with a shared queue to prevent parallel refresh races.
-  - Syncs refreshed credentials through internal auth API routes under `src/app/api/auth/*`.
-- Route access control is implemented in `src/proxy.ts`:
-  - Public auth pages: `/login`, `/register`, `/forgot-password`, `/verify-otp`
-  - Protected prefixes: `/user`, `/account`
-- Home, movie detail, and watch pages prefetch server-side data then hydrate client components:
-  - `src/app/(home)/page.tsx`
-  - `src/app/movie/[slug]/page.tsx`
-  - `src/app/watch/[slug]/page.tsx`
-- The canonical application flow for backend data is:
-  - define endpoint in `src/constants/api-config.ts`
-  - wrap endpoint in `src/api-requests/*.api-request.ts`
-  - expose consumption via `src/queries/*.query.ts`
-  - consume with centralized `queryKeys` from `src/constants/master-data.ts`
+- Next.js 16 App Router app under `src/app`, using route groups (`(home)`, `(auth)`) and dynamic routes (e.g. `[slug]`).
+- Root composition is in `src/app/layout.tsx`: app-level SEO metadata + JSON-LD, then `QueryProvider` -> `AppProvider` -> `ThemeProvider`, plus top loader and toast container.
+- Backend data flow follows one path:
+  1. define endpoint contracts in `src/constants/api-config.ts`
+  2. wrap API calls in `src/api-requests/*.api-request.ts`
+  3. expose React Query hooks in `src/queries/*.query.ts`
+  4. consume with centralized `queryKeys` from `src/constants/master-data.ts`
+- Server-rendered pages prefetch data with TanStack Query and hydrate client components via `dehydrate` + `HydrationBoundary` (notably home/movie/watch routes).
+- HTTP/auth behavior is centralized in `src/utils/http.util.ts`:
+  - injects `Authorization` and optional `X-Client-Type`
+  - handles 401 refresh with a shared queue to avoid parallel refresh races
+  - syncs auth via internal routes under `src/app/api/auth/*`
+- Route guarding lives in `src/proxy.ts`:
+  - auth pages: `/login`, `/register`, `/forgot-password`, `/verify-otp`, `/intro`
+  - protected prefixes: `/user`, `/account`, `/survey`
 
 ## Key conventions specific to this codebase
 
-- Environment variables are validated at module import in `src/config.ts` with Zod; missing/invalid env fails startup/build.
-- Use the project alias `@/*` (configured in `tsconfig.json`) instead of deep relative imports.
-- Keep React Query keys centralized in `src/constants/master-data.ts` (`queryKeys`) and reuse them in queries/mutations.
-- New API request modules should define endpoints in `api-config.ts` and call through shared `http` utilities (path params replacement, standard headers/auth behavior).
-- QueryClient defaults are intentionally opinionated in `src/components/providers/query-provider/get-query-provider.ts`: `staleTime` 60s, `retry` false, `refetchOnWindowFocus` false.
-- Tailwind uses v4 theme tokens from `src/app/globals.css` (`@theme inline`) with custom breakpoints like `max-990:*`, `max-860:*`, etc.
-- Use `cn(...)` from `src/lib/utils.ts` for class composition (`twMerge(clsx(...))`) so later utilities can override earlier classes predictably.
-- Video player caption/quality labels should be normalized through `getLanguageLabel` for Vietnamese-friendly display.
-- Dynamic route params for content pages generally use `slug.id`; resolve IDs via `getIdFromSlug` before API calls (avoid duplicating parsing logic).
-- Auth refresh behavior relies on internal auth API routes under `src/app/api/auth/*` to keep server cookies and client storage in sync; do not bypass this mechanism in new auth flows.
-- Keep route guarding behavior aligned with `src/proxy.ts` when adding new auth-related pages or protected sections.
-
-## Environment variable names (must match `src/config.ts`)
-
-Use these exact keys (validated at startup/build):
-
-- `NEXT_PUBLIC_NODE_ENV`
-- `NEXT_PUBLIC_AUTH_API_URL`
-- `NEXT_PUBLIC_API_ENDPOINT_URL`
-- `NEXT_PUBLIC_API_MEDIA_URL`
-- `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`
-- `NEXT_PUBLIC_URL`
-- `NEXT_PUBLIC_TINYMCE_URL`
-- `APP_USERNAME`
-- `APP_PASSWORD`
-- `NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN`
-- `NEXT_PUBLIC_MEDIA_HOST`
-- `ACCESS_KEY`
-- `NEXT_PUBLIC_CLIENT_TYPE`
+- Use `@/*` imports for `src/*` paths (avoid deep relative imports).
+- Query keys must be added to/reused from `queryKeys` in `src/constants/master-data.ts`.
+- Keep API integration layered (`api-config` -> `api-request` -> `query`) instead of calling Axios directly from components.
+- Use `getIdFromSlug` for `slug.id` routes before API calls.
+- Use `cn()` from `@/lib/utils.ts` for class merging; Tailwind uses custom breakpoints like `max-990`, `max-860`, `max-768`, etc.
+- Use `notify.success()` / `notify.error()` for mutation feedback and `logger` from `@/logger` instead of `console.log`.
+- Environment expectations:
+  - public build-time vars are validated in `src/config.ts` (`NEXT_PUBLIC_*` keys)
+  - server-only vars used by API routes are `APP_USERNAME`, `APP_PASSWORD`, `GRANT_TYPE_REFRESH_TOKEN`, `ACCESS_KEY`
+  - for Docker: pass `NEXT_PUBLIC_*` at build time, but inject non-`NEXT_PUBLIC_` vars at container runtime
+- Do not bypass internal auth API routes for token refresh/logout flows.
+- If you add auth pages or protected sections, update `src/proxy.ts` to keep access rules consistent.

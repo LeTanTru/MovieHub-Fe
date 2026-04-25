@@ -8,8 +8,7 @@ import { logger } from '@/logger';
 import {
   useLoginGoogleMutation,
   useLoginGoogleQuery,
-  useProfileQuery,
-  useSetCookieServerMutation
+  useProfileQuery
 } from '@/queries';
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
@@ -28,13 +27,7 @@ export default function ButtonLoginGoogle() {
   const { mutateAsync: loginGoogleMutate, isPending: loginGoogleLoading } =
     useLoginGoogleMutation();
 
-  const {
-    mutateAsync: setCookieServerMutate,
-    isPending: setCookieServerLoading
-  } = useSetCookieServerMutation();
-
-  const loading =
-    isLoading || isFetching || loginGoogleLoading || setCookieServerLoading;
+  const loading = isLoading || isFetching || loginGoogleLoading;
 
   const handleLogin = async (code: string) => {
     try {
@@ -42,8 +35,6 @@ export default function ButtonLoginGoogle() {
       if (res.result) {
         setData(storageKeys.ACCESS_TOKEN, res.access_token);
         setData(storageKeys.REFRESH_TOKEN, res.refresh_token);
-
-        await setCookieServerMutate(res);
 
         notify.success('Đăng nhập thành công');
 

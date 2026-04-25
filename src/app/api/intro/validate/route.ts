@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   }
 
   return Response.json(
-    { valid: false, message: 'Key không hợp lệ' },
+    { valid: false, message: 'Invalid key' },
     { status: HttpStatusCode.BadRequest }
   );
 }

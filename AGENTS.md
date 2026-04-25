@@ -79,7 +79,7 @@ api-config.ts → *.api-request.ts → *.query.ts → Component
 
 ### State Management
 
-- **QueryClient defaults**: `staleTime: 60s`, `retry: false`, `refetchOnWindowFocus: false`
+- **QueryClient defaults**: `staleTime: 60s`, `retry: false`, `refetchOnWindowFocus: false` (defined in `src/components/providers/query-provider/get-query-provider.ts`)
 - Query keys centralized in `queryKeys` from `@/constants`
 - Zustand stores in `src/store/` with `useShallow` for selector optimization
 - Auth state: use `useAuth()` hook (wraps `auth.store.ts`)
@@ -120,11 +120,11 @@ api-config.ts → *.api-request.ts → *.query.ts → Component
 ## Environment Variables
 
 Validated in `src/config.ts` with Zod. Missing/invalid env fails startup/build. Required keys:
-`NEXT_PUBLIC_NODE_ENV`, `NEXT_PUBLIC_AUTH_API_URL`, `NEXT_PUBLIC_API_ENDPOINT_URL`, `NEXT_PUBLIC_API_MEDIA_URL`, `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_TINYMCE_URL`, `NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN`, `NEXT_PUBLIC_MEDIA_HOST`, `NEXT_PUBLIC_CLIENT_TYPE`
+`NEXT_PUBLIC_NODE_ENV`, `NEXT_PUBLIC_AUTH_API_URL`, `NEXT_PUBLIC_API_ENDPOINT_URL`, `NEXT_PUBLIC_API_MEDIA_URL`, `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_TINYMCE_UR`, `NEXT_PUBLIC_MEDIA_HOST`, `NEXT_PUBLIC_CLIENT_TYPE`
 
 ## Route Protection
 
-Guarded by `src/proxy.ts`. Protected prefixes: `/user`, `/account`. Public auth pages: `/login`, `/register`, `/forgot-password`, `/verify-otp`.
+Guarded by `src/proxy.ts`. Protected prefixes: `/user`, `/account`, `/survey`. Public auth pages: `/login`, `/register`, `/forgot-password`, `/verify-otp`, `/intro`. Authenticated users accessing auth pages redirect to `/`.
 
 ## Key Files Reference
 

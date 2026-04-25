@@ -2,7 +2,6 @@ import { authApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import {
   ChangePasswordBodyType,
-  CookieServerBodyType,
   ForgotPasswordBodyType,
   LoginBodyType,
   RegisterBodyType,
@@ -34,21 +33,6 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.LOGIN],
     mutationFn: (body: LoginBodyType) => authApiRequest.login(body)
-  });
-};
-
-export const useSetCookieServerMutation = () => {
-  return useMutation({
-    mutationKey: [queryKeys.SET_COOKIE_SERVER],
-    mutationFn: (body: CookieServerBodyType) =>
-      authApiRequest.setCookieServer(body)
-  });
-};
-
-export const useRemoveCookieServerMutation = () => {
-  return useMutation({
-    mutationKey: [queryKeys.REMOVE_COOKIE_SERVER],
-    mutationFn: () => authApiRequest.removeCookieServer()
   });
 };
 

@@ -35,12 +35,7 @@ jobs:
             NEXT_PUBLIC_API_MEDIA_URL=${{ secrets.NEXT_PUBLIC_API_MEDIA_URL }}
             NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL=${{ secrets.NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL }}
             NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}
-            NEXT_PUBLIC_TINYMCE_URL=${{ secrets.NEXT_PUBLIC_TINYMCE_URL }}
-            APP_USERNAME=${{ secrets.APP_USERNAME }}
-            APP_PASSWORD=${{ secrets.APP_PASSWORD }}
-            NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN=${{ secrets.NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN }}
             NEXT_PUBLIC_MEDIA_HOST=${{ secrets.NEXT_PUBLIC_MEDIA_HOST }}
-            ACCESS_KEY=${{ secrets.ACCESS_KEY }}
             NEXT_PUBLIC_CLIENT_TYPE=${{ secrets.NEXT_PUBLIC_CLIENT_TYPE }}
 
       - name: Show Image Size
@@ -89,6 +84,10 @@ jobs:
               -p 3000:3000 \
               --restart unless-stopped \
               --name fe-moviehub \
+              -e APP_USERNAME='${{ secrets.APP_USERNAME }}' \
+              -e APP_PASSWORD='${{ secrets.APP_PASSWORD }}' \
+              -e GRANT_TYPE_REFRESH_TOKEN='${{ secrets.GRANT_TYPE_REFRESH_TOKEN }}' \
+              -e ACCESS_KEY='${{ secrets.ACCESS_KEY }}' \
               ${{ secrets.DOCKER_USERNAME }}/fe-moviehub:latest
           EOF
 

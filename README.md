@@ -147,14 +147,17 @@ yarn install
 Copy `.env.example` to `.env.local` and configure:
 
 ```env
+APP_USERNAME=
+APP_PASSWORD=
+GRANT_TYPE_REFRESH_TOKEN=
+ACCESS_KEY=
+
 NEXT_PUBLIC_NODE_ENV=development
 NEXT_PUBLIC_AUTH_API_URL=
 NEXT_PUBLIC_API_ENDPOINT_URL=
 NEXT_PUBLIC_API_MEDIA_URL=
 NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL=
 NEXT_PUBLIC_URL=http://localhost:3000
-NEXT_PUBLIC_TINYMCE_URL=
-NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN=
 NEXT_PUBLIC_MEDIA_HOST=
 NEXT_PUBLIC_CLIENT_TYPE=
 ```
@@ -185,13 +188,16 @@ docker build \
   --build-arg NEXT_PUBLIC_API_MEDIA_URL=... \
   --build-arg NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL=... \
   --build-arg NEXT_PUBLIC_URL=... \
-  --build-arg NEXT_PUBLIC_TINYMCE_URL=... \
-  --build-arg NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN=... \
   --build-arg NEXT_PUBLIC_MEDIA_HOST=... \
   --build-arg NEXT_PUBLIC_CLIENT_TYPE=... \
   -t moviehub-fe .
 
-docker run -p 3000:3000 moviehub-fe
+docker run -p 3000:3000 \
+  -e APP_USERNAME=... \
+  -e APP_PASSWORD=... \
+  -e GRANT_TYPE_REFRESH_TOKEN=... \
+  -e ACCESS_KEY=... \
+  moviehub-fe
 ```
 
 ## Scripts

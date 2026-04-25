@@ -4,11 +4,7 @@ import { Button, Col, PasswordField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { changePasswordErrorMaps, storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import {
-  useChangePasswordMutation,
-  useLogoutMutation,
-  useRemoveCookieServerMutation
-} from '@/queries';
+import { useChangePasswordMutation, useLogoutMutation } from '@/queries';
 import { route } from '@/routes';
 import { changePasswordSchema } from '@/schemaValidations';
 import { ChangePasswordBodyType } from '@/types';
@@ -18,9 +14,6 @@ import { UseFormReturn } from 'react-hook-form';
 export default function ChangePasswordForm() {
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();
-
-  const { mutateAsync: removeCookieMutate, isPending: removeCookieLoading } =
-    useRemoveCookieServerMutation();
 
   const {
     mutateAsync: changePasswordMutate,
@@ -47,12 +40,7 @@ export default function ChangePasswordForm() {
       if (res.result) {
         form.reset();
         await logoutMutate();
-        await removeCookieMutate();
-        removeData([
-          storageKeys.ACCESS_TOKEN,
-          storageKeys.REFRESH_TOKEN,
-          storageKeys.USER_KIND
-        ]);
+        removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
         notify.success('Đổi mật khẩu thành công. Vui lòng đăng nhập lại');
         setTimeout(() => {
           window.location.href = route.login.path;
@@ -139,16 +127,11 @@ export default function ChangePasswordForm() {
                     type='submit'
                     variant='primary'
                     className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 w-full'
-                    loading={
-                      changePasswordLoading ||
-                      logoutLoading ||
-                      removeCookieLoading
-                    }
+                    loading={changePasswordLoading || logoutLoading}
                     disabled={
                       !form.formState.isDirty ||
                       changePasswordLoading ||
-                      logoutLoading ||
-                      removeCookieLoading
+                      logoutLoading
                     }
                   >
                     Đổi mật khẩu

@@ -17,6 +17,12 @@ yarn format           # Prettier format
 
 No test runner is configured. For verification use `yarn lint`.
 
+When changing dependencies or build config, run `yarn lint && yarn build` to verify.
+
+## Pre-commit
+
+Husky + lint-staged runs ESLint + Prettier on staged files automatically on commit.
+
 ## Architecture
 
 ### Data Flow (4-layer pattern)
@@ -53,7 +59,7 @@ Auth sync: refreshed tokens sync through internal API routes (`src/app/api/auth/
 
 - `staleTime: 60s`, `retry: false`, `refetchOnWindowFocus: false`
 
-SSR prefetch pattern:
+SSR prefetch pattern in home/movie/watch pages:
 
 ```tsx
 const dehydratedState = dehydrate(queryClient);
@@ -84,6 +90,7 @@ Root layout wraps with (inside-out): `ThemeProvider` → `AppProvider` → `Quer
 - Dynamic routes use `slug.id` convention; extract ID via `getIdFromSlug()`
 - Video player: Vidstack + HLS.js, caption labels normalized via `getLanguageLabel()`
 - Conventional commits enforced: `type(scope): description`
+- Barrel exports via `index.ts` in: `api-requests/`, `queries/`, `hooks/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, `schemaValidations/`
 
 ## Environment Variables
 
@@ -91,8 +98,7 @@ Validated at startup in `src/config.ts` with Zod. Required keys:
 
 ```
 NEXT_PUBLIC_NODE_ENV, NEXT_PUBLIC_AUTH_API_URL, NEXT_PUBLIC_API_ENDPOINT_URL,
-NEXT_PUBLIC_API_MEDIA_URL, NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL, NEXT_PUBLIC_URL,
-NEXT_PUBLIC_TINYMCE_URL, NEXT_PUBLIC_GRANT_TYPE_REFRESH_TOKEN, NEXT_PUBLIC_MEDIA_HOST,
+NEXT_PUBLIC_API_MEDIA_URL, NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL, NEXT_PUBLIC_URL, NEXT_PUBLIC_MEDIA_HOST,
 NEXT_PUBLIC_CLIENT_TYPE
 ```
 
