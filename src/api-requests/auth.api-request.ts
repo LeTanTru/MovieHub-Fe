@@ -18,7 +18,7 @@ const authApiRequest = {
     }),
 
   loginGoogle: (code: string) =>
-    http.post<ApiResponse<any> & LoginResType>(apiConfig.api.auth.loginGoogle, {
+    http.post<ApiResponse<LoginResType>>(apiConfig.api.auth.loginGoogle, {
       body: { code }
     }),
 
@@ -60,7 +60,12 @@ const authApiRequest = {
     }),
 
   changePassword: (body: Omit<ChangePasswordBodyType, 'confirmNewPassword'>) =>
-    http.post<ApiResponse<any>>(apiConfig.user.changePassword, { body })
+    http.post<ApiResponse<any>>(apiConfig.user.changePassword, { body }),
+
+  session: () =>
+    http.get<ApiResponse<{ accessToken: string; userKind: string }>>(
+      apiConfig.api.auth.session
+    )
 };
 
 export default authApiRequest;

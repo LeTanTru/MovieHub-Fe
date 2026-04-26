@@ -1,26 +1,60 @@
 'use client';
 
-import { storageKeys } from '@/constants';
-import { useProfileQuery } from '@/queries';
-import { useAppLoadingStore, useAuthStore } from '@/store';
+import { useProfileQuery, useSession } from '@/queries';
+import { useAuthStore } from '@/store';
 import { getData, removeData } from '@/utils';
 import { domAnimation, LazyMotion } from 'framer-motion';
-import { useEffect } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
+import { useShallow } from 'zustand/shallow';
 
-type AppProviderProps = { children: React.ReactNode };
+type AppContextType = {
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+};
+
+const AppContext = createContext<AppContextType>({
+  loading: false,
+  setLoading: () => {}
+});
+
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('useAppContext must be used within an AppProvider');
+  }
+  return context;
+};
+
+type AppProviderProps = { children: ReactNode };
 
 export default function AppProvider({ children }: AppProviderProps) {
-  const accessToken = getData(storageKeys.ACCESS_TOKEN);
-  const setProfile = useAuthStore((s) => s.setProfile);
-  const setLoading = useAppLoadingStore((s) => s.setLoading);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const { data: profile, isLoading } = useProfileQuery({
+  const { accessToken, setAccessToken, setProfile } = useAuthStore(
+    useShallow((s) => ({
+      accessToken: s.accessToken,
+      setAccessToken: s.setAccessToken,
+      setProfile: s.setProfile
+    }))
+  );
+
+  const { data: session, isLoading: sessionLoading } = useSession();
+
+  const { data: profile, isLoading: profileLoading } = useProfileQuery({
     enabled: !!accessToken
   });
 
   useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading, setLoading]);
+    if (session?.result && session?.data) {
+      setAccessToken(session.data.accessToken);
+    }
+  }, [session, setAccessToken]);
 
   useEffect(() => {
     if (!profile?.data) return;
@@ -52,7 +86,14 @@ export default function AppProvider({ children }: AppProviderProps) {
 
   return (
     <LazyMotion features={domAnimation} strict>
-      {children}
+      <AppContext.Provider
+        value={{
+          loading: loading || profileLoading || sessionLoading,
+          setLoading
+        }}
+      >
+        {children}
+      </AppContext.Provider>
     </LazyMotion>
   );
 }

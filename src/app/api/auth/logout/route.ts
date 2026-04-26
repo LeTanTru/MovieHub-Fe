@@ -1,7 +1,7 @@
 import { apiConfig, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { ApiResponse } from '@/types';
-import { http, isAxiosError, removeCookieData } from '@/utils';
+import { http, isAxiosError, removeCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextResponse } from 'next/server';
 
@@ -10,8 +10,8 @@ export async function POST() {
     const res = await http.post<ApiResponse<any>>(apiConfig.user.logout);
 
     if (res.result) {
-      await removeCookieData(storageKeys.ACCESS_TOKEN);
-      await removeCookieData(storageKeys.REFRESH_TOKEN);
+      await removeCookie(storageKeys.ACCESS_TOKEN);
+      await removeCookie(storageKeys.REFRESH_TOKEN);
 
       return NextResponse.json({ ...res }, { status: HttpStatusCode.Ok });
     }

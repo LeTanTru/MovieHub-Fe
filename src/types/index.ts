@@ -1,7 +1,6 @@
 export * from './account.type';
 export * from './animation.type';
 export * from './api.type';
-export * from './app-loading.type';
 export * from './auth.type';
 export * from './category.type';
 export * from './collection-item.type';
