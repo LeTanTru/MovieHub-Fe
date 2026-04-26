@@ -1,5 +1,3 @@
-'use client';
-
 import {
   useCallback,
   useRef,
@@ -57,7 +55,7 @@ type FileUploadActions = {
   };
 };
 
-export const useFileUpload = (
+const useFileUpload = (
   options: FileUploadOptions = {}
 ): [FileUploadState, FileUploadActions] => {
   const {
@@ -410,3 +408,5 @@ export const formatBytes = (bytes: number, decimals = 2): string => {
 
   return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + sizes[i];
 };
+
+export default useFileUpload;

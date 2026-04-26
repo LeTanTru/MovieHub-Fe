@@ -7,6 +7,7 @@ import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 import { cn } from '@/lib';
 import Tilt from 'react-parallax-tilt';
 import { SurveyResType } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type SurveyCardProps = {
   movie: SurveyResType;
@@ -67,3 +68,9 @@ export default function SurveyCard({
     </Tilt>
   );
 }
+
+SurveyCard.Skeleton = function () {
+  return (
+    <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md! pb-[150%]' />
+  );
+};

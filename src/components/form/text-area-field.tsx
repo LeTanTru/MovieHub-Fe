@@ -38,7 +38,7 @@ type TextAreaFieldProps<T extends FieldValues> = {
   ref?: Ref<HTMLTextAreaElement>;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-const TextAreaField = <T extends FieldValues>({
+export default function TextAreaField<T extends FieldValues>({
   control,
   name,
   label,
@@ -52,7 +52,7 @@ const TextAreaField = <T extends FieldValues>({
   rows = 8,
   ref,
   ...rest
-}: TextAreaFieldProps<T>) => {
+}: TextAreaFieldProps<T>) {
   const id = useId();
 
   const fieldValue = useWatch({ control, name });
@@ -117,6 +117,4 @@ const TextAreaField = <T extends FieldValues>({
       )}
     />
   );
-};
-
-export default TextAreaField;
+}

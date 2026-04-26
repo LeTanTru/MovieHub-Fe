@@ -26,3 +26,21 @@ export default function MovieGrid({
     </div>
   );
 }
+
+type MovieGridSkeletonProps = {
+  className?: string;
+  skeletonCount?: number;
+};
+
+MovieGrid.Skeleton = function ({
+  className,
+  skeletonCount = 16
+}: MovieGridSkeletonProps) {
+  return (
+    <div className={cn('grid w-full grid-cols-8 gap-6', className)}>
+      {Array.from({ length: skeletonCount }).map((_, index) => (
+        <MovieCard.Skeleton key={index} />
+      ))}
+    </div>
+  );
+};

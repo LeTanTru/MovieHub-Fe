@@ -26,7 +26,6 @@ import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
-import ReviewItemSkeleton from './review-item-skeleton';
 import { AnimatePresence, m } from 'framer-motion';
 
 type ReviewListProps = {
@@ -208,7 +207,7 @@ export default function ReviewList({
     return (
       <div className='mt-12 flex flex-col justify-between gap-8'>
         {Array.from({ length: 3 }).map((_, index) => (
-          <ReviewItemSkeleton key={`review-skeleton-${index}`} />
+          <ReviewItem.Skeleton key={`review-skeleton-${index}`} />
         ))}
       </div>
     );

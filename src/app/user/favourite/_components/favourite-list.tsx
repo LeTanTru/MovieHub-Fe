@@ -1,12 +1,9 @@
 'use client';
 
+import MovieList from './movie-list';
+import PersonList from './person-list';
 import { Activity } from '@/components/activity';
-import { MovieCard } from '@/components/app/movie-card';
-import { MovieGridSkeleton } from '@/components/app/movie-grid';
-import { PersonCard } from '@/components/app/person-card';
-import { PersonGridSkeleton } from '@/components/app/person-grid';
 import { Button } from '@/components/form';
-import { NoData } from '@/components/no-data';
 import { Pagination } from '@/components/pagination';
 import {
   FAVOURITE_TYPE_MOVIE,
@@ -124,78 +121,18 @@ export default function FavouriteList() {
           className='block w-full'
         >
           <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
-            <div
-              role='tabpanel'
-              id={`favourite-tabpanel-${FAVOURITE_TYPE_MOVIE}`}
-              aria-labelledby={`favourite-tab-${FAVOURITE_TYPE_MOVIE}`}
-            >
-              {isLoading ? (
-                <MovieGridSkeleton
-                  className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
-                  skeletonCount={12}
-                />
-              ) : movieList.length === 0 ? (
-                <NoData
-                  className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
-                  imageClassName='max-640:size-40 max-480:size-30'
-                  content={
-                    <>
-                      Bạn chưa có phim yêu thích nào
-                      <br />
-                      Hãy tìm kiếm và thêm phim yêu thích nhé 😊
-                    </>
-                  }
-                />
-              ) : (
-                <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
-                  {movieList.map((movie) => (
-                    <MovieCard
-                      key={movie.id}
-                      movie={movie}
-                      onDeleteAction={handleDeleteFavourite}
-                      dir='down'
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+            <MovieList
+              isLoading={isLoading}
+              movieList={movieList}
+              handleDeleteFavourite={handleDeleteFavourite}
+            />
           </Activity>
           <Activity visible={activeTab === FAVOURITE_TYPE_PERSON}>
-            <div
-              role='tabpanel'
-              id={`favourite-tabpanel-${FAVOURITE_TYPE_PERSON}`}
-              aria-labelledby={`favourite-tab-${FAVOURITE_TYPE_PERSON}`}
-            >
-              {isLoading ? (
-                <PersonGridSkeleton
-                  className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'
-                  skeletonCount={12}
-                />
-              ) : personList.length === 0 ? (
-                <NoData
-                  className='max-640:pb-20 max-640:pt-10 pt-25 pb-40'
-                  imageClassName='max-640:size-40 max-480:size-30'
-                  content={
-                    <>
-                      Bạn chưa có diễn viên yêu thích nào
-                      <br />
-                      Hãy tìm kiếm và thêm diễn viên yêu thích nhé 😊
-                    </>
-                  }
-                />
-              ) : (
-                <div className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-480:gap-y-4 max-640:gap-y-6 grid w-full grow grid-cols-6 gap-6'>
-                  {personList.map((person) => (
-                    <PersonCard
-                      person={person}
-                      key={person.id}
-                      willNavigate
-                      onDeleteAction={handleDeleteFavourite}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+            <PersonList
+              isLoading={isLoading}
+              personList={personList}
+              handleDeleteFavourite={handleDeleteFavourite}
+            />
           </Activity>
         </m.div>
 

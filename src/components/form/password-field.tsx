@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/form';
+import { List, ListItem } from '@/components/list';
 import {
   FormControl,
   FormDescription,
@@ -29,30 +30,6 @@ type PasswordFieldProps<T extends FieldValues> = {
   disabled?: boolean;
   readOnly?: boolean;
   showStrength?: boolean;
-};
-
-const List = ({
-  children,
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLUListElement>) => {
-  return (
-    <ul className={cn('list-none', className)} {...props}>
-      {children}
-    </ul>
-  );
-};
-
-const ListItem = ({
-  children,
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLLIElement>) => {
-  return (
-    <li className={cn(className)} {...props}>
-      {children}
-    </li>
-  );
 };
 
 const getStrengthColor = (score: number): string => {
@@ -146,7 +123,7 @@ export default function PasswordField<T extends FieldValues>({
                     className,
                     'text-sm shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2',
                     {
-                      'cursor-not-allowed border border-solid border-zinc-500/50 text-gray-500':
+                      'cursor-not-allowed border border-solid bg-gray-200/50 text-gray-500':
                         disabled,
                       'border-red-500 focus-visible:ring-red-500':
                         !!fieldState.error,

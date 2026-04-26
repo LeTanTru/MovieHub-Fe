@@ -11,7 +11,7 @@ import { QueryProvider } from '@/components/providers/query-provider';
 import { AppProvider } from '@/components/providers/app-provider';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { GoToTopButton } from '@/components/app/go-to-top-button';
-import { JsonLd } from '@/components/seo/json-ld';
+import { JsonLd } from '@/components/seo';
 
 const beVietnamPro = Be_Vietnam_Pro({
   weight: ['400', '500', '600', '700', '800'],

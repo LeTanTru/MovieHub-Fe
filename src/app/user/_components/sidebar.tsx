@@ -1,23 +1,14 @@
 'use client';
 
-import {
-  GENDER_FEMALE,
-  GENDER_MALE,
-  GENDER_OTHER,
-  genderIconMaps,
-  userSidebarList
-} from '@/constants';
+import { userSidebarList } from '@/constants';
 import { ButtonLogout } from '@/components/app/button-logout';
 import { cn } from '@/lib';
 import { List, ListItem } from '@/components/list';
-import { ProfileResType } from '@/types';
-import { renderImageUrl } from '@/utils';
 import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { AvatarField } from '@/components/form';
+import ProfileSection from './profile-section';
 
 export default function Sidebar() {
   const path = usePathname();
@@ -51,53 +42,10 @@ export default function Sidebar() {
         {!!profile ? (
           <ProfileSection profile={profile} />
         ) : (
-          <ProfileSectionSkeleton />
+          <ProfileSection.Skeleton />
         )}
       </div>
       <ButtonLogout className='max-1120:hidden mt-4 w-full justify-center p-0! text-slate-400 transition-all duration-200 ease-linear hover:bg-transparent! hover:text-white' />
     </div>
   );
 }
-
-type ProfileSectionProps = {
-  profile: ProfileResType;
-};
-
-const ProfileSection = ({ profile }: ProfileSectionProps) => {
-  const GenderIcon = genderIconMaps[profile.gender || GENDER_OTHER];
-
-  return (
-    <>
-      <AvatarField
-        src={renderImageUrl(profile.avatarPath)}
-        alt={profile.fullName}
-        size={60}
-      />
-
-      <div className='mt-4 flex items-start gap-x-1'>
-        <h3 className='mb-2'>{profile.fullName}</h3>
-        <GenderIcon
-          className={cn('ml-1 size-4.5 shrink-0', {
-            'text-cyan-500': profile.gender === GENDER_MALE,
-            'text-pink-500': profile.gender === GENDER_FEMALE,
-            'text-amber-400': profile.gender === GENDER_OTHER
-          })}
-        />
-      </div>
-      <p className='mt-0 text-[13px] text-slate-400'>{profile.email}</p>
-    </>
-  );
-};
-
-const ProfileSectionSkeleton = () => {
-  return (
-    <>
-      <Skeleton className='skeleton h-15 w-15 rounded-full!' />
-      <div className='mt-4 flex items-center gap-x-1'>
-        <Skeleton className='skeleton h-4 w-full' />
-        <Skeleton className='skeleton size-4.5' />
-      </div>
-      <Skeleton className='skeleton mt-2 h-4 w-full text-xs' />
-    </>
-  );
-};

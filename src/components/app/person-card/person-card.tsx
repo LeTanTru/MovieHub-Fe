@@ -12,6 +12,7 @@ import { Activity } from '@/components/activity';
 import { m, Transition, Variants } from 'framer-motion';
 import { useQueryParams } from '@/hooks';
 import { EMPTY_OBJECT } from '@/constants';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type Dir = 'up' | 'down';
 
@@ -148,3 +149,9 @@ export default function PersonCard({
     </m.div>
   );
 }
+
+PersonCard.Skeleton = function () {
+  return (
+    <Skeleton className='skeleton h-0 w-full shrink-0 animate-pulse overflow-hidden pb-[calc(100%+40px)]' />
+  );
+};

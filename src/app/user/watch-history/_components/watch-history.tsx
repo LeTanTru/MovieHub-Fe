@@ -1,7 +1,7 @@
 'use client';
 
 import { MovieHistoryCard } from '@/components/app/movie-card';
-import { MovieGridSkeleton } from '@/components/app/movie-grid';
+import { MovieGrid } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
@@ -47,7 +47,7 @@ export default function WatchHistory() {
         Xem tiếp
       </h3>
       {isLoading ? (
-        <MovieGridSkeleton
+        <MovieGrid.Skeleton
           className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-y-6 max-480:gap-y-4 grid w-full grow grid-cols-6 gap-6'
           skeletonCount={12}
         />

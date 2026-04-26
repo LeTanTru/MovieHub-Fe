@@ -30,7 +30,6 @@ import { useMemo, useState } from 'react';
 import debounce from 'lodash/debounce';
 import Link from 'next/link';
 import PlaylistItem from './playlist-item';
-import PlaylistItemSkeleton from './playlist-item-skeleton';
 
 const variants = cva('', {
   variants: {
@@ -200,7 +199,7 @@ export default function ButtonAddToPlaylist({
             {playlistLoading ? (
               <div className='flex flex-col gap-4'>
                 {Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, index) => (
-                  <PlaylistItemSkeleton key={index} />
+                  <PlaylistItem.Skeleton key={index} />
                 ))}
               </div>
             ) : (
