@@ -24,7 +24,6 @@ import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { route } from '@/routes';
 import { useCommentStore, useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import CommentItemSkeleton from './comment-item-skeleton';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
 
@@ -228,7 +227,7 @@ export default function CommentList({
     return (
       <div className='mt-12 flex flex-col justify-between gap-6'>
         {Array.from({ length: 3 }).map((_, index) => (
-          <CommentItemSkeleton key={`comment-skeleton-${index}`} />
+          <CommentItem.Skeleton key={`comment-skeleton-${index}`} />
         ))}
       </div>
     );

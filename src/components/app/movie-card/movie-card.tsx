@@ -12,6 +12,7 @@ import { useIsMounted } from '@/hooks';
 import { cn } from '@/lib';
 import { X } from 'lucide-react';
 import { MovieModal } from '@/components/app/movie-modal';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type Dir = 'up' | 'down';
 
@@ -185,3 +186,16 @@ export default function MovieCard({
     </>
   );
 }
+
+MovieCard.Skeleton = function () {
+  return (
+    <div className='relative flex flex-col gap-3'>
+      <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md! pb-[150%]'></Skeleton>
+
+      <div className='min-h-10.5 text-center'>
+        <Skeleton className='bg-gunmetal-blue skeleton mx-auto mb-2 h-5 w-20 rounded!'></Skeleton>
+        <Skeleton className='bg-gunmetal-blue skeleton mx-auto h-5 w-20 rounded!'></Skeleton>
+      </div>
+    </div>
+  );
+};

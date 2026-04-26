@@ -1,5 +1,3 @@
-'use client';
-
 import { PlayIcon } from '@/assets';
 import { useClickAnimation } from '@/hooks';
 import { cn } from '@/lib';

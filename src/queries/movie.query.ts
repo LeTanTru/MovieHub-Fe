@@ -1,5 +1,3 @@
-'use client';
-
 import { movieApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import { MovieSearchType } from '@/types';

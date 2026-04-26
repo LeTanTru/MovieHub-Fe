@@ -1,5 +1,3 @@
-'use client';
-
 import WatchSide from './watch-side';
 import WatchMain from './watch-main';
 

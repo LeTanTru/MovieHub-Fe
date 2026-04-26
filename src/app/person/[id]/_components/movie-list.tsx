@@ -10,11 +10,7 @@ import {
   PERSON_KIND_ACTOR
 } from '@/constants';
 import { PersonSearchType } from '@/types';
-import {
-  MovieGrid,
-  MovieGridByYear,
-  MovieGridSkeleton
-} from '@/components/app/movie-grid';
+import { MovieGrid, MovieGridByYear } from '@/components/app/movie-grid';
 import { ButtonAction } from '@/components/app/button-action';
 import { NoData } from '@/components/no-data';
 import { useQueryParams } from '@/hooks';
@@ -82,7 +78,7 @@ export default function MovieList({ personId }: MovieListProps) {
               className='block'
             >
               {movieListLoading ? (
-                <MovieGridSkeleton
+                <MovieGrid.Skeleton
                   className='max-1600:gap-4 max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-x-2 max-640:gap-y-6 max-480:grid-cols-2 grid-cols-6 gap-6'
                   skeletonCount={12}
                 />

@@ -198,6 +198,7 @@
   li::marker {
     --tw-prose-bullets: var(--color-black);
   }
+
   .skeleton {
     position: relative;
     overflow: hidden;

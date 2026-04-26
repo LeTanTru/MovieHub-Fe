@@ -1,5 +1,3 @@
-'use client';
-
 import { categoryApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import { CategorySearchType } from '@/types';

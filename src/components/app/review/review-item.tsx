@@ -22,6 +22,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import Image, { StaticImageData } from 'next/image';
 import { useState } from 'react';
 import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type ReviewItemProps = {
   review: ReviewResType;
@@ -267,3 +268,24 @@ export default function ReviewItem({
     </div>
   );
 }
+
+ReviewItem.Skeleton = function () {
+  return (
+    <div className='flex justify-start gap-4'>
+      <Skeleton className='skeleton h-12.5 w-12.5 rounded-full!' />
+      <div className='flex grow flex-col gap-3'>
+        <div className='flex items-center gap-2'>
+          <Skeleton className='skeleton h-4 w-20' />
+          <Skeleton className='skeleton h-4 w-24' />
+        </div>
+        <Skeleton className='skeleton h-4 w-full' />
+        <Skeleton className='skeleton h-4 w-3/4' />
+        <div className='flex items-center gap-3'>
+          <Skeleton className='skeleton h-4 w-10' />
+          <Skeleton className='skeleton h-4 w-10' />
+          <Skeleton className='skeleton h-4 w-14' />
+        </div>
+      </div>
+    </div>
+  );
+};

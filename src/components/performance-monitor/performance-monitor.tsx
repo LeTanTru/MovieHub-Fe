@@ -1,30 +1,5 @@
 'use client';
 
-import envConfig from '@/config';
-import { logger } from '@/logger';
-
-let lastTime = performance.now();
-let frames = 0;
-
-function measureFPS() {
-  frames++;
-  const currentTime = performance.now();
-
-  if (currentTime >= lastTime + 1000) {
-    const fps = Math.round((frames * 1000) / (currentTime - lastTime));
-    logger.info(`FPS: ${fps}`);
-
-    if (fps < 60) {
-      logger.warn('⚠️ Scroll bị giật! FPS thấp:', fps);
-    }
-
-    frames = 0;
-    lastTime = currentTime;
-  }
-
-  requestAnimationFrame(measureFPS);
-}
-
 export default function PerformanceMonitor() {
   // if (
   //   typeof window !== 'undefined' &&

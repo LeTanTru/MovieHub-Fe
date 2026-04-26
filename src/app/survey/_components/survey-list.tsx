@@ -1,6 +1,5 @@
 'use client';
 
-import SurveyCardSkeleton from './survey-card-skeleton';
 import SurveyCard from './survey-card';
 import { useAuth, useNavigate } from '@/hooks';
 import { useMakeSurveyMutation, useSurveyListQuery } from '@/queries';
@@ -70,7 +69,7 @@ export default function SurveyList() {
       >
         {isLoading
           ? Array.from({ length: 20 }).map((_, index) => (
-              <SurveyCardSkeleton key={index} />
+              <SurveyCard.Skeleton key={index} />
             ))
           : movieList.map((movie) => (
               <SurveyCard

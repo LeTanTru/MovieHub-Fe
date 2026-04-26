@@ -1,6 +1,7 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib';
 import { PlaylistResType } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type PlaylistItemProps = {
   playlist: PlaylistResType;
@@ -50,3 +51,12 @@ export default function PlaylistItem({
     </label>
   );
 }
+
+PlaylistItem.Skeleton = function () {
+  return (
+    <div className='flex items-center gap-2'>
+      <Skeleton className='skeleton h-4 w-4 rounded-sm!' />
+      <Skeleton className='skeleton h-4 w-32 grow rounded' />
+    </div>
+  );
+};

@@ -1,19 +1,15 @@
 'use client';
 
 import { storageKeys } from '@/constants';
-import { useNavigate } from '@/hooks';
 import { useProfileQuery } from '@/queries';
 import { useAppLoadingStore, useAuthStore } from '@/store';
 import { getData, removeData } from '@/utils';
 import { domAnimation, LazyMotion } from 'framer-motion';
-import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 
 type AppProviderProps = { children: React.ReactNode };
 
 export default function AppProvider({ children }: AppProviderProps) {
-  const navigate = useNavigate();
-  const pathname = usePathname();
   const accessToken = getData(storageKeys.ACCESS_TOKEN);
   const setProfile = useAuthStore((s) => s.setProfile);
   const setLoading = useAppLoadingStore((s) => s.setLoading);

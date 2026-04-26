@@ -1,5 +1,3 @@
-'use client';
-
 import { DEFAULT_PAGE_START } from '@/constants';
 import { ApiResponseList, BaseSearchType } from '@/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -7,7 +5,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 type LoadMoreMode = 'scroll' | 'click' | 'both';
 
-type UseLoadMoreProps<T extends HTMLElement, S extends BaseSearchType, R> = {
+type UseLoadMoreProps<S extends BaseSearchType, R> = {
   queryKey: string;
   params: S;
   queryFn: (params: S) => Promise<ApiResponseList<R>>;
@@ -23,7 +21,7 @@ const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
   enabled,
   mode = 'scroll',
   threshold = 1
-}: UseLoadMoreProps<T, S, R>) => {
+}: UseLoadMoreProps<S, R>) => {
   const loadMoreRef = useRef<T | null>(null);
 
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =

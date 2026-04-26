@@ -1,5 +1,3 @@
-'use client';
-
 import { personApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import { PersonSearchType } from '@/types';
