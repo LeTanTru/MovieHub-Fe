@@ -40,15 +40,19 @@ export type RefreshTokenResType = {
   jti: string;
 };
 
-type AuthState = {
+type AuthStoreState = {
   profile: ProfileResType | null;
+  isLoggedOut: boolean;
+  accessToken: string | null;
 };
 
-type AuthAction = {
+type AuthStoreActions = {
   setProfile: (profile: ProfileResType | null) => void;
+  setAccessToken: (token: string | null) => void;
+  clearState: () => void;
 };
 
-export type AuthStoreType = AuthState & AuthAction;
+export type AuthStoreType = AuthStoreState & AuthStoreActions;
 
 export type AnonymousResType = {
   access_token: string;

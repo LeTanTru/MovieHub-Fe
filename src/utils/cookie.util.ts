@@ -1,9 +1,9 @@
 'use server';
 
-import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { cookies } from 'next/headers';
 
-export const setCookieData = async (
+export const setCookie = async (
   key: string,
   value: any,
   cookie?: Partial<ResponseCookie>
@@ -12,12 +12,12 @@ export const setCookieData = async (
   cookieStore.set(key, value, cookie);
 };
 
-export const getCookieData = async (key: string) => {
+export const getCookie = async (key: string) => {
   const cookieStore = await cookies();
   return cookieStore.get(key)?.value || null;
 };
 
-export const removeCookieData = async (key: string) => {
+export const removeCookie = async (key: string) => {
   const cookieStore = await cookies();
   cookieStore.delete(key);
 };

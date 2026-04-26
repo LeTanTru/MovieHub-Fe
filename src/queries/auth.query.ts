@@ -87,3 +87,10 @@ export const useChangePasswordMutation = () => {
       authApiRequest.changePassword(body)
   });
 };
+
+export const useSession = () => {
+  return useQuery({
+    queryKey: [queryKeys.SESSION],
+    queryFn: () => authApiRequest.session()
+  });
+};

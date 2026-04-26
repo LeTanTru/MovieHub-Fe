@@ -2,16 +2,17 @@
 
 import { AnimatePresence, m } from 'framer-motion';
 import DropdownAvatar from './dropdown-avatar';
-import { useAppLoading, useAuth } from '@/hooks';
+import { useAuth } from '@/hooks';
 import { route } from '@/routes';
 import Link from 'next/link';
 import Image from 'next/image';
 import { logoWithText } from '@/assets';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAppContext } from '@/components/providers/app-provider/app-provider';
 
 export default function Header() {
   const { profile } = useAuth();
-  const loading = useAppLoading();
+  const { loading } = useAppContext();
 
   return (
     <header className='header relative top-0 right-0 left-0 z-10 block'>

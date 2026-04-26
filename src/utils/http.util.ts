@@ -2,19 +2,9 @@ import envConfig from '@/config';
 import { apiConfig, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { route } from '@/routes';
-import type {
-  ApiConfig,
-  ApiResponse,
-  Payload,
-  RefreshTokenResType
-} from '@/types';
-import {
-  getCookieData,
-  getData,
-  removeData,
-  setCookieData,
-  setData
-} from '@/utils';
+import type { ApiConfig, Payload } from '@/types';
+import { useAuthStore } from '@/store';
+import { getData, getCookie } from '@/utils';
 import axios, {
   AxiosError,
   HttpStatusCode,
@@ -22,8 +12,9 @@ import axios, {
   type AxiosRequestConfig,
   type AxiosResponse
 } from 'axios';
+import { redirect } from 'next/navigation';
 
-const isClient = () => typeof window !== 'undefined';
+const isClient = typeof window !== 'undefined';
 const axiosInstance = axios.create();
 // const TIME_OUT = 10000;
 
@@ -50,36 +41,19 @@ const processQueue = (error: any, token: string | null = null) => {
 };
 
 const refreshToken = async () => {
-  let token: string | null = null;
-  if (isClient()) {
-    token = getData(storageKeys.REFRESH_TOKEN);
-  } else {
-    token = await getCookieData(storageKeys.REFRESH_TOKEN);
-  }
-  const res: ApiResponse<RefreshTokenResType> = await axiosInstance.post(
-    apiConfig.api.auth.refreshToken.baseUrl,
-    {
-      refresh_token: token
-    }
-  );
-
+  const res = await axiosInstance.post(apiConfig.api.auth.refreshToken.baseUrl);
   const data = res.data;
 
-  if (data) {
-    const newAccessToken = data.access_token;
-    const newRefreshToken = data.refresh_token;
-
-    if (isClient()) {
-      if (newAccessToken) setData(storageKeys.ACCESS_TOKEN, newAccessToken);
-      if (newRefreshToken) setData(storageKeys.REFRESH_TOKEN, newRefreshToken);
-    } else {
-      if (newAccessToken)
-        await setCookieData(storageKeys.ACCESS_TOKEN, newAccessToken);
-      if (newRefreshToken)
-        await setCookieData(storageKeys.REFRESH_TOKEN, newRefreshToken);
+  if (data?.result && data?.data) {
+    const newAccessToken = data.data.access_token;
+    if (isClient) {
+      useAuthStore.getState().setAccessToken(newAccessToken);
+      return newAccessToken;
     }
+    return newAccessToken;
   }
-  return res.data?.access_token;
+
+  return null;
 };
 
 axiosInstance.interceptors.response.use(
@@ -91,8 +65,6 @@ axiosInstance.interceptors.response.use(
       error.status === HttpStatusCode.Unauthorized &&
       !originalConfig._retry
     ) {
-      originalConfig._retry = true;
-
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -108,6 +80,7 @@ axiosInstance.interceptors.response.use(
           });
       }
 
+      originalConfig._retry = true;
       isRefreshing = true;
 
       try {
@@ -127,12 +100,15 @@ axiosInstance.interceptors.response.use(
           error instanceof AxiosError &&
           error?.response?.status === HttpStatusCode.BadRequest &&
           error?.response?.data?.message &&
-          error?.response?.data?.message?.includes('Invalid refresh token') &&
-          error?.response?.data?.data?.includes('invalid_request')
+          error?.response?.data?.message?.includes('Invalid refresh token')
         ) {
-          removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
           await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
-          window.location.href = route.login.path;
+          if (isClient) {
+            useAuthStore.getState().clearState();
+            window.location.href = route.login.path;
+          } else {
+            redirect(route.login.path);
+          }
         }
         processQueue(error, null);
         isRefreshing = false;
@@ -169,15 +145,15 @@ export const sendRequest = async <T>(
   let clientType: string | null | undefined = '';
 
   if (!ignoreAuth) {
-    if (isClient()) {
-      accessToken = getData(storageKeys.ACCESS_TOKEN);
+    if (isClient) {
+      accessToken = useAuthStore.getState().accessToken;
     } else {
-      accessToken = await getCookieData(storageKeys.ACCESS_TOKEN);
+      accessToken = await getCookie(storageKeys.ACCESS_TOKEN);
     }
   }
 
   if (isRequiredXClientType) {
-    if (isClient()) {
+    if (isClient) {
       clientType =
         getData(storageKeys.X_CLIENT_TYPE) || envConfig.NEXT_PUBLIC_CLIENT_TYPE;
     } else {
@@ -237,7 +213,7 @@ export const sendRequest = async <T>(
 
       axiosConfig.data = formData;
 
-      delete axiosConfig.headers?.['Content-Type'];
+      delete axiosConfig.headers!['Content-Type'];
     } else if (method !== 'GET') {
       axiosConfig.data = body;
       axiosConfig.headers = {
@@ -248,8 +224,9 @@ export const sendRequest = async <T>(
 
     const res: AxiosResponse = await axiosInstance.request<T>(axiosConfig);
     return res.data;
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    const err = error as AxiosError;
+    throw err;
   }
 };
 
@@ -271,6 +248,6 @@ export const http = {
   }
 };
 
-export const isAxiosError = (error: unknown): error is AxiosError => {
+export function isAxiosError(error: unknown): error is AxiosError {
   return (error as AxiosError)?.isAxiosError === true;
-};
+}

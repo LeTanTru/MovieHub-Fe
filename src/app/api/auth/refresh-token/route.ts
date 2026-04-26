@@ -2,7 +2,7 @@ import envConfig from '@/config';
 import { apiConfig, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { RefreshTokenResType } from '@/types';
-import { http, isAxiosError, setCookieData } from '@/utils';
+import { getCookie, http, isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { NextResponse } from 'next/server';
@@ -10,18 +10,9 @@ import { NextResponse } from 'next/server';
 const maxAgeAccessToken = 24 * 60 * 60; // 1 day
 const maxAgeRefreshToken = 60 * 60 * 24 * 7; // 7 days
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
-    const body = await request.json();
-
-    if (!body) {
-      return NextResponse.json(
-        { result: false, message: 'Body is required' },
-        { status: HttpStatusCode.BadRequest }
-      );
-    }
-
-    const { refresh_token } = body;
+    const refresh_token = await getCookie(storageKeys.REFRESH_TOKEN);
 
     if (!refresh_token) {
       return NextResponse.json(
@@ -56,13 +47,13 @@ export async function POST(request: Request) {
       maxAge: maxAge
     });
 
-    await setCookieData(
+    await setCookie(
       storageKeys.ACCESS_TOKEN,
       accessToken,
       makeCookieOption(maxAgeAccessToken)
     );
 
-    await setCookieData(
+    await setCookie(
       storageKeys.REFRESH_TOKEN,
       refreshToken,
       makeCookieOption(maxAgeRefreshToken)

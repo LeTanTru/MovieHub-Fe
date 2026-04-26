@@ -284,7 +284,8 @@ export const queryKeys = {
   WATCH_HISTORY_LIST: 'watch-history-list',
   WATCH_HISTORY_TRACKING: 'watch-history-tracking',
   UPDATE_SETTING: 'update-settings',
-  MAKE_SURVEY: 'make-survey'
+  MAKE_SURVEY: 'make-survey',
+  SESSION: 'session'
 };
 
 export const countries: OptionType[] = [

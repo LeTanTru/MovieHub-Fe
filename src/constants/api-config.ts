@@ -33,6 +33,12 @@ const apiConfig = defineApiConfig({
         headers: baseHeader,
         ignoreAuth: true
       },
+      session: {
+        baseUrl: '/api/auth/session',
+        method: 'GET',
+        headers: baseHeader,
+        ignoreAuth: true
+      },
       validateIntro: {
         baseUrl: '/api/intro/validate',
         method: 'POST',

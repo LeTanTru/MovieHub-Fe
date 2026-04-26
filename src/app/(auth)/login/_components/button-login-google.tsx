@@ -12,10 +12,11 @@ import {
 } from '@/queries';
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
-import { getData, notify, removeData, setData } from '@/utils';
+import { getData, notify, removeData } from '@/utils';
 import Image from 'next/image';
 
 export default function ButtonLoginGoogle() {
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const setProfile = useAuthStore((s) => s.setProfile);
 
   const {
@@ -33,8 +34,7 @@ export default function ButtonLoginGoogle() {
     try {
       const res = await loginGoogleMutate(code);
       if (res.result) {
-        setData(storageKeys.ACCESS_TOKEN, res.access_token);
-        setData(storageKeys.REFRESH_TOKEN, res.refresh_token);
+        setAccessToken(res.data?.access_token as string);
 
         notify.success('Đăng nhập thành công');
 

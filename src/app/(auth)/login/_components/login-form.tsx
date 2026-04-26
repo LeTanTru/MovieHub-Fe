@@ -3,7 +3,7 @@
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import { getData, notify, removeData, setData } from '@/utils';
+import { getData, notify, removeData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
@@ -13,13 +13,22 @@ import { useLoginMutation, useProfileQuery } from '@/queries';
 import ButtonLoginGoogle from './button-login-google';
 import { route } from '@/routes';
 import { Separator } from '@/components/ui/separator';
+import { useShallow } from 'zustand/shallow';
 
 export default function LoginForm() {
   const { refetch: getProfile } = useProfileQuery();
   const { mutateAsync: loginMutate, isPending: loginLoading } =
     useLoginMutation();
 
-  const setProfile = useAuthStore((s) => s.setProfile);
+  const { setAccessToken, setProfile } = useAuthStore(
+    useShallow((s) => {
+      return {
+        setAccessToken: s.setAccessToken,
+        setProfile: s.setProfile
+      };
+    })
+  );
+
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const defaultValues: LoginType = {
     email: '',
@@ -29,23 +38,24 @@ export default function LoginForm() {
   const onSubmit = async (values: LoginBodyType) => {
     await loginMutate(values, {
       onSuccess: async (res) => {
-        setData(storageKeys.ACCESS_TOKEN, res.data?.access_token as string);
-        setData(storageKeys.REFRESH_TOKEN, res.data?.refresh_token as string);
+        if (res.result) {
+          const accessToken = res.data?.access_token;
 
-        notify.success('Đăng nhập thành công');
+          setAccessToken(accessToken as string);
 
-        const profile = await getProfile();
-        const profileData = profile.data?.data;
+          const profile = await getProfile();
+          const profileData = profile.data?.data;
 
-        if (profileData) {
-          setProfile(profileData);
+          if (profileData) {
+            setProfile(profileData);
+          }
+
+          setTimeout(() => {
+            const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
+            removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
+            window.location.href = redirectPath || route.home.path;
+          }, 500);
         }
-
-        setTimeout(() => {
-          const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
-          removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
-          window.location.href = redirectPath || route.home.path;
-        }, 500);
       },
       onError: () => {
         notify.error('Email hoặc mật khẩu không đúng');

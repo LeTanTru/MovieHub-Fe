@@ -9,7 +9,7 @@ import { logoWithText } from '@/assets';
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib';
 import { Button } from '@/components/form';
-import { useAppLoading, useAuth, useNavigate } from '@/hooks';
+import { useAuth, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 import { FaXmark } from 'react-icons/fa6';
 import { NavigationMenu } from './navigation';
@@ -18,11 +18,12 @@ import { usePathname } from 'next/navigation';
 import { setData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAppContext } from '@/components/providers/app-provider/app-provider';
 
 export default function Header() {
   const pathname = usePathname();
   const { profile } = useAuth();
-  const loading = useAppLoading();
+  const { loading } = useAppContext();
   const navigate = useNavigate();
   const [isFixed, setIsFixed] = useState<boolean>(false);
   const [showSearch, setShowSearch] = useState<boolean>(false);
