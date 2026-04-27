@@ -14,8 +14,8 @@ type SearchState = {
   keyword: string;
 };
 
-type SearchAction = {
+type SearchActions = {
   setKeyword: (keyword: string) => void;
 };
 
-export type SearchStore = SearchState & SearchAction;
+export type SearchStoreType = SearchState & SearchActions;

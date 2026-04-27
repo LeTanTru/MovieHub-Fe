@@ -63,10 +63,9 @@ export default function ButtonAddToPlaylist({
   const { isAuthenticated } = useAuth();
   const { iconRef, startAnimation } = useClickAnimation();
 
-  const { data: playlistData, isLoading: playlistLoading } =
-    usePlaylistListQuery({
-      enabled: opened
-    });
+  const { data: playlistData, isLoading } = usePlaylistListQuery({
+    enabled: opened
+  });
 
   const { data: playlistByMovieData } = usePlaylistByMovieQuery({
     movieId,
@@ -136,7 +135,7 @@ export default function ButtonAddToPlaylist({
       movieId: movieId
     };
 
-    if (playlistLoading) return;
+    if (isLoading) return;
 
     await updatePlaylistItemMutate(payload, {
       onSuccess: (res) => {
@@ -151,11 +150,10 @@ export default function ButtonAddToPlaylist({
         }
       },
       onError: (error) => {
-        logger.error(
-          `Error ${isInPlaylist ? 'removing from' : 'adding to'} playlist`,
-          error
+        logger.error('[UPDATE_PLAYLIST_ITEM_ERROR]', error);
+        notify.error(
+          `${isInPlaylist ? 'Xóa phim khỏi' : 'Thêm phim vào'} danh sách phát thất bại`
         );
-        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
       }
     });
   });
@@ -196,7 +194,7 @@ export default function ButtonAddToPlaylist({
                 {playlist.length}/{MAX_PLAYLIST_COUNT}
               </span>
             </div>
-            {playlistLoading ? (
+            {isLoading ? (
               <div className='flex flex-col gap-4'>
                 {Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, index) => (
                   <PlaylistItem.Skeleton key={index} />

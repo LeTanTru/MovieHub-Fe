@@ -209,8 +209,8 @@ export default function VerifyOtpForm() {
           }
         },
         onError: (error) => {
-          logger.error('Error while resending OTP', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[RESEND_OTP_ERROR]', error);
+          notify.error('Gửi lại OTP thất bại');
         }
       }
     );
@@ -256,13 +256,13 @@ export default function VerifyOtpForm() {
               applyFormErrors(form, errorCode, verifyOtpErrorMaps);
             }
           } else {
-            notify.error('Có lỗi xảy ra khi gửi OTP');
+            notify.error('Xác thực OTP thất bại');
           }
         }
       },
       onError: (error) => {
-        logger.error('Error while verifying otp: ', error);
-        notify.error('Có lỗi xảy ra khi xác thực OTP');
+        logger.error('[VERIFY_OTP_ERROR]', error);
+        notify.error('Xác thực OTP thất bại');
       }
     });
   };

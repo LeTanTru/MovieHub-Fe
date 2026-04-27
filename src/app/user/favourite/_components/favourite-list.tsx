@@ -25,7 +25,7 @@ export default function FavouriteList() {
   const {
     data: favouriteListData,
     refetch: getFavouriteList,
-    isLoading: favouriteListLoading
+    isLoading
   } = useFavouriteListQuery({
     params: {
       type: activeTab,
@@ -37,7 +37,6 @@ export default function FavouriteList() {
 
   const { mutateAsync: deleteFavouriteMutate } = useDeleteFavouriteMutation();
 
-  const isLoading = favouriteListLoading;
   const favouriteList = favouriteListData?.data?.content || [];
 
   const movieList = favouriteList
@@ -139,7 +138,7 @@ export default function FavouriteList() {
         <Activity visible={!!totalPages}>
           <Pagination
             totalPages={totalPages}
-            onChangeAction={handlePageChange}
+            onChange={handlePageChange}
             page={page}
           />
         </Activity>

@@ -14,15 +14,14 @@ export default function MovieList() {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();
 
-  const { data: movieListData, isLoading: movieListLoading } =
-    useMovieListQuery({
-      params: {
-        page: page ? Number(page) - 1 : 0,
-        type: movieTypes.MOVIE_TYPE_SERIES,
-        size: DEFAULT_PAGE_SIZE
-      },
-      enabled: true
-    });
+  const { data: movieListData, isLoading } = useMovieListQuery({
+    params: {
+      page: page ? Number(page) - 1 : 0,
+      type: movieTypes.MOVIE_TYPE_SERIES,
+      size: DEFAULT_PAGE_SIZE
+    },
+    enabled: true
+  });
 
   const movieList = movieListData?.data?.content || [];
   const totalPages: number = movieListData?.data?.totalPages || 0;
@@ -30,7 +29,7 @@ export default function MovieList() {
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
       <ListHeading title='Phim bộ' />
-      {movieListLoading ? (
+      {isLoading ? (
         <MovieGrid.Skeleton className='max-1600:gap-4 max-1360:grid-cols-6 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-640:gap-x-2 max-640:gap-y-4' />
       ) : movieList.length === 0 ? (
         <NoData

@@ -68,10 +68,12 @@ export default function SettingsForm() {
         if (res.result) {
           notify.success('Cập nhật cài đặt thành công');
           form.reset(values);
+        } else {
+          notify.error('Cập nhật cài đặt thất bại');
         }
       },
       onError: (error) => {
-        logger.error('Error while updating settings', error);
+        logger.error('[UPDATE_SETTINGS_ERROR]', error);
         notify.error('Cập nhật cài đặt thất bại');
       }
     });

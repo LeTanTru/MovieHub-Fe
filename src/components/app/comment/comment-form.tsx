@@ -20,8 +20,8 @@ type CommentFormProps = {
   movieId: string;
   mode?: 'reply' | 'edit';
   defaultMention?: string;
-  onSubmitAction?: () => void;
-  onCancelAction?: () => void;
+  onSubmit?: () => void;
+  onCancel?: () => void;
 };
 
 export default function CommentForm({
@@ -29,8 +29,8 @@ export default function CommentForm({
   movieId,
   mode = 'reply',
   defaultMention,
-  onSubmitAction,
-  onCancelAction
+  onSubmit,
+  onCancel
 }: CommentFormProps) {
   const { editingComment, replyingComment, setEditingComment } =
     useCommentStore(
@@ -107,7 +107,7 @@ export default function CommentForm({
             `${editingComment ? 'Chỉnh sửa' : 'Trả lời'} bình luận thành công`
           );
           setEditingComment(null);
-          onSubmitAction?.();
+          onSubmit?.();
           form?.reset(initialValues);
         } else {
           notify.error(
@@ -116,8 +116,10 @@ export default function CommentForm({
         }
       },
       onError: (error) => {
-        logger.error(`Error while updating comment`, error);
-        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+        logger.error('[UPDATE_COMMENT_ERROR]', error);
+        notify.error(
+          `${editingComment ? 'Chỉnh sửa' : 'Trả lời'} bình luận thất bại`
+        );
       }
     });
   };
@@ -230,7 +232,7 @@ export default function CommentForm({
                   <Button
                     type='button'
                     variant='ghost'
-                    onClick={onCancelAction}
+                    onClick={onCancel}
                     className='hover:text-destructive max-640:text-[13px] max-520:text-xs max-640:p-0 h-fit px-0! py-0 hover:bg-transparent'
                   >
                     Hủy

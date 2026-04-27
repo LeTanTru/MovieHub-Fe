@@ -16,7 +16,7 @@ type Dir = 'up' | 'down';
 type MovieHistoryCardProps = {
   movieHistory: MovieHistoryResType;
   dir?: Dir;
-  onDeleteAction?: (id: string) => void;
+  onDelete?: (id: string) => void;
 };
 
 const makeItemVariants = (dir: Dir): Variants => {
@@ -39,7 +39,7 @@ const itemTransition: Transition = {
 export default function MovieHistoryCard({
   movieHistory,
   dir = 'up',
-  onDeleteAction
+  onDelete
 }: MovieHistoryCardProps) {
   const itemVariants = makeItemVariants(dir);
 
@@ -140,11 +140,11 @@ export default function MovieHistoryCard({
         </h4>
       </div>
 
-      {onDeleteAction && (
+      {onDelete && (
         <button
           aria-label='Remove from favourite'
           className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
-          onClick={() => onDeleteAction(movie.id)}
+          onClick={() => onDelete(movie.id)}
         >
           <X className='size-4' />
         </button>

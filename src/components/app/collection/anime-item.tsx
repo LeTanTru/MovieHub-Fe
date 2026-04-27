@@ -22,20 +22,20 @@ import Link from 'next/link';
 type AnimeItemProps = {
   movie: MovieResType;
   isGrabbing: boolean;
-  onPointerDownAction: () => void;
-  onPointerUpAction: () => void;
-  onLikeAction: (targetId: string) => void;
-  onRemoveLikeAction: (favouriteId: string) => void;
+  onPointerDown: () => void;
+  onPointerUp: () => void;
+  onLike: (targetId: string) => void;
+  onRemoveLike: (favouriteId: string) => void;
   isLiked: boolean;
 };
 
 export default function AnimeItem({
   movie,
   isGrabbing,
-  onPointerDownAction,
-  onPointerUpAction,
-  onLikeAction,
-  onRemoveLikeAction,
+  onPointerDown,
+  onPointerUp,
+  onLike,
+  onRemoveLike,
   isLiked
 }: AnimeItemProps) {
   const movieLink = `${route.movie.path}/${movie.slug}.${movie.id}`;
@@ -59,7 +59,7 @@ export default function AnimeItem({
   const handleClick = () => {
     startAnimation();
 
-    const action = isLiked ? onRemoveLikeAction : onLikeAction;
+    const action = isLiked ? onRemoveLike : onLike;
     action(movie.id);
   };
 
@@ -83,8 +83,8 @@ export default function AnimeItem({
       <div
         className='safe-area'
         style={{ cursor: isGrabbing ? 'grabbing' : 'grab' }}
-        onPointerDown={onPointerDownAction}
-        onPointerUp={onPointerUpAction}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
       >
         <div className='slide-content'>
           <div className='media-item'>

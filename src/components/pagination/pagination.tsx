@@ -11,7 +11,7 @@ type PaginationProps = {
   page?: number;
   to?: string;
   scrollOptions?: any;
-  onChangeAction?: (page: number) => void;
+  onChange?: (page: number) => void;
 };
 
 export default function Pagination({
@@ -19,11 +19,11 @@ export default function Pagination({
   page,
   to,
   scrollOptions,
-  onChangeAction
+  onChange
 }: PaginationProps) {
   const pathname = usePathname();
   const params = useSearchParams();
-  const isControlled = typeof onChangeAction === 'function';
+  const isControlled = typeof onChange === 'function';
   const currentPage = isControlled
     ? (page ?? 1)
     : Number(params.get('page') ?? 1);
@@ -39,7 +39,7 @@ export default function Pagination({
 
   const handlePageClick = (nextPage: number) => {
     if (!isControlled || nextPage === currentPage) return;
-    onChangeAction?.(nextPage);
+    onChange?.(nextPage);
     if (to) {
       scroller.scrollTo(to, {
         duration: 200,

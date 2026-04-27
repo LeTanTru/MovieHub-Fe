@@ -21,20 +21,20 @@ import Image from 'next/image';
 type SliderItemProps = {
   slider: SidebarResType;
   isGrabbing: boolean;
-  onPointerDownAction: () => void;
-  onPointerUpAction: () => void;
-  onLikeAction: (targetId: string) => void;
-  onRemoveLikeAction: (favouriteId: string) => void;
+  onPointerDown: () => void;
+  onPointerUp: () => void;
+  onLike: (targetId: string) => void;
+  onRemoveLike: (favouriteId: string) => void;
   isLiked: boolean;
 };
 
 export default function SliderItem({
   slider,
   isGrabbing,
-  onPointerDownAction,
-  onPointerUpAction,
-  onLikeAction,
-  onRemoveLikeAction,
+  onPointerDown,
+  onPointerUp,
+  onLike,
+  onRemoveLike,
   isLiked
 }: SliderItemProps) {
   const movie = slider.movie;
@@ -54,7 +54,7 @@ export default function SliderItem({
   const handleClick = () => {
     startAnimation();
 
-    const action = isLiked ? onRemoveLikeAction : onLikeAction;
+    const action = isLiked ? onRemoveLike : onLike;
     action(slider.movie.id);
   };
 
@@ -88,8 +88,8 @@ export default function SliderItem({
       <div
         className='safe-area'
         style={{ cursor: isGrabbing ? 'grabbing' : 'grab' }}
-        onPointerDown={onPointerDownAction}
-        onPointerUp={onPointerUpAction}
+        onPointerDown={onPointerDown}
+        onPointerUp={onPointerUp}
       >
         <div className='slide-content'>
           <div className='media-item'>

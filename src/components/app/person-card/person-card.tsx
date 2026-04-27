@@ -38,7 +38,7 @@ type PersonCardProps = {
   showFullName?: boolean;
   willNavigate?: boolean;
   dir?: Dir;
-  onDeleteAction?: (id: string) => void;
+  onDelete?: (id: string) => void;
   params?: PersonSearchType;
 };
 
@@ -47,7 +47,7 @@ export default function PersonCard({
   showFullName,
   willNavigate,
   dir = 'up',
-  onDeleteAction,
+  onDelete,
   params = EMPTY_OBJECT
 }: PersonCardProps) {
   const itemVariants = makeItemVariants(dir);
@@ -129,16 +129,16 @@ export default function PersonCard({
           </Activity>
         </div>
       </div>
-      {onDeleteAction && (
+      {onDelete && (
         <div
           role='button'
           tabIndex={0}
           className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
-          onClick={() => onDeleteAction(person.id)}
+          onClick={() => onDelete(person.id)}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              onDeleteAction(person.id);
+              onDelete(person.id);
             }
           }}
           aria-label='Remove from favourite'

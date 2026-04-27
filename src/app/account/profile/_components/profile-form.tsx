@@ -85,8 +85,8 @@ export default function ProfileForm() {
         }
       }
     } catch (error) {
-      logger.error('Error while updating profile: ', error);
-      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      logger.error('[UPDATE_PROFILE_ERROR]', error);
+      notify.error('Cập nhật tài khoản thất bại');
     }
   };
 
@@ -119,15 +119,15 @@ export default function ProfileForm() {
                     control={form.control}
                     name='avatarPath'
                     label='Ảnh đại diện'
-                    onChangeAction={imageManager.trackUpload}
-                    onUploadAction={async (file: Blob) => {
+                    onChange={imageManager.trackUpload}
+                    onUpload={async (file: Blob) => {
                       const res = await uploadImageMutate({
                         file
                       });
                       return res.data?.filePath ?? '';
                     }}
                     loading={uploadImageLoading}
-                    onDeleteAction={imageManager.handleDeleteOnClick}
+                    onDelete={imageManager.handleDeleteOnClick}
                     size={100}
                     avatar
                   />

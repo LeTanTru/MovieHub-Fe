@@ -1,7 +1,7 @@
-import { SearchStore } from '@/types';
+import { SearchStoreType } from '@/types';
 import { create } from 'zustand';
 
-const useSearchStore = create<SearchStore>((set) => ({
+const useSearchStore = create<SearchStoreType>((set) => ({
   keyword: '',
 
   setKeyword: (keyword) => set({ keyword })

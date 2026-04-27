@@ -23,15 +23,14 @@ export default function MovieList({ personId }: MovieListProps) {
   const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
   const { searchParams } = useQueryParams<PersonSearchType>();
 
-  const { data: moviePersonListData, isLoading: movieListLoading } =
-    useMoviePersonListQuery({
-      params: {
-        personId,
-        kind: searchParams.kind || PERSON_KIND_ACTOR,
-        size: MAX_PAGE_SIZE
-      },
-      enabled: true
-    });
+  const { data: moviePersonListData, isLoading } = useMoviePersonListQuery({
+    params: {
+      personId,
+      kind: searchParams.kind || PERSON_KIND_ACTOR,
+      size: MAX_PAGE_SIZE
+    },
+    enabled: true
+  });
 
   const moviePersonList = moviePersonListData?.data?.content || [];
 
@@ -45,7 +44,7 @@ export default function MovieList({ personId }: MovieListProps) {
             <h3 className='max-640:text-lg max-480:text-base items-center text-xl font-semibold'>
               Các phim đã tham gia
             </h3>
-            {!movieListLoading && movieList.length > 0 && (
+            {!isLoading && movieList.length > 0 && (
               <div
                 className='relative flex shrink-0 items-stretch overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
                 role='tablist'
@@ -77,7 +76,7 @@ export default function MovieList({ personId }: MovieListProps) {
               }}
               className='block'
             >
-              {movieListLoading ? (
+              {isLoading ? (
                 <MovieGrid.Skeleton
                   className='max-1600:gap-4 max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-x-2 max-640:gap-y-6 max-480:grid-cols-2 grid-cols-6 gap-6'
                   skeletonCount={12}

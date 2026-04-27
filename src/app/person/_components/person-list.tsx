@@ -17,15 +17,14 @@ export default function PersonList() {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();
 
-  const { data: personListData, isLoading: personListLoading } =
-    usePersonListQuery({
-      params: {
-        page: page ? Number(page) - 1 : 0,
-        size: DEFAULT_PAGE_SIZE,
-        kind: PERSON_KIND_ACTOR
-      },
-      enabled: true
-    });
+  const { data: personListData, isLoading } = usePersonListQuery({
+    params: {
+      page: page ? Number(page) - 1 : 0,
+      size: DEFAULT_PAGE_SIZE,
+      kind: PERSON_KIND_ACTOR
+    },
+    enabled: true
+  });
 
   const personList = personListData?.data?.content || [];
   const totalPages = personListData?.data?.totalPages || 0;
@@ -33,7 +32,7 @@ export default function PersonList() {
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
       <ListHeading title='Diễn viên' />
-      {personListLoading ? (
+      {isLoading ? (
         <div
           className={cn(
             'grid w-full grid-cols-8 gap-6',

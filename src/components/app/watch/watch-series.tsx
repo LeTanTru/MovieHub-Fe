@@ -152,7 +152,7 @@ export default function WatchSeries() {
         <div className='grow'></div>
         <ButtonToggle
           toggle={toggle}
-          onToggleAction={handleToggle}
+          onToggle={handleToggle}
           text='Rút gọn'
           className='max-640:hidden'
         />

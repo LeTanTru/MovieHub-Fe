@@ -140,8 +140,8 @@ export default function WatchPlayerVideoArea() {
           <WatchAskContinueModal
             opened={isShowContinueModal}
             lastWatchedSeconds={lastWatchedSeconds}
-            onContinueWatchingAction={handleContinueWatching}
-            onStartOverAction={handleStartOver}
+            onContinueWatching={handleContinueWatching}
+            onStartOver={handleStartOver}
           />
         </>
       )}
@@ -149,7 +149,7 @@ export default function WatchPlayerVideoArea() {
         <EpisodeList
           seasons={movie?.seasons || []}
           isOpen={isEpisodeListOpen}
-          onToggleAction={closeEpisodeList}
+          onToggle={closeEpisodeList}
         />
       </Activity>
     </div>

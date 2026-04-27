@@ -78,7 +78,7 @@ const useFileUploadManager = ({
           setCurrentUrl('');
           return result;
         } catch (err) {
-          logger.error('Failed to delete file on click:', url, err);
+          logger.error('[DELETE_FILE_ERROR]', err);
           throw err;
         }
       } else {
@@ -98,7 +98,7 @@ const useFileUploadManager = ({
       await Promise.all(
         validFiles.map((filePath) =>
           deleteFileMutate({ filePath }).catch((err: Error) => {
-            logger.error('Failed to delete file:', filePath, err);
+            logger.error('[DELETE_FILE_ERROR]', err);
           })
         )
       );

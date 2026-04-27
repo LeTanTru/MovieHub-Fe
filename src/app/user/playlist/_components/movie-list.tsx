@@ -66,8 +66,8 @@ export default function MovieList() {
           }
         },
         onError: (error) => {
-          logger.error('Error while removing movie from playlist', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[REMOVE_MOVIE_FROM_PLAYLIST_ERROR]', error);
+          notify.error('Xóa phim khỏi danh sách phát thất bại');
         }
       }
     );
@@ -101,7 +101,7 @@ export default function MovieList() {
             <MovieCard
               key={movie.id}
               movie={movie}
-              onDeleteAction={handleDeleteMovieFromPlaylist}
+              onDelete={handleDeleteMovieFromPlaylist}
               dir='down'
             />
           ))}
@@ -110,7 +110,7 @@ export default function MovieList() {
       <Activity visible={!!totalPages}>
         <Pagination
           totalPages={totalPages}
-          onChangeAction={handlePageChange}
+          onChange={handlePageChange}
           page={page}
         />
       </Activity>

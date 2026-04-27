@@ -30,11 +30,11 @@ type PlaylistState = {
   selectedPlaylist: PlaylistResType | null;
 };
 
-type PlaylistAction = {
+type PlaylistActions = {
   setSelectedPlaylist: (playlist: PlaylistResType | null) => void;
 };
 
-export type PlaylistStoreType = PlaylistState & PlaylistAction;
+export type PlaylistStoreType = PlaylistState & PlaylistActions;
 
 export type PlaylistIdsResType = {
   ids: string[];

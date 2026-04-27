@@ -54,8 +54,8 @@ export default function ButtonLoginGoogle() {
         notify.error('Đăng nhập thất bại');
       }
     } catch (error) {
-      logger.error('Error during Google login:', error);
-      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      logger.error('[LOGIN_GOOGLE_ERROR]', error);
+      notify.error('Đăng nhập thất bại');
     }
   };
 
@@ -88,7 +88,7 @@ export default function ButtonLoginGoogle() {
 
       window.addEventListener('message', onMessage);
     } catch (error) {
-      logger.error('Error logging in google', error);
+      logger.error('[LOGIN_GOOGLE_ERROR]', error);
     }
   };
 

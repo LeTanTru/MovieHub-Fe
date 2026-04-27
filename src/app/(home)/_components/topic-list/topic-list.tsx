@@ -11,11 +11,10 @@ import { route } from '@/routes';
 export default function TopicList() {
   const [isSwitched, setIsSwitched] = useState(false);
 
-  const { data: topicListData, isLoading: topicListLoading } =
-    useCollectionTopicListQuery({
-      enabled: true,
-      params: { size: MAX_PAGE_SIZE }
-    });
+  const { data: topicListData, isLoading } = useCollectionTopicListQuery({
+    enabled: true,
+    params: { size: MAX_PAGE_SIZE }
+  });
 
   const topicList = useMemo(
     () => topicListData?.data?.content?.slice(0, 6) || [],
@@ -38,7 +37,7 @@ export default function TopicList() {
 
   const moreCount = totalElements - topicList.length;
 
-  if (topicListLoading) return <VerticalBarLoading className='py-20' />;
+  if (isLoading) return <VerticalBarLoading className='py-20' />;
 
   if (!topicList.length) return null;
 

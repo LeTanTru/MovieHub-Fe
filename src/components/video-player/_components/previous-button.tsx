@@ -4,14 +4,14 @@ import { Tooltip } from '@vidstack/react';
 import { PreviousIcon } from '@vidstack/react/icons';
 
 type PreviousButtonProps = {
-  onClickAction: () => void;
+  onClick: () => void;
 };
 
-export default function PreviousButton({ onClickAction }: PreviousButtonProps) {
+export default function PreviousButton({ onClick }: PreviousButtonProps) {
   const handleClick = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    onClickAction();
+    onClick();
   };
 
   return (

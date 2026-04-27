@@ -41,7 +41,7 @@ export default function IntroForm() {
         form.setError('key', { message: result.message || 'Key không hợp lệ' });
       }
     } catch {
-      form.setError('key', { message: 'Có lỗi xảy ra, vui lòng thử lại' });
+      form.setError('key', { message: 'Key không hợp lệ' });
     }
   };
 

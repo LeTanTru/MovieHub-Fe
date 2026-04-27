@@ -54,8 +54,8 @@ export default function ChangePasswordForm() {
         }
       }
     } catch (error) {
-      logger.error('Error while changing password: ', error);
-      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      logger.error('[CHANGE_PASSWORD_ERROR]', error);
+      notify.error('Đổi mật khẩu thất bại');
     }
   };
 

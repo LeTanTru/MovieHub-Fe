@@ -56,8 +56,8 @@ export default function RegisterForm() {
         }
       }
     } catch (error) {
-      logger.error('Error while registering', error);
-      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      logger.error('[REGISTER_ERROR]', error);
+      notify.error('Đăng ký thất bại');
     }
   };
 

@@ -58,7 +58,7 @@ export default function ButtonAddPlayList({
           </Button>
         </ToolTip>
       )}
-      <PlaylistModal opened={opened} onCloseAction={handleClose} />
+      <PlaylistModal opened={opened} onClose={handleClose} />
     </>
   );
 }

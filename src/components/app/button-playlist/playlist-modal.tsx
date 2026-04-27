@@ -17,13 +17,13 @@ import { useState } from 'react';
 
 type PlaylistModalProps = {
   opened: boolean;
-  onCloseAction: () => void;
+  onClose: () => void;
   playlist?: PlaylistResType;
 };
 
 export default function PlaylistModal({
   opened,
-  onCloseAction,
+  onClose,
   playlist
 }: PlaylistModalProps) {
   const queryClient = getQueryClient();
@@ -52,7 +52,7 @@ export default function PlaylistModal({
   };
 
   const handleClose = () => {
-    onCloseAction();
+    onClose();
   };
 
   const handleSubmit = async (values: PlaylistBodyType) => {
@@ -78,8 +78,10 @@ export default function PlaylistModal({
           }
         },
         onError: (error) => {
-          logger.error('Error while creating/updating playlist:', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[CREATE_UPDATE_PLAYLIST_ERROR]', error);
+          notify.error(
+            `${isEditing ? 'Cập nhật' : 'Thêm'} danh sách phát thất bại`
+          );
         }
       }
     );
@@ -88,7 +90,7 @@ export default function PlaylistModal({
   return (
     <Modal
       open={opened}
-      onClose={onCloseAction}
+      onClose={onClose}
       bodyWrapperClassName='bg-main-background w-75 max-480:w-[90%] max-990:w-100'
       confirmOnClose={isFormChanged}
       confirmClassName='bg-charade'

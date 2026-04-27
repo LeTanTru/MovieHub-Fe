@@ -27,7 +27,7 @@ export default function Movie({ id }: MovieProps) {
     }))
   );
 
-  const { data: movieData, isLoading: movieLoading } = useMovieQuery(id);
+  const { data: movieData, isLoading } = useMovieQuery(id);
   const movie = movieData?.data;
 
   const { data: moviePersonData } = useMoviePersonListQuery({
@@ -50,7 +50,7 @@ export default function Movie({ id }: MovieProps) {
     if (moviePersons.length > 0) setMoviePersons(moviePersons);
   }, [moviePersons, setMoviePersons]);
 
-  if (movieLoading) return <Movie.Skeleton />;
+  if (isLoading) return <Movie.Skeleton />;
 
   if (!movie) return <NotFound />;
 
