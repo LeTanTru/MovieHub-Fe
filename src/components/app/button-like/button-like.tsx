@@ -38,14 +38,14 @@ const textVariants: Record<string, string> = {
   watch: 'Thích'
 };
 
-const entityTypeVariants: Record<string, number> = {
+const typeVariants: Record<string, number> = {
   detail: FAVOURITE_TYPE_MOVIE,
   person: FAVOURITE_TYPE_PERSON,
   popup: FAVOURITE_TYPE_MOVIE,
   watch: FAVOURITE_TYPE_MOVIE
 };
 
-const entityTypeLabels: Record<string, string> = {
+const labels: Record<string, string> = {
   detail: 'phim',
   person: 'diễn viên',
   popup: 'phim',
@@ -73,9 +73,9 @@ export default function ButtonLike({
   const { isAuthenticated } = useAuth();
 
   const favouriteType: number = variant
-    ? entityTypeVariants[variant]
+    ? typeVariants[variant]
     : FAVOURITE_TYPE_MOVIE;
-  const entityTypeLabel = variant ? entityTypeLabels[variant] : 'phim';
+  const label = variant ? labels[variant] : 'phim';
   const defaultText = variant ? textVariants[variant] : 'Thích';
 
   const { mutateAsync: addFavourite, isPending: addFavouriteLoading } =
@@ -118,7 +118,7 @@ export default function ButtonLike({
           >
             đăng nhập
           </Link>
-          &nbsp;để thêm {entityTypeLabel} vào danh sách yêu thích
+          &nbsp;để thêm {label} vào danh sách yêu thích
         </span>
       );
       return;
@@ -131,19 +131,15 @@ export default function ButtonLike({
       {
         onSuccess: (res) => {
           if (res.result) {
-            notify.success(
-              `Thêm ${entityTypeLabel} vào danh sách yêu thích thành công`
-            );
+            notify.success(`Thêm ${label} vào danh sách yêu thích thành công`);
             setIsLiked(true);
           } else {
-            notify.error(
-              `Thêm ${entityTypeLabel} vào danh sách yêu thích thất bại`
-            );
+            notify.error(`Thêm ${label} vào danh sách yêu thích thất bại`);
           }
         },
         onError: (error) => {
-          logger.error('Error while adding favourite', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[ADD_FAVOURITE_ERROR]', error);
+          notify.error(`Thêm ${label} vào danh sách yêu thích thất bại`);
         }
       }
     );
@@ -160,18 +156,14 @@ export default function ButtonLike({
         onSuccess: (res) => {
           if (res.result) {
             setIsLiked(false);
-            notify.success(
-              `Xóa ${entityTypeLabel} khỏi danh sách yêu thích thành công`
-            );
+            notify.success(`Xóa ${label} khỏi danh sách yêu thích thành công`);
           } else {
-            notify.error(
-              `Xóa ${entityTypeLabel} khỏi danh sách yêu thích thất bại`
-            );
+            notify.error(`Xóa ${label} khỏi danh sách yêu thích thất bại`);
           }
         },
         onError: (error) => {
-          logger.error('Error while removing favourite', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[REMOVE_FAVOURITE_ERROR]', error);
+          notify.error('Xóa yêu thích thất bại');
         }
       }
     );

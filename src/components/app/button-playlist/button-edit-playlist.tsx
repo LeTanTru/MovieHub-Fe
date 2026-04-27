@@ -40,7 +40,7 @@ export default function ButtonEditPlaylist({
       </ToolTip>
       <PlaylistModal
         opened={opened}
-        onCloseAction={handleClose}
+        onClose={handleClose}
         playlist={playlist}
       />
     </>

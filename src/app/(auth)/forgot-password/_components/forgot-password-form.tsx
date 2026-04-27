@@ -255,8 +255,8 @@ export default function ForgotPasswordForm() {
           }
         },
         onError: (error) => {
-          logger.error('Error while resending OTP', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[RESEND_OTP_ERROR]', error);
+          notify.error('Gửi lại OTP thất bại');
         }
       }
     );
@@ -310,8 +310,8 @@ export default function ForgotPasswordForm() {
           }
         },
         onError: (error) => {
-          logger.error('Error while sending otp: ', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[SEND_OTP_ERROR]', error);
+          notify.error('Gửi yêu cầu quên mật khẩu thất bại');
         }
       });
     } else if (step === 2) {
@@ -338,8 +338,8 @@ export default function ForgotPasswordForm() {
             }
           },
           onError: (error) => {
-            logger.error('Error while reseting password: ', error);
-            notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+            logger.error('[RESET_PASSWORD_ERROR]', error);
+            notify.error('Đặt lại mật khẩu thất bại');
           }
         }
       );

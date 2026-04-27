@@ -33,7 +33,7 @@ type CommentListProps = {
   hasMore?: boolean;
   remainingCount?: number;
   isLoadMoreLoading?: boolean;
-  onLoadMoreAction?: () => void;
+  onLoadMore?: () => void;
 };
 
 export default function CommentList({
@@ -42,7 +42,7 @@ export default function CommentList({
   hasMore = false,
   remainingCount = 0,
   isLoadMoreLoading = false,
-  onLoadMoreAction
+  onLoadMore
 }: CommentListProps) {
   const { profile, isAuthenticated } = useAuth();
   const queryClient = getQueryClient();
@@ -124,8 +124,8 @@ export default function CommentList({
         }
       },
       onError: (error) => {
-        logger.error('Error while deleting comment', error);
-        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+        logger.error('[DELETE_COMMENT_ERROR]', error);
+        notify.error('Xóa bình luận thất bại');
       }
     });
   };
@@ -159,14 +159,28 @@ export default function CommentList({
       {
         onSuccess: async (res) => {
           if (res.result) {
-            notify.success(
-              `${type === REACTION_TYPE_LIKE ? 'Thích' : 'Bỏ thích'} bình luận thành công`
-            );
             await Promise.all([
               queryClient.invalidateQueries({
                 queryKey: [queryKeys.COMMENT_VOTE_LIST, movie?.id]
               })
             ]);
+
+            const voteList = queryClient.getQueryData<
+              ApiResponse<CommentVoteResType[]>
+            >([queryKeys.COMMENT_VOTE_LIST, movie?.id]);
+
+            const vote = (voteList?.data || []).find((v) => v.id === id);
+
+            if (vote) {
+              notify.success(
+                `${vote.type === REACTION_TYPE_LIKE ? 'Thích' : 'Không thích'} bình luận thành công`
+              );
+            } else {
+              notify.success(
+                `${type === REACTION_TYPE_LIKE ? 'Bỏ thích' : 'Bỏ không thích'} bình luận thành công`
+              );
+            }
+
             if (onSuccess) onSuccess();
           } else {
             notify.error(
@@ -175,8 +189,14 @@ export default function CommentList({
           }
         },
         onError: (error) => {
-          logger.error('Error while liking comment', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error(
+            `[${type === REACTION_TYPE_LIKE ? 'LIKE' : 'DISLIKE'}_COMMENT_ERROR]`,
+            error
+          );
+
+          notify.error(
+            `${type === REACTION_TYPE_LIKE ? 'Thích' : 'Không thích'} bình luận thất bại`
+          );
         }
       }
     );
@@ -211,13 +231,13 @@ export default function CommentList({
             rootId={rootId ?? comment.id}
             userId={profile?.id || ''}
             voteMap={voteMap}
-            onCloseReplyAction={closeReply}
-            onDeleteAction={() => handleDeleteComment(comment)}
-            onVoteAction={handleVote}
-            openReplyAction={openReply}
-            renderChildrenAction={renderChildren}
-            setEditingCommentAction={setEditingComment}
-            setOpenParentIdsAction={setOpenParentIds}
+            onCloseReply={closeReply}
+            onDelete={() => handleDeleteComment(comment)}
+            onVote={handleVote}
+            openReply={openReply}
+            renderChildren={renderChildren}
+            setEditingComment={setEditingComment}
+            setOpenParentIds={setOpenParentIds}
           />
         </m.div>
       ));
@@ -262,7 +282,7 @@ export default function CommentList({
             <Button
               className='hover:text-golden-glow hover:bg-transparent'
               variant='ghost'
-              onClick={onLoadMoreAction}
+              onClick={onLoadMore}
             >
               {remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`}
             </Button>

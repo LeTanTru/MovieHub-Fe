@@ -15,11 +15,11 @@ type CategoryState = {
   categories: CategoryResType[];
 };
 
-type CategoryAction = {
+type CategoryActions = {
   setCategories: (categories: CategoryResType[]) => void;
 };
 
-export type CategoryStoreType = CategoryState & CategoryAction;
+export type CategoryStoreType = CategoryState & CategoryActions;
 
 export type CategorySearchType = z.infer<typeof categorySearchSchema> &
   BaseSearchType;

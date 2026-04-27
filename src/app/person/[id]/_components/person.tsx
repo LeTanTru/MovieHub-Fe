@@ -8,7 +8,7 @@ import PersonSidebar from './person-sidebar';
 
 export default function Person() {
   const { id } = useParams<{ id: string }>();
-  const { data: personData, isLoading: personLoading } = usePersonQuery(id);
+  const { data: personData, isLoading } = usePersonQuery(id);
 
   const person = personData?.data;
 
@@ -16,7 +16,7 @@ export default function Person() {
 
   return (
     <>
-      <PersonSidebar person={person} loading={personLoading} />
+      <PersonSidebar person={person} loading={isLoading} />
       <MovieList personId={id} />
     </>
   );

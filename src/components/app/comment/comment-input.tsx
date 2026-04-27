@@ -114,8 +114,8 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
         }
       },
       onError: (error) => {
-        logger.error(`Error while creating comment`, error);
-        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+        logger.error('[CREATE_COMMENT_ERROR]', error);
+        notify.error('Bình luận thất bại');
       }
     });
   };

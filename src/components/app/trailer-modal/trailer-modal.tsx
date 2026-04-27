@@ -19,14 +19,14 @@ import { useEffect, useRef } from 'react';
 type TrailerModalProps = {
   video: VideoResType;
   opened: boolean;
-  onCloseAction: () => void;
+  onClose: () => void;
   token: string;
 };
 
 export default function TrailerModal({
   opened,
   video,
-  onCloseAction,
+  onClose,
   token
 }: TrailerModalProps) {
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ export default function TrailerModal({
     <Modal
       title={video.name}
       open={opened}
-      onClose={onCloseAction}
+      onClose={onClose}
       className='trailer-modal'
       aria-labelledby='video-modal-title'
       aria-label={`Phát video ${video.name}`}

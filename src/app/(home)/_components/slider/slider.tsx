@@ -85,8 +85,8 @@ export default function Slider() {
           }
         },
         onError: (error) => {
-          logger.error('Error while adding favourite', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[ADD_FAVOURITE_ERROR]', error);
+          notify.error('Thêm phim vào danh sách yêu thích thất bại');
         }
       }
     );
@@ -126,8 +126,8 @@ export default function Slider() {
             }
           },
           onError: (error) => {
-            logger.error('Error while removing favourite', error);
-            notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+            logger.error('[REMOVE_FAVOURITE_ERROR]', error);
+            notify.error('Xóa phim khỏi danh sách yêu thích thất bại');
           }
         }
       );
@@ -160,10 +160,10 @@ export default function Slider() {
               <SliderItem
                 slider={slider}
                 isGrabbing={isGrabbing}
-                onPointerDownAction={() => setIsGrabbing(true)}
-                onPointerUpAction={() => setIsGrabbing(false)}
-                onLikeAction={handleLike}
-                onRemoveLikeAction={handleRemoveLike}
+                onPointerDown={() => setIsGrabbing(true)}
+                onPointerUp={() => setIsGrabbing(false)}
+                onLike={handleLike}
+                onRemoveLike={handleRemoveLike}
                 isLiked={favouriteListIds.includes(slider.movie.id)}
               />
             </SwiperSlide>

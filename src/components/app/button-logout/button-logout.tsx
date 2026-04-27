@@ -33,8 +33,8 @@ export default function ButtonLogout({
         notify.error('Đăng xuất thất bại');
       }
     } catch (error) {
-      logger.error('Error while logging out', error);
-      notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+      logger.error('[LOGOUT_ERROR]', error);
+      notify.error('Đăng xuất thất bại');
     }
   };
   return (

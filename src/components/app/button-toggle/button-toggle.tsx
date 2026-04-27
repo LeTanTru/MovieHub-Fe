@@ -4,7 +4,7 @@ import { cn } from '@/lib';
 
 type ButtonToggleProps = {
   toggle: boolean;
-  onToggleAction: () => void;
+  onToggle: () => void;
   text: string;
   disabled?: boolean;
   className?: string;
@@ -12,7 +12,7 @@ type ButtonToggleProps = {
 
 export default function ButtonToggle({
   toggle,
-  onToggleAction,
+  onToggle,
   text,
   disabled,
   className
@@ -40,7 +40,7 @@ export default function ButtonToggle({
           }
         )}
         disabled={disabled}
-        onClick={onToggleAction}
+        onClick={onToggle}
       >
         <div
           className={cn(

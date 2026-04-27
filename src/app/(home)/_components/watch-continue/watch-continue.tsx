@@ -49,8 +49,8 @@ export default function WatchContinue() {
         }
       },
       onError: (error) => {
-        logger.error(`Error while deleting watch history`, error);
-        notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+        logger.error('[DELETE_WATCH_HISTORY_ERROR]', error);
+        notify.error('Xóa lịch sử xem thất bại');
       }
     });
   };
@@ -118,7 +118,7 @@ export default function WatchContinue() {
             <SwiperSlide key={movieHistory.id}>
               <MovieHistoryCard
                 movieHistory={movieHistory}
-                onDeleteAction={handleDeleteWatchHistory}
+                onDelete={handleDeleteWatchHistory}
               />
             </SwiperSlide>
           ))}

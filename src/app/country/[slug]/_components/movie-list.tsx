@@ -23,15 +23,14 @@ export default function MovieList({ countryCode }: MovieListProps) {
     (country) => country.value === countryCode
   )?.label;
 
-  const { data: movieListData, isLoading: movieListLoading } =
-    useMovieListQuery({
-      params: {
-        page: page ? Number(page) - 1 : 0,
-        country: countryCode,
-        size: DEFAULT_PAGE_SIZE
-      },
-      enabled: !!countryCode
-    });
+  const { data: movieListData, isLoading } = useMovieListQuery({
+    params: {
+      page: page ? Number(page) - 1 : 0,
+      country: countryCode,
+      size: DEFAULT_PAGE_SIZE
+    },
+    enabled: !!countryCode
+  });
 
   const movieList = movieListData?.data?.content || [];
   const totalPages = movieListData?.data?.totalPages || 0;
@@ -43,7 +42,7 @@ export default function MovieList({ countryCode }: MovieListProps) {
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
       <ListHeading title={`Phim ${countryName}`} />
-      {movieListLoading ? (
+      {isLoading ? (
         <MovieGrid.Skeleton className='max-1600:gap-4 max-1360:grid-cols-6 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-640:gap-x-2 max-640:gap-y-4' />
       ) : movieList.length === 0 ? (
         <NoData

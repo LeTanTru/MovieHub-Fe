@@ -12,7 +12,7 @@ export const parseJSON = <T>(str: string): T => {
   try {
     return JSON.parse(str) as T;
   } catch (error) {
-    logger.error('Failed to parse JSON:', error);
+    logger.error('[PARSE_JSON_ERROR]', error);
     return {} as T;
   }
 };
@@ -31,7 +31,7 @@ export const getColorList = (colorStr: string): string[] => {
     logger.warn('Parsed color is not an array:', colors);
     return [];
   } catch (error) {
-    logger.error('Failed to parse color string:', error);
+    logger.error('[PARSE_COLOR_ERROR]', error);
     return [];
   }
 };

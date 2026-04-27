@@ -47,16 +47,16 @@ type SelectFieldProps<
   description?: string;
   className?: string;
   required?: boolean;
-  getLabelAction?: (option: TOption) => string | number;
-  getValueAction?: (option: TOption) => string | number;
-  getPrefixAction?: (option: TOption) => ReactNode;
+  getLabel?: (option: TOption) => string | number;
+  getValue?: (option: TOption) => string | number;
+  getPrefix?: (option: TOption) => ReactNode;
   allowClear?: boolean;
   searchText?: string;
   notFoundContent?: ReactNode;
   labelClassName?: string;
   disabled?: boolean;
-  onValueChangeAction?: (value: string | number | null) => void;
-  renderOptionAction?: (option: TOption) => ReactNode;
+  onValueChange?: (value: string | number | null) => void;
+  renderOption?: (option: TOption) => ReactNode;
 };
 
 const normalizeText = (text: string): string =>
@@ -93,11 +93,11 @@ export default function SelectField<
   notFoundContent = 'Không có kết quả nào',
   labelClassName,
   disabled = false,
-  renderOptionAction,
-  getLabelAction = (opt) => opt.label,
-  getValueAction = (opt) => opt.value,
-  getPrefixAction = (opt) => opt.prefix,
-  onValueChangeAction
+  renderOption,
+  getLabel = (opt) => opt.label,
+  getValue = (opt) => opt.value,
+  getPrefix = (opt) => opt.prefix,
+  onValueChange
 }: SelectFieldProps<TFieldValues, TOption>) {
   const [open, setOpen] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -105,7 +105,7 @@ export default function SelectField<
   const commandRef = useRef<HTMLDivElement>(null);
 
   const filteredOptions = options.filter((option) =>
-    fuzzyMatch(String(getLabelAction(option)), searchValue)
+    fuzzyMatch(String(getLabel(option)), searchValue)
   );
 
   useEffect(() => {
@@ -119,19 +119,19 @@ export default function SelectField<
       render={({ field, fieldState }) => {
         const selectedValue = field.value;
         const selectedOption = options.find(
-          (o) => getValueAction(o) === selectedValue
+          (o) => getValue(o) === selectedValue
         );
 
         const handleSelect = (val: string | number) => {
           field.onChange(val);
-          onValueChangeAction?.(val);
+          onValueChange?.(val);
           setOpen(false);
         };
 
         const handleClear = (e: MouseEvent | KeyboardEvent) => {
           e.stopPropagation();
           field.onChange(null);
-          onValueChangeAction?.(null);
+          onValueChange?.(null);
           setOpen(false);
         };
 
@@ -165,7 +165,7 @@ export default function SelectField<
                       aria-label='Select'
                       disabled={disabled}
                       className={cn(
-                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2',
+                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color w-full justify-between border px-3! py-0 text-black hover:text-black focus-visible:border-transparent focus-visible:ring-2',
                         {
                           'ring-main-color border-transparent! ring-2': open,
                           '[&>div>span]:text-gray-300': fieldState.invalid,
@@ -175,9 +175,9 @@ export default function SelectField<
                     >
                       {selectedOption ? (
                         <div className='flex min-w-0 flex-1 items-center gap-2'>
-                          {getPrefixAction?.(selectedOption)}
+                          {getPrefix?.(selectedOption)}
                           <span className='block truncate'>
-                            {getLabelAction(selectedOption)}
+                            {getLabel(selectedOption)}
                           </span>
                         </div>
                       ) : (
@@ -202,11 +202,11 @@ export default function SelectField<
                   </PopoverTrigger>
                   <PopoverContent
                     sideOffset={8}
-                    className='bg-charade w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-neutral-800'
+                    className='w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-gray-200'
                   >
                     <Command
                       ref={commandRef}
-                      className='bg-input'
+                      className='bg-background'
                       shouldFilter={false}
                     >
                       <CommandInput
@@ -228,8 +228,7 @@ export default function SelectField<
                           } else if (e.key === 'Enter') {
                             e.preventDefault();
                             const selected = filteredOptions[highlightedIndex];
-                            if (selected)
-                              handleSelect(getValueAction(selected));
+                            if (selected) handleSelect(getValue(selected));
                           }
                         }}
                       />
@@ -262,7 +261,7 @@ export default function SelectField<
                         }}
                       >
                         {filteredOptions.map((opt, idx) => {
-                          const val = getValueAction(opt);
+                          const val = getValue(opt);
                           const isSelected = val === selectedValue;
                           return (
                             <CommandItem
@@ -270,24 +269,24 @@ export default function SelectField<
                               onMouseEnter={() => setHighlightedIndex(idx)}
                               onSelect={() => handleSelect(val)}
                               className={cn(
-                                'hover:bg-main-color/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                                'block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                                 {
-                                  'text-accent-foreground dark:bg-main-color/10':
+                                  'bg-accent text-accent-foreground':
                                     highlightedIndex === idx,
-                                  'bg-main-color/30': isSelected
+                                  'bg-main-color/10': isSelected
                                 }
                               )}
                             >
-                              {renderOptionAction ? (
-                                renderOptionAction(opt)
+                              {renderOption ? (
+                                renderOption(opt)
                               ) : (
                                 <>
-                                  {getPrefixAction?.(opt) && (
+                                  {getPrefix?.(opt) && (
                                     <span className='mr-1 font-mono text-xs opacity-70'>
-                                      {getPrefixAction(opt)}
+                                      {getPrefix(opt)}
                                     </span>
                                   )}
-                                  {getLabelAction(opt)}
+                                  {getLabel(opt)}
                                 </>
                               )}
                             </CommandItem>

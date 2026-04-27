@@ -151,7 +151,7 @@ export type MovieNextEpisodeResType = {
   releaseDate: string;
 };
 
-type MovieAction = {
+type MovieActions = {
   setMovie: (movie?: MovieResType | null) => void;
   setMovieItem: (movieItem?: MovieItemResType | null) => void;
   setMoviePerson: (moviePerson?: MoviePersonResType | null) => void;
@@ -167,4 +167,4 @@ type MovieAction = {
   reset: () => void;
 };
 
-export type MovieStoreType = MovieState & MovieAction;
+export type MovieStoreType = MovieState & MovieActions;

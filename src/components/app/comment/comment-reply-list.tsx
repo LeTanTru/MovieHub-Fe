@@ -12,8 +12,8 @@ type CommentReplyListProps = {
   rootId: string;
   isActiveParent: boolean;
   commentList: CommentResType[];
-  commentListLoading: boolean;
-  commentLoadMoreLoading: boolean;
+  isLoading: boolean;
+  isLoadingMore: boolean;
   hasMoreComments: boolean;
   onViewReplies: () => void;
   onHideReplies: () => void;
@@ -31,8 +31,8 @@ export default function CommentReplyList({
   rootId,
   isActiveParent,
   commentList,
-  commentListLoading,
-  commentLoadMoreLoading,
+  isLoading,
+  isLoadingMore,
   hasMoreComments,
   onViewReplies,
   onHideReplies,
@@ -53,7 +53,7 @@ export default function CommentReplyList({
             <div className='mt-4 flex flex-col gap-4'>
               {renderChildren(commentList, level + 1, rootId)}
             </div>
-            {commentLoadMoreLoading && <VerticalBarLoading className='py-10' />}
+            {isLoadingMore && <VerticalBarLoading className='py-10' />}
           </m.div>
         )}
       </AnimatePresence>
@@ -66,7 +66,7 @@ export default function CommentReplyList({
           >
             <FaChevronDown /> Xem tất cả&nbsp;{comment.totalChildren} trả lời
           </button>
-        ) : commentListLoading ? (
+        ) : isLoading ? (
           <VerticalBarLoading className='py-10' />
         ) : (
           <div

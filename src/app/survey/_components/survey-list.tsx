@@ -44,8 +44,8 @@ export default function SurveyList() {
           }
         },
         onError: (error) => {
-          logger.error('Error while making survey:', error);
-          notify.error('Có lỗi xảy ra. Vui lòng thử lại sau');
+          logger.error('[MAKE_SURVEY_ERROR]', error);
+          notify.error('Hoàn thành khảo sát thất bại');
         }
       }
     );
@@ -75,7 +75,7 @@ export default function SurveyList() {
               <SurveyCard
                 key={movie.id}
                 movie={movie}
-                onClickAction={handleClick}
+                onClick={handleClick}
                 isSelected={selectedMovieIds.includes(movie.id)}
               />
             ))}

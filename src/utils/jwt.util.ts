@@ -7,9 +7,9 @@ export const decodeJwt = (
   try {
     return jwtDecode(token);
   } catch (error) {
-    logger.error('Failed to decode JWT:', error);
+    logger.error('[DECODE_JWT_ERROR]', error);
+    return null;
   }
-  return null;
 };
 
 export const isTokenExpired = (token: string | null): boolean => {

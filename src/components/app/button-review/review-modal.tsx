@@ -18,13 +18,10 @@ import { useShallow } from 'zustand/shallow';
 
 type ReviewModalProps = {
   opened: boolean;
-  onCloseAction: () => void;
+  onClose: () => void;
 };
 
-export default function ReviewModal({
-  opened,
-  onCloseAction
-}: ReviewModalProps) {
+export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const { movie, setMovie } = useMovieStore(
@@ -89,15 +86,15 @@ export default function ReviewModal({
             >([queryKeys.MOVIE, movie?.id]);
             const newMovie = newMovieData?.data;
             setMovie(newMovie);
-            onCloseAction();
+            onClose();
             setSelectedRating(null);
           } else {
             notify.error('Đánh giá phim thất bại');
           }
         },
         onError: (error) => {
-          logger.error('Error while creating/updating review', error);
-          notify.error('Có lỗi xảy ra, vui lòng thử lại sau');
+          logger.error('[CREATE_UPDATE_REVIEW_ERROR]', error);
+          notify.error('Đánh giá phim thất bại');
         }
       }
     );
@@ -106,7 +103,7 @@ export default function ReviewModal({
   return (
     <Modal
       open={opened}
-      onClose={onCloseAction}
+      onClose={onClose}
       bodyWrapperClassName='bg-vintage-navi w-160 max-768:w-150 max-640:w-[95%]'
       confirmOnClose={isFormChanged}
       confirmClassName='bg-charade'
@@ -184,7 +181,7 @@ export default function ReviewModal({
                 <Button
                   type='button'
                   className='max-640:text-[13px]'
-                  onClick={onCloseAction}
+                  onClick={onClose}
                 >
                   Đóng
                 </Button>

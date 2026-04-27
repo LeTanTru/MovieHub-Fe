@@ -12,13 +12,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 type SurveyCardProps = {
   movie: SurveyResType;
   isSelected: boolean;
-  onClickAction: (movie: SurveyResType) => void;
+  onClick: (movie: SurveyResType) => void;
 };
 
 export default function SurveyCard({
   movie,
   isSelected,
-  onClickAction
+  onClick
 }: SurveyCardProps) {
   return (
     <Tilt
@@ -36,7 +36,7 @@ export default function SurveyCard({
         whileTap={{
           scale: 0.98
         }}
-        onClick={() => onClickAction(movie)}
+        onClick={() => onClick(movie)}
       >
         <div
           className={cn(

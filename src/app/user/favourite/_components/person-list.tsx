@@ -51,7 +51,7 @@ export default function PersonList({
               person={person}
               key={person.id}
               willNavigate
-              onDeleteAction={handleDeleteFavourite}
+              onDelete={handleDeleteFavourite}
             />
           ))}
         </div>

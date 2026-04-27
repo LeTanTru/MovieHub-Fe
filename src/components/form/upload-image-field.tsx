@@ -106,7 +106,7 @@ async function getCroppedImg(
       canvas.toBlob((blob) => resolve(blob), outputType || 'image/jpeg');
     });
   } catch (error) {
-    logger.error('getCroppedImg error:', error);
+    logger.error('[GET_CROPPED_IMAGE_ERROR]', error);
     return null;
   }
 }
@@ -128,9 +128,9 @@ type UploadImageFieldProps<T extends FieldValues> = {
   originalSize?: boolean;
   allowCustomAspect?: boolean;
   avatar?: boolean;
-  onChangeAction?: (url: string) => void;
-  onUploadAction: (file: Blob) => Promise<string>;
-  onDeleteAction?: (url: string) => Promise<ApiResponse<any> | undefined>;
+  onChange?: (url: string) => void;
+  onUpload: (file: Blob) => Promise<string>;
+  onDelete?: (url: string) => Promise<ApiResponse<any> | undefined>;
 };
 
 export default function UploadImageField<T extends FieldValues>({
@@ -150,9 +150,9 @@ export default function UploadImageField<T extends FieldValues>({
   originalSize = false,
   allowCustomAspect = false,
   avatar = false,
-  onChangeAction,
-  onUploadAction,
-  onDeleteAction
+  onChange,
+  onUpload,
+  onDelete
 }: UploadImageFieldProps<T>) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
@@ -193,7 +193,7 @@ export default function UploadImageField<T extends FieldValues>({
   }, []);
 
   const handleApply = async () => {
-    if (!previewUrl || !fileId || !onUploadAction) return;
+    if (!previewUrl || !fileId || !onUpload) return;
 
     const fileType =
       files[0]?.file instanceof File ? files[0].file.type : undefined;
@@ -224,12 +224,12 @@ export default function UploadImageField<T extends FieldValues>({
 
     try {
       setIsUploading(true);
-      const uploadedUrl = await onUploadAction(blob);
-      onChangeAction?.(uploadedUrl);
+      const uploadedUrl = await onUpload(blob);
+      onChange?.(uploadedUrl);
       fieldOnChange(uploadedUrl);
       setDialogOpen(false);
     } catch (error) {
-      logger.error('Error while uploading image:', error);
+      logger.error('[UPLOAD_IMAGE_ERROR]', error);
     } finally {
       setIsUploading(false);
     }
@@ -238,13 +238,13 @@ export default function UploadImageField<T extends FieldValues>({
   const handleRemove = async (e: MouseEvent) => {
     e.stopPropagation();
     try {
-      if (onDeleteAction && fieldValue) {
-        await onDeleteAction(fieldValue);
+      if (onDelete && fieldValue) {
+        await onDelete(fieldValue);
       }
     } catch (err) {
-      logger.error('Error while deleting image:', err);
+      logger.error('[DELETE_IMAGE_ERROR]', err);
     }
-    onChangeAction?.('');
+    onChange?.('');
     fieldOnChange('');
     clearFiles();
   };

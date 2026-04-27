@@ -44,7 +44,7 @@ export default function MovieList({
             <MovieCard
               key={movie.id}
               movie={movie}
-              onDeleteAction={handleDeleteFavourite}
+              onDelete={handleDeleteFavourite}
               dir='down'
             />
           ))}

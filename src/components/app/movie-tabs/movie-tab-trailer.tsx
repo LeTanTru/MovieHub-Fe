@@ -53,7 +53,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
       setToken(res.access_token);
       open();
     } catch (err) {
-      logger.error('Failed to get guest token', err);
+      logger.error('[GET_GUEST_TOKEN_ERROR]', err);
       notify.error('Không thể tải trailer, vui lòng thử lại');
     } finally {
       setIsFetching(false);
@@ -74,7 +74,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
           const res = await getAnonymousToken();
           setToken(res.access_token);
         } catch (err) {
-          logger.error('Failed to refresh guest token', err);
+          logger.error('[REFRESH_GUEST_TOKEN_ERROR]', err);
         }
       },
       14 * 60 * 1000
@@ -97,7 +97,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
           <div className='grow'></div>
           <ButtonToggle
             toggle={toggle}
-            onToggleAction={handleToggle}
+            onToggle={handleToggle}
             text='Rút gọn'
             disabled={isFetching}
             className='max-640:hidden'
@@ -179,7 +179,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
 
       <TrailerModal
         opened={opened}
-        onCloseAction={handleCloseTrailer}
+        onClose={handleCloseTrailer}
         video={trailer.video}
         token={token}
       />

@@ -210,10 +210,10 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
                 <>
                   <div className='max-640:hidden contents'>
                     {prev && onPrevClick && (
-                      <PreviousButton onClickAction={onPrevClick} />
+                      <PreviousButton onClick={onPrevClick} />
                     )}
                     {next && onNextClick && (
-                      <NextButton onClickAction={onNextClick} />
+                      <NextButton onClick={onNextClick} />
                     )}
                     <SeekBackwardButton />
                     <SeekForwardButton />
@@ -226,16 +226,14 @@ const VideoPlayer = forwardRef<MediaPlayerInstance, VideoPlayerProps>(
                   <>
                     {showSkipIntro && (
                       <SkipIntroButton
-                        onClickAction={() => {
+                        onClick={() => {
                           if (playerRef.current && introEnd) {
                             playerRef.current.currentTime = introEnd;
                           }
                         }}
                       />
                     )}
-                    {showSkipOutro && (
-                      <SkipOutroButton onClickAction={onNextClick} />
-                    )}
+                    {showSkipOutro && <SkipOutroButton onClick={onNextClick} />}
                   </>
                 ) : null,
               timeSlider: (
