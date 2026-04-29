@@ -124,7 +124,7 @@ export default function ScheduleList() {
         {/* Movie List */}
         <div className='relative flex min-h-15 items-start justify-between'>
           {isLoading || isFetching ? (
-            <VerticalBarLoading className='mx-auto py-20' />
+            <VerticalBarLoading className='mx-auto py-20 pt-40' />
           ) : scheduleList.length === 0 ? (
             <NoData
               className='max-640:pb-20 max-640:pt-10 pt-25 pb-30'
