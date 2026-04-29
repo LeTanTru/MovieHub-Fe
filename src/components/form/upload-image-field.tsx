@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  type MouseEvent,
   type ReactNode,
   useCallback,
   useEffect,
@@ -30,6 +29,7 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 import { AvatarField, Button, ImageField } from '@/components/form';
+import { ConfirmModal } from '@/components/modal';
 import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';
@@ -129,8 +129,8 @@ type UploadImageFieldProps<T extends FieldValues> = {
   allowCustomAspect?: boolean;
   avatar?: boolean;
   onChange?: (url: string) => void;
-  onUpload: (file: Blob) => Promise<string>;
-  onDelete?: (url: string) => Promise<ApiResponse<any> | undefined>;
+  uploadImageFn: (file: Blob) => Promise<string>;
+  deleteImageFn?: (url: string) => Promise<ApiResponse<any> | undefined>;
 };
 
 export default function UploadImageField<T extends FieldValues>({
@@ -151,8 +151,8 @@ export default function UploadImageField<T extends FieldValues>({
   allowCustomAspect = false,
   avatar = false,
   onChange,
-  onUpload,
-  onDelete
+  uploadImageFn,
+  deleteImageFn
 }: UploadImageFieldProps<T>) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
@@ -164,6 +164,7 @@ export default function UploadImageField<T extends FieldValues>({
   const [keepOriginalSize, setKeepOriginalSize] =
     useState<boolean>(originalSize);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [confirmRemoveOpen, setConfirmRemoveOpen] = useState(false);
 
   const {
     field: { value: fieldValue, onChange: fieldOnChange },
@@ -193,7 +194,7 @@ export default function UploadImageField<T extends FieldValues>({
   }, []);
 
   const handleApply = async () => {
-    if (!previewUrl || !fileId || !onUpload) return;
+    if (!previewUrl || !fileId || !uploadImageFn) return;
 
     const fileType =
       files[0]?.file instanceof File ? files[0].file.type : undefined;
@@ -224,7 +225,7 @@ export default function UploadImageField<T extends FieldValues>({
 
     try {
       setIsUploading(true);
-      const uploadedUrl = await onUpload(blob);
+      const uploadedUrl = await uploadImageFn(blob);
       onChange?.(uploadedUrl);
       fieldOnChange(uploadedUrl);
       setDialogOpen(false);
@@ -235,11 +236,10 @@ export default function UploadImageField<T extends FieldValues>({
     }
   };
 
-  const handleRemove = async (e: MouseEvent) => {
-    e.stopPropagation();
+  const handleRemove = async () => {
     try {
-      if (onDelete && fieldValue) {
-        await onDelete(fieldValue);
+      if (deleteImageFn && fieldValue) {
+        await deleteImageFn(fieldValue);
       }
     } catch (err) {
       logger.error('[DELETE_IMAGE_ERROR]', err);
@@ -247,6 +247,7 @@ export default function UploadImageField<T extends FieldValues>({
     onChange?.('');
     fieldOnChange('');
     clearFiles();
+    setConfirmRemoveOpen(false);
   };
 
   useEffect(() => {
@@ -334,22 +335,29 @@ export default function UploadImageField<T extends FieldValues>({
                   />
                 )}
                 {value && (
-                  <Button
-                    onClick={handleRemove}
-                    size='icon'
-                    type='button'
-                    title='Xóa ảnh'
-                    className={cn(
-                      'border-background absolute size-6 rounded-full border-none'
-                    )}
-                    style={{
-                      top: avatar ? (6 * size) / 100 : -8,
-                      right: avatar ? (6 * size) / 100 : -8
-                    }}
-                    aria-label='Remove image'
-                  >
-                    <XIcon className='size-5' />
-                  </Button>
+                  <ConfirmModal
+                    message='Bạn có chắc chắn muốn xóa ảnh này không?'
+                    onConfirm={handleRemove}
+                    open={confirmRemoveOpen}
+                    onOpenChange={setConfirmRemoveOpen}
+                    trigger={
+                      <Button
+                        size='icon'
+                        type='button'
+                        title='Xóa ảnh'
+                        className={cn(
+                          'border-background absolute size-6 rounded-full border-none'
+                        )}
+                        style={{
+                          top: avatar ? (6 * size) / 100 : -8,
+                          right: avatar ? (6 * size) / 100 : -8
+                        }}
+                        aria-label='Remove image'
+                      >
+                        <XIcon className='size-5' />
+                      </Button>
+                    }
+                  />
                 )}
               </div>
             ) : loading && !showCrop ? (

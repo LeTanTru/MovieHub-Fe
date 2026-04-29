@@ -16,8 +16,9 @@ import { useUpdateSettingsMutation } from '@/queries';
 import { settingsSchema } from '@/schemaValidations';
 import { SettingBodyType } from '@/types';
 import { notify } from '@/utils';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
+import { ConfirmModal } from '@/components/modal';
 
 export default function SettingsForm() {
   const { profile } = useAuth();
@@ -26,6 +27,8 @@ export default function SettingsForm() {
 
   const { mutateAsync: updateSettingMutate, isPending } =
     useUpdateSettingsMutation();
+
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
 
   const defaultValues: SettingBodyType = {
     audio: 100,
@@ -165,17 +168,25 @@ export default function SettingsForm() {
                 />
               </Col>
             </Row>
-            <Row className='max-480:mb-0 max-480:flex-col-reverse max-480:gap-6 mb-2 flex justify-end'>
-              <Col className='grid-c-4 max-640:grid-c-6 max-480:grid-c-12'>
+            <Row className='max-640:mb-0 max-640:flex-col-reverse max-640:gap-6 mb-2 flex justify-end'>
+              <Col className='grid-c-6 max-640:grid-c-12'>
                 <Button
                   variant='outline'
+                  type='button'
+                  onClick={() => setShowConfirmCancel(true)}
                   disabled={isPending || !form.formState.isDirty}
-                  className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
+                  className='w-full border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                 >
                   Hủy
                 </Button>
+                <ConfirmModal
+                  open={showConfirmCancel}
+                  onOpenChange={setShowConfirmCancel}
+                  message='Bạn có chắc chắn muốn hủy không?'
+                  onConfirm={() => form.reset()}
+                />
               </Col>
-              <Col className='grid-c-4 max-640:grid-c-6 max-480:grid-c-12'>
+              <Col className='grid-c-6 max-640:grid-c-12'>
                 <Button
                   variant='primary'
                   type='submit'

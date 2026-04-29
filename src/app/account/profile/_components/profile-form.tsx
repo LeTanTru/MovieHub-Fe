@@ -28,6 +28,8 @@ import { UpdateProfileBodyType } from '@/types';
 import { applyFormErrors, notify, renderImageUrl } from '@/utils';
 import type { UseFormReturn } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
+import { useState } from 'react';
+import { ConfirmModal } from '@/components/modal';
 
 export default function ProfileForm() {
   const { profile } = useAuthStore(useShallow((s) => ({ profile: s.profile })));
@@ -36,6 +38,8 @@ export default function ProfileForm() {
   const { mutateAsync: updateProfileMutate, isPending: updateProfileLoading } =
     useUpdateProfileMutation();
   const { mutateAsync: deleteFileMutate } = useDeleteFileMutation();
+
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
 
   const imageManager = useFileUploadManager({
     initialUrl: profile?.avatarPath,
@@ -120,14 +124,14 @@ export default function ProfileForm() {
                     name='avatarPath'
                     label='Ảnh đại diện'
                     onChange={imageManager.trackUpload}
-                    onUpload={async (file: Blob) => {
+                    uploadImageFn={async (file: Blob) => {
                       const res = await uploadImageMutate({
                         file
                       });
                       return res.data?.filePath ?? '';
                     }}
                     loading={uploadImageLoading}
-                    onDelete={imageManager.handleDeleteOnClick}
+                    deleteImageFn={imageManager.handleDeleteOnClick}
                     size={100}
                     avatar
                   />
@@ -141,7 +145,6 @@ export default function ProfileForm() {
                     label='Họ và tên'
                     required
                     placeholder='Nhập họ và tên'
-                    className='text-sm'
                   />
                 </Col>
                 <Col className='grid-c-6 max-640:grid-c-12'>
@@ -151,7 +154,6 @@ export default function ProfileForm() {
                     label='Email'
                     required
                     placeholder='Nhập email'
-                    className='text-sm disabled:opacity-100'
                     disabled
                   />
                 </Col>
@@ -164,7 +166,6 @@ export default function ProfileForm() {
                     label='Tên hiển thị'
                     required
                     placeholder='Nhập tên hiển thị'
-                    className='text-sm'
                   />
                 </Col>
                 <Col className='grid-c-6 max-640:grid-c-12'>
@@ -174,7 +175,6 @@ export default function ProfileForm() {
                     label='Số điện thoại'
                     required
                     placeholder='Nhập số điện thoại'
-                    className='text-sm'
                   />
                 </Col>
               </Row>
@@ -187,7 +187,6 @@ export default function ProfileForm() {
                     label='Giới tính'
                     required
                     placeholder='Chọn giới tính'
-                    className='text-sm'
                   />
                 </Col>
               </Row>
@@ -196,12 +195,24 @@ export default function ProfileForm() {
                   <Button
                     type='button'
                     variant='outline'
-                    onClick={() => handleCancel(form)}
+                    onClick={() => {
+                      if (form.formState.isDirty) {
+                        setShowConfirmCancel(true);
+                      } else {
+                        handleCancel(form);
+                      }
+                    }}
                     disabled={!form.formState.isDirty || updateProfileLoading}
                     className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                   >
                     Hủy
                   </Button>
+                  <ConfirmModal
+                    open={showConfirmCancel}
+                    onOpenChange={setShowConfirmCancel}
+                    message='Bạn có chắc chắn muốn hủy không?'
+                    onConfirm={() => handleCancel(form)}
+                  />
                 </Col>
                 <Col className='grid-c-3 max-640:grid-c-6 max-480:grid-c-12'>
                   <Button

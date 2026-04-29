@@ -9,7 +9,7 @@ import { MetadataType } from '@/types';
 import { notify, parseJSON, renderImageUrl } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
@@ -36,8 +36,7 @@ export default function WatchSeries() {
   const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');
   const latestSeason = metadata?.latestSeason?.label;
 
-  const seasons = movie?.seasons || [];
-  const seasonCount = seasons.length;
+  const seasons = useMemo(() => movie?.seasons || [], [movie?.seasons]);
 
   const currentSeason = seasons.find(
     (season) => season.label === selectedSeason.toString()
@@ -64,19 +63,26 @@ export default function WatchSeries() {
     }, ANIMATION_DURATION);
   };
 
-  const handleSelectSeason = (index: number) => {
-    // Plus one because index is zero-based
-    setSelectedSeason((index + 1).toString());
+  const handleSelectSeason = (seasonLabel: string) => {
+    setSelectedSeason(seasonLabel);
     setShowDropdown(false);
   };
 
   useEffect(() => {
     if (searchParams.season) {
       setSelectedSeason(searchParams.season);
-    } else {
-      setSelectedSeason(latestSeason ? latestSeason : '1');
+    } else if (latestSeason) {
+      setSelectedSeason(latestSeason);
+    } else if (seasons.length > 0 && !selectedSeason) {
+      setSelectedSeason(seasons[0].label);
     }
-  }, [latestSeason, searchParams.season, setSelectedSeason]);
+  }, [
+    latestSeason,
+    searchParams.season,
+    setSelectedSeason,
+    seasons,
+    selectedSeason
+  ]);
 
   if (!movie) return null;
 
@@ -104,7 +110,7 @@ export default function WatchSeries() {
             onClick={handleDropdownToggle}
           >
             <FaBarsStaggered className='text-golden-glow' />
-            Phần {selectedSeason}
+            Phần {selectedSeason || currentSeason?.label || '...'}
             <FaCaretDown />
           </button>
           <AnimatePresence>
@@ -129,20 +135,20 @@ export default function WatchSeries() {
                 <h3 className='border-b border-gray-200 px-4 py-2 text-black'>
                   Danh sách phần
                 </h3>
-                {Array.from({ length: seasonCount }).map((_, index) => (
+                {seasons.map((season) => (
                   <button
                     type='button'
-                    key={`season-${index}`}
+                    key={`season-${season.id}`}
                     className={cn(
                       'block flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
                       {
                         'bg-golden-glow':
-                          (index + 1).toString() === selectedSeason
+                          season.label === selectedSeason?.toString()
                       }
                     )}
-                    onClick={() => handleSelectSeason(index)}
+                    onClick={() => handleSelectSeason(season.label)}
                   >
-                    Phần {index + 1}
+                    Phần {season.label}
                   </button>
                 ))}
               </m.div>

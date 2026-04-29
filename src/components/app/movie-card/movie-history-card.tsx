@@ -10,12 +10,14 @@ import { route } from '@/routes';
 import { formatSecondsToHMS, renderImageUrl } from '@/utils';
 import { cn } from '@/lib';
 import { X } from 'lucide-react';
+import { ConfirmModal } from '@/components/modal';
 
 type Dir = 'up' | 'down';
 
 type MovieHistoryCardProps = {
   movieHistory: MovieHistoryResType;
   dir?: Dir;
+  deleteMessage?: string;
   onDelete?: (id: string) => void;
 };
 
@@ -39,6 +41,7 @@ const itemTransition: Transition = {
 export default function MovieHistoryCard({
   movieHistory,
   dir = 'up',
+  deleteMessage,
   onDelete
 }: MovieHistoryCardProps) {
   const itemVariants = makeItemVariants(dir);
@@ -141,13 +144,18 @@ export default function MovieHistoryCard({
       </div>
 
       {onDelete && (
-        <button
-          aria-label='Remove from favourite'
-          className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
-          onClick={() => onDelete(movie.id)}
-        >
-          <X className='size-4' />
-        </button>
+        <ConfirmModal
+          message={deleteMessage || 'Bạn có chắc chắn muốn xóa phim này không?'}
+          onConfirm={() => onDelete(movie.id)}
+          trigger={
+            <button
+              aria-label='Remove from favourite'
+              className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white/80 p-1 text-black shadow-lg transition-all duration-200 ease-linear hover:bg-white hover:text-rose-500'
+            >
+              <X className='size-4' />
+            </button>
+          }
+        />
       )}
     </m.div>
   );

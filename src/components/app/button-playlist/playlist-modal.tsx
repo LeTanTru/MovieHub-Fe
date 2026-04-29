@@ -91,58 +91,66 @@ export default function PlaylistModal({
     <Modal
       open={opened}
       onClose={onClose}
-      bodyWrapperClassName='bg-main-background w-75 max-480:w-[90%] max-990:w-100'
+      className='bg-main-background max-480:w-[90%] max-990:w-100 w-75'
       confirmOnClose={isFormChanged}
-      confirmClassName='bg-charade'
     >
-      <BaseForm
-        schema={playlistSchema}
-        defaultValues={defaultValues}
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-        className='bg-transparent pt-0'
-        onFormChange={setIsFormChanged}
-      >
-        {(form) => (
-          <>
-            <Row className='mb-6'>
-              <Col className='grid-c-12'>
-                <InputField
-                  control={form.control}
-                  name='name'
-                  label='Tên danh sách phát'
-                  placeholder='Tên danh sách phát'
-                  required
-                  className='max-640:text-[13px]'
-                  labelClassName='max-640:text-[13px]'
-                />
-              </Col>
-            </Row>
-            <Row className='mb-0 justify-center'>
-              <Col className='grid-c-4 max-640:grid-c-6'>
-                <Button
-                  variant='primary'
-                  className='max-640:text-[13px]'
-                  onClick={handleClose}
-                >
-                  Đóng
-                </Button>
-              </Col>
-              <Col className='grid-c-4 max-640:grid-c-6'>
-                <Button
-                  className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
-                  variant='primary'
-                  disabled={!form.formState.isDirty || loading}
-                  type='submit'
-                  loading={loading}
-                >
-                  {isEditing ? 'Cập nhật' : 'Thêm'}
-                </Button>
-              </Col>
-            </Row>
-          </>
-        )}
-      </BaseForm>
+      <Modal.Header className='h-fit justify-end'>
+        <span className='sr-only'>
+          {isEditing ? 'Cập nhật danh sách phát' : 'Thêm danh sách phát'}
+        </span>
+      </Modal.Header>
+      <Modal.Body>
+        <BaseForm
+          schema={playlistSchema}
+          defaultValues={defaultValues}
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          className='bg-transparent pt-0'
+          onFormChange={setIsFormChanged}
+        >
+          {(form) => (
+            <>
+              <Row className='mb-6'>
+                <Col className='grid-c-12'>
+                  <InputField
+                    control={form.control}
+                    name='name'
+                    label='Tên danh sách phát'
+                    placeholder='Tên danh sách phát'
+                    required
+                    className='max-640:text-[13px]'
+                    labelClassName='max-640:text-[13px]'
+                  />
+                </Col>
+              </Row>
+              <Row className='mb-0 justify-center'>
+                <Col className='grid-c-6'>
+                  <Button
+                    variant='primary'
+                    className='max-640:text-[13px]'
+                    onClick={handleClose}
+                    type='button'
+                  >
+                    Đóng
+                  </Button>
+                </Col>
+                <Col className='grid-c-6'>
+                  <Button
+                    className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
+                    variant='primary'
+                    disabled={!form.formState.isDirty || loading}
+                    type='submit'
+                    loading={loading}
+                  >
+                    {isEditing ? 'Cập nhật' : 'Thêm'}
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          )}
+        </BaseForm>
+      </Modal.Body>
+      <Modal.Confirm message='Bạn có chắc chắn muốn hủy không?' />
     </Modal>
   );
 }

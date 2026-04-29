@@ -52,6 +52,7 @@ export default function PersonList({
               key={person.id}
               willNavigate
               onDelete={handleDeleteFavourite}
+              deleteMessage='Bạn có chắc chắn muốn xóa diễn viên này ra khỏi danh sách yêu thích không?'
             />
           ))}
         </div>

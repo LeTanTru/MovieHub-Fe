@@ -8,6 +8,7 @@ import { useLogoutMutation } from '@/queries';
 import { useAuthStore } from '@/store';
 import { notify, removeData } from '@/utils';
 import { LogOutIcon } from 'lucide-react';
+import { ConfirmModal } from '@/components/modal';
 
 type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -38,22 +39,27 @@ export default function ButtonLogout({
     }
   };
   return (
-    <Button
-      variant='ghost'
-      className={cn(
-        'w-full rounded-none rounded-br rounded-bl hover:bg-black/20',
-        {
-          'justify-start': !logoutLoading,
-          'pointer-events-none': logoutLoading
-        },
-        className
-      )}
-      onClick={handleLogout}
-      loading={logoutLoading}
-      {...props}
-    >
-      <LogOutIcon size={16} className='opacity-60' />
-      <span>Đăng xuất</span>
-    </Button>
+    <ConfirmModal
+      message='Bạn có chắc chắn muốn đăng xuất không?'
+      onConfirm={handleLogout}
+      trigger={
+        <Button
+          variant='ghost'
+          className={cn(
+            'w-full rounded-none rounded-br rounded-bl hover:bg-black/20',
+            {
+              'justify-start': !logoutLoading,
+              'pointer-events-none': logoutLoading
+            },
+            className
+          )}
+          loading={logoutLoading}
+          {...props}
+        >
+          <LogOutIcon size={16} className='opacity-60' />
+          <span>Đăng xuất</span>
+        </Button>
+      }
+    />
   );
 }

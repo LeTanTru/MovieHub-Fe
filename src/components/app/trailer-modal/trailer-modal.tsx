@@ -47,46 +47,53 @@ export default function TrailerModal({
 
   return (
     <Modal
-      title={video.name}
       open={opened}
       onClose={onClose}
       className='trailer-modal'
       aria-labelledby='video-modal-title'
       aria-label={`Phát video ${video.name}`}
-      bodyRef={bodyRef}
       confirmOnClose
-      confirmOnCloseMessage='Bạn có chắc chắn muốn đóng không?'
-      confirmClassName='bg-charade'
     >
-      <div
-        style={
-          {
-            height: bodyHeight,
-            '--player-height': `${bodyHeight}px`,
-            '--media-height': `${bodyHeight}px`
-          } as React.CSSProperties
-        }
-      >
-        <VideoPlayer
-          auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
-          duration={video.duration}
-          introEnd={video.introEnd}
-          introStart={video.introStart}
-          src={renderVideoUrl(video.hostname, video.content, video.sourceType)}
-          thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
-          vttUrl={renderVttUrl(video.hostname, video.vttUrl, video.sourceType)}
-          outroStart={video.outroStart}
-          className='rounded-md!'
-          token={token}
-          volume={
-            envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
-              ? 0
-              : isMobileDevice() || isTabletDevice()
-                ? 1
-                : 0.5
+      <Modal.Body ref={bodyRef} className='z-999'>
+        <div
+          style={
+            {
+              height: bodyHeight,
+              '--player-height': `${bodyHeight}px`,
+              '--media-height': `${bodyHeight}px`
+            } as React.CSSProperties
           }
-        />
-      </div>
+        >
+          <VideoPlayer
+            auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
+            duration={video.duration}
+            introEnd={video.introEnd}
+            introStart={video.introStart}
+            src={renderVideoUrl(
+              video.hostname,
+              video.content,
+              video.sourceType
+            )}
+            thumbnailUrl={renderImageUrl(video.thumbnailUrl)}
+            vttUrl={renderVttUrl(
+              video.hostname,
+              video.vttUrl,
+              video.sourceType
+            )}
+            outroStart={video.outroStart}
+            className='rounded-md!'
+            token={token}
+            volume={
+              envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
+                ? 0
+                : isMobileDevice() || isTabletDevice()
+                  ? 1
+                  : 0.5
+            }
+          />
+        </div>
+      </Modal.Body>
+      <Modal.Confirm message='Bạn có chắc chắn muốn đóng không?' />
     </Modal>
   );
 }

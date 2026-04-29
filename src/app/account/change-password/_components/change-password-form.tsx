@@ -10,6 +10,8 @@ import { changePasswordSchema } from '@/schemaValidations';
 import { ChangePasswordBodyType } from '@/types';
 import { applyFormErrors, notify, removeData } from '@/utils';
 import { UseFormReturn } from 'react-hook-form';
+import { useState } from 'react';
+import { ConfirmModal } from '@/components/modal';
 
 export default function ChangePasswordForm() {
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
@@ -19,6 +21,8 @@ export default function ChangePasswordForm() {
     mutateAsync: changePasswordMutate,
     isPending: changePasswordLoading
   } = useChangePasswordMutation();
+
+  const [showConfirmCancel, setShowConfirmCancel] = useState(false);
 
   const defaultValues: ChangePasswordBodyType = {
     confirmNewPassword: '',
@@ -116,11 +120,22 @@ export default function ChangePasswordForm() {
                   <Button
                     type='button'
                     variant='outline'
-                    className='w-full'
-                    disabled={!form.formState.isDirty}
+                    onClick={() => setShowConfirmCancel(true)}
+                    disabled={
+                      !form.formState.isDirty ||
+                      changePasswordLoading ||
+                      logoutLoading
+                    }
+                    className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                   >
                     Hủy
                   </Button>
+                  <ConfirmModal
+                    open={showConfirmCancel}
+                    onOpenChange={setShowConfirmCancel}
+                    message='Bạn có chắc chắn muốn hủy không?'
+                    onConfirm={() => form.reset()}
+                  />
                 </Col>
                 <Col className='grid-c-6 max-480:grid-c-12'>
                   <Button

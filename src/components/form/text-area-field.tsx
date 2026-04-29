@@ -36,9 +36,10 @@ type TextAreaFieldProps<T extends FieldValues> = {
   rows?: number;
   maxRows?: number;
   ref?: Ref<HTMLTextAreaElement>;
+  formItemClassName?: string;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-export default function TextAreaField<T extends FieldValues>({
+const TextAreaField = <T extends FieldValues>({
   control,
   name,
   label,
@@ -51,8 +52,9 @@ export default function TextAreaField<T extends FieldValues>({
   maxLength,
   rows = 8,
   ref,
+  formItemClassName,
   ...rest
-}: TextAreaFieldProps<T>) {
+}: TextAreaFieldProps<T>) => {
   const id = useId();
 
   const fieldValue = useWatch({ control, name });
@@ -63,58 +65,73 @@ export default function TextAreaField<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <FormItem className='relative'>
-          <div className='relative'>
-            {label && (
-              <FormLabel
-                htmlFor={id}
-                className={cn('mb-2 ml-2', labelClassName)}
-              >
-                {label}
-                {required && <span className='text-destructive'>*</span>}
-              </FormLabel>
-            )}
-
-            <FormControl>
-              <div>
-                <Textarea
-                  id={id}
-                  placeholder={placeholder}
-                  disabled={disabled}
-                  readOnly={readOnly}
-                  maxLength={maxLength}
-                  rows={rows}
+        <FormItem
+          className={cn(
+            { 'cursor-not-allowed select-none': disabled },
+            formItemClassName
+          )}
+        >
+          {label && (
+            <FormLabel
+              htmlFor={id}
+              className={cn('ml-2', labelClassName, {
+                'cursor-not-allowed opacity-50 select-none': disabled
+              })}
+            >
+              {label}
+              {required && <span className='text-destructive'>*</span>}
+            </FormLabel>
+          )}
+          <FormControl>
+            <div>
+              <Textarea
+                id={id}
+                placeholder={placeholder}
+                disabled={disabled}
+                readOnly={readOnly}
+                maxLength={maxLength}
+                rows={rows}
+                className={cn(
+                  'focus-visible:ring-main-color scrollbar-none field-sizing-fixed w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-transparent',
+                  {
+                    'border-red-500 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-red-500':
+                      !!fieldState.error
+                  },
+                  className
+                )}
+                {...field}
+                {...rest}
+                ref={ref}
+                onChange={(e) => {
+                  field.onChange(e);
+                  rest.onChange?.(e);
+                }}
+              />
+              {maxLength && (
+                <div
                   className={cn(
-                    'focus-visible:ring-main-color scrollbar-none field-sizing-fixed w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 aria-invalid:ring-transparent',
+                    'pointer-events-none absolute top-1 right-1.5 text-xs leading-none select-none',
                     {
-                      'border-red-500 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-red-500':
-                        !!fieldState.error
-                    },
-                    className
+                      'text-muted-foreground': !fieldState.error,
+                      'text-rose-500': !!fieldState.error,
+                      'opacity-50': disabled
+                    }
                   )}
-                  {...field}
-                  {...rest}
-                  ref={ref}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    rest.onChange?.(e);
-                  }}
-                />
-                {maxLength && (
-                  <div className='text-muted-foreground absolute top-1 right-1.5 text-xs leading-none'>
-                    {charCount}/{maxLength}
-                  </div>
-                )}
-                {fieldState.error && (
-                  <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
-                    <FormMessage className='leading-5.5' />
-                  </div>
-                )}
-              </div>
-            </FormControl>
-          </div>
+                >
+                  {charCount}/{maxLength}
+                </div>
+              )}
+              {fieldState.error && (
+                <div className='animate-in fade-in -mb-6 ml-2 flex min-h-6 items-end'>
+                  <FormMessage className='leading-5.5' />
+                </div>
+              )}
+            </div>
+          </FormControl>
         </FormItem>
       )}
     />
   );
-}
+};
+
+export default TextAreaField;

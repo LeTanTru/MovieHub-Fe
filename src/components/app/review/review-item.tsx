@@ -23,6 +23,7 @@ import Image, { StaticImageData } from 'next/image';
 import { useState } from 'react';
 import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ConfirmModal } from '@/components/modal';
 
 type ReviewItemProps = {
   review: ReviewResType;
@@ -246,16 +247,19 @@ export default function ReviewItem({
                     </button>
                   )}
                   {isAuthor && (
-                    <button
-                      className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'
-                      onClick={() => {
+                    <ConfirmModal
+                      message='Bạn có chắc chắn muốn xóa đánh giá này không?'
+                      onConfirm={() => {
                         setShowDropdown(false);
                         onDelete(review.id);
                       }}
-                    >
-                      <FaTrash />
-                      Xóa đánh giá
-                    </button>
+                      trigger={
+                        <button className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-red-500'>
+                          <FaTrash />
+                          Xóa đánh giá
+                        </button>
+                      }
+                    />
                   )}
                 </m.div>
               )}

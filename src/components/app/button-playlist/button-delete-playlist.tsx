@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, Col, Row, ToolTip } from '@/components/form';
-import { Modal } from '@/components/modal';
+import { ToolTip } from '@/components/form';
+import { ConfirmModal } from '@/components/modal';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { useDisclosure } from '@/hooks';
@@ -81,40 +81,14 @@ export default function ButtonDeletePlaylist({
           <FaTrash />
         </button>
       </ToolTip>
-      <Modal
+
+      <ConfirmModal
         open={opened}
-        onClose={handleClose}
-        className='bg-transparent'
-        bodyWrapperClassName='bg-main-background w-fit max-640:w-[80vw] max-480:w-[90vw]'
-        bodyClassName='p-4 pt-0'
-        confirmClassName='bg-charade'
-      >
-        <h3 className='max-520:text-[13px]'>
-          Bạn có chắc chắn muốn xóa danh sách phát này không?
-        </h3>
-        <Row className='mt-4 mb-0 justify-center'>
-          <Col className='grid-c-4 max-640:grid-c-6'>
-            <Button
-              variant='primary'
-              className='max-520:text-[13px]'
-              onClick={handleClose}
-            >
-              Đóng
-            </Button>
-          </Col>
-          <Col className='grid-c-4 max-640:grid-c-6'>
-            <Button
-              className='max-520:text-[13px] bg-rose-500'
-              variant='destructive'
-              disabled={isPending}
-              loading={isPending}
-              onClick={handleDelete}
-            >
-              Xóa
-            </Button>
-          </Col>
-        </Row>
-      </Modal>
+        message='Bạn có chắc chắn muốn xóa danh sách phát này không?'
+        onConfirm={handleDelete}
+        onOpenChange={handleClose}
+        loading={isPending}
+      />
     </>
   );
 }
