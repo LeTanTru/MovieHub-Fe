@@ -6,7 +6,7 @@ import SearchForm from './search-form';
 import Link from 'next/link';
 import Image from 'next/image';
 import { logoWithText } from '@/assets';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { cn } from '@/lib';
 import { Button } from '@/components/form';
 import { useAuth, useNavigate } from '@/hooks';
@@ -85,10 +85,12 @@ export default function Header() {
         </Link>
 
         {/* Desktop search — always visible, no animation needed */}
-        <SearchForm
-          className='max-1360:hidden'
-          formClassName='flex h-full w-full items-center bg-transparent p-0'
-        />
+        <Suspense fallback={null}>
+          <SearchForm
+            className='max-1360:hidden'
+            formClassName='flex h-full w-full items-center bg-transparent p-0'
+          />
+        </Suspense>
 
         {/* Mobile search — animated show/hide */}
         <AnimatePresence>
@@ -102,10 +104,12 @@ export default function Header() {
               style={{ transformOrigin: 'top center' }}
               className='max-1360:absolute max-1360:left-2.5 max-1360:right-12.5 max-1360:z-50 max-1360:block max-640:right-10 max-480:right-8 hidden w-auto'
             >
-              <SearchForm
-                className='max-1360:max-w-none max-1360:w-full'
-                formClassName='flex h-full w-full items-center bg-transparent p-0'
-              />
+              <Suspense fallback={null}>
+                <SearchForm
+                  className='max-1360:max-w-none max-1360:w-full'
+                  formClassName='flex h-full w-full items-center bg-transparent p-0'
+                />
+              </Suspense>
             </m.div>
           )}
         </AnimatePresence>
