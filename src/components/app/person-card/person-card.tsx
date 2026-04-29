@@ -13,6 +13,7 @@ import { m, Transition, Variants } from 'framer-motion';
 import { useQueryParams } from '@/hooks';
 import { EMPTY_OBJECT } from '@/constants';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ConfirmModal } from '@/components/modal';
 
 type Dir = 'up' | 'down';
 
@@ -38,8 +39,9 @@ type PersonCardProps = {
   showFullName?: boolean;
   willNavigate?: boolean;
   dir?: Dir;
-  onDelete?: (id: string) => void;
   params?: PersonSearchType;
+  deleteMessage?: string;
+  onDelete?: (id: string) => void;
 };
 
 export default function PersonCard({
@@ -47,8 +49,9 @@ export default function PersonCard({
   showFullName,
   willNavigate,
   dir = 'up',
-  onDelete,
-  params = EMPTY_OBJECT
+  params = EMPTY_OBJECT,
+  deleteMessage,
+  onDelete
 }: PersonCardProps) {
   const itemVariants = makeItemVariants(dir);
   const { serializeParams } = useQueryParams();
@@ -130,21 +133,28 @@ export default function PersonCard({
         </div>
       </div>
       {onDelete && (
-        <div
-          role='button'
-          tabIndex={0}
-          className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
-          onClick={() => onDelete(person.id)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              onDelete(person.id);
-            }
-          }}
-          aria-label='Remove from favourite'
-        >
-          <X className='size-4' />
-        </div>
+        <ConfirmModal
+          message={
+            deleteMessage || 'Bạn có chắc chắn muốn xóa diễn viên này không?'
+          }
+          onConfirm={() => onDelete(person.id)}
+          trigger={
+            <div
+              role='button'
+              tabIndex={0}
+              className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white/80 p-1 text-black shadow-lg transition-all duration-200 ease-linear hover:bg-white hover:text-rose-500'
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onDelete(person.id);
+                }
+              }}
+              aria-label='Remove from favourite'
+            >
+              <X className='size-4' />
+            </div>
+          }
+        />
       )}
     </m.div>
   );

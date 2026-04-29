@@ -50,6 +50,8 @@ export default function LoginForm() {
             setProfile(profileData);
           }
 
+          notify.success('Đăng nhập thành công');
+
           setTimeout(() => {
             const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
             removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);

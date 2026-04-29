@@ -63,6 +63,7 @@ export default function SliderField<T extends FieldValues>({
         return (
           <FormItem
             className={cn(
+              'relative',
               { 'cursor-not-allowed select-none': disabled },
               formItemClassName
             )}
@@ -71,7 +72,7 @@ export default function SliderField<T extends FieldValues>({
               {label && (
                 <FormLabel
                   className={cn(labelClassName, {
-                    'opacity-50 select-none': disabled
+                    'cursor-not-allowed opacity-50 select-none': disabled
                   })}
                 >
                   {label}
@@ -95,6 +96,10 @@ export default function SliderField<T extends FieldValues>({
                   <Slider
                     className={cn(
                       'cursor-pointer transition-all duration-200 ease-linear',
+                      {
+                        'pointer-events-auto cursor-not-allowed opacity-50 select-none':
+                          disabled
+                      },
                       className
                     )}
                     step={step}

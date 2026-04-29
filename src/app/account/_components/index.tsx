@@ -1,2 +1,2 @@
 export { default as Header } from './header';
-export { default as ButtonBack } from './button-back';
+export { default as ButtonBackToHome } from './button-back-to-home';

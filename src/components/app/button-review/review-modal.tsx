@@ -104,9 +104,8 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
     <Modal
       open={opened}
       onClose={onClose}
-      bodyWrapperClassName='bg-vintage-navi w-160 max-768:w-150 max-640:w-[95%]'
+      className='bg-vintage-navi max-768:w-150 max-640:w-[95%] w-160'
       confirmOnClose={isFormChanged}
-      confirmClassName='bg-charade'
     >
       <BaseForm
         defaultValues={defaultValues}
@@ -118,11 +117,14 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
       >
         {(form) => (
           <>
+            <Modal.Header className='justify-end p-0'>
+              <span className='sr-only'>Đánh giá phim</span>
+            </Modal.Header>
             <div className='max-640:mb-0 mb-2 text-center text-xl leading-normal font-semibold text-white'>
               <h3>{movie?.title}</h3>
             </div>
             <div className='max-640:mb-4 mb-6'>
-              <div className='max-640:mb-4 max-480:mb-2 mb-6 block text-center'>
+              <div className='max-640:mb-2 mb-4 block text-center'>
                 <div className='flex items-center justify-center'>
                   <div className='h-10 w-10 bg-[url("/logo.webp")] bg-cover bg-position-[50%]'></div>
                   <strong>{formatRating(movie?.averageRating || 0)}</strong>
@@ -204,6 +206,7 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
           </>
         )}
       </BaseForm>
+      <Modal.Confirm message='Bạn có chắc chắn muốn hủy không?' />
     </Modal>
   );
 }

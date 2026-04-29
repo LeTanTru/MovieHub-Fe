@@ -17,9 +17,11 @@ import { ButtonAddPlayList } from '@/components/app/button-playlist';
 import {
   ACTION_ADD_TO_PLAYLIST,
   ACTION_DELETE_FROM_PLAYLIST,
-  MAX_PLAYLIST_COUNT
+  MAX_PLAYLIST_COUNT,
+  queryKeys
 } from '@/constants';
 import { cn } from '@/lib';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { cva, VariantProps } from 'class-variance-authority';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
@@ -62,6 +64,7 @@ export default function ButtonAddToPlaylist({
   const [hasTouchedSelection, setHasTouchedSelection] = useState(false);
   const { isAuthenticated } = useAuth();
   const { iconRef, startAnimation } = useClickAnimation();
+  const queryClient = getQueryClient();
 
   const { data: playlistData, isLoading } = usePlaylistListQuery({
     enabled: opened
@@ -140,6 +143,9 @@ export default function ButtonAddToPlaylist({
     await updatePlaylistItemMutate(payload, {
       onSuccess: (res) => {
         if (res.result) {
+          queryClient.invalidateQueries({
+            queryKey: [queryKeys.PLAYLIST_LIST]
+          });
           notify.success(
             `${isInPlaylist ? 'Xóa phim khỏi' : 'Thêm phim vào'} danh sách phát thành công`
           );

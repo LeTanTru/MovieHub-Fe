@@ -13,12 +13,14 @@ import { cn } from '@/lib';
 import { X } from 'lucide-react';
 import { MovieModal } from '@/components/app/movie-modal';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ConfirmModal } from '@/components/modal';
 
 type Dir = 'up' | 'down';
 
 type MovieCardProps = {
   movie: MovieResType;
   dir?: Dir;
+  deleteMessage?: string;
   onDelete?: (id: string) => void;
 };
 
@@ -45,6 +47,7 @@ const EDGE_PADDING = 20;
 export default function MovieCard({
   movie,
   dir = 'up',
+  deleteMessage,
   onDelete
 }: MovieCardProps) {
   const isMounted = useIsMounted();
@@ -160,13 +163,20 @@ export default function MovieCard({
         </div>
 
         {onDelete && (
-          <button
-            aria-label='Remove from favourite'
-            className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white p-1 text-black shadow-lg transition-all duration-200 ease-linear'
-            onClick={() => onDelete(movie.id)}
-          >
-            <X className='size-4' />
-          </button>
+          <ConfirmModal
+            message={
+              deleteMessage || 'Bạn có chắc chắn muốn xóa phim này không?'
+            }
+            onConfirm={() => onDelete(movie.id)}
+            trigger={
+              <button
+                aria-label='Remove from favourite'
+                className='absolute top-1.5 right-1.5 cursor-pointer rounded bg-white/80 p-1 text-black shadow-lg transition-all duration-200 ease-linear hover:bg-white hover:text-rose-500'
+              >
+                <X className='size-4' />
+              </button>
+            }
+          />
         )}
       </m.div>
 

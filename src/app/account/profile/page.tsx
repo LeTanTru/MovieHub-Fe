@@ -1,4 +1,4 @@
-import { ButtonBack } from '@/app/account/_components';
+import { ButtonBackToHome } from '@/app/account/_components';
 import { ProfileForm } from '@/app/account/profile/_components';
 import { logo } from '@/assets';
 import type { Metadata } from 'next';
@@ -14,7 +14,7 @@ export default function ProfilePage() {
   return (
     <div className='max-990:w-180 max-768:max-w-[95%] mx-auto flex w-full max-w-200 flex-col text-white'>
       <div className='relative flex items-center justify-center'>
-        <ButtonBack />
+        <ButtonBackToHome />
         <Link href='/' className='inline-block'>
           <Image
             src={logo.src}

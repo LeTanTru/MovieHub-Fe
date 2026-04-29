@@ -38,7 +38,6 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
   const latestSeason = metadata?.latestSeason?.label;
 
   const seasons = movie.seasons;
-  const seasonCount = seasons.length;
 
   const currentSeason = seasons.find(
     (season) => season.label === selectedSeason.toString()
@@ -65,17 +64,18 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
     }, ANIMATION_DURATION);
   };
 
-  const handleSelectSeason = (index: number) => {
-    // Plus one because index is zero-based
-    setSelectedSeason((index + 1).toString());
+  const handleSelectSeason = (seasonLabel: string) => {
+    setSelectedSeason(seasonLabel);
     setShowDropdown(false);
   };
 
   useEffect(() => {
     if (latestSeason) {
       setSelectedSeason(latestSeason);
+    } else if (seasons.length > 0 && !selectedSeason) {
+      setSelectedSeason(seasons[0].label);
     }
-  }, [latestSeason, setSelectedSeason]);
+  }, [latestSeason, setSelectedSeason, seasons, selectedSeason]);
 
   const handleEpisodeClick = (episode: (typeof episodes)[0]) => {
     navigate.push(
@@ -95,7 +95,7 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
             onClick={handleDropdownToggle}
           >
             <FaBarsStaggered className='text-golden-glow' />
-            Phần {selectedSeason}
+            Phần {selectedSeason || currentSeason?.label || '...'}
             <FaCaretDown />
           </button>
           <AnimatePresence>
@@ -120,20 +120,20 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
                 <h3 className='border-b border-gray-200 px-4 py-2 text-black'>
                   Danh sách phần
                 </h3>
-                {Array.from({ length: seasonCount }).map((_, index) => (
+                {seasons.map((season) => (
                   <button
                     type='button'
-                    key={`season-${index}`}
+                    key={`season-${season.id}`}
                     className={cn(
                       'block flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
                       {
                         'bg-golden-glow':
-                          (index + 1).toString() === selectedSeason
+                          season.label === selectedSeason?.toString()
                       }
                     )}
-                    onClick={() => handleSelectSeason(index)}
+                    onClick={() => handleSelectSeason(season.label)}
                   >
-                    Phần {index + 1}
+                    Phần {season.label}
                   </button>
                 ))}
               </m.div>

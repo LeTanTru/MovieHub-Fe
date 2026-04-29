@@ -13,7 +13,6 @@ import {
 import { cn } from '@/lib';
 import { useDeleteFavouriteMutation, useFavouriteListQuery } from '@/queries';
 import { notify } from '@/utils';
-import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
 
 export default function FavouriteList() {
@@ -106,43 +105,30 @@ export default function FavouriteList() {
           </Button>
         ))}
       </div>
-      <AnimatePresence mode='popLayout'>
-        <m.div
-          key={activeTab}
-          initial={{
-            opacity: 0.5
-          }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{
-            opacity: 0.5
-          }}
-          transition={{ duration: 0.1, ease: 'linear' }}
-          className='block w-full'
-        >
-          <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
-            <MovieList
-              isLoading={isLoading}
-              movieList={movieList}
-              handleDeleteFavourite={handleDeleteFavourite}
-            />
-          </Activity>
-          <Activity visible={activeTab === FAVOURITE_TYPE_PERSON}>
-            <PersonList
-              isLoading={isLoading}
-              personList={personList}
-              handleDeleteFavourite={handleDeleteFavourite}
-            />
-          </Activity>
-        </m.div>
-
-        <Activity visible={!!totalPages}>
-          <Pagination
-            totalPages={totalPages}
-            onChange={handlePageChange}
-            page={page}
+      <div className='block w-full' key={activeTab}>
+        <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
+          <MovieList
+            isLoading={isLoading}
+            movieList={movieList}
+            handleDeleteFavourite={handleDeleteFavourite}
           />
         </Activity>
-      </AnimatePresence>
+        <Activity visible={activeTab === FAVOURITE_TYPE_PERSON}>
+          <PersonList
+            isLoading={isLoading}
+            personList={personList}
+            handleDeleteFavourite={handleDeleteFavourite}
+          />
+        </Activity>
+      </div>
+
+      <Activity visible={!!totalPages}>
+        <Pagination
+          totalPages={totalPages}
+          onChange={handlePageChange}
+          page={page}
+        />
+      </Activity>
     </div>
   );
 }

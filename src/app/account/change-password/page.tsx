@@ -1,4 +1,4 @@
-import { ButtonBack } from '@/app/account/_components';
+import { ButtonBackToHome } from '@/app/account/_components';
 import { ChangePasswordForm } from '@/app/account/change-password/_components';
 import { logo } from '@/assets';
 import type { Metadata } from 'next';
@@ -14,7 +14,7 @@ export default function ChangePasswordPage() {
   return (
     <div className='max-520:w-[95%] text-whit mx-auto flex w-full max-w-125 flex-col'>
       <div className='relative flex items-center justify-center'>
-        <ButtonBack />
+        <ButtonBackToHome />
         <Link href='/' className='inline-block'>
           <Image
             src={logo.src}
