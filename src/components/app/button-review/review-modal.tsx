@@ -104,7 +104,7 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
     <Modal
       open={opened}
       onClose={onClose}
-      className='bg-vintage-navi max-768:w-150 max-640:w-[95%] w-160'
+      className='bg-vintage-navi max-768:w-150 max-640:w-[95%] top-1/2 left-1/2 mx-0 w-160 -translate-x-1/2 -translate-y-1/2'
       confirmOnClose={isFormChanged}
     >
       <BaseForm
@@ -112,7 +112,7 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
         initialValues={initialValues}
         schema={reviewSchema}
         onSubmit={handleSubmit}
-        className='max-640:px-6 max-480:px-4 max-480:pb-4 max-480:pt-0 max-480:pt-0 border-zinc-600/50 bg-transparent px-8 pb-5'
+        className='bg-transparent p-4'
         onFormChange={setIsFormChanged}
       >
         {(form) => (

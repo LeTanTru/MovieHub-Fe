@@ -116,20 +116,6 @@ export type MovieHistoryResType = {
 export type MovieSearchType = z.infer<typeof movieSearchSchema> &
   BaseSearchType;
 
-type MovieState = {
-  movie: MovieResType | null;
-  movieItem: MovieItemResType | null;
-  moviePerson: MoviePersonResType | null;
-
-  movies: MovieResType[];
-  movieItems: MovieItemResType[];
-  moviePersons: MoviePersonResType[];
-
-  selectedSeason: string;
-
-  discussionTab: string;
-};
-
 export type MovieScheduleResType = {
   id: string;
   title: string;
@@ -149,6 +135,30 @@ export type MovieNextEpisodeResType = {
   kind: number;
   label: string;
   releaseDate: string;
+};
+
+export type MovieSuggestByWatchedType = {
+  referenceMovie: {
+    id: string;
+    title: string;
+  };
+  suggestedMovies: MovieResType[];
+};
+
+export type MovieSuggestByWatchedSearchType = BaseSearchType;
+
+type MovieState = {
+  movie: MovieResType | null;
+  movieItem: MovieItemResType | null;
+  moviePerson: MoviePersonResType | null;
+
+  movies: MovieResType[];
+  movieItems: MovieItemResType[];
+  moviePersons: MoviePersonResType[];
+
+  selectedSeason: string;
+
+  discussionTab: string;
 };
 
 type MovieActions = {

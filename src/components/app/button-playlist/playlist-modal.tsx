@@ -91,7 +91,7 @@ export default function PlaylistModal({
     <Modal
       open={opened}
       onClose={onClose}
-      className='bg-main-background max-480:w-[90%] max-990:w-100 w-75'
+      className='bg-main-background max-480:w-[90%] max-990:w-100 top-1/2 left-1/2 mx-0 w-75 -translate-x-1/2 -translate-y-1/2 rounded-lg'
       confirmOnClose={isFormChanged}
     >
       <Modal.Header className='h-fit justify-end'>

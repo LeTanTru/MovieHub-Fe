@@ -9,6 +9,7 @@ yarn install          # Install dependencies
 yarn dev              # Dev server (port 3000, Turbopack)
 yarn clean-dev        # Clean .next cache + start dev
 yarn build            # Production build
+yarn build:analyze    # Production build with bundle analyzer
 yarn start            # Production server
 yarn lint             # ESLint all files
 yarn lint -- src/path # Lint single file

@@ -1,3 +1,4 @@
+import { Collection } from '@/app/(home)/_components/collection';
 import { collectionApiRequest, sidebarApiRequest } from '@/api-requests';
 import { CollectionSearchType, SidebarSearchType } from '@/types';
 import { Container } from '@/components/layout';
@@ -5,11 +6,11 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
 import { Slider } from '@/app/(home)/_components/slider';
+import { SuggestByWatched } from '@/app/(home)/_components/suggest-by-watched';
 import { TopicList } from '@/app/(home)/_components/topic-list';
 import { WatchContinue } from '@/app/(home)/_components/watch-continue';
-import type { Metadata } from 'next';
-import { Collection } from '@/app/(home)/_components/collection';
 import envConfig from '@/config';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Trang chủ',
@@ -60,6 +61,7 @@ export default async function HomePage() {
       <Container className='max-990:pb-24 max-640:pb-20 relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
         <div className='max-640:gap-8 flex flex-col gap-12.5'>
           <TopicList />
+          <SuggestByWatched />
           <WatchContinue />
           <Collection />
         </div>

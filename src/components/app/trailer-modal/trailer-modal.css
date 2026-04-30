@@ -5,45 +5,20 @@
     background-color: transparent;
   }
 
-  width: 80vw;
+  width: 85vw;
   height: auto;
   max-height: 100vh;
   min-height: auto;
+
+  @media screen and (max-width: 1537px) {
+    width: 82.5vw;
+  }
 
   @media screen and (max-width: 1280px) {
     width: 95vw;
   }
 
   @media screen and (max-width: 800px) {
-    width: 100vw;
-  }
-
-  & .header-title {
-    position: absolute;
-    top: 4px;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    padding: 0 16px;
-    border-radius: inherit;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-
-    @media screen and (max-width: 640px) {
-      display: none;
-    }
-  }
-
-  & .body {
-    height: auto;
-    max-height: 100vh;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-
-    & > div {
-      height: 100%;
-      width: 100%;
-    }
+    width: 97.5vw;
   }
 }

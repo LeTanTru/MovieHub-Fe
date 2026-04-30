@@ -244,9 +244,11 @@ export const queryKeys = {
   LOGIN_GOOGLE: 'login-google',
   LOGIN: 'login',
   LOGOUT: 'logout',
+  MAKE_SURVEY: 'make-survey',
   MOVIE_HISTORY: 'movie-history',
   MOVIE_ITEM_LIST: 'movie-item-list',
   MOVIE_ITEM: 'movie-item',
+  MOVIE_LIST_WATCHED: 'movie-list-watched',
   MOVIE_LIST: 'movie-list',
   MOVIE_NEXT_EPISODE: 'movie-next-episode',
   MOVIE_PERSON_LIST: 'movie-person-list',
@@ -274,18 +276,18 @@ export const queryKeys = {
   REVIEW_LIST: 'review-list',
   REVIEW_VOTE_LIST: 'review-vote-list',
   REVIEW: 'review',
+  SESSION: 'session',
   SIDEBAR_LIST: 'sidebar-list',
+  SUGGEST_BY_WATCHED: 'suggest-by-watched',
   UPDATE_COMMENT: 'update-comment',
   UPDATE_REVIEW: 'update-review',
+  UPDATE_SETTING: 'update-settings',
   VERIFY_OTP: 'verify-otp',
   VOTE_COMMENT: 'vote-comment',
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
-  UPDATE_SETTING: 'update-settings',
-  MAKE_SURVEY: 'make-survey',
-  SESSION: 'session'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
 };
 
 export const countries: OptionType[] = [
