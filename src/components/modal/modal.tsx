@@ -136,7 +136,7 @@ export default function Modal({
         <>
           {backdrop && (
             <m.div
-              className='backdrop fixed inset-0 z-20 bg-black/50 backdrop-blur-xs'
+              className='backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-xs'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -153,7 +153,7 @@ export default function Modal({
             }}
           >
             <m.div
-              className='fixed inset-0 z-9999 flex items-center justify-center overflow-auto'
+              className='fixed inset-0 z-50 overflow-auto'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -162,7 +162,7 @@ export default function Modal({
             >
               <m.div
                 className={cn(
-                  'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white shadow-black/40',
+                  'bg-charade relative top-25 mx-auto w-175 rounded-lg shadow-black/40',
                   className
                 )}
                 initial={variants.initial}
@@ -239,11 +239,11 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
   };
 
   return (
-    <div ref={ref} className='body relative h-[calc(100%-40px)]'>
+    <div ref={ref} className='body relative flex min-h-0 flex-1 flex-col'>
       <div
         ref={scrollRef}
         className={cn(
-          'scrollbar-none h-full rounded-br-lg rounded-bl-lg',
+          'scrollbar-none flex-1 rounded-br-lg rounded-bl-lg',
           { 'overflow-auto': scrollable },
           className
         )}
@@ -259,7 +259,7 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
             exit={{ opacity: 0, y: -10 }}
             onClick={handleScrollDown}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className='absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full p-2 text-white shadow-[0px_0px_10px_2px] shadow-gray-300'
+            className='absolute bottom-4 left-1/2 z-999 -translate-x-1/2 rounded-full p-2 text-white shadow-[0px_0px_10px_2px] shadow-gray-300'
             aria-label='Scroll down'
           >
             <ChevronDown className='size-5 text-slate-800' />

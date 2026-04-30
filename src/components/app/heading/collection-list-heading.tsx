@@ -1,16 +1,25 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { FaChevronRight } from 'react-icons/fa6';
 
 type CollectionListHeadingProps = {
-  title: string;
+  title: string | ReactNode;
   link?: string;
+  loading?: boolean;
 };
 
 export default function CollectionListHeading({
   title,
-  link
+  link,
+  loading
 }: CollectionListHeadingProps) {
-  return (
+  return loading ? (
+    <div className='max-1120:mb-5 max-990:mb-4 max-480:justify-between relative mb-6 flex items-center justify-start gap-4'>
+      <Skeleton className='skeleton max-640:w-48 max-420:w-32 h-10 w-64' />
+      <Skeleton className='skeleton h-8 w-8 rounded-full' />
+    </div>
+  ) : (
     <div className='max-1120:mb-5 max-990:mb-4 max-480:justify-between relative mb-6 flex items-center justify-start gap-4'>
       <h3 className='max-1600:text-2xl max-640:text-xl max-420:text-base text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
         {title}

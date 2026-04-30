@@ -6,7 +6,9 @@ import {
   MovieNextEpisodeResType,
   MovieResType,
   MovieScheduleResType,
-  MovieSearchType
+  MovieSearchType,
+  MovieSuggestByWatchedSearchType,
+  MovieSuggestByWatchedType
 } from '@/types';
 import { http } from '@/utils';
 
@@ -49,6 +51,17 @@ const movieApiRequest = {
         pathParams: {
           id
         }
+      }
+    ),
+  getListWatched: () =>
+    http.get<ApiResponse<{ id: string; title: string }[]>>(
+      apiConfig.movie.getListWatched
+    ),
+  getSuggestByWatched: (params: MovieSuggestByWatchedSearchType) =>
+    http.get<ApiResponse<MovieSuggestByWatchedType>>(
+      apiConfig.movie.suggestByWatched,
+      {
+        params
       }
     )
 };

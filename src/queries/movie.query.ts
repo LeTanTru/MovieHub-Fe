@@ -1,6 +1,6 @@
 import { movieApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { MovieSearchType } from '@/types';
+import { MovieSearchType, MovieSuggestByWatchedSearchType } from '@/types';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 export const useMovieListQuery = ({
@@ -81,5 +81,29 @@ export const useMovieNextEpisodeQuery = (id: string) => {
     queryKey: [queryKeys.MOVIE_NEXT_EPISODE, id],
     queryFn: () => movieApiRequest.getNextEpisode(id),
     enabled: !!id
+  });
+};
+
+export const useMovieListWatchedQuery = ({
+  enabled
+}: { enabled?: boolean } = {}) => {
+  return useQuery({
+    queryKey: [queryKeys.MOVIE_LIST_WATCHED],
+    queryFn: () => movieApiRequest.getListWatched(),
+    enabled
+  });
+};
+
+export const useMovieSuggestByWatchedQuery = ({
+  params = {},
+  enabled
+}: {
+  params?: MovieSuggestByWatchedSearchType;
+  enabled?: boolean;
+} = {}) => {
+  return useQuery({
+    queryKey: [queryKeys.SUGGEST_BY_WATCHED, params],
+    queryFn: () => movieApiRequest.getSuggestByWatched(params),
+    enabled
   });
 };
