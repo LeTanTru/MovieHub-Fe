@@ -25,7 +25,7 @@ import { route } from '@/routes';
 import { useCommentStore, useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
-import { AnimatePresence, m } from 'framer-motion';
+import { m } from 'framer-motion';
 
 type CommentListProps = {
   commentList: CommentResType[];
@@ -108,7 +108,7 @@ export default function CommentList({
           if (comment.parent) {
             await queryClient.invalidateQueries({
               queryKey: [
-                `${queryKeys.COMMENT_LIST}-replies-${comment.parent.id}`
+                `${queryKeys.COMMENT_REPLIES_LIST}-${comment.parent.id}`
               ]
             });
           }
@@ -271,9 +271,7 @@ export default function CommentList({
 
   return (
     <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
-      <AnimatePresence initial={false}>
-        {renderChildren(commentList, 0)}
-      </AnimatePresence>
+      {renderChildren(commentList, 0)}
       {hasMore && (
         <div className='flex justify-center'>
           {isLoadMoreLoading ? (

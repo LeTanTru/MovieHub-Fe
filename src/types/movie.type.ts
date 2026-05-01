@@ -138,11 +138,11 @@ export type MovieNextEpisodeResType = {
 };
 
 export type MovieSuggestByWatchedType = {
-  referenceMovie: {
+  suggestedMovies: MovieResType[];
+  watchedMovie: {
     id: string;
     title: string;
   };
-  suggestedMovies: MovieResType[];
 };
 
 export type MovieSuggestByWatchedSearchType = BaseSearchType;

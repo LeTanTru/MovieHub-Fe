@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
 import envConfig from '@/config';
@@ -18,6 +19,9 @@ import Image from 'next/image';
 export default function ButtonLoginGoogle() {
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const setProfile = useAuthStore((s) => s.setProfile);
+  const messageListenerRef = useRef<((event: MessageEvent) => void) | null>(
+    null
+  );
 
   const {
     refetch: getLoginGoogleUrl,
@@ -61,6 +65,11 @@ export default function ButtonLoginGoogle() {
 
   const handleGetGoogleLoginUrl = async () => {
     try {
+      // Clean up any existing listener before adding new one
+      if (messageListenerRef.current) {
+        window.removeEventListener('message', messageListenerRef.current);
+      }
+
       const res = await getLoginGoogleUrl();
       const googleLoginUrl = res.data?.data;
 
@@ -82,10 +91,12 @@ export default function ButtonLoginGoogle() {
           return;
         if (event.data?.code) {
           window.removeEventListener('message', onMessage);
+          messageListenerRef.current = null;
           await handleLogin(event.data.code);
         }
       };
 
+      messageListenerRef.current = onMessage;
       window.addEventListener('message', onMessage);
     } catch (error) {
       logger.error('[LOGIN_GOOGLE_ERROR]', error);

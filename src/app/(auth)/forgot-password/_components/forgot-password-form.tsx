@@ -10,7 +10,7 @@ import { ForgotPasswordBodyType } from '@/types';
 import { forgotPasswordErrorMaps, storageKeys } from '@/constants';
 import { applyFormErrors, getData, notify, removeData, setData } from '@/utils';
 import { BaseForm } from '@/components/form/base-form';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState, useRef } from 'react';
 import { logger } from '@/logger';
 import {
   useForgotPasswordMutation,
@@ -121,6 +121,7 @@ export default function ForgotPasswordForm() {
     dispatch
   ] = useReducer(resendReducer, initialResendState);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
+  const lastResendTimeRef = useRef(lastResendTime);
 
   const {
     mutateAsync: requestForgotPasswordMutate,
@@ -186,6 +187,10 @@ export default function ForgotPasswordForm() {
   };
 
   useEffect(() => {
+    lastResendTimeRef.current = lastResendTime;
+  }, [lastResendTime]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
       const { timestamp } = getResendData();
@@ -197,7 +202,9 @@ export default function ForgotPasswordForm() {
       }
 
       const cooldown =
-        lastResendTime > 0 ? COOLDOWN_TIME - (now - lastResendTime) : 0;
+        lastResendTimeRef.current > 0
+          ? COOLDOWN_TIME - (now - lastResendTimeRef.current)
+          : 0;
 
       dispatch({
         type: 'tick',
@@ -210,7 +217,7 @@ export default function ForgotPasswordForm() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [resendData.count, lastResendTime]);
+  }, [resendData.count]);
 
   const handleResendOtp = async () => {
     const email = getData(storageKeys.EMAIL);
