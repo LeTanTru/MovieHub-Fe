@@ -9,7 +9,9 @@ import {
   STYLE_CINEMA,
   STYLE_COMING_SOON,
   STYLE_LATEST_BY_COUNTRY,
-  STYLE_TOP_RANKING
+  STYLE_TOP_RANKING,
+  SUGGEST_BY_WATCHED_PAGE_1,
+  SUGGEST_BY_WATCHED_PAGE_2
 } from '@/constants';
 import { collectionApiRequest } from '@/api-requests';
 import {
@@ -24,6 +26,7 @@ import LastestCountryMovieList from './latest-country-movie-list';
 import AnimeMovieList from './anime-movie-list';
 import ComingSoonList from './coming-soon-list';
 import { cn } from '@/lib';
+import { SuggestByWatched } from '@/app/(home)/_components/suggest-by-watched';
 
 type ProcessedItem = CollectionResType | CollectionCountryGroupType;
 
@@ -116,21 +119,35 @@ export default function Collection() {
 
         switch (styleType) {
           case STYLE_TOP_RANKING: {
-            return <TopMovieList collection={collection} key={collection.id} />;
+            return (
+              <div
+                key={collection.id}
+                className='max-640:gap-8 flex flex-col gap-12.5'
+              >
+                <TopMovieList collection={collection} />
+                <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_1} />
+              </div>
+            );
           }
           case STYLE_CINEMA: {
             return (
-              <CinemaMovieList collection={collection} key={collection.id} />
+              <CinemaMovieList key={collection.id} collection={collection} />
             );
           }
           case STYLE_COMING_SOON: {
             return (
-              <ComingSoonList key={collection.id} collection={collection} />
+              <div
+                key={collection.id}
+                className='max-640:gap-8 flex flex-col gap-12.5'
+              >
+                <ComingSoonList collection={collection} />
+                <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_2} />
+              </div>
             );
           }
           case STYLE_ANIME: {
             return (
-              <AnimeMovieList collection={collection} key={collection.id} />
+              <AnimeMovieList key={collection.id} collection={collection} />
             );
           }
           default: {

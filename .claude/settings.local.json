@@ -1,5 +1,5 @@
 {
   "permissions": {
-    "allow": ["Bash(yarn lint *)"]
+    "allow": ["Bash(yarn lint *)", "Bash(yarn build *)", "Bash(npx tsc *)"]
   }
 }

@@ -1,44 +1,36 @@
 'use client';
 
-import { movieApiRequest } from '@/api-requests';
-import { useAuth } from '@/hooks';
-import { useMovieListWatchedQuery } from '@/queries';
-import { useQueries } from '@tanstack/react-query';
-import MovieList from './movie-list';
+import { useInView } from 'react-intersection-observer';
 
-export default function SuggestByWatched() {
+import MovieList from './movie-list';
+import { useAuth } from '@/hooks';
+import { useMovieSuggestByWatchedQuery } from '@/queries';
+
+export default function SuggestByWatched({ page }: { page: number }) {
   const { isAuthenticated } = useAuth();
 
-  const { data: watchedMovieListData, isLoading: watchedMovieListLoading } =
-    useMovieListWatchedQuery({
-      enabled: isAuthenticated
-    });
-
-  const watchedLength = watchedMovieListData?.data?.length || 0;
-
-  const pageQueries = useQueries({
-    queries: Array.from({ length: watchedLength }, (_, i) => ({
-      queryKey: ['suggestByWatched', i],
-      queryFn: () => movieApiRequest.getSuggestByWatched({ page: i }),
-      enabled: isAuthenticated
-    }))
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: '200px 0px 0px 0px'
   });
 
-  return (
-    <div className='flex flex-col gap-10'>
-      {pageQueries.map((query, index) => {
-        const referenceMovie = query.data?.data?.referenceMovie;
-        const movieList = query.data?.data?.suggestedMovies ?? [];
+  const { data: movieListData, isLoading } = useMovieSuggestByWatchedQuery({
+    params: {
+      page
+    },
+    enabled: isAuthenticated && inView
+  });
 
-        return (
-          <MovieList
-            key={index}
-            title={`Vì bạn đã xem phim ${referenceMovie?.title} nên bạn có thể thích`}
-            loading={watchedMovieListLoading || query.isLoading}
-            movieList={movieList}
-          />
-        );
-      })}
+  const watchedMovie = movieListData?.data?.referenceMovie;
+  const movieList = movieListData?.data?.suggestedMovies || [];
+
+  return (
+    <div ref={ref}>
+      <MovieList
+        loading={isLoading}
+        movieList={movieList}
+        title={`Vì bạn đã xem ${watchedMovie?.title}`}
+      />
     </div>
   );
 }
