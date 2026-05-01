@@ -210,7 +210,7 @@ export default function SelectField<
                   >
                     <Command
                       ref={commandRef}
-                      className='bg-background'
+                      className='bg-input'
                       shouldFilter={false}
                     >
                       <CommandInput
@@ -273,11 +273,11 @@ export default function SelectField<
                               onMouseEnter={() => setHighlightedIndex(idx)}
                               onSelect={() => handleSelect(val)}
                               className={cn(
-                                'block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                                'dark:hover:bg-main-color/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                                 {
-                                  'bg-accent text-accent-foreground':
-                                    highlightedIndex === idx,
-                                  'bg-main-color/10': isSelected
+                                  'bg-main-color/10': isSelected,
+                                  'bg-main-color/30 text-accent-foreground':
+                                    highlightedIndex === idx
                                 }
                               )}
                             >

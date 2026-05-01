@@ -244,15 +244,6 @@
     background: rgba(255, 255, 255, 0.059) !important;
     backdrop-filter: blur(15px);
   }
-
-  .body-lock:not(.mobile) {
-    overflow: hidden;
-    margin-right: 15px;
-
-    & .header {
-      padding-right: 15px;
-    }
-  }
 }
 
 @utility scrollbar-none {

@@ -14,7 +14,6 @@ import { createPortal } from 'react-dom';
 import { useIsMounted } from '@/hooks';
 import { X, ChevronDown, Info } from 'lucide-react';
 import { Button } from '@/components/form';
-import { isMobileDevice } from '@/utils';
 
 type ModalContextType = {
   open: boolean;
@@ -85,11 +84,27 @@ export default function Modal({
   useEffect(() => {
     if (!open) return;
 
-    if (isMobileDevice()) document.body.classList.add('body-lock', 'mobile');
-    else document.body.classList.add('body-lock');
+    const hasVerticalScroll =
+      document.documentElement.scrollHeight > window.innerHeight;
+
+    document.body.classList.add('body-lock');
+    document.body.style.overflow = 'hidden';
+    if (hasVerticalScroll) {
+      document.body.style.marginRight = '15px';
+      const header = document.querySelector('.header');
+      if (header && getComputedStyle(header).position === 'fixed') {
+        header.setAttribute('style', 'padding-right: 15px');
+      }
+    }
+
     return () => {
       document.body.classList.remove('body-lock');
-      document.body.classList.remove('body-lock', 'mobile');
+      document.body.style.overflow = '';
+      document.body.style.marginRight = '';
+      const header = document.querySelector('.header');
+      if (header && getComputedStyle(header).position === 'fixed') {
+        (header as HTMLElement).style.paddingRight = '';
+      }
     };
   }, [open]);
 

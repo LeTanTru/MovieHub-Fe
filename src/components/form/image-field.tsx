@@ -18,7 +18,6 @@ import {
 } from 'react';
 import { useImageStatus, useIsMounted } from '@/hooks';
 import { createPortal } from 'react-dom';
-import { isMobileDevice } from '@/utils';
 
 type ImageFieldProps = {
   src?: string;
@@ -143,12 +142,27 @@ export default function ImageField({
   useEffect(() => {
     if (!open) return;
 
-    const isMobile = isMobileDevice();
-    if (isMobile) document.body.classList.add('body-lock', 'mobile');
-    else document.body.classList.add('body-lock');
+    const hasVerticalScroll =
+      document.documentElement.scrollHeight > window.innerHeight;
+
+    document.body.classList.add('body-lock');
+    document.body.style.overflow = 'hidden';
+    if (hasVerticalScroll) {
+      document.body.style.marginRight = '15px';
+      const header = document.querySelector('.header');
+      if (header && getComputedStyle(header).position === 'fixed') {
+        header.setAttribute('style', 'padding-right: 15px');
+      }
+    }
+
     return () => {
       document.body.classList.remove('body-lock');
-      if (isMobile) document.body.classList.remove('mobile');
+      document.body.style.overflow = '';
+      document.body.style.marginRight = '';
+      const header = document.querySelector('.header');
+      if (header && getComputedStyle(header).position === 'fixed') {
+        (header as HTMLElement).style.paddingRight = '';
+      }
     };
   }, [open]);
 

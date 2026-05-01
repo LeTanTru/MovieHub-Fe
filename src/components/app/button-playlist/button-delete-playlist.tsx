@@ -4,7 +4,6 @@ import { ToolTip } from '@/components/form';
 import { ConfirmModal } from '@/components/modal';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
-import { useDisclosure } from '@/hooks';
 import { logger } from '@/logger';
 import { useDeletePlaylistMutation } from '@/queries';
 import { usePlaylistStore } from '@/store';
@@ -26,20 +25,10 @@ export default function ButtonDeletePlaylist({
       setSelectedPlaylist: s.setSelectedPlaylist
     }))
   );
-  const { opened, open, close } = useDisclosure();
   const queryClient = getQueryClient();
 
   const { mutateAsync: deletePlaylistMutate, isPending } =
     useDeletePlaylistMutation();
-
-  const handleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    open();
-  };
-
-  const handleClose = () => {
-    close();
-  };
 
   const handleDelete = async () => {
     await deletePlaylistMutate(id, {
@@ -56,7 +45,6 @@ export default function ButtonDeletePlaylist({
           if (playlist.findIndex((p) => p.id === selectedPlaylist?.id) === -1) {
             setSelectedPlaylist(playlist[0] || null);
           }
-          handleClose();
         } else {
           notify.error('Xóa danh sách phát thất bại');
         }
@@ -69,26 +57,19 @@ export default function ButtonDeletePlaylist({
   };
 
   return (
-    <>
-      <ToolTip
-        title='Xóa danh sách phát'
-        className='bg-white text-center text-black [&>span>svg]:w-4 [&>span>svg]:fill-white'
-      >
-        <button
-          className='hover:text-destructive cursor-pointer rounded-full transition-all duration-200 ease-linear'
-          onClick={handleOpen}
-        >
-          <FaTrash />
-        </button>
-      </ToolTip>
-
-      <ConfirmModal
-        open={opened}
-        message='Bạn có chắc chắn muốn xóa danh sách phát này không?'
-        onConfirm={handleDelete}
-        onOpenChange={handleClose}
-        loading={isPending}
-      />
-    </>
+    <ConfirmModal
+      message='Bạn có chắc chắn muốn xóa danh sách phát này không?'
+      onConfirm={handleDelete}
+      loading={isPending}
+      trigger={
+        <span>
+          <ToolTip title='Xóa danh sách phát'>
+            <button className='hover:text-destructive cursor-pointer rounded-full transition-all duration-200 ease-linear'>
+              <FaTrash />
+            </button>
+          </ToolTip>
+        </span>
+      }
+    />
   );
 }

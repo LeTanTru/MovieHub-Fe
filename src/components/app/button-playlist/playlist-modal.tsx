@@ -94,7 +94,7 @@ export default function PlaylistModal({
       className='bg-main-background max-480:w-[90%] max-990:w-100 top-1/2 left-1/2 mx-0 w-75 -translate-x-1/2 -translate-y-1/2 rounded-lg'
       confirmOnClose={isFormChanged}
     >
-      <Modal.Header className='h-fit justify-end'>
+      <Modal.Header className='h-fit justify-end pb-0'>
         <span className='sr-only'>
           {isEditing ? 'Cập nhật danh sách phát' : 'Thêm danh sách phát'}
         </span>
