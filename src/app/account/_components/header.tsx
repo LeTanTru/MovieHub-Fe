@@ -15,7 +15,7 @@ export default function Header() {
   const { loading } = useAppContext();
 
   return (
-    <header className='header relative top-0 right-0 left-0 z-10 block'>
+    <header className='header fixed top-0 right-0 left-0 z-10 block'>
       <div
         className={
           'max-1600:pl-6 max-1600:pr-8 max-1360:pl-4 max-1360:pr-6 max-1024:px-4 h-header max-1536:h-18 max-520:h-16 flex items-center justify-between bg-transparent pr-10 pl-8 transition-all duration-200 ease-linear'
