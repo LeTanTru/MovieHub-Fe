@@ -135,15 +135,7 @@ export default function Collection() {
             );
           }
           case STYLE_COMING_SOON: {
-            return (
-              <div
-                key={collection.id}
-                className='max-640:gap-8 flex flex-col gap-12.5'
-              >
-                <ComingSoonList collection={collection} />
-                <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_2} />
-              </div>
-            );
+            return <ComingSoonList collection={collection} />;
           }
           case STYLE_ANIME: {
             return (
@@ -151,7 +143,15 @@ export default function Collection() {
             );
           }
           default: {
-            return <MovieList key={collection.id} collection={collection} />;
+            return (
+              <div
+                key={collection.id}
+                className='max-640:gap-8 flex flex-col gap-12.5'
+              >
+                <MovieList key={collection.id} collection={collection} />
+                <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_2} />
+              </div>
+            );
           }
         }
       })}

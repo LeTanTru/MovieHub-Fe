@@ -5,13 +5,15 @@ import { useInView } from 'react-intersection-observer';
 import MovieList from './movie-list';
 import { useAuth } from '@/hooks';
 import { useMovieSuggestByWatchedQuery } from '@/queries';
+import { VerticalBarLoading } from '@/components/loading';
 
 export default function SuggestByWatched({ page }: { page: number }) {
   const { isAuthenticated } = useAuth();
 
   const { ref, inView } = useInView({
-    threshold: 0,
-    rootMargin: '200px 0px 0px 0px'
+    threshold: 0.5,
+    rootMargin: '0px 0px 400px 0px',
+    triggerOnce: false
   });
 
   const { data: movieListData, isLoading } = useMovieSuggestByWatchedQuery({
@@ -21,8 +23,10 @@ export default function SuggestByWatched({ page }: { page: number }) {
     enabled: isAuthenticated && inView
   });
 
-  const watchedMovie = movieListData?.data?.referenceMovie;
+  const watchedMovie = movieListData?.data?.watchedMovie;
   const movieList = movieListData?.data?.suggestedMovies || [];
+
+  if (isLoading) return <VerticalBarLoading />;
 
   return (
     <div ref={ref}>

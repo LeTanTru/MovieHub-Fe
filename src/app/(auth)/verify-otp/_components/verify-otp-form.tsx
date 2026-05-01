@@ -11,7 +11,7 @@ import { route } from '@/routes';
 import { otpSchema } from '@/schemaValidations';
 import { VerifyOtpBodyType } from '@/types';
 import { applyFormErrors, getData, notify, removeData, setData } from '@/utils';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState, useRef } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 const MAX_RESEND = 3; // RESEND LIMIT EACH 10 MINUTES
@@ -98,6 +98,7 @@ export default function VerifyOtpForm() {
     dispatch
   ] = useReducer(resendReducer, initialResendState);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
+  const lastResendTimeRef = useRef(lastResendTime);
 
   const { mutateAsync: resendOtpMutate, isPending: resendOtpLoading } =
     useResendOtpMutation();
@@ -140,6 +141,10 @@ export default function VerifyOtpForm() {
   };
 
   useEffect(() => {
+    lastResendTimeRef.current = lastResendTime;
+  }, [lastResendTime]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
       const { timestamp } = getResendData();
@@ -151,7 +156,9 @@ export default function VerifyOtpForm() {
       }
 
       const cooldown =
-        lastResendTime > 0 ? COOLDOWN_TIME - (now - lastResendTime) : 0;
+        lastResendTimeRef.current > 0
+          ? COOLDOWN_TIME - (now - lastResendTimeRef.current)
+          : 0;
 
       dispatch({
         type: 'tick',
@@ -164,7 +171,7 @@ export default function VerifyOtpForm() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [resendData.count, lastResendTime]);
+  }, [resendData.count]);
 
   const handleResendOtp = async () => {
     const email = getData(storageKeys.EMAIL);

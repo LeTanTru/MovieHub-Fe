@@ -98,7 +98,7 @@ export default function CommentItem({
       parentId: comment.id,
       size: DEFAULT_PAGE_SIZE
     },
-    queryKey: `${queryKeys.COMMENT_LIST}-replies-${comment.id}`,
+    queryKey: `${queryKeys.COMMENT_REPLIES_LIST}-${comment.id}`,
     queryFn: commentApiRequest.getList,
     enabled: isActiveParent,
     mode: 'click'
@@ -116,7 +116,7 @@ export default function CommentItem({
     const parentIdToInvalidate = level === 0 ? comment.id : rootId;
     setOpenParentIds((prev) => [...prev, parentIdToInvalidate]);
     await queryClient.invalidateQueries({
-      queryKey: [`${queryKeys.COMMENT_LIST}-replies-${parentIdToInvalidate}`]
+      queryKey: [`${queryKeys.COMMENT_REPLIES_LIST}-${parentIdToInvalidate}`]
     });
   };
 
@@ -188,7 +188,7 @@ export default function CommentItem({
     onVote(id, type, async () => {
       if (comment.parent)
         await queryClient.invalidateQueries({
-          queryKey: [`${queryKeys.COMMENT_LIST}-replies-${comment.parent?.id}`]
+          queryKey: [`${queryKeys.COMMENT_REPLIES_LIST}-${comment.parent?.id}`]
         });
       else
         await queryClient.invalidateQueries({

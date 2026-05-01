@@ -225,6 +225,7 @@ export const queryKeys = {
   COLLECTION_TOPIC_LIST: 'collection-topic-list',
   COLLECTION: 'collection',
   COMMENT_LIST: 'comment-list',
+  COMMENT_REPLIES_LIST: 'comment-replies-list',
   COMMENT_VOTE_LIST: 'comment-vote-list',
   COMMENT: 'comment',
   CREATE_COMMENT: 'create-comment',

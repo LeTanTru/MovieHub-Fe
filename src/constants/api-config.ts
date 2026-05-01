@@ -244,12 +244,6 @@ const apiConfig = defineApiConfig({
       ignoreAuth: true,
       isRequiredXClientType: true
     },
-    getListWatched: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie/list-watched`,
-      method: 'GET',
-      headers: baseHeader,
-      isRequiredXClientType: true
-    },
     suggestByWatched: {
       baseUrl: `${AppConstants.apiUrl}/v1/movie/suggest-by-watched`,
       method: 'GET',

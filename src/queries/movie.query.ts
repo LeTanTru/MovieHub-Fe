@@ -84,16 +84,6 @@ export const useMovieNextEpisodeQuery = (id: string) => {
   });
 };
 
-export const useMovieListWatchedQuery = ({
-  enabled
-}: { enabled?: boolean } = {}) => {
-  return useQuery({
-    queryKey: [queryKeys.MOVIE_LIST_WATCHED],
-    queryFn: () => movieApiRequest.getListWatched(),
-    enabled
-  });
-};
-
 export const useMovieSuggestByWatchedQuery = ({
   params = {},
   enabled
@@ -102,7 +92,7 @@ export const useMovieSuggestByWatchedQuery = ({
   enabled?: boolean;
 } = {}) => {
   return useQuery({
-    queryKey: [queryKeys.SUGGEST_BY_WATCHED, params],
+    queryKey: [`${queryKeys.SUGGEST_BY_WATCHED}-${params.page}`, params],
     queryFn: () => movieApiRequest.getSuggestByWatched(params),
     enabled
   });

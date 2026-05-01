@@ -53,10 +53,6 @@ const movieApiRequest = {
         }
       }
     ),
-  getListWatched: () =>
-    http.get<ApiResponse<{ id: string; title: string }[]>>(
-      apiConfig.movie.getListWatched
-    ),
   getSuggestByWatched: (params: MovieSuggestByWatchedSearchType) =>
     http.get<ApiResponse<MovieSuggestByWatchedType>>(
       apiConfig.movie.suggestByWatched,
