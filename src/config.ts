@@ -31,8 +31,8 @@ const configProject = configSchema.safeParse({
 });
 
 if (!configProject.success) {
-  logger.error('[ENV_VALIDATION_ERROR]', configProject.error);
-  throw new Error('Các khai báo biến môi trường không hợp lệ');
+  logger.error('[ENV_CONFIG_ERROR]', configProject.error);
+  throw new Error('Missing environment variables');
 }
 
 const envConfig = configProject.data;
