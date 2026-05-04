@@ -1,6 +1,6 @@
 import { watchHistoryApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { WatchHistorySearchType, WatchHistoryType } from '@/types';
+import { WatchHistorySearchType, WatchHistoryBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useWatchHistoryListQuery = ({
@@ -20,7 +20,7 @@ export const useWatchHistoryListQuery = ({
 export const useWatchHistoryTrackingMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.WATCH_HISTORY_TRACKING],
-    mutationFn: (body: WatchHistoryType) =>
+    mutationFn: (body: WatchHistoryBodyType) =>
       watchHistoryApiRequest.tracking(body)
   });
 };

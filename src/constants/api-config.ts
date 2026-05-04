@@ -515,6 +515,32 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredXClientType: true
     }
+  },
+  notification: {
+    countUnread: {
+      baseUrl: `${AppConstants.apiUrl}/v1/notification/count-unread`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/notification/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    readAll: {
+      baseUrl: `${AppConstants.apiUrl}/v1/notification/read-all`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    updateRead: {
+      baseUrl: `${AppConstants.apiUrl}/v1/notification/update-read`,
+      method: 'PUT',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    }
   }
 });
 

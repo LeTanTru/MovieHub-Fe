@@ -30,6 +30,7 @@ export type ReviewVoteResType = {
 };
 
 export type ReviewBodyType = z.infer<typeof reviewSchema>;
+
 export type ReviewVoteBodyType = z.infer<typeof reviewVoteSchema>;
 
 export type ReviewSearchType = z.infer<typeof reviewSearchSchema> &

@@ -8,6 +8,7 @@ export * from './favourite.schema';
 export * from './movie-item.schema';
 export * from './movie-person.schema';
 export * from './movie.schema';
+export * from './notification.schema';
 export * from './person.schema';
 export * from './playlist.schema';
 export * from './review.schema';

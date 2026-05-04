@@ -1,11 +1,11 @@
 import { useCallback, useEffect } from 'react';
-import type { WatchHistoryType } from '@/types';
+import type { WatchHistoryBodyType } from '@/types';
 
 type UseWatchHistoryProps = {
   movieItemId: string | undefined;
   isAuthenticated: boolean;
-  currentSecondsRef: React.MutableRefObject<number>;
-  trackWatchHistoryMutate: (payload: WatchHistoryType) => Promise<unknown>;
+  currentSecondsRef: React.RefObject<number>;
+  trackWatchHistoryMutate: (payload: WatchHistoryBodyType) => Promise<unknown>;
   onEpisodeChange?: () => void;
 };
 
@@ -20,7 +20,7 @@ const useWatchHistory = ({
     if (!movieItemId || currentSecondsRef.current <= 0 || !isAuthenticated)
       return;
 
-    const payload: WatchHistoryType = {
+    const payload: WatchHistoryBodyType = {
       lastWatchSeconds: currentSecondsRef.current,
       movieItemId
     };
