@@ -37,6 +37,9 @@ jobs:
             NEXT_PUBLIC_URL=${{ secrets.NEXT_PUBLIC_URL }}
             NEXT_PUBLIC_MEDIA_HOST=${{ secrets.NEXT_PUBLIC_MEDIA_HOST }}
             NEXT_PUBLIC_CLIENT_TYPE=${{ secrets.NEXT_PUBLIC_CLIENT_TYPE }}
+            NEXT_PUBLIC_MQTT_BROKER=${{ secrets.NEXT_PUBLIC_MQTT_BROKER }}
+            NEXT_PUBLIC_MQTT_USERNAME=${{ secrets.NEXT_PUBLIC_MQTT_USERNAME }}
+            NEXT_PUBLIC_MQTT_PASSWORD=${{ secrets.NEXT_PUBLIC_MQTT_PASSWORD }}
 
       - name: Show Image Size
         run: docker images ${{ secrets.DOCKER_USERNAME }}/fe-moviehub:latest
@@ -88,6 +91,9 @@ jobs:
               -e APP_PASSWORD='${{ secrets.APP_PASSWORD }}' \
               -e GRANT_TYPE_REFRESH_TOKEN='${{ secrets.GRANT_TYPE_REFRESH_TOKEN }}' \
               -e ACCESS_KEY='${{ secrets.ACCESS_KEY }}' \
+              -e NEXT_PUBLIC_MQTT_BROKER='${{ secrets.NEXT_PUBLIC_MQTT_BROKER }}' \
+              -e NEXT_PUBLIC_MQTT_USERNAME='${{ secrets.NEXT_PUBLIC_MQTT_USERNAME }}' \
+              -e NEXT_PUBLIC_MQTT_PASSWORD='${{ secrets.NEXT_PUBLIC_MQTT_PASSWORD }}' \
               ${{ secrets.DOCKER_USERNAME }}/fe-moviehub:latest
           EOF
 
