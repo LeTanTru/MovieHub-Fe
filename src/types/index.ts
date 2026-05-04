@@ -13,6 +13,7 @@ export * from './movie-item.type';
 export * from './movie-person.type';
 export * from './movie.type';
 export * from './navigation-menu.type';
+export * from './notification.type';
 export * from './person.type';
 export * from './playlist.type';
 export * from './review.type';

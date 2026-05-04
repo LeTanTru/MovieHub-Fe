@@ -3,7 +3,7 @@ import {
   ApiResponse,
   WatchHistoryResType,
   WatchHistorySearchType,
-  WatchHistoryType
+  WatchHistoryBodyType
 } from '@/types';
 import { http } from '@/utils';
 
@@ -12,7 +12,7 @@ const watchHistoryApiRequest = {
     http.get<ApiResponse<WatchHistoryResType>>(apiConfig.watchHistory.getList, {
       params
     }),
-  tracking: (body: WatchHistoryType) =>
+  tracking: (body: WatchHistoryBodyType) =>
     http.post<ApiResponse<any>>(apiConfig.watchHistory.tracking, { body }),
   delete: (movieId: string) =>
     http.delete<ApiResponse<any>>(apiConfig.watchHistory.delete, {

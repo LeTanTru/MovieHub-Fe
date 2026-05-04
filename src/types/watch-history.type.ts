@@ -26,4 +26,4 @@ export type WatchHistoryResType = {
 
 export type WatchHistorySearchType = z.infer<typeof watchHistorySearchSchema>;
 
-export type WatchHistoryType = z.infer<typeof watchHistorySchema>;
+export type WatchHistoryBodyType = z.infer<typeof watchHistorySchema>;

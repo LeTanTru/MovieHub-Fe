@@ -9,7 +9,10 @@ const configSchema = z.object({
   NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL: z.url(),
   NEXT_PUBLIC_URL: z.url(),
   NEXT_PUBLIC_MEDIA_HOST: z.string(),
-  NEXT_PUBLIC_CLIENT_TYPE: z.string()
+  NEXT_PUBLIC_CLIENT_TYPE: z.string(),
+  NEXT_PUBLIC_MQTT_BROKER: z.string(),
+  NEXT_PUBLIC_MQTT_USERNAME: z.string(),
+  NEXT_PUBLIC_MQTT_PASSWORD: z.string()
 });
 
 const configProject = configSchema.safeParse({
@@ -21,7 +24,10 @@ const configProject = configSchema.safeParse({
     process.env.NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL,
   NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
   NEXT_PUBLIC_MEDIA_HOST: process.env.NEXT_PUBLIC_MEDIA_HOST,
-  NEXT_PUBLIC_CLIENT_TYPE: process.env.NEXT_PUBLIC_CLIENT_TYPE
+  NEXT_PUBLIC_CLIENT_TYPE: process.env.NEXT_PUBLIC_CLIENT_TYPE,
+  NEXT_PUBLIC_MQTT_BROKER: process.env.NEXT_PUBLIC_MQTT_BROKER,
+  NEXT_PUBLIC_MQTT_USERNAME: process.env.NEXT_PUBLIC_MQTT_USERNAME,
+  NEXT_PUBLIC_MQTT_PASSWORD: process.env.NEXT_PUBLIC_MQTT_PASSWORD
 });
 
 if (!configProject.success) {

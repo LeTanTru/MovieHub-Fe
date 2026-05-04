@@ -1,11 +1,11 @@
 import { useDisclosure } from '@/hooks';
-import type { VideoResType, WatchHistoryType } from '@/types';
+import type { VideoResType, WatchHistoryBodyType } from '@/types';
 import type { MediaPlayerInstance } from '@vidstack/react';
 import { useEffect, useState } from 'react';
 
 type UseContinueWatchingProps = {
   movieItemId: string | undefined;
-  watchHistories: WatchHistoryType[];
+  watchHistories: WatchHistoryBodyType[];
   isAuthenticated: boolean;
   skipIntro: boolean;
   video: VideoResType | null | undefined;
