@@ -9,11 +9,10 @@ import { EpisodeResType, MetadataType, MovieResType } from '@/types';
 import { parseJSON, renderImageUrl } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 import { ScheduleBadge } from '@/components/app/schedule-badge';
-import { EMPTY_ARRAY } from '@/constants';
 import { MovieTabHeading } from '@/components/app/heading';
 
 type MovieTabSeriesProps = {
@@ -39,13 +38,13 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
 
   const latestSeason = metadata?.latestSeason?.label;
 
-  const seasons = movie?.seasons || EMPTY_ARRAY;
+  const seasons = useMemo(() => movie?.seasons || [], [movie?.seasons]);
 
   const currentSeason = seasons.find(
     (season) => season.label === selectedSeason.toString()
   );
 
-  const episodes = currentSeason?.episodes || EMPTY_ARRAY;
+  const episodes = currentSeason?.episodes || [];
 
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)

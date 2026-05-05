@@ -23,7 +23,6 @@ import { useShallow } from 'zustand/shallow';
 import { usePathname } from 'next/navigation';
 import { VerticalBarLoading } from '@/components/loading';
 import MovieItem from './movie-item';
-import { EMPTY_ARRAY } from '@/constants';
 
 type SearchFormProps = {
   className?: string;
@@ -65,7 +64,7 @@ export default function SearchForm({
     enabled: !!keyword && !isSearchPage
   });
 
-  const movieList = movieListData?.data?.content || EMPTY_ARRAY;
+  const movieList = movieListData?.data?.content || [];
 
   const defaultValues: SearchType = {
     keyword: searchParams.keyword || ''

@@ -10,7 +10,6 @@ import {
   ageRatings,
   countries,
   DEFAULT_DATE_FORMAT,
-  EMPTY_ARRAY,
   languages,
   MOVIE_TYPE_SERIES,
   MOVIE_TYPE_SINGLE,
@@ -52,7 +51,7 @@ export default function MovieSide() {
     (age) => movie?.ageRating === age.value
   )?.label;
 
-  const categories = movie?.categories || EMPTY_ARRAY;
+  const categories = movie?.categories || [];
 
   const countryName =
     countries.find((country) => country.value === movie?.country)?.label ||
@@ -79,7 +78,7 @@ export default function MovieSide() {
     (season) => season.label === latestSeason?.toString()
   );
 
-  const episodes = currentSeason?.episodes || EMPTY_ARRAY;
+  const episodes = currentSeason?.episodes || [];
 
   const latestEpisode = episodes?.length
     ? episodes[episodes.length - 1]?.label

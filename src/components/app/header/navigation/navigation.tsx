@@ -3,7 +3,7 @@
 import { CategoryResType, ItemProps } from '@/types';
 import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
-import { countries, EMPTY_ARRAY, MAX_PAGE_SIZE } from '@/constants';
+import { countries, MAX_PAGE_SIZE } from '@/constants';
 import { generateSlug } from '@/utils';
 import NavigationMobile from './navigation-mobile';
 import NavigationDesktop from './navigation-desktop';
@@ -19,8 +19,7 @@ export default function NavigationMenu({ mode }: NavigationMenuProps) {
     },
     enabled: true
   });
-  const categoryList: CategoryResType[] =
-    categoryListData?.data?.content || EMPTY_ARRAY;
+  const categoryList: CategoryResType[] = categoryListData?.data?.content || [];
 
   const navigationList: ItemProps[] = [
     {

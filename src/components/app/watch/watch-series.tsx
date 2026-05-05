@@ -2,7 +2,6 @@
 
 import { ButtonToggle } from '@/components/app/button-toggle';
 import { MovieTabHeading } from '@/components/app/heading';
-import { EMPTY_ARRAY } from '@/constants';
 import { useClickOutside, useNavigate, useQueryParams } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
@@ -39,16 +38,13 @@ export default function WatchSeries() {
 
   const latestSeason = metadata?.latestSeason?.label;
 
-  const seasons = useMemo(
-    () => movie?.seasons || EMPTY_ARRAY,
-    [movie?.seasons]
-  );
+  const seasons = useMemo(() => movie?.seasons || [], [movie?.seasons]);
 
   const currentSeason = seasons.find(
     (season) => season.label === selectedSeason.toString()
   );
 
-  const episodes = currentSeason?.episodes || EMPTY_ARRAY;
+  const episodes = currentSeason?.episodes || [];
 
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)

@@ -1,7 +1,7 @@
 'use client';
 
 import { getIdFromSlug } from '@/utils';
-import { EMPTY_ARRAY, MOVIE_TAB_SUGGESTION } from '@/constants';
+import { MOVIE_TAB_SUGGESTION } from '@/constants';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { useParams } from 'next/navigation';
 import { useSuggestionMovieListQuery } from '@/queries';
@@ -21,7 +21,7 @@ export default function MovieTabSuggestion({
   const { data: suggestionMovieListData, isLoading } =
     useSuggestionMovieListQuery(movieId);
 
-  const suggestionMovieList = suggestionMovieListData?.data || EMPTY_ARRAY;
+  const suggestionMovieList = suggestionMovieListData?.data || [];
 
   return (
     <MotionWrapper uniqueKey={MOVIE_TAB_SUGGESTION} direction={direction}>

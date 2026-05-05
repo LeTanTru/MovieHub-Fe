@@ -1,4 +1,4 @@
-import { DEFAULT_PAGE_START, EMPTY_ARRAY } from '@/constants';
+import { DEFAULT_PAGE_START } from '@/constants';
 import { ApiResponseList, BaseSearchType } from '@/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
@@ -70,8 +70,7 @@ const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, mode, threshold]);
 
   const dataList =
-    data?.pages?.flatMap((page) => page.data.content)?.filter(Boolean) ||
-    EMPTY_ARRAY;
+    data?.pages?.flatMap((page) => page.data.content)?.filter(Boolean) || [];
   const totalElements = data?.pages?.[0]?.data?.totalElements || 0;
 
   return {

@@ -2,7 +2,6 @@
 
 import { caption } from '@/assets';
 import { MovieTabHeading } from '@/components/app/heading';
-import { EMPTY_ARRAY } from '@/constants';
 import { useNavigate, useQueryParams } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
@@ -16,7 +15,7 @@ export default function WatchSingle() {
   const { searchParams } = useQueryParams<{ season: string }>();
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
-  const seasons = movie?.seasons || EMPTY_ARRAY;
+  const seasons = movie?.seasons || [];
 
   const handleSeasonClick = (season: (typeof seasons)[0]) => {
     if (season.label === searchParams.season) {

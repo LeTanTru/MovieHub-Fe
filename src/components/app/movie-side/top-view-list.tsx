@@ -3,13 +3,12 @@
 import { FallingStarIcon } from '@/assets';
 import TopViewItem from './top-view-item';
 import { useTopViewMovieListQuery } from '@/queries';
-import { EMPTY_ARRAY } from '@/constants';
 
 export default function TopViewList() {
   const { data: topViewMovieListData } = useTopViewMovieListQuery({
     enabled: true
   });
-  const topViewMovieList = topViewMovieListData?.data?.content || EMPTY_ARRAY;
+  const topViewMovieList = topViewMovieListData?.data?.content || [];
 
   if (topViewMovieList.length === 0) return null;
 
