@@ -1,17 +1,18 @@
 import './globals.css';
-import { Be_Vietnam_Pro } from 'next/font/google';
-import NextTopLoader from 'nextjs-toploader';
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import envConfig from '@/config';
-import { PerformanceMonitor } from '@/components/performance-monitor';
-import { BodyLoad } from '@/components/app/body-load';
-import { ToastContainer } from 'react-toastify';
-import { QueryProvider } from '@/components/providers/query-provider';
 import { AppProvider } from '@/components/providers/app-provider';
-import { ThemeProvider } from '@/components/providers/theme-provider';
+import { Be_Vietnam_Pro } from 'next/font/google';
+import { BodyLoad } from '@/components/app/body-load';
 import { GoToTopButton } from '@/components/app/go-to-top-button';
 import { JsonLd } from '@/components/seo';
+import { MqttProvider } from '@/components/providers/mqtt-provider';
+import { PerformanceMonitor } from '@/components/performance-monitor';
+import { QueryProvider } from '@/components/providers/query-provider';
+import { Suspense } from 'react';
+import { ThemeProvider } from '@/components/providers/theme-provider';
+import { ToastContainer } from 'react-toastify';
+import envConfig from '@/config';
+import NextTopLoader from 'nextjs-toploader';
+import type { Metadata } from 'next';
 
 const beVietnamPro = Be_Vietnam_Pro({
   weight: ['400', '500', '600', '700', '800'],
@@ -92,7 +93,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       >
         <JsonLd data={organizationSchema} />
         <JsonLd data={websiteSchema} />
-        <BodyLoad />
+        {/* <BodyLoad /> */}
         <QueryProvider>
           <AppProvider>
             <ThemeProvider
@@ -102,8 +103,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               disableTransitionOnChange
             >
               {/* <WebVitals /> */}
-              <NextTopLoader showSpinner={false} />
               <Suspense>{children}</Suspense>
+              <MqttProvider />
+              <NextTopLoader showSpinner={false} />
               <GoToTopButton />
               <PerformanceMonitor />
             </ThemeProvider>

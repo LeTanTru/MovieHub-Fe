@@ -51,6 +51,7 @@ type CommentStoreActions = {
   closeReply: () => void;
 
   setEditingComment: (editingComment: CommentResType | null) => void;
+
   setOpenParentIds: (ids: string[] | ((prev: string[]) => string[])) => void;
 };
 

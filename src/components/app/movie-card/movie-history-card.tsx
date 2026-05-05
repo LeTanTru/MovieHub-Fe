@@ -53,13 +53,15 @@ export default function MovieHistoryCard({
   const movieItem = movieHistory.movieItem;
 
   const percentWatched =
-    (movieHistory.lastWatchSeconds * 100) / movieItem.video.duration;
+    movieItem.video.duration > 0
+      ? (movieHistory.lastWatchSeconds * 100) / movieItem.video.duration
+      : 0;
 
   const isSingle = movie.type === MOVIE_TYPE_SINGLE;
 
   const watchLink = isSingle
-    ? `${route.watch.path}/${movie.slug}.${movie.id}?season=${movieItem.label}`
-    : `${route.watch.path}/${movie.slug}.${movie.id}?season=${movieItem.parent.label}&episode=${movieItem.label}`;
+    ? `${route.watch.path}/${movie.slug}.${movie.id}?season=${movieItem?.parent?.label}`
+    : `${route.watch.path}/${movie.slug}.${movie.id}?season=${movieItem?.parent?.label}&episode=${movieItem?.label}`;
 
   return (
     <m.div
@@ -113,13 +115,13 @@ export default function MovieHistoryCard({
             </span>
           </div>
           <div>
-            {isSingle ? (
-              'Tập full'
-            ) : (
-              <>
-                Phần {movieItem.parent.label} - Tập {movieItem.label}
-              </>
-            )}
+            {isSingle
+              ? 'Tập full'
+              : movieItem?.parent && (
+                  <>
+                    Phần {movieItem.parent.label} - Tập {movieItem.label}
+                  </>
+                )}
           </div>
         </div>
         <h4
@@ -131,14 +133,12 @@ export default function MovieHistoryCard({
           )}
         >
           <Link href={watchLink} title={movie.title}>
-            {movie.title}&nbsp;
-            {movieItem?.parent?.label !== '1' && movieItem?.parent?.label}
+            {movie.title}
           </Link>
         </h4>
         <h4 className='text-dark-gray line-clamp-1 text-xs leading-5 transition-colors duration-200 ease-linear hover:text-white'>
           <Link href={watchLink} title={movie.originalTitle}>
-            {movie.originalTitle}&nbsp;
-            {movieItem?.parent?.label !== '1' && movieItem?.parent?.label}
+            {movie.originalTitle}
           </Link>
         </h4>
       </div>

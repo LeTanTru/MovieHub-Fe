@@ -12,6 +12,7 @@ import {
   ageRatings,
   countries,
   DEFAULT_DATE_FORMAT,
+  EMPTY_ARRAY,
   languages,
   MOVIE_TYPE_SERIES,
   MOVIE_TYPE_SINGLE,
@@ -48,7 +49,7 @@ export default function WatchInfo() {
     (age) => movie?.ageRating === age.value
   )?.label;
 
-  const categories = movie?.categories || [];
+  const categories = movie?.categories || EMPTY_ARRAY;
 
   const countryName =
     countries.find((country) => country.value === movie?.country)?.label ||
@@ -70,7 +71,7 @@ export default function WatchInfo() {
     (season) => season.label === latestSeason.toString()
   );
 
-  const episodes = currentSeason?.episodes || [];
+  const episodes = currentSeason?.episodes || EMPTY_ARRAY;
 
   const latestEpisode = episodes
     ? episodes.length
@@ -136,13 +137,15 @@ export default function WatchInfo() {
           {ageRating ? <TagAgeRating value={ageRating} /> : null}
           <TagNormal value={releaseYear} />
           {/* Single movie */}
-          <Activity visible={isSingle}>
+          <Activity visible={isSingle && !!duration}>
             <TagNormal value={formatDuration(duration)} />
           </Activity>
           {/* Series movie */}
           <Activity visible={isSeries}>
             <TagNormal value={`Phần ${latestSeason}`} />
-            <TagNormal value={`Tập ${latestEpisode}`} />
+            <Activity visible={!!latestEpisode}>
+              <TagNormal value={`Tập ${latestEpisode}`} />
+            </Activity>
           </Activity>
         </TagWrapper>
         <TagWrapper className='mb-3'>

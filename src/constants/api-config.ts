@@ -540,6 +540,18 @@ const apiConfig = defineApiConfig({
       method: 'PUT',
       headers: baseHeader,
       isRequiredXClientType: true
+    },
+    deleteAll: {
+      baseUrl: `${AppConstants.apiUrl}/v1/notification/delete-all`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    delete: {
+      baseUrl: `${AppConstants.apiUrl}/v1/notification/delete/:id`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredXClientType: true
     }
   }
 });

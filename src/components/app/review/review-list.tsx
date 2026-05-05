@@ -10,7 +10,13 @@ import {
 } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { StaticImageData } from 'next/image';
-import { queryKeys, reviewRatings, REACTION_TYPE_LIKE } from '@/constants';
+import {
+  queryKeys,
+  reviewRatings,
+  REACTION_TYPE_LIKE,
+  EMPTY_ARRAY,
+  EMPTY_OBJECT
+} from '@/constants';
 import { useAuth } from '@/hooks';
 import {
   useDeleteReviewMutation,
@@ -67,9 +73,9 @@ export default function ReviewList({
     enabled: isAuthenticated && !!movie?.id
   });
 
-  const voteReviewList = voteReviewListData?.data || [];
+  const voteReviewList = voteReviewListData?.data || EMPTY_ARRAY;
 
-  const voteMaps: Record<string, number> = {};
+  const voteMaps: Record<string, number> = EMPTY_OBJECT;
   voteReviewList.forEach((vote) => {
     if (vote.id) {
       voteMaps[vote.id] = vote.type;
@@ -153,7 +159,9 @@ export default function ReviewList({
               ApiResponse<ReviewVoteResType[]>
             >([queryKeys.REVIEW_VOTE_LIST, movie?.id]);
 
-            const vote = (voteList?.data || []).find((v) => v.id === id);
+            const vote = (voteList?.data || EMPTY_ARRAY).find(
+              (v) => v.id === id
+            );
 
             if (vote) {
               notify.success(

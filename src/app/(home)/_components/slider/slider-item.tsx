@@ -38,13 +38,17 @@ export default function SliderItem({
   isLiked
 }: SliderItemProps) {
   const movie = slider.movie;
+
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 
   const latestSeason = metadata?.latestSeason;
+
   const latestEpisode = metadata?.latestEpisode;
 
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
+
   const duration = metadata?.duration || 0;
+
   const releaseYear = getYearFromDate(
     latestSeason?.releaseDate || movie.releaseDate
   );
@@ -149,17 +153,23 @@ export default function SliderItem({
               </div>
               {isSeries && (
                 <>
-                  <div className='tag-classic'>
-                    <span>Phần {latestSeason?.label || '1'}</span>
-                  </div>
-                  <div className='tag-classic'>
-                    <span>Tập {latestEpisode?.label || '1'}</span>
-                  </div>
+                  {!!latestSeason && (
+                    <div className='tag-classic'>
+                      <span>Phần {latestSeason?.label || '1'}</span>
+                    </div>
+                  )}
+                  {!!latestEpisode && (
+                    <div className='tag-classic'>
+                      <span>Tập {latestEpisode?.label || '1'}</span>
+                    </div>
+                  )}
                 </>
               )}
-              <div className='tag-classic'>
-                <span>{formatDuration(duration)}</span>
-              </div>
+              {!!duration && (
+                <div className='tag-classic'>
+                  <span>{formatDuration(duration)}</span>
+                </div>
+              )}
             </div>
             <div className='hl-tags mb-6! max-[640px]:hidden!'>
               {slider.movie.categories.map((category) => (

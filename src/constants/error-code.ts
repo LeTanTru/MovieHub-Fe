@@ -12,6 +12,8 @@ export const ErrorCode = {
 
   ACCOUNT_ERROR_EMAIL_EXISTED: 'ERROR-ACCOUNT-ERROR-0004',
 
+  ACCOUNT_ERROR_EMAIL_NOT_FOUND: 'ERROR-ACCOUNT-00015',
+
   USER_ERROR_USERNAME_EXISTED: 'ERROR-USER-ERROR-0002',
   USER_ERROR_PHONE_EXISTED: 'ERROR-USER-ERROR-0003',
   USER_ERROR_WRONG_PASSWORD: 'ERROR-USER-ERROR-0005',
@@ -25,6 +27,9 @@ export const ErrorCode = {
 export const registerErrorMaps: ErrorMaps<RegisterType> = {
   [ErrorCode.ACCOUNT_ERROR_EMAIL_EXISTED]: [
     ['email', { type: 'manual', message: 'Email đã tồn tại' }]
+  ],
+  [ErrorCode.ACCOUNT_ERROR_EMAIL_NOT_FOUND]: [
+    ['email', { type: 'manual', message: 'Email không tồn tại' }]
   ]
 };
 

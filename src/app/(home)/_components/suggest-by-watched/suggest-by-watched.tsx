@@ -28,6 +28,8 @@ export default function SuggestByWatched({ page }: { page: number }) {
 
   if (isLoading) return <VerticalBarLoading />;
 
+  if (!isAuthenticated || !watchedMovie) return null;
+
   return (
     <div ref={ref}>
       <MovieList

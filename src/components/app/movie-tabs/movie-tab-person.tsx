@@ -38,7 +38,7 @@ export default function MovieTabPerson({
       <MovieTabHeading title={title} />
 
       {personList.length === 0 ? (
-        <p className='text-gray-400'>
+        <p className='text-accent-foreground'>
           Danh sách {title.toLowerCase()} trống. Vui lòng chờ cập nhật.
         </p>
       ) : (

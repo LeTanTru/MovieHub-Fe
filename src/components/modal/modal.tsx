@@ -287,11 +287,11 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
 
 function Confirm({ message, className }: ConfirmProps) {
   const { showConfirm, onConfirmYes, onConfirmNo } = useModal();
-  return (
+  return createPortal(
     <AnimatePresence>
       {showConfirm && (
         <m.div
-          className='absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black/40'
+          className='fixed inset-0 z-9999 flex items-center justify-center rounded-lg bg-black/40'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -335,7 +335,8 @@ function Confirm({ message, className }: ConfirmProps) {
           </m.div>
         </m.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
 

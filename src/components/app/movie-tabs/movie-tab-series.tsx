@@ -5,7 +5,7 @@ import { useClickOutside, useNavigate } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { MetadataType, MovieResType } from '@/types';
+import { EpisodeResType, MetadataType, MovieResType } from '@/types';
 import { parseJSON, renderImageUrl } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import Image from 'next/image';
@@ -13,6 +13,8 @@ import { useEffect, useState } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 import { ScheduleBadge } from '@/components/app/schedule-badge';
+import { EMPTY_ARRAY } from '@/constants';
+import { MovieTabHeading } from '@/components/app/heading';
 
 type MovieTabSeriesProps = {
   movie: MovieResType;
@@ -37,13 +39,13 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
 
   const latestSeason = metadata?.latestSeason?.label;
 
-  const seasons = movie.seasons;
+  const seasons = movie?.seasons || EMPTY_ARRAY;
 
   const currentSeason = seasons.find(
     (season) => season.label === selectedSeason.toString()
   );
 
-  const episodes = currentSeason?.episodes || [];
+  const episodes = currentSeason?.episodes || EMPTY_ARRAY;
 
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
@@ -77,7 +79,9 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
     }
   }, [latestSeason, setSelectedSeason, seasons, selectedSeason]);
 
-  const handleEpisodeClick = (episode: (typeof episodes)[0]) => {
+  const label = selectedSeason || currentSeason?.label;
+
+  const handleEpisodeClick = (episode: EpisodeResType) => {
     navigate.push(
       `${route.watch.path}/${movie.slug}.${movie.id}?season=${currentSeason?.label}&episode=${episode.label}`
     );
@@ -89,15 +93,19 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
       {/* Header */}
       <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex items-center justify-between'>
         <div className='relative' ref={dropdownRef}>
-          <button
-            type='button'
-            className='max-640:border-none max-640:text-lg max-480:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
-            onClick={handleDropdownToggle}
-          >
-            <FaBarsStaggered className='text-golden-glow' />
-            Phần {selectedSeason || currentSeason?.label || '...'}
-            <FaCaretDown />
-          </button>
+          {currentSeason ? (
+            <button
+              type='button'
+              className='max-640:border-none max-640:text-lg max-480:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
+              onClick={handleDropdownToggle}
+            >
+              <FaBarsStaggered className='text-golden-glow' />
+              Phần {label}
+              <FaCaretDown />
+            </button>
+          ) : (
+            <MovieTabHeading className='mb-0' title='Danh sách các phần' />
+          )}
           <AnimatePresence>
             {showDropdown && (
               <m.div
@@ -140,13 +148,17 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
             )}
           </AnimatePresence>
         </div>
-        <div className='grow'></div>
-        <ButtonToggle
-          toggle={toggle}
-          onToggle={handleToggle}
-          text='Rút gọn'
-          className='max-640:hidden'
-        />
+        {currentSeason && (
+          <>
+            <div className='grow'></div>
+            <ButtonToggle
+              toggle={toggle}
+              onToggle={handleToggle}
+              text='Rút gọn'
+              className='max-640:hidden'
+            />
+          </>
+        )}
       </div>
       {/* Body */}
       <m.div
@@ -161,59 +173,65 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
           layout: { duration: 0.15, ease: 'linear' }
         }}
       >
-        {episodes.map((episode, index) => (
-          <m.div
-            key={episode.id}
-            layout
-            transition={{
-              layout: { duration: 0.15, ease: 'linear' }
-            }}
-            className='translate-z-0 will-change-transform'
-          >
-            <button
-              onClick={() => handleEpisodeClick(episode)}
-              className={cn('group block w-full', {
-                'bg-charade hover:text-golden-glow max-640:h-10.5 flex h-12.5 w-full cursor-pointer items-center justify-center gap-2 rounded-sm px-[3.5px]':
-                  toggle
-              })}
+        {episodes.length > 0 &&
+          episodes.map((episode, index) => (
+            <m.div
+              key={episode.id}
+              layout
+              transition={{
+                layout: { duration: 0.15, ease: 'linear' }
+              }}
+              className='translate-z-0 will-change-transform'
             >
-              <m.div
-                layout
-                className={cn(
-                  'bg-gunmetal-blue relative mb-2.5 block w-full overflow-hidden rounded-md',
-                  {
-                    'h-0 pb-[66%]': !toggle,
-                    hidden: toggle
-                  }
-                )}
-                transition={{
-                  duration: 0.15,
-                  ease: 'linear'
-                }}
+              <button
+                onClick={() => handleEpisodeClick(episode)}
+                className={cn('group block w-full', {
+                  'bg-charade hover:text-golden-glow max-640:h-10.5 flex h-12.5 w-full cursor-pointer items-center justify-center gap-2 rounded-sm px-[3.5px]':
+                    toggle
+                })}
               >
-                <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
-                  <FaPlay />
+                <m.div
+                  layout
+                  className={cn(
+                    'bg-gunmetal-blue relative mb-2.5 block w-full overflow-hidden rounded-md',
+                    {
+                      'h-0 pb-[66%]': !toggle,
+                      hidden: toggle
+                    }
+                  )}
+                  transition={{
+                    duration: 0.15,
+                    ease: 'linear'
+                  }}
+                >
+                  <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
+                    <FaPlay />
+                  </div>
+                  <Image
+                    src={renderImageUrl(episode.thumbnailUrl)}
+                    className='aspect-video h-full w-full border-none object-cover'
+                    alt={episode.title}
+                    fill
+                    sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                  />
+                </m.div>
+                <div className='group-hover:text-golden-glow max-640:gap-1 max-520:text-xs max-640:text-[13px] flex items-center gap-2.5 font-medium transition-all duration-200 ease-linear'>
+                  <div className='block shrink-0 text-xs'>
+                    <FaPlay />
+                  </div>
+                  <div className='line-clamp-1 block truncate'>
+                    Tập {index + 1}
+                  </div>
                 </div>
-                <Image
-                  src={renderImageUrl(episode.thumbnailUrl)}
-                  className='aspect-video h-full w-full border-none object-cover'
-                  alt={episode.title}
-                  fill
-                  sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                />
-              </m.div>
-              <div className='group-hover:text-golden-glow max-640:gap-1 max-520:text-xs max-640:text-[13px] flex items-center gap-2.5 font-medium transition-all duration-200 ease-linear'>
-                <div className='block shrink-0 text-xs'>
-                  <FaPlay />
-                </div>
-                <div className='line-clamp-1 block truncate'>
-                  Tập {index + 1}
-                </div>
-              </div>
-            </button>
-          </m.div>
-        ))}
+              </button>
+            </m.div>
+          ))}
       </m.div>
+      {episodes.length === 0 && (
+        <p className='text-accent-foreground'>
+          Các phần và tập phim đang được cập nhật
+        </p>
+      )}
     </>
   );
 }

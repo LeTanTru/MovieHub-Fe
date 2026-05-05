@@ -49,7 +49,9 @@ export default function AnimeItem({
   const latestEpisode = metadata?.latestEpisode;
 
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
+
   const duration = metadata?.duration || 0;
+
   const releaseYear = getYearFromDate(
     latestSeason?.releaseDate || movie.releaseDate
   );
@@ -123,17 +125,23 @@ export default function AnimeItem({
               </div>
               {isSeries && (
                 <>
-                  <div className='tag-classic'>
-                    <span>Phần {latestSeason?.label || '1'}</span>
-                  </div>
-                  <div className='tag-classic'>
-                    <span>Tập {latestEpisode?.label || '1'}</span>
-                  </div>
+                  {!!latestSeason && (
+                    <div className='tag-classic'>
+                      <span>Phần {latestSeason?.label || '1'}</span>
+                    </div>
+                  )}
+                  {!!latestEpisode && (
+                    <div className='tag-classic'>
+                      <span>Tập {latestEpisode?.label || '1'}</span>
+                    </div>
+                  )}
                 </>
               )}
-              <div className='tag-classic'>
-                <span>{formatDuration(duration)}</span>
-              </div>
+              {!!duration && (
+                <div className='tag-classic'>
+                  <span>{formatDuration(duration)}</span>
+                </div>
+              )}
             </div>
             <div className='hl-tags mb-4!'>
               {movie.categories.map((category) => (

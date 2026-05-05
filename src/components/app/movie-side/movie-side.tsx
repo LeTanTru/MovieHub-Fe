@@ -10,6 +10,7 @@ import {
   ageRatings,
   countries,
   DEFAULT_DATE_FORMAT,
+  EMPTY_ARRAY,
   languages,
   MOVIE_TYPE_SERIES,
   MOVIE_TYPE_SINGLE,
@@ -51,7 +52,7 @@ export default function MovieSide() {
     (age) => movie?.ageRating === age.value
   )?.label;
 
-  const categories = movie?.categories || [];
+  const categories = movie?.categories || EMPTY_ARRAY;
 
   const countryName =
     countries.find((country) => country.value === movie?.country)?.label ||
@@ -75,13 +76,13 @@ export default function MovieSide() {
   const latestSeason = selectedSeason || metadata?.latestSeason?.label;
 
   const currentSeason = movie?.seasons?.find(
-    (season) => season.label === latestSeason.toString()
+    (season) => season.label === latestSeason?.toString()
   );
 
-  const episodes = currentSeason?.episodes || [];
+  const episodes = currentSeason?.episodes || EMPTY_ARRAY;
 
-  const latestEpisode = episodes
-    ? episodes.length
+  const latestEpisode = episodes?.length
+    ? episodes[episodes.length - 1]?.label
     : metadata?.latestEpisode?.label;
 
   const latestEpisodeVideo = episodes?.[episodes.length - 1]?.video;
@@ -144,13 +145,17 @@ export default function MovieSide() {
           {ageRating ? <TagAgeRating value={ageRating} /> : null}
           <TagNormal value={releaseYear} />
           {/* Single movie */}
-          <Activity visible={isSingle}>
+          <Activity visible={isSingle && !!duration}>
             <TagNormal value={formatDuration(duration)} />
           </Activity>
           {/* Series movie */}
           <Activity visible={isSeries}>
-            <TagNormal value={`Phần ${latestSeason}`} />
-            <TagNormal value={`Tập ${latestEpisode}`} />
+            <Activity visible={!!latestSeason}>
+              <TagNormal value={`Phần ${latestSeason}`} />
+            </Activity>
+            <Activity visible={!!latestEpisode}>
+              <TagNormal value={`Tập ${latestEpisode}`} />
+            </Activity>
           </Activity>
           {isSeries && isComplete && (
             <TagNormal

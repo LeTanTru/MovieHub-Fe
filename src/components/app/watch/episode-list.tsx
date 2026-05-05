@@ -37,14 +37,7 @@ export default function EpisodeList({
     setShowDropdown(false)
   );
 
-  const seasonCount = seasons.length;
-
   const season = seasons.find((s) => s.label === selectedSeason.toString());
-
-  const seasonIndices = Array.from(
-    { length: seasonCount },
-    (_, index) => index + 1
-  );
 
   const handleSelectSeason = (seasonLabel: string | number) => {
     setSelectedSeason(seasonLabel);
@@ -70,7 +63,7 @@ export default function EpisodeList({
           <h3 className='font-medium text-white'>Danh sách tập</h3>
           <Button
             variant='ghost'
-            className='rounded-full p-0 text-gray-400 hover:bg-transparent hover:text-white'
+            className='rounded-full p-0 text-white hover:bg-transparent hover:text-rose-500'
             onClick={onToggle}
           >
             <span>
@@ -78,7 +71,7 @@ export default function EpisodeList({
             </span>
           </Button>
         </div>
-        <div className='relative px-4 py-2' ref={dropdownRef}>
+        <div className='relative px-4 py-2'>
           <button
             type='button'
             className='flex max-w-30 cursor-pointer items-center justify-start gap-2.5 rounded border border-solid border-white p-2 text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
@@ -91,6 +84,7 @@ export default function EpisodeList({
           <AnimatePresence>
             {showDropdown && (
               <m.div
+                ref={dropdownRef}
                 initial={{
                   opacity: 0.5,
                   scale: 0.8,
@@ -107,23 +101,23 @@ export default function EpisodeList({
                 transition={{ duration: 0.05, ease: 'linear' }}
                 className='absolute top-12 z-10 min-w-40 overflow-hidden rounded-sm bg-white/10 py-2 shadow-[0px_0px_10px_2px_var(--gray-200)] backdrop-blur-xs'
               >
-                {seasonIndices.map((seasonIndex) => (
+                {seasons.map((season) => (
                   <button
                     type='button'
-                    key={`season-${seasonIndex}`}
+                    key={season.label}
                     className={cn(
                       'block flex w-full cursor-pointer items-center gap-2 px-4 py-2 leading-6 text-white transition-all duration-200 ease-linear hover:bg-white/20',
                       {
                         'text-golden-glow bg-white/25 font-semibold':
-                          seasonIndex.toString() === selectedSeason.toString()
+                          season.label === selectedSeason.toString()
                       }
                     )}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleSelectSeason(seasonIndex);
+                      handleSelectSeason(season.label);
                     }}
                   >
-                    Phần {seasonIndex}
+                    Phần {season.label}
                   </button>
                 ))}
               </m.div>

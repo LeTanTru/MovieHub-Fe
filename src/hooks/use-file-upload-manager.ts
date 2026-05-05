@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { logger } from '@/logger';
 import { UseMutateAsyncFunction } from '@tanstack/react-query';
 import { ApiResponse } from '@/types';
+import { EMPTY_ARRAY } from '@/constants';
 
 type UseFileUploadManagerProps = {
   initialUrl?: string;
@@ -108,7 +109,7 @@ const useFileUploadManager = ({
 
   // Get files to delete when canceling
   const getFilesToDeleteOnCancel = useCallback(() => {
-    const filesToDelete: string[] = [];
+    const filesToDelete: string[] = EMPTY_ARRAY;
 
     if (isEditing) {
       // EDITING MODE
@@ -132,7 +133,7 @@ const useFileUploadManager = ({
 
   // Get files to delete when submitting
   const getFilesToDeleteOnSubmit = useCallback(() => {
-    const filesToDelete: string[] = [];
+    const filesToDelete: string[] = EMPTY_ARRAY;
 
     if (isEditing) {
       // EDITING MODE

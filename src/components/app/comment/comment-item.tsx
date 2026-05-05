@@ -232,6 +232,7 @@ export default function CommentItem({
           onToggleBlurredContent={handleToggleBlurredContent}
           renderMention={renderMention}
         />
+
         <CommentAction
           comment={comment}
           level={level}

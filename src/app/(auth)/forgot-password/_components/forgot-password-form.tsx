@@ -115,7 +115,7 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
 
 export default function ForgotPasswordForm() {
   const navigate = useNavigate();
-  const [step, setStep] = useState<ForgotPasswordStepType>(2);
+  const [step, setStep] = useState<ForgotPasswordStepType>(1);
   const [
     { resendData, countdown, cooldownRemaining, lastResendTime },
     dispatch

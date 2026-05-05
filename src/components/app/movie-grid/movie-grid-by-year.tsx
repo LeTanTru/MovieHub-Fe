@@ -1,4 +1,5 @@
 import { MovieCard } from '@/components/app/movie-card';
+import { EMPTY_ARRAY } from '@/constants';
 import { cn } from '@/lib';
 import { MovieResType } from '@/types';
 import { getYearFromDate } from '@/utils';
@@ -7,7 +8,7 @@ function groupByYear(list: MovieResType[]) {
   return list.reduce((acc: Record<string, MovieResType[]>, movie) => {
     const year = getYearFromDate(movie.releaseDate);
     if (!year || !/^\d+$/.test(year)) return acc;
-    if (!acc[year]) acc[year] = [];
+    if (!acc[year]) acc[year] = EMPTY_ARRAY;
     acc[year].push(movie);
     return acc;
   }, {});

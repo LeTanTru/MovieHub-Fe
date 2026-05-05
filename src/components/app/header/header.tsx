@@ -19,6 +19,7 @@ import { setData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAppContext } from '@/components/providers/app-provider/app-provider';
+import DropdownNotification from '@/components/app/header/dropdown-notification';
 
 export default function Header() {
   const pathname = usePathname();
@@ -151,7 +152,7 @@ export default function Header() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {/* <DropdownNotification /> */}
+                  <DropdownNotification />
                 </m.div>
                 <m.div
                   key='avatar'

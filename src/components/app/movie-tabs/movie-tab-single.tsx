@@ -4,7 +4,7 @@ import { caption } from '@/assets';
 import { MovieTabHeading } from '@/components/app/heading';
 import { useNavigate } from '@/hooks';
 import { route } from '@/routes';
-import { MovieResType } from '@/types';
+import { MovieResType, SeasonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import Image from 'next/image';
 
@@ -15,7 +15,7 @@ type MovieTabSingleProps = {
 export default function MovieTabSingle({ movie }: MovieTabSingleProps) {
   const navigate = useNavigate();
 
-  const handleSeasonClick = (season: (typeof movie.seasons)[0]) => {
+  const handleSeasonClick = (season: SeasonResType) => {
     navigate.push(
       `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}`
     );
@@ -61,7 +61,7 @@ export default function MovieTabSingle({ movie }: MovieTabSingleProps) {
           ))}
         </div>
       ) : (
-        <p className='text-gray-400'>Chưa có tập phim nào</p>
+        <p className='text-accent-foreground'>Tập phim đang được cập nhật</p>
       )}
     </>
   );

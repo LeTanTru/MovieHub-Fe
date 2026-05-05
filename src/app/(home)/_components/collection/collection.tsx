@@ -4,14 +4,14 @@ import './collection.css';
 import { VerticalBarLoading } from '@/components/loading';
 import { useLoadMore } from '@/hooks';
 import {
+  EMPTY_ARRAY,
   queryKeys,
   STYLE_ANIME,
   STYLE_CINEMA,
   STYLE_COMING_SOON,
   STYLE_LATEST_BY_COUNTRY,
   STYLE_TOP_RANKING,
-  SUGGEST_BY_WATCHED_PAGE_1,
-  SUGGEST_BY_WATCHED_PAGE_2
+  SUGGEST_BY_WATCHED_PAGE_1
 } from '@/constants';
 import { collectionApiRequest } from '@/api-requests';
 import {
@@ -40,7 +40,7 @@ function isCountryGroup(
  * Groups consecutive STYLE_LATEST_BY_COUNTRY collections into groups of 3
  */
 function groupCollections(collections: CollectionResType[]): ProcessedItem[] {
-  const result: ProcessedItem[] = [];
+  const result: ProcessedItem[] = EMPTY_ARRAY;
   let i = 0;
 
   while (i < collections.length) {
@@ -149,7 +149,6 @@ export default function Collection() {
                 className='max-640:gap-8 flex flex-col gap-12.5'
               >
                 <MovieList key={collection.id} collection={collection} />
-                <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_2} />
               </div>
             );
           }
