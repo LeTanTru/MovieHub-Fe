@@ -36,6 +36,8 @@ import {
   MOVIE_TAB_TRAILER,
   MOVIE_TYPE_SERIES,
   MOVIE_TYPE_SINGLE,
+  NOTIFICATION_TYPE_COMMUNITY,
+  NOTIFICATION_TYPE_MOVIE,
   PERSON_KIND_ACTOR,
   PERSON_KIND_DIRECTOR,
   REVIEW_RATING_BAD,
@@ -231,8 +233,10 @@ export const queryKeys = {
   CREATE_COMMENT: 'create-comment',
   CREATE_FAVOURITE: 'create-favourite',
   CREATE_REVIEW: 'create-review',
+  DELETE_ALL_NOTIFICATION: 'delete-all-notification',
   DELETE_COMMENT: 'delete-comment',
   DELETE_FAVOURITE: 'delete-favourite',
+  DELETE_NOTIFICATION: 'delete-notification',
   DELETE_REVIEW: 'delete-review',
   FAVOURITE_GET_LIST_IDS: 'favourite-get-list-ids',
   FAVOURITE_LIST: 'favourite-list',
@@ -259,6 +263,7 @@ export const queryKeys = {
   MOVIE_SURVEY_LIST: 'movie-survey-list',
   MOVIE_TOP_VIEW_LIST: 'movie-top-view-list',
   MOVIE: 'movie',
+  NOTIFICATION_LIST: 'notification-list',
   PERSON_LIST: 'person-list',
   PERSON: 'person',
   PIN_COMMENT: 'pin-comment',
@@ -271,6 +276,7 @@ export const queryKeys = {
   PLAYLIST: 'playlist',
   PROFILE_UPDATE: 'update-profile',
   PROFILE: 'profile',
+  READ_ALL_NOTIFICATION: 'read-all-notification',
   REGISTER: 'register',
   REQUEST_FORGOT_PASSWORD: 'request-forgot-password',
   RESEND_OTP: 'resend-otp',
@@ -280,7 +286,9 @@ export const queryKeys = {
   SESSION: 'session',
   SIDEBAR_LIST: 'sidebar-list',
   SUGGEST_BY_WATCHED: 'suggest-by-watched',
+  UNREAD_NOTIFICATION_COUNT: 'unread-notification-count',
   UPDATE_COMMENT: 'update-comment',
+  UPDATE_READ_NOTIFICATION: 'update-read-notification',
   UPDATE_REVIEW: 'update-review',
   UPDATE_SETTING: 'update-settings',
   VERIFY_OTP: 'verify-otp',
@@ -1665,4 +1673,29 @@ export const qualityOptions = [
   { value: VIDEO_QUALITY_1080, label: '1080p' },
   { value: VIDEO_QUALITY_1440, label: '1440p' },
   { value: VIDEO_QUALITY_MAX, label: 'Tối đa' }
+];
+
+export const mqttCMDs = {
+  NEW_MOVIE_ITEM: 'CMD_NEW_MOVIE_ITEM',
+  NEW_MOVIE: 'CMD_NEW_MOVIE',
+  REPLY_COMMENT: 'CMD_REPLY_COMMENT',
+  SEND_NOTIFICATION: 'CMD_SEND_NOTIFICATION',
+  VOTE_COMMENT: 'CMD_VOTE_COMMENT',
+  VOTE_REVIEW: 'CMD_VOTE_REVIEW'
+};
+
+export const mqttTopics = {
+  MOVIE: 'notification/movie',
+  ACCOUNT: 'notification/:accountId'
+};
+
+export const notificationTypes: OptionType[] = [
+  {
+    value: NOTIFICATION_TYPE_MOVIE,
+    label: 'Phim'
+  },
+  {
+    value: NOTIFICATION_TYPE_COMMUNITY,
+    label: 'Cộng đồng'
+  }
 ];

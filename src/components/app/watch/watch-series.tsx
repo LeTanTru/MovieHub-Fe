@@ -1,6 +1,8 @@
 'use client';
 
 import { ButtonToggle } from '@/components/app/button-toggle';
+import { MovieTabHeading } from '@/components/app/heading';
+import { EMPTY_ARRAY } from '@/constants';
 import { useClickOutside, useNavigate, useQueryParams } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
@@ -34,15 +36,19 @@ export default function WatchSeries() {
   );
 
   const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');
+
   const latestSeason = metadata?.latestSeason?.label;
 
-  const seasons = useMemo(() => movie?.seasons || [], [movie?.seasons]);
+  const seasons = useMemo(
+    () => movie?.seasons || EMPTY_ARRAY,
+    [movie?.seasons]
+  );
 
   const currentSeason = seasons.find(
     (season) => season.label === selectedSeason.toString()
   );
 
-  const episodes = currentSeason?.episodes || [];
+  const episodes = currentSeason?.episodes || EMPTY_ARRAY;
 
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
@@ -84,6 +90,8 @@ export default function WatchSeries() {
     selectedSeason
   ]);
 
+  const label = selectedSeason || currentSeason?.label;
+
   if (!movie) return null;
 
   const handleEpisodeClick = (episode: (typeof episodes)[0]) => {
@@ -104,64 +112,74 @@ export default function WatchSeries() {
       {/* Header */}
       <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex items-center justify-between'>
         <div className='relative' ref={dropdownRef}>
-          <button
-            type='button'
-            className='max-640:border-none max-640:text-lg max-480:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
-            onClick={handleDropdownToggle}
-          >
-            <FaBarsStaggered className='text-golden-glow' />
-            Phần {selectedSeason || currentSeason?.label || '...'}
-            <FaCaretDown />
-          </button>
-          <AnimatePresence>
-            {showDropdown && (
-              <m.div
-                initial={{
-                  opacity: 0.5,
-                  scale: 0.8,
-                  transformOrigin: '40% -50%'
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1
-                }}
-                exit={{
-                  opacity: 0.5,
-                  scale: 0.8
-                }}
-                transition={{ duration: 0.1, ease: 'linear' }}
-                className='absolute top-10 z-10 min-w-40 overflow-hidden rounded-md bg-gray-100 pb-2 shadow-lg'
+          {currentSeason ? (
+            <>
+              <button
+                type='button'
+                className='max-640:border-none max-640:text-lg max-480:text-base flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-xl font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
+                onClick={handleDropdownToggle}
               >
-                <h3 className='border-b border-gray-200 px-4 py-2 text-black'>
-                  Danh sách phần
-                </h3>
-                {seasons.map((season) => (
-                  <button
-                    type='button'
-                    key={`season-${season.id}`}
-                    className={cn(
-                      'block flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
-                      {
-                        'bg-golden-glow':
-                          season.label === selectedSeason?.toString()
-                      }
-                    )}
-                    onClick={() => handleSelectSeason(season.label)}
+                <FaBarsStaggered className='text-golden-glow' />
+                Phần {label}
+                <FaCaretDown />
+              </button>{' '}
+              <AnimatePresence>
+                {showDropdown && (
+                  <m.div
+                    initial={{
+                      opacity: 0.5,
+                      scale: 0.8,
+                      transformOrigin: '40% -50%'
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1
+                    }}
+                    exit={{
+                      opacity: 0.5,
+                      scale: 0.8
+                    }}
+                    transition={{ duration: 0.1, ease: 'linear' }}
+                    className='absolute top-10 z-10 min-w-40 overflow-hidden rounded-md bg-gray-100 pb-2 shadow-lg'
                   >
-                    Phần {season.label}
-                  </button>
-                ))}
-              </m.div>
-            )}
-          </AnimatePresence>
+                    <h3 className='border-b border-gray-200 px-4 py-2 text-black'>
+                      Danh sách phần
+                    </h3>
+                    {seasons.map((season) => (
+                      <button
+                        type='button'
+                        key={`season-${season.id}`}
+                        className={cn(
+                          'block flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
+                          {
+                            'bg-golden-glow':
+                              season.label === selectedSeason?.toString()
+                          }
+                        )}
+                        onClick={() => handleSelectSeason(season.label)}
+                      >
+                        Phần {season.label}
+                      </button>
+                    ))}
+                  </m.div>
+                )}
+              </AnimatePresence>
+            </>
+          ) : (
+            <MovieTabHeading className='mb-0' title='Danh sách các phần' />
+          )}
         </div>
-        <div className='grow'></div>
-        <ButtonToggle
-          toggle={toggle}
-          onToggle={handleToggle}
-          text='Rút gọn'
-          className='max-640:hidden'
-        />
+        {currentSeason && (
+          <>
+            <div className='grow'></div>
+            <ButtonToggle
+              toggle={toggle}
+              onToggle={handleToggle}
+              text='Rút gọn'
+              className='max-640:hidden'
+            />
+          </>
+        )}
       </div>
       {/* Body */}
       <m.div
@@ -253,6 +271,11 @@ export default function WatchSeries() {
           );
         })}
       </m.div>
+      {episodes.length === 0 && (
+        <p className='text-accent-foreground'>
+          Các phần và tập phim đang được cập nhật
+        </p>
+      )}
     </>
   );
 }

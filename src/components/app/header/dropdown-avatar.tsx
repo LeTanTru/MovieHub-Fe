@@ -64,7 +64,7 @@ export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
               scale: 0.5
             }}
             transition={{
-              duration: 0.12,
+              duration: 0.1,
               ease: 'linear'
             }}
             className='bg-charade absolute top-[calc(100%+8px)] right-1.5 mt-2 w-48 rounded-md shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'

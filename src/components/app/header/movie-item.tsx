@@ -12,12 +12,15 @@ type MovieItemProps = {
 
 export default function MovieItem({ movie, onClick }: MovieItemProps) {
   const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
+
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
 
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 
   const latestSeason = metadata?.latestSeason;
+
   const latestEpisode = metadata?.latestEpisode;
+
   const releaseYear = getYearFromDate(
     latestSeason?.releaseDate || movie.releaseDate
   );
@@ -57,10 +60,12 @@ export default function MovieItem({ movie, onClick }: MovieItemProps) {
           <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
             <strong>{releaseYear}</strong>
           </div>
-          <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-            <strong>Phần {latestSeason?.label}</strong>
-          </div>
-          {isSeries && (
+          {!!latestSeason && (
+            <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+              <strong>Phần {latestSeason?.label}</strong>
+            </div>
+          )}
+          {isSeries && !!latestEpisode && (
             <div className='relative inline text-xs whitespace-nowrap text-neutral-400 before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
               <strong>Tập {latestEpisode?.label}</strong>
             </div>

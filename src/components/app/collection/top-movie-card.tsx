@@ -106,7 +106,9 @@ export default function TopMovieCard({
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 
   const latestSeason = metadata?.latestSeason;
+
   const latestEpisode = metadata?.latestEpisode;
+
   const releaseYear = getYearFromDate(
     latestSeason?.releaseDate || movie.releaseDate
   );
@@ -209,12 +211,12 @@ export default function TopMovieCard({
               <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
                 {releaseYear}
               </div>
-              {latestSeason?.label !== '1' && (
+              {!!latestSeason && (
                 <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
                   Phần {latestSeason?.label}
                 </div>
               )}
-              {isSeries && (
+              {isSeries && !!latestEpisode && (
                 <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
                   Tập {latestEpisode?.label}
                 </div>

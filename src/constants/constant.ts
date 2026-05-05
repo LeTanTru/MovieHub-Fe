@@ -37,6 +37,7 @@ export const DATE_DAY_TIME_FORMAT_UTC = 'EEEE HH:mm:ss MM/dd/yyyy';
 export const DEFAULT_TABLE_PAGE_START = 0;
 export const MAX_PAGE_SIZE = 1_000_000;
 export const INITIAL_AUTO_COMPLETE_SIZE = 10;
+export const NOTIFICATION_PAGE_SIZE = 20;
 
 export const DEFAULT_PAGE_START = 0;
 export const DEFAULT_PAGE_SIZE = 24;
@@ -108,4 +109,6 @@ export const VIDEO_LIBRARY_SOURCE_TYPE_EXTERNAL = 2;
 
 export const SUGGEST_BY_WATCHED_PAGE_0 = 0;
 export const SUGGEST_BY_WATCHED_PAGE_1 = 1;
-export const SUGGEST_BY_WATCHED_PAGE_2 = 2;
+
+export const NOTIFICATION_TYPE_MOVIE = 2;
+export const NOTIFICATION_TYPE_COMMUNITY = 3;

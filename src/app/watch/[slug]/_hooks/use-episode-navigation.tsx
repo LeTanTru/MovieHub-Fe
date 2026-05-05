@@ -1,6 +1,6 @@
 import { useNavigate } from '@/hooks';
 import { route } from '@/routes';
-import { MovieItemResType, MovieResType } from '@/types';
+import { MovieItemResType, MovieResType, SeasonResType } from '@/types';
 import { useCallback } from 'react';
 
 type useEpisodeNavigationProps = {
@@ -8,7 +8,7 @@ type useEpisodeNavigationProps = {
   isSeries: boolean;
   isFirstEpisode: boolean;
   isLastEpisode: boolean;
-  season: MovieResType['seasons'][number] | null;
+  season: SeasonResType | null;
   selectedEpisode: MovieItemResType | null;
   currentEpisodeIndex: number;
   episodes: MovieItemResType[];

@@ -88,7 +88,7 @@ export type MovieResType = {
   posterUrl: string;
   releaseDate: string;
   reviewCount: number;
-  seasons: SeasonResType[];
+  seasons?: SeasonResType[] | null;
   slug: string;
   status: number;
   thumbnailUrl: string;

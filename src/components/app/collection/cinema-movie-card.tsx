@@ -103,6 +103,7 @@ export default function CinemaMovieCard({
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 
   const latestSeason = metadata?.latestSeason;
+
   const releaseYear = getYearFromDate(
     latestSeason?.releaseDate || movie.releaseDate
   );
@@ -198,9 +199,11 @@ export default function CinemaMovieCard({
               <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
                 {releaseYear}
               </div>
-              <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
-                {formatDuration(duration)}
-              </div>
+              {!!duration && (
+                <div className='text-dark-gray relative inline text-xs whitespace-nowrap before:absolute before:top-1/2 before:left-[-10.5px] before:size-1 before:-translate-y-1/2 before:rounded-full before:bg-white/30 before:content-[""]'>
+                  {formatDuration(duration)}
+                </div>
+              )}
             </div>
           </div>
         </div>

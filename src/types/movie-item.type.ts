@@ -1,5 +1,5 @@
 import { movieItemSearchSchema } from '@/schemaValidations';
-import { MovieResType } from '@/types/movie.type';
+import { EpisodeResType, MovieResType } from '@/types/movie.type';
 import { BaseSearchType } from '@/types/search.type';
 import { VideoResType } from '@/types/video.type';
 import { z } from 'zod';
@@ -7,7 +7,7 @@ import { z } from 'zod';
 export type MovieItemResType = {
   createdDate: string;
   description: string;
-  episodes: any[];
+  episodes?: EpisodeResType[];
   id: string;
   kind: number;
   label: string;
