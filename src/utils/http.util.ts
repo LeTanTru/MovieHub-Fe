@@ -1,5 +1,5 @@
 import envConfig from '@/config';
-import { apiConfig, EMPTY_ARRAY, storageKeys } from '@/constants';
+import { apiConfig, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { route } from '@/routes';
 import type { ApiConfig, Payload } from '@/types';
@@ -26,7 +26,7 @@ let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: any) => void;
   reject: (error?: any) => void;
-}> = EMPTY_ARRAY;
+}> = [];
 
 const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -37,7 +37,7 @@ const processQueue = (error: any, token: string | null = null) => {
     }
   });
   logger.info(failedQueue);
-  failedQueue = EMPTY_ARRAY;
+  failedQueue = [];
 };
 
 const refreshToken = async () => {

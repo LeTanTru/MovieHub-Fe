@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { Activity } from '@/components/activity';
 import { m, Transition, Variants } from 'framer-motion';
 import { useQueryParams } from '@/hooks';
-import { EMPTY_OBJECT } from '@/constants';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ConfirmModal } from '@/components/modal';
 
@@ -49,7 +48,7 @@ export default function PersonCard({
   showFullName,
   willNavigate,
   dir = 'up',
-  params = EMPTY_OBJECT,
+  params = {},
   deleteMessage,
   onDelete
 }: PersonCardProps) {

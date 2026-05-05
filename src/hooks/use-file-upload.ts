@@ -1,4 +1,3 @@
-import { EMPTY_ARRAY } from '@/constants';
 import {
   useCallback,
   useRef,
@@ -64,7 +63,7 @@ const useFileUpload = (
     maxSize = Infinity,
     accept = '*',
     multiple = false,
-    initialFiles = EMPTY_ARRAY,
+    initialFiles = [],
     onFilesChange,
     onFilesAdded
   } = options;
@@ -169,7 +168,7 @@ const useFileUpload = (
       if (!newFiles || newFiles.length === 0) return;
 
       const newFilesArray = Array.from(newFiles);
-      const errors: string[] = EMPTY_ARRAY;
+      const errors: string[] = [];
 
       // Clear existing errors when new files are uploaded
       setState((prev) => ({ ...prev, errors: [] }));
@@ -190,7 +189,7 @@ const useFileUpload = (
         return;
       }
 
-      const validFiles: FileWithPreview[] = EMPTY_ARRAY;
+      const validFiles: FileWithPreview[] = [];
 
       newFilesArray.forEach((file) => {
         // Only check for duplicates if multiple files are allowed

@@ -1,7 +1,7 @@
 'use client';
 
 import { VideoPlayer } from '@/components/video-player';
-import { EMPTY_ARRAY, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
+import { VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
 import {
   renderImageUrl,
   renderVideoUrl,
@@ -147,7 +147,7 @@ export default function WatchPlayerVideoArea() {
       )}
       <Activity visible={isSeries}>
         <EpisodeList
-          seasons={movie?.seasons || EMPTY_ARRAY}
+          seasons={movie?.seasons || []}
           isOpen={isEpisodeListOpen}
           onToggle={closeEpisodeList}
         />

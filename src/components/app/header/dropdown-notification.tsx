@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   DEFAULT_PAGE_START,
-  EMPTY_ARRAY,
   NOTIFICATION_PAGE_SIZE,
   NOTIFICATION_TYPE_COMMUNITY,
   NOTIFICATION_TYPE_MOVIE,
@@ -56,7 +55,7 @@ export default function DropdownNotification() {
     }
   );
 
-  const notificationList = notificationListData?.content || EMPTY_ARRAY;
+  const notificationList = notificationListData?.content || [];
   const totalElements = notificationListData?.totalElements || 0;
 
   const { data: totalUnreadData } = useCountUnreadNotificationQuery();

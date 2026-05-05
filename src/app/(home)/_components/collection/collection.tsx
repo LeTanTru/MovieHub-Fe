@@ -4,7 +4,6 @@ import './collection.css';
 import { VerticalBarLoading } from '@/components/loading';
 import { useLoadMore } from '@/hooks';
 import {
-  EMPTY_ARRAY,
   queryKeys,
   STYLE_ANIME,
   STYLE_CINEMA,
@@ -40,7 +39,7 @@ function isCountryGroup(
  * Groups consecutive STYLE_LATEST_BY_COUNTRY collections into groups of 3
  */
 function groupCollections(collections: CollectionResType[]): ProcessedItem[] {
-  const result: ProcessedItem[] = EMPTY_ARRAY;
+  const result: ProcessedItem[] = [];
   let i = 0;
 
   while (i < collections.length) {

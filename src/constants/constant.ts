@@ -95,9 +95,6 @@ export const STYLE_COMING_SOON = 4;
 export const STYLE_LATEST_BY_COUNTRY = 5;
 export const STYLE_ANIME = 6;
 
-export const EMPTY_OBJECT = {};
-export const EMPTY_ARRAY = [];
-
 export const VIDEO_QUALITY_AUTO = 0;
 export const VIDEO_QUALITY_720 = 1;
 export const VIDEO_QUALITY_1080 = 2;

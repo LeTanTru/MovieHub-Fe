@@ -20,7 +20,7 @@ import { VerticalBarLoading } from '@/components/loading';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { logger } from '@/logger';
 import { notify } from '@/utils';
-import { EMPTY_ARRAY, queryKeys, REACTION_TYPE_LIKE } from '@/constants';
+import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { route } from '@/routes';
 import { useCommentStore, useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
@@ -81,8 +81,7 @@ export default function CommentList({
     enabled: isAuthenticated && !!movie?.id
   });
 
-  const voteCommentList: CommentVoteResType[] =
-    voteCommentListData?.data || EMPTY_ARRAY;
+  const voteCommentList: CommentVoteResType[] = voteCommentListData?.data || [];
 
   const voteMap: Record<string, number> = {};
   voteCommentList.forEach((vote) => {
