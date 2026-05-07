@@ -2,7 +2,7 @@ import CommentForm from './comment-form';
 import { CommentResType, ProfileResType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
 
-type CommentReplyProps = {
+type CommentReplyFormProps = {
   comment: CommentResType;
   rootId: string;
   author: ProfileResType;
@@ -12,7 +12,7 @@ type CommentReplyProps = {
   onCancel: () => void;
 };
 
-export default function CommentReply({
+export default function CommentReplyForm({
   comment,
   rootId,
   author,
@@ -20,7 +20,7 @@ export default function CommentReply({
   editingComment,
   onReplySubmit,
   onCancel
-}: CommentReplyProps) {
+}: CommentReplyFormProps) {
   return (
     <AnimatePresence initial={false}>
       {(replyingComment?.id === comment.id ||

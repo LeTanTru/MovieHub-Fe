@@ -5,7 +5,7 @@ export { default as useDebounce } from './use-debounce';
 export { default as useDisclosure } from './use-disclosure';
 export { default as useFileUpload } from './use-file-upload';
 export { default as useFileUploadManager } from './use-file-upload-manager';
-export { default as useGetAnonymousToken } from './use-get-anonymous-token';
+export { default as useAnonymousToken } from './use-get-anonymous-token';
 export { default as useImageStatus } from './use-image-status';
 export { default as useIsMounted } from './use-is-mounted';
 export { default as useLoadMore } from './use-load-more';

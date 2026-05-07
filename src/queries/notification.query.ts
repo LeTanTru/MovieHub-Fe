@@ -10,7 +10,7 @@ import type {
 import { http } from '@/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useGetNotificationListQuery = ({
+export const useNotificationListQuery = ({
   params,
   enabled
 }: {
@@ -29,14 +29,19 @@ export const useGetNotificationListQuery = ({
   });
 };
 
-export const useCountUnreadNotificationQuery = () => {
+export const useCountUnreadNotificationQuery = ({
+  enabled
+}: {
+  enabled?: boolean;
+}) => {
   return useQuery({
     queryKey: [queryKeys.UNREAD_NOTIFICATION_COUNT],
     queryFn: () =>
       http.get<ApiResponse<UnreadCountNotificationResType>>(
         apiConfig.notification.countUnread
       ),
-    select: (data) => data.data
+    select: (data) => data.data,
+    enabled
   });
 };
 

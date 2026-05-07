@@ -17,27 +17,34 @@ export async function generateMetadata({
     ? `Tìm kiếm phim ${normalizedKeyword}`
     : 'Tìm kiếm phim';
   const description = normalizedKeyword
-    ? `Kết quả tìm kiếm cho "${normalizedKeyword}" trên MovieHub.`
-    : 'Tìm kiếm phim theo tên, thể loại và quốc gia trên MovieHub.';
+    ? `Kết quả tìm kiếm cho "${normalizedKeyword}" trên MovieHub. Khám phá các bộ phim liên quan đến ${normalizedKeyword} với đầy đủ thông tin, trailer và lịch chiếu mới nhất.`
+    : 'Tìm kiếm phim theo tên, thể loại và quốc gia trên MovieHub. Hệ thống tìm kiếm thông minh giúp bạn dễ dàng tìm thấy bộ phim yêu thích của mình một cách nhanh chóng.';
 
   return {
     title,
     description,
+    metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+    keywords: [
+      normalizedKeyword || 'tìm kiếm phim',
+      'phim moviehub',
+      'kết quả tìm kiếm',
+      'xem phim'
+    ],
     robots: {
       index: false,
       follow: true
     },
     alternates: {
-      canonical: `${envConfig.NEXT_PUBLIC_URL}/search`
+      canonical: '/search'
     },
     openGraph: {
       title,
       description,
-      url: `${envConfig.NEXT_PUBLIC_URL}/search`,
+      url: '/search',
       type: 'website'
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
       description
     }

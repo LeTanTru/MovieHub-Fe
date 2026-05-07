@@ -20,7 +20,7 @@ export default function MovieItemBody({
   return (
     <Link
       onClick={handleClick}
-      className='flex flex-1 items-center justify-between gap-2 pl-2'
+      className='flex flex-1 items-center justify-between gap-2 pl-1'
       href={`${route.watch.path}/${body.movie.slug}.${body.movie.id}`}
     >
       <div className='relative w-20 shrink-0'>

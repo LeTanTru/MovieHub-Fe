@@ -10,7 +10,9 @@ enum storageKeys {
   WATCH_SKIP_INTRO = 'watch_skip_intro',
   WATCH_RESOLUTION = 'watch_resolution',
   REDIRECT_PATH_AFTER_LOGIN = 'redirect_path_after_login',
-  PREVIOUS_PATH = 'previous_path'
+  PREVIOUS_PATH = 'previous_path',
+  NOTIFICATION_TAB = 'notification_tab',
+  DISCLAIMER_SHOWN = 'disclaimer_shown'
 }
 
 export default storageKeys;

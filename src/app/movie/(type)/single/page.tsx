@@ -15,20 +15,25 @@ import envConfig from '@/config';
 
 export const metadata: Metadata = {
   title: 'Phim lẻ',
-  description: 'Danh sách phim lẻ mới nhất, cập nhật nhanh nhất.',
+  description:
+    'Danh sách phim lẻ mới nhất, phim chiếu rạp hấp dẫn, cập nhật nhanh nhất. Xem phim lẻ online chất lượng cao, đa dạng thể loại, phim lẻ thuyết minh, lồng tiếng cực hay trên MovieHub.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['phim lẻ', 'phim lẻ mới', 'phim chiếu rạp', 'phim đơn'],
   openGraph: {
     title: 'Phim lẻ',
-    description: 'Danh sách phim lẻ mới nhất, cập nhật nhanh nhất.',
-    url: `${envConfig.NEXT_PUBLIC_URL}/movie/single`,
+    description:
+      'Danh sách phim lẻ mới nhất, phim chiếu rạp hấp dẫn, cập nhật nhanh nhất. Xem phim lẻ online chất lượng cao, đa dạng thể loại, phim lẻ thuyết minh, lồng tiếng cực hay trên MovieHub.',
+    url: '/movie/single',
     type: 'website'
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Phim lẻ',
-    description: 'Danh sách phim lẻ mới nhất, cập nhật nhanh nhất.'
+    description:
+      'Danh sách phim lẻ mới nhất, phim chiếu rạp hấp dẫn, cập nhật nhanh nhất. Xem phim lẻ online chất lượng cao, đa dạng thể loại, phim lẻ thuyết minh, lồng tiếng cực hay trên MovieHub.'
   },
   alternates: {
-    canonical: `${envConfig.NEXT_PUBLIC_URL}/movie/single`
+    canonical: '/movie/single'
   }
 };
 

@@ -1,13 +1,37 @@
 import { ButtonBackToHome } from '@/app/account/_components';
 import { ProfileForm } from '@/app/account/profile/_components';
 import { logo } from '@/assets';
+import envConfig from '@/config';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Tài khoản',
-  description: 'Trang quản lý thông tin cá nhân'
+  title: 'Hồ sơ cá nhân',
+  description:
+    'Quản lý thông tin cá nhân, avatar và cập nhật hồ sơ tài khoản MovieHub của bạn.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['hồ sơ moviehub', 'thông tin cá nhân', 'cập nhật hồ sơ'],
+  alternates: {
+    canonical: '/account/profile'
+  },
+  openGraph: {
+    title: 'Tài khoản | MovieHub',
+    description: 'Quản lý thông tin cá nhân trên MovieHub.',
+    url: '/account/profile',
+    siteName: 'MovieHub',
+    type: 'website',
+    locale: 'vi_VN'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Tài khoản | MovieHub',
+    description: 'Quản lý thông tin cá nhân trên MovieHub.'
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default function ProfilePage() {

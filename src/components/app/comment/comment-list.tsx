@@ -26,13 +26,14 @@ import { useCommentStore, useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
 import { m } from 'framer-motion';
+import { useEffect } from 'react';
 
 type CommentListProps = {
   commentList: CommentResType[];
   isLoading?: boolean;
   hasMore?: boolean;
   remainingCount?: number;
-  isLoadMoreLoading?: boolean;
+  isLoadingMore?: boolean;
   onLoadMore?: () => void;
 };
 
@@ -41,7 +42,7 @@ export default function CommentList({
   isLoading = false,
   hasMore = false,
   remainingCount = 0,
-  isLoadMoreLoading = false,
+  isLoadingMore = false,
   onLoadMore
 }: CommentListProps) {
   const { profile, isAuthenticated } = useAuth();
@@ -55,21 +56,29 @@ export default function CommentList({
     openParentIds,
     replyingComment,
     editingComment,
+    targetCommentId,
+    targetParentId,
     setOpenParentIds,
     openReply,
     closeReply,
-    setEditingComment
+    setEditingComment,
+    clearScrollTarget
   } = useCommentStore(
     useShallow((s) => ({
       openParentIds: s.openParentIds,
       replyingComment: s.replyingComment,
       editingComment: s.editingComment,
+      targetCommentId: s.targetCommentId,
+      targetParentId: s.targetParentId,
       setOpenParentIds: s.setOpenParentIds,
       openReply: s.openReply,
       closeReply: s.closeReply,
-      setEditingComment: s.setEditingComment
+      setEditingComment: s.setEditingComment,
+      clearScrollTarget: s.clearScrollTarget
     }))
   );
+
+  const targetRootId = targetParentId || targetCommentId;
 
   const { mutateAsync: deleteCommentMutate } = useDeleteCommentMutation();
 
@@ -204,6 +213,29 @@ export default function CommentList({
     );
   };
 
+  useEffect(() => {
+    if (!targetParentId) return;
+
+    setOpenParentIds((prev) =>
+      prev.includes(targetParentId) ? prev : [...prev, targetParentId]
+    );
+  }, [setOpenParentIds, targetParentId]);
+
+  useEffect(() => {
+    if (!targetRootId || isLoading || isLoadingMore || !hasMore) return;
+
+    if (commentList.some((comment) => comment.id === targetRootId)) return;
+
+    onLoadMore?.();
+  }, [
+    commentList,
+    hasMore,
+    isLoadingMore,
+    isLoading,
+    onLoadMore,
+    targetRootId
+  ]);
+
   const renderChildren = (
     commentList: CommentResType[],
     level: number,
@@ -230,6 +262,8 @@ export default function CommentList({
             level={level}
             openParentIds={openParentIds}
             replyingComment={replyingComment}
+            targetCommentId={targetCommentId}
+            targetParentId={targetParentId}
             rootId={rootId ?? comment.id}
             userId={profile?.id || ''}
             voteMap={voteMap}
@@ -240,6 +274,7 @@ export default function CommentList({
             renderChildren={renderChildren}
             setEditingComment={setEditingComment}
             setOpenParentIds={setOpenParentIds}
+            clearScrollTarget={clearScrollTarget}
           />
         </m.div>
       ));
@@ -276,7 +311,7 @@ export default function CommentList({
       {renderChildren(commentList, 0)}
       {hasMore && (
         <div className='flex justify-center'>
-          {isLoadMoreLoading ? (
+          {isLoadingMore ? (
             <VerticalBarLoading className='py-10' />
           ) : (
             <Button

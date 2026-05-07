@@ -31,6 +31,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }))
       : [];
 
+  const watchUrls =
+    moviesRes.status === 'fulfilled'
+      ? moviesRes.value.data.content.map((movie) => ({
+          url: `${baseUrl}/watch/${movie.slug}.${movie.id}`,
+          lastModified: movie.modifiedDate || movie.createdDate || now,
+          changeFrequency: 'daily' as const,
+          priority: 0.8
+        }))
+      : [];
+
   const categoryUrls =
     categoriesRes.status === 'fulfilled'
       ? categoriesRes.value.data.content.map((category) => ({
@@ -44,7 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const topicUrls =
     topicsRes.status === 'fulfilled'
       ? topicsRes.value.data.content.map((topic) => ({
-          url: `${baseUrl}/topic/${generateSlug(topic.name)}.${topic.id}`,
+          url: `${baseUrl}/topic/${topic.name}.${topic.id}`,
           lastModified: topic.modifiedDate || topic.createdDate || now,
           changeFrequency: 'weekly' as const,
           priority: 0.7
@@ -112,6 +122,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5
     },
     ...movieUrls,
+    ...watchUrls,
     ...categoryUrls,
     ...topicUrls,
     ...personUrls,

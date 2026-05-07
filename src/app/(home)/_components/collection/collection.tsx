@@ -89,7 +89,7 @@ export default function Collection() {
     data: collectionList,
     isLoading,
     loadMoreRef,
-    isFetchingNextPage
+    isFetchingMore
   } = useLoadMore<HTMLDivElement, CollectionSearchType, CollectionResType>({
     queryKey: queryKeys.COLLECTION_LIST,
     params: { size: loadMoreSize },
@@ -156,10 +156,10 @@ export default function Collection() {
       <div
         ref={loadMoreRef}
         className={cn('vertical-loading flex items-center justify-center', {
-          'pt-20': isLoading || isFetchingNextPage
+          'pt-20': isLoading || isFetchingMore
         })}
       >
-        {(isLoading || isFetchingNextPage) && <VerticalBarLoading />}
+        {(isLoading || isFetchingMore) && <VerticalBarLoading />}
       </div>
     </>
   );

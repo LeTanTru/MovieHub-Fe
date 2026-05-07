@@ -31,24 +31,31 @@ export async function generateMetadata({
   const category = res.data;
   const categoryName = category?.name || 'thể loại';
   const title = category?.name || 'Thể loại phim';
-  const description = `Khám phá danh sách phim ${categoryName.toLowerCase()} mới nhất trên MovieHub.`;
+  const description = `Khám phá danh sách phim ${categoryName.toLowerCase()} mới nhất trên MovieHub. Tổng hợp đầy đủ các bộ phim thuộc thể loại ${categoryName.toLowerCase()} hay nhất, cập nhật liên tục với chất lượng cao.`;
 
   return {
     title,
     description,
+    metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+    keywords: [
+      categoryName,
+      'thể loại phim',
+      'phim moviehub',
+      `phim ${categoryName.toLowerCase()}`
+    ],
     openGraph: {
       title,
       description,
-      url: `${envConfig.NEXT_PUBLIC_URL}/category/${slug}`,
+      url: `/category/${slug}`,
       type: 'website'
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
       description
     },
     alternates: {
-      canonical: `${envConfig.NEXT_PUBLIC_URL}/category/${slug}`
+      canonical: `/category/${slug}`
     }
   };
 }

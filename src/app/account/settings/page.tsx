@@ -1,13 +1,37 @@
 import { ButtonBackToHome } from '@/app/account/_components';
 import { SettingsForm } from '@/app/account/settings/_components';
 import { logo } from '@/assets';
+import envConfig from '@/config';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Cài đặt',
-  description: 'Trang cài đặt tài khoản'
+  description:
+    'Quản lý cài đặt tài khoản MovieHub như ngôn ngữ, thông báo và các tùy chọn hiển thị.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['cài đặt moviehub', 'thiết lập tài khoản', 'tùy chỉnh'],
+  alternates: {
+    canonical: '/account/settings'
+  },
+  openGraph: {
+    title: 'Cài đặt | MovieHub',
+    description: 'Quản lý cài đặt tài khoản MovieHub.',
+    url: '/account/settings',
+    siteName: 'MovieHub',
+    type: 'website',
+    locale: 'vi_VN'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Cài đặt | MovieHub',
+    description: 'Quản lý cài đặt tài khoản MovieHub.'
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default function SettingsPage() {

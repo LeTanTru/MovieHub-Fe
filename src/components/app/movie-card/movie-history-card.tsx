@@ -52,10 +52,10 @@ export default function MovieHistoryCard({
 
   const movieItem = movieHistory.movieItem;
 
+  const duration = movieItem?.video?.duration || 0;
+
   const percentWatched =
-    movieItem.video.duration > 0
-      ? (movieHistory.lastWatchSeconds * 100) / movieItem.video.duration
-      : 0;
+    duration > 0 ? (movieHistory.lastWatchSeconds * 100) / duration : 0;
 
   const isSingle = movie.type === MOVIE_TYPE_SINGLE;
 
@@ -103,15 +103,17 @@ export default function MovieHistoryCard({
         </div>
         <div className='text-dark-gray flex flex-col items-center justify-center text-xs [&_div]:leading-5'>
           <div>
-            <span title={formatSecondsToHMS(movieHistory.lastWatchSeconds)}>
-              {formatSecondsToHMS(movieHistory.lastWatchSeconds)}
+            <span
+              title={formatSecondsToHMS(movieHistory.lastWatchSeconds || 0)}
+            >
+              {formatSecondsToHMS(movieHistory.lastWatchSeconds || 0)}
             </span>
             &nbsp;/&nbsp;
             <span
               className='text-white/50'
-              title={formatSecondsToHMS(movieItem.video.duration)}
+              title={duration ? formatSecondsToHMS(duration) : '??'}
             >
-              {formatSecondsToHMS(movieItem.video.duration)}
+              {duration ? formatSecondsToHMS(duration) : '??'}
             </span>
           </div>
           <div>

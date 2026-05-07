@@ -1,8 +1,8 @@
 import { AvatarField, ImageField } from '@/components/form';
-import { DISCUSSION_TAB_COMMENT } from '@/constants';
+import { DISCUSSION_TAB_REVIEW } from '@/constants';
 import { route } from '@/routes';
-import { useCommentStore, useMovieStore } from '@/store';
-import { NotificationResType, ReplyCommentNotificationType } from '@/types';
+import { useMovieStore } from '@/store';
+import { NotificationResType, VoteReviewNotificationType } from '@/types';
 import {
   convertUTCToLocal,
   generateSlug,
@@ -13,30 +13,20 @@ import {
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-export default function ReplyCommentBody({
+export default function VoteReviewBody({
   notification
 }: {
   notification: NotificationResType;
 }) {
   const body = useMemo(
-    () => parseJSON<ReplyCommentNotificationType>(notification.body),
+    () => parseJSON<VoteReviewNotificationType>(notification.body),
     [notification.body]
   );
 
-  const setOpenParentIds = useCommentStore((s) => s.setOpenParentIds);
-  const setScrollTarget = useCommentStore((s) => s.setScrollTarget);
   const setDiscussionTab = useMovieStore((s) => s.setDiscussionTab);
 
   const handleClick = () => {
-    const parentId = body?.parentId;
-
-    if (parentId) {
-      setOpenParentIds((prev) =>
-        prev.includes(parentId) ? prev : [...prev, parentId]
-      );
-    }
-    setDiscussionTab(DISCUSSION_TAB_COMMENT);
-    setScrollTarget({ commentId: body?.id, parentId });
+    setDiscussionTab(DISCUSSION_TAB_REVIEW);
   };
 
   return (
@@ -56,9 +46,7 @@ export default function ReplyCommentBody({
         </div>
         <div className='flex flex-1 flex-col justify-between gap-2'>
           <h3 className='line-clamp-2' title={notification.title}>
-            {notification.title}:&nbsp;
-            <span className='font-semibold'>&quot;{body?.content}&quot;</span>
-            &nbsp;trong phim&nbsp;
+            {notification.title}&nbsp;trong phim&nbsp;
             <span className='text-golden-glow font-semibold'>
               {body?.movieTitle}
             </span>

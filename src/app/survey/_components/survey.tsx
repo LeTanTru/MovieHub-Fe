@@ -11,7 +11,7 @@ import { route } from '@/routes';
 export default function Survey() {
   return (
     <div className='h-screen'>
-      <div className='bg-fixed-header block p-4'>
+      <header className='bg-fixed-header block p-4'>
         <Link href={route.home.path}>
           <Image
             alt='Logo'
@@ -22,7 +22,8 @@ export default function Survey() {
             unoptimized
           />
         </Link>
-      </div>
+        <h1 className='sr-only'>Khảo sát</h1>
+      </header>
       <Row className='w-full px-12 py-20'>
         <Col className='grid-c-4'>
           <SurveyInfo />

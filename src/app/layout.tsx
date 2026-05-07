@@ -2,6 +2,7 @@ import './globals.css';
 import { AppProvider } from '@/components/providers/app-provider';
 import { Be_Vietnam_Pro } from 'next/font/google';
 import { BodyLoad } from '@/components/app/body-load';
+import { DisclaimerModal } from '@/components/modal';
 import { GoToTopButton } from '@/components/app/go-to-top-button';
 import { JsonLd } from '@/components/seo';
 import { MqttProvider } from '@/components/providers/mqtt-provider';
@@ -27,16 +28,26 @@ export const metadata: Metadata = {
     template: '%s | MovieHub',
     default: 'MovieHub - Xem phim trực tuyến miễn phí'
   },
-  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
   description:
-    'Xem phim trực tuyến miễn phí tại MovieHub với kho phim đa dạng, cập nhật mỗi ngày và trải nghiệm mượt mà trên mọi thiết bị.',
+    'Xem phim trực tuyến miễn phí tại MovieHub với kho phim đa dạng, cập nhật mỗi ngày. Trải nghiệm xem phim chất lượng cao, tốc độ nhanh và mượt mà trên mọi thiết bị.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: [
+    'xem phim',
+    'phim trực tuyến',
+    'phim miễn phí',
+    'phim hay',
+    'moviehub',
+    'phim hd',
+    'phim vietsub',
+    'phim mới'
+  ],
   alternates: {
     canonical: '/'
   },
   openGraph: {
     title: 'MovieHub - Xem phim trực tuyến miễn phí',
     description:
-      'Khám phá kho phim đa dạng, cập nhật mỗi ngày và xem phim chất lượng cao tại MovieHub.',
+      'Khám phá kho phim đa dạng, cập nhật mỗi ngày và xem phim chất lượng cao tại MovieHub. Trải nghiệm giải trí tuyệt vời hoàn toàn miễn phí.',
     url: '/',
     siteName: 'MovieHub',
     type: 'website',
@@ -54,7 +65,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'MovieHub - Xem phim trực tuyến miễn phí',
     description:
-      'Khám phá kho phim đa dạng, cập nhật mỗi ngày và xem phim chất lượng cao tại MovieHub.',
+      'Khám phá kho phim đa dạng, cập nhật mỗi ngày và xem phim chất lượng cao tại MovieHub. Trải nghiệm giải trí tuyệt vời hoàn toàn miễn phí.',
     images: ['/logo.webp']
   }
 };
@@ -76,10 +87,7 @@ const websiteSchema = {
   name: 'MovieHub',
   potentialAction: {
     '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${envConfig.NEXT_PUBLIC_URL}/search?keyword={search_term_string}`
-    },
+    target: `${envConfig.NEXT_PUBLIC_URL}/search?keyword={search_term_string}`,
     'query-input': 'required name=search_term_string'
   }
 };
@@ -93,7 +101,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       >
         <JsonLd data={organizationSchema} />
         <JsonLd data={websiteSchema} />
-        {/* <BodyLoad /> */}
+        <BodyLoad />
         <QueryProvider>
           <AppProvider>
             <ThemeProvider
@@ -104,6 +112,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             >
               {/* <WebVitals /> */}
               <Suspense>{children}</Suspense>
+              <DisclaimerModal />
               <MqttProvider />
               <NextTopLoader showSpinner={false} />
               <GoToTopButton />

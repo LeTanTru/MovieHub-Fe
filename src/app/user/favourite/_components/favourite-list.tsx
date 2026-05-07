@@ -85,20 +85,20 @@ export default function FavouriteList() {
       <div className='flex flex-wrap gap-2' role='tablist'>
         {favouriteTabs.map((tab) => (
           <Button
-            key={tab.key}
+            key={tab.value}
             className={cn(
               'min-w-25 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear hover:bg-white hover:text-black',
               {
-                'bg-white text-black': activeTab === tab.key,
-                'bg-white/5 text-white': activeTab !== tab.key
+                'bg-white text-black': activeTab === tab.value,
+                'bg-white/5 text-white': activeTab !== tab.value
               }
             )}
             role='tab'
-            id={`favourite-tab-${tab.key}`}
-            aria-controls={`favourite-tabpanel-${tab.key}`}
-            aria-selected={activeTab === tab.key}
-            tabIndex={activeTab === tab.key ? 0 : -1}
-            onClick={() => handleTabChange(tab.key)}
+            id={`favourite-tab-${tab.value}`}
+            aria-controls={`favourite-tabpanel-${tab.value}`}
+            aria-selected={activeTab === tab.value}
+            tabIndex={activeTab === tab.value ? 0 : -1}
+            onClick={() => handleTabChange(tab.value)}
             variant='ghost'
           >
             {tab.label}

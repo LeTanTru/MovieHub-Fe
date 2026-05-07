@@ -1,33 +1,34 @@
 'use client';
 
-import { AnimatePresence, m } from 'framer-motion';
-import DropdownAvatar from './dropdown-avatar';
-import SearchForm from './search-form';
-import Link from 'next/link';
-import Image from 'next/image';
-import { logoWithText } from '@/assets';
-import { Suspense, useEffect, useState } from 'react';
-import { cn } from '@/lib';
-import { Button } from '@/components/form';
-import { useAuth, useNavigate } from '@/hooks';
-import { route } from '@/routes';
-import { FaXmark } from 'react-icons/fa6';
-import { NavigationMenu } from './navigation';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { usePathname } from 'next/navigation';
+import { AnimatePresence, m } from 'framer-motion';
+import { Button } from '@/components/form';
+import { cn } from '@/lib';
+import { FaXmark } from 'react-icons/fa6';
+import { logoWithText } from '@/assets';
+import { NavigationMenu } from './navigation';
+import { route } from '@/routes';
 import { setData } from '@/utils';
-import { storageKeys } from '@/constants';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAppContext } from '@/components/providers/app-provider/app-provider';
-import DropdownNotification from '@/components/app/header/dropdown-notification';
+import { storageKeys } from '@/constants';
+import { Suspense, useEffect, useState } from 'react';
+import { useAppContext } from '@/components/providers/app-provider';
+import { useAuth, useNavigate } from '@/hooks';
+import { usePathname } from 'next/navigation';
+import DropdownAvatar from './dropdown-avatar';
+import DropdownNotification from './dropdown-notification';
+import Image from 'next/image';
+import Link from 'next/link';
+import SearchForm from './search-form';
 
 export default function Header() {
   const pathname = usePathname();
+  const [isFixed, setIsFixed] = useState<boolean>(false);
+  const [showSearch, setShowSearch] = useState<boolean>(false);
+
   const { profile } = useAuth();
   const { loading } = useAppContext();
   const navigate = useNavigate();
-  const [isFixed, setIsFixed] = useState<boolean>(false);
-  const [showSearch, setShowSearch] = useState<boolean>(false);
 
   useEffect(() => {
     const handleOnScroll = () => {

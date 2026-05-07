@@ -75,11 +75,11 @@ const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
 
   return {
     data: dataList,
-    fetchNextPage,
+    fetchMore: fetchNextPage,
     handleLoadMore,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading: isLoading,
+    hasMore: hasNextPage,
+    isFetchingMore: isFetchingNextPage,
+    isLoading,
     loadMoreRef,
     totalElements
   };

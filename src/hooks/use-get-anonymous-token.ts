@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { getAnonymousToken } from '@/app/actions/anonymous';
 
-const useGetAnonymousToken = () => {
+const useAnonymousToken = () => {
   const [token, setToken] = useState<string>('');
   const [isLoadingToken, setIsLoadingToken] = useState<boolean>(true);
   const hasFetchedTokenRef = useRef<boolean>(false);
@@ -25,4 +25,4 @@ const useGetAnonymousToken = () => {
   return { token, isLoadingToken };
 };
 
-export default useGetAnonymousToken;
+export default useAnonymousToken;

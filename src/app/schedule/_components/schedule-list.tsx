@@ -59,10 +59,10 @@ export default function ScheduleList() {
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
       {/* Header */}
       <div className='max-1120:mb-5 max-990:mb-4 mb-6'>
-        <div className='max-990:text-2xl max-640:text-[22px] max-480:text-xl max-990:gap-2 flex items-center gap-4 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
+        <h1 className='max-990:text-2xl max-640:text-[22px] max-480:text-xl max-990:gap-2 flex items-center gap-4 text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           <FaRegCalendarCheck className='max-990:text-[28px] max-640:text-[22px] text-[32px]' />
           Lịch chiếu
-        </div>
+        </h1>
         <div className='grow'></div>
       </div>
       {/* Body */}

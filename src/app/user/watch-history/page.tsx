@@ -5,11 +5,40 @@ import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import envConfig from '@/config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Xem tiếp',
-  description: 'Quản lý và xem lại lịch sử xem phim của bạn'
+  description:
+    'Quản lý và xem lại lịch sử xem phim của bạn trên MovieHub. Tiếp tục xem phim từ nơi bạn đã dừng lại.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: [
+    'lịch sử xem phim',
+    'xem tiếp',
+    'phim đang xem',
+    'moviehub history'
+  ],
+  alternates: {
+    canonical: '/user/watch-history'
+  },
+  openGraph: {
+    title: 'Xem tiếp | MovieHub',
+    description: 'Quản lý và xem lại lịch sử xem phim của bạn trên MovieHub.',
+    url: '/user/watch-history',
+    siteName: 'MovieHub',
+    type: 'website',
+    locale: 'vi_VN'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Xem tiếp | MovieHub',
+    description: 'Quản lý và xem lại lịch sử xem phim của bạn trên MovieHub.'
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default async function WatchHistoryPage() {

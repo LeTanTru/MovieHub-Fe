@@ -15,20 +15,25 @@ import envConfig from '@/config';
 
 export const metadata: Metadata = {
   title: 'Phim bộ',
-  description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.',
+  description:
+    'Danh sách phim bộ mới nhất, cập nhật nhanh nhất. Xem phim bộ online chất lượng cao, đa dạng thể loại từ tình cảm, hành động đến kiếm hiệp, phim bộ lồng tiếng, thuyết minh hấp dẫn.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['phim bộ', 'phim bộ mới nhất', 'phim bộ hay', 'moviehub'],
   openGraph: {
     title: 'Phim bộ',
-    description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.',
-    url: `${envConfig.NEXT_PUBLIC_URL}/movie/series`,
+    description:
+      'Danh sách phim bộ mới nhất, cập nhật nhanh nhất. Xem phim bộ online chất lượng cao, đa dạng thể loại từ tình cảm, hành động đến kiếm hiệp, phim bộ lồng tiếng, thuyết minh hấp dẫn.',
+    url: '/movie/series',
     type: 'website'
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Phim bộ',
-    description: 'Danh sách phim bộ mới nhất, cập nhật nhanh nhất.'
+    description:
+      'Danh sách phim bộ mới nhất, cập nhật nhanh nhất. Xem phim bộ online chất lượng cao, đa dạng thể loại từ tình cảm, hành động đến kiếm hiệp, phim bộ lồng tiếng, thuyết minh hấp dẫn.'
   },
   alternates: {
-    canonical: `${envConfig.NEXT_PUBLIC_URL}/movie/series`
+    canonical: '/movie/series'
   }
 };
 

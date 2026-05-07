@@ -81,8 +81,8 @@ export default function MqttProvider() {
     cmd: mqttCMDs.SEND_NOTIFICATION,
     callback: (data) => {
       switch (data.cmd) {
-        case mqttCMDs.NEW_MOVIE:
         case mqttCMDs.NEW_MOVIE_ITEM:
+        case mqttCMDs.NEW_MOVIE:
           invalidateQueries([
             queryKeys.UNREAD_NOTIFICATION_COUNT,
             queryKeys.NOTIFICATION_LIST
@@ -100,6 +100,9 @@ export default function MqttProvider() {
     cmd: mqttCMDs.SEND_NOTIFICATION,
     callback: (data) => {
       switch (data.cmd) {
+        case mqttCMDs.NEW_MOVIE_ITEM:
+        case mqttCMDs.NEW_MOVIE:
+        case mqttCMDs.REPLY_COMMENT:
         case mqttCMDs.VOTE_COMMENT:
         case mqttCMDs.VOTE_REVIEW:
           invalidateQueries([

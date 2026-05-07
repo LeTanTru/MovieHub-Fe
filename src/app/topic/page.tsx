@@ -10,20 +10,25 @@ import envConfig from '@/config';
 
 export const metadata: Metadata = {
   title: 'Chủ đề',
-  description: 'Khám phá các chủ đề phim được tuyển chọn trên MovieHub.',
+  description:
+    'Khám phá các chủ đề phim được tuyển chọn đặc sắc trên MovieHub. Từ những bộ sưu tập phim hành động kịch tính đến những tuyển tập phim tình cảm lãng mạn, đáp ứng mọi sở thích của bạn.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['chủ đề phim', 'bộ sưu tập phim', 'tuyển tập phim hay'],
   openGraph: {
     title: 'Chủ đề phim',
-    description: 'Khám phá các chủ đề phim được tuyển chọn trên MovieHub.',
-    url: `${envConfig.NEXT_PUBLIC_URL}/topic`,
+    description:
+      'Khám phá các chủ đề phim được tuyển chọn đặc sắc trên MovieHub. Từ những bộ sưu tập phim hành động kịch tính đến những tuyển tập phim tình cảm lãng mạn, đáp ứng mọi sở thích của bạn.',
+    url: '/topic',
     type: 'website'
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Chủ đề phim',
-    description: 'Khám phá các chủ đề phim được tuyển chọn trên MovieHub.'
+    description:
+      'Khám phá các chủ đề phim được tuyển chọn đặc sắc trên MovieHub. Từ những bộ sưu tập phim hành động kịch tính đến những tuyển tập phim tình cảm lãng mạn, đáp ứng mọi sở thích của bạn.'
   },
   alternates: {
-    canonical: `${envConfig.NEXT_PUBLIC_URL}/topic`
+    canonical: '/topic'
   }
 };
 

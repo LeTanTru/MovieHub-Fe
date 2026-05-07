@@ -10,11 +10,42 @@ import { FavouriteList } from '@/app/user/favourite/_components';
 import { FavouriteSearchType } from '@/types';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { Sidebar } from '@/app/user/_components';
+import envConfig from '@/config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Danh sách phim và diễn viên yêu thích',
-  description: 'Quản lý danh sách phim và diễn viên yêu thích của bạn'
+  description:
+    'Quản lý danh sách phim và diễn viên yêu thích của bạn trên MovieHub. Lưu lại những bộ phim yêu thích để xem lại bất cứ lúc nào.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: [
+    'phim yêu thích',
+    'diễn viên yêu thích',
+    'danh sách phim',
+    'moviehub favourite'
+  ],
+  alternates: {
+    canonical: '/user/favourite'
+  },
+  openGraph: {
+    title: 'Danh sách yêu thích | MovieHub',
+    description:
+      'Quản lý danh sách phim và diễn viên yêu thích của bạn trên MovieHub.',
+    url: '/user/favourite',
+    siteName: 'MovieHub',
+    type: 'website',
+    locale: 'vi_VN'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Danh sách yêu thích | MovieHub',
+    description:
+      'Quản lý danh sách phim và diễn viên yêu thích của bạn trên MovieHub.'
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default async function FavouritePage() {

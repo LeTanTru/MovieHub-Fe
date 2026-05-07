@@ -36,7 +36,7 @@ export default function TopViewItem({ movie, index }: TopViewItemProps) {
               <Image
                 src={renderImageUrl(movie.posterUrl)}
                 width={80}
-                height={0}
+                height={120}
                 alt={`${movie.title} - ${movie.originalTitle}`}
                 className='absolute inset-0 h-full w-full object-cover'
               />

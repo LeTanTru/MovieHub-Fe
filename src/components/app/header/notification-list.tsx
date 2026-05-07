@@ -10,21 +10,25 @@ import { NotificationItem } from '@/components/app/notification';
 import { VerticalBarLoading } from '@/components/loading';
 
 type Props = {
-  notifications: NotificationResType[];
+  notificationList: NotificationResType[];
   loading?: boolean;
-  handleDelete: (id: string) => void;
+  onDelete: (id: string) => void;
+  onItemClick?: () => void;
 };
 
 export default function NotificationList({
-  notifications,
+  notificationList,
   loading,
-  handleDelete
+  onDelete,
+  onItemClick
 }: Props) {
-  const { mutateAsync: updateReadMutate } = useUpdateReadNotificationMutation();
+  const { mutateAsync: updateReadNotificationMutate } =
+    useUpdateReadNotificationMutation();
 
   const handleUpdateRead = async (notification: NotificationResType) => {
     if (notification.isRead) return;
-    await updateReadMutate(
+
+    await updateReadNotificationMutate(
       { ids: [notification.id] },
       {
         onSuccess: () => {
@@ -35,6 +39,8 @@ export default function NotificationList({
         }
       }
     );
+
+    onItemClick?.();
   };
 
   if (loading) {
@@ -45,7 +51,7 @@ export default function NotificationList({
     );
   }
 
-  if (!notifications.length) {
+  if (!notificationList.length) {
     return (
       <NoData
         className='min-h-[50vh] pt-0'
@@ -57,12 +63,12 @@ export default function NotificationList({
 
   return (
     <List className='scrollbar-none flex max-h-[80vh] min-h-[50vh] w-full flex-col overflow-y-auto rounded p-1'>
-      {notifications.map((notification) => (
+      {notificationList.map((notification) => (
         <NotificationItem
           key={notification.id}
           notification={notification}
           onUpdateRead={handleUpdateRead}
-          onDelete={handleDelete}
+          onDelete={onDelete}
         />
       ))}
     </List>

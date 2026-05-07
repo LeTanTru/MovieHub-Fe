@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { logoWithText } from '@/assets';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAppContext } from '@/components/providers/app-provider/app-provider';
+import { useAppContext } from '@/components/providers/app-provider';
 
 export default function Header() {
   const { profile } = useAuth();

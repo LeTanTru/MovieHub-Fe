@@ -6,11 +6,37 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import { ApiResponse, PlaylistResType, PlaylistSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import envConfig from '@/config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Danh sách phát',
-  description: 'Quản lý và xem các danh sách phát phim yêu thích của bạn'
+  description:
+    'Quản lý và xem các danh sách phát phim yêu thích của bạn trên MovieHub. Tạo playlist để sắp xếp phim theo ý thích.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['danh sách phát', 'playlist phim', 'tạo playlist', 'quản lý phim'],
+  alternates: {
+    canonical: '/user/playlist'
+  },
+  openGraph: {
+    title: 'Danh sách phát | MovieHub',
+    description:
+      'Quản lý và xem các danh sách phát phim yêu thích của bạn trên MovieHub.',
+    url: '/user/playlist',
+    siteName: 'MovieHub',
+    type: 'website',
+    locale: 'vi_VN'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Danh sách phát | MovieHub',
+    description:
+      'Quản lý và xem các danh sách phát phim yêu thích của bạn trên MovieHub.'
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default async function PlaylistPage() {
