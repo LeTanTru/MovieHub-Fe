@@ -15,20 +15,30 @@ import envConfig from '@/config';
 
 export const metadata: Metadata = {
   title: 'Diễn viên',
-  description: 'Trang danh sách diễn viên MovieHub.',
+  description:
+    'Khám phá danh sách diễn viên nổi tiếng, ngôi sao điện ảnh được yêu thích trên MovieHub. Tìm hiểu thông tin chi tiết về tiểu sử, sự nghiệp và các bộ phim mới nhất của các diễn viên.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: [
+    'diễn viên',
+    'ngôi sao điện ảnh',
+    'người nổi tiếng',
+    'diễn viên moviehub'
+  ],
   openGraph: {
     title: 'Diễn viên',
-    description: 'Khám phá danh sách diễn viên nổi bật trên MovieHub.',
-    url: `${envConfig.NEXT_PUBLIC_URL}/person`,
+    description:
+      'Khám phá danh sách diễn viên nổi tiếng, ngôi sao điện ảnh được yêu thích trên MovieHub. Tìm hiểu thông tin chi tiết về tiểu sử, sự nghiệp và các bộ phim mới nhất của các diễn viên.',
+    url: '/person',
     type: 'website'
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Diễn viên',
-    description: 'Khám phá danh sách diễn viên nổi bật trên MovieHub.'
+    description:
+      'Khám phá danh sách diễn viên nổi tiếng, ngôi sao điện ảnh được yêu thích trên MovieHub. Tìm hiểu thông tin chi tiết về tiểu sử, sự nghiệp và các bộ phim mới nhất của các diễn viên.'
   },
   alternates: {
-    canonical: `${envConfig.NEXT_PUBLIC_URL}/person`
+    canonical: '/person'
   }
 };
 

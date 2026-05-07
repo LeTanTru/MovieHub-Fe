@@ -22,7 +22,8 @@ import {
   ReviewResType,
   ReviewSearchType
 } from '@/types';
-import { getIdFromSlug, sanitizeText } from '@/utils';
+import { JsonLd } from '@/components/seo';
+import { getIdFromSlug, sanitizeText, stripHtml, truncate } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 
@@ -45,34 +46,49 @@ export async function generateMetadata(
   const id = getIdFromSlug(slug);
 
   const res = await movieApiRequest.getById(id);
+  const title = res.data
+    ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
+    : 'Không tìm thấy phim';
+  const description = truncate(
+    stripHtml(res.data?.description || 'Thông tin phim'),
+    160
+  );
+
   const previousImages = (await parent).openGraph?.images || [];
   const images = res.data?.posterUrl
-    ? [`${AppConstants.contentRootUrl}${res.data.posterUrl}`, ...previousImages]
+    ? [
+        {
+          url: `${AppConstants.contentRootUrl}${res.data.posterUrl}`,
+          width: 1200,
+          height: 630,
+          alt: title
+        },
+        ...previousImages
+      ]
     : previousImages;
 
   return {
-    title: res.data
-      ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
-      : 'Không tìm thấy phim',
-    description: sanitizeText(res.data?.description || 'Thông tin phim'),
+    title,
+    description,
+    metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+    keywords: res.data
+      ? [res.data.title, res.data.originalTitle || '', 'xem phim', 'phim hay']
+      : ['xem phim', 'phim moviehub'],
     openGraph: {
-      title: res.data
-        ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
-        : 'Không tìm thấy phim',
-      description: sanitizeText(res.data?.description || 'Thông tin phim'),
+      type: 'video.movie',
+      title,
+      description,
       images,
-      url: `${envConfig.NEXT_PUBLIC_URL}/movie/${slug}`
+      url: `/movie/${slug}`
     },
     twitter: {
       card: 'summary_large_image',
-      title: res.data
-        ? `Phim ${res.data?.title} - ${res.data?.originalTitle}`
-        : 'Không tìm thấy phim',
-      description: sanitizeText(res.data?.description || 'Thông tin phim'),
+      title,
+      description,
       images
     },
     alternates: {
-      canonical: `${envConfig.NEXT_PUBLIC_URL}/movie/${slug}`
+      canonical: `/movie/${slug}`
     }
   };
 }
@@ -152,8 +168,25 @@ export default async function MoviePage({ params }: MoviePageProps) {
     })
   ]);
 
+  const movieRes = queryClient.getQueryData<any>([queryKeys.MOVIE, id]);
+  const movie = movieRes?.data;
+  const jsonLd = movie
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Movie',
+        name: movie.title,
+        alternateName: movie.originalTitle,
+        image: movie.posterUrl
+          ? `${AppConstants.contentRootUrl}${movie.posterUrl}`
+          : undefined,
+        description: sanitizeText(movie.description || ''),
+        dateCreated: movie.createdDate
+      }
+    : null;
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      {jsonLd && <JsonLd data={jsonLd} />}
       <Movie id={id} />
     </HydrationBoundary>
   );

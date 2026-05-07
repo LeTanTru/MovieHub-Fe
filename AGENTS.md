@@ -1,143 +1,64 @@
 # AGENTS.md - MovieHub-FE Development Guide
 
-## Build, Lint & Test Commands
+## Commands
 
-| Command                             | Description                       |
-| ----------------------------------- | --------------------------------- |
-| `yarn install`                      | Install dependencies              |
-| `yarn dev`                          | Dev server (port 3000, Turbopack) |
-| `yarn clean-dev`                    | Clean .next cache + dev           |
-| `yarn build`                        | Production build                  |
-| `yarn start`                        | Production server                 |
-| `yarn lint`                         | ESLint on all files               |
-| `yarn lint -- src/path/to/file.tsx` | Lint a single file                |
-| `yarn format`                       | Prettier format all files         |
+- `yarn clean-dev`: Clean `.next` cache + start dev server (port 3000, Turbopack)
+- `yarn build:analyze`: Production build with bundle analyzer
+- Single file verification: `yarn lint -- src/path/to/file.tsx` (no test runner exists)
+- Pre-commit/dep change check: `yarn lint && yarn build`
+- Docker: Pass `NEXT_PUBLIC_*` at build time, inject non-`NEXT_PUBLIC_` vars at container runtime
 
-**No test runner is configured.** No Jest/Vitest/Playwright exists. For single-file verification, use `yarn lint -- src/path/to/file.tsx`.
+## Architecture
 
-Before committing: `yarn lint && yarn build`
+- Root layout (`src/app/layout.tsx`) wraps: `ThemeProvider` → `AppProvider` → `QueryProvider` → `NextTopLoader` → children → `ToastContainer`
+- 4-layer API pattern (do not bypass):
+  `src/constants/api-config.ts` → `src/api-requests/<domain>.api-request.ts` → `src/queries/<domain>.query.ts` → Component
+- Add new query keys to `queryKeys` in `src/constants/master-data.ts`
+- HTTP client: `src/utils/http.util.ts` with auto Bearer token, `X-Client-Type` header, 401 refresh queue, FormData support, `:id` path param substitution
+- Auth sync/refresh: Use internal routes under `src/app/api/auth/*` only, no bypass
+- API response types: `ApiResponse<T>`, `ApiResponseList<T>`
 
-## Architecture Overview
+## Route Protection (`src/proxy.ts`)
 
-- **Framework**: Next.js 16 App Router with route groups (`(home)`, `(auth)`) and dynamic routes (`[slug]`)
-- **State**: Zustand (client) + TanStack React Query (server)
-- **HTTP**: Axios with auto token refresh (401 handling)
-- **Forms**: React Hook Form + Zod validation
-- **UI**: shadcn/ui (new-york style) + Tailwind CSS v4
+- Protected prefixes: `/user`, `/account`, `/survey`
+- Public auth pages: `/login`, `/register`, `/forgot-password`, `/verify-otp`, `/intro`
+- Update this file when adding new auth/protected routes
 
-### Root App Composition
+## State Management
 
-`src/app/layout.tsx` wraps pages with `QueryProvider`, `AppProvider`, `ThemeProvider`, top loader, and toast container.
+- TanStack Query defaults: `staleTime: 60s`, `retry: false`, `refetchOnWindowFocus: false`
+- SSR prefetch: Use `dehydrate` + `HydrationBoundary` (home/movie/watch pages)
+- Zustand stores in `src/store/`, use `useShallow` for selectors
+- Auth: `useAuth()` hook wraps `auth.store.ts`
 
-### Canonical Data Flow
+## Repo-Specific Conventions
 
-```
-api-config.ts → *.api-request.ts → *.query.ts → Component
-```
+- Imports: `@/*` alias for `src/*`, barrel exports via `index.ts` in `api-requests/`, `queries/`, `hooks/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, `schemaValidations/`
+- Naming:
+  - API: `<domain>.api-request.ts`, Query: `<domain>.query.ts`, Type: `<domain>.type.ts`, Schema: `<domain>.schema.ts`, Store: `<domain>.store.ts`, Utils: `<name>.util.ts`
+  - Private dirs: `_components/` prefix
+  - Types: `*ResType` (response), `*SearchType` (search), `*BodyType` (request), `*StoreType` (Zustand)
+- Dynamic routes: `slug.id` format, extract ID via `getIdFromSlug()`
+- UI: shadcn/ui (new-york style), Tailwind CSS v4, custom breakpoints: `max-990`, `max-860`, `max-768`, `max-640`, `max-520`, `max-480`, `max-420`
+- `cn()` from `@/lib` for className composition
+- Forms: React Hook Form + Zod, schemas in `src/schemaValidations/`
+- Notifications: `notify.success()`/`notify.error()` from `@/utils` (required for all API mutations)
+- Logging: `logger` from `@/logger`, no `console.log`
+- TypeScript: `any` allowed, unused vars prefix with `_`
+- Video player: Vidstack + HLS.js, caption labels via `getLanguageLabel()`
 
-1. Define endpoint in `src/constants/api-config.ts`
-2. Create request wrapper in `src/api-requests/<domain>.api-request.ts`
-3. Create React Query hook in `src/queries/<domain>.query.ts`
-4. Consume in components with `queryKeys` from `src/constants/master-data.ts`
+## Git & Commits
 
-## Code Style & Conventions
-
-### Imports
-
-- Always use `@/*` alias for `src/*` imports (configured in `tsconfig.json`)
-- Order: external libs → `@/` aliases → relative imports
-- Barrel exports via `index.ts` in: `api-requests/`, `queries/`, `hooks/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, `schemaValidations/`
-
-### Naming Conventions
-
-- **Components**: PascalCase (`CommentItem.tsx`)
-- **Hooks**: camelCase with `use-` prefix (`use-auth.ts`)
-- **API files**: `<domain>.api-request.ts`
-- **Query files**: `<domain>.query.ts`
-- **Type files**: `<domain>.type.ts`
-- **Schema files**: `<domain>.schema.ts`
-- **Store files**: `<domain>.store.ts`
-- **Utils**: `<name>.util.ts`
-- **Private dirs**: `_components/` (underscore prefix)
-- **Types**: `*ResType` (response), `*SearchType` (search params), `*BodyType` (request body), `*StoreType` (Zustand)
-
-### Component Patterns
-
-- Server components by default; mark client with `'use client'` at top
-- Use `cn()` from `@/lib` for conditional className composition (`twMerge(clsx(...))`)
-- Pages use server-side prefetch with `dehydrate`/`HydrationBoundary` pattern:
-  ```tsx
-  const dehydratedState = dehydrate(queryClient);
-  return (
-    <HydrationBoundary state={dehydratedState}>
-      <ClientComponent />
-    </HydrationBoundary>
-  );
-  ```
-- Route params: use `getIdFromSlug` to extract IDs from `slug` params
-- Tailwind breakpoints: custom `max-990:*`, `max-860:*`, `max-768:*`, `max-640:*`, `max-520:*`, `max-480:*`, `max-420:*`
-
-### State Management
-
-- **QueryClient defaults**: `staleTime: 60s`, `retry: false`, `refetchOnWindowFocus: false` (defined in `src/components/providers/query-provider/get-query-provider.ts`)
-- Query keys centralized in `queryKeys` from `@/constants`
-- Zustand stores in `src/store/` with `useShallow` for selector optimization
-- Auth state: use `useAuth()` hook (wraps `auth.store.ts`)
-
-### API & HTTP Layer
-
-- Axios instance in `src/utils/http.util.ts` with:
-  - Auto `Authorization` header (Bearer token from cookies/localStorage)
-  - Auto `X-Client-Type` header when required
-  - 401 token refresh with request queue (prevents parallel refresh races)
-  - FormData support for file uploads
-- Auth refresh relies on internal routes under `src/app/api/auth/*` — do not bypass
-- API response types: `ApiResponse<T>` or `ApiResponseList<T>`
-- Mutation pattern: `mutateAsync(payload, { onSuccess, onError })`
-
-### Error Handling
-
-- API errors: caught by Axios interceptor, auto token refresh on 401
-- Form validation: Zod schemas in `src/schemaValidations/`
-- Notifications: use `notify.success()` / `notify.error()` from `@/utils`
-- Logging: use `logger` from `@/logger` (not `console.log`)
-- **Every API mutation must show a notification** for both success and error cases
-
-### TypeScript
-
-- `any` is allowed (`@typescript-eslint/no-explicit-any: 'off'`)
-- Unused vars: warn (prefix with `_` to suppress)
-- Type suffixes: `*ResType` (response), `*SearchType` (search), `*BodyType` (request), `*StoreType` (Zustand)
-- Zod schemas: `z.infer<typeof schema>` for type derivation
-
-### Git & Commits
-
-- Conventional commits enforced via `@commitlint/cli`
-- Pre-commit hook: `lint-staged` runs ESLint + Prettier on staged files
-- **Never commit** without running `yarn lint` first
-- Commit format: `type(scope): description` (e.g., `fix(comment): add success notification for reply`)
+- Conventional commits: `type(scope): description`, enforced via `@commitlint/cli`
+- Pre-commit: Husky + lint-staged runs ESLint + Prettier on staged files
+- Never commit without `yarn lint`
 
 ## Environment Variables
 
-Validated in `src/config.ts` with Zod. Missing/invalid env fails startup/build. Required keys:
-`NEXT_PUBLIC_NODE_ENV`, `NEXT_PUBLIC_AUTH_API_URL`, `NEXT_PUBLIC_API_ENDPOINT_URL`, `NEXT_PUBLIC_API_MEDIA_URL`, `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_TINYMCE_UR`, `NEXT_PUBLIC_MEDIA_HOST`, `NEXT_PUBLIC_CLIENT_TYPE`
+- Validated at startup in `src/config.ts` with Zod, missing/invalid values fail build/start
+- Required `NEXT_PUBLIC_*` keys: `NEXT_PUBLIC_NODE_ENV`, `NEXT_PUBLIC_AUTH_API_URL`, `NEXT_PUBLIC_API_ENDPOINT_URL`, `NEXT_PUBLIC_API_MEDIA_URL`, `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_MEDIA_HOST`, `NEXT_PUBLIC_CLIENT_TYPE`
+- Server-only vars (runtime): `APP_USERNAME`, `APP_PASSWORD`, `GRANT_TYPE_REFRESH_TOKEN`, `ACCESS_KEY`
 
-## Route Protection
+## Restricted Files (DO NOT READ)
 
-Guarded by `src/proxy.ts`. Protected prefixes: `/user`, `/account`, `/survey`. Public auth pages: `/login`, `/register`, `/forgot-password`, `/verify-otp`, `/intro`. Authenticated users accessing auth pages redirect to `/`.
-
-## Key Files Reference
-
-| Purpose          | Location                                   |
-| ---------------- | ------------------------------------------ |
-| Root layout      | `src/app/layout.tsx`                       |
-| Route protection | `src/proxy.ts`                             |
-| HTTP client      | `src/utils/http.util.ts`                   |
-| Query provider   | `src/components/providers/query-provider/` |
-| API endpoints    | `src/constants/api-config.ts`              |
-| Query keys       | `src/constants/master-data.ts`             |
-| Video player     | `src/components/video-player/`             |
-
-## Restricted Files
-
-These files contain sensitive data and MUST NOT be read: `supersecrets.txt`, `credentials.json`, `.env`
+- `supersecrets.txt`, `credentials.json`, `.env`, `.env.local`

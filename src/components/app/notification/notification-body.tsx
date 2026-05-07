@@ -4,6 +4,7 @@ import MovieBody from './movie-body';
 import MovieItemBody from './movie-item-body';
 import ReplyCommentBody from './reply-comment-body';
 import VoteCommentBody from './vote-comment-body';
+import VoteReviewBody from './vote-review-body';
 
 export default function NotificationBody({
   notification
@@ -25,6 +26,10 @@ export default function NotificationBody({
 
     case mqttCMDs.VOTE_COMMENT: {
       return <VoteCommentBody notification={notification} />;
+    }
+
+    case mqttCMDs.VOTE_REVIEW: {
+      return <VoteReviewBody notification={notification} />;
     }
 
     default:

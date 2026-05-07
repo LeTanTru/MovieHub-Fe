@@ -4,7 +4,8 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { Person } from '@/app/person/[id]/_components';
 import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
 import { MoviePersonSearchType } from '@/types';
-import { sanitizeText } from '@/utils';
+import { JsonLd } from '@/components/seo';
+import { sanitizeText, stripHtml, truncate } from '@/utils';
 import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
@@ -33,37 +34,50 @@ export async function generateMetadata(
   const { id } = await params;
 
   const res = await personApiRequest.getById(id);
+  const title = res.data
+    ? `Diễn viên ${res.data?.otherName}`
+    : 'Không tìm thấy diễn viên';
+  const description = truncate(
+    stripHtml(res.data?.bio ?? 'Thông tin diễn viên'),
+    160
+  );
+
   const previousImages = (await parent).openGraph?.images || [];
   const images = res.data?.avatarPath
     ? [
-        `${AppConstants.contentRootUrl}${res.data?.avatarPath}`,
+        {
+          url: `${AppConstants.contentRootUrl}${res.data?.avatarPath}`,
+          width: 1200,
+          height: 630,
+          alt: title
+        },
         ...previousImages
       ]
     : previousImages;
 
   return {
-    title: res.data
-      ? `Diễn viên ${res.data?.otherName}`
-      : 'Không tìm thấy diễn viên',
-    description: sanitizeText(res.data?.bio ?? 'Thông tin diễn viên'),
+    title,
+    description,
+    metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+    keywords: res.data
+      ? [res.data.otherName, 'diễn viên', 'đạo diễn', 'phim moviehub']
+      : ['diễn viên', 'người nổi tiếng'],
     openGraph: {
-      title: res.data
-        ? `Diễn viên ${res.data?.otherName}`
-        : 'Không tìm thấy diễn viên',
-      description: sanitizeText(res.data?.bio ?? 'Thông tin diễn viên'),
+      type: 'profile',
+      title,
+      description,
       images,
-      url: `${envConfig.NEXT_PUBLIC_URL}/person/${id}`
+      url: `/person/${id}`
     },
     twitter: {
       card: 'summary_large_image',
-      title: res.data
-        ? `Diễn viên ${res.data?.otherName}`
-        : 'Không tìm thấy diễn viên',
-      description: sanitizeText(res.data?.bio ?? 'Thông tin diễn viên'),
+      site: '@MovieHub',
+      title,
+      description,
       images
     },
     alternates: {
-      canonical: `${envConfig.NEXT_PUBLIC_URL}/person/${id}`
+      canonical: `/person/${id}`
     }
   };
 }
@@ -92,8 +106,26 @@ export default async function PersonDetailPage({
     })
   ]);
 
+  const personRes = queryClient.getQueryData<any>([queryKeys.PERSON, id]);
+  const person = personRes?.data;
+  const jsonLd = person
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: person.name,
+        alternateName: person.otherName,
+        image: person.avatarPath
+          ? `${AppConstants.contentRootUrl}${person.avatarPath}`
+          : undefined,
+        description: sanitizeText(person.bio || ''),
+        birthDate: person.dateOfBirth,
+        nationality: person.country
+      }
+    : null;
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      {jsonLd && <JsonLd data={jsonLd} />}
       <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
         <div className='max-1120:flex-col relative mx-auto flex w-full max-w-410 justify-between px-5'>
           <Person />

@@ -22,7 +22,8 @@ import {
   ReviewResType,
   ReviewSearchType
 } from '@/types';
-import { getIdFromSlug, sanitizeText } from '@/utils';
+import { JsonLd } from '@/components/seo';
+import { getIdFromSlug, sanitizeText, stripHtml, truncate } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 
@@ -45,34 +46,54 @@ export async function generateMetadata(
   const id = getIdFromSlug(slug);
 
   const res = await movieApiRequest.getById(id);
+  const title = res.data
+    ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
+    : 'Không tìm thấy phim';
+  const description = truncate(
+    stripHtml(res.data?.description || 'Thông tin phim'),
+    160
+  );
+
   const previousImages = (await parent).openGraph?.images || [];
   const images = res.data?.posterUrl
-    ? [`${AppConstants.contentRootUrl}${res.data.posterUrl}`, ...previousImages]
+    ? [
+        {
+          url: `${AppConstants.contentRootUrl}${res.data.posterUrl}`,
+          width: 1200,
+          height: 630,
+          alt: title
+        },
+        ...previousImages
+      ]
     : previousImages;
 
   return {
-    title: res.data
-      ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
-      : 'Không tìm thấy phim',
-    description: sanitizeText(res.data?.description || 'Thông tin phim'),
+    title,
+    description,
+    metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+    keywords: res.data
+      ? [
+          'xem phim',
+          res.data.title,
+          res.data.originalTitle || '',
+          'phim hay',
+          'xem phim trực tuyến'
+        ]
+      : ['xem phim', 'phim moviehub'],
     openGraph: {
-      title: res.data
-        ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
-        : 'Không tìm thấy phim',
-      description: sanitizeText(res.data?.description || 'Thông tin phim'),
+      title,
+      description,
       images,
-      url: `${envConfig.NEXT_PUBLIC_URL}/watch/${slug}`
+      url: `/watch/${slug}`
     },
     twitter: {
       card: 'summary_large_image',
-      title: res.data
-        ? `Xem phim ${res.data?.title} - ${res.data?.originalTitle}`
-        : 'Không tìm thấy phim',
-      description: sanitizeText(res.data?.description || 'Thông tin phim'),
+      title,
+      description,
       images
     },
     alternates: {
-      canonical: `${envConfig.NEXT_PUBLIC_URL}/movie/${slug}`
+      canonical: `/watch/${slug}`
     }
   };
 }
@@ -146,8 +167,25 @@ export default async function WatchPage({ params }: WatchPageProps) {
     })
   ]);
 
+  const movieRes = queryClient.getQueryData<any>([queryKeys.MOVIE, id]);
+  const movie = movieRes?.data;
+  const jsonLd = movie
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'VideoObject',
+        name: movie.title,
+        description: sanitizeText(movie.description || ''),
+        thumbnailUrl: movie.posterUrl
+          ? `${AppConstants.contentRootUrl}${movie.posterUrl}`
+          : undefined,
+        uploadDate: movie.createdDate,
+        duration: movie.duration ? `PT${movie.duration}M` : undefined
+      }
+    : null;
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      {jsonLd && <JsonLd data={jsonLd} />}
       <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
         <Watch id={id} />
       </Container>

@@ -3,7 +3,7 @@ import { CollectionItemSearchType } from '@/types';
 import { Container } from '@/components/layout';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getIdFromSlug } from '@/utils';
+import { getIdFromSlug, stripHtml, truncate } from '@/utils';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/topic/[slug]/_components';
 import type { Metadata } from 'next';
@@ -30,26 +30,36 @@ export async function generateMetadata({
   const res = await collectionApiRequest.getById(id);
   const topic = res.data;
   const title = topic?.name || 'Chủ đề';
-  const description = topic?.name
-    ? `Xem danh sách phim thuộc chủ đề ${topic.name} trên MovieHub.`
-    : 'Xem danh sách phim theo chủ đề trên MovieHub.';
+  const description = truncate(
+    stripHtml(
+      `Khám phá danh sách phim thuộc chủ đề ${topic?.name || ''} trên MovieHub. Những bộ phim hay nhất được tuyển chọn kỹ lưỡng, cập nhật liên tục để mang lại trải nghiệm tuyệt vời nhất.`
+    ),
+    160
+  );
 
   return {
     title,
     description,
+    metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+    keywords: [
+      topic?.name || 'chủ đề phim',
+      'phim theo chủ đề',
+      'tuyển tập phim',
+      'phim moviehub'
+    ],
     openGraph: {
       title,
       description,
-      url: `${envConfig.NEXT_PUBLIC_URL}/topic/${slug}`,
+      url: `/topic/${slug}`,
       type: 'website'
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
       description
     },
     alternates: {
-      canonical: `${envConfig.NEXT_PUBLIC_URL}/topic/${slug}`
+      canonical: `/topic/${slug}`
     }
   };
 }

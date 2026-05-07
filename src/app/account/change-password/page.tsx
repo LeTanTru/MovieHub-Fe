@@ -1,13 +1,37 @@
 import { ButtonBackToHome } from '@/app/account/_components';
 import { ChangePasswordForm } from '@/app/account/change-password/_components';
 import { logo } from '@/assets';
+import envConfig from '@/config';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Đổi mật khẩu',
-  description: 'Trang thay đổi mật khẩu tài khoản'
+  description:
+    'Thay đổi mật khẩu tài khoản MovieHub để bảo vệ tài khoản của bạn.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['đổi mật khẩu moviehub', 'thay đổi mật khẩu', 'bảo mật tài khoản'],
+  alternates: {
+    canonical: '/account/change-password'
+  },
+  openGraph: {
+    title: 'Đổi mật khẩu | MovieHub',
+    description: 'Thay đổi mật khẩu tài khoản MovieHub.',
+    url: '/account/change-password',
+    siteName: 'MovieHub',
+    type: 'website',
+    locale: 'vi_VN'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Đổi mật khẩu | MovieHub',
+    description: 'Thay đổi mật khẩu tài khoản MovieHub.'
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default function ChangePasswordPage() {

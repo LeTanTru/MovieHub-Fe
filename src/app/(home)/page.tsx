@@ -20,11 +20,23 @@ export const metadata: Metadata = {
   title: 'Trang chủ',
   description:
     'Xem phim trực tuyến miễn phí với chất lượng cao tại MovieHub. Khám phá kho phim đa dạng, cập nhật phim mới hàng ngày.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: [
+    'phim',
+    'phim hay',
+    'xem phim',
+    'xem phim trực tuyến',
+    'moviehub',
+    'phim mới',
+    'phim vietsub',
+    'phim lẻ',
+    'phim bộ'
+  ],
   openGraph: {
     title: 'MovieHub - Xem phim trực tuyến miễn phí',
     description:
       'Khám phá kho phim đa dạng, cập nhật phim mới hàng ngày tại MovieHub.',
-    url: envConfig.NEXT_PUBLIC_URL,
+    url: '/',
     type: 'website'
   },
   twitter: {
@@ -32,10 +44,10 @@ export const metadata: Metadata = {
     title: 'MovieHub - Xem phim trực tuyến miễn phí',
     description:
       'Khám phá kho phim đa dạng, cập nhật phim mới hàng ngày tại MovieHub.',
-    images: [`${envConfig.NEXT_PUBLIC_URL}/logo.webp`]
+    images: ['/logo.webp']
   },
   alternates: {
-    canonical: envConfig.NEXT_PUBLIC_URL
+    canonical: '/'
   }
 };
 

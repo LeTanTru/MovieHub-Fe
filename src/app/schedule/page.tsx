@@ -7,20 +7,25 @@ import envConfig from '@/config';
 
 export const metadata: Metadata = {
   title: 'Lịch chiếu',
-  description: 'Xem lịch chiếu phim.',
+  description:
+    'Theo dõi lịch chiếu phim mới nhất trên MovieHub. Cập nhật thông tin chi tiết về thời gian phát sóng các bộ phim bộ, phim lẻ hấp dẫn nhất trong tuần để không bỏ lỡ bất kỳ tập phim nào.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['lịch chiếu phim', 'thông tin lịch chiếu', 'lịch phát sóng phim'],
   openGraph: {
     title: 'Lịch chiếu',
-    description: 'Xem lịch chiếu phim trên MovieHub.',
-    url: `${envConfig.NEXT_PUBLIC_URL}/schedule`,
+    description:
+      'Theo dõi lịch chiếu phim mới nhất trên MovieHub. Cập nhật thông tin chi tiết về thời gian phát sóng các bộ phim bộ, phim lẻ hấp dẫn nhất trong tuần để không bỏ lỡ bất kỳ tập phim nào.',
+    url: '/schedule',
     type: 'website'
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Lịch chiếu',
-    description: 'Xem lịch chiếu phim trên MovieHub.'
+    description:
+      'Theo dõi lịch chiếu phim mới nhất trên MovieHub. Cập nhật thông tin chi tiết về thời gian phát sóng các bộ phim bộ, phim lẻ hấp dẫn nhất trong tuần để không bỏ lỡ bất kỳ tập phim nào.'
   },
   alternates: {
-    canonical: `${envConfig.NEXT_PUBLIC_URL}/schedule`
+    canonical: '/schedule'
   }
 };
 

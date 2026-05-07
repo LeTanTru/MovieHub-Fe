@@ -8,7 +8,7 @@ import {
   useReducer,
   useRef
 } from 'react';
-import { useAuth, useGetAnonymousToken, useNavigate } from '@/hooks';
+import { useAuth, useAnonymousToken, useNavigate } from '@/hooks';
 import {
   useWatchHistoryTrackingMutation,
   useWatchHistoryListQuery
@@ -89,7 +89,7 @@ export default function WatchPlayerProvider({
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
-  const { token, isLoadingToken } = useGetAnonymousToken();
+  const { token, isLoadingToken } = useAnonymousToken();
 
   const playerRef = useRef<MediaPlayerInstance>(null);
   const currentSecondsRef = useRef<number>(0);

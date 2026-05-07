@@ -1,13 +1,13 @@
 import { AvatarField, ImageField } from '@/components/form';
-import { useQueryParams } from '@/hooks';
+import { DISCUSSION_TAB_COMMENT } from '@/constants';
 import { route } from '@/routes';
+import { useCommentStore, useMovieStore } from '@/store';
 import { NotificationResType, VoteCommentNotificationType } from '@/types';
 import {
   convertUTCToLocal,
-  generatePath,
+  generateSlug,
   parseJSON,
   renderImageUrl,
-  renderListPageUrl,
   timeAgo
 } from '@/utils';
 import Link from 'next/link';
@@ -22,22 +22,29 @@ export default function VoteCommentBody({
     () => parseJSON<VoteCommentNotificationType>(notification.body),
     [notification.body]
   );
-  const { serializeParams } = useQueryParams();
 
-  const handleClick = () => {};
+  const setOpenParentIds = useCommentStore((s) => s.setOpenParentIds);
+  const setScrollTarget = useCommentStore((s) => s.setScrollTarget);
+  const setDiscussionTab = useMovieStore((s) => s.setDiscussionTab);
+
+  const handleClick = () => {
+    const parentId = body?.parentId;
+
+    if (parentId) {
+      setOpenParentIds((prev) =>
+        prev.includes(parentId) ? prev : [...prev, parentId]
+      );
+    }
+
+    setDiscussionTab(DISCUSSION_TAB_COMMENT);
+    setScrollTarget({ commentId: body?.id, parentId });
+  };
 
   return (
     <Link
       onClick={handleClick}
-      className='flex flex-1 items-center justify-between gap-2 pl-2'
-      href={renderListPageUrl(
-        generatePath(route.movie.path, {
-          id: body?.movieId || ''
-        }),
-        serializeParams({
-          movieTitle: body?.movieTitle
-        })
-      )}
+      className='flex flex-1 items-center justify-between gap-2 pl-1'
+      href={`${route.movie.path}/${generateSlug(body.movieTitle)}.${body.movieId}`}
     >
       <div className='flex flex-1 items-center gap-2'>
         <div className='flex w-10 shrink-0 justify-center'>
@@ -50,9 +57,10 @@ export default function VoteCommentBody({
         </div>
         <div className='flex flex-1 flex-col justify-between gap-2'>
           <h3 className='line-clamp-2' title={notification.title}>
-            {notification.title}:&nbsp;
-            <span className='font-semibold'>&quot;{body?.content}&quot;</span>
-            &nbsp; trong phim {body.movieTitle}
+            {notification.title}&nbsp;trong phim&nbsp;
+            <span className='text-golden-glow font-semibold'>
+              {body?.movieTitle}
+            </span>
           </h3>
           <div
             className='text-muted-foreground shrink-0 text-xs'

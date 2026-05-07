@@ -56,8 +56,8 @@ export default function Discussion({
   const {
     data: commentList,
     isLoading: commentListLoading,
-    hasNextPage: hasMoreComments,
-    isFetchingNextPage: commentLoadMoreLoading,
+    hasMore: hasMoreComments,
+    isFetchingMore: isFetchingMoreComments,
     handleLoadMore: handleLoadMoreComments,
     totalElements: totalComments
   } = useLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
@@ -74,8 +74,8 @@ export default function Discussion({
   const {
     data: reviewList,
     isLoading: reviewListLoading,
-    hasNextPage: hasMoreReviews,
-    isFetchingNextPage: reviewLoadMoreLoading,
+    hasMore: hasMoreReviews,
+    isFetchingMore: isFetchingMoreReviews,
     handleLoadMore: handleLoadMoreReviews,
     totalElements: totalReviews
   } = useLoadMore<HTMLDivElement, ReviewSearchType, ReviewResType>({
@@ -199,7 +199,7 @@ export default function Discussion({
             isLoading={commentListLoading}
             hasMore={!!hasMoreComments}
             remainingCount={remainingComments}
-            isLoadMoreLoading={commentLoadMoreLoading}
+            isLoadingMore={isFetchingMoreComments}
             onLoadMore={handleLoadMoreComments}
           />
         </Activity>
@@ -209,7 +209,7 @@ export default function Discussion({
             isLoading={reviewListLoading}
             hasMore={!!hasMoreReviews}
             remainingCount={remainingReviews}
-            isLoadMoreLoading={reviewLoadMoreLoading}
+            isLoadingMore={isFetchingMoreReviews}
             onLoadMore={handleLoadMoreReviews}
           />
         </Activity>

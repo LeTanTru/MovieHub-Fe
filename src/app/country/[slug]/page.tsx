@@ -29,30 +29,37 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const countryCode = getIdFromSlug(slug);
-  const countryName = countries.find(
-    (country) => country.value === countryCode
-  )?.label;
+  const countryName =
+    countries.find((country) => country.value === countryCode)?.label ||
+    'quốc gia';
   const title = countryName ? `Phim ${countryName}` : 'Phim theo quốc gia';
   const description = countryName
-    ? `Xem danh sách phim ${countryName} mới nhất trên MovieHub.`
-    : 'Xem danh sách phim theo quốc gia mới nhất trên MovieHub.';
+    ? `Khám phá danh sách phim ${countryName} mới nhất trên MovieHub. Tổng hợp các bộ phim từ ${countryName} hay nhất, đa dạng thể loại, cập nhật thường xuyên với chất lượng tốt nhất.`
+    : 'Xem danh sách phim theo quốc gia mới nhất trên MovieHub. Tuyển tập phim từ nhiều quốc gia trên thế giới, cập nhật nhanh chóng và đầy đủ nhất.';
 
   return {
     title,
     description,
+    metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+    keywords: [
+      countryName,
+      'quốc gia phim',
+      'phim moviehub',
+      `phim ${countryName?.toLowerCase()}`
+    ],
     openGraph: {
       title,
       description,
-      url: `${envConfig.NEXT_PUBLIC_URL}/country/${slug}`,
+      url: `/country/${slug}`,
       type: 'website'
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
       description
     },
     alternates: {
-      canonical: `${envConfig.NEXT_PUBLIC_URL}/country/${slug}`
+      canonical: `/country/${slug}`
     }
   };
 }

@@ -1,5 +1,19 @@
 import sanitizeHtml from 'sanitize-html';
 
+export const stripHtml = (str: string) => {
+  return sanitizeHtml(str, {
+    allowedTags: [],
+    allowedAttributes: {}
+  })
+    .replace(/\s+/g, ' ')
+    .trim();
+};
+
+export const truncate = (str: string, length: number) => {
+  if (str.length <= length) return str;
+  return str.slice(0, length).trim() + '...';
+};
+
 export const sanitizeText = (str: string) => {
   return sanitizeHtml(str, {
     allowedTags: [

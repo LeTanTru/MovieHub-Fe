@@ -33,7 +33,7 @@ type ReviewListProps = {
   isLoading?: boolean;
   hasMore?: boolean;
   remainingCount?: number;
-  isLoadMoreLoading?: boolean;
+  isLoadingMore?: boolean;
   onLoadMore?: () => void;
 };
 
@@ -42,7 +42,7 @@ export default function ReviewList({
   isLoading = false,
   hasMore = false,
   remainingCount = 0,
-  isLoadMoreLoading = false,
+  isLoadingMore = false,
   onLoadMore
 }: ReviewListProps) {
   const { profile, isAuthenticated } = useAuth();
@@ -246,7 +246,7 @@ export default function ReviewList({
             variant='ghost'
             onClick={onLoadMore}
           >
-            {isLoadMoreLoading ? (
+            {isLoadingMore ? (
               <VerticalBarLoading />
             ) : (
               remainingCount > 0 && `Xem thêm ${remainingCount} đánh giá`

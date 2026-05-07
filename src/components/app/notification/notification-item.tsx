@@ -30,9 +30,9 @@ export default function NotificationItem({
     <div
       onClick={() => onUpdateRead(notification)}
       className={cn(
-        'hover:bg-black-denim flex cursor-pointer items-center justify-between rounded py-2 transition-colors duration-200 ease-linear',
+        'hover:bg-bunker/80 flex cursor-pointer items-center justify-between rounded py-2 transition-colors duration-200 ease-linear',
         {
-          'bg-black-denim/50': !notification.isRead
+          'bg-bunker/50': !notification.isRead
         }
       )}
     >
@@ -49,11 +49,11 @@ export default function NotificationItem({
         </DropdownMenuTrigger>
         <DropdownMenuContent
           sideOffset={0}
-          className='dark:bg-black-denim w-40 border-none transition-colors duration-200 ease-linear'
+          className='dark:bg-charade w-40 border-none'
           align='center'
         >
           <DropdownMenuGroup>
-            <DropdownMenuItem className='dark:hover:bg-charade cursor-pointer p-0! transition-all duration-200 ease-linear'>
+            <DropdownMenuItem className='dark:hover:bg-black-denim cursor-pointer p-0! transition-all duration-200 ease-linear'>
               <ConfirmModal
                 message='Bạn có chắc chắn muốn xóa thông báo này không ?'
                 onConfirm={() => onDelete(notification.id)}

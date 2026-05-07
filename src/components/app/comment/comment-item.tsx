@@ -12,15 +12,17 @@ import {
 import { useClickOutside, useLoadMore } from '@/hooks';
 import { CommentResType, CommentSearchType } from '@/types';
 import { renderImageUrl } from '@/utils';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { commentApiRequest } from '@/api-requests';
 import { getQueryClient } from '@/components/providers/query-provider';
 import CommentHeader from './comment-header';
 import CommentContent from './comment-content';
-import CommentReply from './comment-reply';
+import CommentReplyForm from './comment-reply-form';
 import CommentReplyList from './comment-reply-list';
 import CommentAction from './comment-action';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Element, scroller } from 'react-scroll';
+import { cn } from '@/lib';
 
 type CommentItemProps = {
   comment: CommentResType & { children?: CommentResType[] };
@@ -30,6 +32,8 @@ type CommentItemProps = {
   level: number;
   openParentIds: string[];
   replyingComment: CommentResType | null;
+  targetCommentId: string | null;
+  targetParentId: string | null;
   rootId: string;
   userId: string;
   voteMap: Record<string, number>;
@@ -44,6 +48,7 @@ type CommentItemProps = {
   ) => ReactNode;
   setEditingComment: (editingComment: CommentResType | null) => void;
   setOpenParentIds: (ids: string[] | ((prev: string[]) => string[])) => void;
+  clearScrollTarget: () => void;
 };
 
 export default function CommentItem({
@@ -54,6 +59,8 @@ export default function CommentItem({
   level,
   openParentIds,
   replyingComment,
+  targetCommentId,
+  targetParentId,
   rootId,
   userId,
   voteMap,
@@ -63,7 +70,8 @@ export default function CommentItem({
   openReply,
   renderChildren,
   setEditingComment,
-  setOpenParentIds
+  setOpenParentIds,
+  clearScrollTarget
 }: CommentItemProps) {
   const author = comment.author;
   const isAuthor = userId && author.id ? userId === author.id : false;
@@ -86,12 +94,16 @@ export default function CommentItem({
 
   const isActiveParent = openParentIds.includes(comment.id);
 
+  const scrollTargetName = useMemo(() => `comment-${comment.id}`, [comment.id]); // unique name for scroll target
+
+  const [isScrollTarget, setIsScrollTarget] = useState(false); // state to trigger highlight effect
+
   const {
     data: commentList,
     isLoading,
-    hasNextPage: hasMoreComments,
-    isFetchingNextPage: isLoadingMore,
-    handleLoadMore: handleFetchNextPage
+    hasMore,
+    isFetchingMore,
+    fetchMore
   } = useLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
     params: {
       movieId: comment.movieId,
@@ -199,86 +211,150 @@ export default function CommentItem({
 
   const showMore = isHiddenComment || isAuthor;
 
+  useEffect(() => {
+    if (targetCommentId !== comment.id) return; // only scroll if this comment is the target
+
+    let clearHighlightTimeout: NodeJS.Timeout | null = null;
+
+    // delay scrolling to ensure the target element is rendered and in place
+    const scrollTimeout = setTimeout(() => {
+      scroller.scrollTo(scrollTargetName, {
+        duration: 500,
+        smooth: 'easeInOutQuart',
+        offset: -250
+      });
+
+      setIsScrollTarget(true);
+      clearHighlightTimeout = setTimeout(() => {
+        setIsScrollTarget(false);
+        clearScrollTarget();
+      }, 2000);
+    }, 100);
+
+    return () => {
+      setIsScrollTarget(false); // Clear highlight if component unmounts or targetCommentId changes
+
+      clearTimeout(scrollTimeout);
+      if (clearHighlightTimeout) {
+        clearTimeout(clearHighlightTimeout);
+      }
+    };
+  }, [clearScrollTarget, comment.id, scrollTargetName, targetCommentId]);
+
+  useEffect(() => {
+    if (!targetCommentId || !targetParentId) return; // only load more if there is a target comment and parent
+
+    if (targetParentId !== comment.id) return; // only load more if this comment is the parent of the target comment
+
+    if (targetCommentId === comment.id) return; // if the target comment is this comment, it means it's already loaded, no need to load more
+
+    if (!isActiveParent || isLoading || isFetchingMore || !hasMore) return; // only load more if this comment is the active parent and not already loading or fetching more
+
+    if (commentList.some((item) => item.id === targetCommentId)) return; // if the target comment is already in the currently loaded comments, no need to load more
+
+    fetchMore();
+  }, [
+    comment.id,
+    commentList,
+    fetchMore,
+    hasMore,
+    isActiveParent,
+    isFetchingMore,
+    isLoading,
+    targetCommentId,
+    targetParentId
+  ]);
+
   return (
-    <div className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'>
-      <div className='flex flex-col items-center gap-y-0.5'>
-        <AvatarField
-          src={renderImageUrl(author.avatarPath)}
-          size={45}
-          alt={author.fullName}
-          breakpoints={[{ breakpoint: 640, size: 50 }]}
-        />
-        {isAuthor && (
-          <span className='max-640:block text-golden-glow max-640:text-[13px] max-520:text-xs hidden font-semibold'>
-            Bạn
-          </span>
+    <Element name={scrollTargetName}>
+      <div
+        className={cn(
+          'max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4',
+          {
+            'ring-golden-glow rounded-lg ring-2 transition-colors duration-200 ease-linear':
+              isScrollTarget
+          }
         )}
+      >
+        <div className='flex flex-col items-center gap-y-0.5'>
+          <AvatarField
+            src={renderImageUrl(author.avatarPath)}
+            size={45}
+            alt={author.fullName}
+            breakpoints={[{ breakpoint: 640, size: 50 }]}
+          />
+          {isAuthor && (
+            <span className='max-640:block text-golden-glow max-640:text-[13px] max-520:text-xs hidden font-semibold'>
+              Bạn
+            </span>
+          )}
+        </div>
+        <div className='grow'>
+          <CommentHeader
+            comment={comment}
+            isAuthor={isAuthor}
+            kind={kind}
+            gender={gender}
+            GenderIcon={GenderIcon}
+            author={author}
+            movieItem={movieItem}
+          />
+
+          <CommentContent
+            comment={comment}
+            isHiddenComment={isHiddenComment}
+            showBlurredContent={showBlurredContent}
+            onToggleBlurredContent={handleToggleBlurredContent}
+            renderMention={renderMention}
+          />
+
+          <CommentAction
+            comment={comment}
+            level={level}
+            isAuthenticated={isAuthenticated}
+            isAuthor={isAuthor}
+            isVoteLoading={isVoteLoading}
+            isHiddenComment={isHiddenComment}
+            showBlurredContent={showBlurredContent}
+            showDropdown={showDropdown}
+            showMore={showMore}
+            voteMap={voteMap}
+            dropdownRef={dropdownRef}
+            onVote={handleVote}
+            onReply={handleReplyComment}
+            onEdit={() => handleEditComment(comment)}
+            onToggleDropdown={handleDropdownToggle}
+            onToggleBlurredContent={handleToggleBlurredContent}
+            onDelete={handleDeleteComment}
+          />
+
+          <CommentReplyForm
+            comment={comment}
+            rootId={rootId}
+            author={author}
+            replyingComment={replyingComment}
+            editingComment={editingComment}
+            onReplySubmit={handleReplySubmit}
+            onCancel={handleCancel}
+          />
+
+          <CommentReplyList
+            comment={comment}
+            level={level}
+            rootId={rootId}
+            isActiveParent={isActiveParent}
+            commentList={commentList}
+            isLoading={isLoading}
+            isLoadingMore={isFetchingMore}
+            hasMoreComments={!!hasMore}
+            onViewReplies={() => handleViewReplies(comment.id)}
+            onHideReplies={() => handleHideReplies(comment.id)}
+            onFetchMoreReplies={fetchMore}
+            renderChildren={renderChildren}
+          />
+        </div>
       </div>
-      <div className='grow'>
-        <CommentHeader
-          comment={comment}
-          isAuthor={isAuthor}
-          kind={kind}
-          gender={gender}
-          GenderIcon={GenderIcon}
-          author={author}
-          movieItem={movieItem}
-        />
-
-        <CommentContent
-          comment={comment}
-          isHiddenComment={isHiddenComment}
-          showBlurredContent={showBlurredContent}
-          onToggleBlurredContent={handleToggleBlurredContent}
-          renderMention={renderMention}
-        />
-
-        <CommentAction
-          comment={comment}
-          level={level}
-          isAuthenticated={isAuthenticated}
-          isAuthor={isAuthor}
-          isVoteLoading={isVoteLoading}
-          isHiddenComment={isHiddenComment}
-          showBlurredContent={showBlurredContent}
-          showDropdown={showDropdown}
-          showMore={showMore}
-          voteMap={voteMap}
-          dropdownRef={dropdownRef}
-          onVote={handleVote}
-          onReply={handleReplyComment}
-          onEdit={() => handleEditComment(comment)}
-          onToggleDropdown={handleDropdownToggle}
-          onToggleBlurredContent={handleToggleBlurredContent}
-          onDelete={handleDeleteComment}
-        />
-
-        <CommentReply
-          comment={comment}
-          rootId={rootId}
-          author={author}
-          replyingComment={replyingComment}
-          editingComment={editingComment}
-          onReplySubmit={handleReplySubmit}
-          onCancel={handleCancel}
-        />
-
-        <CommentReplyList
-          comment={comment}
-          level={level}
-          rootId={rootId}
-          isActiveParent={isActiveParent}
-          commentList={commentList}
-          isLoading={isLoading}
-          isLoadingMore={isLoadingMore}
-          hasMoreComments={!!hasMoreComments}
-          onViewReplies={() => handleViewReplies(comment.id)}
-          onHideReplies={() => handleHideReplies(comment.id)}
-          onFetchMoreReplies={handleFetchNextPage}
-          renderChildren={renderChildren}
-        />
-      </div>
-    </div>
+    </Element>
   );
 }
 

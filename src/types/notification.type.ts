@@ -70,7 +70,7 @@ export type ReplyCommentNotificationType = {
   movieTitle: string;
   movieThumbnail: string;
   content: string;
-  parentId: string;
+  parentId?: string;
   author: {
     id: string;
     username: string;
@@ -86,6 +86,23 @@ export type VoteCommentNotificationType = {
   movieId: string;
   movieTitle: string;
   movieThumbnail: string;
+  content: string;
+  reactionType: number;
+  author: {
+    id: string;
+    username: string;
+    email: string;
+    fullName: string;
+    avatarPath: string;
+  };
+};
+
+export type VoteReviewNotificationType = {
+  id: string;
+  movieId: string;
+  movieTitle: string;
+  movieThumbnail: string;
+  rate: number;
   content: string;
   reactionType: number;
   author: {

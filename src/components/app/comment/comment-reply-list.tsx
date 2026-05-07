@@ -63,6 +63,7 @@ export default function CommentReplyList({
           <button
             className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs mt-4 flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
             onClick={onViewReplies}
+            type='button'
           >
             <FaChevronDown /> Xem tất cả&nbsp;{comment.totalChildren} trả lời
           </button>
@@ -76,6 +77,7 @@ export default function CommentReplyList({
             {hasMoreComments && (
               <Button
                 variant='ghost'
+                type='button'
                 className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex h-5! items-center p-0! font-medium hover:bg-transparent'
                 onClick={onFetchMoreReplies}
               >
@@ -85,6 +87,7 @@ export default function CommentReplyList({
             )}
             <Button
               variant='ghost'
+              type='button'
               className='max-640:text-[13px] max-520:text-xs flex h-5! items-center p-0! font-medium hover:bg-transparent hover:text-red-500'
               onClick={onHideReplies}
             >

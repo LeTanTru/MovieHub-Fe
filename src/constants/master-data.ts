@@ -1658,11 +1658,11 @@ export const movieTabs = [
 
 export const favouriteTabs = [
   {
-    key: FAVOURITE_TYPE_MOVIE,
+    value: FAVOURITE_TYPE_MOVIE,
     label: 'Phim'
   },
   {
-    key: FAVOURITE_TYPE_PERSON,
+    value: FAVOURITE_TYPE_PERSON,
     label: 'Diễn viên'
   }
 ];
@@ -1689,7 +1689,7 @@ export const mqttTopics = {
   ACCOUNT: 'notification/:accountId'
 };
 
-export const notificationTypes: OptionType[] = [
+export const notificationTabs: OptionType[] = [
   {
     value: NOTIFICATION_TYPE_MOVIE,
     label: 'Phim'

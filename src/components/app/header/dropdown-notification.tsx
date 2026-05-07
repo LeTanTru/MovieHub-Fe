@@ -11,8 +11,9 @@ import {
   NOTIFICATION_PAGE_SIZE,
   NOTIFICATION_TYPE_COMMUNITY,
   NOTIFICATION_TYPE_MOVIE,
-  notificationTypes,
-  queryKeys
+  notificationTabs,
+  queryKeys,
+  storageKeys
 } from '@/constants';
 import { useAuth, useClickOutside, useDisclosure } from '@/hooks';
 import { logger } from '@/logger';
@@ -20,12 +21,12 @@ import {
   useCountUnreadNotificationQuery,
   useDeleteAllNotificationMutation,
   useDeleteNotificationMutation,
-  useGetNotificationListQuery,
+  useNotificationListQuery,
   useReadAllNotificationMutation
 } from '@/queries';
 import { route } from '@/routes';
 import { NotificationSearchType } from '@/types';
-import { invalidateQueries, notify } from '@/utils';
+import { getData, invalidateQueries, notify, setData } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import { Bell, CheckCheck, Trash } from 'lucide-react';
 import Link from 'next/link';
@@ -43,41 +44,41 @@ export default function DropdownNotification() {
   const dropdownRef = useClickOutside<HTMLDivElement>(() => closeDropDown());
 
   const [params, setParams] = useState<NotificationSearchType>({
-    type: NOTIFICATION_TYPE_MOVIE,
+    type: getData(storageKeys.NOTIFICATION_TAB) || NOTIFICATION_TYPE_MOVIE,
     page: DEFAULT_PAGE_START,
     size: NOTIFICATION_PAGE_SIZE
   });
 
-  const { data: notificationListData, isLoading } = useGetNotificationListQuery(
-    {
-      params,
-      enabled: isAuthenticated && openedDropdown
-    }
-  );
+  const { data: notificationListData, isLoading } = useNotificationListQuery({
+    params,
+    enabled: isAuthenticated && openedDropdown
+  });
 
   const notificationList = notificationListData?.content || [];
   const totalElements = notificationListData?.totalElements || 0;
 
-  const { data: totalUnreadData } = useCountUnreadNotificationQuery();
+  const { data: totalUnreadData } = useCountUnreadNotificationQuery({
+    enabled: isAuthenticated
+  });
 
   const totalUnread = totalUnreadData?.totalUnread
     ? Number(totalUnreadData.totalUnread)
     : 0;
 
   const {
-    mutateAsync: readAllNotifyMutate,
+    mutateAsync: readAllNotificationMutate,
     isPending: readAllNotificationLoading
   } = useReadAllNotificationMutation();
 
   const { mutateAsync: deleteNotifyMutate } = useDeleteNotificationMutation();
 
   const {
-    mutateAsync: deleteAllNotifyMutate,
+    mutateAsync: deleteAllNotificationMutate,
     isPending: deleteAllNotificationLoading
   } = useDeleteAllNotificationMutation();
 
   const handleReadAll = async () => {
-    await readAllNotifyMutate(undefined, {
+    await readAllNotificationMutate(undefined, {
       onSuccess: () => {
         invalidateQueries([
           queryKeys.UNREAD_NOTIFICATION_COUNT,
@@ -93,7 +94,7 @@ export default function DropdownNotification() {
   };
 
   const handleDeleteAll = async () => {
-    await deleteAllNotifyMutate(undefined, {
+    await deleteAllNotificationMutate(undefined, {
       onSuccess: () => {
         invalidateQueries([
           queryKeys.UNREAD_NOTIFICATION_COUNT,
@@ -126,6 +127,11 @@ export default function DropdownNotification() {
 
   const handleChangeTab = (type: string) => {
     setParams((prev) => ({ ...prev, type: Number(type) }));
+    setData(storageKeys.NOTIFICATION_TAB, String(type));
+  };
+
+  const handleItemClick = () => {
+    closeDropDown();
   };
 
   return (
@@ -163,14 +169,17 @@ export default function DropdownNotification() {
               <div className='bg-charade h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
             </div>
             <Tabs
-              defaultValue={NOTIFICATION_TYPE_MOVIE.toString()}
+              defaultValue={
+                getData(storageKeys.NOTIFICATION_TAB) ||
+                String(NOTIFICATION_TYPE_MOVIE)
+              }
               className='flex-1 rounded'
               onValueChange={handleChangeTab}
             >
               <div className='flex justify-between border-b'>
                 <div className='flex-1'>
                   <TabsList className='w-full justify-start gap-0 rounded-none border-none bg-transparent p-0'>
-                    {notificationTypes.map((notification) => (
+                    {notificationTabs.map((notification) => (
                       <TabsTrigger
                         key={notification.value}
                         value={notification.value.toString()}
@@ -228,9 +237,10 @@ export default function DropdownNotification() {
                 className='flex items-center justify-center'
               >
                 <NotificationList
-                  notifications={notificationList}
+                  notificationList={notificationList}
                   loading={isLoading}
-                  handleDelete={handleDelete}
+                  onDelete={handleDelete}
+                  onItemClick={handleItemClick}
                 />
               </TabsContent>
               <TabsContent
@@ -238,9 +248,10 @@ export default function DropdownNotification() {
                 className='flex items-center justify-center'
               >
                 <NotificationList
-                  notifications={notificationList}
+                  notificationList={notificationList}
                   loading={isLoading}
-                  handleDelete={handleDelete}
+                  onDelete={handleDelete}
+                  onItemClick={handleItemClick}
                 />
               </TabsContent>
             </Tabs>
