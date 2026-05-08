@@ -57,7 +57,7 @@ export default function Discussion({
     data: commentList,
     isLoading: commentListLoading,
     hasMore: hasMoreComments,
-    isFetchingMore: isFetchingMoreComments,
+    isLoadingMore: isFetchingMoreComments,
     handleLoadMore: handleLoadMoreComments,
     totalElements: totalComments
   } = useLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
@@ -75,7 +75,7 @@ export default function Discussion({
     data: reviewList,
     isLoading: reviewListLoading,
     hasMore: hasMoreReviews,
-    isFetchingMore: isFetchingMoreReviews,
+    isLoadingMore: isFetchingMoreReviews,
     handleLoadMore: handleLoadMoreReviews,
     totalElements: totalReviews
   } = useLoadMore<HTMLDivElement, ReviewSearchType, ReviewResType>({
@@ -103,6 +103,7 @@ export default function Discussion({
     totalComments - filteredCommentList.length,
     0
   );
+
   const remainingReviews = Math.max(
     totalReviews - filteredReviewList.length,
     0

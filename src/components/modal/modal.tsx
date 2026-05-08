@@ -38,8 +38,8 @@ const useModal = () => {
 type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   open: boolean;
   onClose: () => void;
-  backdrop?: boolean;
   confirmOnClose?: boolean;
+  closeOnBackdrop?: boolean;
   variants?: {
     initial: Record<string, any>;
     animate: Record<string, any>;
@@ -68,9 +68,9 @@ export default function Modal({
   children,
   open,
   onClose,
-  backdrop = true,
   className,
   confirmOnClose = false,
+  closeOnBackdrop = false,
   variants = {
     initial: { opacity: 0.5, scale: 0.85 },
     animate: { opacity: 1, scale: 1 },
@@ -149,15 +149,13 @@ export default function Modal({
     <AnimatePresence>
       {open && (
         <>
-          {backdrop && (
-            <m.div
-              className='backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-xs'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.1, ease: 'linear' }}
-            />
-          )}
+          <m.div
+            className='backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-xs'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.1, ease: 'linear' }}
+          />
           <ModalContext.Provider
             value={{
               open,
@@ -173,7 +171,10 @@ export default function Modal({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.1, ease: 'linear' }}
-              onClick={handleClose}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (closeOnBackdrop) handleClose();
+              }}
             >
               <m.div
                 className={cn(
