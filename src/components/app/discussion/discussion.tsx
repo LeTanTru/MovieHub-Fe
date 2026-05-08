@@ -59,7 +59,8 @@ export default function Discussion({
     hasMore: hasMoreComments,
     isLoadingMore: isFetchingMoreComments,
     handleLoadMore: handleLoadMoreComments,
-    totalElements: totalComments
+    totalElements: totalComments,
+    remainingElements: remainingComments
   } = useLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
     queryKey: queryKeys.COMMENT_LIST,
     params: {
@@ -77,7 +78,8 @@ export default function Discussion({
     hasMore: hasMoreReviews,
     isLoadingMore: isFetchingMoreReviews,
     handleLoadMore: handleLoadMoreReviews,
-    totalElements: totalReviews
+    totalElements: totalReviews,
+    remainingElements: remainingReviews
   } = useLoadMore<HTMLDivElement, ReviewSearchType, ReviewResType>({
     queryKey: queryKeys.REVIEW_LIST,
     params: {
@@ -98,16 +100,6 @@ export default function Discussion({
     [DISCUSSION_TAB_COMMENT]: totalComments,
     [DISCUSSION_TAB_REVIEW]: totalReviews
   };
-
-  const remainingComments = Math.max(
-    totalComments - filteredCommentList.length,
-    0
-  );
-
-  const remainingReviews = Math.max(
-    totalReviews - filteredReviewList.length,
-    0
-  );
 
   const isActiveLoading =
     discussionTab === DISCUSSION_TAB_COMMENT
