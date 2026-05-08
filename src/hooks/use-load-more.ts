@@ -71,17 +71,20 @@ const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
 
   const dataList =
     data?.pages?.flatMap((page) => page.data.content)?.filter(Boolean) || [];
+
   const totalElements = data?.pages?.[0]?.data?.totalElements || 0;
+
+  const remainingElements = Math.max(totalElements - dataList.length, 0);
 
   return {
     data: dataList,
-    fetchMore: fetchNextPage,
-    handleLoadMore,
     hasMore: hasNextPage,
-    isFetchingMore: isFetchingNextPage,
+    isLoadingMore: isFetchingNextPage,
     isLoading,
     loadMoreRef,
-    totalElements
+    remainingElements,
+    totalElements,
+    handleLoadMore
   };
 };
 

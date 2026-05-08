@@ -173,7 +173,7 @@ export default function DropdownNotification() {
                 getData(storageKeys.NOTIFICATION_TAB) ||
                 String(NOTIFICATION_TYPE_MOVIE)
               }
-              className='flex-1 rounded'
+              className='flex-1 gap-0 rounded'
               onValueChange={handleChangeTab}
             >
               <div className='flex justify-between border-b'>
@@ -183,7 +183,7 @@ export default function DropdownNotification() {
                       <TabsTrigger
                         key={notification.value}
                         value={notification.value.toString()}
-                        className='data-[state=active]:text-golden-glow! inline-block h-full flex-0 cursor-pointer rounded border-0 border-r border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:bg-black/20! data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                        className='data-[state=active]:text-golden-glow! inline-block h-full min-w-25 flex-0 cursor-pointer rounded border-0 border-r border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:bg-black/30! data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
                       >
                         {notification.label}
                       </TabsTrigger>

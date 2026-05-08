@@ -1,5 +1,6 @@
 'use client';
 
+import { notificationApiRequest } from '@/api-requests';
 import { NotificationItem } from '@/components/app/notification';
 import { Button } from '@/components/form';
 import { List } from '@/components/list';
@@ -12,14 +13,13 @@ import {
   notificationTabs,
   queryKeys
 } from '@/constants';
-import { useAuth } from '@/hooks';
+import { useAuth, useLoadMore } from '@/hooks';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import {
   useCountUnreadNotificationQuery,
   useDeleteAllNotificationMutation,
   useDeleteNotificationMutation,
-  useNotificationListQuery,
   useReadAllNotificationMutation,
   useUpdateReadNotificationMutation
 } from '@/queries';
@@ -39,13 +39,21 @@ export default function NotificationList() {
     size: NOTIFICATION_PAGE_SIZE
   });
 
-  const { data: notificationListData, isLoading } = useNotificationListQuery({
+  const {
+    data: notificationList,
+    isLoading,
+    totalElements,
+    hasMore,
+    isLoadingMore,
+    remainingElements,
+    handleLoadMore
+  } = useLoadMore<HTMLDivElement, NotificationSearchType, NotificationResType>({
+    queryKey: queryKeys.NOTIFICATION_LIST,
     params,
-    enabled: isAuthenticated
+    queryFn: notificationApiRequest.getList,
+    enabled: isAuthenticated,
+    mode: 'click'
   });
-
-  const notificationList = notificationListData?.content || [];
-  const totalElements = notificationListData?.totalElements || 0;
 
   const { data: totalUnreadData } = useCountUnreadNotificationQuery({
     enabled: isAuthenticated
@@ -212,7 +220,7 @@ export default function NotificationList() {
           <VerticalBarLoading className='stroke-main-color' />
         </div>
       ) : (
-        <List className='scrollbar-none flex max-h-[80vh] min-h-[50vh] w-full flex-col overflow-y-auto rounded'>
+        <List className='w-full'>
           {notificationList.map((notification) => (
             <NotificationItem
               key={notification.id}
@@ -222,6 +230,22 @@ export default function NotificationList() {
             />
           ))}
         </List>
+      )}
+      {hasMore && (
+        <div className='flex w-full items-center justify-center'>
+          {isLoadingMore ? (
+            <VerticalBarLoading className='py-10' />
+          ) : (
+            <Button
+              className='hover:text-golden-glow hover:bg-transparent'
+              variant='ghost'
+              onClick={handleLoadMore}
+            >
+              {remainingElements > 0 &&
+                `Xem thêm (${remainingElements}) thông báo`}
+            </Button>
+          )}
+        </div>
       )}
     </div>
   );

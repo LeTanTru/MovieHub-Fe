@@ -18,6 +18,7 @@ interface ConfirmModalProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   loading?: boolean;
+  triggerClassName?: string;
 }
 
 export default function ConfirmModal({
@@ -30,7 +31,8 @@ export default function ConfirmModal({
   className,
   open: controlledOpen,
   onOpenChange,
-  loading
+  loading,
+  triggerClassName
 }: ConfirmModalProps) {
   const [internalOpen, setInternalOpen] = useState(false);
   const isControlled = controlledOpen !== undefined;
@@ -64,6 +66,7 @@ export default function ConfirmModal({
             e.stopPropagation();
             setOpen(true);
           }}
+          className={cn('w-full', triggerClassName)}
         >
           {trigger}
         </div>

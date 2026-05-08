@@ -102,8 +102,8 @@ export default function CommentItem({
     data: commentList,
     isLoading,
     hasMore,
-    isFetchingMore,
-    fetchMore
+    isLoadingMore,
+    handleLoadMore
   } = useLoadMore<HTMLDivElement, CommentSearchType, CommentResType>({
     params: {
       movieId: comment.movieId,
@@ -248,18 +248,18 @@ export default function CommentItem({
 
     if (targetCommentId === comment.id) return; // if the target comment is this comment, it means it's already loaded, no need to load more
 
-    if (!isActiveParent || isLoading || isFetchingMore || !hasMore) return; // only load more if this comment is the active parent and not already loading or fetching more
+    if (!isActiveParent || isLoading || isLoadingMore || !hasMore) return; // only load more if this comment is the active parent and not already loading or fetching more
 
     if (commentList.some((item) => item.id === targetCommentId)) return; // if the target comment is already in the currently loaded comments, no need to load more
 
-    fetchMore();
+    handleLoadMore();
   }, [
     comment.id,
     commentList,
-    fetchMore,
+    handleLoadMore,
     hasMore,
     isActiveParent,
-    isFetchingMore,
+    isLoadingMore,
     isLoading,
     targetCommentId,
     targetParentId
@@ -345,11 +345,11 @@ export default function CommentItem({
             isActiveParent={isActiveParent}
             commentList={commentList}
             isLoading={isLoading}
-            isLoadingMore={isFetchingMore}
+            isLoadingMore={isLoadingMore}
             hasMoreComments={!!hasMore}
             onViewReplies={() => handleViewReplies(comment.id)}
             onHideReplies={() => handleHideReplies(comment.id)}
-            onFetchMoreReplies={fetchMore}
+            onLoadMore={handleLoadMore}
             renderChildren={renderChildren}
           />
         </div>

@@ -62,7 +62,7 @@ export default function NotificationList({
   }
 
   return (
-    <List className='scrollbar-none flex max-h-[80vh] min-h-[50vh] w-full flex-col overflow-y-auto rounded p-1'>
+    <List className='scrollbar-none flex max-h-[80vh] min-h-[50vh] w-full flex-col overflow-y-auto'>
       {notificationList.map((notification) => (
         <NotificationItem
           key={notification.id}

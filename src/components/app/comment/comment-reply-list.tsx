@@ -17,7 +17,7 @@ type CommentReplyListProps = {
   hasMoreComments: boolean;
   onViewReplies: () => void;
   onHideReplies: () => void;
-  onFetchMoreReplies: () => void;
+  onLoadMore: () => void;
   renderChildren: (
     list: CommentResType[],
     level: number,
@@ -36,7 +36,7 @@ export default function CommentReplyList({
   hasMoreComments,
   onViewReplies,
   onHideReplies,
-  onFetchMoreReplies,
+  onLoadMore,
   renderChildren
 }: CommentReplyListProps) {
   return (
@@ -79,7 +79,7 @@ export default function CommentReplyList({
                 variant='ghost'
                 type='button'
                 className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex h-5! items-center p-0! font-medium hover:bg-transparent'
-                onClick={onFetchMoreReplies}
+                onClick={onLoadMore}
               >
                 <FaChevronDown /> Xem thêm&nbsp;
                 {comment.totalChildren - commentList.length} trả lời
