@@ -49,7 +49,7 @@ export default function MovieTabs() {
     setActiveKey(key);
   };
 
-  const activeTabContent = (() => {
+  const getActiveTab = () => {
     switch (activeKey) {
       case MOVIE_TAB_EPISODE:
         return <MovieTabEpisode direction={direction} />;
@@ -68,7 +68,9 @@ export default function MovieTabs() {
       default:
         return null;
     }
-  })();
+  };
+
+  const activeTabContent = getActiveTab();
 
   return (
     <div className='max-1120:px-5 max-800:px-0 flex flex-col px-10'>

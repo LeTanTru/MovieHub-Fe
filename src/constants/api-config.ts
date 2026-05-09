@@ -249,20 +249,17 @@ const apiConfig = defineApiConfig({
       method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true
+    },
+    recommendation: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/recommendation`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
     }
   },
   moviePerson: {
     getList: {
       baseUrl: `${AppConstants.apiUrl}/v1/movie-person/list`,
-      method: 'GET',
-      headers: baseHeader,
-      ignoreAuth: true,
-      isRequiredXClientType: true
-    }
-  },
-  movieItem: {
-    getList: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie-item/list`,
       method: 'GET',
       headers: baseHeader,
       ignoreAuth: true,
@@ -433,12 +430,6 @@ const apiConfig = defineApiConfig({
     delete: {
       baseUrl: `${AppConstants.apiUrl}/v1/playlist/delete/:id`,
       method: 'DELETE',
-      headers: baseHeader,
-      isRequiredXClientType: true
-    },
-    getById: {
-      baseUrl: `${AppConstants.apiUrl}/v1/playlist/get/:id`,
-      method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true
     },

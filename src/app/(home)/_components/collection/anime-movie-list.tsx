@@ -28,13 +28,14 @@ type AnimeMovieListProps = {
 };
 
 export default function AnimeMovieList({ collection }: AnimeMovieListProps) {
-  const movieList = collection?.movies || [];
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
-  const [isGrabbing, setIsGrabbing] = useState<boolean>(false);
-
   const queryClient = getQueryClient();
 
   const { isAuthenticated } = useAuth();
+
+  const movieList = collection?.movies || [];
+
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+  const [isGrabbing, setIsGrabbing] = useState<boolean>(false);
 
   const { mutateAsync: addFavourite, isPending: addFavouriteLoading } =
     useFavouriteMutation();

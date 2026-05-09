@@ -36,14 +36,6 @@ export const useDeletePlaylistMutation = () => {
   });
 };
 
-export const usePlaylistQuery = (id: string) => {
-  return useQuery({
-    queryKey: [queryKeys.PLAYLIST, id],
-    queryFn: () => playlistApiRequest.getById(id),
-    enabled: !!id
-  });
-};
-
 export const usePlaylistListQuery = ({ enabled }: { enabled?: boolean }) => {
   return useQuery({
     queryKey: [queryKeys.PLAYLIST_LIST],

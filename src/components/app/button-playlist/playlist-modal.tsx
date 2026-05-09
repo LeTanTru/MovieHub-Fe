@@ -14,6 +14,7 @@ import { playlistSchema } from '@/schemaValidations';
 import { PlaylistBodyType, PlaylistResType } from '@/types';
 import { notify } from '@/utils';
 import { useState } from 'react';
+import { useAuth } from '@/hooks';
 
 type PlaylistModalProps = {
   opened: boolean;
@@ -26,11 +27,15 @@ export default function PlaylistModal({
   onClose,
   playlist
 }: PlaylistModalProps) {
+  const { isAuthenticated } = useAuth();
+
   const queryClient = getQueryClient();
+
   const {
     mutateAsync: createPlaylistMutate,
     isPending: createPlaylistLoading
   } = useCreatePlayListMutation();
+
   const {
     mutateAsync: updatePlaylistMutate,
     isPending: updatePlaylistLoading
@@ -56,6 +61,8 @@ export default function PlaylistModal({
   };
 
   const handleSubmit = async (values: PlaylistBodyType) => {
+    if (!isAuthenticated) return;
+
     const mutate = isEditing ? updatePlaylistMutate : createPlaylistMutate;
     await mutate(
       {

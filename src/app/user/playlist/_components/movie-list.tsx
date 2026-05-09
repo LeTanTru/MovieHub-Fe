@@ -15,8 +15,11 @@ import {
 import { usePlaylistStore } from '@/store';
 import { notify } from '@/utils';
 import { useState } from 'react';
+import { useAuth } from '@/hooks';
 
 export default function MovieList() {
+  const { isAuthenticated } = useAuth();
+
   const [page, setPage] = useState(1);
 
   const pageSize = 12;
@@ -46,6 +49,8 @@ export default function MovieList() {
   };
 
   const handleDeleteMovieFromPlaylist = async (movieId: string) => {
+    if (!isAuthenticated) return;
+
     if (!playlist) return;
 
     await removePlaylistItemMutate(

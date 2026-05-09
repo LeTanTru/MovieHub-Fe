@@ -11,7 +11,7 @@ import { FaTelegramPlane } from 'react-icons/fa';
 import { FaRegFaceGrinBeam } from 'react-icons/fa6';
 import { Button, Col, Row, TextAreaField } from '@/components/form';
 import { useShallow } from 'zustand/shallow';
-import { useClickOutside } from '@/hooks';
+import { useClickOutside, useAuth } from '@/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type UseFormReturn } from 'react-hook-form';
 
@@ -32,6 +32,8 @@ export default function CommentForm({
   onSubmit,
   onCancel
 }: CommentFormProps) {
+  const { isAuthenticated } = useAuth();
+
   const { editingComment, replyingComment, setEditingComment } =
     useCommentStore(
       useShallow((s) => ({
@@ -90,6 +92,11 @@ export default function CommentForm({
   );
 
   const handleSubmit = async (values: CommentBodyType, form?: any) => {
+    if (!isAuthenticated) {
+      notify.error('Vui lòng đăng nhập để bình luận');
+      return;
+    }
+
     if (values.content?.trim().length === 0) {
       notify.error('Bạn chưa nhập nội dung bình luận');
       return;

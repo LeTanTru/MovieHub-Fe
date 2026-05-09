@@ -12,8 +12,11 @@ import { applyFormErrors, notify, removeData } from '@/utils';
 import { UseFormReturn } from 'react-hook-form';
 import { useState } from 'react';
 import { ConfirmModal } from '@/components/modal';
+import { useAuth } from '@/hooks';
 
 export default function ChangePasswordForm() {
+  const { isAuthenticated } = useAuth();
+
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();
 
@@ -34,6 +37,8 @@ export default function ChangePasswordForm() {
     values: ChangePasswordBodyType,
     form: UseFormReturn<ChangePasswordBodyType>
   ) => {
+    if (!isAuthenticated) return;
+
     try {
       const payload: Omit<ChangePasswordBodyType, 'confirmNewPassword'> = {
         oldPassword: values.oldPassword,

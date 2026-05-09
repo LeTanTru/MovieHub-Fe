@@ -14,16 +14,18 @@ const useWatchPlayerData = (movie: MovieResType | null) => {
   const isSingle = movie?.type === MOVIE_TYPE_SINGLE;
   const isSeries = movie?.type === MOVIE_TYPE_SERIES;
 
-  const season = (() => {
+  const getSeason = () => {
     if (!movie?.seasons?.length) return null;
     if (!currentSeason) return movie.seasons[movie.seasons.length - 1];
     return (
       movie.seasons.find((item) => item.label === currentSeason) ||
       movie.seasons[movie.seasons.length - 1]
     );
-  })();
+  };
 
-  const selectedEpisode = (() => {
+  const season = getSeason();
+
+  const getEpisode = () => {
     if (!isSeries) return null;
     const episodeList = (season?.episodes || []) as MovieItemResType[];
     if (!episodeList.length) return null;
@@ -32,34 +34,42 @@ const useWatchPlayerData = (movie: MovieResType | null) => {
       episodeList.find((item) => item.label === currentEpisode) ||
       episodeList[episodeList.length - 1]
     );
-  })();
+  };
+
+  const selectedEpisode = getEpisode();
 
   const episodes = useMemo(
     () => (season?.episodes || []) as MovieItemResType[],
     [season?.episodes]
   );
 
-  const currentEpisodeIndex = (() => {
+  const getEpisodeIndex = () => {
     if (!selectedEpisode || !episodes.length) return -1;
     return episodes.findIndex((ep) => ep.label === selectedEpisode.label);
-  })();
+  };
+
+  const currentEpisodeIndex = getEpisodeIndex();
 
   const isFirstEpisode = currentEpisodeIndex === 0;
   const isLastEpisode = currentEpisodeIndex === episodes.length - 1;
 
-  const video = (() => {
+  const getVideo = () => {
     if (isSeries) return selectedEpisode?.video;
     if (isSingle) return season?.video;
     return season?.video || selectedEpisode?.video || null;
-  })();
+  };
 
-  const videoTitle = (() => {
+  const video = getVideo();
+
+  const getVideoTitle = () => {
     if (!movie) return '';
     if (isSeries && season && selectedEpisode) {
       return `${season.title} - Phần ${season.label} - Tập ${selectedEpisode.label}. ${selectedEpisode.title}`;
     }
     return `${movie.title} - ${movie.originalTitle}`;
-  })();
+  };
+
+  const videoTitle = getVideoTitle();
 
   const movieItemId = isSeries ? selectedEpisode?.id : season?.id;
 

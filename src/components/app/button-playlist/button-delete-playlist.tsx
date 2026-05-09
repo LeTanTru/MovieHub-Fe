@@ -11,6 +11,7 @@ import { ApiResponse, PlaylistResType } from '@/types';
 import { notify } from '@/utils';
 import { FaTrash } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
+import { useAuth } from '@/hooks';
 
 type ButtonDeletePlaylistProps = {
   id: string;
@@ -19,6 +20,8 @@ type ButtonDeletePlaylistProps = {
 export default function ButtonDeletePlaylist({
   id
 }: ButtonDeletePlaylistProps) {
+  const { isAuthenticated } = useAuth();
+
   const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
     useShallow((s) => ({
       selectedPlaylist: s.selectedPlaylist,
@@ -31,6 +34,8 @@ export default function ButtonDeletePlaylist({
     useDeletePlaylistMutation();
 
   const handleDelete = async () => {
+    if (!isAuthenticated) return;
+
     await deletePlaylistMutate(id, {
       onSuccess: async (res) => {
         if (res.result) {
