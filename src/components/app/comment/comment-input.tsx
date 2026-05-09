@@ -26,6 +26,7 @@ type CommentInputProps = {
 
 export default function CommentInput({ isLoading = false }: CommentInputProps) {
   const { isAuthenticated } = useAuth();
+
   const queryClient = getQueryClient();
   const formMethodsRef = useRef<UseFormReturn<CommentBodyType> | null>(null);
   const [showPicker, setShowPicker] = useState<boolean>(false);

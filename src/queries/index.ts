@@ -6,7 +6,6 @@ export * from './collection.query';
 export * from './comment.query';
 export * from './favourite.query';
 export * from './file.query';
-export * from './movie-item.query';
 export * from './movie-person.query';
 export * from './movie.query';
 export * from './notification.query';

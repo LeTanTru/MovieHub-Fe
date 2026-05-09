@@ -29,13 +29,6 @@ const playlistApiRequest = {
     http.delete<ApiResponseList<any>>(apiConfig.playlist.delete, {
       pathParams: { id }
     }),
-  getById: (id: string) =>
-    http.get<ApiResponseList<PlaylistMovieResType>>(
-      apiConfig.playlist.getById,
-      {
-        pathParams: { id }
-      }
-    ),
   getList: () =>
     http.get<ApiResponse<PlaylistResType[]>>(apiConfig.playlist.getList),
   getListByMovie: (movieId: string) =>

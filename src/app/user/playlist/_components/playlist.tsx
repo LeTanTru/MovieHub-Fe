@@ -8,8 +8,11 @@ import { usePlaylistListQuery } from '@/queries';
 import { usePlaylistStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import PlaylistCard from './playlist-card';
+import { useAuth } from '@/hooks';
 
 export default function Playlist() {
+  const { isAuthenticated } = useAuth();
+
   const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
     useShallow((s) => ({
       selectedPlaylist: s.selectedPlaylist,
@@ -18,7 +21,7 @@ export default function Playlist() {
   );
 
   const { data: playlistData, isLoading } = usePlaylistListQuery({
-    enabled: true
+    enabled: isAuthenticated
   });
 
   const playlist = useMemo(() => playlistData?.data || [], [playlistData]);

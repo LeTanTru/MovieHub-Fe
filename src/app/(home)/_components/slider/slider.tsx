@@ -25,6 +25,8 @@ import { VerticalBarLoading } from '@/components/loading';
 import Image from 'next/image';
 
 export default function Slider() {
+  const { isAuthenticated } = useAuth();
+
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const [isGrabbing, setIsGrabbing] = useState<boolean>(false);
   const queryClient = getQueryClient();
@@ -34,8 +36,6 @@ export default function Slider() {
   });
 
   const sidebarList = sidebarListData?.data?.content || [];
-
-  const { isAuthenticated } = useAuth();
 
   const { mutateAsync: addFavourite, isPending: addFavouriteLoading } =
     useFavouriteMutation();

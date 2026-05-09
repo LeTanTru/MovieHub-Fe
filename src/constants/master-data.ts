@@ -296,7 +296,8 @@ export const queryKeys = {
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
+  MOVIE_RECOMMENDATION: 'movie-recommendation'
 };
 
 export const countries: OptionType[] = [

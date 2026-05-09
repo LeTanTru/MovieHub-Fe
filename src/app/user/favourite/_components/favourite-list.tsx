@@ -14,8 +14,11 @@ import { cn } from '@/lib';
 import { useDeleteFavouriteMutation, useFavouriteListQuery } from '@/queries';
 import { notify } from '@/utils';
 import { useState } from 'react';
+import { useAuth } from '@/hooks';
 
 export default function FavouriteList() {
+  const { isAuthenticated } = useAuth();
+
   const [activeTab, setActiveTab] = useState(FAVOURITE_TYPE_MOVIE);
   const [page, setPage] = useState(1);
 
@@ -31,7 +34,7 @@ export default function FavouriteList() {
       page: page - 1,
       size: pageSize
     },
-    enabled: true
+    enabled: isAuthenticated
   });
 
   const { mutateAsync: deleteFavouriteMutate } = useDeleteFavouriteMutation();
@@ -54,6 +57,8 @@ export default function FavouriteList() {
   };
 
   const handleDeleteFavourite = async (targetId: string) => {
+    if (!isAuthenticated) return;
+
     await deleteFavouriteMutate(
       { targetId, type: activeTab },
       {

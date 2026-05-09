@@ -3,20 +3,6 @@ import { queryKeys } from '@/constants';
 import { ReviewBodyType, ReviewSearchType, ReviewVoteBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useReviewListQuery = ({
-  params = {},
-  enabled
-}: {
-  params?: ReviewSearchType;
-  enabled?: boolean;
-} = {}) => {
-  return useQuery({
-    queryKey: [queryKeys.REVIEW_LIST, params],
-    queryFn: () => reviewApiRequest.getList(params),
-    enabled
-  });
-};
-
 export const useCheckMovieQuery = ({
   movieId,
   enabled

@@ -8,6 +8,7 @@ import { invalidateQueries } from '@/utils';
 import { queryKeys } from '@/constants';
 import { NotificationItem } from '@/components/app/notification';
 import { VerticalBarLoading } from '@/components/loading';
+import { useAuth } from '@/hooks';
 
 type Props = {
   notificationList: NotificationResType[];
@@ -22,10 +23,14 @@ export default function NotificationList({
   onDelete,
   onItemClick
 }: Props) {
+  const { isAuthenticated } = useAuth();
+
   const { mutateAsync: updateReadNotificationMutate } =
     useUpdateReadNotificationMutation();
 
   const handleUpdateRead = async (notification: NotificationResType) => {
+    if (!isAuthenticated) return;
+
     if (notification.isRead) return;
 
     await updateReadNotificationMutate(

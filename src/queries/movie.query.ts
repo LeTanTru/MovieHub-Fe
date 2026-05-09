@@ -97,3 +97,15 @@ export const useMovieSuggestByWatchedQuery = ({
     enabled
   });
 };
+
+export const useMovieRecommendationQuery = ({
+  enabled
+}: {
+  enabled?: boolean;
+}) => {
+  return useQuery({
+    queryKey: [queryKeys.MOVIE_RECOMMENDATION],
+    queryFn: () => movieApiRequest.getRecommendation(),
+    enabled
+  });
+};

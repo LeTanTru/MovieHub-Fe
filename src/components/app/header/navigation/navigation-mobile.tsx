@@ -14,7 +14,7 @@ import {
 import { useAuth, useClickOutside, useNavigate } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
-import { ItemProps } from '@/types';
+import { ItemProps, ProfileResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import { ChevronDown, X } from 'lucide-react';
@@ -51,6 +51,19 @@ export default function NavigationMobile({
   const handleSubmenuToggle = (key: string, index: number) => {
     setSelectedItem((prev) =>
       prev?.key === key && prev?.index === index ? null : { key, index }
+    );
+  };
+
+  const GenderIcon = ({ profile }: { profile: ProfileResType }) => {
+    const Icon = genderIconMaps[profile.gender];
+    return (
+      <Icon
+        className={cn('size-4.5', {
+          'text-cyan-500': profile?.gender === GENDER_MALE,
+          'text-pink-500': profile?.gender === GENDER_FEMALE,
+          'text-amber-400': profile?.gender === GENDER_OTHER
+        })}
+      />
     );
   };
 
@@ -112,19 +125,7 @@ export default function NavigationMobile({
                   <div className='flex items-center justify-between'>
                     <div className='flex gap-2'>
                       <p className=''>{profile.fullName}</p>
-                      {(() => {
-                        const Icon = genderIconMaps[profile.gender];
-                        return (
-                          <Icon
-                            className={cn('size-4.5', {
-                              'text-cyan-500': profile?.gender === GENDER_MALE,
-                              'text-pink-500':
-                                profile?.gender === GENDER_FEMALE,
-                              'text-amber-400': profile?.gender === GENDER_OTHER
-                            })}
-                          />
-                        );
-                      })()}
+                      <GenderIcon profile={profile} />
                     </div>
                     <AvatarField
                       src={renderImageUrl(profile.avatarPath)}

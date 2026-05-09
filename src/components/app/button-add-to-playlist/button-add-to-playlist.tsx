@@ -57,12 +57,13 @@ export default function ButtonAddToPlaylist({
   className,
   variant
 }: ButtonAddToPlaylistProps) {
+  const { isAuthenticated } = useAuth();
+
   const { opened, toggle, close } = useDisclosure();
   const containerRef = useClickOutside<HTMLDivElement>(close);
   const [checkedPlaylist, setCheckedPlaylist] = useState<string[]>([]);
   const [playlistId, setPlaylistId] = useState<string>('');
   const [hasTouchedSelection, setHasTouchedSelection] = useState(false);
-  const { isAuthenticated } = useAuth();
   const { iconRef, startAnimation } = useClickAnimation();
   const queryClient = getQueryClient();
 

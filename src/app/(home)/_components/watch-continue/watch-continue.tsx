@@ -22,11 +22,13 @@ import { VerticalBarLoading } from '@/components/loading';
 import { CollectionListHeading } from '@/components/app/heading';
 
 export default function WatchContinue() {
+  const { isAuthenticated } = useAuth();
+
   const queryClient = getQueryClient();
+
   const nextRef = useRef<HTMLDivElement>(null);
   const prevRef = useRef<HTMLDivElement>(null);
 
-  const { isAuthenticated } = useAuth();
   const { data: movieHistoriesData, isLoading } = useMovieHistoryListQuery({
     enabled: isAuthenticated
   });

@@ -68,9 +68,10 @@ export default function ButtonLike({
   text,
   showTooltip = true
 }: ButtonLikeProps) {
+  const { isAuthenticated } = useAuth();
+
   const { iconRef, startAnimation } = useClickAnimation();
   const [isLiked, setIsLiked] = useState(false);
-  const { isAuthenticated } = useAuth();
 
   const favouriteType: number = variant
     ? typeVariants[variant]

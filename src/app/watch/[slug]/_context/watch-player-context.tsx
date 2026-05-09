@@ -86,8 +86,9 @@ export default function WatchPlayerProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+
+  const navigate = useNavigate();
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
   const { token, isLoadingToken } = useAnonymousToken();
 

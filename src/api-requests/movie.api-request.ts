@@ -59,7 +59,9 @@ const movieApiRequest = {
       {
         params
       }
-    )
+    ),
+  getRecommendation: () =>
+    http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.recommendation)
 };
 
 export default movieApiRequest;

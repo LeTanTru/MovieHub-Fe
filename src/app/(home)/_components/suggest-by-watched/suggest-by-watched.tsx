@@ -26,9 +26,9 @@ export default function SuggestByWatched({ page }: { page: number }) {
   const watchedMovie = movieListData?.data?.watchedMovie;
   const movieList = movieListData?.data?.suggestedMovies || [];
 
-  if (isLoading) return <VerticalBarLoading />;
-
   if (!isAuthenticated || !watchedMovie) return null;
+
+  if (isLoading) return <VerticalBarLoading />;
 
   return (
     <div ref={ref}>

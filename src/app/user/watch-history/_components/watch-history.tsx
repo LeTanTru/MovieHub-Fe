@@ -11,11 +11,15 @@ import {
   useDeleteWatchHistoryMutation
 } from '@/queries';
 import { notify } from '@/utils';
+import { useAuth } from '@/hooks';
 
 export default function WatchHistory() {
+  const { isAuthenticated } = useAuth();
+
   const queryClient = getQueryClient();
+
   const { data: movieHistoriesData, isLoading } = useMovieHistoryListQuery({
-    enabled: true
+    enabled: isAuthenticated
   });
   const movieHistories = movieHistoriesData?.data || [];
 
@@ -23,6 +27,8 @@ export default function WatchHistory() {
     useDeleteWatchHistoryMutation();
 
   const handleDeleteWatchHistory = async (movieId: string) => {
+    if (!isAuthenticated) return;
+
     await deleteWatchHistoryMutate(movieId, {
       onSuccess: async (res) => {
         if (res.result) {

@@ -7,20 +7,6 @@ import {
 } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-export const useCommentListQuery = ({
-  params = {},
-  enabled
-}: {
-  params?: CommentSearchType;
-  enabled?: boolean;
-} = {}) => {
-  return useQuery({
-    queryKey: [queryKeys.COMMENT_LIST, params],
-    queryFn: () => commentApiRequest.getList(params),
-    enabled
-  });
-};
-
 export const useCreateCommentMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.CREATE_COMMENT],
