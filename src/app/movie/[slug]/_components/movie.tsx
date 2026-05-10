@@ -47,7 +47,7 @@ export default function Movie({ id }: MovieProps) {
   }, [movie, setMovie]);
 
   useEffect(() => {
-    if (moviePersons.length > 0) setMoviePersons(moviePersons);
+    setMoviePersons(moviePersons);
   }, [moviePersons, setMoviePersons]);
 
   if (isLoading) return <Movie.Skeleton />;

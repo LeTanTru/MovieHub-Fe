@@ -11,7 +11,8 @@ import { route } from '@/routes';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Video } from 'lucide-react';
+import { Calendar, Video } from 'lucide-react';
+import { cn } from '@/lib';
 
 export default function MovieActionBar() {
   const { movie, selectedSeason } = useMovieStore(
@@ -26,6 +27,7 @@ export default function MovieActionBar() {
     const currentSeason = movie.seasons.find(
       (season) => season.label === selectedSeason
     );
+
     const latestSeason = movie.seasons[movie.seasons.length - 1];
 
     const targetSeason = currentSeason || latestSeason;
@@ -33,8 +35,10 @@ export default function MovieActionBar() {
     const isSeries = movie.type === MOVIE_TYPE_SERIES;
 
     const latestEpisode = isSeries
-      ? targetSeason?.episodes?.[(targetSeason?.episodes?.length ?? 1) - 1]
+      ? targetSeason?.episodes?.[targetSeason?.episodes?.length - 1]
       : null;
+
+    if (!latestEpisode && isSeries) return null;
 
     const watchLink = isSeries
       ? `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}&episode=${latestEpisode?.label}`
@@ -42,6 +46,10 @@ export default function MovieActionBar() {
 
     return watchLink;
   };
+
+  const hasTrailer = movie.seasons?.some(
+    (season) => season.trailer && season.trailer.video
+  );
 
   const watchLink = getWatchLink();
 
@@ -57,14 +65,33 @@ export default function MovieActionBar() {
         ) : (
           <div
             role='button'
-            className='flex cursor-pointer flex-col items-center overflow-hidden rounded-lg bg-[linear-gradient(39deg,rgba(254,207,89,1),rgba(255,241,204,1))] text-black shadow-[0_0_10px_0_rgba(0,0,0,0.1)] transition-all duration-200 ease-linear hover:opacity-90 hover:shadow-[0_0_10px_10px_rgba(255,218,125,0.15)]'
+            className='group relative cursor-pointer overflow-hidden rounded-xl text-black hover:shadow-[0_0_24px_6px_rgba(255,207,89,0.3)]'
+            style={{
+              background:
+                'linear-gradient(135deg, #FECF59 0%, #FFE87C 50%, #FFF1CC 100%)',
+              boxShadow: '0 4px 14px 0 rgba(254,207,89,0.35)'
+            }}
           >
-            <div className='flex items-center justify-center gap-2 px-4 py-2'>
-              <Video className='fill-black' />
-              <span>Xem Trailer</span>
-            </div>
-            <div className='w-full bg-white py-1.5 text-center text-xs'>
-              Phim sắp ra mắt
+            <div className='pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full' />
+
+            {hasTrailer && (
+              <div className='flex items-center justify-center gap-2 px-5 py-2.5 font-bold tracking-wide'>
+                <Video size={20} className='fill-black/80' />
+                <span className='text-sm'>Xem Trailer</span>
+              </div>
+            )}
+
+            <div
+              className={cn(
+                'flex w-full items-center justify-center gap-2 border-t border-black/10 bg-black/8 px-4 py-2 text-xs font-semibold tracking-widest',
+                {
+                  'border-none bg-transparent px-5 py-3 text-sm': !hasTrailer,
+                  'bg-gray-200': hasTrailer
+                }
+              )}
+            >
+              {!hasTrailer && <Calendar size={20} className='animate-bounce' />}
+              <span>{!hasTrailer ? 'Sắp ra mắt' : 'Phim sắp ra mắt'}</span>
             </div>
           </div>
         )}

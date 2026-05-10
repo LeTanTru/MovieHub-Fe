@@ -1,7 +1,6 @@
 'use client';
 
 import { bell } from '@/assets';
-import { DEFAULT_DATE_FORMAT } from '@/constants';
 import { useMovieNextEpisodeQuery } from '@/queries';
 import { useMovieStore } from '@/store';
 import { formatDate } from '@/utils';
@@ -32,10 +31,8 @@ export default function ScheduleBadge() {
             Tập {nextEpisode.label}: {nextEpisode.title}
           </strong>
           &nbsp;sẽ phát sóng&nbsp;
-          <strong>
-            {formatDate(nextEpisode.releaseDate, DEFAULT_DATE_FORMAT)}
-          </strong>
-          . Các bạn nhớ đón xem nhé 😚
+          <strong>{formatDate(nextEpisode.releaseDate)}</strong>. Các bạn nhớ
+          đón xem nhé 😚
         </div>
       </div>
     </div>

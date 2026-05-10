@@ -163,7 +163,7 @@ export default function DropdownNotification() {
               ease: 'linear'
             }}
             onMouseDown={(e) => e.stopPropagation()}
-            className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-50 w-150 flex-col justify-between rounded shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-[80dvh] w-150 flex-col justify-between rounded shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11.5 h-2 w-4'>
               <div className='bg-charade h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
@@ -232,10 +232,7 @@ export default function DropdownNotification() {
                   </div>
                 )}
               </div>
-              <TabsContent
-                value={NOTIFICATION_TYPE_MOVIE.toString()}
-                className='flex items-center justify-center'
-              >
+              <TabsContent value={NOTIFICATION_TYPE_MOVIE.toString()}>
                 <NotificationList
                   notificationList={notificationList}
                   loading={isLoading}
@@ -243,10 +240,7 @@ export default function DropdownNotification() {
                   onItemClick={handleItemClick}
                 />
               </TabsContent>
-              <TabsContent
-                value={NOTIFICATION_TYPE_COMMUNITY.toString()}
-                className='flex items-center justify-center'
-              >
+              <TabsContent value={NOTIFICATION_TYPE_COMMUNITY.toString()}>
                 <NotificationList
                   notificationList={notificationList}
                   loading={isLoading}

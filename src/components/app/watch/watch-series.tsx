@@ -75,16 +75,10 @@ export default function WatchSeries() {
       setSelectedSeason(searchParams.season);
     } else if (latestSeason) {
       setSelectedSeason(latestSeason);
-    } else if (seasons.length > 0 && !selectedSeason) {
+    } else if (seasons.length > 0) {
       setSelectedSeason(seasons[0].label);
     }
-  }, [
-    latestSeason,
-    searchParams.season,
-    setSelectedSeason,
-    seasons,
-    selectedSeason
-  ]);
+  }, [latestSeason, searchParams.season, setSelectedSeason, seasons]);
 
   const label = selectedSeason || currentSeason?.label;
 
@@ -194,6 +188,7 @@ export default function WatchSeries() {
           const isPlaying =
             episode.label === searchParams.episode &&
             currentSeason?.label === searchParams.season;
+
           return (
             <m.div
               key={episode.id}
@@ -234,13 +229,23 @@ export default function WatchSeries() {
                   <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
                     <FaPlay />
                   </div>
-                  <Image
-                    src={renderImageUrl(episode.thumbnailUrl)}
-                    className='aspect-video h-full w-full border-none object-cover'
-                    alt={episode.title}
-                    fill
-                    sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                  />
+                  {episode.thumbnailUrl ? (
+                    <Image
+                      src={renderImageUrl(episode.thumbnailUrl)}
+                      className='aspect-video h-full w-full border-none object-cover'
+                      alt={episode.title}
+                      fill
+                      sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                    />
+                  ) : (
+                    <Image
+                      src='/logo.webp'
+                      alt={episode.title}
+                      width={100}
+                      height={100}
+                      className='absolute top-1/2 left-1/2 m-auto -translate-x-1/2 -translate-y-1/2 object-cover'
+                    />
+                  )}
                   {isPlaying && !toggle && (
                     <div className='bg-golden-glow absolute bottom-0 left-0 rounded-tr-sm px-1.5 py-0.75 text-xs text-black'>
                       Đang chiếu

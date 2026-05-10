@@ -10,8 +10,7 @@ import { useState } from 'react';
 import {
   useDeleteFavouriteMutation,
   useFavouriteListIdsQuery,
-  useFavouriteMutation,
-  useSidebarListQuery
+  useFavouriteMutation
 } from '@/queries';
 import { notify, renderImageUrl } from '@/utils';
 import SliderItem from './slider-item';
@@ -23,19 +22,18 @@ import { logger } from '@/logger';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { VerticalBarLoading } from '@/components/loading';
 import Image from 'next/image';
+import { SidebarResType } from '@/types';
 
-export default function Slider() {
+type SliderProps = {
+  sidebarList: SidebarResType[];
+};
+
+export default function Slider({ sidebarList }: SliderProps) {
   const { isAuthenticated } = useAuth();
 
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const [isGrabbing, setIsGrabbing] = useState<boolean>(false);
   const queryClient = getQueryClient();
-
-  const { data: sidebarListData, isLoading } = useSidebarListQuery({
-    enabled: true
-  });
-
-  const sidebarList = sidebarListData?.data?.content || [];
 
   const { mutateAsync: addFavourite, isPending: addFavouriteLoading } =
     useFavouriteMutation();
@@ -134,7 +132,7 @@ export default function Slider() {
     }
   };
 
-  if (isLoading)
+  if (sidebarList.length === 0)
     return (
       <VerticalBarLoading className='max-1900:h-190 max-1280:h-150 max-800:h-125 max-640:h-100 flex h-215 items-center justify-center' />
     );

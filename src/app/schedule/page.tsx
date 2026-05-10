@@ -4,6 +4,9 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import envConfig from '@/config';
+import { queryKeys, DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT } from '@/constants';
+import { formatDate } from '@/utils';
+import { movieApiRequest } from '@/api-requests';
 
 export const metadata: Metadata = {
   title: 'Lịch chiếu',
@@ -29,8 +32,19 @@ export const metadata: Metadata = {
   }
 };
 
-export default function SchedulePage() {
+export default async function SchedulePage() {
   const queryClient = getQueryClient();
+
+  const date = formatDate(
+    new Date().toLocaleDateString('vi-VN'),
+    DATE_TIME_FORMAT,
+    DEFAULT_DATE_FORMAT
+  );
+
+  await queryClient.prefetchQuery({
+    queryKey: [queryKeys.MOVIE_SCHEDULE_LIST, { date }],
+    queryFn: () => movieApiRequest.getScheduleList({ date })
+  });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

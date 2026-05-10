@@ -41,7 +41,7 @@ export default function Watch({ id }: WatchProps) {
   }, [movie, setMovie]);
 
   useEffect(() => {
-    if (moviePersons.length > 0) setMoviePersons(moviePersons);
+    setMoviePersons(moviePersons);
   }, [moviePersons, setMoviePersons]);
 
   if (isLoading) return <Watch.Skeleton />;
