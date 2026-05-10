@@ -163,7 +163,7 @@ export default function DropdownNotification() {
               ease: 'linear'
             }}
             onMouseDown={(e) => e.stopPropagation()}
-            className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-[80dvh] w-150 flex-col justify-between rounded shadow-[0px_0px_6px_2px_var(--accent)] before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-[80dvh] w-150 flex-col justify-between overflow-hidden rounded before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11.5 h-2 w-4'>
               <div className='bg-charade h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
@@ -178,16 +178,33 @@ export default function DropdownNotification() {
             >
               <div className='flex justify-between border-b'>
                 <div className='flex-1'>
-                  <TabsList className='w-full justify-start gap-0 rounded-none border-none bg-transparent p-0'>
-                    {notificationTabs.map((notification) => (
-                      <TabsTrigger
-                        key={notification.value}
-                        value={notification.value.toString()}
-                        className='data-[state=active]:text-golden-glow! inline-block h-full min-w-25 flex-0 cursor-pointer rounded border-0 border-r border-none! border-transparent transition-all duration-200 ease-linear data-[state=active]:bg-black/30! data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
-                      >
-                        {notification.label}
-                      </TabsTrigger>
-                    ))}
+                  <TabsList className='relative flex w-fit justify-start gap-0 rounded-none border-none bg-transparent p-0'>
+                    {notificationTabs.map((notification) => {
+                      const isActive =
+                        params.type.toString() ===
+                        notification.value.toString();
+
+                      return (
+                        <div
+                          key={notification.value}
+                          className='relative flex h-full items-center'
+                        >
+                          {isActive && (
+                            <m.div
+                              layoutId='notification-tab-bg'
+                              className='bg-black-denim absolute inset-0'
+                              transition={{ duration: 0.1, ease: 'linear' }}
+                            />
+                          )}
+                          <TabsTrigger
+                            value={notification.value.toString()}
+                            className='data-[state=active]:text-golden-glow! relative z-10 inline-block h-full min-w-25 flex-0 cursor-pointer rounded-none border-0 border-none! border-transparent bg-transparent! transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                          >
+                            {notification.label}
+                          </TabsTrigger>
+                        </div>
+                      );
+                    })}
                   </TabsList>
                 </div>
                 {notificationList.length > 0 && !isLoading && (

@@ -87,7 +87,11 @@ export default function Header() {
         </Link>
 
         {/* Desktop search — always visible, no animation needed */}
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <div className='bg-input/30! max-1360:hidden h-search-form skeleton block w-full max-w-92 rounded-lg'></div>
+          }
+        >
           <SearchForm
             className='max-1360:hidden'
             formClassName='flex h-full w-full items-center bg-transparent p-0'

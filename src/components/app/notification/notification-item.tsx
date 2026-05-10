@@ -31,7 +31,7 @@ export default function NotificationItem({
     <ListItem
       onClick={() => onUpdateRead(notification)}
       className={cn(
-        'hover:bg-bunker/80 flex cursor-pointer items-center justify-between rounded py-2 transition-colors duration-200 ease-linear',
+        'hover:bg-bunker/80 flex cursor-pointer items-center justify-between py-2 transition-colors duration-200 ease-linear',
         {
           'bg-bunker/50': !notification.isRead
         }

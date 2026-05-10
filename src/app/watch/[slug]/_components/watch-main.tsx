@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Discussion } from '@/components/app/discussion';
 import { ScheduleBadge } from '@/components/app/schedule-badge';
 import { WatchEpisode, WatchInfo } from '@/components/app/watch';
@@ -10,11 +11,15 @@ export default function WatchMain() {
       <div>
         <ScheduleBadge />
         <WatchEpisode />
-        <Discussion
-          toId={MOVIE_WATCH_DISCUSSION_ID}
-          className='max-1120:pb-0 px-0'
-          variant='watch'
-        />
+        <Suspense
+          fallback={<Discussion.Skeleton className='max-1120:pb-0 px-0' />}
+        >
+          <Discussion
+            toId={MOVIE_WATCH_DISCUSSION_ID}
+            className='max-1120:pb-0 px-0'
+            variant='watch'
+          />
+        </Suspense>
       </div>
     </div>
   );
