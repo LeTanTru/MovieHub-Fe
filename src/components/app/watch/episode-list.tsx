@@ -125,7 +125,7 @@ export default function EpisodeList({
           </AnimatePresence>
         </div>
         <div className='min-h-0 flex-1 overflow-auto'>
-          {season?.episodes.map((episode) => (
+          {season?.episodes?.map((episode) => (
             <EpisodeItem
               key={episode.id}
               episode={episode}

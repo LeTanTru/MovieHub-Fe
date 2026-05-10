@@ -1,6 +1,9 @@
-import { Collection } from '@/app/(home)/_components/collection';
 import { collectionApiRequest, sidebarApiRequest } from '@/api-requests';
-import { CollectionSearchType, SidebarSearchType } from '@/types';
+import {
+  CollectionSearchType,
+  SidebarResType,
+  SidebarSearchType
+} from '@/types';
 import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/components/providers/query-provider';
@@ -13,6 +16,7 @@ import { Slider } from '@/app/(home)/_components/slider';
 import { SuggestByWatched } from '@/app/(home)/_components/suggest-by-watched';
 import { TopicList } from '@/app/(home)/_components/topic-list';
 import { WatchContinue } from '@/app/(home)/_components/watch-continue';
+import { Collection } from '@/app/(home)/_components/collection';
 import envConfig from '@/config';
 import type { Metadata } from 'next';
 
@@ -71,9 +75,15 @@ export default async function HomePage() {
     })
   ]);
 
+  const sidebarRes = queryClient.getQueryData<{
+    data: { content: SidebarResType[] };
+  }>([queryKeys.SIDEBAR_LIST, sidebarFilters]);
+
+  const sidebarList = sidebarRes?.data?.content || [];
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Slider />
+      <Slider sidebarList={sidebarList} />
       <Container className='max-990:pb-24 max-640:pb-20 relative z-9 min-h-[calc(100vh-400px)] pt-0 pb-40'>
         <div className='max-640:gap-8 flex flex-col gap-12.5'>
           <TopicList />

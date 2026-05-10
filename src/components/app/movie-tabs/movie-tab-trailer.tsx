@@ -93,7 +93,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
       <MotionWrapper uniqueKey={MOVIE_TAB_TRAILER} direction={direction}>
         <div className='flex items-center justify-between'>
           <MovieTabHeading title={`Trailer phim ${movie.title}`} />
-          {trailer && (
+          {trailer?.video && (
             <>
               <div className='grow'></div>
               <ButtonToggle
@@ -107,7 +107,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
           )}
         </div>
 
-        {trailer && (
+        {trailer?.video && (
           <div
             className={cn('grid', {
               'max-1120:grid-cols-5 max-990:grid-cols-4 max-640:grid-cols-3 max-520:grid-cols-2 grid-cols-6 gap-x-2.5 gap-y-8':
@@ -145,14 +145,24 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
                   <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
                     <FaPlay />
                   </div>
-                  <Image
-                    src={renderImageUrl(trailer.thumbnailUrl)}
-                    className='aspect-video h-full w-full border-none object-cover'
-                    alt={trailer.title}
-                    fill
-                    sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                    unoptimized
-                  />
+                  {trailer.thumbnailUrl ? (
+                    <Image
+                      src={renderImageUrl(trailer.thumbnailUrl)}
+                      className='aspect-video h-full w-full border-none object-cover'
+                      alt={trailer.title}
+                      fill
+                      sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                      unoptimized
+                    />
+                  ) : (
+                    <Image
+                      src='/logo.webp'
+                      alt={trailer.title}
+                      width={100}
+                      height={100}
+                      className='absolute top-1/2 left-1/2 m-auto -translate-x-1/2 -translate-y-1/2 object-cover'
+                    />
+                  )}
                   <div className='absolute inset-0 bg-[rgba(0,0,0,0.3)] transition-colors duration-200 ease-linear group-hover:bg-[rgba(0,0,0,0.5)]'></div>
                   {isFetching && (
                     <div className='absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2'>
@@ -180,14 +190,16 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
             </m.div>
           </div>
         )}
-        {!trailer && (
+        {!trailer?.video && (
           <p className='text-accent-foreground'>
-            Trailer cho phim {movie.title} đang được cập nhật
+            Trailer cho phim&nbsp;
+            <span className='font-semibold'>{movie.title}</span>&nbsp;đang được
+            cập nhật
           </p>
         )}
       </MotionWrapper>
 
-      {trailer && (
+      {trailer?.video && (
         <TrailerModal
           opened={opened}
           onClose={handleCloseTrailer}

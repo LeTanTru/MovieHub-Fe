@@ -14,6 +14,7 @@ import { cn } from '@/lib';
 import { NotificationResType } from '@/types';
 import { EllipsisVertical } from 'lucide-react';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { ListItem } from '@/components/list';
 
 type NotificationItemProps = {
   notification: NotificationResType;
@@ -27,7 +28,7 @@ export default function NotificationItem({
   onDelete
 }: NotificationItemProps) {
   return (
-    <div
+    <ListItem
       onClick={() => onUpdateRead(notification)}
       className={cn(
         'hover:bg-bunker/80 flex cursor-pointer items-center justify-between rounded py-2 transition-colors duration-200 ease-linear',
@@ -71,6 +72,6 @@ export default function NotificationItem({
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
+    </ListItem>
   );
 }

@@ -15,15 +15,24 @@ import {
   queryKeys
 } from '@/constants';
 import {
+  ApiResponse,
   ApiResponseList,
   CommentResType,
   CommentSearchType,
+  MetadataType,
   MoviePersonSearchType,
+  MovieResType,
   ReviewResType,
   ReviewSearchType
 } from '@/types';
 import { JsonLd } from '@/components/seo';
-import { getIdFromSlug, sanitizeText, stripHtml, truncate } from '@/utils';
+import {
+  getIdFromSlug,
+  parseJSON,
+  sanitizeText,
+  stripHtml,
+  truncate
+} from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 
@@ -167,8 +176,15 @@ export default async function WatchPage({ params }: WatchPageProps) {
     })
   ]);
 
-  const movieRes = queryClient.getQueryData<any>([queryKeys.MOVIE, id]);
+  const movieRes = queryClient.getQueryData<ApiResponse<MovieResType>>([
+    queryKeys.MOVIE,
+    id
+  ]);
+
   const movie = movieRes?.data;
+  const metadata = movie
+    ? parseJSON<MetadataType>(movie.metadata || '{}')
+    : null;
   const jsonLd = movie
     ? {
         '@context': 'https://schema.org',
@@ -179,7 +195,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
           ? `${AppConstants.contentRootUrl}${movie.posterUrl}`
           : undefined,
         uploadDate: movie.createdDate,
-        duration: movie.duration ? `PT${movie.duration}M` : undefined
+        duration: metadata?.duration ? `PT${metadata.duration}M` : undefined
       }
     : null;
 

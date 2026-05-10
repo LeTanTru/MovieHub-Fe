@@ -134,10 +134,10 @@ export default function MovieSide() {
           }
         )}
       >
-        {movie.title} {+latestSeason > 1 ? selectedSeason : ''}
+        {movie.title}
       </h2>
       <div className='text-golden-glow max-1120:mb-4 max-1120:-mt-0.75 max-640:mb-3 mb-5 font-normal'>
-        {movie.originalTitle} {+latestSeason > 1 ? selectedSeason : ''}
+        {movie.originalTitle}
       </div>
       <div className='max-1120:p-6 max-640:p-4 max-1120:rounded-md max-1120:bg-[rgba(0,0,0,.2)] max-1120:text-left'>
         <TagWrapper className='mb-3'>

@@ -70,7 +70,7 @@ export default function Modal({
   onClose,
   className,
   confirmOnClose = false,
-  closeOnBackdrop = false,
+  closeOnBackdrop = true,
   variants = {
     initial: { opacity: 0.5, scale: 0.85 },
     animate: { opacity: 1, scale: 1 },

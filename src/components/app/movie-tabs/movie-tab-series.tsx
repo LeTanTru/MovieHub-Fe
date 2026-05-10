@@ -65,18 +65,18 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
     }, ANIMATION_DURATION);
   };
 
-  const handleSelectSeason = (seasonLabel: string) => {
-    setSelectedSeason(seasonLabel);
+  const handleSelectSeason = (season: string) => {
+    setSelectedSeason(season);
     setShowDropdown(false);
   };
 
   useEffect(() => {
     if (latestSeason) {
       setSelectedSeason(latestSeason);
-    } else if (seasons.length > 0 && !selectedSeason) {
+    } else if (seasons.length > 0) {
       setSelectedSeason(seasons[0].label);
     }
-  }, [latestSeason, setSelectedSeason, seasons, selectedSeason]);
+  }, [latestSeason, setSelectedSeason, seasons]);
 
   const label = selectedSeason || currentSeason?.label;
 
@@ -203,16 +203,26 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
                     ease: 'linear'
                   }}
                 >
-                  <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
+                  <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
                     <FaPlay />
                   </div>
-                  <Image
-                    src={renderImageUrl(episode.thumbnailUrl)}
-                    className='aspect-video h-full w-full border-none object-cover'
-                    alt={episode.title}
-                    fill
-                    sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                  />
+                  {episode.thumbnailUrl ? (
+                    <Image
+                      src={renderImageUrl(episode.thumbnailUrl)}
+                      className='aspect-video h-full w-full border-none object-cover'
+                      alt={episode.title}
+                      fill
+                      sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                    />
+                  ) : (
+                    <Image
+                      src='/logo.webp'
+                      alt={episode.title}
+                      width={100}
+                      height={100}
+                      className='absolute top-1/2 left-1/2 m-auto -translate-x-1/2 -translate-y-1/2 object-cover'
+                    />
+                  )}
                 </m.div>
                 <div className='group-hover:text-golden-glow max-640:gap-1 max-520:text-xs max-640:text-[13px] flex items-center gap-2.5 font-medium transition-all duration-200 ease-linear'>
                   <div className='block shrink-0 text-xs'>

@@ -78,6 +78,7 @@ export default function ConfirmModal({
           'max-1536:top-50 max-1024:top-30 top-70 w-fit max-w-lg min-w-xs p-4',
           className
         )}
+        closeOnBackdrop={false}
       >
         <Modal.Body className='flex flex-col gap-2'>
           <div className='flex items-center gap-2'>

@@ -67,13 +67,13 @@ export default function WatchInfo() {
   const latestSeason = selectedSeason || metadata?.latestSeason?.label;
 
   const currentSeason = movie?.seasons?.find(
-    (season) => season.label === latestSeason.toString()
+    (season) => season.label === latestSeason?.toString()
   );
 
   const episodes = currentSeason?.episodes || [];
 
-  const latestEpisode = episodes
-    ? episodes.length
+  const latestEpisode = episodes?.length
+    ? episodes[episodes.length - 1]?.label
     : metadata?.latestEpisode?.label;
 
   const latestEpisodeVideo = episodes?.[episodes.length - 1]?.video;
@@ -129,9 +129,7 @@ export default function WatchInfo() {
             {movie.title}
           </Link>
         </h2>
-        <p className='text-golden-glow mb-3'>
-          {movie.originalTitle} {+selectedSeason > 1 ? selectedSeason : ''}
-        </p>
+        <p className='text-golden-glow mb-3'>{movie.originalTitle}</p>
         <TagWrapper className='mb-3'>
           {ageRating ? <TagAgeRating value={ageRating} /> : null}
           <TagNormal value={releaseYear} />

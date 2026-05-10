@@ -24,7 +24,7 @@ export default function MovieTabSingle({ movie }: MovieTabSingleProps) {
   return (
     <>
       <MovieTabHeading title='Các bản chiếu' />
-      {movie && movie.seasons && movie.seasons.length > 0 ? (
+      {movie?.seasons && movie.seasons.length > 0 ? (
         <div className='max-990:grid-cols-2 max-520:grid-cols-1 grid grid-cols-3 gap-4'>
           {movie.seasons.map((season) => (
             <button
@@ -33,13 +33,23 @@ export default function MovieTabSingle({ movie }: MovieTabSingleProps) {
               className='bg-mid-gray relative w-full max-w-137.5 cursor-pointer overflow-hidden rounded-lg text-white transition-all duration-200 ease-linear hover:-translate-y-1'
             >
               <div className='max-990:max-w-90 max-990:w-[45%] absolute top-0 right-0 bottom-0 w-2/5 max-w-32.5 mask-[linear-gradient(270deg,black_0,transparent_95%)]'>
-                <Image
-                  src={renderImageUrl(season?.thumbnailUrl)}
-                  alt={`${movie.title} - ${movie.originalTitle}`}
-                  fill
-                  className='aspect-video h-full w-full object-cover'
-                  sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
-                />
+                {season.thumbnailUrl ? (
+                  <Image
+                    src={renderImageUrl(season.thumbnailUrl)}
+                    className='aspect-video h-full w-full border-none object-cover'
+                    alt={season.title}
+                    fill
+                    sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+                  />
+                ) : (
+                  <Image
+                    src='/logo.webp'
+                    alt={season.title}
+                    width={100}
+                    height={100}
+                    className='absolute top-1/2 left-1/2 m-auto -translate-x-1/2 -translate-y-1/2 object-cover'
+                  />
+                )}
               </div>
               <div className='max-990:w-7/10 relative z-2 flex w-9/10 flex-col items-start justify-center gap-4 p-6'>
                 <div className='inline-flex items-center gap-2'>
