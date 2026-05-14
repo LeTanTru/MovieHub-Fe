@@ -107,7 +107,7 @@ export default function Footer() {
           <div className='max-1120:w-full max-1120:text-center relative z-2 block max-w-187.5'>
             <div className='max-1120:mb-4 mb-6'>
               <div className='bg-vn-flag inline-flex items-center justify-center gap-2 rounded-4xl px-3 py-2 text-white'>
-                <div className='h-5 w-5 shrink-0'>
+                <div className='size-5 shrink-0'>
                   <Image
                     src={vnFlag.src}
                     alt='Vietnam Flag'

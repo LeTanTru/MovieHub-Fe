@@ -45,7 +45,7 @@ export default function Header() {
                 transition={{ duration: 0.2 }}
                 style={{ marginRight: 24 }}
               >
-                <Skeleton className='skeleton h-10 w-10 rounded-full!' />
+                <Skeleton className='skeleton size-10 rounded-full!' />
               </m.div>
             ) : (
               <div className='flex h-full items-center gap-x-5'>

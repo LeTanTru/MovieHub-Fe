@@ -136,7 +136,9 @@ export default function Collection() {
             );
           }
           case STYLE_COMING_SOON: {
-            return <ComingSoonList collection={collection} />;
+            return (
+              <ComingSoonList key={collection.id} collection={collection} />
+            );
           }
           case STYLE_ANIME: {
             return (

@@ -41,14 +41,18 @@ export default function Search() {
 
   // Only use searchParams for API queries, not the local filters state
   const queryFilterParams = Object.fromEntries(
-    Object.entries(searchParams)
-      .filter(([key, value]) => key !== 'page' && !!value)
-      .map(([key, value]) => {
-        if (Array.isArray(value)) {
-          return [key, value.join(',')];
+    Object.entries(searchParams).reduce<[string, string][]>(
+      (acc, [key, value]) => {
+        if (key !== 'page' && !!value) {
+          acc.push([
+            key,
+            Array.isArray(value) ? value.join(',') : String(value)
+          ]);
         }
-        return [key, value];
-      })
+        return acc;
+      },
+      []
+    )
   ) as Partial<SearchParamsType>;
 
   const {

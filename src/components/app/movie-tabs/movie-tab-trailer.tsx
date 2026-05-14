@@ -142,7 +142,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
                     }
                   )}
                 >
-                  <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
+                  <div className='group-hover:text-golden-glow border-golden-glow absolute top-1/2 left-1/2 z-3 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-solid bg-[rgba(0,0,0,0.5)] pl-0.5 opacity-0 transition-all duration-200 ease-linear group-hover:opacity-100'>
                     <FaPlay />
                   </div>
                   {trailer.thumbnailUrl ? (

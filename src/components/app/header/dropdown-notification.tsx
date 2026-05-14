@@ -138,7 +138,7 @@ export default function DropdownNotification() {
     <div ref={dropdownRef} className='relative'>
       <Button
         variant='outline'
-        className='group h-11 w-11 rounded-full border-transparent p-0! text-white hover:border-transparent focus-visible:ring-0'
+        className='group size-11 rounded-full border-transparent p-0! text-white hover:border-transparent focus-visible:ring-0'
         onClick={toggleDropDown}
       >
         <div className='relative transition-all duration-200 ease-linear hover:opacity-80'>
@@ -166,7 +166,7 @@ export default function DropdownNotification() {
             className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-[80dvh] w-150 flex-col justify-between overflow-hidden rounded before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11.5 h-2 w-4'>
-              <div className='bg-charade h-4 w-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
+              <div className='bg-charade size-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
             </div>
             <Tabs
               defaultValue={

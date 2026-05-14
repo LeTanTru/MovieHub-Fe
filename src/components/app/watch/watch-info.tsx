@@ -20,7 +20,7 @@ import {
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { MetadataType } from '@/types';
+import type { MetadataType, PersonResType } from '@/types';
 import {
   formatDate,
   formatDuration,
@@ -58,9 +58,12 @@ export default function WatchInfo() {
     languages.find((language) => language.value === movie?.language)?.label ||
     'Đang cập nhật';
 
-  const directors = moviePersons
-    .filter((moviePerson) => moviePerson.kind === PERSON_KIND_DIRECTOR)
-    .map((moviePerson) => moviePerson.person);
+  const directors = moviePersons.reduce<PersonResType[]>((acc, moviePerson) => {
+    if (moviePerson.kind === PERSON_KIND_DIRECTOR) {
+      acc.push(moviePerson.person);
+    }
+    return acc;
+  }, []);
 
   // For series movie
   const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');

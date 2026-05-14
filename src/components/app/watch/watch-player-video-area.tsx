@@ -67,7 +67,7 @@ export default function WatchPlayerVideoArea() {
     <div className='max-800:rounded-none relative aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px]'>
       {isLoadingToken ? (
         <div className='flex h-full w-full items-center justify-center bg-black'>
-          <div className='h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
+          <div className='size-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
         </div>
       ) : (
         <>

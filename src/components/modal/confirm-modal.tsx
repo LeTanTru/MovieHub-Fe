@@ -66,6 +66,13 @@ export default function ConfirmModal({
             e.stopPropagation();
             setOpen(true);
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen(true);
+            }
+          }}
           className={cn('w-full', triggerClassName)}
         >
           {trigger}

@@ -71,7 +71,7 @@ export default function Pagination({
       <span
         key={page}
         className={cn(
-          'bg-background flex h-10 w-10 items-center justify-center rounded font-medium'
+          'bg-background flex size-10 items-center justify-center rounded font-medium'
         )}
         aria-label='current page'
       >
@@ -83,7 +83,7 @@ export default function Pagination({
         type='button'
         onClick={() => handlePageClick(page)}
         className={cn(
-          'hover:bg-muted flex h-10 w-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
+          'hover:bg-muted flex size-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
         )}
       >
         {page}
@@ -94,7 +94,7 @@ export default function Pagination({
         href={createPageLink(page)}
         onClick={handleScroll}
         className={cn(
-          'hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
+          'hover:bg-muted flex size-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
         )}
       >
         {page}
@@ -143,7 +143,7 @@ export default function Pagination({
           <button
             type='button'
             onClick={() => handlePageClick(currentPage - 1)}
-            className='hover:bg-muted flex h-10 w-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
+            className='hover:bg-muted flex size-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
             aria-label='Prev button'
           >
             <FaAngleLeft />
@@ -152,13 +152,13 @@ export default function Pagination({
           <Link
             href={createPageLink(currentPage - 1)}
             onClick={handleScroll}
-            className='hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
+            className='hover:bg-muted flex size-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
           >
             <FaAngleLeft />
           </Link>
         )
       ) : (
-        <span className='flex h-10 w-10 items-center justify-center rounded opacity-50'>
+        <span className='flex size-10 items-center justify-center rounded opacity-50'>
           <FaAngleLeft />
         </span>
       )}
@@ -167,7 +167,7 @@ export default function Pagination({
         p === '...' ? (
           <span
             key={`dots-${i === 1 ? 'start' : 'end'}`}
-            className='text-muted-foreground flex h-10 w-10 items-center justify-center'
+            className='text-muted-foreground flex size-10 items-center justify-center'
           >
             …
           </span>
@@ -181,7 +181,7 @@ export default function Pagination({
           <button
             type='button'
             onClick={() => handlePageClick(currentPage + 1)}
-            className='hover:bg-muted flex h-10 w-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
+            className='hover:bg-muted flex size-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
             aria-label='Next button'
           >
             <FaAngleRight />
@@ -190,13 +190,13 @@ export default function Pagination({
           <Link
             href={createPageLink(currentPage + 1)}
             onClick={handleScroll}
-            className='hover:bg-muted flex h-10 w-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
+            className='hover:bg-muted flex size-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
           >
             <FaAngleRight />
           </Link>
         )
       ) : (
-        <span className='flex h-10 w-10 items-center justify-center rounded opacity-50'>
+        <span className='flex size-10 items-center justify-center rounded opacity-50'>
           <FaAngleRight />
         </span>
       )}

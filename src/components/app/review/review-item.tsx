@@ -274,7 +274,7 @@ export default function ReviewItem({
 ReviewItem.Skeleton = function () {
   return (
     <div className='flex justify-start gap-4'>
-      <Skeleton className='skeleton h-12.5 w-12.5 rounded-full!' />
+      <Skeleton className='skeleton size-12.5 rounded-full!' />
       <div className='flex grow flex-col gap-3'>
         <div className='flex items-center gap-2'>
           <Skeleton className='skeleton h-4 w-20' />

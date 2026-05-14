@@ -11,6 +11,7 @@ import {
 } from '@/constants';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
+import type { PersonResType } from '@/types';
 
 type MovieTabPersonProps = {
   kind: number;
@@ -25,9 +26,15 @@ export default function MovieTabPerson({
     useShallow((s) => ({ moviePersons: s.moviePersons }))
   );
 
-  const personList = moviePersons
-    .filter((moviePerson) => moviePerson.kind === kind)
-    .map((moviePerson) => moviePerson.person);
+  const personList = moviePersons.reduce<PersonResType[]>(
+    (acc, moviePerson) => {
+      if (moviePerson.kind === kind) {
+        acc.push(moviePerson.person);
+      }
+      return acc;
+    },
+    []
+  );
 
   const title = movieTabPersonTitles[kind];
 

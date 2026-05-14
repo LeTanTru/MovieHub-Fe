@@ -142,7 +142,7 @@ MovieActionBar.Skeleton = function () {
             {Array.from({ length: 4 }).map((_, index) => (
               <Skeleton
                 key={`action-skeleton-${index}`}
-                className='skeleton max-520:hidden:max-860:min-w-15 max-640:text-[13px] max-520:text-xs h-15 w-15 rounded-lg!'
+                className='skeleton max-520:hidden:max-860:min-w-15 max-640:text-[13px] max-520:text-xs size-15 rounded-lg!'
               />
             ))}
           </div>

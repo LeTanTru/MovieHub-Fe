@@ -131,7 +131,7 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
             <div className='max-640:mb-4 mb-6'>
               <div className='max-640:mb-2 mb-4 block text-center'>
                 <div className='flex items-center justify-center'>
-                  <div className='h-10 w-10 bg-[url("/logo.webp")] bg-cover bg-position-[50%]'></div>
+                  <div className='size-10 bg-[url("/logo.webp")] bg-cover bg-position-[50%]'></div>
                   <strong>{formatRating(movie?.averageRating || 0)}</strong>
                   <span>&nbsp;/ {movie?.reviewCount || 0} lượt đánh giá</span>
                 </div>

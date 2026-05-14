@@ -178,7 +178,7 @@ export default function PersonSidebar({ person, loading }: PersonSidebarProps) {
                 }}
                 transition={{ duration: 0.2, ease: 'linear' }}
               >
-                <FaArrowDown className='h-6 w-6 text-white' />
+                <FaArrowDown className='size-6 text-white' />
               </m.div>
             </m.div>
           </m.div>
@@ -191,7 +191,7 @@ export default function PersonSidebar({ person, loading }: PersonSidebarProps) {
 PersonSidebar.Skeleton = function () {
   return (
     <div className='border-r-transparent-white max-1600:w-85 max-1120:border-none max-1120:pr-0 max-1120:pb-5 max-1120:w-full w-110 shrink-0 border-r pr-10'>
-      <Skeleton className='skeleton mx-auto mb-6 h-40 w-40 rounded-full!' />
+      <Skeleton className='skeleton mx-auto mb-6 size-40 rounded-full!' />
 
       <Skeleton className='max-800:text-xl max-640:text-lg max-640:mb-0 max-640:mt-2 skeleton mx-auto mt-4 mb-2 h-8 w-3/4' />
 

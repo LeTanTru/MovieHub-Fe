@@ -202,7 +202,7 @@ export default function InputField<T extends FieldValues>({
                         >
                           <span className='flex-1'>{option}</span>
                           {field.value === option && (
-                            <Check className='text-main-color h-4 w-4' />
+                            <Check className='text-main-color size-4' />
                           )}
                         </div>
                       ))}

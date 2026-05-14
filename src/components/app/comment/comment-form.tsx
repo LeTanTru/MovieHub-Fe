@@ -134,6 +134,7 @@ export default function CommentForm({
   useEffect(() => {
     let picker: any;
     let mounted = true;
+    let emojiClickHandler: ((event: any) => void) | null = null;
 
     (async () => {
       const { Picker } = await import('emoji-picker-element');
@@ -143,17 +144,21 @@ export default function CommentForm({
 
       picker = new Picker();
       picker.i18n = vi;
-      picker.style.position = 'absolute';
-      picker.style.zIndex = '1000';
-      picker.style.opacity = '0';
-      picker.style.visibility = 'hidden';
-      picker.style.right = '180px';
-      picker.style.top = '0px';
-      picker.style.transition = 'all 0.2s linear';
+      picker.style.cssText = `
+        position: absolute;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        right: 180px;
+        top: 0px;
+        transition: all 0.2s linear;
+        --border-radius: 8px;
+        --border-size: 0;
+      `;
       picker.style.setProperty('--border-radius', '8px');
       picker.style.setProperty('--border-size', '0');
 
-      picker.addEventListener('emoji-click', (event: any) => {
+      emojiClickHandler = (event: any) => {
         const emoji = event.detail.unicode;
         if (formMethodsRef.current) {
           const currentValue =
@@ -163,7 +168,9 @@ export default function CommentForm({
             shouldTouch: true
           });
         }
-      });
+      };
+
+      picker.addEventListener('emoji-click', emojiClickHandler);
 
       if (pickerContainerRef.current) {
         pickerContainerRef.current.appendChild(picker);
@@ -172,6 +179,9 @@ export default function CommentForm({
 
     return () => {
       mounted = false;
+      if (picker && emojiClickHandler) {
+        picker.removeEventListener('emoji-click', emojiClickHandler);
+      }
       if (picker && picker.parentNode) picker.parentNode.removeChild(picker);
     };
   }, []);
@@ -180,13 +190,9 @@ export default function CommentForm({
     const pickerEl = pickerContainerRef.current?.querySelector('emoji-picker');
 
     if (pickerEl) {
-      if (!showPicker) {
-        pickerEl.style.opacity = '0';
-        pickerEl.style.visibility = 'hidden';
-      } else {
-        pickerEl.style.opacity = '1';
-        pickerEl.style.visibility = 'visible';
-      }
+      pickerEl.style.cssText = !showPicker
+        ? 'opacity: 0; visibility: hidden;'
+        : 'opacity: 1; visibility: visible;';
     }
   }, [showPicker]);
 

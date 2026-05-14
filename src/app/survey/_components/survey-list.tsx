@@ -54,9 +54,10 @@ export default function SurveyList() {
   useEffect(() => {
     if (profile?.isMakeSurvey) {
       notify.info('Bạn đã hoàn thành khảo sát rồi');
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         navigate.back();
       }, 1000);
+      return () => clearTimeout(timeoutId);
     }
   }, [profile?.isMakeSurvey]); // eslint-disable-line react-hooks/exhaustive-deps
 

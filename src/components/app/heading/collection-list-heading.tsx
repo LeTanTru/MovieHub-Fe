@@ -17,7 +17,7 @@ export default function CollectionListHeading({
   return loading ? (
     <div className='max-1120:mb-5 max-990:mb-4 max-480:justify-between relative mb-6 flex items-center justify-start gap-4'>
       <Skeleton className='skeleton max-640:w-48 max-420:w-32 h-10 w-64' />
-      <Skeleton className='skeleton h-8 w-8 rounded-full' />
+      <Skeleton className='skeleton size-8 rounded-full' />
     </div>
   ) : (
     <div className='max-1120:mb-5 max-990:mb-4 max-480:justify-between relative mb-6 flex items-center justify-start gap-4'>

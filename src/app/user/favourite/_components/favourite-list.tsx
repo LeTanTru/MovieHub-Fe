@@ -41,13 +41,13 @@ export default function FavouriteList() {
 
   const favouriteList = favouriteListData?.data?.content || [];
 
-  const movieList = favouriteList
-    .map((favourite) => favourite.movie)
-    .filter(Boolean);
+  const movieList = favouriteList.flatMap((favourite) =>
+    favourite.movie ? [favourite.movie] : []
+  );
 
-  const personList = favouriteList
-    .map((favourite) => favourite.person)
-    .filter(Boolean);
+  const personList = favouriteList.flatMap((favourite) =>
+    favourite.person ? [favourite.person] : []
+  );
 
   const totalPages = favouriteListData?.data?.totalPages || 0;
 
