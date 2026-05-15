@@ -43,10 +43,6 @@ export default function SearchForm({
     open: openMovieList,
     close: closeMovieList
   } = useDisclosure();
-  const movieListRef = useClickOutside<HTMLDivElement>(() => {
-    closeMovieList();
-    setKeyword('');
-  });
 
   const { searchParams, setQueryParam, serializeParams } = useQueryParams<{
     keyword: string;
@@ -58,6 +54,11 @@ export default function SearchForm({
       setKeyword: s.setKeyword
     }))
   );
+
+  const movieListRef = useClickOutside<HTMLDivElement>(() => {
+    closeMovieList();
+    setKeyword('');
+  });
 
   const { data: movieListData, isLoading } = useMovieListQuery({
     params: { keyword },

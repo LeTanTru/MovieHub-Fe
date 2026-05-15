@@ -14,7 +14,6 @@ import { storageKeys } from '@/constants';
 import { Suspense, useEffect, useState } from 'react';
 import { useAppContext } from '@/components/providers/app-provider';
 import { useAuth, useNavigate } from '@/hooks';
-import { usePathname } from 'next/navigation';
 import DropdownAvatar from './dropdown-avatar';
 import DropdownNotification from './dropdown-notification';
 import Image from 'next/image';
@@ -22,7 +21,6 @@ import Link from 'next/link';
 import SearchForm from './search-form';
 
 export default function Header() {
-  const pathname = usePathname();
   const [isFixed, setIsFixed] = useState<boolean>(false);
   const [showSearch, setShowSearch] = useState<boolean>(false);
 
@@ -42,7 +40,7 @@ export default function Header() {
   }, []);
 
   const handleLogin = () => {
-    setData(storageKeys.REDIRECT_PATH_AFTER_LOGIN, pathname);
+    setData(storageKeys.REDIRECT_PATH_AFTER_LOGIN, window.location.pathname);
     navigate.push(route.login.path);
   };
 

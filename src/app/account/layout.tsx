@@ -15,7 +15,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
 
       <Container className='max-1536:min-h-[calc(100vh-72px)] max-520:min-h-[calc(100vh-64px)] pt-header relative z-2 mx-auto flex min-h-[calc(100vh-120px)] w-full max-w-400 flex-col justify-center'>
         {children}
-        <div className='mt-4 text-center text-sm'>
+        <div suppressHydrationWarning className='mt-4 text-center text-sm'>
           © Copyright {new Date().getFullYear()} by&nbsp;
           <Link href='/' className='underline'>
             Moviehub

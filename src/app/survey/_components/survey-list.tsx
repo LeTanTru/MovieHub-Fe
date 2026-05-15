@@ -23,11 +23,11 @@ export default function SurveyList() {
   const [selectedMovieIds, setSelectedMovieIds] = useState<string[]>([]);
 
   const handleClick = (movie: SurveyResType) => {
-    if (selectedMovieIds.includes(movie.id)) {
-      setSelectedMovieIds(selectedMovieIds.filter((id) => id !== movie.id));
-    } else {
-      setSelectedMovieIds([...selectedMovieIds, movie.id]);
-    }
+    setSelectedMovieIds((prev) =>
+      prev.includes(movie.id)
+        ? prev.filter((id) => id !== movie.id)
+        : [...prev, movie.id]
+    );
   };
 
   const handleSubmit = async () => {

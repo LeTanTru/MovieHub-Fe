@@ -1,8 +1,9 @@
 'use client';
 
+import { useQueryParams } from '@/hooks';
 import { cn } from '@/lib';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { scroller } from 'react-scroll';
 
@@ -22,17 +23,19 @@ export default function Pagination({
   onChange
 }: PaginationProps) {
   const pathname = usePathname();
-  const params = useSearchParams();
+  const { searchParams, serializeParams } = useQueryParams();
   const isControlled = typeof onChange === 'function';
   const currentPage = isControlled
     ? (page ?? 1)
-    : Number(params.get('page') ?? 1);
+    : Number(searchParams.page ?? 1);
 
   const createPageLink = (page: number) => {
-    if (page === 1) return pathname;
-    const newParams = new URLSearchParams(params.toString());
-    newParams.set('page', String(page));
-    return `${pathname}?${newParams.toString()}`;
+    const newParams = {
+      ...searchParams,
+      page: page === 1 ? null : String(page)
+    };
+    const queryString = serializeParams(newParams);
+    return queryString ? `${pathname}?${queryString}` : pathname;
   };
 
   if (totalPages <= 1) return null;

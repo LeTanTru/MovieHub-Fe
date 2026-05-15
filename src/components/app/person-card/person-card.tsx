@@ -43,12 +43,14 @@ type PersonCardProps = {
   onDelete?: (id: string) => void;
 };
 
+const DEFAULT_PARAMS: PersonSearchType = {};
+
 export default function PersonCard({
   person,
   showFullName,
   willNavigate,
   dir = 'up',
-  params = {},
+  params = DEFAULT_PARAMS,
   deleteMessage,
   onDelete
 }: PersonCardProps) {

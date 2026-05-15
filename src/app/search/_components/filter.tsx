@@ -159,7 +159,7 @@ export default function Filter({
         <div className='block'>
           <button
             type='button'
-            className='bg-black-denim max-640:px-0 inline-flex h-7.5 cursor-pointer items-center gap-2 rounded pr-3 pl-2 font-medium text-white'
+            className='max-640:px-0 inline-flex h-7.5 cursor-pointer items-center gap-2 rounded bg-transparent pr-3 pl-2 font-medium text-white'
             onClick={onShowFilter}
           >
             <FaFilter className='size-5' />
