@@ -65,7 +65,7 @@ export default function SearchForm({
     enabled: !!keyword && !isSearchPage
   });
 
-  const movieList = movieListData?.data?.content || [];
+  const movieList = movieListData?.content || [];
 
   const defaultValues: SearchType = {
     keyword: searchParams.keyword || ''

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
@@ -15,34 +15,28 @@ type WatchProps = {
 };
 
 export default function Watch({ id }: WatchProps) {
-  const { setMovie, setMoviePersons } = useMovieStore(
+  const { setMovie, setMoviePerson } = useMovieStore(
     useShallow((s) => ({
       setMovie: s.setMovie,
-      setMoviePersons: s.setMoviePersons
+      setMoviePerson: s.setMoviePerson
     }))
   );
-  const { data: movieData, isLoading } = useMovieQuery(id);
-  const movie = movieData?.data;
+  const { data: movie, isLoading } = useMovieQuery(id);
 
-  const { data: moviePersonData } = useMoviePersonListQuery({
+  const { data: moviePerson = [] } = useMoviePersonListQuery({
     params: {
       movieId: id
     },
     enabled: !!movie
   });
 
-  const moviePersons = useMemo(
-    () => moviePersonData?.data?.content || [],
-    [moviePersonData?.data?.content]
-  );
-
   useEffect(() => {
     if (movie) setMovie(movie);
   }, [movie, setMovie]);
 
   useEffect(() => {
-    setMoviePersons(moviePersons);
-  }, [moviePersons, setMoviePersons]);
+    setMoviePerson(moviePerson);
+  }, [moviePerson, setMoviePerson]);
 
   if (isLoading) return <Watch.Skeleton />;
 

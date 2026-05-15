@@ -62,12 +62,10 @@ export default function ReviewList({
     {} as Record<number, { label: string; icon: StaticImageData }>
   );
 
-  const { data: voteReviewListData } = useVoteReviewListQuery({
+  const { data: voteReviewList = [] } = useVoteReviewListQuery({
     movieId: movie?.id || '',
     enabled: isAuthenticated && !!movie?.id
   });
-
-  const voteReviewList = voteReviewListData?.data || [];
 
   const voteMaps: Record<string, number> = {};
   voteReviewList.forEach((vote) => {

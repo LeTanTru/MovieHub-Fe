@@ -8,7 +8,8 @@ export default function TopViewList() {
   const { data: topViewMovieListData } = useTopViewMovieListQuery({
     enabled: true
   });
-  const topViewMovieList = topViewMovieListData?.data?.content || [];
+
+  const topViewMovieList = topViewMovieListData?.content || [];
 
   if (topViewMovieList.length === 0) return null;
 

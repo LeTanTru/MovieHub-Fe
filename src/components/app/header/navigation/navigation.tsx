@@ -19,7 +19,8 @@ export default function NavigationMenu({ mode }: NavigationMenuProps) {
     },
     enabled: true
   });
-  const categoryList: CategoryResType[] = categoryListData?.data?.content || [];
+
+  const categoryList: CategoryResType[] = categoryListData?.content || [];
 
   const navigationList: ItemProps[] = [
     {

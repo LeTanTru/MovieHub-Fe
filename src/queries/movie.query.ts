@@ -16,7 +16,8 @@ export const useMovieListQuery = ({
     queryKey: [queryKeys.MOVIE_LIST, params],
     queryFn: () => movieApiRequest.getList(params),
     enabled,
-    placeholderData: isKeepPreviousData ? keepPreviousData : undefined
+    placeholderData: isKeepPreviousData ? keepPreviousData : undefined,
+    select: (data) => data.data
   });
 };
 
@@ -24,7 +25,8 @@ export const useMovieQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE, id],
     queryFn: () => movieApiRequest.getById(id),
-    enabled: !!id
+    enabled: !!id,
+    select: (data) => data.data
   });
 };
 
@@ -32,7 +34,8 @@ export const useSuggestionMovieListQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
     queryFn: () => movieApiRequest.getSuggestionList(id),
-    enabled: !!id
+    enabled: !!id,
+    select: (data) => data.data
   });
 };
 
@@ -44,7 +47,8 @@ export const useMovieHistoryListQuery = ({
   return useQuery({
     queryKey: [queryKeys.MOVIE_HISTORY],
     queryFn: () => movieApiRequest.getHistoryList(),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };
 
@@ -58,7 +62,8 @@ export const useTopViewMovieListQuery = ({
   return useQuery({
     queryKey: [queryKeys.MOVIE_TOP_VIEW_LIST, params],
     queryFn: () => movieApiRequest.getTopViewList(params),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };
 
@@ -72,7 +77,8 @@ export const useScheduleMovieListQuery = ({
   return useQuery({
     queryKey: [queryKeys.MOVIE_SCHEDULE_LIST, params],
     queryFn: () => movieApiRequest.getScheduleList(params),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };
 
@@ -80,7 +86,8 @@ export const useMovieNextEpisodeQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_NEXT_EPISODE, id],
     queryFn: () => movieApiRequest.getNextEpisode(id),
-    enabled: !!id
+    enabled: !!id,
+    select: (data) => data.data
   });
 };
 
@@ -94,7 +101,8 @@ export const useMovieSuggestByWatchedQuery = ({
   return useQuery({
     queryKey: [`${queryKeys.SUGGEST_BY_WATCHED}-${params.page}`, params],
     queryFn: () => movieApiRequest.getSuggestByWatched(params),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };
 
@@ -106,6 +114,7 @@ export const useMovieRecommendationQuery = ({
   return useQuery({
     queryKey: [queryKeys.MOVIE_RECOMMENDATION],
     queryFn: () => movieApiRequest.getRecommendation(),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };

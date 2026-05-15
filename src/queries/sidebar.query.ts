@@ -13,6 +13,7 @@ export const useSidebarListQuery = ({
   return useQuery({
     queryKey: [queryKeys.SIDEBAR_LIST, params],
     queryFn: () => sidebarApiRequest.getList(params),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };

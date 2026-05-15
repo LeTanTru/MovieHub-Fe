@@ -85,7 +85,7 @@ export default function ButtonLike({
   const { mutateAsync: removeFavourite, isPending: removeFavouriteLoading } =
     useDeleteFavouriteMutation();
 
-  const { data: favouriteData, refetch: getFavourite } = useFavouriteQuery({
+  const { data: favouriteId, refetch: getFavourite } = useFavouriteQuery({
     params: {
       targetId,
       type: favouriteType
@@ -103,8 +103,8 @@ export default function ButtonLike({
   }, [getFavourite, refetch, isAuthenticated]);
 
   useEffect(() => {
-    setIsLiked(!!favouriteData?.result && isAuthenticated);
-  }, [favouriteData, isAuthenticated]);
+    setIsLiked(!!favouriteId && isAuthenticated);
+  }, [favouriteId, isAuthenticated]);
 
   const handleLike = async () => {
     startAnimation();

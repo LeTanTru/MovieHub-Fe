@@ -18,7 +18,8 @@ export const useLoginGoogleQuery = ({
   return useQuery({
     queryKey: [queryKeys.GET_LOGIN_GOOGLE, loginType],
     queryFn: () => authApiRequest.getGoogleLoginUrl(loginType),
-    enabled: false
+    enabled: false,
+    select: (data) => data.data
   });
 };
 
@@ -91,6 +92,7 @@ export const useChangePasswordMutation = () => {
 export const useSession = () => {
   return useQuery({
     queryKey: [queryKeys.SESSION],
-    queryFn: () => authApiRequest.session()
+    queryFn: () => authApiRequest.session(),
+    select: (data) => data.data
   });
 };

@@ -85,12 +85,10 @@ export default function CommentList({
   const { mutateAsync: voteCommentMutate, isPending: voteCommentLoading } =
     useVoteCommentMutation();
 
-  const { data: voteCommentListData } = useVoteCommentListQuery({
+  const { data: voteCommentList = [] } = useVoteCommentListQuery({
     movieId: movie?.id || '',
     enabled: isAuthenticated && !!movie?.id
   });
-
-  const voteCommentList: CommentVoteResType[] = voteCommentListData?.data || [];
 
   const voteMap: Record<string, number> = {};
   voteCommentList.forEach((vote) => {

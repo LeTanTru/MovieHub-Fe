@@ -23,8 +23,8 @@ export default function SuggestByWatched({ page }: { page: number }) {
     enabled: isAuthenticated && inView
   });
 
-  const watchedMovie = movieListData?.data?.watchedMovie;
-  const movieList = movieListData?.data?.suggestedMovies || [];
+  const watchedMovie = movieListData?.watchedMovie;
+  const movieList = movieListData?.suggestedMovies || [];
 
   if (!isAuthenticated || !watchedMovie) return null;
 

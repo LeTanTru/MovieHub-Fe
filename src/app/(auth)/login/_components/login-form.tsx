@@ -44,7 +44,7 @@ export default function LoginForm() {
           setAccessToken(accessToken as string);
 
           const profile = await getProfile();
-          const profileData = profile.data?.data;
+          const profileData = profile.data;
 
           if (profileData) {
             setProfile(profileData);

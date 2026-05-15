@@ -22,10 +22,8 @@ export default function MovieList({ collectionId }: MovieListProps) {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();
 
-  const { data: collectionData, isLoading: collectionLoading } =
+  const { data: collection, isLoading: collectionLoading } =
     useCollectionQuery(collectionId);
-
-  const collection = collectionData?.data;
 
   const { data: collectionItemListData, isLoading: collectionItemListLoading } =
     useCollectionItemListQuery({
@@ -36,8 +34,8 @@ export default function MovieList({ collectionId }: MovieListProps) {
       }
     });
 
-  const movieList = collectionItemListData?.data?.content || [];
-  const totalPages = collectionItemListData?.data?.totalPages || 0;
+  const movieList = collectionItemListData?.content || [];
+  const totalPages = collectionItemListData?.totalPages || 0;
   const colors = getColorList(collection?.color || '[]');
 
   const getGradientStyle = (dir: string = 'to bottom') =>

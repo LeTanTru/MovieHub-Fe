@@ -29,11 +29,9 @@ export default function WatchContinue() {
   const nextRef = useRef<HTMLDivElement>(null);
   const prevRef = useRef<HTMLDivElement>(null);
 
-  const { data: movieHistoriesData, isLoading } = useMovieHistoryListQuery({
+  const { data: movieHistories = [], isLoading } = useMovieHistoryListQuery({
     enabled: isAuthenticated
   });
-
-  const movieHistories = movieHistoriesData?.data || [];
 
   const { mutateAsync: deleteWatchHistoryMutate } =
     useDeleteWatchHistoryMutation();
@@ -59,7 +57,7 @@ export default function WatchContinue() {
 
   if (isLoading) return <VerticalBarLoading className='py-20' />;
 
-  if (!movieHistories.length) return null;
+  if (movieHistories.length === 0) return null;
 
   return (
     <div className='watch-continue fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>

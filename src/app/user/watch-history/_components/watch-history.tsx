@@ -18,10 +18,9 @@ export default function WatchHistory() {
 
   const queryClient = getQueryClient();
 
-  const { data: movieHistoriesData, isLoading } = useMovieHistoryListQuery({
+  const { data: movieHistories = [], isLoading } = useMovieHistoryListQuery({
     enabled: isAuthenticated
   });
-  const movieHistories = movieHistoriesData?.data || [];
 
   const { mutateAsync: deleteWatchHistoryMutate } =
     useDeleteWatchHistoryMutation();

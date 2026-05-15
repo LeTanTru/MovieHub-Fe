@@ -13,7 +13,8 @@ export const useWatchHistoryListQuery = ({
   return useQuery({
     queryKey: [queryKeys.WATCH_HISTORY_LIST, params],
     queryFn: () => watchHistoryApiRequest.getList(params),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };
 

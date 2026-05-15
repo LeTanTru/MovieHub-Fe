@@ -32,8 +32,8 @@ export default function MovieList({ countryCode }: MovieListProps) {
     enabled: !!countryCode
   });
 
-  const movieList = movieListData?.data?.content || [];
-  const totalPages = movieListData?.data?.totalPages || 0;
+  const movieList = movieListData?.content || [];
+  const totalPages = movieListData?.totalPages || 0;
 
   if (!countryName) {
     return <NotFound />;

@@ -8,8 +8,8 @@ import Image from 'next/image';
 
 export default function ScheduleBadge() {
   const movie = useMovieStore((s) => s.movie);
-  const { data: nextEpisodeData } = useMovieNextEpisodeQuery(movie?.id || '');
-  const nextEpisode = nextEpisodeData?.data;
+
+  const { data: nextEpisode } = useMovieNextEpisodeQuery(movie?.id || '');
 
   if (!nextEpisode) return null;
 

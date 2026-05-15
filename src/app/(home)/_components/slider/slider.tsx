@@ -48,7 +48,7 @@ export default function Slider({ sidebarList }: SliderProps) {
     enabled: isAuthenticated
   });
 
-  const favouriteListIds = favouriteListIdsData?.data?.ids || [];
+  const favouriteListIds = favouriteListIdsData?.ids || [];
 
   const handleLike = async (targetId: string) => {
     if (!isAuthenticated) {

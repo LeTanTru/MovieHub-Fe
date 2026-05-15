@@ -41,8 +41,8 @@ export default function MovieList() {
   const { mutateAsync: removePlaylistItemMutate } =
     useRemovePlaylistItemMutation();
 
-  const movieList = playlistMoviesData?.data?.content || [];
-  const totalPages = playlistMoviesData?.data?.totalPages || 0;
+  const movieList = playlistMoviesData?.content || [];
+  const totalPages = playlistMoviesData?.totalPages || 0;
 
   const handlePageChange = (page: number) => {
     setPage(page);

@@ -7,11 +7,10 @@ const DEFAULT_SEASON = '1';
 const useMovieStore = create<MovieStoreType>((set) => ({
   movie: null,
   movieItem: null,
-  moviePerson: null,
 
   movies: [],
   movieItems: [],
-  moviePersons: [],
+  moviePerson: [],
 
   selectedSeason: DEFAULT_SEASON,
 
@@ -19,11 +18,10 @@ const useMovieStore = create<MovieStoreType>((set) => ({
 
   setMovie: (movie) => set({ movie }),
   setMovieItem: (movieItem) => set({ movieItem }),
-  setMoviePerson: (moviePerson) => set({ moviePerson }),
 
   setMovies: (movies) => set({ movies }),
   setMovieItems: (movieItems) => set({ movieItems }),
-  setMoviePersons: (moviePersons) => set({ moviePersons }),
+  setMoviePerson: (moviePerson) => set({ moviePerson }),
 
   setSelectedSeason: (season) => set({ selectedSeason: season }),
 
@@ -33,11 +31,10 @@ const useMovieStore = create<MovieStoreType>((set) => ({
     set({
       movie: null,
       movieItem: null,
-      moviePerson: null,
 
       movies: [],
       movieItems: [],
-      moviePersons: [],
+      moviePerson: [],
 
       selectedSeason: DEFAULT_SEASON
     })

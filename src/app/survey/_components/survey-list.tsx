@@ -13,12 +13,10 @@ import { cn } from '@/lib';
 export default function SurveyList() {
   const navigate = useNavigate();
   const { isAuthenticated, profile } = useAuth();
-  const { data: surveyListData, isLoading } =
+  const { data: movieList = [], isLoading } =
     useSurveyListQuery(!!isAuthenticated);
 
   const { mutateAsync: makeSurveyMutate, isPending } = useMakeSurveyMutation();
-
-  const movieList = surveyListData?.data || [];
 
   const [selectedMovieIds, setSelectedMovieIds] = useState<string[]>([]);
 

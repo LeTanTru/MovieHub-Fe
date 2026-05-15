@@ -18,10 +18,8 @@ export default function MovieTabSuggestion({
   const { slug } = useParams<{ slug: string }>();
   const movieId = getIdFromSlug(slug);
 
-  const { data: suggestionMovieListData, isLoading } =
+  const { data: suggestionMovieList = [], isLoading } =
     useSuggestionMovieListQuery(movieId);
-
-  const suggestionMovieList = suggestionMovieListData?.data || [];
 
   return (
     <MotionWrapper uniqueKey={MOVIE_TAB_SUGGESTION} direction={direction}>

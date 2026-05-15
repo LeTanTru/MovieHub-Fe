@@ -69,8 +69,8 @@ export default function Search() {
     isKeepPreviousData: true
   });
 
-  const movieList = movieListData?.data?.content || [];
-  const totalPages = movieListData?.data?.totalPages || 0;
+  const movieList = movieListData?.content || [];
+  const totalPages = movieListData?.totalPages || 0;
 
   // Generate a unique key based on actual data to trigger animations only when data changes
   const listKey = `${currentPage}-${movieList[0]?.id || 'empty'}-${movieList.length}`;

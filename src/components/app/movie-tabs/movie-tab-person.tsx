@@ -10,7 +10,6 @@ import {
   PERSON_KIND_ACTOR
 } from '@/constants';
 import { useMovieStore } from '@/store';
-import { useShallow } from 'zustand/shallow';
 import type { PersonResType } from '@/types';
 
 type MovieTabPersonProps = {
@@ -22,19 +21,14 @@ export default function MovieTabPerson({
   kind,
   direction
 }: MovieTabPersonProps) {
-  const { moviePersons } = useMovieStore(
-    useShallow((s) => ({ moviePersons: s.moviePersons }))
-  );
+  const moviePerson = useMovieStore((state) => state.moviePerson);
 
-  const personList = moviePersons.reduce<PersonResType[]>(
-    (acc, moviePerson) => {
-      if (moviePerson.kind === kind) {
-        acc.push(moviePerson.person);
-      }
-      return acc;
-    },
-    []
-  );
+  const personList = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {
+    if (moviePerson.kind === kind) {
+      acc.push(moviePerson.person);
+    }
+    return acc;
+  }, []);
 
   const title = movieTabPersonTitles[kind];
 

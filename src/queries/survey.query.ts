@@ -7,7 +7,8 @@ export const useSurveyListQuery = (enabled: boolean = false) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_SURVEY_LIST],
     queryFn: () => surveyApiRequest.getSurveyList(),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };
 

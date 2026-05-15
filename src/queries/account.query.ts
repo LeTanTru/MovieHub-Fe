@@ -10,7 +10,8 @@ export const useProfileQuery = ({
   return useQuery({
     queryKey: [queryKeys.PROFILE],
     queryFn: () => accountApiRequest.getProfile(),
-    enabled: enabled
+    enabled: enabled,
+    select: (data) => data.data
   });
 };
 

@@ -67,7 +67,7 @@ export default function ButtonAddToPlaylist({
   const { iconRef, startAnimation } = useClickAnimation();
   const queryClient = getQueryClient();
 
-  const { data: playlistData, isLoading } = usePlaylistListQuery({
+  const { data: playlist = [], isLoading } = usePlaylistListQuery({
     enabled: opened
   });
 
@@ -81,11 +81,9 @@ export default function ButtonAddToPlaylist({
     isPending: updatePlaylistItemLoading
   } = useUpdatePlaylistItemMutation();
 
-  const playlist = playlistData?.data || [];
-
   const playlistByMovie = useMemo(
-    () => playlistByMovieData?.data?.ids || [],
-    [playlistByMovieData?.data?.ids]
+    () => playlistByMovieData?.ids || [],
+    [playlistByMovieData?.ids]
   );
 
   const handleOpen = () => {

@@ -88,7 +88,7 @@ export default function Filter({
   });
 
   const categoryList =
-    categoryListData?.data?.content
+    categoryListData?.content
       ?.map((category) => ({
         label: category.name,
         value: category.id
