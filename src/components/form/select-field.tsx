@@ -194,13 +194,13 @@ export default function SelectField<
                           aria-label='Clear selection'
                           onClick={handleClear}
                           onKeyDown={(e) => e.key === 'Enter' && handleClear(e)}
-                          className='bg-accent ml-2 flex h-4 w-4 items-center justify-center rounded-full hover:opacity-80'
+                          className='bg-accent ml-2 flex size-4 items-center justify-center rounded-full hover:opacity-80'
                           tabIndex={0}
                         >
                           <X className='size-3' />
                         </span>
                       ) : (
-                        <ChevronDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                        <ChevronDown className='ml-2 size-4 shrink-0 opacity-50' />
                       )}
                     </Button>
                   </PopoverTrigger>

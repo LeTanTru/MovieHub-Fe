@@ -67,7 +67,7 @@ PlaylistCard.Skeleton = function () {
       <div className='skeleton mb-4 h-5 w-20 rounded'></div>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-x-2'>
-          <div className='skeleton h-5 w-5 rounded-full'></div>
+          <div className='skeleton size-5 rounded-full'></div>
           <div className='skeleton h-5 w-12 rounded'></div>
         </div>
         <div></div>

@@ -34,7 +34,7 @@ import ActorList from './actor-list';
 import Image from 'next/image';
 import Link from 'next/link';
 import TopViewList from './top-view-list';
-import { MetadataType } from '@/types';
+import type { MetadataType, PersonResType } from '@/types';
 import { MovieProgress } from '@/components/app/movie-progress';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -61,13 +61,19 @@ export default function MovieSide() {
     languages.find((language) => language.value === movie?.language)?.label ||
     'Đang cập nhật';
 
-  const directors = moviePersons
-    .filter((moviePerson) => moviePerson.kind === PERSON_KIND_DIRECTOR)
-    .map((moviePerson) => moviePerson.person);
+  const directors = moviePersons.reduce<PersonResType[]>((acc, moviePerson) => {
+    if (moviePerson.kind === PERSON_KIND_DIRECTOR) {
+      acc.push(moviePerson.person);
+    }
+    return acc;
+  }, []);
 
-  const actors = moviePersons
-    .filter((moviePerson) => moviePerson.kind === PERSON_KIND_ACTOR)
-    .map((moviePerson) => moviePerson.person);
+  const actors = moviePersons.reduce<PersonResType[]>((acc, moviePerson) => {
+    if (moviePerson.kind === PERSON_KIND_ACTOR) {
+      acc.push(moviePerson.person);
+    }
+    return acc;
+  }, []);
 
   const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');
 
@@ -305,7 +311,7 @@ MovieSide.Skeleton = function () {
               key={`actor-skeleton-${index}`}
               className='flex flex-col items-center gap-3 text-center'
             >
-              <Skeleton className='skeleton h-20 w-20 rounded-full!' />
+              <Skeleton className='skeleton size-20 rounded-full!' />
               <Skeleton className='skeleton h-4 w-16' />
             </div>
           ))}
@@ -314,7 +320,7 @@ MovieSide.Skeleton = function () {
       {/* TopViewList skeleton - hidden on screens <= 1120px */}
       <div className='max-1120:hidden border-t border-solid border-white/10 pt-8'>
         <div className='mb-4 flex min-h-10 items-center gap-4'>
-          <Skeleton className='skeleton h-6 w-6 rounded!' />
+          <Skeleton className='skeleton size-6 rounded!' />
           <Skeleton className='skeleton h-6 w-32' />
         </div>
         <div className='flex flex-col gap-4'>

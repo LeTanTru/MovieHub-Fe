@@ -62,6 +62,7 @@ export default function SurveyCard({
           alt={movie.title}
           fill
           unoptimized
+          sizes='(max-width: 480px) 50vw, (max-width: 640px) 50vw, (max-width: 1120px) 33vw, 25vw'
           className='absolute inset-0 size-full rounded-md object-cover select-none'
         />
       </m.div>

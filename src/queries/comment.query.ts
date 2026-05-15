@@ -1,10 +1,6 @@
 import { commentApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import {
-  CommentSearchType,
-  CommentBodyType,
-  VoteCommentBodyType
-} from '@/types';
+import { CommentBodyType, VoteCommentBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useCreateCommentMutation = () => {

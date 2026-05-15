@@ -13,7 +13,7 @@ export default function ActorCell({ actor }: ActorCellProps) {
     <div className='flex flex-col items-center gap-3 text-center'>
       <Link
         href={`${route.person.path}/${actor.id}`}
-        className='bg-main-background relative h-20 w-20 shrink-0 overflow-hidden rounded-full'
+        className='bg-main-background relative size-20 shrink-0 overflow-hidden rounded-full'
       >
         <AvatarField
           src={renderImageUrl(actor.avatarPath)}

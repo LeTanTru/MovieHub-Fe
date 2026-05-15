@@ -19,20 +19,23 @@ const useQueryParams = <S extends Record<string, any>>() => {
       params.set(String(key), String(value));
     }
 
-    const sortedParams = new URLSearchParams();
-    [...params.keys()].sort().forEach((k) => {
-      const v = params.get(k);
-      if (v !== null) sortedParams.set(k, v);
-    });
+    const sortedParams = [...params.keys()]
+      .toSorted()
+      .map((k) => {
+        const v = params.get(k);
+        return v !== null
+          ? `${encodeURIComponent(k)}=${encodeURIComponent(v)}`
+          : null;
+      })
+      .filter(Boolean)
+      .join('&');
 
-    navigate.push(
-      `${pathname}?${serializeParams(Object.fromEntries(sortedParams.entries()) as Record<string, any>)}`
-    );
+    navigate.replace(`${pathname}?${sortedParams}`);
   };
 
   const setQueryParams = (newParams: Partial<S>) => {
     const queryString = serializeParams(newParams as Record<string, any>);
-    navigate.push(queryString ? `${pathname}?${queryString}` : pathname);
+    navigate.replace(queryString ? `${pathname}?${queryString}` : pathname);
   };
 
   const serializeParams = (obj: Record<string, any>) => {

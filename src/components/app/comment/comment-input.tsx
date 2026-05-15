@@ -124,6 +124,7 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
   useEffect(() => {
     let picker: any;
     let mounted = true;
+    let emojiClickHandler: ((event: any) => void) | null = null;
 
     (async () => {
       const { Picker } = await import('emoji-picker-element');
@@ -133,17 +134,21 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
 
       picker = new Picker();
       picker.i18n = vi;
-      picker.style.position = 'absolute';
-      picker.style.zIndex = '1000';
-      picker.style.opacity = '0';
-      picker.style.visibility = 'hidden';
-      picker.style.right = '130px';
-      picker.style.top = '0px';
-      picker.style.transition = 'all 0.2s linear';
+      picker.style.cssText = `
+        position: absolute;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        right: 130px;
+        top: 0px;
+        transition: all 0.2s linear;
+        --border-radius: 8px;
+        --border-size: 0;
+      `;
       picker.style.setProperty('--border-radius', '8px');
       picker.style.setProperty('--border-size', '0');
 
-      picker.addEventListener('emoji-click', (event: any) => {
+      emojiClickHandler = (event: any) => {
         const emoji = event.detail.unicode;
         if (formMethodsRef.current) {
           const currentValue =
@@ -153,7 +158,9 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
             shouldTouch: true
           });
         }
-      });
+      };
+
+      picker.addEventListener('emoji-click', emojiClickHandler);
 
       if (pickerContainerRef.current) {
         pickerContainerRef.current.appendChild(picker);
@@ -162,6 +169,9 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
 
     return () => {
       mounted = false;
+      if (picker && emojiClickHandler) {
+        picker.removeEventListener('emoji-click', emojiClickHandler);
+      }
       if (picker && picker.parentNode) picker.parentNode.removeChild(picker);
     };
   }, []);
@@ -170,8 +180,9 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
     const pickerEl = pickerContainerRef.current?.querySelector('emoji-picker');
 
     if (pickerEl) {
-      pickerEl.style.opacity = showPicker ? '1' : '0';
-      pickerEl.style.visibility = showPicker ? 'visible' : 'hidden';
+      pickerEl.style.cssText = showPicker
+        ? 'opacity: 1; visibility: visible;'
+        : 'opacity: 0; visibility: hidden;';
     }
   }, [showPicker]);
 

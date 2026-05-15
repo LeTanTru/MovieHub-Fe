@@ -43,7 +43,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
 ProfileSection.Skeleton = function () {
   return (
     <>
-      <Skeleton className='skeleton h-15 w-15 rounded-full!' />
+      <Skeleton className='skeleton size-15 rounded-full!' />
       <div className='mt-4 flex items-center gap-x-1'>
         <Skeleton className='skeleton h-4 w-full' />
         <Skeleton className='skeleton size-4.5' />

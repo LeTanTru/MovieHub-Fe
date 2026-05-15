@@ -9,6 +9,7 @@ import { useMovieStore } from '@/store';
 import { useParams } from 'next/navigation';
 import { useShallow } from 'zustand/shallow';
 import { useSuggestionMovieListQuery } from '@/queries';
+import type { PersonResType } from '@/types';
 
 export default function WatchSide() {
   const { slug } = useParams<{ slug: string }>();
@@ -21,9 +22,12 @@ export default function WatchSide() {
     }))
   );
 
-  const actors = moviePersons
-    .filter((moviePerson) => moviePerson.kind === PERSON_KIND_ACTOR)
-    .map((moviePerson) => moviePerson.person);
+  const actors = moviePersons.reduce<PersonResType[]>((acc, moviePerson) => {
+    if (moviePerson.kind === PERSON_KIND_ACTOR) {
+      acc.push(moviePerson.person);
+    }
+    return acc;
+  }, []);
 
   const { data: suggestionMovieListData } =
     useSuggestionMovieListQuery(movieId);

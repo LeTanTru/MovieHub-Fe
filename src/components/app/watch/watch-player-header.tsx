@@ -18,7 +18,7 @@ export default function WatchPlayerHeader() {
       >
         <FaChevronLeft />
       </Link>
-      <h3 className='max-1120:font-semibold max-1120:text-lg max-640:text-sm text-xl font-bold'>
+      <h3 className='max-1120:font-semibold max-1120:text-lg max-640:text-sm text-xl font-semibold'>
         Xem phim {videoTitle}
       </h3>
     </div>

@@ -149,8 +149,7 @@ export default function AvatarField({
 
     return () => {
       document.body.classList.remove('body-lock');
-      document.body.style.overflow = '';
-      document.body.style.marginRight = '';
+      document.body.style.cssText = '';
       const header = document.querySelector('.header');
       if (header && getComputedStyle(header).position === 'fixed') {
         (header as HTMLElement).style.paddingRight = '';

@@ -65,7 +65,7 @@ Watch.Skeleton = function () {
       {/* Watch Player Skeleton */}
       <div className='watch-player max-800:max-w-none max-800:w-full max-800:px-0 max-640:-mt-10 max-640:flex max-640:flex-col-reverse relative mx-auto max-w-410 px-5'>
         <div className='max-1360:mb-4 max-1360:px-6 max-1120:px-4 max-800:mb-2 max-640:mt-4 max-640:mb-0 mb-6 inline-flex w-full items-center gap-2 px-8'>
-          <Skeleton className='skeleton h-9 w-9 rounded-full' />
+          <Skeleton className='skeleton size-9 rounded-full' />
           <Skeleton className='skeleton h-7 w-64' />
         </div>
         <div className='watch-player-wrapper'>
@@ -153,17 +153,15 @@ Watch.Skeleton = function () {
           <div className='border-t border-solid border-white/10 pt-7.5'>
             <Skeleton className='skeleton mb-8 h-6 w-24' />
             <div className='max-1120:grid-cols-6 max-640:grid-cols-3 max-800:grid-cols-5 max-480:grid-cols-2 max-640:text-[13px] max-520:text-xs grid grid-cols-3 gap-x-2.5 gap-y-6'>
-              {Array.from({ length: 6 })
-                .map((_, index) => `actor-${index}`)
-                .map((actorKey) => (
-                  <div
-                    key={actorKey}
-                    className='flex flex-col items-center gap-3 text-center'
-                  >
-                    <Skeleton className='skeleton h-20 w-20 rounded-full!' />
-                    <Skeleton className='skeleton h-4 w-16' />
-                  </div>
-                ))}
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div
+                  key={`actor-${index}`}
+                  className='flex flex-col items-center gap-3 text-center'
+                >
+                  <Skeleton className='skeleton size-20 rounded-full!' />
+                  <Skeleton className='skeleton h-4 w-16' />
+                </div>
+              ))}
             </div>
           </div>
 
@@ -171,18 +169,16 @@ Watch.Skeleton = function () {
           <div className='border-t border-solid border-white/10 pt-7.5'>
             <Skeleton className='skeleton mb-4 h-7 w-40' />
             <div className='flex flex-col gap-4'>
-              {Array.from({ length: 5 })
-                .map((_, index) => `suggestion-${index}`)
-                .map((suggestionKey) => (
-                  <div key={suggestionKey} className='flex gap-3'>
-                    <Skeleton className='skeleton h-24 w-16 shrink-0' />
-                    <div className='flex flex-1 flex-col gap-2'>
-                      <Skeleton className='skeleton h-5 w-3/4' />
-                      <Skeleton className='skeleton h-4 w-1/2' />
-                      <Skeleton className='skeleton h-4 w-1/3' />
-                    </div>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div key={`suggestion-${index}`} className='flex gap-3'>
+                  <Skeleton className='skeleton h-24 w-16 shrink-0' />
+                  <div className='flex flex-1 flex-col gap-2'>
+                    <Skeleton className='skeleton h-5 w-3/4' />
+                    <Skeleton className='skeleton h-4 w-1/2' />
+                    <Skeleton className='skeleton h-4 w-1/3' />
                   </div>
-                ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>

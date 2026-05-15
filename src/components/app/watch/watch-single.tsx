@@ -68,7 +68,7 @@ export default function WatchSingle() {
                   <Image
                     src={caption}
                     alt='Caption'
-                    className='h-5 w-5 object-cover'
+                    className='size-5 object-cover'
                   />
                   <span>Phụ đề</span>
                 </div>

@@ -9,7 +9,7 @@ export default function SurveyInfo() {
 
   return (
     <div className=''>
-      <h1 className='mb-4 text-4xl leading-12 font-bold'>
+      <h1 className='mb-4 text-4xl leading-12 font-semibold'>
         {profile.fullName.split(' ').at(-1)}, hãy chọn những phim mà bạn thích
         nhé!
       </h1>
