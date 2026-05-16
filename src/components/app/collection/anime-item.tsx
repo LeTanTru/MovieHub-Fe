@@ -24,8 +24,7 @@ type AnimeItemProps = {
   isGrabbing: boolean;
   onPointerDown: () => void;
   onPointerUp: () => void;
-  onLike: (targetId: string) => void;
-  onRemoveLike: (favouriteId: string) => void;
+  onVote: (targetId: string, isLiked: boolean) => void;
   isLiked: boolean;
 };
 
@@ -34,8 +33,7 @@ export default function AnimeItem({
   isGrabbing,
   onPointerDown,
   onPointerUp,
-  onLike,
-  onRemoveLike,
+  onVote,
   isLiked
 }: AnimeItemProps) {
   const movieLink = `${route.movie.path}/${movie.slug}.${movie.id}`;
@@ -60,9 +58,7 @@ export default function AnimeItem({
 
   const handleClick = () => {
     startAnimation();
-
-    const action = isLiked ? onRemoveLike : onLike;
-    action(movie.id);
+    onVote(movie.id, isLiked);
   };
 
   return (

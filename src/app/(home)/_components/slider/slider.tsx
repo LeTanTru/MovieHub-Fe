@@ -12,14 +12,13 @@ import {
   useFavouriteListIdsQuery,
   useFavouriteMutation
 } from '@/queries';
-import { notify, renderImageUrl } from '@/utils';
+import { invalidateQueries, notify, renderImageUrl } from '@/utils';
 import SliderItem from './slider-item';
 import { useAuth } from '@/hooks';
 import { FAVOURITE_TYPE_MOVIE, queryKeys } from '@/constants';
 import { route } from '@/routes';
 import Link from 'next/link';
 import { logger } from '@/logger';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { VerticalBarLoading } from '@/components/loading';
 import Image from 'next/image';
 import { SidebarResType } from '@/types';
@@ -33,7 +32,6 @@ export default function Slider({ sidebarList }: SliderProps) {
 
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const [isGrabbing, setIsGrabbing] = useState<boolean>(false);
-  const queryClient = getQueryClient();
 
   const { mutateAsync: addFavourite, isPending: addFavouriteLoading } =
     useFavouriteMutation();
@@ -50,7 +48,7 @@ export default function Slider({ sidebarList }: SliderProps) {
 
   const favouriteListIds = favouriteListIdsData?.ids || [];
 
-  const handleLike = async (targetId: string) => {
+  const handleVote = async (targetId: string, isLiked: boolean) => {
     if (!isAuthenticated) {
       notify.error(
         <span>
@@ -61,75 +59,44 @@ export default function Slider({ sidebarList }: SliderProps) {
           >
             đăng nhập
           </Link>
-          &nbsp;để thêm phim vào danh sách yêu thích
+          &nbsp;để {isLiked ? 'xóa phim khỏi' : 'thêm phim vào'} danh sách yêu
+          thích
         </span>
       );
       return;
     }
 
-    if (addFavouriteLoading) return;
+    const mutate = isLiked ? removeFavourite : addFavourite;
+    const loading = isLiked ? removeFavouriteLoading : addFavouriteLoading;
 
-    await addFavourite(
+    if (loading) return;
+
+    await mutate(
       { targetId, type: FAVOURITE_TYPE_MOVIE },
       {
         onSuccess: (res) => {
           if (res.result) {
-            notify.success('Thêm phim vào danh sách yêu thích thành công');
-            queryClient.invalidateQueries({
-              queryKey: [queryKeys.FAVOURITE_GET_LIST_IDS]
-            });
+            notify.success(
+              `${isLiked ? 'Xóa phim khỏi' : 'Thêm phim vào'} danh sách yêu thích thành công`
+            );
+            invalidateQueries([queryKeys.FAVOURITE_GET_LIST_IDS]);
           } else {
-            notify.error('Thêm phim vào danh sách yêu thích thất bại');
+            notify.error(
+              `${isLiked ? 'Xóa phim khỏi' : 'Thêm phim vào'} danh sách yêu thích thất bại`
+            );
           }
         },
         onError: (error) => {
-          logger.error('[ADD_FAVOURITE_ERROR]', error);
-          notify.error('Thêm phim vào danh sách yêu thích thất bại');
+          logger.error(
+            `[${isLiked ? 'REMOVE' : 'ADD'}_FAVOURITE_ERROR]`,
+            error
+          );
+          notify.error(
+            `${isLiked ? 'Xóa phim khỏi' : 'Thêm phim vào'} danh sách yêu thích thất bại`
+          );
         }
       }
     );
-  };
-
-  const handleRemoveLike = async (targetId: string) => {
-    if (!isAuthenticated) {
-      notify.error(
-        <span>
-          Vui lòng&nbsp;
-          <Link
-            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
-          >
-            đăng nhập
-          </Link>
-          &nbsp;để xóa phim khỏi danh sách yêu thích
-        </span>
-      );
-      return;
-    }
-
-    if (removeFavouriteLoading) return;
-
-    if (targetId) {
-      await removeFavourite(
-        { targetId, type: FAVOURITE_TYPE_MOVIE },
-        {
-          onSuccess: (res) => {
-            if (res.result) {
-              notify.success('Xóa phim khỏi danh sách yêu thích thành công');
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.FAVOURITE_GET_LIST_IDS]
-              });
-            } else {
-              notify.error('Xóa phim khỏi danh sách yêu thích thất bại');
-            }
-          },
-          onError: (error) => {
-            logger.error('[REMOVE_FAVOURITE_ERROR]', error);
-            notify.error('Xóa phim khỏi danh sách yêu thích thất bại');
-          }
-        }
-      );
-    }
   };
 
   if (sidebarList.length === 0)
@@ -160,8 +127,7 @@ export default function Slider({ sidebarList }: SliderProps) {
                 isGrabbing={isGrabbing}
                 onPointerDown={() => setIsGrabbing(true)}
                 onPointerUp={() => setIsGrabbing(false)}
-                onLike={handleLike}
-                onRemoveLike={handleRemoveLike}
+                onVote={handleVote}
                 isLiked={favouriteListIds.includes(slider.movie.id)}
               />
             </SwiperSlide>

@@ -9,13 +9,13 @@ import {
   SliderField
 } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import { qualityOptions } from '@/constants';
+import { qualityOptions, queryKeys } from '@/constants';
 import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
 import { useUpdateSettingsMutation } from '@/queries';
 import { settingsSchema } from '@/schemaValidations';
 import { SettingBodyType } from '@/types';
-import { notify } from '@/utils';
+import { invalidateQueries, notify } from '@/utils';
 import { useMemo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { ConfirmModal } from '@/components/modal';
@@ -71,6 +71,7 @@ export default function SettingsForm() {
         if (res.result) {
           notify.success('Cập nhật cài đặt thành công');
           form.reset(values);
+          invalidateQueries([queryKeys.PROFILE]);
         } else {
           notify.error('Cập nhật cài đặt thất bại');
         }

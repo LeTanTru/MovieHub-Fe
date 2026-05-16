@@ -3,20 +3,17 @@
 import { MovieHistoryCard } from '@/components/app/movie-card';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import {
   useMovieHistoryListQuery,
   useDeleteWatchHistoryMutation
 } from '@/queries';
-import { notify } from '@/utils';
+import { invalidateQueries, notify } from '@/utils';
 import { useAuth } from '@/hooks';
 
 export default function WatchHistory() {
   const { isAuthenticated } = useAuth();
-
-  const queryClient = getQueryClient();
 
   const { data: movieHistories = [], isLoading } = useMovieHistoryListQuery({
     enabled: isAuthenticated
@@ -32,9 +29,7 @@ export default function WatchHistory() {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa lịch sử xem thành công');
-          await queryClient.invalidateQueries({
-            queryKey: [queryKeys.MOVIE_HISTORY]
-          });
+          invalidateQueries([queryKeys.MOVIE_HISTORY]);
         } else {
           notify.error('Xóa lịch sử xem thất bại');
         }

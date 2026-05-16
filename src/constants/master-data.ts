@@ -258,6 +258,7 @@ export const queryKeys = {
   MOVIE_NEXT_EPISODE: 'movie-next-episode',
   MOVIE_PERSON_LIST: 'movie-person-list',
   MOVIE_PERSON: 'movie-person',
+  MOVIE_RECOMMENDATION: 'movie-recommendation',
   MOVIE_SCHEDULE_LIST: 'movie-schedule-list',
   MOVIE_SUGGESTION_LIST: 'suggestion-movie-list',
   MOVIE_SURVEY_LIST: 'movie-survey-list',
@@ -296,8 +297,7 @@ export const queryKeys = {
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
-  MOVIE_RECOMMENDATION: 'movie-recommendation'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
 };
 
 export const countries: OptionType[] = [

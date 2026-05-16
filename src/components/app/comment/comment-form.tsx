@@ -91,7 +91,10 @@ export default function CommentForm({
     ]
   );
 
-  const handleSubmit = async (values: CommentBodyType, form?: any) => {
+  const handleSubmit = async (
+    values: CommentBodyType,
+    form?: UseFormReturn<CommentBodyType>
+  ) => {
     if (!isAuthenticated) {
       notify.error('Vui lòng đăng nhập để bình luận');
       return;

@@ -103,12 +103,15 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Bình luận thành công');
-          await queryClient.invalidateQueries({
-            queryKey: [queryKeys.COMMENT_LIST]
-          });
-          await queryClient.invalidateQueries({
-            queryKey: [queryKeys.MOVIE, movie?.id]
-          });
+
+          await Promise.all([
+            queryClient.invalidateQueries({
+              queryKey: [queryKeys.COMMENT_LIST]
+            }),
+            queryClient.invalidateQueries({
+              queryKey: [queryKeys.MOVIE, movie?.id]
+            })
+          ]);
           form?.reset(initialValues);
         } else {
           notify.error('Bình luận thất bại');

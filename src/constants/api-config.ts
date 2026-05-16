@@ -544,6 +544,76 @@ const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredXClientType: true
     }
+  },
+  chat: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/chat/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    }
+  },
+  room: {
+    check: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/check`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    create: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/create`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    delete: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/delete/:id`,
+      method: 'DELETE',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    end: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/end/:id`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    getByCode: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/get-by-code/:code`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    getById: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/get/:id}`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    join: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/join`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    getMyRooms: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/my-rooms`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    start: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/start/:id`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    }
   }
 });
 

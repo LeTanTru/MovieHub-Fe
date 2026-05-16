@@ -137,6 +137,9 @@ export default function NotificationList() {
             queryKeys.UNREAD_NOTIFICATION_COUNT,
             queryKeys.NOTIFICATION_LIST
           ]);
+        },
+        onError: (error) => {
+          logger.error('[UPDATE_READ_NOTIFICATION_ERROR]', error);
         }
       }
     );

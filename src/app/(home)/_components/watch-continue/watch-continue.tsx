@@ -11,8 +11,7 @@ import {
 } from '@/queries';
 import { route } from '@/routes';
 import { Navigation } from 'swiper/modules';
-import { notify } from '@/utils';
-import { getQueryClient } from '@/components/providers/query-provider';
+import { invalidateQueries, notify } from '@/utils';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useAuth } from '@/hooks';
@@ -23,8 +22,6 @@ import { CollectionListHeading } from '@/components/app/heading';
 
 export default function WatchContinue() {
   const { isAuthenticated } = useAuth();
-
-  const queryClient = getQueryClient();
 
   const nextRef = useRef<HTMLDivElement>(null);
   const prevRef = useRef<HTMLDivElement>(null);
@@ -41,9 +38,7 @@ export default function WatchContinue() {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa lịch sử xem thành công');
-          await queryClient.invalidateQueries({
-            queryKey: [queryKeys.MOVIE_HISTORY]
-          });
+          invalidateQueries([queryKeys.MOVIE_HISTORY]);
         } else {
           notify.error('Xóa lịch sử xem thất bại');
         }

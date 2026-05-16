@@ -23,8 +23,7 @@ type SliderItemProps = {
   isGrabbing: boolean;
   onPointerDown: () => void;
   onPointerUp: () => void;
-  onLike: (targetId: string) => void;
-  onRemoveLike: (favouriteId: string) => void;
+  onVote: (targetId: string, isLiked: boolean) => void;
   isLiked: boolean;
 };
 
@@ -33,8 +32,7 @@ export default function SliderItem({
   isGrabbing,
   onPointerDown,
   onPointerUp,
-  onLike,
-  onRemoveLike,
+  onVote,
   isLiked
 }: SliderItemProps) {
   const movie = slider.movie;
@@ -57,9 +55,7 @@ export default function SliderItem({
 
   const handleClick = () => {
     startAnimation();
-
-    const action = isLiked ? onRemoveLike : onLike;
-    action(slider.movie.id);
+    onVote(slider.movie.id, isLiked);
   };
 
   return (
