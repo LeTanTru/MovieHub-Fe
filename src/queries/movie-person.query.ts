@@ -14,6 +14,6 @@ export const useMoviePersonListQuery = ({
     queryKey: [queryKeys.MOVIE_PERSON_LIST, params],
     queryFn: () => moviePersonApiRequest.getList(params),
     enabled,
-    select: (data) => data.data.content ?? []
+    select: (data) => data.data.content
   });
 };
