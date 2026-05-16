@@ -24,7 +24,7 @@ export default function MovieTabSingle({ movie }: MovieTabSingleProps) {
   return (
     <>
       <MovieTabHeading title='Các bản chiếu' />
-      {movie?.seasons && movie.seasons.length > 0 ? (
+      {movie.seasons && movie.seasons.length > 0 ? (
         <div className='max-990:grid-cols-2 max-520:grid-cols-1 grid grid-cols-3 gap-4'>
           {movie.seasons.map((season) => (
             <button

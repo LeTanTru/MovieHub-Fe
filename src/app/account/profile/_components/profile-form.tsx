@@ -72,30 +72,37 @@ export default function ProfileForm() {
     values: UpdateProfileBodyType,
     form: UseFormReturn<UpdateProfileBodyType>
   ) => {
-    await imageManager.handleSubmit();
-    try {
-      const res = await updateProfileMutate({
-        ...values,
-        avatarPath: imageManager.currentUrl
-      });
-      if (res.result) {
-        notify.success('Cập nhật tài khoản thành công');
-      } else {
-        const errorCode = res.code;
-        if (errorCode) {
-          applyFormErrors(form, errorCode, profileErrorMaps);
-        } else {
-          notify.error('Cập nhật tài khoản thất bại');
+    await Promise.all([
+      imageManager.handleSubmit(),
+      updateProfileMutate(
+        {
+          ...values,
+          avatarPath: imageManager.currentUrl
+        },
+        {
+          onSuccess: (res) => {
+            if (res.result) {
+              notify.success('Cập nhật tài khoản thành công');
+            } else {
+              const errorCode = res.code;
+              if (errorCode) {
+                applyFormErrors(form, errorCode, profileErrorMaps);
+              } else {
+                notify.error('Cập nhật tài khoản thất bại');
+              }
+            }
+          },
+          onError: (error) => {
+            logger.error('[UPDATE_PROFILE_ERROR]', error);
+            notify.error('Cập nhật tài khoản thất bại');
+          }
         }
-      }
-    } catch (error) {
-      logger.error('[UPDATE_PROFILE_ERROR]', error);
-      notify.error('Cập nhật tài khoản thất bại');
-    }
+      )
+    ]);
   };
 
-  const handleCancel = async (form: UseFormReturn<UpdateProfileBodyType>) => {
-    await imageManager.handleCancel(false);
+  const handleCancel = (form: UseFormReturn<UpdateProfileBodyType>) => {
+    imageManager.handleCancel(false);
     form.clearErrors();
     form.reset(initialValues);
   };

@@ -37,10 +37,10 @@ export default function NotificationList({
       { ids: [notification.id] },
       {
         onSuccess: () => {
-          invalidateQueries([
-            queryKeys.UNREAD_NOTIFICATION_COUNT,
-            queryKeys.NOTIFICATION_LIST
-          ]);
+          invalidateQueries(
+            [queryKeys.UNREAD_NOTIFICATION_COUNT],
+            [queryKeys.NOTIFICATION_LIST]
+          );
         }
       }
     );

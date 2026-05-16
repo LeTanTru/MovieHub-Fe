@@ -32,11 +32,11 @@ export default function VoteReviewBody({
   return (
     <Link
       onClick={handleClick}
-      className='flex flex-1 items-center justify-between gap-2 pl-1'
+      className='max-480:flex-col max-480:gap-1 flex flex-1 items-center justify-between gap-2 pl-1'
       href={`${route.movie.path}/${generateSlug(body.movieTitle)}.${body.movieId}`}
     >
       <div className='flex flex-1 items-center gap-2'>
-        <div className='flex w-10 shrink-0 justify-center'>
+        <div className='max-640:w-8 max-520:w-7 flex w-10 shrink-0 justify-center'>
           <AvatarField
             size={40}
             src={renderImageUrl(body?.author?.avatarPath)}
@@ -45,21 +45,24 @@ export default function VoteReviewBody({
           />
         </div>
         <div className='flex flex-1 flex-col justify-between gap-2'>
-          <h3 className='line-clamp-2' title={notification.title}>
+          <h3
+            className='max-640:text-[13px] max-520:text-xs line-clamp-2'
+            title={notification.title}
+          >
             {notification.title}&nbsp;trong phim&nbsp;
             <span className='text-golden-glow font-semibold'>
               {body?.movieTitle}
             </span>
           </h3>
           <div
-            className='text-muted-foreground shrink-0 text-xs'
+            className='text-muted-foreground max-640:text-[11px] shrink-0 text-xs'
             title={convertUTCToLocal(notification.createdDate)}
           >
             {timeAgo(notification.createdDate)}
           </div>
         </div>
       </div>
-      <div className='relative w-20 shrink-0'>
+      <div className='max-480:hidden relative w-20 shrink-0'>
         <ImageField
           src={renderImageUrl(body?.movieThumbnail)}
           alt={body?.movieTitle}

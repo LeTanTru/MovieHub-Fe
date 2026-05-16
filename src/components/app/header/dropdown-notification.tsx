@@ -80,10 +80,10 @@ export default function DropdownNotification() {
   const handleReadAll = async () => {
     await readAllNotificationMutate(undefined, {
       onSuccess: () => {
-        invalidateQueries([
-          queryKeys.UNREAD_NOTIFICATION_COUNT,
-          queryKeys.NOTIFICATION_LIST
-        ]);
+        invalidateQueries(
+          [queryKeys.UNREAD_NOTIFICATION_COUNT],
+          [queryKeys.NOTIFICATION_LIST]
+        );
         notify.success('Đọc tất cả thông báo thành công');
       },
       onError: (error) => {
@@ -96,10 +96,10 @@ export default function DropdownNotification() {
   const handleDeleteAll = async () => {
     await deleteAllNotificationMutate(undefined, {
       onSuccess: () => {
-        invalidateQueries([
-          queryKeys.UNREAD_NOTIFICATION_COUNT,
-          queryKeys.NOTIFICATION_LIST
-        ]);
+        invalidateQueries(
+          [queryKeys.UNREAD_NOTIFICATION_COUNT],
+          [queryKeys.NOTIFICATION_LIST]
+        );
         notify.success('Xóa tất cả thông báo thành công');
       },
       onError: (error) => {
@@ -112,10 +112,10 @@ export default function DropdownNotification() {
   const handleDelete = async (id: string) => {
     await deleteNotifyMutate(id, {
       onSuccess: () => {
-        invalidateQueries([
-          queryKeys.UNREAD_NOTIFICATION_COUNT,
-          queryKeys.NOTIFICATION_LIST
-        ]);
+        invalidateQueries(
+          [queryKeys.UNREAD_NOTIFICATION_COUNT],
+          [queryKeys.NOTIFICATION_LIST]
+        );
         notify.success('Xóa thông báo thành công');
       },
       onError: (error) => {

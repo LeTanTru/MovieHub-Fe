@@ -2,7 +2,6 @@
 
 import { HeartIcon } from '@/assets';
 import { Button, ToolTip } from '@/components/form';
-import { getQueryClient } from '@/components/providers/query-provider';
 import {
   FAVOURITE_TYPE_MOVIE,
   FAVOURITE_TYPE_PERSON,
@@ -74,7 +73,6 @@ export default function ButtonLike({
   showTooltip = true
 }: ButtonLikeProps) {
   const { isAuthenticated } = useAuth();
-  const queryClient = getQueryClient();
 
   const { iconRef, startAnimation } = useClickAnimation();
   const [isLiked, setIsLiked] = useState(false);
@@ -145,13 +143,11 @@ export default function ButtonLike({
           notify.success(
             `${isLiked ? 'Xóa' : 'Thêm'} ${label} ${isLiked ? 'khỏi' : 'vào'} danh sách yêu thích thành công`
           );
-          invalidateQueries([
-            queryKeys.FAVOURITE_LIST,
-            queryKeys.FAVOURITE_GET_LIST_IDS
-          ]);
-          queryClient.invalidateQueries({
-            queryKey: [queryKeys.FAVOURITE, { targetId, type: favouriteType }]
-          });
+          invalidateQueries(
+            [queryKeys.FAVOURITE_LIST],
+            [queryKeys.FAVOURITE_GET_LIST_IDS],
+            [queryKeys.FAVOURITE, { targetId, type: favouriteType }]
+          );
         },
         onError: (error) => {
           logger.error(

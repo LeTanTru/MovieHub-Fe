@@ -14,10 +14,12 @@ import {
   queryKeys
 } from '@/constants';
 import {
+  ApiResponse,
   ApiResponseList,
   CommentResType,
   CommentSearchType,
   MoviePersonSearchType,
+  MovieResType,
   MovieSearchType,
   ReviewResType,
   ReviewSearchType
@@ -168,7 +170,10 @@ export default async function MoviePage({ params }: MoviePageProps) {
     })
   ]);
 
-  const movieRes = queryClient.getQueryData<any>([queryKeys.MOVIE, id]);
+  const movieRes = queryClient.getQueryData<ApiResponse<MovieResType>>([
+    queryKeys.MOVIE,
+    id
+  ]);
   const movie = movieRes?.data;
   const jsonLd = movie
     ? {

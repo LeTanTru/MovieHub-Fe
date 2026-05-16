@@ -26,11 +26,7 @@ export default function FavouriteList() {
 
   const pageSize = 12;
 
-  const {
-    data: favouriteListData,
-    refetch: getFavouriteList,
-    isLoading
-  } = useFavouriteListQuery({
+  const { data: favouriteListData, isLoading } = useFavouriteListQuery({
     params: {
       type: activeTab,
       page: page - 1,
@@ -69,8 +65,11 @@ export default function FavouriteList() {
             notify.success(
               `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thành công`
             );
-            getFavouriteList();
-            invalidateQueries([queryKeys.FAVOURITE_GET_LIST_IDS]);
+            invalidateQueries(
+              [queryKeys.FAVOURITE_LIST],
+              [queryKeys.FAVOURITE_GET_LIST_IDS],
+              [queryKeys.FAVOURITE, { targetId, type: activeTab }]
+            );
           } else {
             notify.error(
               `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thất bại`

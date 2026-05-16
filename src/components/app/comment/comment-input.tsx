@@ -1,33 +1,35 @@
 'use client';
 
 import { BaseForm } from '@/components/form/base-form';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { MOVIE_TYPE_SINGLE, queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateCommentMutation } from '@/queries';
 import { route } from '@/routes';
 import { commentSchema } from '@/schemaValidations';
-import { useMovieStore } from '@/store';
-import { CommentBodyType } from '@/types';
-import { notify } from '@/utils';
+import { CommentBodyType, MovieResType } from '@/types';
+import { notify, invalidateQueries } from '@/utils';
 import Link from 'next/link';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth, useClickOutside, useQueryParams } from '@/hooks';
 import { Button, Col, Row, TextAreaField } from '@/components/form';
-import { useShallow } from 'zustand/shallow';
 import { type UseFormReturn } from 'react-hook-form';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaRegFaceGrinBeam } from 'react-icons/fa6';
 
 type CommentInputProps = {
   isLoading?: boolean;
+  movie: MovieResType;
+  selectedSeason: string;
 };
 
-export default function CommentInput({ isLoading = false }: CommentInputProps) {
+export default function CommentInput({
+  isLoading = false,
+  movie,
+  selectedSeason
+}: CommentInputProps) {
   const { isAuthenticated } = useAuth();
 
-  const queryClient = getQueryClient();
   const formMethodsRef = useRef<UseFormReturn<CommentBodyType> | null>(null);
   const [showPicker, setShowPicker] = useState<boolean>(false);
 
@@ -39,14 +41,10 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
 
   const { searchParams } = useQueryParams<{ episode: string }>();
 
-  const { movie, selectedSeason } = useMovieStore(
-    useShallow((s) => ({ movie: s.movie, selectedSeason: s.selectedSeason }))
-  );
-
   const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =
     useCreateCommentMutation();
 
-  const seasons = movie?.seasons || [];
+  const seasons = movie.seasons || [];
   const episode = searchParams.episode;
   const currentSeason = seasons.find(
     (season) => season.label === selectedSeason.toString()
@@ -65,13 +63,13 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
   const initialValues = useMemo<CommentBodyType>(
     () => ({
       content: '',
-      movieId: String(movie?.id || ''),
+      movieId: String(movie.id),
       movieItemId:
-        movie?.type === MOVIE_TYPE_SINGLE
+        movie.type === MOVIE_TYPE_SINGLE
           ? String(currentSeason?.id || '')
           : String(currentEpisode?.id || '')
     }),
-    [movie?.id, movie?.type, currentSeason?.id, currentEpisode?.id]
+    [movie.id, movie.type, currentSeason?.id, currentEpisode?.id]
   );
 
   const handleSubmit = async (
@@ -104,14 +102,10 @@ export default function CommentInput({ isLoading = false }: CommentInputProps) {
         if (res.result) {
           notify.success('Bình luận thành công');
 
-          await Promise.all([
-            queryClient.invalidateQueries({
-              queryKey: [queryKeys.COMMENT_LIST]
-            }),
-            queryClient.invalidateQueries({
-              queryKey: [queryKeys.MOVIE, movie?.id]
-            })
-          ]);
+          invalidateQueries(
+            [queryKeys.COMMENT_LIST, { movieId: movie.id }],
+            [queryKeys.MOVIE, movie.id]
+          );
           form?.reset(initialValues);
         } else {
           notify.error('Bình luận thất bại');

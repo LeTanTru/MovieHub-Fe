@@ -77,7 +77,7 @@ export default function ButtonReview({
               'mr-2': !isReviewed
             })}
           >
-            {formatRating(movie?.averageRating || 0)}
+            {formatRating(movie.averageRating || 0)}
           </span>
           {!isReviewed && (
             <span className='content whitespace-nowrap underline'>
@@ -86,7 +86,7 @@ export default function ButtonReview({
           )}
         </button>
       </div>
-      <ReviewModal opened={opened} onClose={close} />
+      <ReviewModal opened={opened} movie={movie} onClose={close} />
     </>
   );
 }

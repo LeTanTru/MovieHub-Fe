@@ -3,7 +3,6 @@
 import { Button, Col, InputField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { Modal } from '@/components/modal';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import {
@@ -12,7 +11,7 @@ import {
 } from '@/queries';
 import { playlistSchema } from '@/schemaValidations';
 import { PlaylistBodyType, PlaylistResType } from '@/types';
-import { notify } from '@/utils';
+import { notify, invalidateQueries } from '@/utils';
 import { useState } from 'react';
 import { useAuth } from '@/hooks';
 
@@ -28,8 +27,6 @@ export default function PlaylistModal({
   playlist
 }: PlaylistModalProps) {
   const { isAuthenticated } = useAuth();
-
-  const queryClient = getQueryClient();
 
   const {
     mutateAsync: createPlaylistMutate,
@@ -74,9 +71,7 @@ export default function PlaylistModal({
             notify.success(
               `${isEditing ? 'Cập nhật' : 'Thêm'} danh sách phát thành công`
             );
-            await queryClient.invalidateQueries({
-              queryKey: [queryKeys.PLAYLIST_LIST]
-            });
+            invalidateQueries([queryKeys.PLAYLIST_LIST]);
             handleClose();
           } else {
             notify.error(

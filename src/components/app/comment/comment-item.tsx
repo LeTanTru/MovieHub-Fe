@@ -11,10 +11,9 @@ import {
 } from '@/constants';
 import { useClickOutside, useLoadMore } from '@/hooks';
 import { CommentResType, CommentSearchType } from '@/types';
-import { renderImageUrl } from '@/utils';
+import { renderImageUrl, invalidateQueries } from '@/utils';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { commentApiRequest } from '@/api-requests';
-import { getQueryClient } from '@/components/providers/query-provider';
 import CommentHeader from './comment-header';
 import CommentContent from './comment-content';
 import CommentReplyForm from './comment-reply-form';
@@ -83,7 +82,6 @@ export default function CommentItem({
 
   const movieItem = comment.movieItem;
 
-  const queryClient = getQueryClient();
   const [showDropdown, setShowDropdown] = useState(false);
   const [showBlurredContent, setShowBlurredContent] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
@@ -122,14 +120,12 @@ export default function CommentItem({
 
   const handleReplySubmit = async () => {
     onCloseReply();
-    await queryClient.invalidateQueries({
-      queryKey: [queryKeys.COMMENT_LIST]
-    });
+    invalidateQueries([queryKeys.COMMENT_LIST, { movieId: comment.movieId }]);
     const parentIdToInvalidate = level === 0 ? comment.id : rootId;
     setOpenParentIds((prev) => [...prev, parentIdToInvalidate]);
-    await queryClient.invalidateQueries({
-      queryKey: [`${queryKeys.COMMENT_REPLIES_LIST}-${parentIdToInvalidate}`]
-    });
+    invalidateQueries([
+      `${queryKeys.COMMENT_REPLIES_LIST}-${parentIdToInvalidate}`
+    ]);
   };
 
   const handleReplyComment = () => {
@@ -199,13 +195,14 @@ export default function CommentItem({
   const handleVote = (id: string, type: number) => {
     onVote(id, type, async () => {
       if (comment.parent)
-        await queryClient.invalidateQueries({
-          queryKey: [`${queryKeys.COMMENT_REPLIES_LIST}-${comment.parent?.id}`]
-        });
+        invalidateQueries([
+          `${queryKeys.COMMENT_REPLIES_LIST}-${comment.parent?.id}`
+        ]);
       else
-        await queryClient.invalidateQueries({
-          queryKey: [queryKeys.COMMENT_LIST]
-        });
+        invalidateQueries([
+          queryKeys.COMMENT_LIST,
+          { movieId: comment.movieId }
+        ]);
     });
   };
 

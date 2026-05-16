@@ -2,12 +2,7 @@
 
 import { NoData } from '@/components/no-data';
 import ReviewItem from './review-item';
-import {
-  ApiResponse,
-  MovieResType,
-  ReviewResType,
-  ReviewVoteResType
-} from '@/types';
+import { MovieResType, ReviewResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { StaticImageData } from 'next/image';
 import { queryKeys, reviewRatings, REACTION_TYPE_LIKE } from '@/constants';
@@ -19,16 +14,14 @@ import {
 } from '@/queries';
 import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { logger } from '@/logger';
-import { notify } from '@/utils';
+import { invalidateQueries, notify } from '@/utils';
 import { route } from '@/routes';
-import { useMovieStore } from '@/store';
-import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
 
 type ReviewListProps = {
+  movie: MovieResType;
   reviewList: ReviewResType[];
   isLoading?: boolean;
   hasMore?: boolean;
@@ -38,6 +31,7 @@ type ReviewListProps = {
 };
 
 export default function ReviewList({
+  movie,
   reviewList,
   isLoading = false,
   hasMore = false,
@@ -46,10 +40,6 @@ export default function ReviewList({
   onLoadMore
 }: ReviewListProps) {
   const { profile, isAuthenticated } = useAuth();
-  const queryClient = getQueryClient();
-  const { movie, setMovie } = useMovieStore(
-    useShallow((s) => ({ movie: s.movie, setMovie: s.setMovie }))
-  );
 
   const reviewRatingMaps: Record<
     number,
@@ -63,8 +53,8 @@ export default function ReviewList({
   );
 
   const { data: voteReviewList = [] } = useVoteReviewListQuery({
-    movieId: movie?.id || '',
-    enabled: isAuthenticated && !!movie?.id
+    movieId: movie.id,
+    enabled: isAuthenticated && !!movie.id
   });
 
   const voteMaps: Record<string, number> = {};
@@ -82,26 +72,13 @@ export default function ReviewList({
     await deleteReviewMutate(id, {
       onSuccess: async (res) => {
         if (res.result) {
-          await Promise.all([
-            queryClient.invalidateQueries({
-              queryKey: [queryKeys.REVIEW_LIST, movie?.id]
-            }),
-            queryClient.invalidateQueries({
-              queryKey: [queryKeys.CHECK_MOVIE, movie?.id]
-            }),
-            queryClient.invalidateQueries({
-              queryKey: [queryKeys.MOVIE, movie?.id]
-            })
-          ]);
-
-          const newMovieData = queryClient.getQueryData<
-            ApiResponse<MovieResType>
-          >([queryKeys.MOVIE, movie?.id]);
-          const newMovie = newMovieData?.data;
-
-          setMovie(newMovie);
-
           notify.success('Xóa đánh giá thành công');
+
+          invalidateQueries(
+            [queryKeys.REVIEW_LIST, { movieId: movie.id }],
+            [queryKeys.CHECK_MOVIE, movie.id],
+            [queryKeys.MOVIE, movie.id]
+          );
         } else {
           notify.error('Xóa đánh giá thất bại');
         }
@@ -136,30 +113,27 @@ export default function ReviewList({
     await voteReviewMutate(
       { id, type },
       {
-        onSuccess: async (res) => {
+        onSuccess: (res) => {
           if (res.result) {
-            await Promise.all([
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.REVIEW_LIST, { movieId: movie?.id }]
-              }),
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.REVIEW_VOTE_LIST, movie?.id]
-              })
-            ]);
+            invalidateQueries(
+              [queryKeys.REVIEW_LIST, { movieId: movie.id }],
+              [queryKeys.REVIEW_VOTE_LIST, movie.id]
+            );
 
-            const voteList = queryClient.getQueryData<
-              ApiResponse<ReviewVoteResType[]>
-            >([queryKeys.REVIEW_VOTE_LIST, movie?.id]);
+            const previousVoteType = voteMaps[id];
+            const isRemovingVote = previousVoteType === type;
 
-            const vote = (voteList?.data || []).find((v) => v.id === id);
-
-            if (vote) {
+            if (isRemovingVote) {
               notify.success(
-                `${vote.type === REACTION_TYPE_LIKE ? 'Thích' : 'Không thích'} đánh giá thành công`
+                `${type === REACTION_TYPE_LIKE ? 'Bỏ thích' : 'Bỏ không thích'} đánh giá thành công`
+              );
+            } else if (previousVoteType) {
+              notify.success(
+                `${type === REACTION_TYPE_LIKE ? 'Thích' : 'Không thích'} đánh giá thành công`
               );
             } else {
               notify.success(
-                `${type === REACTION_TYPE_LIKE ? 'Bỏ thích' : 'Bỏ không thích'} đánh giá thành công`
+                `${type === REACTION_TYPE_LIKE ? 'Thích' : 'Không thích'} đánh giá thành công`
               );
             }
           } else {

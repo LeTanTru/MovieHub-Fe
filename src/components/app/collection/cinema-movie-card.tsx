@@ -98,7 +98,7 @@ export default function CinemaMovieCard({
     }, 200);
   };
 
-  const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
+  const ageRating = ageRatings.find((age) => movie.ageRating === age.value);
 
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 

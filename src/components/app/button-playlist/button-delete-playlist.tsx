@@ -2,13 +2,11 @@
 
 import { ToolTip } from '@/components/form';
 import { ConfirmModal } from '@/components/modal';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useDeletePlaylistMutation } from '@/queries';
 import { usePlaylistStore } from '@/store';
-import { ApiResponse, PlaylistResType } from '@/types';
-import { notify } from '@/utils';
+import { notify, invalidateQueries } from '@/utils';
 import { FaTrash } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 import { useAuth } from '@/hooks';
@@ -28,7 +26,6 @@ export default function ButtonDeletePlaylist({
       setSelectedPlaylist: s.setSelectedPlaylist
     }))
   );
-  const queryClient = getQueryClient();
 
   const { mutateAsync: deletePlaylistMutate, isPending } =
     useDeletePlaylistMutation();
@@ -37,22 +34,13 @@ export default function ButtonDeletePlaylist({
     if (!isAuthenticated) return;
 
     await deletePlaylistMutate(id, {
-      onSuccess: async (res) => {
+      onSuccess: (res) => {
         if (res.result) {
           notify.success('Xóa danh sách phát thành công');
+          invalidateQueries([queryKeys.PLAYLIST_LIST]);
 
-          await queryClient.invalidateQueries({
-            queryKey: [queryKeys.PLAYLIST_LIST]
-          });
-
-          const playlistData = queryClient.getQueryData<
-            ApiResponse<PlaylistResType[]>
-          >([queryKeys.PLAYLIST_LIST]);
-
-          const playlist = playlistData?.data || [];
-
-          if (playlist.findIndex((p) => p.id === selectedPlaylist?.id) === -1) {
-            setSelectedPlaylist(playlist[0] || null);
+          if (selectedPlaylist?.id === id) {
+            setSelectedPlaylist(null);
           }
         } else {
           notify.error('Xóa danh sách phát thất bại');
