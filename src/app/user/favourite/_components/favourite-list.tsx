@@ -8,11 +8,12 @@ import { Pagination } from '@/components/pagination';
 import {
   FAVOURITE_TYPE_MOVIE,
   FAVOURITE_TYPE_PERSON,
-  favouriteTabs
+  favouriteTabs,
+  queryKeys
 } from '@/constants';
 import { cn } from '@/lib';
 import { useDeleteFavouriteMutation, useFavouriteListQuery } from '@/queries';
-import { notify } from '@/utils';
+import { invalidateQueries, notify } from '@/utils';
 import { useState } from 'react';
 import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
@@ -69,6 +70,7 @@ export default function FavouriteList() {
               `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thành công`
             );
             getFavouriteList();
+            invalidateQueries([queryKeys.FAVOURITE_GET_LIST_IDS]);
           } else {
             notify.error(
               `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thất bại`
