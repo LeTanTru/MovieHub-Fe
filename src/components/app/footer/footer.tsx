@@ -101,7 +101,7 @@ export default function Footer() {
               height={700}
               decoding='async'
               loading='lazy'
-              className='h-full'
+              className='h-full w-auto'
             />
           </div>
           <div className='max-1120:w-full max-1120:text-center relative z-2 block max-w-187.5'>
