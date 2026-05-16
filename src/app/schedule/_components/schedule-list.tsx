@@ -26,7 +26,7 @@ export default function ScheduleList() {
   );
 
   const {
-    data: scheduleListData,
+    data: scheduleList = [],
     isLoading,
     isFetching,
     refetch: getScheduleList
@@ -35,7 +35,6 @@ export default function ScheduleList() {
     enabled: !false
   });
 
-  const scheduleList = scheduleListData?.data || [];
   const now = new Date();
   const weekStart = startOfWeek(now, { weekStartsOn: 1 });
   const weekEnd = endOfWeek(now, { weekStartsOn: 1 });

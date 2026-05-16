@@ -11,8 +11,7 @@ import {
 } from '@/queries';
 import { route } from '@/routes';
 import { Navigation } from 'swiper/modules';
-import { notify } from '@/utils';
-import { getQueryClient } from '@/components/providers/query-provider';
+import { invalidateQueries, notify } from '@/utils';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useAuth } from '@/hooks';
@@ -24,16 +23,12 @@ import { CollectionListHeading } from '@/components/app/heading';
 export default function WatchContinue() {
   const { isAuthenticated } = useAuth();
 
-  const queryClient = getQueryClient();
-
   const nextRef = useRef<HTMLDivElement>(null);
   const prevRef = useRef<HTMLDivElement>(null);
 
-  const { data: movieHistoriesData, isLoading } = useMovieHistoryListQuery({
+  const { data: movieHistories = [], isLoading } = useMovieHistoryListQuery({
     enabled: isAuthenticated
   });
-
-  const movieHistories = movieHistoriesData?.data || [];
 
   const { mutateAsync: deleteWatchHistoryMutate } =
     useDeleteWatchHistoryMutation();
@@ -43,9 +38,7 @@ export default function WatchContinue() {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa lịch sử xem thành công');
-          await queryClient.invalidateQueries({
-            queryKey: [queryKeys.MOVIE_HISTORY]
-          });
+          invalidateQueries([queryKeys.MOVIE_HISTORY]);
         } else {
           notify.error('Xóa lịch sử xem thất bại');
         }
@@ -59,7 +52,7 @@ export default function WatchContinue() {
 
   if (isLoading) return <VerticalBarLoading className='py-20' />;
 
-  if (!movieHistories.length) return null;
+  if (movieHistories.length === 0) return null;
 
   return (
     <div className='watch-continue fade-in slide-in-from-top-[-30px] animate-in max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5 duration-200'>

@@ -26,12 +26,10 @@ export default function ButtonReview({
 
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
 
-  const { data: checkMovieData } = useCheckMovieQuery({
+  const { data: isReviewed } = useCheckMovieQuery({
     movieId: movieId,
     enabled: !!movieId && isAuthenticated
   });
-
-  const isReviewed = checkMovieData?.result && checkMovieData.data;
 
   const handleOpenReviewModal = () => {
     if (!isAuthenticated) {

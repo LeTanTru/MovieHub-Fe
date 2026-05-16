@@ -43,10 +43,6 @@ export default function SearchForm({
     open: openMovieList,
     close: closeMovieList
   } = useDisclosure();
-  const movieListRef = useClickOutside<HTMLDivElement>(() => {
-    closeMovieList();
-    setKeyword('');
-  });
 
   const { searchParams, setQueryParam, serializeParams } = useQueryParams<{
     keyword: string;
@@ -59,12 +55,17 @@ export default function SearchForm({
     }))
   );
 
+  const movieListRef = useClickOutside<HTMLDivElement>(() => {
+    closeMovieList();
+    setKeyword('');
+  });
+
   const { data: movieListData, isLoading } = useMovieListQuery({
     params: { keyword },
     enabled: !!keyword && !isSearchPage
   });
 
-  const movieList = movieListData?.data?.content || [];
+  const movieList = movieListData?.content || [];
 
   const defaultValues: SearchType = {
     keyword: searchParams.keyword || ''

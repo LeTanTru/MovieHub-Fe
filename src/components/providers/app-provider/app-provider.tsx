@@ -51,18 +51,16 @@ export default function AppProvider({ children }: AppProviderProps) {
   });
 
   useEffect(() => {
-    if (session?.result && session?.data) {
-      setAccessToken(session.data.accessToken);
+    if (session?.accessToken) {
+      setAccessToken(session.accessToken);
     }
   }, [session, setAccessToken]);
 
   useEffect(() => {
-    if (!profile?.data) return;
-
-    if (profile.result && profile.data) {
-      setProfile(profile.data);
+    if (profile) {
+      setProfile(profile);
     }
-  }, [profile?.data, profile?.result, setProfile]);
+  }, [profile, setProfile]);
 
   // useEffect(() => {
   //   if (pathname !== '/intro') {

@@ -3,7 +3,7 @@
 import { ButtonAddPlayList } from '@/components/app/button-playlist';
 import { MAX_PLAYLIST_COUNT } from '@/constants';
 import { NoData } from '@/components/no-data';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { usePlaylistListQuery } from '@/queries';
 import { usePlaylistStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
@@ -20,11 +20,9 @@ export default function Playlist() {
     }))
   );
 
-  const { data: playlistData, isLoading } = usePlaylistListQuery({
+  const { data: playlist = [], isLoading } = usePlaylistListQuery({
     enabled: isAuthenticated
   });
-
-  const playlist = useMemo(() => playlistData?.data || [], [playlistData]);
 
   useEffect(() => {
     if (!selectedPlaylist && playlist.length > 0) {

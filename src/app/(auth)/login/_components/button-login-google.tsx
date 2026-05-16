@@ -43,7 +43,7 @@ export default function ButtonLoginGoogle() {
         notify.success('Đăng nhập thành công');
 
         const profile = await getProfile();
-        const profileData = profile.data?.data;
+        const profileData = profile.data;
 
         if (profileData) {
           setProfile(profileData);
@@ -71,7 +71,7 @@ export default function ButtonLoginGoogle() {
       }
 
       const res = await getLoginGoogleUrl();
-      const googleLoginUrl = res.data?.data;
+      const googleLoginUrl = res.data;
 
       const width = 500;
       const height = 600;

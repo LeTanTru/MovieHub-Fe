@@ -24,7 +24,7 @@ import { cn } from '@/lib';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { cva, VariantProps } from 'class-variance-authority';
 import { logger } from '@/logger';
-import { notify } from '@/utils';
+import { invalidateQueries, notify } from '@/utils';
 import { PlaylistItemBodyType } from '@/types';
 import { PlusICon } from '@/assets';
 import { route } from '@/routes';
@@ -67,7 +67,7 @@ export default function ButtonAddToPlaylist({
   const { iconRef, startAnimation } = useClickAnimation();
   const queryClient = getQueryClient();
 
-  const { data: playlistData, isLoading } = usePlaylistListQuery({
+  const { data: playlist = [], isLoading } = usePlaylistListQuery({
     enabled: opened
   });
 
@@ -81,11 +81,9 @@ export default function ButtonAddToPlaylist({
     isPending: updatePlaylistItemLoading
   } = useUpdatePlaylistItemMutation();
 
-  const playlist = playlistData?.data || [];
-
   const playlistByMovie = useMemo(
-    () => playlistByMovieData?.data?.ids || [],
-    [playlistByMovieData?.data?.ids]
+    () => playlistByMovieData?.ids || [],
+    [playlistByMovieData?.ids]
   );
 
   const handleOpen = () => {
@@ -144,8 +142,9 @@ export default function ButtonAddToPlaylist({
     await updatePlaylistItemMutate(payload, {
       onSuccess: (res) => {
         if (res.result) {
+          invalidateQueries([queryKeys.PLAYLIST_LIST]);
           queryClient.invalidateQueries({
-            queryKey: [queryKeys.PLAYLIST_LIST]
+            queryKey: [queryKeys.PLAYLIST_BY_MOVIES, movieId]
           });
           notify.success(
             `${isInPlaylist ? 'Xóa phim khỏi' : 'Thêm phim vào'} danh sách phát thành công`

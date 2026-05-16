@@ -17,8 +17,8 @@ export default function TopicList() {
   });
 
   const topicList = useMemo(
-    () => topicListData?.data?.content || [],
-    [topicListData?.data?.content]
+    () => topicListData?.content || [],
+    [topicListData?.content]
   );
 
   useEffect(() => {

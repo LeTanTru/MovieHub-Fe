@@ -41,6 +41,7 @@ export const useVoteCommentListQuery = ({
   return useQuery({
     queryKey: [queryKeys.COMMENT_VOTE_LIST, movieId],
     queryFn: () => commentApiRequest.getVoteList(movieId),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };

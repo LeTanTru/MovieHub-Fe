@@ -13,7 +13,8 @@ export const useCategoryListQuery = ({
   return useQuery({
     queryKey: [queryKeys.CATEGORY_LIST, params],
     queryFn: () => categoryApiRequest.getList(params),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };
 
@@ -21,6 +22,7 @@ export const useCategoryQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.CATEGORY, id],
     queryFn: () => categoryApiRequest.getById(id),
-    enabled: !!id
+    enabled: !!id,
+    select: (data) => data.data
   });
 };

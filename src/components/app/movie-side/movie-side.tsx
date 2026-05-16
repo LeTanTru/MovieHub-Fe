@@ -39,10 +39,10 @@ import { MovieProgress } from '@/components/app/movie-progress';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function MovieSide() {
-  const { movie, moviePersons, selectedSeason } = useMovieStore(
+  const { movie, moviePerson, selectedSeason } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,
-      moviePersons: s.moviePersons,
+      moviePerson: s.moviePerson,
       selectedSeason: s.selectedSeason
     }))
   );
@@ -61,14 +61,14 @@ export default function MovieSide() {
     languages.find((language) => language.value === movie?.language)?.label ||
     'Đang cập nhật';
 
-  const directors = moviePersons.reduce<PersonResType[]>((acc, moviePerson) => {
+  const directors = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {
     if (moviePerson.kind === PERSON_KIND_DIRECTOR) {
       acc.push(moviePerson.person);
     }
     return acc;
   }, []);
 
-  const actors = moviePersons.reduce<PersonResType[]>((acc, moviePerson) => {
+  const actors = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {
     if (moviePerson.kind === PERSON_KIND_ACTOR) {
       acc.push(moviePerson.person);
     }

@@ -40,13 +40,17 @@ export default function ButtonDeletePlaylist({
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa danh sách phát thành công');
+
           await queryClient.invalidateQueries({
             queryKey: [queryKeys.PLAYLIST_LIST]
           });
+
           const playlistData = queryClient.getQueryData<
             ApiResponse<PlaylistResType[]>
           >([queryKeys.PLAYLIST_LIST]);
+
           const playlist = playlistData?.data || [];
+
           if (playlist.findIndex((p) => p.id === selectedPlaylist?.id) === -1) {
             setSelectedPlaylist(playlist[0] || null);
           }

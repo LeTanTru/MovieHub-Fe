@@ -38,7 +38,7 @@ export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
 
   const latestSeason = metadata?.latestSeason?.label;
 
-  const seasons = useMemo(() => movie?.seasons || [], [movie?.seasons]);
+  const seasons = useMemo(() => movie.seasons || [], [movie.seasons]);
 
   const currentSeason = seasons.find(
     (season) => season.label === selectedSeason.toString()

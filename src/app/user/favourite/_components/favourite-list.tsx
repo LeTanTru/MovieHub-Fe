@@ -15,6 +15,7 @@ import { useDeleteFavouriteMutation, useFavouriteListQuery } from '@/queries';
 import { notify } from '@/utils';
 import { useState } from 'react';
 import { useAuth } from '@/hooks';
+import { logger } from '@/logger';
 
 export default function FavouriteList() {
   const { isAuthenticated } = useAuth();
@@ -39,7 +40,7 @@ export default function FavouriteList() {
 
   const { mutateAsync: deleteFavouriteMutate } = useDeleteFavouriteMutation();
 
-  const favouriteList = favouriteListData?.data?.content || [];
+  const favouriteList = favouriteListData?.content || [];
 
   const movieList = favouriteList.flatMap((favourite) =>
     favourite.movie ? [favourite.movie] : []
@@ -49,7 +50,7 @@ export default function FavouriteList() {
     favourite.person ? [favourite.person] : []
   );
 
-  const totalPages = favouriteListData?.data?.totalPages || 0;
+  const totalPages = favouriteListData?.totalPages || 0;
 
   const handleTabChange = (type: number) => {
     setActiveTab(type);
@@ -73,6 +74,12 @@ export default function FavouriteList() {
               `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thất bại`
             );
           }
+        },
+        onError: (error) => {
+          logger.error('[DELETE_FAVOURITE_ERROR]', error);
+          notify.error(
+            `Xóa ${activeTab === FAVOURITE_TYPE_MOVIE ? 'phim' : 'diễn viên'} khỏi danh sách yêu thích thất bại`
+          );
         }
       }
     );

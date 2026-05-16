@@ -19,7 +19,7 @@ import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { logger } from '@/logger';
-import { notify } from '@/utils';
+import { invalidateQueries, notify } from '@/utils';
 import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { route } from '@/routes';
 import { useCommentStore, useMovieStore } from '@/store';
@@ -85,12 +85,10 @@ export default function CommentList({
   const { mutateAsync: voteCommentMutate, isPending: voteCommentLoading } =
     useVoteCommentMutation();
 
-  const { data: voteCommentListData } = useVoteCommentListQuery({
+  const { data: voteCommentList = [] } = useVoteCommentListQuery({
     movieId: movie?.id || '',
     enabled: isAuthenticated && !!movie?.id
   });
-
-  const voteCommentList: CommentVoteResType[] = voteCommentListData?.data || [];
 
   const voteMap: Record<string, number> = {};
   voteCommentList.forEach((vote) => {
@@ -106,14 +104,10 @@ export default function CommentList({
           notify.success('Xóa bình luận thành công');
 
           // Invalidate comment list and movie data for updating total comments
-          await Promise.all([
-            queryClient.invalidateQueries({
-              queryKey: [queryKeys.COMMENT_LIST]
-            }),
-            queryClient.invalidateQueries({
-              queryKey: [queryKeys.MOVIE, movie?.id]
-            })
-          ]);
+          invalidateQueries([queryKeys.COMMENT_LIST]);
+          await queryClient.invalidateQueries({
+            queryKey: [queryKeys.MOVIE, movie?.id]
+          });
 
           // Invalidate replies list if comment is a reply
           if (comment.parent) {

@@ -2,6 +2,7 @@ import { accountApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { ProfileResType, UpdateProfileBodyType } from '@/types';
+import { getQueryClient } from '@/components/providers/query-provider';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useProfileQuery = ({
@@ -10,7 +11,8 @@ export const useProfileQuery = ({
   return useQuery({
     queryKey: [queryKeys.PROFILE],
     queryFn: () => accountApiRequest.getProfile(),
-    enabled: enabled
+    enabled: enabled,
+    select: (data) => data.data
   });
 };
 
@@ -20,8 +22,10 @@ export const useUpdateProfileMutation = () => {
     mutationFn: (body: UpdateProfileBodyType) =>
       accountApiRequest.updateProfile(body),
     onSuccess: async () => {
+      const queryClient = getQueryClient();
       const res = await accountApiRequest.getProfile();
       useAuthStore.getState().setProfile(res.data as ProfileResType);
+      queryClient.setQueryData([queryKeys.PROFILE], res.data);
     }
   });
 };

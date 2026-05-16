@@ -13,7 +13,8 @@ export const usePersonListQuery = ({
   return useQuery({
     queryKey: [queryKeys.PERSON_LIST, params],
     queryFn: () => personApiRequest.getList(params),
-    enabled
+    enabled,
+    select: (data) => data.data
   });
 };
 
@@ -21,6 +22,7 @@ export const usePersonQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.PERSON, id],
     queryFn: () => personApiRequest.getById(id),
-    enabled: !!id
+    enabled: !!id,
+    select: (data) => data.data
   });
 };

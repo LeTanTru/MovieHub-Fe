@@ -13,21 +13,19 @@ import { cn } from '@/lib';
 export default function SurveyList() {
   const navigate = useNavigate();
   const { isAuthenticated, profile } = useAuth();
-  const { data: surveyListData, isLoading } =
+  const { data: movieList = [], isLoading } =
     useSurveyListQuery(!!isAuthenticated);
 
   const { mutateAsync: makeSurveyMutate, isPending } = useMakeSurveyMutation();
 
-  const movieList = surveyListData?.data || [];
-
   const [selectedMovieIds, setSelectedMovieIds] = useState<string[]>([]);
 
   const handleClick = (movie: SurveyResType) => {
-    if (selectedMovieIds.includes(movie.id)) {
-      setSelectedMovieIds(selectedMovieIds.filter((id) => id !== movie.id));
-    } else {
-      setSelectedMovieIds([...selectedMovieIds, movie.id]);
-    }
+    setSelectedMovieIds((prev) =>
+      prev.includes(movie.id)
+        ? prev.filter((id) => id !== movie.id)
+        : [...prev, movie.id]
+    );
   };
 
   const handleSubmit = async () => {

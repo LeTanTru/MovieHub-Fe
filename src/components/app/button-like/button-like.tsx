@@ -2,7 +2,12 @@
 
 import { HeartIcon } from '@/assets';
 import { Button, ToolTip } from '@/components/form';
-import { FAVOURITE_TYPE_MOVIE, FAVOURITE_TYPE_PERSON } from '@/constants';
+import { getQueryClient } from '@/components/providers/query-provider';
+import {
+  FAVOURITE_TYPE_MOVIE,
+  FAVOURITE_TYPE_PERSON,
+  queryKeys
+} from '@/constants';
 import { useAuth, useClickAnimation } from '@/hooks';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
@@ -12,7 +17,7 @@ import {
   useFavouriteQuery
 } from '@/queries';
 import { route } from '@/routes';
-import { notify } from '@/utils';
+import { invalidateQueries, notify } from '@/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
@@ -69,6 +74,7 @@ export default function ButtonLike({
   showTooltip = true
 }: ButtonLikeProps) {
   const { isAuthenticated } = useAuth();
+  const queryClient = getQueryClient();
 
   const { iconRef, startAnimation } = useClickAnimation();
   const [isLiked, setIsLiked] = useState(false);
@@ -85,7 +91,7 @@ export default function ButtonLike({
   const { mutateAsync: removeFavourite, isPending: removeFavouriteLoading } =
     useDeleteFavouriteMutation();
 
-  const { data: favouriteData, refetch: getFavourite } = useFavouriteQuery({
+  const { data: favouriteId, refetch: getFavourite } = useFavouriteQuery({
     params: {
       targetId,
       type: favouriteType
@@ -103,10 +109,10 @@ export default function ButtonLike({
   }, [getFavourite, refetch, isAuthenticated]);
 
   useEffect(() => {
-    setIsLiked(!!favouriteData?.result && isAuthenticated);
-  }, [favouriteData, isAuthenticated]);
+    setIsLiked(!!favouriteId && isAuthenticated);
+  }, [favouriteId, isAuthenticated]);
 
-  const handleLike = async () => {
+  const handleVote = async () => {
     startAnimation();
 
     if (!isAuthenticated) {
@@ -119,63 +125,49 @@ export default function ButtonLike({
           >
             đăng nhập
           </Link>
-          &nbsp;để thêm {label} vào danh sách yêu thích
+          &nbsp;để {isLiked ? 'xóa' : 'thêm'} {label} {isLiked ? 'khỏi' : 'vào'}{' '}
+          danh sách yêu thích
         </span>
       );
       return;
     }
 
-    if (addFavouriteLoading) return;
+    const mutate = isLiked ? removeFavourite : addFavourite;
+    const loading = isLiked ? removeFavouriteLoading : addFavouriteLoading;
 
-    await addFavourite(
+    if (loading) return;
+
+    await mutate(
       { targetId, type: favouriteType },
       {
-        onSuccess: (res) => {
-          if (res.result) {
-            notify.success(`Thêm ${label} vào danh sách yêu thích thành công`);
-            setIsLiked(true);
-          } else {
-            notify.error(`Thêm ${label} vào danh sách yêu thích thất bại`);
-          }
+        onSuccess: () => {
+          setIsLiked(!isLiked);
+          notify.success(
+            `${isLiked ? 'Xóa' : 'Thêm'} ${label} ${isLiked ? 'khỏi' : 'vào'} danh sách yêu thích thành công`
+          );
+          invalidateQueries([
+            queryKeys.FAVOURITE_LIST,
+            queryKeys.FAVOURITE_GET_LIST_IDS
+          ]);
+          queryClient.invalidateQueries({
+            queryKey: [queryKeys.FAVOURITE, { targetId, type: favouriteType }]
+          });
         },
         onError: (error) => {
-          logger.error('[ADD_FAVOURITE_ERROR]', error);
-          notify.error(`Thêm ${label} vào danh sách yêu thích thất bại`);
-        }
-      }
-    );
-  };
-
-  const handleRemoveLike = async () => {
-    if (removeFavouriteLoading) return;
-
-    startAnimation();
-
-    await removeFavourite(
-      { targetId, type: favouriteType },
-      {
-        onSuccess: (res) => {
-          if (res.result) {
-            setIsLiked(false);
-            notify.success(`Xóa ${label} khỏi danh sách yêu thích thành công`);
-          } else {
-            notify.error(`Xóa ${label} khỏi danh sách yêu thích thất bại`);
-          }
-        },
-        onError: (error) => {
-          logger.error('[REMOVE_FAVOURITE_ERROR]', error);
-          notify.error('Xóa yêu thích thất bại');
+          logger.error(
+            `[${isLiked ? 'REMOVE' : 'ADD'}_FAVOURITE_ERROR]`,
+            error
+          );
+          notify.error(
+            `${isLiked ? 'Xóa' : 'Thêm'} ${label} ${isLiked ? 'khỏi' : 'vào'} danh sách yêu thích thất bại`
+          );
         }
       }
     );
   };
 
   const handleClick = () => {
-    if (isLiked) {
-      handleRemoveLike();
-    } else {
-      handleLike();
-    }
+    handleVote();
   };
 
   const buttonContent = (

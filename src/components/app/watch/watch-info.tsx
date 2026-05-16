@@ -36,10 +36,10 @@ import { FaChevronRight } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
 export default function WatchInfo() {
-  const { movie, moviePersons, selectedSeason } = useMovieStore(
+  const { movie, moviePerson, selectedSeason } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,
-      moviePersons: s.moviePersons,
+      moviePerson: s.moviePerson,
       selectedSeason: s.selectedSeason
     }))
   );
@@ -58,7 +58,7 @@ export default function WatchInfo() {
     languages.find((language) => language.value === movie?.language)?.label ||
     'Đang cập nhật';
 
-  const directors = moviePersons.reduce<PersonResType[]>((acc, moviePerson) => {
+  const directors = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {
     if (moviePerson.kind === PERSON_KIND_DIRECTOR) {
       acc.push(moviePerson.person);
     }

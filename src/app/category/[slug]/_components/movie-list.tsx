@@ -20,8 +20,7 @@ export default function MovieList({ id }: MovieListProps) {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();
 
-  const { data: categoryData, isLoading: categoryLoading } =
-    useCategoryQuery(id);
+  const { data: category, isLoading: categoryLoading } = useCategoryQuery(id);
 
   const { data: movieListData, isLoading: movieListLoading } =
     useMovieListQuery({
@@ -33,9 +32,8 @@ export default function MovieList({ id }: MovieListProps) {
       enabled: !!id
     });
 
-  const category = categoryData?.data;
-  const movieList = movieListData?.data?.content || [];
-  const totalPages = movieListData?.data?.totalPages || 0;
+  const movieList = movieListData?.content || [];
+  const totalPages = movieListData?.totalPages || 0;
 
   if (!category) return <NotFound />;
 

@@ -15,24 +15,22 @@ export default function WatchSide() {
   const { slug } = useParams<{ slug: string }>();
   const movieId = getIdFromSlug(slug);
 
-  const { movie, moviePersons } = useMovieStore(
+  const { movie, moviePerson } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,
-      moviePersons: s.moviePersons
+      moviePerson: s.moviePerson
     }))
   );
 
-  const actors = moviePersons.reduce<PersonResType[]>((acc, moviePerson) => {
+  const actors = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {
     if (moviePerson.kind === PERSON_KIND_ACTOR) {
       acc.push(moviePerson.person);
     }
     return acc;
   }, []);
 
-  const { data: suggestionMovieListData } =
+  const { data: suggestionMovieList = [] } =
     useSuggestionMovieListQuery(movieId);
-
-  const suggestionMovieList = suggestionMovieListData?.data || [];
 
   if (!movie) return null;
 

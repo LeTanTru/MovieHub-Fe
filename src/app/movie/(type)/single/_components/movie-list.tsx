@@ -23,8 +23,8 @@ export default function MovieList() {
     enabled: true
   });
 
-  const movieList = movieListData?.data?.content || [];
-  const totalPages = movieListData?.data?.totalPages || 0;
+  const movieList = movieListData?.content || [];
+  const totalPages = movieListData?.totalPages || 0;
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>

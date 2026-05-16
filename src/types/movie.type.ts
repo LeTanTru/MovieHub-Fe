@@ -150,11 +150,10 @@ export type MovieSuggestByWatchedSearchType = BaseSearchType;
 type MovieState = {
   movie: MovieResType | null;
   movieItem: MovieItemResType | null;
-  moviePerson: MoviePersonResType | null;
 
   movies: MovieResType[];
   movieItems: MovieItemResType[];
-  moviePersons: MoviePersonResType[];
+  moviePerson: MoviePersonResType[];
 
   selectedSeason: string;
 
@@ -164,11 +163,10 @@ type MovieState = {
 type MovieActions = {
   setMovie: (movie?: MovieResType | null) => void;
   setMovieItem: (movieItem?: MovieItemResType | null) => void;
-  setMoviePerson: (moviePerson?: MoviePersonResType | null) => void;
 
   setMovies: (movies: MovieResType[]) => void;
   setMovieItems: (movieItems: MovieItemResType[]) => void;
-  setMoviePersons: (moviePersons: MoviePersonResType[]) => void;
+  setMoviePerson: (moviePerson: MoviePersonResType[]) => void;
 
   setSelectedSeason: (season: string) => void;
 

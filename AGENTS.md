@@ -14,9 +14,11 @@
 - 4-layer API pattern (do not bypass):
   `src/constants/api-config.ts` → `src/api-requests/<domain>.api-request.ts` → `src/queries/<domain>.query.ts` → Component
 - Add new query keys to `queryKeys` in `src/constants/master-data.ts`
+- **Query `select` convention**: All `useQuery` calls include `select: (data) => data.data` (or `data.data.content`). Components receive unwrapped data — never chain `?.data?.data` in components.
 - HTTP client: `src/utils/http.util.ts` with auto Bearer token, `X-Client-Type` header, 401 refresh queue, FormData support, `:id` path param substitution
 - Auth sync/refresh: Use internal routes under `src/app/api/auth/*` only, no bypass
 - API response types: `ApiResponse<T>`, `ApiResponseList<T>`
+- Next.js config: `reactCompiler: true` (React Compiler enabled), `output: 'standalone'` (Docker), CSS optimization via `optimizeCss`
 
 ## Route Protection (`src/proxy.ts`)
 
@@ -52,11 +54,12 @@
 - Conventional commits: `type(scope): description`, enforced via `@commitlint/cli`
 - Pre-commit: Husky + lint-staged runs ESLint + Prettier on staged files
 - Never commit without `yarn lint`
+- **CI/Deploy**: Push to `main` triggers auto-build + Docker push + VPS deploy (via VPN) with Discord notification
 
 ## Environment Variables
 
 - Validated at startup in `src/config.ts` with Zod, missing/invalid values fail build/start
-- Required `NEXT_PUBLIC_*` keys: `NEXT_PUBLIC_NODE_ENV`, `NEXT_PUBLIC_AUTH_API_URL`, `NEXT_PUBLIC_API_ENDPOINT_URL`, `NEXT_PUBLIC_API_MEDIA_URL`, `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_MEDIA_HOST`, `NEXT_PUBLIC_CLIENT_TYPE`
+- Required `NEXT_PUBLIC_*` keys: `NEXT_PUBLIC_NODE_ENV`, `NEXT_PUBLIC_AUTH_API_URL`, `NEXT_PUBLIC_API_ENDPOINT_URL`, `NEXT_PUBLIC_API_MEDIA_URL`, `NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL`, `NEXT_PUBLIC_URL`, `NEXT_PUBLIC_MEDIA_HOST`, `NEXT_PUBLIC_CLIENT_TYPE`, `NEXT_PUBLIC_MQTT_BROKER`, `NEXT_PUBLIC_MQTT_USERNAME`, `NEXT_PUBLIC_MQTT_PASSWORD`
 - Server-only vars (runtime): `APP_USERNAME`, `APP_PASSWORD`, `GRANT_TYPE_REFRESH_TOKEN`, `ACCESS_KEY`
 
 ## Restricted Files (DO NOT READ)

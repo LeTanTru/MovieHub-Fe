@@ -17,10 +17,10 @@ export default function TopicList() {
   });
 
   const topicList = useMemo(
-    () => topicListData?.data?.content?.slice(0, 6) || [],
-    [topicListData?.data?.content]
+    () => topicListData?.content?.slice(0, 6) || [],
+    [topicListData?.content]
   );
-  const totalElements = topicListData?.data?.totalElements || 0;
+  const totalElements = topicListData?.totalElements || 0;
 
   useEffect(() => {
     if (!topicList.length) return;

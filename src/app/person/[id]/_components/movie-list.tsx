@@ -23,7 +23,7 @@ export default function MovieList({ personId }: MovieListProps) {
   const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
   const { searchParams } = useQueryParams<PersonSearchType>();
 
-  const { data: moviePersonListData, isLoading } = useMoviePersonListQuery({
+  const { data: moviePersonList = [], isLoading } = useMoviePersonListQuery({
     params: {
       personId,
       kind: searchParams.kind || PERSON_KIND_ACTOR,
@@ -31,8 +31,6 @@ export default function MovieList({ personId }: MovieListProps) {
     },
     enabled: true
   });
-
-  const moviePersonList = moviePersonListData?.data?.content || [];
 
   const movieList = moviePersonList.map((moviePerson) => moviePerson.movie);
 

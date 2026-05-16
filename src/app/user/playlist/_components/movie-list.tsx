@@ -5,7 +5,6 @@ import { MovieCard } from '@/components/app/movie-card';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import { Pagination } from '@/components/pagination';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import {
@@ -13,7 +12,7 @@ import {
   useRemovePlaylistItemMutation
 } from '@/queries';
 import { usePlaylistStore } from '@/store';
-import { notify } from '@/utils';
+import { invalidateQueries, notify } from '@/utils';
 import { useState } from 'react';
 import { useAuth } from '@/hooks';
 
@@ -24,7 +23,6 @@ export default function MovieList() {
 
   const pageSize = 12;
   const playlist = usePlaylistStore((s) => s.selectedPlaylist);
-  const queryClient = getQueryClient();
 
   const {
     data: playlistMoviesData,
@@ -41,8 +39,8 @@ export default function MovieList() {
   const { mutateAsync: removePlaylistItemMutate } =
     useRemovePlaylistItemMutation();
 
-  const movieList = playlistMoviesData?.data?.content || [];
-  const totalPages = playlistMoviesData?.data?.totalPages || 0;
+  const movieList = playlistMoviesData?.content || [];
+  const totalPages = playlistMoviesData?.totalPages || 0;
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -62,10 +60,8 @@ export default function MovieList() {
         onSuccess: async (res) => {
           if (res.result) {
             notify.success('Xóa phim khỏi danh sách phát thành công');
-            await getPlaylistMovies();
-            await queryClient.invalidateQueries({
-              queryKey: [queryKeys.PLAYLIST_LIST]
-            });
+            getPlaylistMovies();
+            invalidateQueries([queryKeys.PLAYLIST_LIST]);
           } else {
             notify.error('Xóa phim khỏi danh sách phát thất bại');
           }

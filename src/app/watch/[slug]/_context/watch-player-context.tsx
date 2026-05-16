@@ -141,8 +141,8 @@ export default function WatchPlayerProvider({
   });
 
   const watchHistories = useMemo(
-    () => watchHistoryData?.data?.watchHistories || [],
-    [watchHistoryData?.data?.watchHistories]
+    () => watchHistoryData?.watchHistories || [],
+    [watchHistoryData?.watchHistories]
   );
 
   // — Watch history tracking

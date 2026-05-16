@@ -8,9 +8,7 @@ import PersonSidebar from './person-sidebar';
 
 export default function Person() {
   const { id } = useParams<{ id: string }>();
-  const { data: personData, isLoading } = usePersonQuery(id);
-
-  const person = personData?.data;
+  const { data: person, isLoading } = usePersonQuery(id);
 
   if (!person) return <NotFound />;
 
