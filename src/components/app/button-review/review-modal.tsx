@@ -3,34 +3,32 @@
 import { Button, Col, Row, TextAreaField } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { Modal } from '@/components/modal';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys, reviewRatings } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useCreateReviewMutation } from '@/queries';
 import { reviewSchema } from '@/schemaValidations';
-import { useMovieStore } from '@/store';
-import { ApiResponse, MovieResType, ReviewBodyType } from '@/types';
-import { formatRating, notify } from '@/utils';
+import { MovieResType, ReviewBodyType } from '@/types';
+import { formatRating, notify, invalidateQueries } from '@/utils';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useShallow } from 'zustand/shallow';
 import { useAuth } from '@/hooks';
 
 type ReviewModalProps = {
   opened: boolean;
+  movie: MovieResType;
   onClose: () => void;
 };
 
-export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
+export default function ReviewModal({
+  opened,
+  movie,
+  onClose
+}: ReviewModalProps) {
   const { isAuthenticated } = useAuth();
 
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
-  const { movie, setMovie } = useMovieStore(
-    useShallow((s) => ({ movie: s.movie, setMovie: s.setMovie }))
-  );
-  const queryClient = getQueryClient();
 
   const { mutateAsync: createReviewMutate, isPending: createReviewLoading } =
     useCreateReviewMutation();
@@ -45,7 +43,7 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
   const initialValues: ReviewBodyType = {
     id: '',
     content: '',
-    movieId: movie?.id || '',
+    movieId: movie.id,
     rate: 0
   };
 
@@ -72,25 +70,14 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
         rate: selectedRating || values.rate
       },
       {
-        onSuccess: async (res) => {
+        onSuccess: (res) => {
           if (res.result) {
             notify.success('Đánh giá phim thành công');
-            await Promise.all([
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.REVIEW_LIST]
-              }),
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.CHECK_MOVIE, movie?.id]
-              }),
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.MOVIE, movie?.id]
-              })
-            ]);
-            const newMovieData = queryClient.getQueryData<
-              ApiResponse<MovieResType>
-            >([queryKeys.MOVIE, movie?.id]);
-            const newMovie = newMovieData?.data;
-            setMovie(newMovie);
+            invalidateQueries(
+              [queryKeys.REVIEW_LIST, { movieId: movie.id }],
+              [queryKeys.CHECK_MOVIE, movie.id],
+              [queryKeys.MOVIE, movie.id]
+            );
             onClose();
             setSelectedRating(null);
           } else {
@@ -98,7 +85,7 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
           }
         },
         onError: (error) => {
-          logger.error('[CREATE_UPDATE_REVIEW_ERROR]', error);
+          logger.error('[CREATE_REVIEW_ERROR]', error);
           notify.error('Đánh giá phim thất bại');
         }
       }
@@ -126,14 +113,14 @@ export default function ReviewModal({ opened, onClose }: ReviewModalProps) {
               <span className='sr-only'>Đánh giá phim</span>
             </Modal.Header>
             <div className='max-640:mb-0 mb-2 text-center text-xl leading-normal font-semibold text-white'>
-              <h3>{movie?.title}</h3>
+              <h3>{movie.title}</h3>
             </div>
             <div className='max-640:mb-4 mb-6'>
               <div className='max-640:mb-2 mb-4 block text-center'>
                 <div className='flex items-center justify-center'>
                   <div className='size-10 bg-[url("/logo.webp")] bg-cover bg-position-[50%]'></div>
-                  <strong>{formatRating(movie?.averageRating || 0)}</strong>
-                  <span>&nbsp;/ {movie?.reviewCount || 0} lượt đánh giá</span>
+                  <strong>{formatRating(movie.averageRating || 0)}</strong>
+                  <span>&nbsp;/ {movie.reviewCount || 0} lượt đánh giá</span>
                 </div>
               </div>
               <div className='max-640:grid-cols-3 max-480:grid-cols-2 max-640:bg-transparent max-640:gap-3 max-480:gap-2 max-640:p-0 grid grid-cols-5 gap-5 rounded-xl bg-[rgba(0,0,0,0.3)] p-4'>

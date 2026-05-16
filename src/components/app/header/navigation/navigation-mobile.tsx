@@ -57,10 +57,6 @@ export default function NavigationMobile({
     setSelectedItem(null);
   });
 
-  const navMobileList = userSidebarList.filter(
-    (item) => item.link !== route.user.notification.path
-  );
-
   const handleSubmenuToggle = (key: string, index: number) => {
     setSelectedItem((prev) =>
       prev?.key === key && prev?.index === index ? null : { key, index }
@@ -134,7 +130,7 @@ export default function NavigationMobile({
                     />
                   </div>
                   <List className='grid grid-cols-2 gap-2 pt-2'>
-                    {navMobileList.map((item) => (
+                    {userSidebarList.map((item) => (
                       <ListItem
                         key={item.link}
                         className={cn(

@@ -100,7 +100,7 @@ export default function TopMovieCard({
     }, 200);
   };
 
-  const ageRating = ageRatings.find((age) => movie?.ageRating === age.value);
+  const ageRating = ageRatings.find((age) => movie.ageRating === age.value);
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
 
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');

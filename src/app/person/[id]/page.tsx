@@ -3,7 +3,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { Person } from '@/app/person/[id]/_components';
 import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
-import { MoviePersonSearchType } from '@/types';
+import { ApiResponse, MoviePersonSearchType, PersonResType } from '@/types';
 import { JsonLd } from '@/components/seo';
 import { sanitizeText, stripHtml, truncate } from '@/utils';
 import {
@@ -106,7 +106,10 @@ export default async function PersonDetailPage({
     })
   ]);
 
-  const personRes = queryClient.getQueryData<any>([queryKeys.PERSON, id]);
+  const personRes = queryClient.getQueryData<ApiResponse<PersonResType>>([
+    queryKeys.PERSON,
+    id
+  ]);
   const person = personRes?.data;
   const jsonLd = person
     ? {

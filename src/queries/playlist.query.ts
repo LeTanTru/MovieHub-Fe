@@ -63,7 +63,7 @@ export const usePlaylistByMovieQuery = ({
 
 export const useRemovePlaylistItemMutation = () => {
   return useMutation({
-    mutationKey: [queryKeys.PLAYLIST_DELETE],
+    mutationKey: [queryKeys.REMOVE_PLAYLIST_ITEM],
     mutationFn: (params: RemoveItemSearchType) =>
       playlistApiRequest.removeItem(params)
   });

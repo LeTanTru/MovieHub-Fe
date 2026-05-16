@@ -24,11 +24,7 @@ export default function MovieList() {
   const pageSize = 12;
   const playlist = usePlaylistStore((s) => s.selectedPlaylist);
 
-  const {
-    data: playlistMoviesData,
-    isLoading,
-    refetch: getPlaylistMovies
-  } = usePlaylistMoviesQuery({
+  const { data: playlistMoviesData, isLoading } = usePlaylistMoviesQuery({
     playlistId: playlist?.id || '',
     params: {
       page: page - 1,
@@ -60,8 +56,10 @@ export default function MovieList() {
         onSuccess: async (res) => {
           if (res.result) {
             notify.success('Xóa phim khỏi danh sách phát thành công');
-            getPlaylistMovies();
-            invalidateQueries([queryKeys.PLAYLIST_LIST]);
+            invalidateQueries(
+              [queryKeys.PLAYLIST_LIST],
+              [queryKeys.PLAYLIST_MOVIES, playlist.id]
+            );
           } else {
             notify.error('Xóa phim khỏi danh sách phát thất bại');
           }

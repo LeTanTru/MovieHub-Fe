@@ -46,12 +46,15 @@ export default function Discussion({
   const id = getIdFromSlug(slug);
 
   const { profile } = useAuth();
-  const { discussionTab, setDiscussionTab } = useMovieStore(
-    useShallow((s) => ({
-      discussionTab: s.discussionTab,
-      setDiscussionTab: s.setDiscussionTab
-    }))
-  );
+  const { movie, discussionTab, selectedSeason, setDiscussionTab } =
+    useMovieStore(
+      useShallow((s) => ({
+        discussionTab: s.discussionTab,
+        movie: s.movie,
+        selectedSeason: s.selectedSeason,
+        setDiscussionTab: s.setDiscussionTab
+      }))
+    );
 
   const {
     data: commentList,
@@ -108,6 +111,8 @@ export default function Discussion({
 
   const isCommentTab = discussionTab === DISCUSSION_TAB_COMMENT;
   const isReviewTab = discussionTab === DISCUSSION_TAB_REVIEW;
+
+  if (!movie) return null;
 
   return (
     <Element name={toId} id={toId}>
@@ -184,10 +189,15 @@ export default function Discussion({
               {isCommentTab ? 'bình luận' : 'đánh giá'}.
             </div>
           )}
-          <CommentInput isLoading={isActiveLoading} />
+          <CommentInput
+            isLoading={isActiveLoading}
+            movie={movie}
+            selectedSeason={selectedSeason}
+          />
         </Activity>
         <Activity visible={isCommentTab}>
           <CommentList
+            movie={movie}
             commentList={filteredCommentList}
             isLoading={commentListLoading}
             hasMore={!!hasMoreComments}
@@ -198,6 +208,7 @@ export default function Discussion({
         </Activity>
         <Activity visible={isReviewTab}>
           <ReviewList
+            movie={movie}
             reviewList={filteredReviewList}
             isLoading={reviewListLoading}
             hasMore={!!hasMoreReviews}

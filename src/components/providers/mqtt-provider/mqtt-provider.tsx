@@ -83,10 +83,10 @@ export default function MqttProvider() {
       switch (data.cmd) {
         case mqttCMDs.NEW_MOVIE_ITEM:
         case mqttCMDs.NEW_MOVIE:
-          invalidateQueries([
-            queryKeys.UNREAD_NOTIFICATION_COUNT,
-            queryKeys.NOTIFICATION_LIST
-          ]);
+          invalidateQueries(
+            [queryKeys.UNREAD_NOTIFICATION_COUNT],
+            [queryKeys.NOTIFICATION_LIST]
+          );
           break;
       }
     }
@@ -105,10 +105,10 @@ export default function MqttProvider() {
         case mqttCMDs.REPLY_COMMENT:
         case mqttCMDs.VOTE_COMMENT:
         case mqttCMDs.VOTE_REVIEW:
-          invalidateQueries([
-            queryKeys.UNREAD_NOTIFICATION_COUNT,
-            queryKeys.NOTIFICATION_LIST
-          ]);
+          invalidateQueries(
+            [queryKeys.UNREAD_NOTIFICATION_COUNT],
+            [queryKeys.NOTIFICATION_LIST]
+          );
           break;
       }
     }

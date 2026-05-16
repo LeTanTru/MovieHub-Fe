@@ -81,10 +81,10 @@ export default function NotificationList() {
   const handleReadAll = async () => {
     await readAllNotificationMutate(undefined, {
       onSuccess: () => {
-        invalidateQueries([
-          queryKeys.UNREAD_NOTIFICATION_COUNT,
-          queryKeys.NOTIFICATION_LIST
-        ]);
+        invalidateQueries(
+          [queryKeys.UNREAD_NOTIFICATION_COUNT],
+          [queryKeys.NOTIFICATION_LIST]
+        );
         notify.success('Đọc tất cả thông báo thành công');
       },
       onError: (error) => {
@@ -97,10 +97,10 @@ export default function NotificationList() {
   const handleDeleteAll = async () => {
     await deleteAllNotificationMutate(undefined, {
       onSuccess: () => {
-        invalidateQueries([
-          queryKeys.UNREAD_NOTIFICATION_COUNT,
-          queryKeys.NOTIFICATION_LIST
-        ]);
+        invalidateQueries(
+          [queryKeys.UNREAD_NOTIFICATION_COUNT],
+          [queryKeys.NOTIFICATION_LIST]
+        );
         notify.success('Xóa tất cả thông báo thành công');
       },
       onError: (error) => {
@@ -113,10 +113,10 @@ export default function NotificationList() {
   const handleDelete = async (id: string) => {
     await deleteNotifyMutate(id, {
       onSuccess: () => {
-        invalidateQueries([
-          queryKeys.UNREAD_NOTIFICATION_COUNT,
-          queryKeys.NOTIFICATION_LIST
-        ]);
+        invalidateQueries(
+          [queryKeys.UNREAD_NOTIFICATION_COUNT],
+          [queryKeys.NOTIFICATION_LIST]
+        );
         notify.success('Xóa thông báo thành công');
       },
       onError: (error) => {
@@ -133,10 +133,10 @@ export default function NotificationList() {
       { ids: [notification.id] },
       {
         onSuccess: () => {
-          invalidateQueries([
-            queryKeys.UNREAD_NOTIFICATION_COUNT,
-            queryKeys.NOTIFICATION_LIST
-          ]);
+          invalidateQueries(
+            [queryKeys.UNREAD_NOTIFICATION_COUNT],
+            [queryKeys.NOTIFICATION_LIST]
+          );
         },
         onError: (error) => {
           logger.error('[UPDATE_READ_NOTIFICATION_ERROR]', error);
@@ -155,7 +155,7 @@ export default function NotificationList() {
       <h3 className='max-640:text-base text-xl leading-normal font-semibold text-white'>
         Thông báo ({totalUnread} chưa đọc)
       </h3>
-      <div className='flex w-full justify-between'>
+      <div className='max-640:flex-col max-640:gap-3 flex w-full items-center justify-between gap-4'>
         <div className='flex flex-wrap gap-2' role='tablist'>
           {notificationTabs.map((tab) => (
             <Button
@@ -191,7 +191,7 @@ export default function NotificationList() {
               ) : (
                 <CheckCheck className='size-4' />
               )}
-              Đọc tất cả
+              <span className='max-520:hidden'> Đọc tất cả</span>
             </Button>
           )}
 
@@ -211,7 +211,7 @@ export default function NotificationList() {
                   ) : (
                     <Trash className='size-4' />
                   )}
-                  Xóa tất cả
+                  <span className='max-520:hidden'> Xóa tất cả</span>
                 </Button>
               }
             />

@@ -2,12 +2,7 @@
 
 import { NoData } from '@/components/no-data';
 import CommentItem from './comment-item';
-import {
-  ApiResponse,
-  CommentResType,
-  CommentVoteResType,
-  MovieResType
-} from '@/types';
+import { CommentResType, MovieResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { useAuth } from '@/hooks';
 import {
@@ -17,18 +12,18 @@ import {
 } from '@/queries';
 import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { logger } from '@/logger';
 import { invalidateQueries, notify } from '@/utils';
 import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { route } from '@/routes';
-import { useCommentStore, useMovieStore } from '@/store';
+import { useCommentStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
 import { m } from 'framer-motion';
 import { useEffect } from 'react';
 
 type CommentListProps = {
+  movie: MovieResType;
   commentList: CommentResType[];
   isLoading?: boolean;
   hasMore?: boolean;
@@ -38,6 +33,7 @@ type CommentListProps = {
 };
 
 export default function CommentList({
+  movie,
   commentList,
   isLoading = false,
   hasMore = false,
@@ -46,11 +42,6 @@ export default function CommentList({
   onLoadMore
 }: CommentListProps) {
   const { profile, isAuthenticated } = useAuth();
-  const queryClient = getQueryClient();
-
-  const { movie, setMovie } = useMovieStore(
-    useShallow((s) => ({ movie: s.movie, setMovie: s.setMovie }))
-  );
 
   const {
     openParentIds,
@@ -86,8 +77,8 @@ export default function CommentList({
     useVoteCommentMutation();
 
   const { data: voteCommentList = [] } = useVoteCommentListQuery({
-    movieId: movie?.id || '',
-    enabled: isAuthenticated && !!movie?.id
+    movieId: movie.id,
+    enabled: isAuthenticated && !!movie.id
   });
 
   const voteMap: Record<string, number> = {};
@@ -103,27 +94,16 @@ export default function CommentList({
         if (res.result) {
           notify.success('Xóa bình luận thành công');
 
-          // Invalidate comment list and movie data for updating total comments
-          invalidateQueries([queryKeys.COMMENT_LIST]);
-          await queryClient.invalidateQueries({
-            queryKey: [queryKeys.MOVIE, movie?.id]
-          });
+          invalidateQueries(
+            [queryKeys.COMMENT_LIST, { movieId: comment.movieId }],
+            [queryKeys.MOVIE, movie.id]
+          );
 
-          // Invalidate replies list if comment is a reply
           if (comment.parent) {
-            await queryClient.invalidateQueries({
-              queryKey: [
-                `${queryKeys.COMMENT_REPLIES_LIST}-${comment.parent.id}`
-              ]
-            });
+            invalidateQueries([
+              `${queryKeys.COMMENT_REPLIES_LIST}-${comment.parent.id}`
+            ]);
           }
-
-          // Update movie store data
-          const newMovieData = queryClient.getQueryData<
-            ApiResponse<MovieResType>
-          >([queryKeys.MOVIE, movie?.id]);
-          const newMovie = newMovieData?.data;
-          setMovie(newMovie);
         } else {
           notify.error('Xóa bình luận thất bại');
         }
@@ -162,27 +142,23 @@ export default function CommentList({
     await voteCommentMutate(
       { id, type },
       {
-        onSuccess: async (res) => {
+        onSuccess: (res) => {
           if (res.result) {
-            await Promise.all([
-              queryClient.invalidateQueries({
-                queryKey: [queryKeys.COMMENT_VOTE_LIST, movie?.id]
-              })
-            ]);
+            invalidateQueries(
+              [queryKeys.COMMENT_LIST, { movieId: movie.id }],
+              [queryKeys.COMMENT_VOTE_LIST, movie.id]
+            );
 
-            const voteList = queryClient.getQueryData<
-              ApiResponse<CommentVoteResType[]>
-            >([queryKeys.COMMENT_VOTE_LIST, movie?.id]);
+            const previousVoteType = voteMap[id];
+            const isRemovingVote = previousVoteType === type;
 
-            const vote = (voteList?.data || []).find((v) => v.id === id);
-
-            if (vote) {
+            if (isRemovingVote) {
               notify.success(
-                `${vote.type === REACTION_TYPE_LIKE ? 'Thích' : 'Không thích'} bình luận thành công`
+                `${type === REACTION_TYPE_LIKE ? 'Bỏ thích' : 'Bỏ không thích'} bình luận thành công`
               );
             } else {
               notify.success(
-                `${type === REACTION_TYPE_LIKE ? 'Bỏ thích' : 'Bỏ không thích'} bình luận thành công`
+                `${type === REACTION_TYPE_LIKE ? 'Thích' : 'Không thích'} bình luận thành công`
               );
             }
 

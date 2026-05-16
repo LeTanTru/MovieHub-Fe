@@ -20,10 +20,10 @@ export default function MovieBody({
   return (
     <Link
       onClick={handleClick}
-      className='flex flex-1 items-center justify-between gap-2 pl-1'
+      className='max-480:flex-col max-480:gap-1 flex flex-1 items-center justify-between gap-2 pl-1'
       href={`${route.movie.path}/${body.slug}.${body.id}`}
     >
-      <div className='relative w-20 shrink-0'>
+      <div className='max-480:hidden relative w-20 shrink-0'>
         <ImageField
           src={renderImageUrl(body?.thumbnailUrl)}
           alt={body?.title}
@@ -32,19 +32,22 @@ export default function MovieBody({
         />
       </div>
       <div className='flex flex-1 flex-col justify-between gap-2'>
-        <h3 className='line-clamp-2' title={notification.title}>
+        <h3
+          className='max-640:text-[13px] max-520:text-xs line-clamp-2'
+          title={notification.title}
+        >
           <span>{notification.title}: Phim </span>
 
           <span className='font-medium'>
             {body?.title} - {body.originalTitle}
           </span>
 
-          <p className='mt-1'>
+          <p className='max-640:text-[13px] max-520:text-xs mt-1'>
             Ngày chiếu: {convertUTCToLocal(body?.releaseDate)}
           </p>
         </h3>
         <div
-          className='text-muted-foreground shrink-0 text-xs'
+          className='text-muted-foreground max-640:text-[11px] shrink-0 text-xs'
           title={convertUTCToLocal(notification.createdDate)}
         >
           {timeAgo(notification.createdDate)}
