@@ -21,6 +21,7 @@ import { WatchContinue } from '@/app/(home)/_components/watch-continue';
 import { Collection } from '@/app/(home)/_components/collection';
 import envConfig from '@/config';
 import type { Metadata } from 'next';
+import { Recommendation } from '@/app/(home)/_components/recommendation';
 
 export const revalidate = 60;
 
@@ -101,6 +102,7 @@ export default async function HomePage() {
           <TopicList />
           <WatchContinue />
           <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_0} />
+          <Recommendation />
           <Collection />
         </div>
       </Container>

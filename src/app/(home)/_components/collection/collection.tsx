@@ -26,7 +26,6 @@ import AnimeMovieList from './anime-movie-list';
 import ComingSoonList from './coming-soon-list';
 import { cn } from '@/lib';
 import { SuggestByWatched } from '@/app/(home)/_components/suggest-by-watched';
-import { Recommendation } from '@/app/(home)/_components/recommendation';
 
 type ProcessedItem = CollectionResType | CollectionCountryGroupType;
 
@@ -126,7 +125,6 @@ export default function Collection() {
               >
                 <TopMovieList collection={collection} />
                 <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_1} />
-                <Recommendation />
               </div>
             );
           }

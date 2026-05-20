@@ -1,47 +1,41 @@
 import type { ReactNode } from 'react';
 import { toast, ToastOptions, Bounce } from 'react-toastify';
-import { isMobileDevice } from './device.util';
 
 const TOAST_AUTO_CLOSE_MS = 3000;
 
-const defaultOptions: Omit<ToastOptions, 'position'> = {
+const defaultOptions: ToastOptions = {
+  position: 'top-right',
   autoClose: TOAST_AUTO_CLOSE_MS,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-  theme: 'dark',
+  theme: 'light',
   transition: Bounce,
   className: `
-    whitespace-nowrap
     pr-10!
     min-w-80!
-    max-w-300!
+    max-w-120!
     w-fit!
     text-white!
   `
 };
 
-const getDefaultOptions = (): ToastOptions => ({
-  ...defaultOptions,
-  position: isMobileDevice() ? 'top-center' : 'bottom-right'
-});
-
 const showSuccess = (message: string | ReactNode, options?: ToastOptions) => {
-  toast.success(message, { ...getDefaultOptions(), ...options });
+  toast.success(message, { ...defaultOptions, ...options });
 };
 
 const showError = (message: string | ReactNode, options?: ToastOptions) => {
-  toast.error(message, { ...getDefaultOptions(), ...options });
+  toast.error(message, { ...defaultOptions, ...options });
 };
 
 const showInfo = (message: string | ReactNode, options?: ToastOptions) => {
-  toast.info(message, { ...getDefaultOptions(), ...options });
+  toast.info(message, { ...defaultOptions, ...options });
 };
 
 const showWarning = (message: string | ReactNode, options?: ToastOptions) => {
-  toast.warn(message, { ...getDefaultOptions(), ...options });
+  toast.warn(message, { ...defaultOptions, ...options });
 };
 
 export const notify = {
