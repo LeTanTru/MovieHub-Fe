@@ -11,6 +11,9 @@ import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_START,
+  MAX_PAGE_SIZE,
+  PERSON_KIND_ACTOR,
+  PERSON_KIND_DIRECTOR,
   queryKeys
 } from '@/constants';
 import {
@@ -18,14 +21,22 @@ import {
   ApiResponseList,
   CommentResType,
   CommentSearchType,
+  MetadataType,
+  MoviePersonResType,
   MoviePersonSearchType,
   MovieResType,
   MovieSearchType,
   ReviewResType,
   ReviewSearchType
 } from '@/types';
-import { JsonLd } from '@/components/seo';
-import { getIdFromSlug, sanitizeText, stripHtml, truncate } from '@/utils';
+import { JsonLd, BreadcrumbListJsonLd } from '@/components/seo';
+import {
+  getIdFromSlug,
+  parseJSON,
+  sanitizeText,
+  stripHtml,
+  truncate
+} from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
 
@@ -102,7 +113,20 @@ export default async function MoviePage({ params }: MoviePageProps) {
   const id = getIdFromSlug(slug);
 
   const moviePersonFilters: MoviePersonSearchType = {
-    movieId: id
+    movieId: id,
+    size: MAX_PAGE_SIZE
+  };
+
+  const actorFilters: MoviePersonSearchType = {
+    movieId: id,
+    kind: PERSON_KIND_ACTOR,
+    size: MAX_PAGE_SIZE
+  };
+
+  const directorFilters: MoviePersonSearchType = {
+    movieId: id,
+    kind: PERSON_KIND_DIRECTOR,
+    size: MAX_PAGE_SIZE
   };
 
   const commentFilters: CommentSearchType = {
@@ -127,6 +151,14 @@ export default async function MoviePage({ params }: MoviePageProps) {
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
       queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE_PERSON_LIST, actorFilters],
+      queryFn: () => moviePersonApiRequest.getList(actorFilters)
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE_PERSON_LIST, directorFilters],
+      queryFn: () => moviePersonApiRequest.getList(directorFilters)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
@@ -175,6 +207,20 @@ export default async function MoviePage({ params }: MoviePageProps) {
     id
   ]);
   const movie = movieRes?.data;
+
+  const allPersons =
+    queryClient.getQueryData<ApiResponseList<MoviePersonResType>>([
+      queryKeys.MOVIE_PERSON_LIST,
+      moviePersonFilters
+    ])?.data.content || [];
+
+  const actors = allPersons.filter((p) => p.kind === PERSON_KIND_ACTOR);
+  const directors = allPersons.filter((p) => p.kind === PERSON_KIND_DIRECTOR);
+
+  const movieMetadata = movie
+    ? parseJSON<MetadataType>(movie.metadata || '{}')
+    : null;
+
   const jsonLd = movie
     ? {
         '@context': 'https://schema.org',
@@ -185,13 +231,54 @@ export default async function MoviePage({ params }: MoviePageProps) {
           ? `${AppConstants.contentRootUrl}${movie.posterUrl}`
           : undefined,
         description: sanitizeText(movie.description || ''),
-        dateCreated: movie.createdDate
+        datePublished: movie.releaseDate || movie.createdDate,
+        director: directors.map((d) => ({
+          '@type': 'Person',
+          name: d.person.otherName || d.person.name
+        })),
+        actor: actors.slice(0, 10).map((a) => ({
+          '@type': 'Person',
+          name: a.person.otherName || a.person.name,
+          ...(a.characterName ? { characterName: a.characterName } : {})
+        })),
+        aggregateRating: movie.averageRating
+          ? {
+              '@type': 'AggregateRating',
+              ratingValue: movie.averageRating,
+              bestRating: 5,
+              worstRating: 1,
+              ratingCount: movie.reviewCount || 0
+            }
+          : undefined,
+        genre: movie.categories.map((c) => c.name),
+        duration: movieMetadata?.duration
+          ? `PT${movieMetadata.duration}M`
+          : undefined,
+        url: `${envConfig.NEXT_PUBLIC_URL}/movie/${movie.slug}.${movie.id}`,
+        sameAs: movie.viewCount ? undefined : undefined
+      }
+    : null;
+
+  const breadcrumbLd = movie
+    ? {
+        items: [
+          { name: 'Trang chủ', item: envConfig.NEXT_PUBLIC_URL },
+          {
+            name: 'Phim',
+            item: `${envConfig.NEXT_PUBLIC_URL}/movie/single`
+          },
+          {
+            name: movie.title,
+            item: `${envConfig.NEXT_PUBLIC_URL}/movie/${movie.slug}.${movie.id}`
+          }
+        ]
       }
     : null;
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {jsonLd && <JsonLd data={jsonLd} />}
+      {breadcrumbLd && <BreadcrumbListJsonLd items={breadcrumbLd.items} />}
       <Movie id={id} />
     </HydrationBoundary>
   );

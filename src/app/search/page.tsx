@@ -1,7 +1,12 @@
 import { Search } from '@/app/search/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
-import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
+import {
+  MAX_PAGE_SIZE,
+  queryKeys,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
+} from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import envConfig from '@/config';
@@ -41,12 +46,21 @@ export async function generateMetadata({
       title,
       description,
       url: '/search',
-      type: 'website'
+      type: 'website',
+      images: [
+        {
+          url: '/logo.webp',
+          width: OG_IMAGE_WIDTH,
+          height: OG_IMAGE_HEIGHT,
+          alt: 'MovieHub'
+        }
+      ]
     },
     twitter: {
       card: 'summary_large_image',
       title,
-      description
+      description,
+      images: ['/logo.webp']
     }
   };
 }

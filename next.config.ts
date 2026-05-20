@@ -29,12 +29,10 @@ const nextConfig: NextConfig = {
   },
   outputFileTracingRoot: path.join(__dirname),
   reactCompiler: true,
-  // Optimize CSS chunking and reduce network requests
   experimental: {
     optimizePackageImports: ['@vidstack/react'],
     optimizeCss: true
   },
-  // Optimize bundle size
   compiler: {
     removeConsole:
       process.env.NODE_ENV === 'development'
@@ -42,6 +40,43 @@ const nextConfig: NextConfig = {
             exclude: ['log', 'error']
           }
         : false
+  },
+  async redirects() {
+    return [];
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          },
+          {
+            key: 'X-Robots-Tag',
+            value: 'index, follow'
+          }
+        ]
+      },
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload'
+          }
+        ]
+      }
+    ];
   }
 };
 

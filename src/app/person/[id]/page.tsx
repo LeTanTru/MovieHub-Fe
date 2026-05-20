@@ -4,7 +4,7 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { Person } from '@/app/person/[id]/_components';
 import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
 import { ApiResponse, MoviePersonSearchType, PersonResType } from '@/types';
-import { JsonLd } from '@/components/seo';
+import { JsonLd, BreadcrumbListJsonLd } from '@/components/seo';
 import { sanitizeText, stripHtml, truncate } from '@/utils';
 import {
   AppConstants,
@@ -71,7 +71,6 @@ export async function generateMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      site: '@MovieHub',
       title,
       description,
       images
@@ -122,13 +121,32 @@ export default async function PersonDetailPage({
           : undefined,
         description: sanitizeText(person.bio || ''),
         birthDate: person.dateOfBirth,
-        nationality: person.country
+        nationality: person.country,
+        jobTitle: person.kinds?.includes(2) ? 'Director' : 'Actor',
+        url: `${envConfig.NEXT_PUBLIC_URL}/person/${person.id}`
+      }
+    : null;
+
+  const breadcrumbLd = person
+    ? {
+        items: [
+          { name: 'Trang chủ', item: envConfig.NEXT_PUBLIC_URL },
+          {
+            name: 'Diễn viên',
+            item: `${envConfig.NEXT_PUBLIC_URL}/person`
+          },
+          {
+            name: person.otherName || person.name,
+            item: `${envConfig.NEXT_PUBLIC_URL}/person/${person.id}`
+          }
+        ]
       }
     : null;
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {jsonLd && <JsonLd data={jsonLd} />}
+      {breadcrumbLd && <BreadcrumbListJsonLd items={breadcrumbLd.items} />}
       <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
         <div className='max-1120:flex-col relative mx-auto flex w-full max-w-410 justify-between px-5'>
           <Person />

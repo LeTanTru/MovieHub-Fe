@@ -90,7 +90,7 @@ export default function SelectField<
   className,
   formItemClassName,
   required,
-  allowClear,
+  allowClear = false,
   searchText,
   notFoundContent = 'Không có kết quả nào',
   labelClassName,
@@ -172,7 +172,7 @@ export default function SelectField<
                         {
                           'ring-main-color border-transparent! ring-2': open,
                           '[&>div>span]:text-gray-300': fieldState.invalid,
-                          'border-red-500 ring-red-500': !!fieldState.error
+                          'border-rose-500 ring-rose-500': !!fieldState.error
                         },
                         className
                       )}
@@ -188,7 +188,7 @@ export default function SelectField<
                         <span className='text-gray-300'>{placeholder}</span>
                       )}
 
-                      {selectedOption && allowClear ? (
+                      {selectedOption && allowClear && !disabled ? (
                         <span
                           role='button'
                           aria-label='Clear selection'
@@ -200,7 +200,12 @@ export default function SelectField<
                           <X className='size-3' />
                         </span>
                       ) : (
-                        <ChevronDown className='ml-2 size-4 shrink-0 opacity-50' />
+                        <ChevronDown
+                          className={cn('ml-2 size-4 shrink-0', {
+                            'text-gray-300': !selectedOption && !disabled,
+                            'opacity-50': disabled
+                          })}
+                        />
                       )}
                     </Button>
                   </PopoverTrigger>

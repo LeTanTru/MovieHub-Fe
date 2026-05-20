@@ -26,6 +26,7 @@ const useFileUploadManager = ({
   const [currentUrl, setCurrentUrl] = useState<string>('');
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
   const [originalUrl, setOriginalUrl] = useState<string>('');
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (onOpen) {
@@ -55,7 +56,13 @@ const useFileUploadManager = ({
     if (url) {
       setCurrentUrl(url);
       setUploadedFiles((prev) => [...prev, url]);
+      setIsUploading(false);
     }
+  }, []);
+
+  // Track upload start
+  const trackUploadStart = useCallback(() => {
+    setIsUploading(true);
   }, []);
 
   // Handle delete on click X button
@@ -78,7 +85,7 @@ const useFileUploadManager = ({
           setCurrentUrl('');
           return result;
         } catch (err) {
-          logger.error('[DELETE_FILE_ERROR]', err);
+          logger.error('[DELETE_FILE_ERROR]', url, err);
           throw err;
         }
       } else {
@@ -98,7 +105,7 @@ const useFileUploadManager = ({
       await Promise.all(
         validFiles.map((filePath) =>
           deleteFileMutate({ filePath }).catch((err: Error) => {
-            logger.error('[DELETE_FILE_ERROR]', err);
+            logger.error('[DELETE_FILE_ERROR]', filePath, err);
           })
         )
       );
@@ -191,6 +198,8 @@ const useFileUploadManager = ({
     uploadedFiles,
     originalUrl,
     trackUpload,
+    trackUploadStart,
+    isUploading,
     handleDeleteOnClick,
     handleCancel,
     handleSubmit,

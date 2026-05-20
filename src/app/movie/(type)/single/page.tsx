@@ -6,7 +6,9 @@ import {
   DEFAULT_PAGE_START,
   DEFAULT_PAGE_SIZE,
   movieTypes,
-  queryKeys
+  queryKeys,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
 } from '@/constants';
 import { MovieSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -24,13 +26,22 @@ export const metadata: Metadata = {
     description:
       'Danh sách phim lẻ mới nhất, phim chiếu rạp hấp dẫn, cập nhật nhanh nhất. Xem phim lẻ online chất lượng cao, đa dạng thể loại, phim lẻ thuyết minh, lồng tiếng cực hay trên MovieHub.',
     url: '/movie/single',
-    type: 'website'
+    type: 'website',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Phim lẻ',
     description:
-      'Danh sách phim lẻ mới nhất, phim chiếu rạp hấp dẫn, cập nhật nhanh nhất. Xem phim lẻ online chất lượng cao, đa dạng thể loại, phim lẻ thuyết minh, lồng tiếng cực hay trên MovieHub.'
+      'Danh sách phim lẻ mới nhất, phim chiếu rạp hấp dẫn, cập nhật nhanh nhất. Xem phim lẻ online chất lượng cao, đa dạng thể loại, phim lẻ thuyết minh, lồng tiếng cực hay trên MovieHub.',
+    images: ['/logo.webp']
   },
   alternates: {
     canonical: '/movie/single'

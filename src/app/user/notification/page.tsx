@@ -1,3 +1,4 @@
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { Sidebar } from '@/app/user/_components';
 import { NotificationList } from '@/app/user/notification/_components';
 import { Container } from '@/components/layout';
@@ -20,13 +21,22 @@ export const metadata: Metadata = {
     url: '/user/notification',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Thông báo | MovieHub',
     description:
-      'Xem và quản lý các thông báo về phim mới, bình luận và hoạt động cộng đồng trên MovieHub.'
+      'Xem và quản lý các thông báo về phim mới, bình luận và hoạt động cộng đồng trên MovieHub.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,

@@ -38,6 +38,9 @@ import type { MetadataType, PersonResType } from '@/types';
 import { MovieProgress } from '@/components/app/movie-progress';
 import { Skeleton } from '@/components/ui/skeleton';
 
+const ACTOR_SKELETON_COUNT = 6;
+const TOP_VIEW_SKELETON_COUNT = 3;
+
 export default function MovieSide() {
   const { movie, moviePerson, selectedSeason } = useMovieStore(
     useShallow((s) => ({
@@ -306,7 +309,7 @@ MovieSide.Skeleton = function () {
       <div className='max-1120:hidden mb-5'>
         <Skeleton className='skeleton mb-8 h-8 w-32' />
         <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
-          {Array.from({ length: 6 }).map((_, index) => (
+          {Array.from({ length: ACTOR_SKELETON_COUNT }).map((_, index) => (
             <div
               key={`actor-skeleton-${index}`}
               className='flex flex-col items-center gap-3 text-center'
@@ -324,7 +327,7 @@ MovieSide.Skeleton = function () {
           <Skeleton className='skeleton h-6 w-32' />
         </div>
         <div className='flex flex-col gap-4'>
-          {Array.from({ length: 3 }).map((_, index) => (
+          {Array.from({ length: TOP_VIEW_SKELETON_COUNT }).map((_, index) => (
             <div
               key={`top-view-skeleton-${index}`}
               className='flex items-center justify-between gap-2'

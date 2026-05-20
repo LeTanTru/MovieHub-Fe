@@ -22,6 +22,8 @@ import Link from 'next/link';
 import { m } from 'framer-motion';
 import { useEffect } from 'react';
 
+const COMMENT_SKELETON_COUNT = 3;
+
 type CommentListProps = {
   movie: MovieResType;
   commentList: CommentResType[];
@@ -253,7 +255,7 @@ export default function CommentList({
   if (isLoading)
     return (
       <div className='mt-12 flex flex-col justify-between gap-6'>
-        {Array.from({ length: 3 }).map((_, index) => (
+        {Array.from({ length: COMMENT_SKELETON_COUNT }).map((_, index) => (
           <CommentItem.Skeleton key={`comment-skeleton-${index}`} />
         ))}
       </div>

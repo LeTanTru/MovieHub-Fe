@@ -10,7 +10,9 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import {
   MAX_PAGE_SIZE,
   queryKeys,
-  SUGGEST_BY_WATCHED_PAGE_0
+  SUGGEST_BY_WATCHED_PAGE_0,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
 } from '@/constants';
 import { Slider } from '@/app/(home)/_components/slider';
 import { SuggestByWatched } from '@/app/(home)/_components/suggest-by-watched';
@@ -19,6 +21,8 @@ import { WatchContinue } from '@/app/(home)/_components/watch-continue';
 import { Collection } from '@/app/(home)/_components/collection';
 import envConfig from '@/config';
 import type { Metadata } from 'next';
+
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'Trang chủ',
@@ -41,14 +45,22 @@ export const metadata: Metadata = {
     description:
       'Khám phá kho phim đa dạng, cập nhật phim mới hàng ngày tại MovieHub.',
     url: '/',
-    type: 'website'
+    type: 'website',
+    images: [
+      {
+        url: '/og',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'MovieHub - Xem phim trực tuyến miễn phí',
     description:
       'Khám phá kho phim đa dạng, cập nhật phim mới hàng ngày tại MovieHub.',
-    images: ['/logo.webp']
+    images: ['/og']
   },
   alternates: {
     canonical: '/'

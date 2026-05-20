@@ -1,6 +1,9 @@
 import { logger } from '@/logger';
 import { jwtDecode } from 'jwt-decode';
 
+const MS_PER_SECOND = 1000;
+const SECONDS_PER_MINUTE = 60;
+
 export const decodeJwt = (
   token: string
 ): { exp: number; authorities: string[] } | null => {
@@ -18,7 +21,7 @@ export const isTokenExpired = (token: string | null): boolean => {
   const payload = decodeJwt(token);
   if (!payload || !payload.exp) return true;
 
-  const now = Math.floor(Date.now() / 1000);
+  const now = Math.floor(Date.now() / MS_PER_SECOND);
   return payload.exp < now;
 };
 
@@ -31,8 +34,8 @@ export const isTokenExpiringSoon = (
   const payload = decodeJwt(token);
   if (!payload || !payload.exp) return true;
 
-  const now = Math.floor(Date.now() / 1000);
-  const threshold = thresholdMinutes * 60;
+  const now = Math.floor(Date.now() / MS_PER_SECOND);
+  const threshold = thresholdMinutes * SECONDS_PER_MINUTE;
 
   return payload.exp < now + threshold;
 };

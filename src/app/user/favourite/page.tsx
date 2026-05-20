@@ -1,7 +1,9 @@
 import {
   DEFAULT_PAGE_START,
   FAVOURITE_TYPE_MOVIE,
-  queryKeys
+  queryKeys,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
 } from '@/constants';
 import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -34,13 +36,22 @@ export const metadata: Metadata = {
     url: '/user/favourite',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Danh sách yêu thích | MovieHub',
     description:
-      'Quản lý danh sách phim và diễn viên yêu thích của bạn trên MovieHub.'
+      'Quản lý danh sách phim và diễn viên yêu thích của bạn trên MovieHub.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,

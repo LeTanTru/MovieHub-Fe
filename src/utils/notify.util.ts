@@ -2,8 +2,10 @@ import type { ReactNode } from 'react';
 import { toast, ToastOptions, Bounce } from 'react-toastify';
 import { isMobileDevice } from './device.util';
 
+const TOAST_AUTO_CLOSE_MS = 3000;
+
 const defaultOptions: Omit<ToastOptions, 'position'> = {
-  autoClose: 3000,
+  autoClose: TOAST_AUTO_CLOSE_MS,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,

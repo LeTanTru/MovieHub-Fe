@@ -6,7 +6,9 @@ import {
   DEFAULT_PAGE_START,
   DEFAULT_PAGE_SIZE,
   PERSON_KIND_ACTOR,
-  queryKeys
+  queryKeys,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
 } from '@/constants';
 import { PersonSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -29,13 +31,22 @@ export const metadata: Metadata = {
     description:
       'Khám phá danh sách diễn viên nổi tiếng, ngôi sao điện ảnh được yêu thích trên MovieHub. Tìm hiểu thông tin chi tiết về tiểu sử, sự nghiệp và các bộ phim mới nhất của các diễn viên.',
     url: '/person',
-    type: 'website'
+    type: 'website',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Diễn viên',
     description:
-      'Khám phá danh sách diễn viên nổi tiếng, ngôi sao điện ảnh được yêu thích trên MovieHub. Tìm hiểu thông tin chi tiết về tiểu sử, sự nghiệp và các bộ phim mới nhất của các diễn viên.'
+      'Khám phá danh sách diễn viên nổi tiếng, ngôi sao điện ảnh được yêu thích trên MovieHub. Tìm hiểu thông tin chi tiết về tiểu sử, sự nghiệp và các bộ phim mới nhất của các diễn viên.',
+    images: ['/logo.webp']
   },
   alternates: {
     canonical: '/person'

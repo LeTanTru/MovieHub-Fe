@@ -1,3 +1,4 @@
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { ForgotPasswordForm } from './_components';
 import type { Metadata } from 'next';
 import envConfig from '@/config';
@@ -21,12 +22,21 @@ export const metadata: Metadata = {
     url: '/forgot-password',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary',
     title: 'Quên mật khẩu | MovieHub',
-    description: 'Khôi phục tài khoản MovieHub của bạn.'
+    description: 'Khôi phục tài khoản MovieHub của bạn.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,

@@ -2,7 +2,12 @@ import { collectionApiRequest } from '@/api-requests';
 import { TopicList } from '@/app/topic/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
-import { MAX_PAGE_SIZE, queryKeys } from '@/constants';
+import {
+  MAX_PAGE_SIZE,
+  queryKeys,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
+} from '@/constants';
 import { CollectionSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
@@ -19,13 +24,22 @@ export const metadata: Metadata = {
     description:
       'Khám phá các chủ đề phim được tuyển chọn đặc sắc trên MovieHub. Từ những bộ sưu tập phim hành động kịch tính đến những tuyển tập phim tình cảm lãng mạn, đáp ứng mọi sở thích của bạn.',
     url: '/topic',
-    type: 'website'
+    type: 'website',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Chủ đề phim',
     description:
-      'Khám phá các chủ đề phim được tuyển chọn đặc sắc trên MovieHub. Từ những bộ sưu tập phim hành động kịch tính đến những tuyển tập phim tình cảm lãng mạn, đáp ứng mọi sở thích của bạn.'
+      'Khám phá các chủ đề phim được tuyển chọn đặc sắc trên MovieHub. Từ những bộ sưu tập phim hành động kịch tính đến những tuyển tập phim tình cảm lãng mạn, đáp ứng mọi sở thích của bạn.',
+    images: ['/logo.webp']
   },
   alternates: {
     canonical: '/topic'

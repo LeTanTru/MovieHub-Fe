@@ -20,6 +20,8 @@ import { route } from '@/routes';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
 
+const REVIEW_SKELETON_COUNT = 3;
+
 type ReviewListProps = {
   movie: MovieResType;
   reviewList: ReviewResType[];
@@ -159,7 +161,7 @@ export default function ReviewList({
   if (isLoading)
     return (
       <div className='mt-12 flex flex-col justify-between gap-8'>
-        {Array.from({ length: 3 }).map((_, index) => (
+        {Array.from({ length: REVIEW_SKELETON_COUNT }).map((_, index) => (
           <ReviewItem.Skeleton key={`review-skeleton-${index}`} />
         ))}
       </div>

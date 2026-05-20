@@ -1597,7 +1597,7 @@ export const languages: OptionType[] = [
 export const kindMaps: Record<number, { label: string; style: string }> = {
   [KIND_ADMIN]: {
     label: 'Super Admin',
-    style: 'border-red-500  text-red-600'
+    style: 'border-rose-500  text-rose-600'
   },
   [KIND_MANAGER]: {
     label: 'Admin',

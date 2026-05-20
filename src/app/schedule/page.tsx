@@ -4,7 +4,13 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import envConfig from '@/config';
-import { queryKeys, DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT } from '@/constants';
+import {
+  queryKeys,
+  DATE_TIME_FORMAT,
+  DEFAULT_DATE_FORMAT,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
+} from '@/constants';
 import { formatDate } from '@/utils';
 import { movieApiRequest } from '@/api-requests';
 
@@ -19,13 +25,22 @@ export const metadata: Metadata = {
     description:
       'Theo dõi lịch chiếu phim mới nhất trên MovieHub. Cập nhật thông tin chi tiết về thời gian phát sóng các bộ phim bộ, phim lẻ hấp dẫn nhất trong tuần để không bỏ lỡ bất kỳ tập phim nào.',
     url: '/schedule',
-    type: 'website'
+    type: 'website',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Lịch chiếu',
     description:
-      'Theo dõi lịch chiếu phim mới nhất trên MovieHub. Cập nhật thông tin chi tiết về thời gian phát sóng các bộ phim bộ, phim lẻ hấp dẫn nhất trong tuần để không bỏ lỡ bất kỳ tập phim nào.'
+      'Theo dõi lịch chiếu phim mới nhất trên MovieHub. Cập nhật thông tin chi tiết về thời gian phát sóng các bộ phim bộ, phim lẻ hấp dẫn nhất trong tuần để không bỏ lỡ bất kỳ tập phim nào.',
+    images: ['/logo.webp']
   },
   alternates: {
     canonical: '/schedule'

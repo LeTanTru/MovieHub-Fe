@@ -1,3 +1,4 @@
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import './globals.css';
 import { AppProvider } from '@/components/providers/app-provider';
 import { Be_Vietnam_Pro } from 'next/font/google';
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/'
   },
+  manifest: '/manifest.webmanifest',
   openGraph: {
     title: 'MovieHub - Xem phim trực tuyến miễn phí',
     description:
@@ -54,9 +56,9 @@ export const metadata: Metadata = {
     locale: 'vi_VN',
     images: [
       {
-        url: '/logo.webp',
-        width: 1200,
-        height: 630,
+        url: '/og',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
         alt: 'MovieHub'
       }
     ]
@@ -66,7 +68,7 @@ export const metadata: Metadata = {
     title: 'MovieHub - Xem phim trực tuyến miễn phí',
     description:
       'Khám phá kho phim đa dạng, cập nhật mỗi ngày và xem phim chất lượng cao tại MovieHub. Trải nghiệm giải trí tuyệt vời hoàn toàn miễn phí.',
-    images: ['/logo.webp']
+    images: ['/og']
   }
 };
 

@@ -15,6 +15,11 @@ import { useIsMounted } from '@/hooks';
 import { X, ChevronDown, Info } from 'lucide-react';
 import { Button } from '@/components/form';
 
+const SCROLLBAR_COMPENSATION_PX = 15;
+const SCROLL_BOTTOM_THRESHOLD_PX = 10;
+const SCROLL_DOWN_AMOUNT_PX = 200;
+const SCROLL_ARROW_ANIMATION_OFFSET_PX = 10;
+
 type ModalContextType = {
   open: boolean;
   onClose: () => void;
@@ -87,18 +92,19 @@ export default function Modal({
     const hasVerticalScroll =
       document.documentElement.scrollHeight > window.innerHeight;
 
-    document.body.classList.add('body-lock');
     document.body.style.overflow = 'hidden';
     if (hasVerticalScroll) {
-      document.body.style.marginRight = '15px';
+      document.body.style.marginRight = `${SCROLLBAR_COMPENSATION_PX}px`;
       const header = document.querySelector('.header');
       if (header && getComputedStyle(header).position === 'fixed') {
-        header.setAttribute('style', 'padding-right: 15px');
+        header.setAttribute(
+          'style',
+          `padding-right: ${SCROLLBAR_COMPENSATION_PX}px`
+        );
       }
     }
 
     return () => {
-      document.body.classList.remove('body-lock');
       document.body.style.cssText = '';
       const header = document.querySelector('.header');
       if (header && getComputedStyle(header).position === 'fixed') {
@@ -233,7 +239,8 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
       if (scrollRef.current) {
         const { scrollHeight, clientHeight, scrollTop } = scrollRef.current;
         const hasOverflow = scrollHeight > clientHeight;
-        const isAtBottom = scrollHeight - scrollTop <= clientHeight + 10;
+        const isAtBottom =
+          scrollHeight - scrollTop <= clientHeight + SCROLL_BOTTOM_THRESHOLD_PX;
         setShowScrollArrow(hasOverflow && !isAtBottom);
       }
     };
@@ -250,7 +257,10 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
   }, [scrollable]);
 
   const handleScrollDown = () => {
-    scrollRef.current?.scrollBy({ top: 200, behavior: 'smooth' });
+    scrollRef.current?.scrollBy({
+      top: SCROLL_DOWN_AMOUNT_PX,
+      behavior: 'smooth'
+    });
   };
 
   return (
@@ -269,9 +279,9 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
       <AnimatePresence>
         {scrollable && showScrollArrow && (
           <m.button
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -SCROLL_ARROW_ANIMATION_OFFSET_PX }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            exit={{ opacity: 0, y: -SCROLL_ARROW_ANIMATION_OFFSET_PX }}
             onClick={handleScrollDown}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className='absolute bottom-4 left-1/2 z-999 -translate-x-1/2 rounded-full p-2 text-white shadow-[0px_0px_10px_2px] shadow-gray-300'
@@ -319,7 +329,7 @@ function Confirm({ message, className }: ConfirmProps) {
               <Button
                 variant='outline'
                 size='sm'
-                className='border-red-500 text-red-500 transition-all duration-200 ease-linear hover:border-red-500/80 hover:bg-transparent hover:text-red-500/80'
+                className='border-rose-500 text-rose-500 transition-all duration-200 ease-linear hover:border-rose-500/80 hover:bg-transparent hover:text-rose-500/80'
                 onClick={onConfirmNo}
               >
                 Không

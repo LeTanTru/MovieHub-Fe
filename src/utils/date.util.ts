@@ -2,6 +2,14 @@ import { DATE_TIME_FORMAT } from '@/constants';
 import { logger } from '@/logger';
 import { format as formatFn, isValid, parse } from 'date-fns';
 
+const MS_PER_SECOND = 1000;
+const SECONDS_PER_MINUTE = 60;
+const MINUTES_PER_HOUR = 60;
+const HOURS_PER_DAY = 24;
+const DAYS_PER_WEEK = 7;
+const WEEKS_PER_YEAR = 52;
+const TIME_AGO_JUST_NOW_THRESHOLD = 5;
+
 export const formatDate = (
   date: string | null | undefined,
   outputFormat: string = DATE_TIME_FORMAT,
@@ -33,7 +41,8 @@ export const convertLocalToUTC = (
     if (!isValid(parsedDate)) return '';
 
     const utcDate = new Date(
-      parsedDate.getTime() + parsedDate.getTimezoneOffset() * 60 * 1000
+      parsedDate.getTime() +
+        parsedDate.getTimezoneOffset() * SECONDS_PER_MINUTE * MS_PER_SECOND
     );
 
     return formatFn(utcDate, outputFormat);
@@ -55,7 +64,8 @@ export const convertUTCToLocal = (
     if (!isValid(parsedDate)) return '';
 
     const localDate = new Date(
-      parsedDate.getTime() - parsedDate.getTimezoneOffset() * 60 * 1000
+      parsedDate.getTime() -
+        parsedDate.getTimezoneOffset() * SECONDS_PER_MINUTE * MS_PER_SECOND
     );
 
     return formatFn(localDate, outputFormat);
@@ -82,24 +92,28 @@ export const timeAgo = (dateStr: string, short = false) => {
 
     if (!date || isNaN(date.getTime())) return 'Invalid date';
 
-    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    const seconds = Math.floor((Date.now() - date.getTime()) / MS_PER_SECOND);
 
-    if (seconds < 5) return short ? '0s' : 'Vừa xong';
-    if (seconds < 60) return short ? `${seconds}s` : `${seconds} giây trước`;
+    if (seconds < TIME_AGO_JUST_NOW_THRESHOLD) return short ? '0s' : 'Vừa xong';
+    if (seconds < SECONDS_PER_MINUTE)
+      return short ? `${seconds}s` : `${seconds} giây trước`;
 
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return short ? `${minutes}m` : `${minutes} phút trước`;
+    const minutes = Math.floor(seconds / SECONDS_PER_MINUTE);
+    if (minutes < MINUTES_PER_HOUR)
+      return short ? `${minutes}m` : `${minutes} phút trước`;
 
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return short ? `${hours}h` : `${hours} giờ trước`;
+    const hours = Math.floor(minutes / MINUTES_PER_HOUR);
+    if (hours < HOURS_PER_DAY)
+      return short ? `${hours}h` : `${hours} giờ trước`;
 
-    const days = Math.floor(hours / 24);
-    if (days < 7) return short ? `${days}d` : `${days} ngày trước`;
+    const days = Math.floor(hours / HOURS_PER_DAY);
+    if (days < DAYS_PER_WEEK) return short ? `${days}d` : `${days} ngày trước`;
 
-    const weeks = Math.floor(days / 7);
-    if (weeks < 52) return short ? `${weeks}w` : `${weeks} tuần trước`;
+    const weeks = Math.floor(days / DAYS_PER_WEEK);
+    if (weeks < WEEKS_PER_YEAR)
+      return short ? `${weeks}w` : `${weeks} tuần trước`;
 
-    const years = Math.floor(weeks / 52);
+    const years = Math.floor(weeks / WEEKS_PER_YEAR);
     return short ? `${years}y` : `${years} năm trước`;
   } catch {
     return 'Invalid date';

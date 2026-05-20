@@ -22,6 +22,8 @@ import {
 } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 
+const TEXTAREA_DEFAULT_ROWS = 8;
+
 type TextAreaFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
@@ -50,7 +52,7 @@ const TextAreaField = <T extends FieldValues>({
   disabled = false,
   readOnly = false,
   maxLength,
-  rows = 8,
+  rows = TEXTAREA_DEFAULT_ROWS,
   ref,
   formItemClassName,
   ...rest
@@ -67,6 +69,7 @@ const TextAreaField = <T extends FieldValues>({
       render={({ field, fieldState }) => (
         <FormItem
           className={cn(
+            'relative',
             { 'cursor-not-allowed select-none': disabled },
             formItemClassName
           )}
@@ -94,7 +97,7 @@ const TextAreaField = <T extends FieldValues>({
                 className={cn(
                   'focus-visible:ring-main-color scrollbar-none field-sizing-fixed w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-transparent',
                   {
-                    'border-red-500 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-red-500':
+                    'border-rose-500 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-rose-500':
                       !!fieldState.error
                   },
                   className

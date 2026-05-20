@@ -16,6 +16,9 @@ import { CheckIcon, EyeIcon, EyeOffIcon, XIcon } from 'lucide-react';
 import { useId, useState } from 'react';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 
+const PASSWORD_MIN_LENGTH = 8;
+const PASSWORD_STRENGTH_MAX_SCORE = 4;
+
 type PasswordFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
@@ -34,7 +37,7 @@ type PasswordFieldProps<T extends FieldValues> = {
 
 const getStrengthColor = (score: number): string => {
   if (score === 0) return 'bg-gray-200';
-  if (score <= 1) return 'bg-red-500';
+  if (score <= 1) return 'bg-rose-500';
   if (score <= 2) return 'bg-orange-500';
   if (score <= 3) return 'bg-yellow-500';
   return 'bg-emerald-500';
@@ -70,7 +73,10 @@ export default function PasswordField<T extends FieldValues>({
 
   const checkStrength = (pass: string) => {
     const requirements = [
-      { regex: /.{8,}/, text: 'Ít nhất 8 ký tự' },
+      {
+        regex: new RegExp(`.{${PASSWORD_MIN_LENGTH},}`),
+        text: `Ít nhất ${PASSWORD_MIN_LENGTH} ký tự`
+      },
       { regex: /[0-9]/, text: 'Ít nhất 1 số' },
       { regex: /[a-z]/, text: 'Ít nhất 1 chữ cái thường' },
       { regex: /[A-Z]/, text: 'Ít nhất 1 chữ cái hoa' }
@@ -123,7 +129,7 @@ export default function PasswordField<T extends FieldValues>({
                   className={cn(
                     'text-sm shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                     {
-                      'border-red-500 focus-visible:ring-red-500':
+                      'border-rose-500 focus-visible:ring-rose-500':
                         !!fieldState.error,
                       'focus-visible:ring-main-color': !fieldState.error,
                       'pb-0.5': !isVisible && !!field.value, // not show and have value
@@ -160,6 +166,7 @@ export default function PasswordField<T extends FieldValues>({
                 )}
               </div>
             </FormControl>
+
             {showStrength && value && (
               <>
                 {/* Strength bar */}
@@ -168,12 +175,14 @@ export default function PasswordField<T extends FieldValues>({
                   role='progressbar'
                   aria-valuenow={strengthScore}
                   aria-valuemin={0}
-                  aria-valuemax={4}
+                  aria-valuemax={PASSWORD_STRENGTH_MAX_SCORE}
                   aria-label='Password strength'
                 >
                   <div
                     className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
-                    style={{ width: `${(strengthScore / 4) * 100}%` }}
+                    style={{
+                      width: `${(strengthScore / PASSWORD_STRENGTH_MAX_SCORE) * 100}%`
+                    }}
                   ></div>
                 </div>
 

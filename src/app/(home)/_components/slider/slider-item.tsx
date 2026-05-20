@@ -74,14 +74,11 @@ export default function SliderItem({
         <div className='cover-image'>
           <Image
             title={`${slider.movie.title} - ${slider.movie.originalTitle}`}
-            loading={slider.ordering === 0 ? 'eager' : 'lazy'}
             src={renderImageUrl(slider.webThumbnailUrl)}
             alt={`${slider.movie.title} - ${slider.movie.originalTitle}`}
             width={1920}
             height={1080}
-            decoding='async'
-            fetchPriority='high'
-            preload={slider.ordering === 0}
+            priority={slider.ordering === 0}
           />
         </div>
       </div>
@@ -109,6 +106,7 @@ export default function SliderItem({
                     height={130}
                     decoding='async'
                     preload={slider.ordering === 0}
+                    priority={slider.ordering === 0}
                   />
                 </Link>
               </div>

@@ -1,3 +1,8 @@
+const SECONDS_PER_MINUTE = 60;
+const SECONDS_PER_HOUR = 3600;
+const PAD_LENGTH = 2;
+const PAD_CHAR = '0';
+
 export const timeToSeconds = (time: string): number => {
   if (typeof time === 'number') return time;
 
@@ -15,22 +20,24 @@ export const timeToSeconds = (time: string): number => {
     isNaN(seconds) ||
     hours < 0 ||
     minutes < 0 ||
-    minutes >= 60 ||
+    minutes >= SECONDS_PER_MINUTE ||
     seconds < 0 ||
-    seconds >= 60
+    seconds >= SECONDS_PER_MINUTE
   ) {
     throw new Error('Giá trị giờ, phút, giây không hợp lệ');
   }
 
-  return hours * 3600 + minutes * 60 + seconds;
+  return hours * SECONDS_PER_HOUR + minutes * SECONDS_PER_MINUTE + seconds;
 };
 
 export const formatSecondsToHMS = (totalSeconds: number): string => {
   if (!totalSeconds || isNaN(totalSeconds)) return '00:00:00';
 
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
+  const hours = Math.floor(totalSeconds / SECONDS_PER_HOUR);
+  const minutes = Math.floor(
+    (totalSeconds % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE
+  );
+  const seconds = totalSeconds % SECONDS_PER_MINUTE;
 
   if (hours === 0) {
     return `${pad(minutes)}:${pad(seconds)}`;
@@ -40,13 +47,13 @@ export const formatSecondsToHMS = (totalSeconds: number): string => {
 };
 
 function pad(n: number): string {
-  return String(n).padStart(2, '0');
+  return String(n).padStart(PAD_LENGTH, PAD_CHAR);
 }
 
 export const formatDuration = (second: number): string => {
-  const hours = Math.floor(second / 3600);
-  const minutes = Math.floor((second % 3600) / 60);
-  const seconds = Math.floor((second % 3600) % 60);
+  const hours = Math.floor(second / SECONDS_PER_HOUR);
+  const minutes = Math.floor((second % SECONDS_PER_HOUR) / SECONDS_PER_MINUTE);
+  const seconds = Math.floor((second % SECONDS_PER_HOUR) % SECONDS_PER_MINUTE);
 
   let time = '';
 
@@ -68,8 +75,8 @@ export const formatDuration = (second: number): string => {
 export const formatSecondsToMinutes = (totalSeconds: number): string => {
   if (!totalSeconds || isNaN(totalSeconds)) return '0m';
 
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
+  const minutes = Math.floor(totalSeconds / SECONDS_PER_MINUTE);
+  const seconds = totalSeconds % SECONDS_PER_MINUTE;
 
   return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
 };

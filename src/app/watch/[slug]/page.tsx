@@ -25,7 +25,7 @@ import {
   ReviewResType,
   ReviewSearchType
 } from '@/types';
-import { JsonLd } from '@/components/seo';
+import { JsonLd, BreadcrumbListJsonLd } from '@/components/seo';
 import {
   getIdFromSlug,
   parseJSON,
@@ -182,7 +182,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
   ]);
 
   const movie = movieRes?.data;
-  const metadata = movie
+  const movieMetadata = movie
     ? parseJSON<MetadataType>(movie.metadata || '{}')
     : null;
   const jsonLd = movie
@@ -190,18 +190,52 @@ export default async function WatchPage({ params }: WatchPageProps) {
         '@context': 'https://schema.org',
         '@type': 'VideoObject',
         name: movie.title,
+        alternateName: movie.originalTitle,
         description: sanitizeText(movie.description || ''),
         thumbnailUrl: movie.posterUrl
           ? `${AppConstants.contentRootUrl}${movie.posterUrl}`
+          : `${AppConstants.contentRootUrl}${movie.thumbnailUrl}`,
+        uploadDate: movie.releaseDate || movie.createdDate,
+        duration: movieMetadata?.duration
+          ? `PT${movieMetadata.duration}M`
           : undefined,
-        uploadDate: movie.createdDate,
-        duration: metadata?.duration ? `PT${metadata.duration}M` : undefined
+        contentUrl: `${envConfig.NEXT_PUBLIC_URL}/watch/${movie.slug}.${movie.id}`,
+        embedUrl: `${envConfig.NEXT_PUBLIC_URL}/watch/${movie.slug}.${movie.id}`,
+        url: `${envConfig.NEXT_PUBLIC_URL}/watch/${movie.slug}.${movie.id}`,
+        ...(movie.averageRating
+          ? {
+              aggregateRating: {
+                '@type': 'AggregateRating',
+                ratingValue: movie.averageRating,
+                bestRating: 5,
+                worstRating: 1,
+                ratingCount: movie.reviewCount || 0
+              }
+            }
+          : {})
+      }
+    : null;
+
+  const breadcrumbLd = movie
+    ? {
+        items: [
+          { name: 'Trang chủ', item: envConfig.NEXT_PUBLIC_URL },
+          {
+            name: 'Xem phim',
+            item: `${envConfig.NEXT_PUBLIC_URL}/watch/${movie.slug}.${movie.id}`
+          },
+          {
+            name: movie.title,
+            item: `${envConfig.NEXT_PUBLIC_URL}/watch/${movie.slug}.${movie.id}`
+          }
+        ]
       }
     : null;
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {jsonLd && <JsonLd data={jsonLd} />}
+      {breadcrumbLd && <BreadcrumbListJsonLd items={breadcrumbLd.items} />}
       <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
         <Watch id={id} />
       </Container>

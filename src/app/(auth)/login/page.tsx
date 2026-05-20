@@ -1,3 +1,4 @@
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { LoginForm } from '@/app/(auth)/login/_components';
 import type { Metadata } from 'next';
 import envConfig from '@/config';
@@ -17,12 +18,21 @@ export const metadata: Metadata = {
     url: '/login',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary',
     title: 'Đăng nhập | MovieHub',
-    description: 'Đăng nhập vào MovieHub để trải nghiệm xem phim trực tuyến.'
+    description: 'Đăng nhập vào MovieHub để trải nghiệm xem phim trực tuyến.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,

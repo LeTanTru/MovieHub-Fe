@@ -1,3 +1,4 @@
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { ButtonBackToHome } from '@/app/account/_components';
 import { SettingsForm } from '@/app/account/settings/_components';
 import { logo } from '@/assets';
@@ -21,12 +22,21 @@ export const metadata: Metadata = {
     url: '/account/settings',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary',
     title: 'Cài đặt | MovieHub',
-    description: 'Quản lý cài đặt tài khoản MovieHub.'
+    description: 'Quản lý cài đặt tài khoản MovieHub.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,
