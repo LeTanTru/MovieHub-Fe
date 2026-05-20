@@ -10,12 +10,10 @@ export const size = {
 
 export const contentType = 'image/png';
 
-export default async function Image({
-  searchParams
-}: {
-  searchParams: Promise<{ title?: string; description?: string }>;
-}) {
-  const { title, description } = await searchParams;
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const title = searchParams.get('title');
+  const description = searchParams.get('description');
 
   const displayTitle = title || 'MovieHub';
   const displayDescription = description || 'Xem phim trực tuyến miễn phí';
