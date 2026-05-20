@@ -25,7 +25,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         </div>
         {children}
         <div suppressHydrationWarning className='mt-4 text-center text-sm'>
-          © Copyright {new Date().getFullYear()} by&nbsp;
+          © Copyright&nbsp;{new Date().getFullYear()}&nbsp;by&nbsp;
           <Link href='/' className='underline'>
             Moviehub
           </Link>

@@ -166,7 +166,8 @@ export default function Footer() {
               nền tảng phim trực tuyến hay nhất {currentYear} chất lượng 4K!
             </div>
             <div className='max-1120:justify-center flex items-center gap-2 text-gray-400'>
-              <FaRegCopyright /> {currentYear} MovieHub
+              <FaRegCopyright />
+              &nbsp;{currentYear}&nbsp;MovieHub
             </div>
           </div>
         </div>
