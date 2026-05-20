@@ -17,6 +17,8 @@ import { Control, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '@/lib/utils';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 
+const OTP_DEFAULT_LENGTH = 6;
+
 type OtpInputFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
@@ -36,7 +38,7 @@ export default function OtpInputField<T extends FieldValues>({
   control,
   name,
   label,
-  length = 6,
+  length = OTP_DEFAULT_LENGTH,
   required,
   className,
   formItemClassName,
@@ -89,9 +91,9 @@ export default function OtpInputField<T extends FieldValues>({
                   {Array.from({ length: length }).map((_, i) => (
                     <InputOTPSlot
                       className={cn(
-                        'data-[active=true]:ring-green-primary h-12 w-12 rounded-md border-l text-base duration-200 ease-linear disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none data-[active=true]:border-none data-[active=true]:ring-2',
+                        'data-[active=true]:ring-emerald-primary h-12 w-12 rounded-md border-l text-base duration-200 ease-linear disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none data-[active=true]:border-none data-[active=true]:ring-2',
                         {
-                          'border-red-500 data-[active=true]:ring-red-500':
+                          'border-rose-500 data-[active=true]:ring-rose-500':
                             !!fieldState.error
                         }
                       )}

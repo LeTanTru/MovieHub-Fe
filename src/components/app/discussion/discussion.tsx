@@ -31,6 +31,8 @@ import {
 } from '@/types';
 import { cn } from '@/lib';
 
+const DISCUSSION_SKELETON_COUNT = 3;
+
 type DiscussionProps = {
   toId: string;
   className?: string;
@@ -247,7 +249,7 @@ Discussion.Skeleton = function ({ className }: DiscussionSkeletonProps) {
       </div>
       <Skeleton className='skeleton mb-4 h-25 w-full rounded!' />
       <div className='flex flex-col gap-8'>
-        {Array.from({ length: 3 }).map((_, index) => (
+        {Array.from({ length: DISCUSSION_SKELETON_COUNT }).map((_, index) => (
           <div key={`discussion-skeleton-${index}`} className='flex gap-4'>
             <Skeleton className='skeleton size-12.5 rounded-full!' />
             <div className='flex grow flex-col gap-3'>

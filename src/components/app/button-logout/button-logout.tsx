@@ -10,6 +10,8 @@ import { notify, removeData } from '@/utils';
 import { LogOutIcon } from 'lucide-react';
 import { ConfirmModal } from '@/components/modal';
 
+const LOGOUT_REDIRECT_DELAY = 500;
+
 type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function ButtonLogout({
@@ -29,7 +31,7 @@ export default function ButtonLogout({
         notify.success('Đăng xuất thành công');
         setTimeout(() => {
           window.location.reload();
-        }, 500);
+        }, LOGOUT_REDIRECT_DELAY);
       } else {
         notify.error('Đăng xuất thất bại');
       }

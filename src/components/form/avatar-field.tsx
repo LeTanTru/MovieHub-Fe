@@ -41,10 +41,17 @@ type AvatarFieldProps = {
   hoverIconClassName?: string;
 } & HTMLAttributes<HTMLElement>;
 
+const AVATAR_SIZE_DEFAULT = 48;
+const AVATAR_PREVIEW_SIZE_DEFAULT = 200;
+const IMAGE_PREVIEW_SCALE_MIN = 1;
+const IMAGE_PREVIEW_SCALE_MAX = 3;
+const IMAGE_PREVIEW_SCALE_STEP = 0.1;
+const SCROLLBAR_COMPENSATION_PX = 15;
+
 export default function AvatarField({
-  size = 48,
+  size = AVATAR_SIZE_DEFAULT,
   breakpoints,
-  previewSize = 200,
+  previewSize = AVATAR_PREVIEW_SIZE_DEFAULT,
   src,
   fallbackSrc,
   className,
@@ -116,8 +123,13 @@ export default function AvatarField({
     (e: WheelEvent) => {
       if (!zoomOnScroll) return;
       setScale((prev) => {
-        const next = prev + (e.deltaY > 0 ? -0.1 : 0.1);
-        return Math.max(1, Math.min(3, next));
+        const next =
+          prev +
+          (e.deltaY > 0 ? -IMAGE_PREVIEW_SCALE_STEP : IMAGE_PREVIEW_SCALE_STEP);
+        return Math.max(
+          IMAGE_PREVIEW_SCALE_MIN,
+          Math.min(IMAGE_PREVIEW_SCALE_MAX, next)
+        );
       });
     },
     [zoomOnScroll]
@@ -137,18 +149,19 @@ export default function AvatarField({
     const hasVerticalScroll =
       document.documentElement.scrollHeight > window.innerHeight;
 
-    document.body.classList.add('body-lock');
     document.body.style.overflow = 'hidden';
     if (hasVerticalScroll) {
-      document.body.style.marginRight = '15px';
+      document.body.style.marginRight = `${SCROLLBAR_COMPENSATION_PX}px`;
       const header = document.querySelector('.header');
       if (header && getComputedStyle(header).position === 'fixed') {
-        header.setAttribute('style', 'padding-right: 15px');
+        header.setAttribute(
+          'style',
+          `padding-right: ${SCROLLBAR_COMPENSATION_PX}px`
+        );
       }
     }
 
     return () => {
-      document.body.classList.remove('body-lock');
       document.body.style.cssText = '';
       const header = document.querySelector('.header');
       if (header && getComputedStyle(header).position === 'fixed') {

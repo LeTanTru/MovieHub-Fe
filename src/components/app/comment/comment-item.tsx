@@ -23,6 +23,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Element, scroller } from 'react-scroll';
 import { cn } from '@/lib';
 
+const SCROLL_DELAY = 100;
+const HIGHLIGHT_DURATION = 2000;
+
 type CommentItemProps = {
   comment: CommentResType & { children?: CommentResType[] };
   editingComment: CommentResType | null;
@@ -225,8 +228,8 @@ export default function CommentItem({
       clearHighlightTimeout = setTimeout(() => {
         setIsScrollTarget(false);
         clearScrollTarget();
-      }, 2000);
-    }, 100);
+      }, HIGHLIGHT_DURATION);
+    }, SCROLL_DELAY);
 
     return () => {
       setIsScrollTarget(false); // Clear highlight if component unmounts or targetCommentId changes

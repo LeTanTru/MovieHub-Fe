@@ -34,7 +34,7 @@ export default function TopicItemMore({
         }
       )}
     >
-      <div className='mask absolute top-0 right-0 bottom-0 left-0 bg-linear-to-b from-red-500 to-blue-500'></div>
+      <div className='mask absolute top-0 right-0 bottom-0 left-0 bg-linear-to-b from-rose-500 to-sky-500'></div>
       <div
         className={cn(
           'max-1900:min-h-27.5 max-1280:min-h-25 max-800:min-h-20 relative z-3 flex h-full min-h-27.5 w-full shrink-0 items-center justify-center',

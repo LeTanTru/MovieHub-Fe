@@ -6,6 +6,8 @@ import { AnimatePresence, m } from 'framer-motion';
 import { ReactNode } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 
+const REPLY_CHILD_MARGIN_LEFT = 40;
+
 type CommentReplyListProps = {
   comment: CommentResType;
   level: number;
@@ -72,7 +74,7 @@ export default function CommentReplyList({
         ) : (
           <div
             className='max-640:mt-2 mt-4 flex items-center gap-4'
-            style={{ marginLeft: level * 40 }}
+            style={{ marginLeft: level * REPLY_CHILD_MARGIN_LEFT }}
           >
             {hasMoreComments && (
               <Button
@@ -88,7 +90,7 @@ export default function CommentReplyList({
             <Button
               variant='ghost'
               type='button'
-              className='max-640:text-[13px] max-520:text-xs flex h-5! items-center p-0! font-medium hover:bg-transparent hover:text-red-500'
+              className='max-640:text-[13px] max-520:text-xs flex h-5! items-center p-0! font-medium hover:bg-transparent hover:text-rose-500'
               onClick={onHideReplies}
             >
               <FaChevronUp /> Ẩn trả lời

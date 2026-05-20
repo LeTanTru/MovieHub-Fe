@@ -109,3 +109,6 @@ export const SUGGEST_BY_WATCHED_PAGE_1 = 1;
 
 export const NOTIFICATION_TYPE_MOVIE = 2;
 export const NOTIFICATION_TYPE_COMMUNITY = 3;
+
+export const OG_IMAGE_WIDTH = 1200;
+export const OG_IMAGE_HEIGHT = 630;

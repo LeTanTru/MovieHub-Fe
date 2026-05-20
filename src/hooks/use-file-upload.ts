@@ -7,6 +7,10 @@ import {
   type InputHTMLAttributes
 } from 'react';
 
+const RANDOM_ID_START_INDEX = 2;
+const RANDOM_ID_END_INDEX = 9;
+const BYTES_PER_KILOBYTE = 1024;
+
 type FileMetadata = {
   name: string;
   size: number;
@@ -130,7 +134,7 @@ const useFileUpload = (
 
   const generateUniqueId = useCallback((file: File | FileMetadata): string => {
     if (file instanceof File) {
-      return `${file.name}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+      return `${file.name}-${Date.now()}-${Math.random().toString(36).substring(RANDOM_ID_START_INDEX, RANDOM_ID_END_INDEX)}`;
     }
     return file.id;
   }, []);
@@ -400,7 +404,7 @@ const useFileUpload = (
 export const formatBytes = (bytes: number, decimals = 2): string => {
   if (bytes === 0) return '0 Bytes';
 
-  const k = 1024;
+  const k = BYTES_PER_KILOBYTE;
   const dm = decimals < 0 ? 0 : decimals;
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 

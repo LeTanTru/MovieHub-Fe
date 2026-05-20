@@ -198,7 +198,7 @@ export default function Header() {
                 exit={{ opacity: 0, scale: 0.8, rotate: -15 }}
                 transition={{ duration: 0.1 }}
               >
-                <FaXmark className='max-480:size-5 size-6 font-semibold text-red-500' />
+                <FaXmark className='max-480:size-5 size-6 font-semibold text-rose-500' />
               </m.div>
             )}
           </AnimatePresence>

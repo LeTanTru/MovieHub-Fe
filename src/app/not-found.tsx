@@ -7,6 +7,17 @@ import { route } from '@/routes';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronLeft } from 'react-icons/fa6';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Không tìm thấy trang - 404',
+  description:
+    'Trang bạn đang tìm kiếm không tồn tại. Vui lòng kiểm tra đường dẫn hoặc quay về trang chủ MovieHub.',
+  robots: {
+    index: false,
+    follow: true
+  }
+};
 
 export default function NotFound() {
   return (

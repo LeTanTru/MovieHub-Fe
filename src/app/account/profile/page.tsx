@@ -1,3 +1,4 @@
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { ButtonBackToHome } from '@/app/account/_components';
 import { ProfileForm } from '@/app/account/profile/_components';
 import { logo } from '@/assets';
@@ -21,12 +22,21 @@ export const metadata: Metadata = {
     url: '/account/profile',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary',
     title: 'Tài khoản | MovieHub',
-    description: 'Quản lý thông tin cá nhân trên MovieHub.'
+    description: 'Quản lý thông tin cá nhân trên MovieHub.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,

@@ -44,11 +44,11 @@ const toNumberIfPossible = (value: string): string | number => {
   return !isNaN(num) && value.trim() !== '' ? num : value;
 };
 
-const DEFAULT_OPTIONS: string[] = [];
+const EMPTY_OPTIONS: string[] = [];
 
 export default function InputField<T extends FieldValues>({
-  name,
   control,
+  name,
   label,
   placeholder,
   description,
@@ -61,7 +61,7 @@ export default function InputField<T extends FieldValues>({
   readOnly = false,
   prefixIcon,
   suffixIcon,
-  options = DEFAULT_OPTIONS,
+  options = EMPTY_OPTIONS,
   onOptionSelect,
   ref,
   ...inputProps
@@ -137,11 +137,11 @@ export default function InputField<T extends FieldValues>({
                 ref={ref}
                 className={cn(
                   className,
-                  'text-sm font-normal shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
+                  'text-sm font-normal shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                   {
                     'pl-10': prefixIcon,
                     'pr-10': suffixIcon,
-                    'border-red-500 focus-visible:ring-red-500':
+                    'border-rose-500 focus-visible:ring-rose-500':
                       !!fieldState.error,
                     'focus-visible:ring-main-color': !fieldState.error
                   }

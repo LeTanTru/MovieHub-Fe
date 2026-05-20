@@ -4,14 +4,12 @@ import { ButtonToggle } from '@/components/app/button-toggle';
 import { CircleLoading } from '@/components/loading';
 import { cn } from '@/lib';
 import { FaPlay } from 'react-icons/fa6';
-import { getAnonymousToken } from '@/app/actions/anonymous';
-import { logger } from '@/logger';
 import { m } from 'framer-motion';
 import { MOVIE_TAB_TRAILER } from '@/constants';
 import { notify, renderImageUrl } from '@/utils';
 import { TrailerModal } from '@/components/app/trailer-modal';
-import { useDisclosure } from '@/hooks';
-import { useEffect, useState } from 'react';
+import { useDisclosure, useAnonymousToken } from '@/hooks';
+import { useState } from 'react';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Image from 'next/image';
@@ -25,8 +23,7 @@ type MovieTabTrailerProps = {
 export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
   const [toggle, setToggle] = useState(true);
   const { opened, open, close } = useDisclosure();
-  const [isFetching, setIsFetching] = useState(false);
-  const [token, setToken] = useState<string>('');
+  const { token, isLoadingToken } = useAnonymousToken();
 
   const { movie, selectedSeason } = useMovieStore(
     useShallow((s) => ({
@@ -46,45 +43,18 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
   };
 
   const handlePlayTrailer = async () => {
-    if (isFetching) return;
+    if (isLoadingToken) return;
 
-    setIsFetching(true);
-    try {
-      const res = await getAnonymousToken();
-      setToken(res.access_token);
-      open();
-    } catch (err) {
-      logger.error('[GET_GUEST_TOKEN_ERROR]', err);
+    if (!token) {
       notify.error('Không thể tải trailer, vui lòng thử lại');
-    } finally {
-      setIsFetching(false);
+      return;
     }
+    open();
   };
 
   const handleCloseTrailer = () => {
     close();
-    setToken('');
   };
-
-  useEffect(() => {
-    if (!opened || !token) return;
-
-    const intervalId = setInterval(
-      async () => {
-        try {
-          const res = await getAnonymousToken();
-          setToken(res.access_token);
-        } catch (err) {
-          logger.error('[REFRESH_GUEST_TOKEN_ERROR]', err);
-        }
-      },
-      14 * 60 * 1000
-    );
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [opened, token]);
 
   if (!movie) return null;
 
@@ -100,7 +70,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
                 toggle={toggle}
                 onToggle={handleToggle}
                 text='Rút gọn'
-                disabled={isFetching}
+                disabled={isLoadingToken}
                 className='max-640:hidden'
               />
             </>
@@ -123,7 +93,7 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
               }}
               className={cn('cursor-pointer', {
                 'pointer-events-none cursor-not-allowed opacity-50 select-none':
-                  isFetching
+                  isLoadingToken
               })}
               onClick={handlePlayTrailer}
             >
@@ -164,13 +134,13 @@ export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
                     />
                   )}
                   <div className='absolute inset-0 bg-[rgba(0,0,0,0.3)] transition-colors duration-200 ease-linear group-hover:bg-[rgba(0,0,0,0.5)]'></div>
-                  {isFetching && (
+                  {isLoadingToken && (
                     <div className='absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2'>
                       <CircleLoading />
                     </div>
                   )}
                 </div>
-                {isFetching && toggle ? (
+                {isLoadingToken && toggle ? (
                   <CircleLoading />
                 ) : (
                   <>

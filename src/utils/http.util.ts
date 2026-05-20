@@ -12,21 +12,21 @@ import axios, {
   type AxiosRequestConfig,
   type AxiosResponse
 } from 'axios';
-import { redirect } from 'next/navigation';
+import { redirect, unstable_rethrow } from 'next/navigation';
 
 const isClient = typeof window !== 'undefined';
 const axiosInstance = axios.create();
-// const TIME_OUT = 10000;
-
-type RequestConfigWithRetry = InternalAxiosRequestConfig & {
-  _retry?: boolean;
-};
+const TIME_OUT = 10000;
 
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (value?: any) => void;
   reject: (error?: any) => void;
 }> = [];
+
+type RequestConfigWithRetry = InternalAxiosRequestConfig & {
+  _retry?: boolean;
+};
 
 const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -36,7 +36,9 @@ const processQueue = (error: any, token: string | null = null) => {
       prom.resolve(token);
     }
   });
-  logger.info(failedQueue);
+  if (process.env.NODE_ENV === 'development') {
+    logger.info(failedQueue);
+  }
   failedQueue = [];
 };
 
@@ -95,6 +97,7 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance.request(originalConfig);
       } catch (error) {
+        unstable_rethrow(error);
         logger.error('[REFRESH_TOKEN_ERROR]', error);
         if (
           error instanceof AxiosError &&
@@ -105,7 +108,10 @@ axiosInstance.interceptors.response.use(
           await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
           if (isClient) {
             useAuthStore.getState().clearState();
-            window.location.href = route.login.path;
+            const loginPath = route.login.path;
+            if (typeof loginPath === 'string' && loginPath.startsWith('/')) {
+              window.location.href = loginPath;
+            }
           } else {
             redirect(route.login.path);
           }
@@ -138,7 +144,8 @@ export const sendRequest = async <T>(
     pathParams = {},
     body = {},
     options = {},
-    authorization
+    authorization,
+    signal
   } = payload;
 
   let accessToken: string | null = '';
@@ -185,7 +192,8 @@ export const sendRequest = async <T>(
       method,
       headers: baseHeader,
       params,
-      // timeout: TIME_OUT,
+      timeout: TIME_OUT,
+      signal,
       ...options
     };
 

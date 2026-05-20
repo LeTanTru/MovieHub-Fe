@@ -3,7 +3,7 @@ import { Sidebar } from '@/app/user/_components';
 import { WatchHistory } from '@/app/user/watch-history/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
-import { queryKeys } from '@/constants';
+import { queryKeys, OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import envConfig from '@/config';
 import type { Metadata } from 'next';
@@ -28,12 +28,21 @@ export const metadata: Metadata = {
     url: '/user/watch-history',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Xem tiếp | MovieHub',
-    description: 'Quản lý và xem lại lịch sử xem phim của bạn trên MovieHub.'
+    description: 'Quản lý và xem lại lịch sử xem phim của bạn trên MovieHub.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,

@@ -3,7 +3,12 @@ import { Sidebar } from '@/app/user/_components';
 import { MovieList, Playlist } from '@/app/user/playlist/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
-import { DEFAULT_PAGE_START, queryKeys } from '@/constants';
+import {
+  DEFAULT_PAGE_START,
+  queryKeys,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
+} from '@/constants';
 import { ApiResponse, PlaylistResType, PlaylistSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import envConfig from '@/config';
@@ -25,13 +30,22 @@ export const metadata: Metadata = {
     url: '/user/playlist',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Danh sách phát | MovieHub',
     description:
-      'Quản lý và xem các danh sách phát phim yêu thích của bạn trên MovieHub.'
+      'Quản lý và xem các danh sách phát phim yêu thích của bạn trên MovieHub.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,

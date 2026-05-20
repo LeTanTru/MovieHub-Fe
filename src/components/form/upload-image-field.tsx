@@ -64,6 +64,14 @@ const ASPECT_RATIOS = [
   { label: '2:3', value: 2 / 3 }
 ] as const;
 
+const DEFAULT_FIELD_SIZE = 70;
+const REMOVE_BUTTON_OFFSET_PERCENT = 6;
+const REMOVE_BUTTON_OFFSET_PX = -8;
+const ZOOM_ICON_SIZE = 16;
+const ZOOM_SLIDER_MIN = 1;
+const ZOOM_SLIDER_MAX = 3;
+const ZOOM_SLIDER_STEP = 0.01;
+
 type Area = { x: number; y: number; width: number; height: number };
 
 const createImage = (url: string): Promise<HTMLImageElement> =>
@@ -124,7 +132,6 @@ type UploadImageFieldProps<T extends FieldValues> = {
   loading?: boolean;
   aspect?: number;
   defaultCrop?: boolean;
-  showCrop?: boolean;
   originalSize?: boolean;
   allowCustomAspect?: boolean;
   avatar?: boolean;
@@ -142,11 +149,10 @@ export default function UploadImageField<T extends FieldValues>({
   labelClassName,
   className,
   imageClassName,
-  size = 70,
+  size = DEFAULT_FIELD_SIZE,
   loading,
   aspect = 1,
-  defaultCrop = true,
-  showCrop = true,
+  defaultCrop = false,
   originalSize = false,
   allowCustomAspect = false,
   avatar = false,
@@ -157,7 +163,7 @@ export default function UploadImageField<T extends FieldValues>({
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [shouldCrop, setShouldCrop] = useState<boolean>(
-    showCrop && defaultCrop && !originalSize
+    defaultCrop && !originalSize
   );
   const [zoom, setZoom] = useState<number>(1);
   const [customAspect, setCustomAspect] = useState<number>(aspect);
@@ -252,15 +258,10 @@ export default function UploadImageField<T extends FieldValues>({
 
   useEffect(() => {
     if (fileId && fileId !== previousFileIdRef.current) {
-      if (showCrop) {
-        setDialogOpen(true);
-        setZoom(1);
-        setCroppedAreaPixels(null);
-        setCustomAspect(aspect);
-      } else {
-        // Upload directly without showing dialog when showCrop is false
-        handleApply();
-      }
+      setDialogOpen(true);
+      setZoom(1);
+      setCroppedAreaPixels(null);
+      setCustomAspect(aspect);
     }
     previousFileIdRef.current = fileId;
   }, [fileId]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -273,13 +274,13 @@ export default function UploadImageField<T extends FieldValues>({
             <FormLabel
               className={cn(
                 {
-                  'text-destructive': error?.message
+                  'text-rose-500': error?.message
                 },
                 labelClassName
               )}
             >
               {label}
-              {required && <span className='text-destructive'>*</span>}
+              {required && <span className='text-rose-500'>*</span>}
             </FormLabel>
           )}
           <div
@@ -291,7 +292,7 @@ export default function UploadImageField<T extends FieldValues>({
                   !value,
                 'rounded-full': avatar,
                 'border-gray-300 bg-gray-100': isDragging,
-                'border-red-500': !!error
+                'border-rose-500': !!error
               }
             )}
             style={{
@@ -326,12 +327,16 @@ export default function UploadImageField<T extends FieldValues>({
                   <ImageField
                     disablePreview
                     src={value}
-                    className={cn('size-full rounded object-cover')}
-                    aspect={keepOriginalSize ? undefined : aspect}
-                    width={keepOriginalSize ? undefined : size * aspect}
-                    height={keepOriginalSize ? undefined : size}
-                    originalSize={keepOriginalSize}
-                    imageClassName={imageClassName}
+                    className={cn('size-full rounded', {
+                      'bg-black': keepOriginalSize
+                    })}
+                    aspect={aspect}
+                    width={size * aspect}
+                    height={size}
+                    imageClassName={cn(
+                      keepOriginalSize ? 'object-contain!' : 'object-cover!',
+                      imageClassName
+                    )}
                   />
                 )}
                 {value && (
@@ -346,11 +351,15 @@ export default function UploadImageField<T extends FieldValues>({
                         type='button'
                         title='Xóa ảnh'
                         className={cn(
-                          'border-background absolute size-6 rounded-full border-none'
+                          'border-background absolute size-6 rounded-full border-none text-white hover:text-rose-500'
                         )}
                         style={{
-                          top: avatar ? (6 * size) / 100 : -8,
-                          right: avatar ? (6 * size) / 100 : -8
+                          top: avatar
+                            ? (REMOVE_BUTTON_OFFSET_PERCENT * size) / 100
+                            : REMOVE_BUTTON_OFFSET_PX,
+                          right: avatar
+                            ? (REMOVE_BUTTON_OFFSET_PERCENT * size) / 100
+                            : REMOVE_BUTTON_OFFSET_PX
                         }}
                         aria-label='Remove image'
                       >
@@ -360,17 +369,17 @@ export default function UploadImageField<T extends FieldValues>({
                   />
                 )}
               </div>
-            ) : loading && !showCrop ? (
+            ) : loading ? (
               <CircleLoading className='stroke-main-color' />
             ) : avatar ? (
               <CircleUserRoundIcon
                 strokeWidth={1}
-                className='size-full max-h-1/3 max-w-1/3 stroke-gray-300 transition-all duration-200 ease-linear group-hover:stroke-black'
+                className='size-full max-h-1/3 max-w-1/3 stroke-gray-300 transition-all duration-200 ease-linear group-hover:stroke-gray-400'
               />
             ) : (
               <UploadIcon
                 strokeWidth={1}
-                className='size-full max-h-1/3 max-w-1/3 stroke-gray-300 transition-all duration-200 ease-linear group-hover:stroke-black'
+                className='size-full max-h-1/3 max-w-1/3 stroke-gray-300 transition-all duration-200 ease-linear group-hover:stroke-gray-400'
               />
             )}
 
@@ -387,180 +396,180 @@ export default function UploadImageField<T extends FieldValues>({
         </div>
         {error?.message && (
           <div className='animate-in fade-in -mb-6 flex min-h-6 items-end justify-center'>
-            <p className='text-destructive text-sm leading-5.5'>
-              {error.message}
-            </p>
+            <p className='text-sm leading-5.5 text-rose-500'>{error.message}</p>
           </div>
         )}
       </div>
 
-      {showCrop && (
-        <Dialog
-          open={dialogOpen}
-          onOpenChange={(open) => {
-            if (isUploading) return;
-            setDialogOpen(open);
-          }}
+      <Dialog
+        open={dialogOpen}
+        onOpenChange={(open) => {
+          if (isUploading) return;
+          setDialogOpen(open);
+        }}
+      >
+        <DialogContent
+          className='gap-0 overflow-hidden rounded-tl-sm rounded-tr-sm border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
+          showCloseButton={false}
         >
-          <DialogContent
-            className='gap-0 overflow-hidden rounded-tl-sm rounded-tr-sm border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
-            showCloseButton={!isUploading}
+          <DialogHeader className='text-left'>
+            <DialogTitle className='border-none p-0 outline-none'></DialogTitle>
+          </DialogHeader>
+
+          <AspectRatio
+            ratio={customAspect < 1 ? 1 : customAspect}
+            className={cn('bg-muted h-full', {
+              'bg-black': keepOriginalSize && !shouldCrop
+            })}
           >
-            <DialogHeader className='text-left'>
-              <DialogTitle className='border-none p-0 outline-none'></DialogTitle>
-            </DialogHeader>
+            {previewUrl && shouldCrop ? (
+              <Cropper
+                aspectRatio={customAspect}
+                className='h-full w-full'
+                image={previewUrl}
+                zoom={zoom}
+                onCropChange={handleCropChange}
+                onZoomChange={setZoom}
+              >
+                <CropperDescription />
+                <CropperImage />
+                <CropperCropArea className='border-main-color border-2' />
+              </Cropper>
+            ) : (
+              previewUrl && (
+                <Image
+                  fill
+                  src={previewUrl}
+                  alt='Preview'
+                  className={cn('h-full w-full', {
+                    'object-contain': keepOriginalSize && !shouldCrop,
+                    'object-cover': !keepOriginalSize && shouldCrop
+                  })}
+                  sizes='(max-width: 768px) 100vw, 50vw'
+                />
+              )
+            )}
+          </AspectRatio>
 
-            <AspectRatio
-              ratio={customAspect < 1 ? 1 : customAspect}
-              className={cn('bg-muted h-full', {
-                'bg-black': keepOriginalSize && !shouldCrop
-              })}
-            >
-              {previewUrl && shouldCrop ? (
-                <Cropper
-                  aspectRatio={customAspect}
-                  className='h-full w-full'
-                  image={previewUrl}
-                  zoom={zoom}
-                  onCropChange={handleCropChange}
-                  onZoomChange={setZoom}
+          <DialogFooter className='flex flex-col flex-wrap gap-4 border-t px-4 py-6 sm:justify-between'>
+            {!keepOriginalSize && (
+              <div className='mx-auto flex w-full max-w-80 items-center gap-4'>
+                <ZoomOutIcon
+                  className='shrink-0 opacity-60'
+                  size={ZOOM_ICON_SIZE}
+                />
+                <Slider
+                  value={[zoom]}
+                  min={ZOOM_SLIDER_MIN}
+                  max={ZOOM_SLIDER_MAX}
+                  step={ZOOM_SLIDER_STEP}
+                  onValueChange={(val) => setZoom(val[0])}
+                  showTooltip
+                  className='cursor-pointer [&_span[role="slider"]]:bg-gray-500'
+                />
+                <ZoomInIcon
+                  className='shrink-0 opacity-60'
+                  size={ZOOM_ICON_SIZE}
+                />
+              </div>
+            )}
+
+            {allowCustomAspect && shouldCrop && (
+              <div className='flex items-center gap-2'>
+                <span className='text-muted-foreground text-sm'>
+                  Tỉ lệ khung hình:
+                </span>
+                <Select
+                  value={customAspect.toString()}
+                  onValueChange={(val) => setCustomAspect(parseFloat(val))}
                 >
-                  <CropperDescription />
-                  <CropperImage />
-                  <CropperCropArea className='border-main-color border-2' />
-                </Cropper>
-              ) : (
-                previewUrl && (
-                  <Image
-                    fill
-                    src={previewUrl}
-                    alt='Preview'
-                    className={cn('h-full w-full', {
-                      'object-contain': keepOriginalSize && !shouldCrop,
-                      'object-cover': !keepOriginalSize && shouldCrop
-                    })}
-                    sizes='(max-width: 768px) 100vw, 50vw'
+                  <SelectTrigger className='w-24'>
+                    <SelectValue placeholder='Chọn tỉ lệ' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ASPECT_RATIOS.map((ratio) => (
+                      <SelectItem
+                        key={ratio.value}
+                        value={ratio.value.toString()}
+                      >
+                        {ratio.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
+            <div className='flex w-full justify-between'>
+              <div className='flex items-center gap-4'>
+                <label
+                  className='flex cursor-pointer items-center gap-2'
+                  htmlFor='crop-image'
+                >
+                  <Checkbox
+                    id='crop-image'
+                    className='mb-0! cursor-pointer border-gray-200 border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-sky-700! data-[state=checked]:text-white'
+                    checked={shouldCrop}
+                    onCheckedChange={(checked) => {
+                      setShouldCrop(!!checked);
+                      setKeepOriginalSize(!checked);
+                      if (!checked) {
+                        setZoom(1);
+                        setCustomAspect(aspect);
+                      }
+                    }}
                   />
-                )
-              )}
-            </AspectRatio>
-
-            <DialogFooter className='flex flex-col flex-wrap gap-4 border-t px-4 py-6 sm:justify-between'>
-              {shouldCrop && (
-                <div className='mx-auto flex w-full max-w-80 items-center gap-4'>
-                  <ZoomOutIcon className='shrink-0 opacity-60' size={16} />
-                  <Slider
-                    value={[zoom]}
-                    min={1}
-                    max={3}
-                    step={0.01}
-                    onValueChange={(val) => setZoom(val[0])}
-                    showTooltip
-                    className='cursor-pointer [&_span[role="slider"]]:bg-gray-500'
-                  />
-                  <ZoomInIcon className='shrink-0 opacity-60' size={16} />
-                </div>
-              )}
-
-              {allowCustomAspect && shouldCrop && (
-                <div className='flex items-center gap-2'>
-                  <span className='text-muted-foreground text-sm'>
-                    Tỉ lệ khung hình:
-                  </span>
-                  <Select
-                    value={customAspect.toString()}
-                    onValueChange={(val) => setCustomAspect(parseFloat(val))}
-                  >
-                    <SelectTrigger className='w-24'>
-                      <SelectValue placeholder='Chọn tỉ lệ' />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {ASPECT_RATIOS.map((ratio) => (
-                        <SelectItem
-                          key={ratio.value}
-                          value={ratio.value.toString()}
-                        >
-                          {ratio.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-
-              <div className='flex w-full justify-between'>
-                <div className='flex items-center gap-4'>
+                  <span className='text-sm'>Cắt ảnh</span>
+                </label>
+                {!!originalSize && (
                   <label
                     className='flex cursor-pointer items-center gap-2'
-                    htmlFor='crop-image'
+                    htmlFor='keep-original-size'
                   >
                     <Checkbox
-                      id='crop-image'
-                      className='mb-0! cursor-pointer border-gray-200 border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
-                      checked={shouldCrop}
+                      id='keep-original-size'
+                      className='mb-0! cursor-pointer border-gray-200 border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-sky-700! data-[state=checked]:text-white'
+                      checked={keepOriginalSize}
                       onCheckedChange={(checked) => {
-                        setShouldCrop(!!checked);
-                        setKeepOriginalSize(false);
-                        if (!checked) {
+                        setKeepOriginalSize(!!checked);
+                        setShouldCrop(!checked);
+                        if (checked) {
                           setZoom(1);
                           setCustomAspect(aspect);
-                          setKeepOriginalSize(true);
                         }
                       }}
                     />
-                    <span className='text-sm'>Cắt ảnh</span>
+                    <span className='text-sm'>Gốc</span>
                   </label>
-                  {!!originalSize && (
-                    <label
-                      className='flex cursor-pointer items-center gap-2'
-                      htmlFor='keep-original-size'
-                    >
-                      <Checkbox
-                        id='keep-original-size'
-                        className='mb-0! cursor-pointer border-gray-200 border-transparent transition-colors duration-200 ease-linear focus-visible:ring-0 data-[state=checked]:border-transparent data-[state=checked]:bg-blue-700! data-[state=checked]:text-white'
-                        checked={keepOriginalSize}
-                        onCheckedChange={(checked) => {
-                          setKeepOriginalSize(!!checked);
-                          setShouldCrop(false);
-                          if (!checked) {
-                            setZoom(1);
-                            setCustomAspect(aspect);
-                            setShouldCrop(true);
-                          }
-                        }}
-                      />
-                      <span className='text-sm'>Gốc</span>
-                    </label>
-                  )}
-                </div>
-
-                <div className='flex items-center justify-center gap-2'>
-                  <Button
-                    type='button'
-                    variant='outline'
-                    size='icon'
-                    className='hover:border-destructive/80 text-destructive border-destructive hover:text-destructive/80 disabled:border-destructive/80 -my-1 w-25'
-                    onClick={() => setDialogOpen(false)}
-                    disabled={isUploading}
-                  >
-                    Đóng
-                  </Button>
-                  <Button
-                    type='button'
-                    variant='primary'
-                    className='-my-1 w-25'
-                    onClick={handleApply}
-                    disabled={!previewUrl || loading || isUploading}
-                    loading={loading || isUploading}
-                  >
-                    Áp dụng
-                  </Button>
-                </div>
+                )}
               </div>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      )}
+
+              <div className='flex items-center justify-center gap-2'>
+                <Button
+                  type='button'
+                  variant='outline'
+                  size='icon'
+                  className='-my-1 w-25 border-rose-500 text-rose-500 hover:border-rose-500/80 hover:text-rose-500/80 disabled:border-rose-500/80'
+                  onClick={() => setDialogOpen(false)}
+                  disabled={isUploading}
+                >
+                  Đóng
+                </Button>
+                <Button
+                  type='button'
+                  variant='primary'
+                  className='-my-1 w-25'
+                  onClick={handleApply}
+                  disabled={!previewUrl || loading || isUploading}
+                  loading={loading || isUploading}
+                >
+                  Áp dụng
+                </Button>
+              </div>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

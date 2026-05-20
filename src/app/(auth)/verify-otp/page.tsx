@@ -1,3 +1,4 @@
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { VerifyOtpForm } from '@/app/(auth)/verify-otp/_components';
 import type { Metadata } from 'next';
 import envConfig from '@/config';
@@ -17,12 +18,21 @@ export const metadata: Metadata = {
     url: '/verify-otp',
     siteName: 'MovieHub',
     type: 'website',
-    locale: 'vi_VN'
+    locale: 'vi_VN',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary',
     title: 'Xác minh OTP | MovieHub',
-    description: 'Xác minh tài khoản MovieHub của bạn.'
+    description: 'Xác minh tài khoản MovieHub của bạn.',
+    images: ['/logo.webp']
   },
   robots: {
     index: false,

@@ -1,11 +1,18 @@
 import { categoryApiRequest, movieApiRequest } from '@/api-requests';
 import { Container } from '@/components/layout';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_START, queryKeys } from '@/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_START,
+  queryKeys,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
+} from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getIdFromSlug } from '@/utils';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/category/[slug]/_components';
-import { MovieSearchType } from '@/types';
+import { ApiResponseList, MovieResType, MovieSearchType } from '@/types';
+import { BreadcrumbListJsonLd, ItemListJsonLd } from '@/components/seo';
 import type { Metadata } from 'next';
 import envConfig from '@/config';
 
@@ -47,12 +54,23 @@ export async function generateMetadata({
       title,
       description,
       url: `/category/${slug}`,
-      type: 'website'
+      type: 'website',
+      images: [
+        {
+          url: `/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`,
+          width: OG_IMAGE_WIDTH,
+          height: OG_IMAGE_HEIGHT,
+          alt: title
+        }
+      ]
     },
     twitter: {
       card: 'summary_large_image',
       title,
-      description
+      description,
+      images: [
+        `/og?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}`
+      ]
     },
     alternates: {
       canonical: `/category/${slug}`
@@ -83,8 +101,45 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     })
   ]);
 
+  const categoryRes = queryClient.getQueryData<{ data: { name: string } }>([
+    queryKeys.CATEGORY,
+    id
+  ]);
+  const categoryName = categoryRes?.data?.name || 'thể loại';
+
+  const moviesRes = queryClient.getQueryData<ApiResponseList<MovieResType>>([
+    queryKeys.MOVIE_LIST,
+    movieFilters
+  ]);
+  const movies = moviesRes?.data.content || [];
+
+  const breadcrumbLd = {
+    items: [
+      { name: 'Trang chủ', item: envConfig.NEXT_PUBLIC_URL },
+      {
+        name: 'Thể loại',
+        item: `${envConfig.NEXT_PUBLIC_URL}/movie/single`
+      },
+      {
+        name: categoryName,
+        item: `${envConfig.NEXT_PUBLIC_URL}/category/${slug}`
+      }
+    ]
+  };
+
+  const itemListLd = {
+    items: movies.map((movie, index) => ({
+      position: index + 1,
+      url: `${envConfig.NEXT_PUBLIC_URL}/movie/${movie.slug}.${movie.id}`,
+      name: movie.title
+    })),
+    itemListName: `Phim ${categoryName}`
+  };
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      <BreadcrumbListJsonLd items={breadcrumbLd.items} />
+      {itemListLd.items.length > 0 && <ItemListJsonLd {...itemListLd} />}
       <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
         <div className='max-640:gap-8 flex flex-col gap-12.5'>
           <MovieList id={id} />

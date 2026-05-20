@@ -19,6 +19,11 @@ import {
 import { useImageStatus, useIsMounted } from '@/hooks';
 import { createPortal } from 'react-dom';
 
+const ZOOM_STEP = 0.1;
+const SCALE_MIN = 1;
+const SCALE_MAX = 3;
+const SCROLLBAR_COMPENSATION_PX = 15;
+
 type ImageFieldProps = {
   src?: string;
   alt?: string;
@@ -121,8 +126,8 @@ export default function ImageField({
       if (!zoomOnScroll) return;
 
       setScale((prev) => {
-        let next = prev + (e.deltaY > 0 ? -0.1 : 0.1);
-        next = Math.max(1, Math.min(3, next));
+        let next = prev + (e.deltaY > 0 ? -ZOOM_STEP : ZOOM_STEP);
+        next = Math.max(SCALE_MIN, Math.min(SCALE_MAX, next));
         return next;
       });
     },
@@ -145,18 +150,19 @@ export default function ImageField({
     const hasVerticalScroll =
       document.documentElement.scrollHeight > window.innerHeight;
 
-    document.body.classList.add('body-lock');
     document.body.style.overflow = 'hidden';
     if (hasVerticalScroll) {
-      document.body.style.marginRight = '15px';
+      document.body.style.marginRight = `${SCROLLBAR_COMPENSATION_PX}px`;
       const header = document.querySelector('.header');
       if (header && getComputedStyle(header).position === 'fixed') {
-        header.setAttribute('style', 'padding-right: 15px');
+        header.setAttribute(
+          'style',
+          `padding-right: ${SCROLLBAR_COMPENSATION_PX}px`
+        );
       }
     }
 
     return () => {
-      document.body.classList.remove('body-lock');
       document.body.style.cssText = '';
       const header = document.querySelector('.header');
       if (header && getComputedStyle(header).position === 'fixed') {

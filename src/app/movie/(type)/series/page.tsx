@@ -6,7 +6,9 @@ import {
   DEFAULT_PAGE_START,
   DEFAULT_PAGE_SIZE,
   movieTypes,
-  queryKeys
+  queryKeys,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT
 } from '@/constants';
 import { MovieSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -24,13 +26,22 @@ export const metadata: Metadata = {
     description:
       'Danh sách phim bộ mới nhất, cập nhật nhanh nhất. Xem phim bộ online chất lượng cao, đa dạng thể loại từ tình cảm, hành động đến kiếm hiệp, phim bộ lồng tiếng, thuyết minh hấp dẫn.',
     url: '/movie/series',
-    type: 'website'
+    type: 'website',
+    images: [
+      {
+        url: '/logo.webp',
+        width: OG_IMAGE_WIDTH,
+        height: OG_IMAGE_HEIGHT,
+        alt: 'MovieHub'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Phim bộ',
     description:
-      'Danh sách phim bộ mới nhất, cập nhật nhanh nhất. Xem phim bộ online chất lượng cao, đa dạng thể loại từ tình cảm, hành động đến kiếm hiệp, phim bộ lồng tiếng, thuyết minh hấp dẫn.'
+      'Danh sách phim bộ mới nhất, cập nhật nhanh nhất. Xem phim bộ online chất lượng cao, đa dạng thể loại từ tình cảm, hành động đến kiếm hiệp, phim bộ lồng tiếng, thuyết minh hấp dẫn.',
+    images: ['/logo.webp']
   },
   alternates: {
     canonical: '/movie/series'
