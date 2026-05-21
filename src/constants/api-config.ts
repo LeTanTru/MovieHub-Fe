@@ -154,13 +154,15 @@ const apiConfig = defineApiConfig({
       method: 'POST',
       headers: multipartHeader,
       isUpload: true,
-      permissionCode: 'FILE_U'
+      permissionCode: 'FILE_U',
+      isRequiredXClientType: true
     },
     delete: {
       baseUrl: `${AppConstants.mediaUrl}/v1/file/delete-file`,
       method: 'POST',
       headers: baseHeader,
-      permissionCode: 'FILE_U_D'
+      permissionCode: 'FILE_U_D',
+      isRequiredXClientType: true
     }
   },
   category: {

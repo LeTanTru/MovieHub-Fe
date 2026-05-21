@@ -36,13 +36,15 @@ type AppProviderProps = { children: ReactNode };
 export default function AppProvider({ children }: AppProviderProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { accessToken, setAccessToken, setProfile } = useAuthStore(
-    useShallow((s) => ({
-      accessToken: s.accessToken,
-      setAccessToken: s.setAccessToken,
-      setProfile: s.setProfile
-    }))
-  );
+  const { accessToken, setAccessToken, setCsrfToken, setProfile } =
+    useAuthStore(
+      useShallow((s) => ({
+        accessToken: s.accessToken,
+        setAccessToken: s.setAccessToken,
+        setCsrfToken: s.setCsrfToken,
+        setProfile: s.setProfile
+      }))
+    );
 
   const { data: session, isLoading: sessionLoading } = useSession();
 
@@ -51,10 +53,11 @@ export default function AppProvider({ children }: AppProviderProps) {
   });
 
   useEffect(() => {
-    if (session?.accessToken) {
+    if (session) {
       setAccessToken(session.accessToken);
+      setCsrfToken(session.csrfToken);
     }
-  }, [session, setAccessToken]);
+  }, [session, setAccessToken, setCsrfToken]);
 
   useEffect(() => {
     if (profile) {

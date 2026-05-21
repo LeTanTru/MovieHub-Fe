@@ -10,11 +10,19 @@ export async function POST() {
     const res = await http.post<ApiResponse<any>>(apiConfig.user.logout);
 
     if (res.result) {
-      await removeCookie(storageKeys.ACCESS_TOKEN);
-      await removeCookie(storageKeys.REFRESH_TOKEN);
+      await Promise.all([
+        removeCookie(storageKeys.ACCESS_TOKEN),
+        removeCookie(storageKeys.REFRESH_TOKEN),
+        removeCookie(storageKeys.CSRF_TOKEN)
+      ]);
 
       return NextResponse.json({ ...res }, { status: HttpStatusCode.Ok });
     }
+
+    return NextResponse.json(
+      { result: false, message: 'Logout failed' },
+      { status: HttpStatusCode.Ok }
+    );
   } catch (error) {
     if (isAxiosError(error)) {
       const response = error.response?.data;
@@ -23,10 +31,7 @@ export async function POST() {
 
       if (response) {
         return NextResponse.json(
-          {
-            result: false,
-            ...response
-          },
+          { result: false, ...response },
           { status: error.response?.status }
         );
       }
@@ -38,5 +43,10 @@ export async function POST() {
     }
 
     logger.error('[LOGOUT_ERROR]', error);
+
+    return NextResponse.json(
+      { result: false, message: 'Logout failed' },
+      { status: HttpStatusCode.InternalServerError }
+    );
   }
 }

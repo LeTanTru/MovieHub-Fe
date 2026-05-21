@@ -1,14 +1,18 @@
-import envConfig from '@/config';
-import { apiConfig, storageKeys } from '@/constants';
+import { generateCsrfToken } from '../_lib/generate-csrf-token';
+import { getBasicAuthHeader } from '../_lib/auth';
+import { makeCookieOption } from '../_lib/make-cookie-option';
+import {
+  ACCESS_TOKEN_MAX_AGE,
+  apiConfig,
+  CSRF_TOKEN_MAX_AGE,
+  REFRESH_TOKEN_MAX_AGE,
+  storageKeys
+} from '@/constants';
 import { logger } from '@/logger';
 import { RefreshTokenResType } from '@/types';
 import { getCookie, http, isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { NextResponse } from 'next/server';
-
-const maxAgeAccessToken = 24 * 60 * 60; // 1 day
-const maxAgeRefreshToken = 60 * 60 * 24 * 7; // 7 days
 
 export async function POST() {
   try {
@@ -30,7 +34,7 @@ export async function POST() {
         },
         options: {
           headers: {
-            Authorization: `Basic ${btoa(`${process.env.APP_USERNAME}:${process.env.APP_PASSWORD}`)}`
+            Authorization: getBasicAuthHeader()
           }
         }
       }
@@ -38,35 +42,29 @@ export async function POST() {
 
     const accessToken = res.access_token;
     const refreshToken = res.refresh_token;
+    const csrfToken = generateCsrfToken();
 
-    const makeCookieOption = (maxAge: number): Partial<ResponseCookie> => ({
-      path: '/',
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
-      maxAge: maxAge
-    });
+    await Promise.all([
+      setCookie(
+        storageKeys.ACCESS_TOKEN,
+        accessToken,
+        makeCookieOption(ACCESS_TOKEN_MAX_AGE)
+      ),
+      setCookie(
+        storageKeys.REFRESH_TOKEN,
+        refreshToken,
+        makeCookieOption(REFRESH_TOKEN_MAX_AGE)
+      ),
+      setCookie(
+        storageKeys.CSRF_TOKEN,
+        csrfToken,
+        makeCookieOption(CSRF_TOKEN_MAX_AGE)
+      )
+    ]);
 
-    await setCookie(
-      storageKeys.ACCESS_TOKEN,
-      accessToken,
-      makeCookieOption(maxAgeAccessToken)
-    );
-
-    await setCookie(
-      storageKeys.REFRESH_TOKEN,
-      refreshToken,
-      makeCookieOption(maxAgeRefreshToken)
-    );
-
-    return Response.json(
-      {
-        result: true,
-        data: res
-      },
-      {
-        status: HttpStatusCode.Ok
-      }
+    return NextResponse.json(
+      { result: true, data: res },
+      { status: HttpStatusCode.Ok }
     );
   } catch (error) {
     if (isAxiosError(error)) {
@@ -76,10 +74,7 @@ export async function POST() {
 
       if (response) {
         return NextResponse.json(
-          {
-            result: false,
-            ...response
-          },
+          { result: false, ...response },
           { status: error.response?.status }
         );
       }
@@ -91,5 +86,10 @@ export async function POST() {
     }
 
     logger.error('[REFRESH_TOKEN_ERROR]', error);
+
+    return NextResponse.json(
+      { result: false, message: 'Refresh token failed' },
+      { status: HttpStatusCode.InternalServerError }
+    );
   }
 }
