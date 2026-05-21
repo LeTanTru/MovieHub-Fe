@@ -7,6 +7,7 @@ import {
   LoginResType,
   RegisterBodyType,
   RequestForgotPasswordBodyType,
+  SessionResType,
   VerifyOtpBodyType
 } from '@/types';
 import { http } from '@/utils';
@@ -63,9 +64,7 @@ const authApiRequest = {
     http.post<ApiResponse<any>>(apiConfig.user.changePassword, { body }),
 
   session: () =>
-    http.get<ApiResponse<{ accessToken: string; userKind: string }>>(
-      apiConfig.api.auth.session
-    )
+    http.get<ApiResponse<SessionResType>>(apiConfig.api.auth.session)
 };
 
 export default authApiRequest;

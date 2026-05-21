@@ -4,7 +4,7 @@ import { logger } from '@/logger';
 import { route } from '@/routes';
 import type { ApiConfig, Payload } from '@/types';
 import { useAuthStore } from '@/store';
-import { getData, getCookie } from '@/utils';
+import { getCookie } from '@/utils';
 import axios, {
   AxiosError,
   HttpStatusCode,
@@ -136,6 +136,7 @@ export const sendRequest = async <T>(
     method,
     ignoreAuth,
     isRequiredXClientType,
+    isRequiredCsrfToken,
     isUpload
   } = apiConfig;
 
@@ -150,6 +151,7 @@ export const sendRequest = async <T>(
 
   let accessToken: string | null = '';
   let clientType: string | null | undefined = '';
+  let csrfToken: string | null = '';
 
   if (!ignoreAuth) {
     if (isClient) {
@@ -159,13 +161,16 @@ export const sendRequest = async <T>(
     }
   }
 
-  if (isRequiredXClientType) {
+  if (isRequiredCsrfToken) {
     if (isClient) {
-      clientType =
-        getData(storageKeys.X_CLIENT_TYPE) || envConfig.NEXT_PUBLIC_CLIENT_TYPE;
+      csrfToken = useAuthStore.getState().csrfToken;
     } else {
-      clientType = envConfig.NEXT_PUBLIC_CLIENT_TYPE;
+      csrfToken = await getCookie(storageKeys.CSRF_TOKEN);
     }
+  }
+
+  if (isRequiredXClientType) {
+    clientType = envConfig.NEXT_PUBLIC_CLIENT_TYPE;
   }
 
   const baseHeader: Record<string, string> = { ...headers };
@@ -180,6 +185,10 @@ export const sendRequest = async <T>(
 
   if (clientType) {
     baseHeader[storageKeys.X_CLIENT_TYPE] = clientType;
+  }
+
+  if (isRequiredCsrfToken && csrfToken) {
+    baseHeader[storageKeys.X_CSRF_TOKEN] = csrfToken;
   }
 
   Object.entries(pathParams).forEach(([key, value]) => {

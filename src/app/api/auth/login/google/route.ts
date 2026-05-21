@@ -1,14 +1,16 @@
-import envConfig from '@/config';
 import { authApiRequest } from '@/api-requests';
-import { storageKeys } from '@/constants';
+import {
+  ACCESS_TOKEN_MAX_AGE,
+  CSRF_TOKEN_MAX_AGE,
+  REFRESH_TOKEN_MAX_AGE,
+  storageKeys
+} from '@/constants';
 import { logger } from '@/logger';
 import { isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { NextRequest, NextResponse } from 'next/server';
-
-const maxAgeAccessToken = 24 * 60 * 60; // 1 day
-const maxAgeRefreshToken = 60 * 60 * 24 * 7; // 7 days
+import { makeCookieOption } from '../../_lib/make-cookie-option';
+import { generateCsrfToken } from '../../_lib/generate-csrf-token';
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,42 +18,32 @@ export async function POST(request: NextRequest) {
     const code: string = req.code;
 
     const res = await authApiRequest.loginGoogleCallback(code);
-    if (res.access_token) {
-      const accessToken = res.access_token;
-      const refreshToken = res.refresh_token;
 
-      const makeCookieOption = (maxAge: number): Partial<ResponseCookie> => ({
-        path: '/',
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: envConfig.NEXT_PUBLIC_NODE_ENV === 'production',
-        maxAge: maxAge
-      });
+    const accessToken = res.access_token;
+    const refreshToken = res.refresh_token;
+    const csrfToken = generateCsrfToken();
 
-      await setCookie(
+    await Promise.all([
+      setCookie(
         storageKeys.ACCESS_TOKEN,
         accessToken,
-        makeCookieOption(maxAgeAccessToken)
-      );
-
-      await setCookie(
+        makeCookieOption(ACCESS_TOKEN_MAX_AGE)
+      ),
+      setCookie(
         storageKeys.REFRESH_TOKEN,
         refreshToken,
-        makeCookieOption(maxAgeRefreshToken)
-      );
+        makeCookieOption(REFRESH_TOKEN_MAX_AGE)
+      ),
+      setCookie(
+        storageKeys.CSRF_TOKEN,
+        csrfToken,
+        makeCookieOption(CSRF_TOKEN_MAX_AGE)
+      )
+    ]);
 
-      return NextResponse.json(
-        { result: true, data: res },
-        {
-          status: HttpStatusCode.Ok
-        }
-      );
-    }
     return NextResponse.json(
-      { result: false, data: res },
-      {
-        status: HttpStatusCode.Ok
-      }
+      { result: true, data: res },
+      { status: HttpStatusCode.Ok }
     );
   } catch (error) {
     if (isAxiosError(error)) {
@@ -61,10 +53,7 @@ export async function POST(request: NextRequest) {
 
       if (response) {
         return NextResponse.json(
-          {
-            result: false,
-            ...response
-          },
+          { result: false, ...response },
           { status: error.response?.status }
         );
       }
