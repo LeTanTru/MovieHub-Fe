@@ -10,7 +10,7 @@ type PersonListProps = {
   handleDeleteFavourite: (targetId: string) => void;
 };
 
-export default function PersonList({
+export function PersonList({
   isLoading,
   personList,
   handleDeleteFavourite

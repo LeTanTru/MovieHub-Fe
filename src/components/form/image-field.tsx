@@ -51,7 +51,7 @@ type ImageFieldProps = {
   zoomOnScroll?: boolean;
 } & HTMLAttributes<HTMLDivElement>;
 
-export default function ImageField({
+export function ImageField({
   src,
   alt = 'Image',
   size,

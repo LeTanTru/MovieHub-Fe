@@ -18,7 +18,7 @@ type ToolTipProps = {
   className?: string;
 };
 
-export default function ToolTip({
+export function ToolTip({
   title,
   children,
   side = 'bottom',

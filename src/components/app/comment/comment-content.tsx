@@ -10,7 +10,7 @@ type CommentContentProps = {
   renderMention: () => ReactNode;
 };
 
-export default function CommentContent({
+export function CommentContent({
   comment,
   isHiddenComment,
   showBlurredContent,

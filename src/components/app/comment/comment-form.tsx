@@ -24,7 +24,7 @@ type CommentFormProps = {
   onCancel?: () => void;
 };
 
-export default function CommentForm({
+export function CommentForm({
   parentId,
   movieId,
   mode = 'reply',

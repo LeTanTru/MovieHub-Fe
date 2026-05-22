@@ -1,1 +1,1 @@
-export { default as Survey } from './survey';
+export { Survey } from './survey';

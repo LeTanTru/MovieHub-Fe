@@ -31,7 +31,7 @@ type AnimeMovieListProps = {
   collection: CollectionResType;
 };
 
-export default function AnimeMovieList({ collection }: AnimeMovieListProps) {
+export function AnimeMovieList({ collection }: AnimeMovieListProps) {
   const { isAuthenticated } = useAuth();
 
   const movieList = collection?.movies || [];

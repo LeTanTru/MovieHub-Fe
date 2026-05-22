@@ -13,7 +13,7 @@ export const useCreateCommentMutation = () => {
 export const useDeleteCommentMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.DELETE_COMMENT],
-    mutationFn: (id: string) => commentApiRequest.delete(id)
+    mutationFn: (id: string) => commentApiRequest.deleteById(id)
   });
 };
 

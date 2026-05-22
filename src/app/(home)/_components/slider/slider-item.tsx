@@ -27,7 +27,7 @@ type SliderItemProps = {
   isLiked: boolean;
 };
 
-export default function SliderItem({
+export function SliderItem({
   slider,
   isGrabbing,
   onPointerDown,

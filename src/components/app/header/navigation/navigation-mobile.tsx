@@ -40,9 +40,7 @@ const GenderIcon = ({ profile }: { profile: ProfileResType }) => {
   );
 };
 
-export default function NavigationMobile({
-  navigationList
-}: NavigationMobileProps) {
+export function NavigationMobile({ navigationList }: NavigationMobileProps) {
   const pathname = usePathname();
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);

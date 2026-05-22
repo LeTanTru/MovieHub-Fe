@@ -1,18 +1,18 @@
 'use client';
 
-import MotionWrapper from './motion-wrapper';
+import { MotionWrapper } from './motion-wrapper';
 import { MOVIE_TAB_EPISODE, MOVIE_TYPE_SINGLE } from '@/constants';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import MovieTabSingle from './movie-tab-single';
-import MovieTabSeries from './movie-tab-series';
+import { MovieTabSingle } from './movie-tab-single';
+import { MovieTabSeries } from './movie-tab-series';
 
 type MovieTabEpisodeProps = {
   direction?: number;
   className?: string;
 };
 
-export default function MovieTabEpisode({
+export function MovieTabEpisode({
   direction = 0,
   className
 }: MovieTabEpisodeProps) {

@@ -9,7 +9,7 @@ type SuggestionItemProps = {
   movie: MovieResType;
 };
 
-export default function SuggestionItem({ movie }: SuggestionItemProps) {
+export function SuggestionItem({ movie }: SuggestionItemProps) {
   const ageRating = ageRatings.find((age) => movie.ageRating === age.value);
 
   const isSeries = movie.type === MOVIE_TYPE_SERIES;

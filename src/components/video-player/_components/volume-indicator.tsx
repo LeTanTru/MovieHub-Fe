@@ -29,7 +29,7 @@ function indicatorReducer(
   }
 }
 
-export default function VolumeIndicator() {
+export function VolumeIndicator() {
   const volume = useMediaState('volume');
   const [{ showIndicator }, dispatch] = useReducer(
     indicatorReducer,

@@ -1,1 +1,1 @@
-export { default as MovieProgress } from './movie-progress';
+export { MovieProgress } from './movie-progress';

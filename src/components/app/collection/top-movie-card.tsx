@@ -47,11 +47,7 @@ const itemTransition: Transition = {
 const MODAL_WIDTH = 400;
 const EDGE_PADDING = 20;
 
-export default function TopMovieCard({
-  movie,
-  dir = 'up',
-  index
-}: TopMovieCardProps) {
+export function TopMovieCard({ movie, dir = 'up', index }: TopMovieCardProps) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
   const isDesktop = isDesktopDevice();

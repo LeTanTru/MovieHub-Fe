@@ -8,7 +8,7 @@ import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-export default function MovieList({
+export function MovieList({
   title,
   loading,
   movieList

@@ -1,1 +1,1 @@
-export { default as WatchHistory } from './watch-history';
+export { WatchHistory } from './watch-history';

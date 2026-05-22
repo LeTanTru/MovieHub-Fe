@@ -5,7 +5,7 @@ import { convertUTCToLocal, parseJSON, renderImageUrl, timeAgo } from '@/utils';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-export default function MovieBody({
+export function MovieBody({
   notification
 }: {
   notification: NotificationResType;

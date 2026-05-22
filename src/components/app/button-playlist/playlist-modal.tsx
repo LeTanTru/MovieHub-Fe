@@ -21,7 +21,7 @@ type PlaylistModalProps = {
   playlist?: PlaylistResType;
 };
 
-export default function PlaylistModal({
+export function PlaylistModal({
   opened,
   onClose,
   playlist

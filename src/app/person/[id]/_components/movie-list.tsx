@@ -19,7 +19,7 @@ type MovieListProps = {
   personId: string;
 };
 
-export default function MovieList({ personId }: MovieListProps) {
+export function MovieList({ personId }: MovieListProps) {
   const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
   const { searchParams } = useQueryParams<PersonSearchType>();
 

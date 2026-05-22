@@ -23,7 +23,7 @@ type CommentInputProps = {
   selectedSeason: string;
 };
 
-export default function CommentInput({
+export function CommentInput({
   isLoading = false,
   movie,
   selectedSeason

@@ -11,7 +11,7 @@ type SubmenuButtonProps = {
   icon: ElementType;
 };
 
-export default function SubmenuButton({
+export function SubmenuButton({
   label,
   hint,
   icon: Icon,

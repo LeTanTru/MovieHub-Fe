@@ -14,7 +14,7 @@ type MovieListProps = {
   movieList: MovieResType[];
 };
 
-export default function MovieList({ movieList }: MovieListProps) {
+export function MovieList({ movieList }: MovieListProps) {
   const nextRef = useRef<HTMLDivElement>(null);
   const prevRef = useRef<HTMLDivElement>(null);
 

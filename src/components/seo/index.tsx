@@ -1,4 +1,4 @@
-export { default as JsonLd } from './json-ld';
+export { JsonLd } from './json-ld';
 export {
   BreadcrumbListJsonLd,
   ItemListJsonLd

@@ -10,7 +10,7 @@ type MovieListProps = {
   handleDeleteFavourite: (targetId: string) => void;
 };
 
-export default function MovieList({
+export function MovieList({
   isLoading,
   movieList,
   handleDeleteFavourite

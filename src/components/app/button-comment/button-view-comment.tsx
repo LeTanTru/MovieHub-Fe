@@ -28,7 +28,7 @@ type ButtonViewCommentProps = {
   className?: string;
 } & VariantProps<typeof variants>;
 
-export default function ButtonViewComment({
+export function ButtonViewComment({
   to,
   className,
   variant

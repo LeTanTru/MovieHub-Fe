@@ -13,7 +13,7 @@ import {
   useFavouriteMutation
 } from '@/queries';
 import { invalidateQueries, notify, renderImageUrl } from '@/utils';
-import SliderItem from './slider-item';
+import { SliderItem } from './slider-item';
 import { useAuth } from '@/hooks';
 import { FAVOURITE_TYPE_MOVIE, queryKeys } from '@/constants';
 import { route } from '@/routes';
@@ -27,7 +27,7 @@ type SliderProps = {
   sidebarList: SidebarResType[];
 };
 
-export default function Slider({ sidebarList }: SliderProps) {
+export function Slider({ sidebarList }: SliderProps) {
   const { isAuthenticated } = useAuth();
 
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);

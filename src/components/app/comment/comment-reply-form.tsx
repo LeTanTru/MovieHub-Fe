@@ -1,4 +1,4 @@
-import CommentForm from './comment-form';
+import { CommentForm } from './comment-form';
 import { CommentResType, ProfileResType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
 
@@ -12,7 +12,7 @@ type CommentReplyFormProps = {
   onCancel: () => void;
 };
 
-export default function CommentReplyForm({
+export function CommentReplyForm({
   comment,
   rootId,
   author,

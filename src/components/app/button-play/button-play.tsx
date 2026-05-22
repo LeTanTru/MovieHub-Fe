@@ -9,11 +9,7 @@ type ButtonPlayProps = {
   className?: string;
 };
 
-export default function ButtonPlay({
-  href,
-  title,
-  className
-}: ButtonPlayProps) {
+export function ButtonPlay({ href, title, className }: ButtonPlayProps) {
   const { iconRef, startAnimation } = useClickAnimation();
 
   const handleClick = () => {

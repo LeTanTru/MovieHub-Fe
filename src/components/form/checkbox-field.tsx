@@ -25,7 +25,7 @@ type CheckboxFieldProps<T extends FieldValues> = {
   formItemClassName?: string;
 };
 
-export default function CheckboxField<T extends FieldValues>({
+export function CheckboxField<T extends FieldValues>({
   control,
   name,
   label,

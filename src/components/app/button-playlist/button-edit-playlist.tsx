@@ -1,6 +1,6 @@
 'use client';
 
-import PlaylistModal from './playlist-modal';
+import { PlaylistModal } from './playlist-modal';
 import { Button, ToolTip } from '@/components/form';
 import { useDisclosure } from '@/hooks';
 import { PlaylistResType } from '@/types';
@@ -10,9 +10,7 @@ type ButtonEditPlaylistProps = {
   playlist: PlaylistResType;
 };
 
-export default function ButtonEditPlaylist({
-  playlist
-}: ButtonEditPlaylistProps) {
+export function ButtonEditPlaylist({ playlist }: ButtonEditPlaylistProps) {
   const { opened, open, close } = useDisclosure();
 
   const handleOpen = (e: React.MouseEvent<HTMLButtonElement>) => {

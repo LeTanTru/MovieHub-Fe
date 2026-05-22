@@ -1,7 +1,7 @@
 'use client';
 
-import MovieList from './movie-list';
-import PersonList from './person-list';
+import { MovieList } from './movie-list';
+import { PersonList } from './person-list';
 import { Activity } from '@/components/activity';
 import { Button } from '@/components/form';
 import { Pagination } from '@/components/pagination';
@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
 
-export default function FavouriteList() {
+export function FavouriteList() {
   const { isAuthenticated } = useAuth();
 
   const [activeTab, setActiveTab] = useState(FAVOURITE_TYPE_MOVIE);

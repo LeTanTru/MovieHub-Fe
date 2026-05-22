@@ -1,1 +1,1 @@
-export { default as ButtonLike } from './button-like';
+export { ButtonLike } from './button-like';

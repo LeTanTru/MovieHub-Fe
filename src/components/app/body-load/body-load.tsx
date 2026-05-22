@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 
 const hidePathnames = ['/auth/google/callback'];
 
-export default function BodyLoad() {
+export function BodyLoad() {
   const pathname = usePathname();
 
   if (hidePathnames.includes(pathname)) return null;

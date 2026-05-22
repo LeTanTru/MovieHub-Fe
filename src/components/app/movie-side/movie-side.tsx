@@ -30,10 +30,10 @@ import { Activity } from '@/components/activity';
 import { cn } from '@/lib';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import ActorList from './actor-list';
+import { ActorList } from './actor-list';
 import Image from 'next/image';
 import Link from 'next/link';
-import TopViewList from './top-view-list';
+import { TopViewList } from './top-view-list';
 import type { MetadataType, PersonResType } from '@/types';
 import { MovieProgress } from '@/components/app/movie-progress';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -41,7 +41,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 const ACTOR_SKELETON_COUNT = 6;
 const TOP_VIEW_SKELETON_COUNT = 3;
 
-export default function MovieSide() {
+export function MovieSide() {
   const { movie, moviePerson, selectedSeason } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,

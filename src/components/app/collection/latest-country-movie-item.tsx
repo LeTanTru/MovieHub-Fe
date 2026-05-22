@@ -13,7 +13,7 @@ type LatestCountryMovieItemProps = {
   collection: CollectionResType;
 };
 
-export default function LatestCountryMovieItem({
+export function LatestCountryMovieItem({
   collection
 }: LatestCountryMovieItemProps) {
   const nextRef = useRef<HTMLDivElement>(null);

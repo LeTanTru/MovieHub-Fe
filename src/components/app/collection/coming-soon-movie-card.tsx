@@ -39,7 +39,7 @@ const itemTransition: Transition = {
 const MODAL_WIDTH = 400;
 const EDGE_PADDING = 20;
 
-export default function ComingSoonMovieCard({
+export function ComingSoonMovieCard({
   movie,
   dir = 'up'
 }: ComingSoonMovieCardProps) {

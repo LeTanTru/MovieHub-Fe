@@ -10,7 +10,7 @@ type ButtonActionProps = {
   setActiveKey: (key: string) => void;
 };
 
-export default function ButtonAction({
+export function ButtonAction({
   action,
   label,
   activeKey,

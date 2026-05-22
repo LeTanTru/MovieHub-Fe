@@ -8,13 +8,13 @@ import { NoData } from '@/components/no-data';
 import { Pagination } from '@/components/pagination';
 import { useMovieListQuery } from '@/queries';
 import { useQueryParams } from '@/hooks';
-import NotFound from './not-found';
+import { NotFound } from './not-found';
 
 type MovieListProps = {
   countryCode: string;
 };
 
-export default function MovieList({ countryCode }: MovieListProps) {
+export function MovieList({ countryCode }: MovieListProps) {
   const {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();

@@ -28,7 +28,7 @@ import { invalidateQueries, notify } from '@/utils';
 import { CheckCheck, Trash } from 'lucide-react';
 import { useState } from 'react';
 
-export default function NotificationList() {
+export function NotificationList() {
   const { isAuthenticated } = useAuth();
 
   const [activeTab, setActiveTab] = useState(NOTIFICATION_TYPE_MOVIE);

@@ -1,7 +1,7 @@
 'use client';
 
 import { NoData } from '@/components/no-data';
-import CommentItem from './comment-item';
+import { CommentItem } from './comment-item';
 import { CommentResType, MovieResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { useAuth } from '@/hooks';
@@ -34,7 +34,7 @@ type CommentListProps = {
   onLoadMore?: () => void;
 };
 
-export default function CommentList({
+export function CommentList({
   movie,
   commentList,
   isLoading = false,

@@ -5,10 +5,7 @@ type MovieTabHeadingProps = {
   className?: string;
 };
 
-export default function MovieTabHeading({
-  title,
-  className
-}: MovieTabHeadingProps) {
+export function MovieTabHeading({ title, className }: MovieTabHeadingProps) {
   return (
     <h3
       className={cn(

@@ -1,6 +1,6 @@
 'use client';
 
-import ReviewModal from './review-modal';
+import { ReviewModal } from './review-modal';
 import { useAuth, useDisclosure } from '@/hooks';
 import { cn } from '@/lib';
 import { useCheckMovieQuery } from '@/queries';
@@ -16,10 +16,7 @@ type ButtonReviewProps = {
   className?: string;
 };
 
-export default function ButtonReview({
-  movieId,
-  className
-}: ButtonReviewProps) {
+export function ButtonReview({ movieId, className }: ButtonReviewProps) {
   const { isAuthenticated } = useAuth();
 
   const { opened, open, close } = useDisclosure();

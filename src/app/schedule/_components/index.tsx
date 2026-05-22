@@ -1,1 +1,1 @@
-export { default as ScheduleList } from './schedule-list';
+export { ScheduleList } from './schedule-list';

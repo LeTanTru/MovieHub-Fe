@@ -2,7 +2,7 @@ type CommentDotIconProps = {
   className?: string;
 };
 
-const CommentDotIcon = ({ className }: CommentDotIconProps) => {
+export function CommentDotIcon({ className }: CommentDotIconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -20,8 +20,4 @@ const CommentDotIcon = ({ className }: CommentDotIconProps) => {
       </g>
     </svg>
   );
-};
-
-CommentDotIcon.displayName = 'CommentDotIcon';
-
-export default CommentDotIcon;
+}

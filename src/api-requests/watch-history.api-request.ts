@@ -7,17 +7,15 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-const watchHistoryApiRequest = {
-  getList: (params: WatchHistorySearchType) =>
-    http.get<ApiResponse<WatchHistoryResType>>(apiConfig.watchHistory.getList, {
-      params
-    }),
-  tracking: (body: WatchHistoryBodyType) =>
-    http.post<ApiResponse<any>>(apiConfig.watchHistory.tracking, { body }),
-  delete: (movieId: string) =>
-    http.delete<ApiResponse<any>>(apiConfig.watchHistory.delete, {
-      pathParams: { movieId }
-    })
-};
+export const getList = (params: WatchHistorySearchType) =>
+  http.get<ApiResponse<WatchHistoryResType>>(apiConfig.watchHistory.getList, {
+    params
+  });
 
-export default watchHistoryApiRequest;
+export const tracking = (body: WatchHistoryBodyType) =>
+  http.post<ApiResponse<any>>(apiConfig.watchHistory.tracking, { body });
+
+export const deleteById = (movieId: string) =>
+  http.delete<ApiResponse<any>>(apiConfig.watchHistory.delete, {
+    pathParams: { movieId }
+  });

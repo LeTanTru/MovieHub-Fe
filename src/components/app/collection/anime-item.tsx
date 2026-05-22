@@ -28,7 +28,7 @@ type AnimeItemProps = {
   isLiked: boolean;
 };
 
-export default function AnimeItem({
+export function AnimeItem({
   movie,
   isGrabbing,
   onPointerDown,

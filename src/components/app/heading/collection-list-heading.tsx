@@ -9,7 +9,7 @@ type CollectionListHeadingProps = {
   loading?: boolean;
 };
 
-export default function CollectionListHeading({
+export function CollectionListHeading({
   title,
   link,
   loading

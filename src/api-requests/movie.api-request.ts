@@ -12,56 +12,58 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-const movieApiRequest = {
-  getList: (params?: MovieSearchType) =>
-    http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
-      params
-    }),
-  getById: (id: string) =>
-    http.get<ApiResponse<MovieResType>>(apiConfig.movie.getById, {
-      pathParams: {
-        id
-      }
-    }),
-  getSuggestionList: (id: string) =>
-    http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.getSuggestionList, {
-      pathParams: {
-        id
-      }
-    }),
-  getHistoryList: () =>
-    http.get<ApiResponse<MovieHistoryResType[]>>(
-      apiConfig.movie.getHistoryList
-    ),
-  getTopViewList: (params?: MovieSearchType) =>
-    http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getTopViewList, {
-      params
-    }),
-  getScheduleList: (params: { date: string }) =>
-    http.get<ApiResponse<MovieScheduleResType[]>>(
-      apiConfig.movie.getScheduleList,
-      {
-        params
-      }
-    ),
-  getNextEpisode: (id: string) =>
-    http.get<ApiResponse<MovieNextEpisodeResType>>(
-      apiConfig.movie.getNextEpisode,
-      {
-        pathParams: {
-          id
-        }
-      }
-    ),
-  getSuggestByWatched: (params: MovieSuggestByWatchedSearchType) =>
-    http.get<ApiResponse<MovieSuggestByWatchedType>>(
-      apiConfig.movie.suggestByWatched,
-      {
-        params
-      }
-    ),
-  getRecommendation: () =>
-    http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.recommendation)
-};
+export const getList = (params?: MovieSearchType) =>
+  http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
+    params
+  });
 
-export default movieApiRequest;
+export const getById = (id: string) =>
+  http.get<ApiResponse<MovieResType>>(apiConfig.movie.getById, {
+    pathParams: {
+      id
+    }
+  });
+
+export const getSuggestionList = (id: string) =>
+  http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.getSuggestionList, {
+    pathParams: {
+      id
+    }
+  });
+
+export const getHistoryList = () =>
+  http.get<ApiResponse<MovieHistoryResType[]>>(apiConfig.movie.getHistoryList);
+
+export const getTopViewList = (params?: MovieSearchType) =>
+  http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getTopViewList, {
+    params
+  });
+
+export const getScheduleList = (params: { date: string }) =>
+  http.get<ApiResponse<MovieScheduleResType[]>>(
+    apiConfig.movie.getScheduleList,
+    {
+      params
+    }
+  );
+
+export const getNextEpisode = (id: string) =>
+  http.get<ApiResponse<MovieNextEpisodeResType>>(
+    apiConfig.movie.getNextEpisode,
+    {
+      pathParams: {
+        id
+      }
+    }
+  );
+
+export const getSuggestByWatched = (params: MovieSuggestByWatchedSearchType) =>
+  http.get<ApiResponse<MovieSuggestByWatchedType>>(
+    apiConfig.movie.suggestByWatched,
+    {
+      params
+    }
+  );
+
+export const getRecommendation = () =>
+  http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.recommendation);

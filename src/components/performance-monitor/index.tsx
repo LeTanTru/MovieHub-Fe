@@ -1,1 +1,1 @@
-export { default as PerformanceMonitor } from './performance-monitor';
+export { PerformanceMonitor } from './performance-monitor';

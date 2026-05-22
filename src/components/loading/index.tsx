@@ -1,2 +1,2 @@
-export { default as CircleLoading } from './circle-loading';
-export { default as VerticalBarLoading } from './vertical-bar-loading';
+export { CircleLoading } from './circle-loading';
+export { VerticalBarLoading } from './vertical-bar-loading';

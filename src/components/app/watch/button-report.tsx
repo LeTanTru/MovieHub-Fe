@@ -8,7 +8,7 @@ type ButtonReportProps = {
   className?: string;
 };
 
-export default function ButtonReport({ className }: ButtonReportProps) {
+export function ButtonReport({ className }: ButtonReportProps) {
   return (
     <Button
       variant='ghost'

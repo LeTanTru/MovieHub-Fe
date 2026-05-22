@@ -1,6 +1,6 @@
 'use client';
 
-import TimeSliderHighlight from './time-slider-highlight';
+import { TimeSliderHighlight } from './time-slider-highlight';
 import { TimeSlider as BaseTimeSlider } from '@vidstack/react';
 
 type TimeSliderProps = {
@@ -11,7 +11,7 @@ type TimeSliderProps = {
   vttUrl: string;
 };
 
-export default function TimeSlider({
+export function TimeSlider({
   introStart,
   introEnd,
   outroStart,

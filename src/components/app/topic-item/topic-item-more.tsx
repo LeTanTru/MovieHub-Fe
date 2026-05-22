@@ -10,10 +10,7 @@ type TopicItemMoreProps = {
   isSwitched: boolean;
 };
 
-export default function TopicItemMore({
-  moreCount,
-  isSwitched
-}: TopicItemMoreProps) {
+export function TopicItemMore({ moreCount, isSwitched }: TopicItemMoreProps) {
   return (
     <MotionLink
       whileHover={{

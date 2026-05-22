@@ -8,7 +8,7 @@ import { NotificationResType } from '@/types';
 import { generateMqttTopic, invalidateQueries, parseJSON } from '@/utils';
 import { useEffect } from 'react';
 
-export default function MqttProvider() {
+export function MqttProvider() {
   const { profile } = useAuth();
   const client = getMqttClient();
 

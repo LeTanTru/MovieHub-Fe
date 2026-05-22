@@ -31,7 +31,7 @@ type BaseFormProps<T extends Record<string, any>> = Omit<
   onFormChange?: (isFormChanged: boolean) => void;
 };
 
-export default function BaseForm<T extends Record<string, any>>({
+export function BaseForm<T extends Record<string, any>>({
   className,
   defaultValues,
   id,

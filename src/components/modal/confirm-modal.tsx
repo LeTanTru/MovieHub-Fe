@@ -2,7 +2,7 @@
 
 import { MouseEvent, useState } from 'react';
 import { Info } from 'lucide-react';
-import Modal from './modal';
+import { Modal } from './modal';
 import { CircleLoading } from '@/components/loading';
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
@@ -21,7 +21,7 @@ interface ConfirmModalProps {
   triggerClassName?: string;
 }
 
-export default function ConfirmModal({
+export function ConfirmModal({
   message,
   onConfirm,
   onCancel,

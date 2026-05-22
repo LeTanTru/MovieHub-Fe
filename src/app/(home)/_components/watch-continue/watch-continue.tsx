@@ -20,7 +20,7 @@ import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { VerticalBarLoading } from '@/components/loading';
 import { CollectionListHeading } from '@/components/app/heading';
 
-export default function WatchContinue() {
+export function WatchContinue() {
   const { isAuthenticated } = useAuth();
 
   const nextRef = useRef<HTMLDivElement>(null);

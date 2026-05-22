@@ -14,10 +14,7 @@ const LOGOUT_REDIRECT_DELAY = 500;
 
 type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export default function ButtonLogout({
-  className,
-  ...props
-}: ButtonLogoutProps) {
+export function ButtonLogout({ className, ...props }: ButtonLogoutProps) {
   const clearState = useAuthStore((s) => s.clearState);
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();

@@ -16,7 +16,7 @@ type useEpisodeNavigationProps = {
   navigate: ReturnType<typeof useNavigate>;
 };
 
-const useEpisodeNavigation = ({
+export const useEpisodeNavigation = ({
   autoNextEpisode,
   isSeries,
   isFirstEpisode,
@@ -99,5 +99,3 @@ const useEpisodeNavigation = ({
 
   return { handleVideoEnded, handlePrevEpisode, handleNextEpisode };
 };
-
-export default useEpisodeNavigation;

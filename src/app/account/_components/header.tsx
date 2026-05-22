@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, m } from 'framer-motion';
-import DropdownAvatar from './dropdown-avatar';
+import { DropdownAvatar } from './dropdown-avatar';
 import { useAuth } from '@/hooks';
 import { route } from '@/routes';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ import { logoWithText } from '@/assets';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAppContext } from '@/components/providers/app-provider';
 
-export default function Header() {
+export function Header() {
   const { profile } = useAuth();
   const { loading } = useAppContext();
 

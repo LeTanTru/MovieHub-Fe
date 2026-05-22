@@ -14,7 +14,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { FaBarsStaggered, FaCaretDown, FaPlay } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
-export default function WatchSeries() {
+export function WatchSeries() {
   const ANIMATION_DURATION = 300;
 
   const navigate = useNavigate();

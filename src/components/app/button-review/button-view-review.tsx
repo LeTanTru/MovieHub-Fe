@@ -28,7 +28,7 @@ type ButtonViewReviewProps = {
   className?: string;
 } & VariantProps<typeof variants>;
 
-export default function ButtonViewReview({
+export function ButtonViewReview({
   to,
   className,
   variant

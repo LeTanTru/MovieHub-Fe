@@ -10,7 +10,7 @@ type PlaylistItemProps = {
   onToggle: (playlistId: string) => void;
 };
 
-export default function PlaylistItem({
+export function PlaylistItem({
   playlist,
   checked,
   disabled = false,

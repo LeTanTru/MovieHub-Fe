@@ -33,7 +33,7 @@ export const useCreatePlayListMutation = () => {
 export const useDeletePlaylistMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.PLAYLIST_DELETE],
-    mutationFn: (id: string) => playlistApiRequest.delete(id)
+    mutationFn: (id: string) => playlistApiRequest.deleteById(id)
   });
 };
 

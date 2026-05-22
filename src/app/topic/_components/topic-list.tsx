@@ -7,7 +7,7 @@ import { TopicItem } from '@/components/app/topic-item';
 import { useEffect, useMemo, useState } from 'react';
 import { ListHeading } from '@/components/app/heading';
 
-export default function TopicList() {
+export function TopicList() {
   const skeletonCount = 14;
   const [isSwitched, setIsSwitched] = useState(false);
 

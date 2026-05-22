@@ -15,7 +15,7 @@ import {
 } from 'react-icons/fa6';
 import type { IconType } from 'react-icons/lib';
 
-export default function Footer() {
+export function Footer() {
   const socialLinks: { key: string; icon: IconType; url: string }[] = [
     {
       key: 'telegram',

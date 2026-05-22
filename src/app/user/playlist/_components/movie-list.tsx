@@ -16,7 +16,7 @@ import { invalidateQueries, notify } from '@/utils';
 import { useState } from 'react';
 import { useAuth } from '@/hooks';
 
-export default function MovieList() {
+export function MovieList() {
   const { isAuthenticated } = useAuth();
 
   const [page, setPage] = useState(1);

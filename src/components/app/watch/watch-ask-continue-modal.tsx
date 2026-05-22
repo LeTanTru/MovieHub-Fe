@@ -11,7 +11,7 @@ type WatchAskContinueModalProps = {
   onStartOver: () => void;
 };
 
-export default function WatchAskContinueModal({
+export function WatchAskContinueModal({
   opened,
   lastWatchedSeconds,
   onContinueWatching,

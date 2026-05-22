@@ -1,1 +1,1 @@
-export { default as SettingsForm } from './settings-form';
+export { SettingsForm } from './settings-form';

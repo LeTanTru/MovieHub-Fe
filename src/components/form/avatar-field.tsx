@@ -48,7 +48,7 @@ const IMAGE_PREVIEW_SCALE_MAX = 3;
 const IMAGE_PREVIEW_SCALE_STEP = 0.1;
 const SCROLLBAR_COMPENSATION_PX = 15;
 
-export default function AvatarField({
+export function AvatarField({
   size = AVATAR_SIZE_DEFAULT,
   breakpoints,
   previewSize = AVATAR_PREVIEW_SIZE_DEFAULT,

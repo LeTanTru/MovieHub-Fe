@@ -10,31 +10,32 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-const reviewApiRequest = {
-  getList: (params?: ReviewSearchType) =>
-    http.get<ApiResponseList<ReviewResType>>(apiConfig.review.getList, {
-      params
-    }),
-  checkMovie: (movieId: string) =>
-    http.get<ApiResponse<ReviewResType>>(apiConfig.review.checkMovie, {
-      pathParams: { movieId }
-    }),
-  create: (body: ReviewBodyType) =>
-    http.post<ApiResponse<any>>(apiConfig.review.create, {
-      body
-    }),
-  delete: (id: string) =>
-    http.delete<ApiResponse<any>>(apiConfig.review.delete, {
-      pathParams: { id }
-    }),
-  vote: (body: ReviewVoteBodyType) =>
-    http.patch<ApiResponse<any>>(apiConfig.review.vote, {
-      body
-    }),
-  getVoteList: (movieId: string) =>
-    http.get<ApiResponse<ReviewVoteResType[]>>(apiConfig.review.getVoteList, {
-      pathParams: { movieId }
-    })
-};
+export const getList = (params?: ReviewSearchType) =>
+  http.get<ApiResponseList<ReviewResType>>(apiConfig.review.getList, {
+    params
+  });
 
-export default reviewApiRequest;
+export const checkMovie = (movieId: string) =>
+  http.get<ApiResponse<ReviewResType>>(apiConfig.review.checkMovie, {
+    pathParams: { movieId }
+  });
+
+export const create = (body: ReviewBodyType) =>
+  http.post<ApiResponse<any>>(apiConfig.review.create, {
+    body
+  });
+
+export const deleteById = (id: string) =>
+  http.delete<ApiResponse<any>>(apiConfig.review.delete, {
+    pathParams: { id }
+  });
+
+export const vote = (body: ReviewVoteBodyType) =>
+  http.patch<ApiResponse<any>>(apiConfig.review.vote, {
+    body
+  });
+
+export const getVoteList = (movieId: string) =>
+  http.get<ApiResponse<ReviewVoteResType[]>>(apiConfig.review.getVoteList, {
+    pathParams: { movieId }
+  });

@@ -13,14 +13,14 @@ import { useState } from 'react';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Image from 'next/image';
-import MotionWrapper from './motion-wrapper';
+import { MotionWrapper } from './motion-wrapper';
 import { MovieTabHeading } from '@/components/app/heading';
 
 type MovieTabTrailerProps = {
   direction: number;
 };
 
-export default function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
+export function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
   const [toggle, setToggle] = useState(true);
   const { opened, open, close } = useDisclosure();
   const { token, isLoadingToken } = useAnonymousToken();

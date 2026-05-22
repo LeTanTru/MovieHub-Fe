@@ -13,7 +13,7 @@ type UseContinueWatchingProps = {
   onIntroSkipped: () => void;
 };
 
-const useContinueWatching = ({
+export const useContinueWatching = ({
   movieItemId,
   watchHistories,
   isAuthenticated,
@@ -90,5 +90,3 @@ const useContinueWatching = ({
     handleStartOver
   };
 };
-
-export default useContinueWatching;

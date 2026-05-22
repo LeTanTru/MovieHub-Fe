@@ -9,7 +9,7 @@ type BreadcrumbListProps = {
   items: BreadcrumbListItem[];
 };
 
-export const BreadcrumbListJsonLd = ({ items }: BreadcrumbListProps) => {
+export function BreadcrumbListJsonLd({ items }: BreadcrumbListProps) {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -27,7 +27,7 @@ export const BreadcrumbListJsonLd = ({ items }: BreadcrumbListProps) => {
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
-};
+}
 
 type ItemListJsonLdItem = {
   position: number;
@@ -40,10 +40,7 @@ type ItemListJsonLdProps = {
   itemListName?: string;
 };
 
-export const ItemListJsonLd = ({
-  items,
-  itemListName
-}: ItemListJsonLdProps) => {
+export function ItemListJsonLd({ items, itemListName }: ItemListJsonLdProps) {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -62,4 +59,4 @@ export const ItemListJsonLd = ({
       dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
-};
+}

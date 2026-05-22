@@ -52,7 +52,7 @@ export const useReadAllNotificationMutation = () => {
 export const useDeleteNotificationMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.DELETE_NOTIFICATION],
-    mutationFn: (id: string) => notificationApiRequest.delete(id)
+    mutationFn: (id: string) => notificationApiRequest.deleteById(id)
   });
 };
 

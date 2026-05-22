@@ -3,7 +3,7 @@ import { useQueryParams } from '@/hooks';
 import { MovieItemResType, MovieResType } from '@/types';
 import { useMemo } from 'react';
 
-const useWatchPlayerData = (movie: MovieResType | null) => {
+export const useWatchPlayerData = (movie: MovieResType | null) => {
   const { searchParams } = useQueryParams<{
     season: string;
     episode: string;
@@ -86,5 +86,3 @@ const useWatchPlayerData = (movie: MovieResType | null) => {
     movieItemId
   };
 };
-
-export default useWatchPlayerData;

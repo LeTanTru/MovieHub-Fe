@@ -8,7 +8,7 @@ type ActorCellProps = {
   actor: PersonResType;
 };
 
-export default function ActorCell({ actor }: ActorCellProps) {
+export function ActorCell({ actor }: ActorCellProps) {
   return (
     <div className='flex flex-col items-center gap-3 text-center'>
       <Link

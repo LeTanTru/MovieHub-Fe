@@ -10,7 +10,7 @@ type ButtonToggleProps = {
   className?: string;
 };
 
-export default function ButtonToggle({
+export function ButtonToggle({
   toggle,
   onToggle,
   text,

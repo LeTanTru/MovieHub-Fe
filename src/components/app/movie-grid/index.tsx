@@ -1,2 +1,2 @@
-export { default as MovieGrid } from './movie-grid';
-export { default as MovieGridByYear } from './movie-grid-by-year';
+export { MovieGrid } from './movie-grid';
+export { MovieGridByYear } from './movie-grid-by-year';

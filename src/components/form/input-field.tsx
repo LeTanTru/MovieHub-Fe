@@ -46,7 +46,7 @@ const toNumberIfPossible = (value: string): string | number => {
 
 const EMPTY_OPTIONS: string[] = [];
 
-export default function InputField<T extends FieldValues>({
+export function InputField<T extends FieldValues>({
   control,
   name,
   label,

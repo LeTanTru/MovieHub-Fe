@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import NotFound from './not-found';
-import WatchContainer from './watch-container';
-import WatchPlayer from './watch-player';
+import { NotFound } from './not-found';
+import { WatchContainer } from './watch-container';
+import { WatchPlayer } from './watch-player';
 import { Discussion } from '@/components/app/discussion';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -14,7 +14,7 @@ type WatchProps = {
   id: string;
 };
 
-export default function Watch({ id }: WatchProps) {
+export function Watch({ id }: WatchProps) {
   const { setMovie, setMoviePerson } = useMovieStore(
     useShallow((s) => ({
       setMovie: s.setMovie,

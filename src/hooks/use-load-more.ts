@@ -14,7 +14,11 @@ type UseLoadMoreProps<S extends BaseSearchType, R> = {
   threshold?: number;
 };
 
-const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
+export const useLoadMore = <
+  T extends HTMLElement,
+  S extends BaseSearchType,
+  R
+>({
   queryKey,
   params,
   queryFn,
@@ -87,5 +91,3 @@ const useLoadMore = <T extends HTMLElement, S extends BaseSearchType, R>({
     handleLoadMore
   };
 };
-
-export default useLoadMore;

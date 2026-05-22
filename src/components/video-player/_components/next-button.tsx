@@ -7,7 +7,7 @@ type NextButtonProps = {
   onClick: () => void;
 };
 
-export default function NextButton({ onClick }: NextButtonProps) {
+export function NextButton({ onClick }: NextButtonProps) {
   const handleClick = (e: React.MouseEvent | React.TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();

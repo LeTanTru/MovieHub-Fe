@@ -4,7 +4,7 @@ import { cn } from '@/lib';
 import { ChevronUpIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-export default function GoToTopButton() {
+export function GoToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

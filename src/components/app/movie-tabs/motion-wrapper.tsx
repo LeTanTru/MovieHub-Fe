@@ -11,7 +11,7 @@ type MotionWrapperProps = {
   className?: string;
 };
 
-export default function MotionWrapper({
+export function MotionWrapper({
   children,
   uniqueKey,
   direction,

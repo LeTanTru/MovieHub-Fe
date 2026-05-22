@@ -7,10 +7,10 @@ import { useEffect } from 'react';
 import { usePlaylistListQuery } from '@/queries';
 import { usePlaylistStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import PlaylistCard from './playlist-card';
+import { PlaylistCard } from './playlist-card';
 import { useAuth } from '@/hooks';
 
-export default function Playlist() {
+export function Playlist() {
   const { isAuthenticated } = useAuth();
 
   const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(

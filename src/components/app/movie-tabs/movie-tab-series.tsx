@@ -19,7 +19,7 @@ type MovieTabSeriesProps = {
   movie: MovieResType;
 };
 
-export default function MovieTabSeries({ movie }: MovieTabSeriesProps) {
+export function MovieTabSeries({ movie }: MovieTabSeriesProps) {
   const ANIMATION_DURATION = 300;
 
   const navigate = useNavigate();

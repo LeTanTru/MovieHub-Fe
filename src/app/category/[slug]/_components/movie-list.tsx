@@ -9,13 +9,13 @@ import { Pagination } from '@/components/pagination';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCategoryQuery, useMovieListQuery } from '@/queries';
 import { useQueryParams } from '@/hooks';
-import NotFound from './not-found';
+import { NotFound } from './not-found';
 
 type MovieListProps = {
   id: string;
 };
 
-export default function MovieList({ id }: MovieListProps) {
+export function MovieList({ id }: MovieListProps) {
   const {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();

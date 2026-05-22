@@ -10,7 +10,7 @@ type TopViewItemProps = {
   index: number;
 };
 
-export default function TopViewItem({ movie, index }: TopViewItemProps) {
+export function TopViewItem({ movie, index }: TopViewItemProps) {
   const ageRating = ageRatings.find((age) => movie.ageRating === age.value);
   const isSeries = movie.type === MOVIE_TYPE_SERIES;
 

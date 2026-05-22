@@ -3,11 +3,11 @@
 import { ClosedCaptionsIcon } from '@vidstack/react/icons';
 import { Menu, useCaptionOptions } from '@vidstack/react';
 import { submenuClass } from './styles';
-import MenuRadio from './menu-radio';
-import SubmenuButton from './submenu-button';
+import { MenuRadio } from './menu-radio';
+import { SubmenuButton } from './submenu-button';
 import { getLanguageLabel } from '@/utils';
 
-export default function CaptionSubmenu() {
+export function CaptionSubmenu() {
   const options = useCaptionOptions(),
     hint = options.selectedTrack?.label ?? 'Tắt';
 

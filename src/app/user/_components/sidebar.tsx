@@ -8,9 +8,9 @@ import { Separator } from '@/components/ui/separator';
 import { useAuth } from '@/hooks';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import ProfileSection from './profile-section';
+import { ProfileSection } from './profile-section';
 
-export default function Sidebar() {
+export function Sidebar() {
   const path = usePathname();
   const { profile } = useAuth();
 

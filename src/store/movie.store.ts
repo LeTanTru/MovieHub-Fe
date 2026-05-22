@@ -4,7 +4,7 @@ import { create } from 'zustand';
 
 const DEFAULT_SEASON = '1';
 
-const useMovieStore = create<MovieStoreType>((set) => ({
+export const useMovieStore = create<MovieStoreType>((set) => ({
   movie: null,
   movieItem: null,
 
@@ -39,5 +39,3 @@ const useMovieStore = create<MovieStoreType>((set) => ({
       selectedSeason: DEFAULT_SEASON
     })
 }));
-
-export default useMovieStore;

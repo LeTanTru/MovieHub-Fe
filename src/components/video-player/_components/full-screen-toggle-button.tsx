@@ -3,7 +3,7 @@
 import { FullscreenButton, Tooltip, useMediaState } from '@vidstack/react';
 import { FullscreenExitIcon, FullscreenIcon } from '@vidstack/react/icons';
 
-export default function FullscreenToggleButton() {
+export function FullscreenToggleButton() {
   const isFullscreen = useMediaState('fullscreen');
 
   return (

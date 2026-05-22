@@ -1,1 +1,1 @@
-export { default as IntroForm } from './intro-form';
+export { IntroForm } from './intro-form';

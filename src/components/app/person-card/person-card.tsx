@@ -45,7 +45,7 @@ type PersonCardProps = {
 
 const DEFAULT_PARAMS: PersonSearchType = {};
 
-export default function PersonCard({
+export function PersonCard({
   person,
   showFullName,
   willNavigate,

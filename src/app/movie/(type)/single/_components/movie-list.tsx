@@ -9,7 +9,7 @@ import { DEFAULT_PAGE_SIZE, movieTypes } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';
 
-export default function MovieList() {
+export function MovieList() {
   const {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();

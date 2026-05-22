@@ -34,7 +34,7 @@ type SliderFieldProps<T extends FieldValues> = {
   markers?: (number | string)[];
 };
 
-export default function SliderField<T extends FieldValues>({
+export function SliderField<T extends FieldValues>({
   control,
   name,
   label,

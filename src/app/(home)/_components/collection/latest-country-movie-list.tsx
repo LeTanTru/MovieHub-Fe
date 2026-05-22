@@ -10,7 +10,7 @@ type LastestCountryMovieListProps = {
   collectionList: CollectionResType[];
 };
 
-export default function LastestCountryMovieList({
+export function LastestCountryMovieList({
   collectionList
 }: LastestCountryMovieListProps) {
   return (

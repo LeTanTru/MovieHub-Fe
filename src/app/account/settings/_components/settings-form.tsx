@@ -20,7 +20,7 @@ import { useMemo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { ConfirmModal } from '@/components/modal';
 
-export default function SettingsForm() {
+export function SettingsForm() {
   const { profile } = useAuth();
 
   const settings = JSON.parse(profile?.settings || '{}');

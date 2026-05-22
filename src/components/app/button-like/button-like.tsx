@@ -64,7 +64,7 @@ type ButtonLikeProps = {
   showTooltip?: boolean;
 } & VariantProps<typeof buttonVariants>;
 
-export default function ButtonLike({
+export function ButtonLike({
   targetId,
   className,
   refetch,

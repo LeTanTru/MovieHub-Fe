@@ -140,7 +140,7 @@ type UploadImageFieldProps<T extends FieldValues> = {
   deleteImageFn?: (url: string) => Promise<ApiResponse<any> | undefined>;
 };
 
-export default function UploadImageField<T extends FieldValues>({
+export function UploadImageField<T extends FieldValues>({
   control,
   name,
   label,

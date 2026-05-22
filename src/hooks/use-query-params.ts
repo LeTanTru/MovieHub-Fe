@@ -1,7 +1,7 @@
-import useNavigate from '@/hooks/use-navigate';
+import { useNavigate } from './use-navigate';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-const useQueryParams = <S extends Record<string, any>>() => {
+export const useQueryParams = <S extends Record<string, any>>() => {
   const navigate = useNavigate();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -72,5 +72,3 @@ const useQueryParams = <S extends Record<string, any>>() => {
     setQueryParams
   };
 };
-
-export default useQueryParams;

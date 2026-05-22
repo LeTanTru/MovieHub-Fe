@@ -22,7 +22,7 @@ import { route } from '@/routes';
 import { useNavigate } from '@/hooks';
 import { Separator } from '@/components/ui/separator';
 
-export default function RegisterForm() {
+export function RegisterForm() {
   const navigate = useNavigate();
   const defaultValues: RegisterType = {
     email: '',

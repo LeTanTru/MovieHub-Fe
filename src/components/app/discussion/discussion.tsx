@@ -39,7 +39,7 @@ type DiscussionProps = {
   variant?: 'detail' | 'watch';
 };
 
-export default function Discussion({
+export function Discussion({
   toId,
   className,
   variant = 'detail'

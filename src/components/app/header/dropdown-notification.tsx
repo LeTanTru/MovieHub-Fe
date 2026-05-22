@@ -1,6 +1,6 @@
 'use client';
 
-import NotificationList from './notification-list';
+import { NotificationList } from './notification-list';
 import { Button } from '@/components/form';
 import { CircleLoading } from '@/components/loading';
 import { ConfirmModal } from '@/components/modal';
@@ -32,7 +32,7 @@ import { Bell, CheckCheck, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-export default function DropdownNotification() {
+export function DropdownNotification() {
   const { isAuthenticated } = useAuth();
 
   const {

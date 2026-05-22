@@ -14,7 +14,7 @@ type UseOutroSkipProps = {
   onNextEpisode: () => void;
 };
 
-const useOutroSkip = ({
+export const useOutroSkip = ({
   autoNextEpisode,
   video,
   playerRef,
@@ -65,5 +65,3 @@ const useOutroSkip = ({
 
   return { handleTimeUpdate };
 };
-
-export default useOutroSkip;

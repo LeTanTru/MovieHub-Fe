@@ -6,7 +6,7 @@ import { useMovieStore } from '@/store';
 import { formatDate } from '@/utils';
 import Image from 'next/image';
 
-export default function ScheduleBadge() {
+export function ScheduleBadge() {
   const movie = useMovieStore((s) => s.movie);
 
   const { data: nextEpisode } = useMovieNextEpisodeQuery(movie?.id || '');

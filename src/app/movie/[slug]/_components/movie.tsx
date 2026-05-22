@@ -12,14 +12,14 @@ import { useShallow } from 'zustand/shallow';
 import { Discussion } from '@/components/app/discussion';
 import { MovieActionBar } from '@/components/app/movie-action-bar';
 import { MovieTabs } from '@/components/app/movie-tabs';
-import NotFound from './not-found';
+import { NotFound } from './not-found';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type MovieProps = {
   id: string;
 };
 
-export default function Movie({ id }: MovieProps) {
+export function Movie({ id }: MovieProps) {
   const { setMovie, setMoviePerson } = useMovieStore(
     useShallow((s) => ({
       setMovie: s.setMovie,

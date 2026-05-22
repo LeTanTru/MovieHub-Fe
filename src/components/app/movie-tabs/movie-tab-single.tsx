@@ -12,7 +12,7 @@ type MovieTabSingleProps = {
   movie: MovieResType;
 };
 
-export default function MovieTabSingle({ movie }: MovieTabSingleProps) {
+export function MovieTabSingle({ movie }: MovieTabSingleProps) {
   const navigate = useNavigate();
 
   const handleSeasonClick = (season: SeasonResType) => {

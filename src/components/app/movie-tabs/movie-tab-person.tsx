@@ -1,7 +1,7 @@
 'use client';
 
 import { MovieTabHeading } from '@/components/app/heading';
-import MotionWrapper from './motion-wrapper';
+import { MotionWrapper } from './motion-wrapper';
 import { PersonCard } from '@/components/app/person-card';
 import {
   MOVIE_TAB_ACTOR,
@@ -17,10 +17,7 @@ type MovieTabPersonProps = {
   direction: number;
 };
 
-export default function MovieTabPerson({
-  kind,
-  direction
-}: MovieTabPersonProps) {
+export function MovieTabPerson({ kind, direction }: MovieTabPersonProps) {
   const moviePerson = useMovieStore((state) => state.moviePerson);
 
   const personList = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {

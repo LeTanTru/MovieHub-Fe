@@ -8,20 +8,17 @@ import {
 } from '@vidstack/react';
 import { SettingsIcon } from '@vidstack/react/icons';
 import { buttonClass, menuClass, tooltipClass } from './styles';
-import CaptionSubmenu from './caption-submenu';
-import QualitySubmenu from './quality-submenu';
-import SpeedSubmenu from './speed-submenu';
-import VolumeSubmenu from './volume-submenu';
+import { CaptionSubmenu } from './caption-submenu';
+import { QualitySubmenu } from './quality-submenu';
+import { SpeedSubmenu } from './speed-submenu';
+import { VolumeSubmenu } from './volume-submenu';
 
 type SettingsProps = {
   placement: MenuPlacement;
   tooltipPlacement: TooltipPlacement;
 };
 
-export default function SettingMenu({
-  placement,
-  tooltipPlacement
-}: SettingsProps) {
+export function SettingMenu({ placement, tooltipPlacement }: SettingsProps) {
   return (
     <Menu.Root className='parent'>
       <Tooltip.Root>

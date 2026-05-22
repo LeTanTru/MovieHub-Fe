@@ -11,7 +11,7 @@ type MovieGridProps = {
   className?: string;
 };
 
-export default function MovieGrid({
+export function MovieGrid({
   movieList,
   dir = 'up',
   className

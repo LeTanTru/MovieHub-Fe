@@ -1,7 +1,7 @@
 'use client';
 
-import Filter from './filter';
-import MovieList from './movie-list';
+import { Filter } from './filter';
+import { MovieList } from './movie-list';
 import { DEFAULT_PAGE_SIZE, SEARCH_MOVIE_LIST_ID } from '@/constants';
 import { useDebounce, useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';
@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { animateScroll, scroller } from 'react-scroll';
 import { useShallow } from 'zustand/shallow';
 
-export default function Search() {
+export function Search() {
   const { keyword } = useSearchStore(
     useShallow((s) => ({
       keyword: s.keyword

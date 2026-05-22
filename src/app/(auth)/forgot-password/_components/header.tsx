@@ -6,9 +6,7 @@ type ForgotPasswordHeaderProps = {
   step: ForgotPasswordStepType;
 };
 
-export default function ForgotPasswordHeader({
-  step
-}: ForgotPasswordHeaderProps) {
+export function ForgotPasswordHeader({ step }: ForgotPasswordHeaderProps) {
   return (
     <div className='mb-4 flex flex-col items-center gap-2'>
       <h3 className='text-xl font-semibold'>Quên mật khẩu</h3>

@@ -1,4 +1,4 @@
-import ActorCell from './actor-cell';
+import { ActorCell } from './actor-cell';
 import { cn } from '@/lib';
 import { PersonResType } from '@/types';
 
@@ -6,7 +6,7 @@ type ActorListProps = {
   actors: PersonResType[];
 };
 
-export default function ActorList({ actors }: ActorListProps) {
+export function ActorList({ actors }: ActorListProps) {
   return (
     <div
       className={cn('max-1120:hidden mb-5 flex-wrap items-end gap-2', {

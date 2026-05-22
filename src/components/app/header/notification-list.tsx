@@ -17,7 +17,7 @@ type Props = {
   onItemClick?: () => void;
 };
 
-export default function NotificationList({
+export function NotificationList({
   notificationList,
   loading,
   onDelete,

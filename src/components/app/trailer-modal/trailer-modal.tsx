@@ -21,7 +21,7 @@ type TrailerModalProps = {
   token: string;
 };
 
-export default function TrailerModal({
+export function TrailerModal({
   opened,
   video,
   onClose,
