@@ -49,6 +49,7 @@ export default function ChangePasswordForm() {
       if (res.result) {
         form.reset();
         await logoutMutate();
+        removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
         notify.success('Đổi mật khẩu thành công. Vui lòng đăng nhập lại');
         setTimeout(() => {
           window.location.href = route.login.path;

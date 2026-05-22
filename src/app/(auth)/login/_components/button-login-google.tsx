@@ -8,10 +8,13 @@ import { AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useLoginGoogleMutation, useLoginGoogleQuery } from '@/queries';
 import { route } from '@/routes';
+import { useAuthStore } from '@/store';
 import { getData, notify, removeData } from '@/utils';
 import Image from 'next/image';
 
 export default function ButtonLoginGoogle() {
+  const setAccessToken = useAuthStore((s) => s.setAccessToken);
+  const setProfile = useAuthStore((s) => s.setProfile);
   const messageListenerRef = useRef<((event: MessageEvent) => void) | null>(
     null
   );
@@ -30,7 +33,15 @@ export default function ButtonLoginGoogle() {
     try {
       const res = await loginGoogleMutate(code);
       if (res.result) {
+        setAccessToken(res.data?.access_token as string);
+
         notify.success('Đăng nhập thành công');
+
+        const profileData = res.data?.profile;
+
+        if (profileData) {
+          setProfile(profileData);
+        }
 
         setTimeout(() => {
           const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);

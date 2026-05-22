@@ -17,7 +17,6 @@ import { redirect, unstable_rethrow } from 'next/navigation';
 const isClient = typeof window !== 'undefined';
 const axiosInstance = axios.create();
 const TIME_OUT = 10000;
-let clientAccessToken: string | null = null;
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -49,9 +48,12 @@ const refreshToken = async () => {
 
   if (data?.result && data?.data) {
     const newAccessToken = data.data.access_token;
+    const newCsrfToken = data.data.csrfToken;
     if (isClient) {
-      clientAccessToken = newAccessToken;
-      return newAccessToken;
+      useAuthStore.getState().setAccessToken(newAccessToken);
+      if (newCsrfToken) {
+        useAuthStore.getState().setCsrfToken(newCsrfToken);
+      }
     }
     return newAccessToken;
   }
@@ -102,12 +104,15 @@ axiosInstance.interceptors.response.use(
         logger.error('[REFRESH_TOKEN_ERROR]', error);
         if (
           error instanceof AxiosError &&
-          error?.response?.status === HttpStatusCode.BadRequest &&
-          error?.response?.data?.message &&
-          error?.response?.data?.message?.includes('Invalid refresh token')
+          (error?.response?.status === HttpStatusCode.BadRequest ||
+            error?.response?.status === HttpStatusCode.Unauthorized ||
+            error?.response?.status === HttpStatusCode.Forbidden)
         ) {
-          await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
-          clientAccessToken = null;
+          try {
+            await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
+          } catch (e) {
+            logger.error('[LOGOUT_ON_REFRESH_FAILED]', e);
+          }
           if (isClient) {
             useAuthStore.getState().clearState();
             const loginPath = route.login.path;
@@ -157,7 +162,7 @@ export const sendRequest = async <T>(
 
   if (!ignoreAuth) {
     if (isClient) {
-      accessToken = clientAccessToken;
+      accessToken = useAuthStore.getState().accessToken;
     } else {
       accessToken = await getCookie(storageKeys.ACCESS_TOKEN);
     }
@@ -265,10 +270,6 @@ export const http = {
   delete<T>(apiConfig: ApiConfig, payload?: Payload) {
     return sendRequest<T>(apiConfig, payload);
   }
-};
-
-export const clearClientAccessToken = () => {
-  clientAccessToken = null;
 };
 
 export function isAxiosError(error: unknown): error is AxiosError {

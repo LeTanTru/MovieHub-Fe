@@ -32,6 +32,7 @@ export type LoginResType = {
   expires_in: number;
   scope: string;
   jti: string;
+  profile?: ProfileResType | null;
 };
 
 export type RefreshTokenResType = {
@@ -43,23 +44,21 @@ export type RefreshTokenResType = {
   jti: string;
 };
 
-export type AuthResType = {
-  authenticated: boolean;
-};
-
 export type SessionResType = {
-  authenticated: boolean;
+  accessToken: string;
   csrfToken: string;
-  profile: ProfileResType | null;
+  profile: ProfileResType;
 };
 
 type AuthStoreState = {
+  accessToken: string | null;
   csrfToken: string | null;
   profile: ProfileResType | null;
 };
 
 type AuthStoreActions = {
   clearState: () => void;
+  setAccessToken: (token: string | null) => void;
   setCsrfToken: (token: string | null) => void;
   setProfile: (profile: ProfileResType | null) => void;
 };
