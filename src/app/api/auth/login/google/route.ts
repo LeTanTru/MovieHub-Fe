@@ -1,14 +1,16 @@
 import { authApiRequest } from '@/api-requests';
 import {
   ACCESS_TOKEN_MAX_AGE,
+  apiConfig,
   CSRF_TOKEN_MAX_AGE,
   REFRESH_TOKEN_MAX_AGE,
   storageKeys
 } from '@/constants';
 import { logger } from '@/logger';
-import { isAxiosError, setCookie } from '@/utils';
+import { http, isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
+import { ApiResponse, ProfileResType } from '@/types';
 import { makeCookieOption } from '../../_lib/make-cookie-option';
 import { generateCsrfToken } from '../../_lib/generate-csrf-token';
 
@@ -22,6 +24,23 @@ export async function POST(request: NextRequest) {
     const accessToken = res.access_token;
     const refreshToken = res.refresh_token;
     const csrfToken = generateCsrfToken();
+
+    let profile: ProfileResType | null = null;
+    if (accessToken) {
+      const profileRes = await http.get<ApiResponse<ProfileResType>>(
+        apiConfig.user.getProfile,
+        {
+          options: {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          }
+        }
+      );
+      if (profileRes.result && profileRes.data) {
+        profile = profileRes.data;
+      }
+    }
 
     await Promise.all([
       setCookie(
@@ -42,7 +61,7 @@ export async function POST(request: NextRequest) {
     ]);
 
     return NextResponse.json(
-      { result: true, data: res },
+      { result: true, data: { ...res, profile } },
       { status: HttpStatusCode.Ok }
     );
   } catch (error) {

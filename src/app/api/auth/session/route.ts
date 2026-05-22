@@ -1,8 +1,9 @@
 import { generateCsrfToken } from '../_lib/generate-csrf-token';
 import { makeCookieOption } from '../_lib/make-cookie-option';
-import { CSRF_TOKEN_MAX_AGE, storageKeys } from '@/constants';
+import { apiConfig, CSRF_TOKEN_MAX_AGE, storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import { getCookie, setCookie } from '@/utils';
+import { ApiResponse, ProfileResType } from '@/types';
+import { getCookie, http, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextResponse } from 'next/server';
 
@@ -10,7 +11,17 @@ export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
+    let profile: ProfileResType | null = null;
     const accessToken = await getCookie(storageKeys.ACCESS_TOKEN);
+
+    if (accessToken) {
+      const res = await http.get<ApiResponse<ProfileResType>>(
+        apiConfig.user.getProfile
+      );
+      if (res.result && res.data) {
+        profile = res.data;
+      }
+    }
 
     let csrfToken = await getCookie(storageKeys.CSRF_TOKEN);
     if (!csrfToken) {
@@ -27,7 +38,8 @@ export async function GET() {
         result: true,
         data: {
           accessToken,
-          csrfToken
+          csrfToken,
+          profile
         }
       },
       {

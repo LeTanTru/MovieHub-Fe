@@ -6,11 +6,7 @@ import { Button } from '@/components/form';
 import envConfig from '@/config';
 import { AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import {
-  useLoginGoogleMutation,
-  useLoginGoogleQuery,
-  useProfileQuery
-} from '@/queries';
+import { useLoginGoogleMutation, useLoginGoogleQuery } from '@/queries';
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
 import { getData, notify, removeData } from '@/utils';
@@ -28,7 +24,6 @@ export default function ButtonLoginGoogle() {
     isLoading,
     isFetching
   } = useLoginGoogleQuery({ loginType: AppConstants.loginType });
-  const { refetch: getProfile } = useProfileQuery();
   const { mutateAsync: loginGoogleMutate, isPending: loginGoogleLoading } =
     useLoginGoogleMutation();
 
@@ -42,8 +37,7 @@ export default function ButtonLoginGoogle() {
 
         notify.success('Đăng nhập thành công');
 
-        const profile = await getProfile();
-        const profileData = profile.data;
+        const profileData = res.data?.profile;
 
         if (profileData) {
           setProfile(profileData);

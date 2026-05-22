@@ -8,7 +8,12 @@ import {
   storageKeys
 } from '@/constants';
 import { logger } from '@/logger';
-import { LoginBodyType, LoginResType } from '@/types';
+import {
+  ApiResponse,
+  LoginBodyType,
+  LoginResType,
+  ProfileResType
+} from '@/types';
 import { http, isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
@@ -41,6 +46,23 @@ export async function POST(request: NextRequest) {
     const refreshToken = res.refresh_token;
     const csrfToken = generateCsrfToken();
 
+    let profile: ProfileResType | null = null;
+    if (accessToken) {
+      const profileRes = await http.get<ApiResponse<ProfileResType>>(
+        apiConfig.user.getProfile,
+        {
+          options: {
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          }
+        }
+      );
+      if (profileRes.result && profileRes.data) {
+        profile = profileRes.data;
+      }
+    }
+
     await Promise.all([
       setCookie(
         storageKeys.ACCESS_TOKEN,
@@ -60,7 +82,7 @@ export async function POST(request: NextRequest) {
     ]);
 
     return NextResponse.json(
-      { result: true, data: res },
+      { result: true, data: { ...res, profile } },
       { status: HttpStatusCode.Ok }
     );
   } catch (error) {

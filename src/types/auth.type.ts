@@ -32,6 +32,7 @@ export type LoginResType = {
   expires_in: number;
   scope: string;
   jti: string;
+  profile?: ProfileResType | null;
 };
 
 export type RefreshTokenResType = {
@@ -46,6 +47,7 @@ export type RefreshTokenResType = {
 export type SessionResType = {
   accessToken: string;
   csrfToken: string;
+  profile: ProfileResType;
 };
 
 type AuthStoreState = {

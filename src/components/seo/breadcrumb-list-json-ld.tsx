@@ -1,3 +1,5 @@
+import { safeJsonLd } from './json-ld.util';
+
 type BreadcrumbListItem = {
   name: string;
   item: string;
@@ -22,7 +24,7 @@ export const BreadcrumbListJsonLd = ({ items }: BreadcrumbListProps) => {
   return (
     <script
       type='application/ld+json'
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 };
@@ -57,7 +59,7 @@ export const ItemListJsonLd = ({
   return (
     <script
       type='application/ld+json'
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(data) }}
     />
   );
 };

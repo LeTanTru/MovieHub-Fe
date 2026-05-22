@@ -63,7 +63,7 @@ export async function POST() {
     ]);
 
     return NextResponse.json(
-      { result: true, data: res },
+      { result: true, data: { ...res, csrfToken } },
       { status: HttpStatusCode.Ok }
     );
   } catch (error) {

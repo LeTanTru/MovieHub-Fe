@@ -18,26 +18,22 @@ export default function ButtonLogout({
   className,
   ...props
 }: ButtonLogoutProps) {
-  const setProfile = useAuthStore((s) => s.setProfile);
+  const clearState = useAuthStore((s) => s.clearState);
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();
 
   const handleLogout = async () => {
     try {
-      const res = await logoutMutate();
-      if (res.result) {
-        removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
-        setProfile(null);
-        notify.success('Đăng xuất thành công');
-        setTimeout(() => {
-          window.location.reload();
-        }, LOGOUT_REDIRECT_DELAY);
-      } else {
-        notify.error('Đăng xuất thất bại');
-      }
+      await logoutMutate();
     } catch (error) {
       logger.error('[LOGOUT_ERROR]', error);
-      notify.error('Đăng xuất thất bại');
+    } finally {
+      removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
+      clearState();
+      notify.success('Đăng xuất thành công');
+      setTimeout(() => {
+        window.location.reload();
+      }, LOGOUT_REDIRECT_DELAY);
     }
   };
   return (
