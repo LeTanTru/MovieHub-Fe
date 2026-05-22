@@ -17,6 +17,7 @@ import { redirect, unstable_rethrow } from 'next/navigation';
 const isClient = typeof window !== 'undefined';
 const axiosInstance = axios.create();
 const TIME_OUT = 10000;
+let clientAccessToken: string | null = null;
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -49,7 +50,7 @@ const refreshToken = async () => {
   if (data?.result && data?.data) {
     const newAccessToken = data.data.access_token;
     if (isClient) {
-      useAuthStore.getState().setAccessToken(newAccessToken);
+      clientAccessToken = newAccessToken;
       return newAccessToken;
     }
     return newAccessToken;
@@ -106,6 +107,7 @@ axiosInstance.interceptors.response.use(
           error?.response?.data?.message?.includes('Invalid refresh token')
         ) {
           await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
+          clientAccessToken = null;
           if (isClient) {
             useAuthStore.getState().clearState();
             const loginPath = route.login.path;
@@ -155,7 +157,7 @@ export const sendRequest = async <T>(
 
   if (!ignoreAuth) {
     if (isClient) {
-      accessToken = useAuthStore.getState().accessToken;
+      accessToken = clientAccessToken;
     } else {
       accessToken = await getCookie(storageKeys.ACCESS_TOKEN);
     }
@@ -263,6 +265,10 @@ export const http = {
   delete<T>(apiConfig: ApiConfig, payload?: Payload) {
     return sendRequest<T>(apiConfig, payload);
   }
+};
+
+export const clearClientAccessToken = () => {
+  clientAccessToken = null;
 };
 
 export function isAxiosError(error: unknown): error is AxiosError {

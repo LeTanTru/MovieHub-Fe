@@ -43,20 +43,23 @@ export type RefreshTokenResType = {
   jti: string;
 };
 
+export type AuthResType = {
+  authenticated: boolean;
+};
+
 export type SessionResType = {
-  accessToken: string;
+  authenticated: boolean;
   csrfToken: string;
+  profile: ProfileResType | null;
 };
 
 type AuthStoreState = {
-  accessToken: string | null;
   csrfToken: string | null;
   profile: ProfileResType | null;
 };
 
 type AuthStoreActions = {
   clearState: () => void;
-  setAccessToken: (token: string | null) => void;
   setCsrfToken: (token: string | null) => void;
   setProfile: (profile: ProfileResType | null) => void;
 };

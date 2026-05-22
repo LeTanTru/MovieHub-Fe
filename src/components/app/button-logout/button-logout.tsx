@@ -1,12 +1,11 @@
 'use client';
 
 import { Button } from '@/components/form';
-import { storageKeys } from '@/constants';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useLogoutMutation } from '@/queries';
 import { useAuthStore } from '@/store';
-import { notify, removeData } from '@/utils';
+import { clearClientAccessToken, notify } from '@/utils';
 import { LogOutIcon } from 'lucide-react';
 import { ConfirmModal } from '@/components/modal';
 
@@ -18,7 +17,7 @@ export default function ButtonLogout({
   className,
   ...props
 }: ButtonLogoutProps) {
-  const setProfile = useAuthStore((s) => s.setProfile);
+  const clearState = useAuthStore((s) => s.clearState);
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();
 
@@ -26,8 +25,8 @@ export default function ButtonLogout({
     try {
       const res = await logoutMutate();
       if (res.result) {
-        removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
-        setProfile(null);
+        clearClientAccessToken();
+        clearState();
         notify.success('Đăng xuất thành công');
         setTimeout(() => {
           window.location.reload();

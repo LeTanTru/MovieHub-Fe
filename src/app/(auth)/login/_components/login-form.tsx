@@ -5,29 +5,17 @@ import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
 import { getData, notify, removeData } from '@/utils';
 import { storageKeys } from '@/constants';
-import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useLoginMutation, useProfileQuery } from '@/queries';
+import { useLoginMutation } from '@/queries';
 import ButtonLoginGoogle from './button-login-google';
 import { route } from '@/routes';
 import { Separator } from '@/components/ui/separator';
-import { useShallow } from 'zustand/shallow';
 
 export default function LoginForm() {
-  const { refetch: getProfile } = useProfileQuery();
   const { mutateAsync: loginMutate, isPending: loginLoading } =
     useLoginMutation();
-
-  const { setAccessToken, setProfile } = useAuthStore(
-    useShallow((s) => {
-      return {
-        setAccessToken: s.setAccessToken,
-        setProfile: s.setProfile
-      };
-    })
-  );
 
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const defaultValues: LoginType = {
@@ -39,17 +27,6 @@ export default function LoginForm() {
     await loginMutate(values, {
       onSuccess: async (res) => {
         if (res.result) {
-          const accessToken = res.data?.access_token;
-
-          setAccessToken(accessToken as string);
-
-          const profile = await getProfile();
-          const profileData = profile.data;
-
-          if (profileData) {
-            setProfile(profileData);
-          }
-
           notify.success('Đăng nhập thành công');
 
           setTimeout(() => {

@@ -1,9 +1,9 @@
 # Security Audit Report
 
-**Generated:** 2026-05-20  
+**Generated:** 2026-05-21  
 **Scanner:** `.claude/agents/security-vulnerability-scanner.md`  
-**Scope:** Full frontend repository static security review covering auth/session, OAuth/CSRF, XSS/injection, API access control, dependencies, CI/CD, Docker, MQTT, and video/third-party surfaces.  
-**Method:** 4 parallel security sub-agent scans + local validation. Restricted files were not read: `supersecrets.txt`, `credentials.json`, `.env`, `.env.local`.
+**Scope:** Full frontend repository static security review covering auth/session, route protection, client rendering/data flow, URL handling, dependencies, Docker/CI, headers, public environment exposure, and MQTT.  
+**Method:** 3 parallel security sub-agent scans plus local verification. Restricted files were not read: `supersecrets.txt`, `credentials.json`, `.env`, `.env.local`.
 
 ---
 
@@ -11,71 +11,76 @@
 
 | Category | Issues Found | Critical | High | Medium | Low |
 | -------- | ------------ | -------- | ---- | ------ | --- |
-| Total    | 17           | 1        | 5    | 9      | 2   |
+| Total    | 11           | 1        | 5    | 4      | 1   |
+
+## Status Update
+
+**Updated:** 2026-05-22
+
+- Finding 1 is **mitigated in frontend code**. Description and bio fields no longer flow through `dangerouslySetInnerHTML`, and `sanitizeText()` now strips input to plain text before rendering.
+- Findings 2 and 3 are **fixed in frontend code**. All JSON-LD script sinks now serialize through a centralized `safeJsonLd()` helper that escapes script-breaking characters before insertion.
+- Finding 4 is **mitigated in frontend code**. `/api/auth/session` no longer returns the bearer token, login responses no longer echo token material, and the access token has been removed from Zustand app state.
+- `sanitize-html@2.17.0` is still present in the dependency tree, so package replacement/removal remains open under Finding 6.
 
 ### Highest-Priority Findings
 
-1. `sanitize-html@2.17.0` is affected by CVE-2026-44990 / GHSA-rpr9-rxv7-x643 and is used in trusted HTML rendering paths.
-2. HttpOnly auth tokens are re-exposed to client JavaScript through internal auth JSON responses and Zustand memory.
-3. JSON-LD uses raw `JSON.stringify()` inside `dangerouslySetInnerHTML`, allowing stored script-breakout XSS from API-controlled titles/names.
-4. Public MQTT credentials are bundled into the browser and Docker image via `NEXT_PUBLIC_MQTT_*`.
-5. `axios@1.13.2` is affected by CVE-2026-42041 / GHSA-w9j2-pvgh-6h63.
-6. Public discussion hydration may expose full profile fields through comment/review author DTOs.
+1. Finding 1 has been mitigated in code, but `sanitize-html@2.17.0` still remains in the dependency tree under Finding 6.
+2. Findings 2 and 3 have been fixed in code by escaping JSON-LD before insertion into script tags.
+3. Finding 4 has been mitigated by removing the `session` and login response leak path, but full bearer confinement still requires a server-proxy architecture for authenticated client traffic.
+4. `NEXT_PUBLIC_MQTT_USERNAME` and `NEXT_PUBLIC_MQTT_PASSWORD` are bundled into the client.
+5. Production dependency audit reported `29` vulnerabilities: `2 Critical`, `10 High`, `16 Moderate`, `1 Low`.
 
 ---
 
 ## Critical Vulnerabilities
 
-### 1. `sanitize-html@2.17.0` XSS Bypass via `xmp` Raw-Text Passthrough
+### 1. Sanitizer Bypass Can Lead to XSS
 
 **Severity:** Critical  
 **Type:** CWE-79, Cross-Site Scripting  
 **OWASP:** A03:2021 - Injection  
-**Locations:** `package.json:67`, `yarn.lock`, `src/utils/sanitize.util.ts:1`, `src/utils/sanitize.util.ts:4`, `src/utils/sanitize.util.ts:18`, `src/utils/sanitize.util.ts:236`  
-**Evidence:** Dependency audit reports GHSA-rpr9-rxv7-x643 / CVE-2026-44990 for `sanitize-html@2.17.0`. The application uses `sanitize-html` before rendering API-controlled descriptions through `dangerouslySetInnerHTML`.
+**Locations:** `package.json:67`, `yarn.lock`, `src/utils/sanitize.util.ts:17`, example sink `src/app/(home)/_components/slider/slider-item.tsx:181`
 
-**Impact:** Attacker-controlled HTML passed through `sanitizeText()` or `stripHtml()` can survive sanitization as executable markup if rendered as trusted HTML.
+**Status:** Mitigated on 2026-05-22. The exploit path in the frontend was removed by converting `sanitizeText()` to plain-text sanitization and replacing description/bio `dangerouslySetInnerHTML` sinks with normal React text rendering in:
 
-**Remediation:** Upgrade or patch `sanitize-html` as soon as a fixed release is available. Until then, explicitly add `xmp` to `nonTextTags`, avoid vulnerable raw-text discard behavior, and add regression tests for `<xmp><script>...` payloads.
+- `src/app/(home)/_components/slider/slider-item.tsx`
+- `src/components/app/collection/anime-item.tsx`
+- `src/components/app/watch/watch-info.tsx`
+- `src/components/app/movie-side/movie-side.tsx`
+- `src/app/person/[id]/_components/person-sidebar.tsx`
 
-**Effort:** Quick to Moderate
+**Residual Risk:** The vulnerable `sanitize-html@2.17.0` dependency is still installed. That package risk remains tracked under Finding 6 until it is replaced or removed.
+
+**Evidence:**
+
+`package.json` declares `sanitize-html` and `yarn.lock` resolves `sanitize-html@2.17.0`. `sanitizeText()` output is rendered through `dangerouslySetInnerHTML` in several UI paths.
+
+```tsx
+dangerouslySetInnerHTML={{
+  __html: sanitizeText(slider.movie.description)
+}}
+```
+
+**Impact:** Before the fix, attacker-controlled description or bio HTML could survive sanitization and execute in user browsers through `dangerouslySetInnerHTML`. That direct rendering path is now removed.
+
+**Remediation:** Done for the frontend sink path by switching these fields to plain-text rendering. Remaining follow-up is to replace/remove `sanitize-html` so the vulnerable package is no longer shipped.
+
+**Effort:** Moderate
 
 ---
 
 ## High Vulnerabilities
 
-### 2. HttpOnly Session Tokens Re-Exposed to Client JavaScript
+### [FIXED] 2. JSON-LD Script Injection via Raw `JSON.stringify()`
 
 **Severity:** High  
-**Type:** CWE-922 / CWE-200, Sensitive Information Exposure  
-**OWASP:** A02:2021 - Cryptographic Failures, A07:2021 - Identification and Authentication Failures  
-**Locations:** `src/app/api/auth/session/route.ts:8-13`, `src/app/api/auth/login/route.ts:37-63`, `src/app/api/auth/login/google/route.ts:20-45`, `src/app/api/auth/refresh-token/route.ts:39-66`, `src/components/providers/app-provider/app-provider.tsx:53-57`
-
-**Evidence:**
-
-```ts
-return NextResponse.json({
-  data: {
-    accessToken: accessTokenCookie
-  }
-});
-```
-
-Login, Google login, and refresh routes also return `data: res`, which includes token fields already stored as HttpOnly cookies. `AppProvider` copies `session.accessToken` into Zustand state.
-
-**Impact:** Any XSS, malicious browser extension, or compromised first-party script can call `/api/auth/session` or inspect auth responses and steal bearer tokens. This defeats the main security value of HttpOnly cookies.
-
-**Remediation:** Do not return access or refresh tokens in JSON. Keep tokens exclusively in HttpOnly cookies or server-side session storage. Return only `{ result: true }` or safe session/profile metadata.
-
-**Effort:** Moderate
-
-### 3. JSON-LD Script Injection via Raw `JSON.stringify()`
-
-**Severity:** High  
-**Type:** CWE-79, Stored XSS  
+**Type:** CWE-79 / CWE-116, Stored or Reflected XSS  
 **OWASP:** A03:2021 - Injection  
-**Locations:** `src/components/seo/json-ld.tsx:7-10`, `src/components/seo/breadcrumb-list-json-ld.tsx:23-26`, `src/components/seo/breadcrumb-list-json-ld.tsx:57-61`  
-**Data Flow:** API-controlled values from movie/person/category/watch pages flow into JSON-LD objects, including `movie.title`, `movie.originalTitle`, actor/director names, category names, and movie names.
+**Locations:** `src/components/seo/json-ld.tsx:9`, `src/app/movie/[slug]/page.tsx:224`, `src/app/watch/[slug]/page.tsx:188`, `src/app/person/[id]/page.tsx:113`
+
+**Status:** Fixed on 2026-05-22. JSON-LD serialization was centralized into `src/components/seo/json-ld.util.ts`, and `JsonLd` now renders `safeJsonLd(data)` instead of raw `JSON.stringify(data)`.
+
+**Fix Details:** `safeJsonLd()` escapes `<`, `>`, `&`, U+2028, and U+2029 after `JSON.stringify()`, which prevents `</script>` breakout and other script-context injection when backend-controlled fields are embedded into JSON-LD.
 
 **Evidence:**
 
@@ -86,18 +91,81 @@ Login, Google login, and refresh routes also return `data: res`, which includes 
 />
 ```
 
-**Impact:** If a stored title/name contains `</script><script>...</script>`, `JSON.stringify()` does not make the value safe for a script element. The browser can terminate the JSON-LD script and execute injected JavaScript.
+**Impact:** Before the fix, backend-controlled fields such as `movie.title`, `movie.description`, `person.name`, or `person.bio` could terminate the JSON-LD script and execute attacker JavaScript. That script-breakout path is now closed by escaped serialization.
 
-**Remediation:** Serialize JSON-LD with script-context escaping. Replace `<`, `>`, `&`, U+2028, and U+2029 after `JSON.stringify()`, or use a safe serializer such as `serialize-javascript` with JSON mode.
+**Remediation:** Done. `JsonLd` now uses a centralized `safeJsonLd(data)` helper for script-safe JSON serialization.
 
 **Effort:** Quick
 
-### 4. Public MQTT Credentials Bundled into Client and Docker Image
+### [FIXED] 3. Breadcrumb and ItemList JSON-LD Use the Same Unsafe Script Sink
 
 **Severity:** High  
-**Type:** CWE-798 / CWE-200, Hardcoded or Exposed Credentials  
-**OWASP:** A05:2021 - Security Misconfiguration  
-**Locations:** `src/config.ts:13-15`, `src/lib/mqtt.ts:13-15`, `Dockerfile:26-40`, `.github/workflows/docker.yml:40-42`, `.github/workflows/docker.yml:94-96`
+**Type:** CWE-79 / CWE-116, Stored or Reflected XSS  
+**OWASP:** A03:2021 - Injection  
+**Locations:** `src/components/seo/breadcrumb-list-json-ld.tsx:25`, `src/components/seo/breadcrumb-list-json-ld.tsx:60`
+
+**Status:** Fixed on 2026-05-22. `BreadcrumbListJsonLd` and `ItemListJsonLd` now use the same centralized `safeJsonLd(data)` helper as `JsonLd`.
+
+**Fix Details:** The fix covers breadcrumb and item-list inputs such as `movie.title`, `categoryName`, `countryName`, and `topicName` by escaping script-breaking characters before the JSON-LD payload is written into the `<script type="application/ld+json">` sink.
+
+**Evidence:**
+
+```tsx
+dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+```
+
+Inputs include `movie.title`, `categoryName`, `countryName`, and `topicName` from category, country, and topic pages.
+
+**Impact:** Before the fix, malicious titles or names could break out of the JSON-LD script and run JavaScript on SEO-rendered pages. That shared sink is now protected by the same escaping helper used for Finding 2.
+
+**Remediation:** Done. `BreadcrumbListJsonLd` and `ItemListJsonLd` now reuse the same `safeJsonLd(data)` helper from Finding 2.
+
+**Effort:** Quick
+
+### [MITIGATED] 4. HttpOnly Access Token Is Exposed Back to JavaScript
+
+**Severity:** High  
+**Type:** CWE-200 / CWE-922, Sensitive Information Exposure  
+**OWASP:** A02:2021 - Cryptographic Failures, A07:2021 - Identification and Authentication Failures  
+**Locations:** `src/app/api/auth/session/route.ts:13`, `src/app/api/auth/session/route.ts:25`, `src/components/providers/app-provider/app-provider.tsx:55`
+
+**Status:** Mitigated on 2026-05-22. `/api/auth/session` now returns only safe session metadata (`authenticated`, `csrfToken`, `profile`) instead of bearer token material. Client login/google-login flows no longer read token material from internal auth responses, and the access token has been removed from Zustand app state.
+
+**Fix Details:** Auth bootstrapping is now driven by the server-side session/profile response rather than copying the bearer token into client state on startup. The client bearer is now kept in the HTTP module only when a protected request has to rehydrate through the refresh flow, which reduces broad token exposure across app code and state tooling.
+
+**Residual Risk:** This is not a full architectural closure. The frontend still performs direct authenticated API/media requests, so the refresh flow can still reintroduce a bearer token into browser JavaScript when protected client traffic needs to recover auth. Fully keeping bearer tokens server-only requires moving authenticated API/media access behind same-origin server routes or another backend-for-frontend/session-proxy pattern.
+
+**Evidence:**
+
+```ts
+const accessToken = await getCookie(storageKeys.ACCESS_TOKEN);
+
+return NextResponse.json({
+  result: true,
+  data: {
+    accessToken,
+    csrfToken
+  }
+});
+```
+
+```ts
+setAccessToken(session.accessToken);
+setCsrfToken(session.csrfToken);
+```
+
+**Impact:** Before the mitigation, `/api/auth/session` returned the access token to browser JavaScript and `AppProvider` copied it into Zustand. That direct session bootstrap leak path is now removed.
+
+**Remediation:** Partially done. `/api/auth/session` now returns safe metadata only, and startup auth state no longer depends on copying the bearer into client state. Remaining work for a full fix is to proxy authenticated API/media traffic through internal server routes so refresh never has to return a bearer token to browser JavaScript.
+
+**Effort:** Moderate
+
+### 5. Public MQTT Credentials Are Shipped to the Browser
+
+**Severity:** High  
+**Type:** CWE-798 / CWE-200, Exposed Credentials  
+**OWASP:** A07:2021 - Identification and Authentication Failures, A05:2021 - Security Misconfiguration  
+**Locations:** `src/config.ts:13`, `src/lib/mqtt.ts:13`, `Dockerfile:26`, `.github/workflows/docker.yml:40`
 
 **Evidence:**
 
@@ -108,39 +176,34 @@ client = mqtt.connect(envConfig.NEXT_PUBLIC_MQTT_BROKER as string, {
 });
 ```
 
-**Impact:** Anyone loading the frontend can extract broker credentials from the JavaScript bundle. If broker ACLs are weak, attackers can subscribe to account notification topics or publish spoofed notifications.
+**Impact:** Anything prefixed `NEXT_PUBLIC_` is client-exposed. Any user can extract broker username/password from shipped JavaScript or runtime config, then connect directly to MQTT unless broker ACLs fully constrain the account.
 
-**Remediation:** Do not ship shared static MQTT credentials in `NEXT_PUBLIC_*`. Issue short-lived per-user MQTT tokens server-side, enforce broker ACLs per user/topic, and avoid passing secrets through Docker build args.
+**Remediation:** Treat browser MQTT credentials as public. Use per-user short-lived broker tokens from a server endpoint, enforce broker ACLs scoped to user/topic, or move privileged MQTT interactions server-side. Do not pass MQTT passwords as Docker build args.
 
 **Effort:** Moderate to Extensive
 
-### 5. `axios@1.13.2` Auth/Error Handling Bypass Gadget
+### 6. Vulnerable Production Dependencies
 
 **Severity:** High  
-**Type:** CWE-1321 / CWE-287, Prototype Pollution Impact on Auth/Error Handling  
-**OWASP:** A07:2021 - Identification and Authentication Failures, A06:2021 - Vulnerable and Outdated Components  
-**Locations:** `package.json:39`, `yarn.lock`
+**Type:** CWE-1104, Use of Vulnerable Components  
+**OWASP:** A06:2021 - Vulnerable and Outdated Components  
+**Locations:** `package.json:39`, `package.json:53`, `package.json:67`, `yarn.lock`
 
-**Evidence:** Dependency audit reports GHSA-w9j2-pvgh-6h63 / CVE-2026-42041 for `axios >=1.0.0 <1.15.1`.
+**Evidence:** `yarn audit --groups dependencies` reported `29` vulnerabilities: `2 Critical`, `10 High`, `16 Moderate`, `1 Low`.
 
-**Impact:** If any dependency or input path pollutes `Object.prototype.validateStatus`, Axios can treat 401/403/500 responses as successful and bypass expected error handling.
+Most actionable packages from the audit output:
 
-**Remediation:** Upgrade Axios to `>=1.15.1` and add defensive tests around auth/API error handling.
+| Package                        | Current     | Reported Issue                                              | Patched / Action                         |
+| ------------------------------ | ----------- | ----------------------------------------------------------- | ---------------------------------------- |
+| `axios`                        | `1.13.2`    | SSRF/proxy bypass and prototype-pollution gadget advisories | Upgrade to `>=1.15.x` per audit          |
+| `sanitize-html`                | `2.17.0`    | Critical XSS advisory                                       | No patch reported; mitigate or replace   |
+| `mqtt > ws`                    | `ws@8.20.0` | Uninitialized memory disclosure                             | Upgrade/override to `ws >=8.20.1`        |
+| `next/sanitize-html > postcss` | mixed       | XSS in CSS stringify output                                 | Pull `postcss >=8.5.10` where possible   |
+| `rimraf > glob > minimatch`    | transitive  | ReDoS advisories                                            | Pull `minimatch >=10.2.3` where possible |
 
-**Effort:** Quick
+**Impact:** Exploitability varies by package and code path. The sanitizer issue is directly relevant because sanitized HTML is rendered. Axios and WebSocket dependencies affect API and MQTT request paths.
 
-### 6. Public Discussion Hydration May Expose Excessive User Data
-
-**Severity:** High  
-**Type:** CWE-200, Excessive Data Exposure  
-**OWASP:** API3:2019 - Excessive Data Exposure / API3:2023 - Broken Object Property Level Authorization  
-**Locations:** `src/types/comment.type.ts:11`, `src/types/review.type.ts:10`, `src/types/account.type.ts:6`, `src/app/movie/[slug]/page.tsx`, `src/app/watch/[slug]/page.tsx`
-
-**Evidence:** `CommentResType.author`, `CommentResType.replyTo`, parent author, and `ReviewResType.author` are typed as full `ProfileResType`, which includes fields such as `email`, `phone`, `group`, `settings`, and `isMakeSurvey`. Movie/watch pages prefetch comment/review lists into client-visible hydration payloads.
-
-**Impact:** Public pages can expose non-display user profile fields and role/group metadata even though the UI only needs public author fields.
-
-**Remediation:** Use a public author DTO such as `{ id, username, fullName, avatarPath, kind, gender? }` for comment/review responses. Do not hydrate email, phone, settings, or group/permission fields.
+**Remediation:** Upgrade direct dependencies where possible, add Yarn resolutions for vulnerable transitives where safe, and re-run `yarn audit --groups dependencies`.
 
 **Effort:** Moderate
 
@@ -148,42 +211,52 @@ client = mqtt.connect(envConfig.NEXT_PUBLIC_MQTT_BROKER as string, {
 
 ## Medium Vulnerabilities
 
-### 7. OAuth Callback Flow Has No Visible `state` / Nonce Validation
+### 7. Route Protection Trusts Cookie Presence Without Token Validation
 
 **Severity:** Medium  
-**Type:** CWE-346 / CWE-352, OAuth CSRF  
+**Type:** CWE-287 / CWE-306, Improper Authentication  
 **OWASP:** A01:2021 - Broken Access Control, A07:2021 - Identification and Authentication Failures  
-**Locations:** `src/app/auth/google/callback/page.tsx:13`, `src/app/(auth)/login/_components/button-login-google.tsx:89`, `src/app/api/auth/login/google/route.ts:15`
+**Location:** `src/proxy.ts:16`
 
-**Evidence:** The callback extracts only `code`; postMessage sends only `{ code }`; the API exchanges only `code`. No frontend `state`, nonce, or PKCE verifier handling was found.
+**Evidence:**
 
-**Impact:** If the upstream auth service does not independently bind and validate state, attackers can perform OAuth login CSRF/account confusion.
+```ts
+const accessToken = request.cookies.get(storageKeys.ACCESS_TOKEN)?.value;
 
-**Remediation:** Generate a high-entropy `state`, store it in an HttpOnly/SameSite cookie or server session, require it on callback, and verify it before code exchange. Use PKCE if supported.
+if (privatePaths.some((p) => pathname.startsWith(p))) {
+  if (!accessToken) {
+    return NextResponse.redirect(new URL('/', request.nextUrl));
+  }
+}
+```
+
+**Impact:** Any non-empty `access_token` cookie passes route protection for `/account`, `/survey`, and `/user`, even if expired, malformed, revoked, or attacker-injected. Backend APIs may still reject the token, but protected page shells and client logic can be reached.
+
+**Remediation:** Validate token shape and expiry before allowing protected routes, or use an internal session validation endpoint / signed session cookie. Consider `__Host-` cookie names to reduce cookie injection risk.
 
 **Effort:** Moderate
 
-### 8. Cookie-Authenticated Auth Mutation Routes Lack CSRF Origin/Token Checks
+### 8. Missing Content Security Policy
 
 **Severity:** Medium  
-**Type:** CWE-352, CSRF  
-**OWASP:** A01:2021 - Broken Access Control  
-**Locations:** `src/app/api/auth/logout/route.ts:8`, `src/app/api/auth/refresh-token/route.ts:13`, `src/app/api/auth/login/google/route.ts:13`
+**Type:** CWE-693, Security Misconfiguration  
+**OWASP:** A05:2021 - Security Misconfiguration  
+**Location:** `next.config.ts:47`
 
-**Evidence:** POST routes mutate authentication state using cookies and `Set-Cookie`, but do not validate `Origin`, `Referer`, `Sec-Fetch-Site`, or CSRF tokens.
+**Evidence:** Headers include `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, and HSTS, but no `Content-Security-Policy`.
 
-**Impact:** `SameSite=Lax` reduces classic cross-site POST CSRF, but explicit request provenance checks are still missing for same-site subdomain attacks, sibling app compromise, and future cookie policy regressions.
+**Impact:** Existing `dangerouslySetInnerHTML` usage means any sanitizer bypass or upstream HTML compromise has no CSP backstop to limit script execution, external connections, frames, or media origins.
 
-**Remediation:** Add centralized CSRF validation for auth mutation routes. Require same-origin `Origin`, reject cross-site `Sec-Fetch-Site`, and use a CSRF token for state-changing requests.
+**Remediation:** Add CSP in `headers()` with constrained `default-src`, `script-src`, `style-src`, `img-src`, `connect-src`, `media-src`, and `frame-ancestors`. Include only required origins: app host, API/auth/media hosts, MQTT broker websocket origin, and trusted video/embed hosts.
 
-**Effort:** Quick to Moderate
+**Effort:** Moderate
 
-### 9. Path Parameter Injection from Unencoded Replacement
+### 9. Unencoded Route Path Parameter Substitution
 
 **Severity:** Medium  
-**Type:** CWE-20 / CWE-116, Improper Input Validation / Output Encoding  
-**OWASP:** A03:2021 - Injection  
-**Location:** `src/utils/http.util.ts:185-187`
+**Type:** CWE-116 / CWE-20, Improper Encoding and Input Validation  
+**OWASP:** A04:2021 - Insecure Design, A03:2021 - Injection  
+**Locations:** `src/utils/http.util.ts:194`, `src/utils/url.util.ts:63`, `src/app/movie/[slug]/page.tsx:59`
 
 **Evidence:**
 
@@ -193,99 +266,24 @@ Object.entries(pathParams).forEach(([key, value]) => {
 });
 ```
 
-**Impact:** If a path parameter contains `/`, `?`, `#`, or encoded delimiter variants, it can alter the outbound API path/query rather than being treated as an opaque ID.
+**Impact:** A crafted slug segment containing decoded reserved URL characters like `?`, `#`, or `/` can alter the outgoing API URL path/query. This is not an IDOR by itself, but it weakens URL handling and can create request confusion.
 
-**Remediation:** Encode replacements with `encodeURIComponent(String(value))` and validate expected ID shapes before API calls.
-
-**Effort:** Quick to Moderate
-
-### 10. Profile Update Trusts Client-Supplied Account Identity and Immutable Fields
-
-**Severity:** Medium  
-**Type:** CWE-639 / CWE-915, IDOR / Mass Assignment  
-**OWASP:** API1:2023 - Broken Object Level Authorization, API6:2023 - Unrestricted Access to Sensitive Business Flows  
-**Locations:** `src/schemaValidations/account.schema.ts:3`, `src/app/account/profile/_components/profile-form.tsx:61`, `src/api-requests/account.api-request.ts:8`
-
-**Evidence:** `updateProfileSchema` requires `id` and accepts `email`. The form initializes `id` from `profile.id`, disables email only in the UI, and posts the whole body to `/v1/user/update-profile`.
-
-**Impact:** If the backend trusts `body.id` or accepts `email`, a tampered request can attempt cross-account updates or mutate fields the UI intended to keep immutable.
-
-**Remediation:** Backend should derive user identity from the token and ignore/reject `id`. Frontend should remove `id` and immutable `email` from the update body.
-
-**Effort:** Moderate
-
-### 11. Comment Update Body Allows Relationship Mass Assignment
-
-**Severity:** Medium  
-**Type:** CWE-915, Mass Assignment  
-**OWASP:** API6:2023 - Unrestricted Access to Sensitive Business Flows  
-**Locations:** `src/schemaValidations/comment.schema.ts:3`, `src/components/app/comment/comment-form.tsx:108`, `src/api-requests/comment.api-request.ts:26`
-
-**Evidence:** The same `CommentBodyType` is used for create and update, accepting `movieId`, `movieItemId`, `parentId`, `replyToId`, and `replyToKind`. Update sends `{ ...values, id: editingComment.id }`.
-
-**Impact:** A tampered update request can try to re-parent a comment, move it to another movie/item, or alter reply targeting if the backend does not restrict updateable fields to `content`.
-
-**Remediation:** Use separate create/update schemas. Update should accept only `{ id, content }`, with ownership and relationship immutability enforced server-side.
-
-**Effort:** Moderate
-
-### 12. `axios` / `follow-redirects` Can Leak Custom Auth Headers on Cross-Domain Redirects
-
-**Severity:** Medium  
-**Type:** CWE-200, Sensitive Information Exposure  
-**OWASP:** A02:2021 - Cryptographic Failures, A06:2021 - Vulnerable and Outdated Components  
-**Locations:** `package.json:39`, `yarn.lock`
-
-**Evidence:** `axios@1.13.2` depends on `follow-redirects@1.15.11`; dependency audit reports GHSA-r4q5-vmmm-2653 for `follow-redirects <=1.15.11`.
-
-**Impact:** Server-side Axios calls using custom auth headers could forward those headers to attacker-controlled redirect targets.
-
-**Remediation:** Upgrade `follow-redirects` to `>=1.16.0` through Axios/lockfile resolution. Disable redirects or strip custom sensitive headers when calling untrusted URLs.
+**Remediation:** Replace path params with `encodeURIComponent(String(value))` and validate slug IDs against the expected ID format before API calls.
 
 **Effort:** Quick
 
-### 13. MQTT Transitive `ws@8.20.0` Uninitialized Memory Disclosure
+### 10. Excessive Data Exposure in Favourite List API Contract
 
 **Severity:** Medium  
-**Type:** CWE-908, Uninitialized Resource  
-**OWASP:** A06:2021 - Vulnerable and Outdated Components  
-**Locations:** `package.json:53`, `yarn.lock`
+**Type:** CWE-200, Excessive Data Exposure  
+**OWASP:** A01:2021 - Broken Access Control, A04:2021 - Insecure Design  
+**Locations:** `src/api-requests/favourite.api-request.ts:16`, `src/types/favourite.type.ts:7`, `src/types/favourite.type.ts:46`, `src/app/user/favourite/_components/favourite-list.tsx:29`
 
-**Evidence:** `mqtt@5.15.1` depends on `ws@8.20.0`; dependency audit reports GHSA-58qx-3vcg-4xpx / CVE-2026-45736, fixed in `ws@8.20.1`.
+**Evidence:** `FavouriteResType` includes `user: UserResType`, and `UserResType` includes fields such as `email`, `phone`, `group`, and `permissions`. The UI only maps `favourite.movie` and `favourite.person`.
 
-**Impact:** Practical exploitability appears low in this frontend context, but the runtime dependency tree includes a vulnerable WebSocket implementation.
+**Impact:** Sensitive user/account metadata is delivered to the browser unnecessarily, increasing exposure through DevTools, logs, extensions, or compromised client state.
 
-**Remediation:** Upgrade `mqtt` when it resolves `ws >=8.20.1`, or add a Yarn `resolutions` override for `ws@8.20.1+`.
-
-**Effort:** Quick
-
-### 14. CI/CD Supply-Chain Hardening Gaps in Privileged Deploy Workflow
-
-**Severity:** Medium  
-**Type:** CWE-829, Inclusion of Functionality from Untrusted Control Sphere  
-**OWASP:** A08:2021 - Software and Data Integrity Failures  
-**Locations:** `.github/workflows/docker.yml:13`, `.github/workflows/docker.yml:16`, `.github/workflows/docker.yml:19`, `.github/workflows/docker.yml:25`
-
-**Evidence:** GitHub Actions are pinned by mutable tags such as `@v4`, `@v3`, and `@v6` instead of full commit SHAs. The workflow also has no explicit top-level `permissions`.
-
-**Impact:** A compromised or retagged third-party action could run in the deployment pipeline with access to Docker, VPN, SSH, and Discord secrets.
-
-**Remediation:** Pin actions to full commit SHAs and set least-privilege `permissions`, typically `contents: read` unless more is required.
-
-**Effort:** Moderate
-
-### 15. Docker Base/Image Tags Are Mutable and Production Deploys `latest`
-
-**Severity:** Medium  
-**Type:** CWE-1104, Use of Unmaintained or Mutable Third-Party Components  
-**OWASP:** A06:2021 - Vulnerable and Outdated Components  
-**Locations:** `Dockerfile:2`, `Dockerfile:10`, `Dockerfile:45`, `.github/workflows/docker.yml:30`, `.github/workflows/docker.yml:48`, `.github/workflows/docker.yml:81`, `.github/workflows/docker.yml:97`
-
-**Evidence:** `FROM node:20-alpine` is not digest-pinned and deployment pulls `${DOCKER_USERNAME}/fe-moviehub:latest`.
-
-**Impact:** Builds and deploys are not reproducible. Upstream tag changes can introduce vulnerable base layers or unexpected runtime changes.
-
-**Remediation:** Pin base images by digest and deploy immutable image tags such as commit SHA or release version.
+**Remediation:** Return a DTO for favourite lists containing only `id`, `type`, `movie`/`person`, and pagination fields. Remove `user` from the frontend list response type if the UI does not need it.
 
 **Effort:** Moderate
 
@@ -293,60 +291,48 @@ Object.entries(pathParams).forEach(([key, value]) => {
 
 ## Low Vulnerabilities
 
-### 16. Security Headers Are Incomplete
+### 11. Internal Auth Mutation Routes Do Not Enforce CSRF Validation
 
 **Severity:** Low  
-**Type:** CWE-693 / CWE-1021, Security Misconfiguration  
-**OWASP:** A05:2021 - Security Misconfiguration  
-**Location:** `next.config.ts:47`
+**Type:** CWE-352, Cross-Site Request Forgery  
+**OWASP:** A01:2021 - Broken Access Control, A07:2021 - Identification and Authentication Failures  
+**Locations:** `src/app/api/auth/logout/route.ts:8`, `src/app/api/auth/refresh-token/route.ts:17`
 
-**Evidence:** Headers include `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `X-Robots-Tag`, and HSTS, but no `Content-Security-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, or `Cross-Origin-Resource-Policy`.
+**Evidence:** The CSRF cookie is created in login/refresh/session, but internal auth POST routes do not compare `X-CSRF-Token` against the cookie.
 
-**Impact:** Missing CSP materially increases the impact of XSS. Missing permissions and cross-origin policies leave avoidable browser attack surface.
+```ts
+export async function POST() {
+  const refresh_token = await getCookie(storageKeys.REFRESH_TOKEN);
+  // ...
+}
+```
 
-**Remediation:** Add a CSP with constrained `default-src`, `script-src`, `connect-src`, `img-src`, and `frame-ancestors`. Add `Permissions-Policy`, COOP, and CORP where compatible.
+**Impact:** `SameSite: 'lax'` reduces most cross-site POST cookie sending, so exploitability is limited. Still, logout CSRF or forced refresh behavior can be possible in browser edge cases, same-site subdomain scenarios, or if cookie policy changes.
 
-**Effort:** Moderate
+**Remediation:** Require `X-CSRF-Token` for internal auth mutation routes and compare it with the server-side CSRF cookie using a constant-time comparison. Mark corresponding internal auth API config as CSRF-required.
 
-### 17. Client-Side Upload Validation Is MIME-Only and Has No Default Size Limit
-
-**Severity:** Low  
-**Type:** CWE-434, Unrestricted File Upload  
-**OWASP:** A05:2021 - Security Misconfiguration  
-**Locations:** `src/components/form/upload-image-field.tsx:180-191`, `src/hooks/use-file-upload.ts:87-118`, `src/app/account/profile/_components/profile-form.tsx:134-138`
-
-**Evidence:** `useFileUpload({ accept: 'image/*' })` uses browser MIME checks and defaults `maxSize` to `Infinity`.
-
-**Impact:** Users can select very large files and browser-provided MIME types can be spoofed. This increases DoS/storage risk if backend validation is weak.
-
-**Remediation:** Add frontend size limits and extension/MIME allowlists for UX. Enforce authoritative backend validation: max bytes, decoded image verification, extension normalization, content sniffing, and safe storage names.
-
-**Effort:** Moderate
+**Effort:** Quick
 
 ---
 
 ## Positive Security Patterns Found
 
-| Pattern                                           | File                                                                                                                   | Notes                                                                                |
-| ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| HttpOnly cookie flags present                     | `src/app/api/auth/login/route.ts`, `src/app/api/auth/login/google/route.ts`, `src/app/api/auth/refresh-token/route.ts` | Cookies use `httpOnly`, `sameSite: 'lax'`, `path: '/'`, and production-only `secure` |
-| Baseline security headers present                 | `next.config.ts`                                                                                                       | HSTS, frame denial, MIME sniffing protection, and referrer policy are configured     |
-| Container drops root privileges                   | `Dockerfile`                                                                                                           | Runtime stage uses non-root `nextjs` user                                            |
-| HTML descriptions usually sanitized before render | `src/utils/sanitize.util.ts`, movie/person/slider components                                                           | `sanitizeText()` is used before many `dangerouslySetInnerHTML` sinks                 |
-| Google message receiver validates origin          | `src/app/(auth)/login/_components/button-login-google.tsx`                                                             | `event.origin` is checked before accepting the callback code                         |
-| Route protection exists for private pages         | `src/proxy.ts`                                                                                                         | `/account`, `/survey`, and `/user` are gated by auth cookie presence                 |
+| Pattern                                   | File                                                       | Notes                                                                                |
+| ----------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| HttpOnly cookie options exist             | `src/app/api/auth/_lib/make-cookie-option.ts`              | Cookies use `httpOnly`, `sameSite: 'lax'`, `path: '/'`, and production-only `secure` |
+| Baseline security headers exist           | `next.config.ts`                                           | HSTS, frame denial, MIME sniffing protection, and referrer policy are configured     |
+| Container drops root privileges           | `Dockerfile`                                               | Runtime stage uses non-root `nextjs` user                                            |
+| Google message receiver checks origin     | `src/app/(auth)/login/_components/button-login-google.tsx` | `event.origin` is checked before accepting callback code                             |
+| Route protection exists for private pages | `src/proxy.ts`                                             | `/account`, `/survey`, and `/user` are gated by auth cookie presence                 |
 
 ---
 
-## False Positives / Removed Stale Findings
+## False Positives / Not Confirmed
 
-- Direct token persistence to `localStorage` was not found in the current code. Token exposure is through JSON responses and Zustand memory, not durable `localStorage` token storage.
-- A previous “missing all security headers” finding is stale. Baseline headers now exist; remaining gap is missing CSP/Permissions-Policy/COOP/CORP.
-- Video/VTT URLs were reviewed and not classified as a concrete third-party script execution issue because they are passed to media/caption sinks and appear intentional.
-- Docker root execution was ruled out because the runtime image uses a non-root `nextjs` user.
-- `minimatch@10.1.1` ReDoS advisory appears build/tooling-only through `rimraf -> glob`; it was not prioritized as deployed runtime exposure.
-- Login redirect reuse was not classified as an open redirect in the reviewed flow because the stored redirect path is set from `window.location.pathname`, not a full external URL.
-- Search/query params are URL-encoded before navigation in the reviewed flow.
+- No verified open redirect was found in the reviewed login redirect flow. The stored redirect path is set from `window.location.pathname`, not a query-controlled external URL.
+- No frontend-confirmed IDOR was found in the reviewed paths. Backend authorization still needs to enforce ownership.
+- No hardcoded plaintext secrets were found in allowed files beyond the public MQTT credential exposure pattern.
+- Restricted files were intentionally excluded from review.
 
 ---
 
@@ -354,28 +340,26 @@ Object.entries(pathParams).forEach(([key, value]) => {
 
 ### Phase 1 - Immediate
 
-- [ ] Patch or mitigate `sanitize-html` CVE-2026-44990 and add XSS regression tests.
-- [ ] Stop returning access/refresh tokens from internal auth APIs and remove token copying into Zustand.
-- [ ] Escape JSON-LD serialization before inserting it into `<script type="application/ld+json">`.
-- [ ] Upgrade `axios` to `>=1.15.1` and refresh the lockfile.
+- [x] Escape JSON-LD serialization before inserting it into `<script type="application/ld+json">`.
+- [x] Stop returning `accessToken` from `/api/auth/session` and remove token copying into Zustand.
+- [ ] Move authenticated client API/media traffic behind same-origin server routes so refresh never has to reintroduce bearer tokens to browser JavaScript.
+- [x] Remove HTML rendering from description/bio sinks and reduce `sanitizeText()` to plain-text sanitization.
+- [ ] Replace/remove `sanitize-html` and add XSS regression coverage for malicious description/bio payloads.
+- [ ] Upgrade vulnerable runtime dependencies where possible and refresh `yarn.lock`.
 
 ### Phase 2 - Soon
 
-- [ ] Replace public static MQTT credentials with short-lived per-user broker credentials and ACLs.
-- [ ] Add OAuth `state` validation and PKCE/nonce support where available.
-- [ ] Add CSRF origin/token validation for auth mutation routes.
-- [ ] Replace full discussion author/profile DTOs with public-safe DTOs.
-- [ ] Encode and validate `pathParams` in `src/utils/http.util.ts`.
+- [ ] Replace public static MQTT credentials with short-lived per-user broker credentials and strict ACLs.
+- [ ] Add a Content Security Policy.
+- [ ] Validate auth cookies in `src/proxy.ts`, at least checking token expiry/shape.
+- [ ] Encode path parameter substitutions and validate route-derived IDs.
+- [ ] Reduce favourite list DTOs to only the fields needed by the UI.
 
 ### Phase 3 - Hardening
 
-- [ ] Remove client-controlled `id` and immutable fields from profile update payloads.
-- [ ] Split comment create/update schemas and restrict update to `{ id, content }`.
-- [ ] Upgrade or override `follow-redirects` and `ws` vulnerable transitive dependencies.
-- [ ] Pin GitHub Actions and Docker base images to immutable SHAs/digests.
-- [ ] Deploy immutable image tags instead of `latest`.
-- [ ] Add CSP, Permissions-Policy, COOP, and CORP.
-- [ ] Add explicit upload size/type validation in the frontend and verify backend enforcement.
+- [ ] Add CSRF token/origin validation for internal auth mutation routes.
+- [ ] Add `Permissions-Policy`, `Cross-Origin-Opener-Policy`, and `Cross-Origin-Resource-Policy` where compatible.
+- [ ] Re-run dependency audit in CI and fail on high/critical production vulnerabilities.
 
 ---
 
@@ -404,6 +388,6 @@ Expected outcomes:
 
 ## Notes / Limitations
 
-- This is a frontend/static review. IDOR and mass-assignment risks require backend enforcement to fully fix.
-- Dependency findings reflect the advisories reported during the scan on 2026-05-20.
+- This is a frontend/static review. Backend authorization and DTO fixes require backend enforcement to fully resolve some findings.
+- Dependency findings reflect `yarn audit --groups dependencies` output observed during this scan on 2026-05-21.
 - Restricted secret files were intentionally excluded from review.

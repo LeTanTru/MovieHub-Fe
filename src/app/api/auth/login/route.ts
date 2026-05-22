@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     ]);
 
     return NextResponse.json(
-      { result: true, data: res },
+      { result: true, data: { authenticated: true } },
       { status: HttpStatusCode.Ok }
     );
   } catch (error) {

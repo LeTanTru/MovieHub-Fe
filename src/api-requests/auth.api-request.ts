@@ -4,6 +4,7 @@ import {
   ChangePasswordBodyType,
   ForgotPasswordBodyType,
   LoginBodyType,
+  AuthResType,
   LoginResType,
   RegisterBodyType,
   RequestForgotPasswordBodyType,
@@ -19,7 +20,7 @@ const authApiRequest = {
     }),
 
   loginGoogle: (code: string) =>
-    http.post<ApiResponse<LoginResType>>(apiConfig.api.auth.loginGoogle, {
+    http.post<ApiResponse<AuthResType>>(apiConfig.api.auth.loginGoogle, {
       body: { code }
     }),
 
@@ -29,7 +30,7 @@ const authApiRequest = {
     }),
 
   login: (body: LoginBodyType) =>
-    http.post<ApiResponse<LoginResType>>(apiConfig.api.auth.login, {
+    http.post<ApiResponse<AuthResType>>(apiConfig.api.auth.login, {
       body
     }),
 
