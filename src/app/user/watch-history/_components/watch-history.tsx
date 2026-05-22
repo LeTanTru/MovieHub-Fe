@@ -12,7 +12,7 @@ import {
 import { invalidateQueries, notify } from '@/utils';
 import { useAuth } from '@/hooks';
 
-export default function WatchHistory() {
+export function WatchHistory() {
   const { isAuthenticated } = useAuth();
 
   const { data: movieHistories = [], isLoading } = useMovieHistoryListQuery({

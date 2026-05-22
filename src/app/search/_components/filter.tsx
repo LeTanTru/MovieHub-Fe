@@ -70,7 +70,7 @@ type FilterProps = {
   onShowFilter: () => void;
 };
 
-export default function Filter({
+export function Filter({
   filters,
   showFilter,
   isAllFiltersDefault,

@@ -9,7 +9,7 @@ import { FaBarsStaggered, FaCaretDown } from 'react-icons/fa6';
 import { AnimatePresence, m } from 'framer-motion';
 import { useClickOutside, useQueryParams } from '@/hooks';
 import { usePathname } from 'next/navigation';
-import EpisodeItem from './episode-item';
+import { EpisodeItem } from './episode-item';
 
 type EpisodeListProps = {
   isOpen?: boolean;
@@ -17,7 +17,7 @@ type EpisodeListProps = {
   seasons: SeasonResType[];
 };
 
-export default function EpisodeList({
+export function EpisodeList({
   isOpen = false,
   onToggle,
   seasons

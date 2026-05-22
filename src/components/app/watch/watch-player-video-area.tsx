@@ -20,7 +20,7 @@ import { Activity } from '@/components/activity';
 import { usePlayerSettings } from '@/app/watch/[slug]/_hooks';
 import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 
-export default function WatchPlayerVideoArea() {
+export function WatchPlayerVideoArea() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const playerSettings = usePlayerSettings();
 

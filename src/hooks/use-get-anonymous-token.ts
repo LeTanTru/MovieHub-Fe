@@ -5,7 +5,7 @@ const MS_PER_SECOND = 1000;
 const SECONDS_PER_MINUTE = 60;
 const TOKEN_REFRESH_INTERVAL_MINUTES = 14;
 
-const useAnonymousToken = () => {
+export const useAnonymousToken = () => {
   const [token, setToken] = useState<string>('');
   const [isLoadingToken, setIsLoadingToken] = useState<boolean>(true);
   const hasFetchedTokenRef = useRef<boolean>(false);
@@ -31,5 +31,3 @@ const useAnonymousToken = () => {
 
   return { token, isLoadingToken };
 };
-
-export default useAnonymousToken;

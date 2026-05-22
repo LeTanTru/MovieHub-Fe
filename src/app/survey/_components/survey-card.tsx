@@ -15,11 +15,7 @@ type SurveyCardProps = {
   onClick: (movie: SurveyResType) => void;
 };
 
-export default function SurveyCard({
-  movie,
-  isSelected,
-  onClick
-}: SurveyCardProps) {
+export function SurveyCard({ movie, isSelected, onClick }: SurveyCardProps) {
   return (
     <Tilt
       scale={1.1}

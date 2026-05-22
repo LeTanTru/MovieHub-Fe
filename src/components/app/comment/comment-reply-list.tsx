@@ -27,7 +27,7 @@ type CommentReplyListProps = {
   ) => ReactNode;
 };
 
-export default function CommentReplyList({
+export function CommentReplyList({
   comment,
   level,
   rootId,

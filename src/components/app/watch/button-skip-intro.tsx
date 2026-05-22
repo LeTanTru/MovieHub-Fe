@@ -7,7 +7,7 @@ type ButtonSkipIntroProps = {
   handleToggleSkipIntro: () => void;
 };
 
-export default function ButtonSkipIntro({
+export function ButtonSkipIntro({
   skipIntro,
   className,
   handleToggleSkipIntro

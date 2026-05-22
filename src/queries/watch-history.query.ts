@@ -29,6 +29,6 @@ export const useWatchHistoryTrackingMutation = () => {
 export const useDeleteWatchHistoryMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.WATCH_HISTORY_DELETE],
-    mutationFn: (movieId: string) => watchHistoryApiRequest.delete(movieId)
+    mutationFn: (movieId: string) => watchHistoryApiRequest.deleteById(movieId)
   });
 };

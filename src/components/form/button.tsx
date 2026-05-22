@@ -45,7 +45,7 @@ type ButtonProps = ComponentProps<'button'> &
     iconClassName?: string;
   };
 
-export default function Button({
+export function Button({
   className,
   variant,
   size,

@@ -1,7 +1,7 @@
 import { AnimatedIconHandle } from '@/types';
 import { useRef } from 'react';
 
-const useClickAnimation = () => {
+export const useClickAnimation = () => {
   const iconRef = useRef<AnimatedIconHandle>(null);
 
   const startAnimation = async () => {
@@ -13,5 +13,3 @@ const useClickAnimation = () => {
     startAnimation
   };
 };
-
-export default useClickAnimation;

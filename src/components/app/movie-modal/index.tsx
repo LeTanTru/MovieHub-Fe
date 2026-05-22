@@ -1,1 +1,1 @@
-export { default as MovieModal } from './movie-modal';
+export { MovieModal } from './movie-modal';

@@ -51,7 +51,7 @@ const getStrengthText = (score: number): string => {
   return 'Mật khẩu mạnh';
 };
 
-export default function PasswordField<T extends FieldValues>({
+export function PasswordField<T extends FieldValues>({
   control,
   name,
   label,

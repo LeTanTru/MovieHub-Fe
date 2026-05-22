@@ -2,7 +2,7 @@ type FallingStarIconProps = {
   className?: string;
 };
 
-const FallingStarIcon = ({ className }: FallingStarIconProps) => {
+export function FallingStarIcon({ className }: FallingStarIconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -28,6 +28,4 @@ const FallingStarIcon = ({ className }: FallingStarIconProps) => {
       />
     </svg>
   );
-};
-
-export default FallingStarIcon;
+}

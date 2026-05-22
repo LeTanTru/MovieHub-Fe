@@ -1,14 +1,14 @@
 'use client';
 
 import { Col, Row } from '@/components/form';
-import SurveyInfo from './survey-info';
-import SurveyList from './survey-list';
+import { SurveyInfo } from './survey-info';
+import { SurveyList } from './survey-list';
 import { logoWithText } from '@/assets';
 import Image from 'next/image';
 import Link from 'next/link';
 import { route } from '@/routes';
 
-export default function Survey() {
+export function Survey() {
   return (
     <div className='h-screen'>
       <header className='bg-fixed-header block p-4'>

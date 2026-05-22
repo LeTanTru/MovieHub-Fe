@@ -16,7 +16,7 @@ import { m } from 'framer-motion';
 
 const MotionLink = m.create(Link);
 
-export default function ScheduleList() {
+export function ScheduleList() {
   const [date, setDate] = useState<string>(() =>
     formatDate(
       new Date().toLocaleDateString('vi-VN'),

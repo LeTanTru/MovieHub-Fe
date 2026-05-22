@@ -6,7 +6,7 @@ type IntroRangeHighlightProps = {
   duration: number;
 };
 
-export default function TimeSliderHighlight({
+export function TimeSliderHighlight({
   start,
   end,
   duration

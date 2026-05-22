@@ -9,11 +9,7 @@ type ButtonInfoProps = {
   className?: string;
 };
 
-export default function ButtonInfo({
-  href,
-  title,
-  className
-}: ButtonInfoProps) {
+export function ButtonInfo({ href, title, className }: ButtonInfoProps) {
   const { iconRef, startAnimation } = useClickAnimation();
 
   const handleClick = () => {

@@ -9,32 +9,29 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-const notificationApiRequest = {
-  getList: (params?: NotificationSearchType) =>
-    http.get<ApiResponseList<NotificationResType>>(
-      apiConfig.notification.getList,
-      { params }
-    ),
+export const getList = (params?: NotificationSearchType) =>
+  http.get<ApiResponseList<NotificationResType>>(
+    apiConfig.notification.getList,
+    { params }
+  );
 
-  countUnread: () =>
-    http.get<ApiResponse<UnreadCountNotificationResType>>(
-      apiConfig.notification.countUnread
-    ),
+export const countUnread = () =>
+  http.get<ApiResponse<UnreadCountNotificationResType>>(
+    apiConfig.notification.countUnread
+  );
 
-  updateRead: (body: UpdateReadNotificationBodyType) =>
-    http.put<ApiResponse<any>>(apiConfig.notification.updateRead, {
-      body
-    }),
+export const updateRead = (body: UpdateReadNotificationBodyType) =>
+  http.put<ApiResponse<any>>(apiConfig.notification.updateRead, {
+    body
+  });
 
-  readAll: () => http.put<ApiResponse<any>>(apiConfig.notification.readAll),
+export const readAll = () =>
+  http.put<ApiResponse<any>>(apiConfig.notification.readAll);
 
-  delete: (id: string) =>
-    http.delete<ApiResponse<any>>(apiConfig.notification.delete, {
-      pathParams: { id }
-    }),
+export const deleteById = (id: string) =>
+  http.delete<ApiResponse<any>>(apiConfig.notification.delete, {
+    pathParams: { id }
+  });
 
-  deleteAll: () =>
-    http.delete<ApiResponse<any>>(apiConfig.notification.deleteAll)
-};
-
-export default notificationApiRequest;
+export const deleteAll = () =>
+  http.delete<ApiResponse<any>>(apiConfig.notification.deleteAll);

@@ -10,7 +10,7 @@ import { notify, renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import { useShallow } from 'zustand/shallow';
 
-export default function WatchSingle() {
+export function WatchSingle() {
   const navigate = useNavigate();
   const { searchParams } = useQueryParams<{ season: string }>();
   const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));

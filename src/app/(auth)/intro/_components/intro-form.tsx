@@ -13,7 +13,7 @@ const introSchema = z.object({
   key: z.string().nonempty('Bắt buộc')
 });
 
-export default function IntroForm() {
+export function IntroForm() {
   const defaultValues: z.infer<typeof introSchema> = {
     key: ''
   };

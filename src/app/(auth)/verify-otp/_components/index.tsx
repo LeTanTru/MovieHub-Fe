@@ -1,1 +1,1 @@
-export { default as VerifyOtpForm } from './verify-otp-form';
+export { VerifyOtpForm } from './verify-otp-form';

@@ -30,7 +30,7 @@ function playerSettingsReducer(
   }
 }
 
-const usePlayerSettings = () => {
+export const usePlayerSettings = () => {
   const { profile } = useAuth();
   const userSettings: SettingResType = JSON.parse(profile?.settings || '{}');
 
@@ -78,5 +78,3 @@ const usePlayerSettings = () => {
     handleToggleSkipIntro
   };
 };
-
-export default usePlayerSettings;

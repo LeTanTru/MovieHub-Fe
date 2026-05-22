@@ -1,1 +1,1 @@
-export { default as MovieSide } from './movie-side';
+export { MovieSide } from './movie-side';

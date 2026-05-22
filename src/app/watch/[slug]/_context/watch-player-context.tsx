@@ -81,7 +81,7 @@ type WatchPlayerContextType = {
 
 const WatchPlayerContext = createContext<WatchPlayerContextType | null>(null);
 
-export default function WatchPlayerProvider({
+export function WatchPlayerProvider({
   children
 }: {
   children: React.ReactNode;

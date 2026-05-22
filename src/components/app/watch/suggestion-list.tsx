@@ -1,11 +1,11 @@
-import SuggestionItem from './suggestion-item';
+import { SuggestionItem } from './suggestion-item';
 import { MovieResType } from '@/types';
 
 type SuggestionListProps = {
   movieList: MovieResType[];
 };
 
-export default function SuggestionList({ movieList }: SuggestionListProps) {
+export function SuggestionList({ movieList }: SuggestionListProps) {
   return (
     <div className='border-t border-solid border-white/10 pt-7.5'>
       <div className='relative block'>

@@ -25,7 +25,7 @@ type ButtonWatchNowProps = {
   className?: string;
 } & VariantProps<typeof variants>;
 
-export default function ButtonWatchNow({
+export function ButtonWatchNow({
   href,
   className,
   variant

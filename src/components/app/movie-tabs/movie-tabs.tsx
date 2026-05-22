@@ -13,16 +13,16 @@ import {
 import { AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib';
 import { useRef, useState, useEffect } from 'react';
-import MovieTabEpisode from './movie-tab-episode';
-import MovieTabPerson from './movie-tab-person';
-import MovieTabSuggestion from './movie-tab-suggestion';
-import MovieTabTrailer from './movie-tab-trailer';
+import { MovieTabEpisode } from './movie-tab-episode';
+import { MovieTabPerson } from './movie-tab-person';
+import { MovieTabSuggestion } from './movie-tab-suggestion';
+import { MovieTabTrailer } from './movie-tab-trailer';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const TAB_SKELETON_COUNT = 5;
 const TAB_CONTENT_SKELETON_COUNT = 6;
 
-export default function MovieTabs() {
+export function MovieTabs() {
   const [activeKey, setActiveKey] = useState<string>(MOVIE_TAB_EPISODE);
   const [direction, setDirection] = useState<number>(0);
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });

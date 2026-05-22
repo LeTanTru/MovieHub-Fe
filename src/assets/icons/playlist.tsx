@@ -2,7 +2,7 @@ type PlaylistIconProps = {
   className?: string;
 };
 
-const PlaylistIcon = ({ className }: PlaylistIconProps) => {
+export function PlaylistIcon({ className }: PlaylistIconProps) {
   return (
     <svg
       height='512'
@@ -19,8 +19,4 @@ const PlaylistIcon = ({ className }: PlaylistIconProps) => {
       </g>
     </svg>
   );
-};
-
-PlaylistIcon.displayName = 'PlaylistIcon';
-
-export default PlaylistIcon;
+}

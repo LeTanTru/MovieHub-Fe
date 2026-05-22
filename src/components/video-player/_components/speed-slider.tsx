@@ -2,7 +2,7 @@
 
 import { SpeedSlider as BaseSpeedSlider } from '@vidstack/react';
 
-export default function SpeedSlider() {
+export function SpeedSlider() {
   return (
     <BaseSpeedSlider.Root
       className='group vds-slider relative inline-flex cursor-pointer touch-none items-center py-2.5 outline-none select-none aria-hidden:hidden'

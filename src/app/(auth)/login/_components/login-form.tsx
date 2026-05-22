@@ -10,12 +10,12 @@ import { BaseForm } from '@/components/form/base-form';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useLoginMutation } from '@/queries';
-import ButtonLoginGoogle from './button-login-google';
+import { ButtonLoginGoogle } from './button-login-google';
 import { route } from '@/routes';
 import { Separator } from '@/components/ui/separator';
 import { useShallow } from 'zustand/shallow';
 
-export default function LoginForm() {
+export function LoginForm() {
   const { mutateAsync: loginMutate, isPending: loginLoading } =
     useLoginMutation();
 

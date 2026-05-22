@@ -1,4 +1,4 @@
-enum storageKeys {
+export enum storageKeys {
   ACCESS_TOKEN = 'access_token',
   CSRF_TOKEN = 'csrf_token',
   DISCLAIMER_SHOWN = 'disclaimer_shown',
@@ -16,5 +16,3 @@ enum storageKeys {
   X_CLIENT_TYPE = 'X-Client-Type',
   X_CSRF_TOKEN = 'X-CSRF-Token'
 }
-
-export default storageKeys;

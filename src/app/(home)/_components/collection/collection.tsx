@@ -18,12 +18,12 @@ import {
   CollectionResType,
   CollectionSearchType
 } from '@/types';
-import TopMovieList from './top-movie-list';
-import MovieList from './movie-list';
-import CinemaMovieList from './cinema-movie-list';
-import LastestCountryMovieList from './latest-country-movie-list';
-import AnimeMovieList from './anime-movie-list';
-import ComingSoonList from './coming-soon-list';
+import { TopMovieList } from './top-movie-list';
+import { MovieList } from './movie-list';
+import { CinemaMovieList } from './cinema-movie-list';
+import { LastestCountryMovieList } from './latest-country-movie-list';
+import { AnimeMovieList } from './anime-movie-list';
+import { ComingSoonList } from './coming-soon-list';
 import { cn } from '@/lib';
 import { SuggestByWatched } from '@/app/(home)/_components/suggest-by-watched';
 
@@ -82,7 +82,7 @@ function groupCollections(collections: CollectionResType[]): ProcessedItem[] {
   return result;
 }
 
-export default function Collection() {
+export function Collection() {
   const loadMoreSize = 3;
 
   const {

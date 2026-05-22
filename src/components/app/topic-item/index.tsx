@@ -1,2 +1,2 @@
-export { default as TopicItem } from './topic-item';
-export { default as TopicItemMore } from './topic-item-more';
+export { TopicItem } from './topic-item';
+export { TopicItemMore } from './topic-item-more';

@@ -1,6 +1,6 @@
 'use client';
 
-import PlaylistModal from './playlist-modal';
+import { PlaylistModal } from './playlist-modal';
 import { Button, ToolTip } from '@/components/form';
 import { useDisclosure } from '@/hooks';
 import { cn } from '@/lib';
@@ -12,7 +12,7 @@ type ButtonAddPlayListProps = {
   showText?: boolean;
 };
 
-export default function ButtonAddPlayList({
+export function ButtonAddPlayList({
   className,
   text,
   showText

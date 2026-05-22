@@ -1,12 +1,12 @@
 import { mqttCMDs } from '@/constants';
 import { NotificationResType } from '@/types';
-import MovieBody from './movie-body';
-import MovieItemBody from './movie-item-body';
-import ReplyCommentBody from './reply-comment-body';
-import VoteCommentBody from './vote-comment-body';
-import VoteReviewBody from './vote-review-body';
+import { MovieBody } from './movie-body';
+import { MovieItemBody } from './movie-item-body';
+import { ReplyCommentBody } from './reply-comment-body';
+import { VoteCommentBody } from './vote-comment-body';
+import { VoteReviewBody } from './vote-review-body';
 
-export default function NotificationBody({
+export function NotificationBody({
   notification
 }: {
   notification: NotificationResType;

@@ -25,12 +25,12 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { logger } from '@/logger';
 import { invalidateQueries, notify } from '@/utils';
 import { PlaylistItemBodyType } from '@/types';
-import { PlusICon } from '@/assets';
+import { PlusIcon } from '@/assets';
 import { route } from '@/routes';
 import { useMemo, useState } from 'react';
 import debounce from 'lodash/debounce';
 import Link from 'next/link';
-import PlaylistItem from './playlist-item';
+import { PlaylistItem } from './playlist-item';
 
 const variants = cva('', {
   variants: {
@@ -51,7 +51,7 @@ type ButtonAddToPlaylistProps = {
   className?: string;
 } & VariantProps<typeof variants>;
 
-export default function ButtonAddToPlaylist({
+export function ButtonAddToPlaylist({
   movieId,
   className,
   variant
@@ -173,7 +173,7 @@ export default function ButtonAddToPlaylist({
         variant='ghost'
         onClick={handleOpen}
       >
-        <PlusICon ref={iconRef} />
+        <PlusIcon ref={iconRef} />
         <span
           className={cn({
             'max-520:hidden': variant === 'watch'

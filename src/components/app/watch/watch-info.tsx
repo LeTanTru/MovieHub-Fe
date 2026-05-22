@@ -35,7 +35,7 @@ import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
-export default function WatchInfo() {
+export function WatchInfo() {
   const { movie, moviePerson, selectedSeason } = useMovieStore(
     useShallow((s) => ({
       movie: s.movie,

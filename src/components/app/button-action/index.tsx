@@ -1,1 +1,1 @@
-export { default as ButtonAction } from './button-action';
+export { ButtonAction } from './button-action';

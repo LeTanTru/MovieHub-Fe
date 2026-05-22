@@ -20,11 +20,7 @@ type ReviewModalProps = {
   onClose: () => void;
 };
 
-export default function ReviewModal({
-  opened,
-  movie,
-  onClose
-}: ReviewModalProps) {
+export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
   const { isAuthenticated } = useAuth();
 
   const [selectedRating, setSelectedRating] = useState<number | null>(null);

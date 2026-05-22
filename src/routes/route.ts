@@ -9,7 +9,7 @@ type RouteConfig = Record<string, RouteItem>;
 
 const defineRoute = <T extends RouteConfig>(routes: T): T => routes;
 
-const route = defineRoute({
+export const route = defineRoute({
   home: {
     path: '/'
   },

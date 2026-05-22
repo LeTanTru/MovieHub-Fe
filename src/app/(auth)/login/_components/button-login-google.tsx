@@ -12,7 +12,7 @@ import { useAuthStore } from '@/store';
 import { getData, notify, removeData } from '@/utils';
 import Image from 'next/image';
 
-export default function ButtonLoginGoogle() {
+export function ButtonLoginGoogle() {
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
   const setProfile = useAuthStore((s) => s.setProfile);
   const messageListenerRef = useRef<((event: MessageEvent) => void) | null>(

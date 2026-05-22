@@ -13,7 +13,7 @@ type UseIntroSkipProps = {
   onIntroSkipped: () => void;
 };
 
-const useIntroSkip = ({
+export const useIntroSkip = ({
   skipIntro,
   video,
   playerRef,
@@ -65,5 +65,3 @@ const useIntroSkip = ({
 
   return { handlePlayerCanPlay, handleTimeUpdate };
 };
-
-export default useIntroSkip;

@@ -28,7 +28,7 @@ export const useCreateReviewMutation = () => {
 export const useDeleteReviewMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.DELETE_REVIEW],
-    mutationFn: (id: string) => reviewApiRequest.delete(id)
+    mutationFn: (id: string) => reviewApiRequest.deleteById(id)
   });
 };
 

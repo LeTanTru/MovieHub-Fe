@@ -13,7 +13,7 @@ import {
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-export default function VoteReviewBody({
+export function VoteReviewBody({
   notification
 }: {
   notification: NotificationResType;

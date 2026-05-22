@@ -10,7 +10,7 @@ import { ListHeading } from '@/components/app/heading';
 import { PersonCard } from '@/components/app/person-card';
 import { cn } from '@/lib';
 
-export default function PersonList() {
+export function PersonList() {
   const skeletonCount = 16;
 
   const {

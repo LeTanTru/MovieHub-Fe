@@ -27,7 +27,7 @@ type CommentHeaderProps = {
   movieItem: CommentResType['movieItem'];
 };
 
-export default function CommentHeader({
+export function CommentHeader({
   comment,
   isAuthor,
   kind,

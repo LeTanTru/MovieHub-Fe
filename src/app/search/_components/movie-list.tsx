@@ -16,7 +16,7 @@ type MovieListProps = {
   keyword?: string;
 };
 
-export default function MovieList({
+export function MovieList({
   movieList,
   isLoading,
   totalPages,

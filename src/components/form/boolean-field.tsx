@@ -29,7 +29,7 @@ type BooleanFieldProps<T extends FieldValues> = {
   description?: string;
 };
 
-export default function BooleanField<T extends FieldValues>({
+export function BooleanField<T extends FieldValues>({
   control,
   name,
   label,

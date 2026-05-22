@@ -13,9 +13,7 @@ type NavigationDesktopProps = {
   navigationList: ItemProps[];
 };
 
-export default function NavigationDesktop({
-  navigationList
-}: NavigationDesktopProps) {
+export function NavigationDesktop({ navigationList }: NavigationDesktopProps) {
   const pathname = usePathname();
   const [hovered, setHovered] = useState<string | null>(null);
 

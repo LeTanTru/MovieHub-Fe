@@ -14,7 +14,7 @@ type ProfileSectionProps = {
   profile: ProfileResType;
 };
 
-export default function ProfileSection({ profile }: ProfileSectionProps) {
+export function ProfileSection({ profile }: ProfileSectionProps) {
   const GenderIcon = genderIconMaps[profile.gender || GENDER_OTHER];
 
   return (

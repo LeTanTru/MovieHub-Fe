@@ -27,7 +27,7 @@ type ButtonShareMovieProps = {
   className?: string;
 } & VariantProps<typeof variants>;
 
-export default function ButtonShareMovie({
+export function ButtonShareMovie({
   className,
   variant
 }: ButtonShareMovieProps) {

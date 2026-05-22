@@ -8,7 +8,7 @@ type MovieProgressProps = {
   totalEpisode: number;
 };
 
-export default function MovieProgress({
+export function MovieProgress({
   isComplete,
   currentTotalEpisode,
   totalEpisode

@@ -19,7 +19,7 @@ export const useDeleteFavouriteMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.DELETE_FAVOURITE],
     mutationFn: (params: FavouriteDeleteType) =>
-      favouriteApiRequest.delete(params)
+      favouriteApiRequest.deleteById(params)
   });
 };
 

@@ -69,7 +69,7 @@ type ConfirmProps = {
   className?: string;
 };
 
-export default function Modal({
+export function Modal({
   children,
   open,
   onClose,

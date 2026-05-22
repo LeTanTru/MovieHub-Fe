@@ -1,1 +1,1 @@
-export { default as ScheduleBadge } from './schedule-badge';
+export { ScheduleBadge } from './schedule-badge';

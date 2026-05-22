@@ -7,17 +7,14 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-const personApiRequest = {
-  getList: (params?: PersonSearchType) =>
-    http.get<ApiResponseList<PersonResType>>(apiConfig.person.getList, {
-      params
-    }),
-  getById: (id: string) =>
-    http.get<ApiResponse<PersonResType>>(apiConfig.person.getById, {
-      pathParams: {
-        id: id
-      }
-    })
-};
+export const getList = (params?: PersonSearchType) =>
+  http.get<ApiResponseList<PersonResType>>(apiConfig.person.getList, {
+    params
+  });
 
-export default personApiRequest;
+export const getById = (id: string) =>
+  http.get<ApiResponse<PersonResType>>(apiConfig.person.getById, {
+    pathParams: {
+      id: id
+    }
+  });

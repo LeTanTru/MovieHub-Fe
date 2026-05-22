@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronLeft } from 'react-icons/fa6';
 
-export default function NotFound() {
+export function NotFound() {
   return (
     <div className='mx-auto text-center'>
       <Image

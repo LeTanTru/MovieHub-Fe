@@ -18,7 +18,7 @@ type DropdownAvatarProps = {
   profile: ProfileResType;
 };
 
-export default function DropdownAvatar({ profile }: DropdownAvatarProps) {
+export function DropdownAvatar({ profile }: DropdownAvatarProps) {
   const pathname = usePathname();
   const { opened, close, toggle } = useDisclosure();
   const dropdownRef = useClickOutside<HTMLDivElement>(close);

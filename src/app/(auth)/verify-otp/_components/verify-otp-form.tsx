@@ -90,7 +90,7 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
   }
 }
 
-export default function VerifyOtpForm() {
+export function VerifyOtpForm() {
   const navigate = useNavigate();
 
   const [

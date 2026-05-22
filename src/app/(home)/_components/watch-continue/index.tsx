@@ -1,1 +1,1 @@
-export { default as WatchContinue } from './watch-continue';
+export { WatchContinue } from './watch-continue';

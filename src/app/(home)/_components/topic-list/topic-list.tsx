@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { CollectionListHeading } from '@/components/app/heading';
 import { route } from '@/routes';
 
-export default function TopicList() {
+export function TopicList() {
   const [isSwitched, setIsSwitched] = useState(false);
 
   const { data: topicListData, isLoading } = useCollectionTopicListQuery({

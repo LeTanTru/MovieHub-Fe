@@ -2,11 +2,11 @@
 
 import { useParams } from 'next/navigation';
 import { usePersonQuery } from '@/queries';
-import MovieList from './movie-list';
-import NotFound from './not-found';
-import PersonSidebar from './person-sidebar';
+import { MovieList } from './movie-list';
+import { NotFound } from './not-found';
+import { PersonSidebar } from './person-sidebar';
 
-export default function Person() {
+export function Person() {
   const { id } = useParams<{ id: string }>();
   const { data: person, isLoading } = usePersonQuery(id);
 

@@ -11,7 +11,7 @@ import {
   ClosedCaptionsOnIcon
 } from '@vidstack/react/icons';
 
-export default function CaptionButton() {
+export function CaptionButton() {
   const track = useMediaState('textTrack'),
     isOn = track && isTrackCaptionKind(track);
   return (

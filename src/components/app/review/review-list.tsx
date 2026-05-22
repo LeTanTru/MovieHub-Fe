@@ -1,7 +1,7 @@
 'use client';
 
 import { NoData } from '@/components/no-data';
-import ReviewItem from './review-item';
+import { ReviewItem } from './review-item';
 import { MovieResType, ReviewResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { StaticImageData } from 'next/image';
@@ -32,7 +32,7 @@ type ReviewListProps = {
   onLoadMore?: () => void;
 };
 
-export default function ReviewList({
+export function ReviewList({
   movie,
   reviewList,
   isLoading = false,

@@ -18,7 +18,7 @@ type MovieGridByYearProps = {
   className?: string;
 };
 
-export default function MovieGridByYear({
+export function MovieGridByYear({
   movieList,
   className
 }: MovieGridByYearProps) {

@@ -9,7 +9,7 @@ type ButtonAutoNextEpisodeProps = {
   className?: string;
 };
 
-export default function ButtonAutoNextEpisode({
+export function ButtonAutoNextEpisode({
   autoNextEpisode,
   className,
   onClick

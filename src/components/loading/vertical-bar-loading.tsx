@@ -5,9 +5,7 @@ type VerticalBarLoadingProps = {
   className?: string;
 };
 
-export default function VerticalBarLoading({
-  className
-}: VerticalBarLoadingProps) {
+export function VerticalBarLoading({ className }: VerticalBarLoadingProps) {
   return (
     <div className={cn('bar-list', className)}>
       <div className='mx-auto flex w-12 items-center justify-between overflow-hidden rounded-full bg-transparent'>

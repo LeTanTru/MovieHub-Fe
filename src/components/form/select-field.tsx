@@ -77,7 +77,7 @@ const fuzzyMatch = (text: string, search: string) => {
   return new RegExp(pattern).test(t);
 };
 
-export default function SelectField<
+export function SelectField<
   TFieldValues extends FieldValues,
   TOption extends Record<string, any>
 >({

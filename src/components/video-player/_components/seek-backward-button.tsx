@@ -3,7 +3,7 @@
 import { SeekButton, Tooltip } from '@vidstack/react';
 import { SeekBackward10Icon } from '@vidstack/react/icons';
 
-export default function SeekBackwardButton() {
+export function SeekBackwardButton() {
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>

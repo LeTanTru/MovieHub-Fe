@@ -1,7 +1,7 @@
 'use client';
 
 import { submenuClass } from './styles';
-import SubmenuButton from './submenu-button';
+import { SubmenuButton } from './submenu-button';
 import { Menu, useMediaState, VolumeSlider } from '@vidstack/react';
 import {
   MusicIcon,
@@ -9,7 +9,7 @@ import {
   VolumeLowIcon
 } from '@vidstack/react/icons';
 
-export default function VolumeSubmenu() {
+export function VolumeSubmenu() {
   const volume = useMediaState('volume');
   const currentVolume = Math.round(Number(volume ?? 0) * 100);
 

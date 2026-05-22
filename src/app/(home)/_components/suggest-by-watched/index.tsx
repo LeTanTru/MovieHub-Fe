@@ -1,1 +1,1 @@
-export { default as SuggestByWatched } from './suggest-by-watched';
+export { SuggestByWatched } from './suggest-by-watched';

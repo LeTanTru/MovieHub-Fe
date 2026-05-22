@@ -31,7 +31,7 @@ import { useShallow } from 'zustand/shallow';
 import { useState } from 'react';
 import { ConfirmModal } from '@/components/modal';
 
-export default function ProfileForm() {
+export function ProfileForm() {
   const { profile } = useAuthStore(useShallow((s) => ({ profile: s.profile })));
   const { mutateAsync: uploadImageMutate, isPending: uploadImageLoading } =
     useUploadImageMutation();

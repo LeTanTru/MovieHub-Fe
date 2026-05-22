@@ -8,9 +8,7 @@ type ButtonMovieTheaterProps = {
   className?: string;
 };
 
-export default function ButtonMovieTheater({
-  className
-}: ButtonMovieTheaterProps) {
+export function ButtonMovieTheater({ className }: ButtonMovieTheaterProps) {
   const [isMovieTheater, setIsMovieTheater] = useState(false);
 
   useEffect(() => {

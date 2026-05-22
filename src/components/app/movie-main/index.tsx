@@ -1,1 +1,1 @@
-export { default as MovieMain } from './movie-main';
+export { MovieMain } from './movie-main';

@@ -11,7 +11,7 @@ import { useShallow } from 'zustand/shallow';
 import { useSuggestionMovieListQuery } from '@/queries';
 import type { PersonResType } from '@/types';
 
-export default function WatchSide() {
+export function WatchSide() {
   const { slug } = useParams<{ slug: string }>();
   const movieId = getIdFromSlug(slug);
 

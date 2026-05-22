@@ -33,7 +33,7 @@ export const useAppContext = () => {
 
 type AppProviderProps = { children: ReactNode };
 
-export default function AppProvider({ children }: AppProviderProps) {
+export function AppProvider({ children }: AppProviderProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
   const { setAccessToken, setCsrfToken, setProfile } = useAuthStore(
@@ -54,15 +54,6 @@ export default function AppProvider({ children }: AppProviderProps) {
       setProfile(session.profile);
     }
   }, [session, setAccessToken, setCsrfToken, setProfile]);
-
-  // useEffect(() => {
-  //   if (pathname !== '/intro') {
-  //     const hasValidAccess = checkAccessExpiry();
-  //     if (!hasValidAccess) {
-  //       navigate.replace('/intro');
-  //     }
-  //   }
-  // }, [pathname, navigate]);
 
   useEffect(() => {
     const hasScroll = document.body.scrollHeight > window.innerHeight;

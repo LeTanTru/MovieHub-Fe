@@ -1,6 +1,6 @@
 'use client';
 
-import SurveyCard from './survey-card';
+import { SurveyCard } from './survey-card';
 import { useAuth, useNavigate } from '@/hooks';
 import { useMakeSurveyMutation, useSurveyListQuery } from '@/queries';
 import { SurveyResType } from '@/types';
@@ -10,7 +10,7 @@ import { notify } from '@/utils';
 import { logger } from '@/logger';
 import { cn } from '@/lib';
 
-export default function SurveyList() {
+export function SurveyList() {
   const navigate = useNavigate();
   const { isAuthenticated, profile } = useAuth();
   const { data: movieList = [], isLoading } =

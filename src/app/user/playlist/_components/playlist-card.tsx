@@ -15,7 +15,7 @@ type PlaylistCardProps = {
   playlist: PlaylistResType;
 };
 
-export default function PlaylistCard({ playlist }: PlaylistCardProps) {
+export function PlaylistCard({ playlist }: PlaylistCardProps) {
   const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
     useShallow((s) => ({
       selectedPlaylist: s.selectedPlaylist,

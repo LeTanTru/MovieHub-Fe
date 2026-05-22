@@ -22,17 +22,14 @@ import { useSearchStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import { usePathname } from 'next/navigation';
 import { VerticalBarLoading } from '@/components/loading';
-import MovieItem from './movie-item';
+import { MovieItem } from './movie-item';
 
 type SearchFormProps = {
   className?: string;
   formClassName?: string;
 };
 
-export default function SearchForm({
-  className,
-  formClassName
-}: SearchFormProps) {
+export function SearchForm({ className, formClassName }: SearchFormProps) {
   const navigate = useNavigate();
   const pathname = usePathname();
 

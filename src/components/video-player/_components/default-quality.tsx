@@ -16,9 +16,7 @@ const QUALITY_MAP: Record<number, number> = {
   4: 9999
 };
 
-export default function DefaultQuality({
-  defaultQuality
-}: DefaultQualityProps) {
+export function DefaultQuality({ defaultQuality }: DefaultQualityProps) {
   const options = useVideoQualityOptions({ auto: true });
 
   useEffect(() => {

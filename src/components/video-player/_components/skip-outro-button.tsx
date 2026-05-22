@@ -6,7 +6,7 @@ type SkipOutroButtonProps = {
   onClick?: () => void;
 };
 
-export default function SkipOutroButton({ onClick }: SkipOutroButtonProps) {
+export function SkipOutroButton({ onClick }: SkipOutroButtonProps) {
   return (
     <Button
       type='button'

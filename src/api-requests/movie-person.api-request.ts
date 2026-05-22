@@ -6,14 +6,7 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-const moviePersonApiRequest = {
-  getList: (params?: MoviePersonSearchType) =>
-    http.get<ApiResponseList<MoviePersonResType>>(
-      apiConfig.moviePerson.getList,
-      {
-        params
-      }
-    )
-};
-
-export default moviePersonApiRequest;
+export const getList = (params?: MoviePersonSearchType) =>
+  http.get<ApiResponseList<MoviePersonResType>>(apiConfig.moviePerson.getList, {
+    params
+  });

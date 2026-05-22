@@ -10,7 +10,7 @@ type MovieItemProps = {
   onClick?: () => void;
 };
 
-export default function MovieItem({ movie, onClick }: MovieItemProps) {
+export function MovieItem({ movie, onClick }: MovieItemProps) {
   const ageRating = ageRatings.find((age) => movie.ageRating === age.value);
 
   const isSeries = movie.type === MOVIE_TYPE_SERIES;

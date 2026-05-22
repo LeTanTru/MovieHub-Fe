@@ -1,1 +1,1 @@
-export { default as BodyLoad } from './body-load';
+export { BodyLoad } from './body-load';

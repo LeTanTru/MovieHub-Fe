@@ -8,9 +8,7 @@ type ButtonWatchTogetherProps = {
   className?: string;
 };
 
-export default function ButtonWatchTogether({
-  className
-}: ButtonWatchTogetherProps) {
+export function ButtonWatchTogether({ className }: ButtonWatchTogetherProps) {
   return (
     <Button
       variant='ghost'

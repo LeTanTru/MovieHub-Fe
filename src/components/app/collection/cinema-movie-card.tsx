@@ -46,10 +46,7 @@ const itemTransition: Transition = {
 const MODAL_WIDTH = 400;
 const EDGE_PADDING = 20;
 
-export default function CinemaMovieCard({
-  movie,
-  dir = 'up'
-}: CinemaMovieCardProps) {
+export function CinemaMovieCard({ movie, dir = 'up' }: CinemaMovieCardProps) {
   const isMounted = useIsMounted();
   const itemVariants = makeItemVariants(dir);
   const isDesktop = isDesktopDevice();

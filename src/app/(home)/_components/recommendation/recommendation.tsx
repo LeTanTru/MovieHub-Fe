@@ -1,11 +1,11 @@
 'use client';
 
 import { VerticalBarLoading } from '@/components/loading';
-import MovieList from './movie-list';
+import { MovieList } from './movie-list';
 import { useAuth } from '@/hooks';
 import { useMovieRecommendationQuery } from '@/queries';
 
-export default function Recommendation() {
+export function Recommendation() {
   const { isAuthenticated } = useAuth();
 
   const { data: movieList = [], isLoading } = useMovieRecommendationQuery({

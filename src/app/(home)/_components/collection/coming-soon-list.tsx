@@ -16,7 +16,7 @@ type ComingSoonListProps = {
   collection: CollectionResType;
 };
 
-export default function ComingSoonList({ collection }: ComingSoonListProps) {
+export function ComingSoonList({ collection }: ComingSoonListProps) {
   const movieList = collection?.movies || [];
 
   const nextRef = useRef<HTMLDivElement>(null);

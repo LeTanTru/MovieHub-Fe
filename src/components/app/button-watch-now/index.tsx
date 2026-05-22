@@ -1,1 +1,1 @@
-export { default as ButtonWatchNow } from './buttton-watch-now';
+export { ButtonWatchNow } from './buttton-watch-now';

@@ -14,11 +14,11 @@ import { CommentResType, CommentSearchType } from '@/types';
 import { renderImageUrl, invalidateQueries } from '@/utils';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { commentApiRequest } from '@/api-requests';
-import CommentHeader from './comment-header';
-import CommentContent from './comment-content';
-import CommentReplyForm from './comment-reply-form';
-import CommentReplyList from './comment-reply-list';
-import CommentAction from './comment-action';
+import { CommentHeader } from './comment-header';
+import { CommentContent } from './comment-content';
+import { CommentReplyForm } from './comment-reply-form';
+import { CommentReplyList } from './comment-reply-list';
+import { CommentAction } from './comment-action';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Element, scroller } from 'react-scroll';
 import { cn } from '@/lib';
@@ -53,7 +53,7 @@ type CommentItemProps = {
   clearScrollTarget: () => void;
 };
 
-export default function CommentItem({
+export function CommentItem({
   comment,
   editingComment,
   isAuthenticated,

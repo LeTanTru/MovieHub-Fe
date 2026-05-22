@@ -15,9 +15,7 @@ type ButtonDeletePlaylistProps = {
   id: string;
 };
 
-export default function ButtonDeletePlaylist({
-  id
-}: ButtonDeletePlaylistProps) {
+export function ButtonDeletePlaylist({ id }: ButtonDeletePlaylistProps) {
   const { isAuthenticated } = useAuth();
 
   const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(

@@ -1,2 +1,2 @@
-export { default as CommentList } from './comment-list';
-export { default as CommentInput } from './comment-input';
+export { CommentList } from './comment-list';
+export { CommentInput } from './comment-input';

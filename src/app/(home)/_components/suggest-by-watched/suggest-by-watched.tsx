@@ -2,12 +2,12 @@
 
 import { useInView } from 'react-intersection-observer';
 
-import MovieList from './movie-list';
+import { MovieList } from './movie-list';
 import { useAuth } from '@/hooks';
 import { useMovieSuggestByWatchedQuery } from '@/queries';
 import { VerticalBarLoading } from '@/components/loading';
 
-export default function SuggestByWatched({ page }: { page: number }) {
+export function SuggestByWatched({ page }: { page: number }) {
   const { isAuthenticated } = useAuth();
 
   const { ref, inView } = useInView({

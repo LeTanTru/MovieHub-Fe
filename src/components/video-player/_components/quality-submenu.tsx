@@ -4,10 +4,10 @@ import { CheckIcon } from '@vidstack/react/icons';
 import { getLanguageLabel } from '@/utils';
 import { Menu, useVideoQualityOptions } from '@vidstack/react';
 import { submenuClass } from './styles';
-import MenuRadio from './menu-radio';
-import SubmenuButton from './submenu-button';
+import { MenuRadio } from './menu-radio';
+import { SubmenuButton } from './submenu-button';
 
-export default function QualitySubmenu() {
+export function QualitySubmenu() {
   const options = useVideoQualityOptions({ auto: true, sort: 'descending' });
 
   const currentQualityHeight = options.selectedQuality?.height;

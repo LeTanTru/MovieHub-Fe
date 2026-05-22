@@ -14,7 +14,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Calendar, Video } from 'lucide-react';
 import { cn } from '@/lib';
 
-export default function MovieActionBar() {
+export function MovieActionBar() {
   const { movie, selectedSeason } = useMovieStore(
     useShallow((s) => ({ movie: s.movie, selectedSeason: s.selectedSeason }))
   );

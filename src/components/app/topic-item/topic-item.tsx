@@ -15,7 +15,7 @@ type TopicItemProps = {
   isSwitched: boolean;
 };
 
-export default function TopicItem({ topic, isSwitched }: TopicItemProps) {
+export function TopicItem({ topic, isSwitched }: TopicItemProps) {
   const colors = getColorList(topic.color || '[]');
 
   const getGradientStyle = (dir: string = 'to bottom') =>
@@ -85,7 +85,7 @@ export default function TopicItem({ topic, isSwitched }: TopicItemProps) {
   );
 }
 
-TopicItem.Skeleton = function () {
+TopicItem.Skeleton = () => {
   return (
     <Skeleton className='topic-item skeleton max-1900:min-h-37.5 max-1280:min-h-35 max-800:min-h-30 max-480:min-h-22.5 max-480:shrink-0 max-480:w-30 min-h-37.5' />
   );

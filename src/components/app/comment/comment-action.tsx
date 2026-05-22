@@ -39,7 +39,7 @@ type CommentActionProps = {
   onDelete: () => void;
 };
 
-export default function CommentAction({
+export function CommentAction({
   comment,
   level,
   isAuthenticated,

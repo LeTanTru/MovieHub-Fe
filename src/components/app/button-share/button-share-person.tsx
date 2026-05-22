@@ -12,9 +12,7 @@ type ButtonSharePersonProps = {
   className?: string;
 };
 
-export default function ButtonSharePerson({
-  className
-}: ButtonSharePersonProps) {
+export function ButtonSharePerson({ className }: ButtonSharePersonProps) {
   const pathname = usePathname();
   const [link, setLink] = useState('');
   const { iconRef, startAnimation } = useClickAnimation();

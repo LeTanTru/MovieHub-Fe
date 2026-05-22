@@ -36,7 +36,7 @@ type ReviewItemProps = {
   onDelete: (id: string) => void;
 };
 
-export default function ReviewItem({
+export function ReviewItem({
   review,
   reviewRatingMaps,
   isAuthor,
@@ -271,7 +271,7 @@ export default function ReviewItem({
   );
 }
 
-ReviewItem.Skeleton = function () {
+ReviewItem.Skeleton = () => {
   return (
     <div className='flex justify-start gap-4'>
       <Skeleton className='skeleton size-12.5 rounded-full!' />

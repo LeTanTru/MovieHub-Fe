@@ -12,7 +12,7 @@ type NoDataProps = {
   src?: string;
 };
 
-export default function NoData({
+export function NoData({
   className,
   imageClassName,
   content = 'Không có dữ liệu',

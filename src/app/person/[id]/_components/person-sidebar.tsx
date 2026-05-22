@@ -23,7 +23,7 @@ type PersonSidebarProps = {
   loading: boolean;
 };
 
-export default function PersonSidebar({ person, loading }: PersonSidebarProps) {
+export function PersonSidebar({ person, loading }: PersonSidebarProps) {
   const { opened, open, close } = useDisclosure();
   const [showScrollIcon, setShowScrollIcon] = useState<boolean>(false);
   const modalContentRef = useRef<HTMLDivElement>(null);

@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { ConfirmModal } from '@/components/modal';
 import { useAuth } from '@/hooks';
 
-export default function ChangePasswordForm() {
+export function ChangePasswordForm() {
   const { isAuthenticated } = useAuth();
 
   const { mutateAsync: logoutMutate, isPending: logoutLoading } =

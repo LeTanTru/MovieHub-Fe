@@ -9,7 +9,7 @@ type UseWatchHistoryProps = {
   onEpisodeChange?: () => void;
 };
 
-const useWatchHistory = ({
+export const useWatchHistory = ({
   movieItemId,
   isAuthenticated,
   currentSecondsRef,
@@ -67,5 +67,3 @@ const useWatchHistory = ({
 
   return { saveWatchHistory, handleSeeked };
 };
-
-export default useWatchHistory;

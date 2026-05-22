@@ -11,7 +11,7 @@ type StepOneFormSectionProps = {
   isFormChanged: boolean;
 };
 
-export default function StepOneFormSection({
+export function StepOneFormSection({
   form,
   loading,
   isFormChanged

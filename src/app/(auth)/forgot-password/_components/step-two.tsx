@@ -27,7 +27,7 @@ type StepTwoFormSectionProps = {
   formatCountdown: (ms: number) => string;
 };
 
-export default function StepTwoFormSection({
+export function StepTwoFormSection({
   form,
   resendDataCount,
   countdown,

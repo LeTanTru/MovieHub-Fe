@@ -12,7 +12,7 @@ type EpisodeItemProps = {
   onClick?: () => void;
 };
 
-export default function EpisodeItem({
+export function EpisodeItem({
   episode,
   watchUrl,
   selectedSeason,

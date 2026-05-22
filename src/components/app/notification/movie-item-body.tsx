@@ -1,11 +1,11 @@
-import ImageField from '@/components/form/image-field';
+import { ImageField } from '@/components/form';
 import { route } from '@/routes';
 import { MovieItemNotificationType, NotificationResType } from '@/types';
 import { convertUTCToLocal, parseJSON, renderImageUrl, timeAgo } from '@/utils';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-export default function MovieItemBody({
+export function MovieItemBody({
   notification
 }: {
   notification: NotificationResType;

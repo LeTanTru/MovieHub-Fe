@@ -5,16 +5,14 @@ import { MOVIE_TAB_SUGGESTION } from '@/constants';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { useParams } from 'next/navigation';
 import { useSuggestionMovieListQuery } from '@/queries';
-import MotionWrapper from './motion-wrapper';
+import { MotionWrapper } from './motion-wrapper';
 import { MovieTabHeading } from '@/components/app/heading';
 
 type MovieTabSuggestionProps = {
   direction: number;
 };
 
-export default function MovieTabSuggestion({
-  direction
-}: MovieTabSuggestionProps) {
+export function MovieTabSuggestion({ direction }: MovieTabSuggestionProps) {
   const { slug } = useParams<{ slug: string }>();
   const movieId = getIdFromSlug(slug);
 

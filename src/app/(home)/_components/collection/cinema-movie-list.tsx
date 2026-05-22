@@ -16,7 +16,7 @@ type CinemaMovieListProps = {
   collection: CollectionResType;
 };
 
-export default function CinemaMovieList({ collection }: CinemaMovieListProps) {
+export function CinemaMovieList({ collection }: CinemaMovieListProps) {
   const movieList = collection?.movies || [];
 
   const nextRef = useRef<HTMLDivElement>(null);

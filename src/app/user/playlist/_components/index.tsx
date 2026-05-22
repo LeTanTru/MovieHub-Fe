@@ -1,2 +1,2 @@
-export { default as Playlist } from './playlist';
-export { default as MovieList } from './movie-list';
+export { Playlist } from './playlist';
+export { MovieList } from './movie-list';

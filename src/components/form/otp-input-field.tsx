@@ -34,7 +34,7 @@ type OtpInputFieldProps<T extends FieldValues> = {
   disabled?: boolean;
 };
 
-export default function OtpInputField<T extends FieldValues>({
+export function OtpInputField<T extends FieldValues>({
   control,
   name,
   label,

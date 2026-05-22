@@ -1,1 +1,1 @@
-export { default as ButtonAddToPlaylist } from './button-add-to-playlist';
+export { ButtonAddToPlaylist } from './button-add-to-playlist';

@@ -12,7 +12,7 @@ import {
 } from '@/components/app/watch';
 import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 
-export default function WatchPlayerControls() {
+export function WatchPlayerControls() {
   const {
     movie,
     autoNextEpisode,

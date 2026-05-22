@@ -9,7 +9,7 @@ type QueryProviderProps = {
   children: ReactNode;
 };
 
-export default function QueryProvider({ children }: QueryProviderProps) {
+export function QueryProvider({ children }: QueryProviderProps) {
   const [queryClient] = useState<QueryClient>(() => getQueryClient());
 
   return (

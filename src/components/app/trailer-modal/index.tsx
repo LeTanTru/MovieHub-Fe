@@ -1,1 +1,1 @@
-export { default as TrailerModal } from './trailer-modal';
+export { TrailerModal } from './trailer-modal';

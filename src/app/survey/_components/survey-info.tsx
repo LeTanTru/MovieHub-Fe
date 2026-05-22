@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/hooks';
 
-export default function SurveyInfo() {
+export function SurveyInfo() {
   const { profile } = useAuth();
 
   if (!profile) return null;

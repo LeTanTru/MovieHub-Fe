@@ -30,7 +30,7 @@ type MovieModalProps = {
   pos: { x: number; y: number } | null;
 };
 
-export default function MovieModal({ movie, pos }: MovieModalProps) {
+export function MovieModal({ movie, pos }: MovieModalProps) {
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 
   const latestSeason = metadata?.latestSeason;

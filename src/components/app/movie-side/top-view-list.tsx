@@ -1,10 +1,10 @@
 'use client';
 
 import { FallingStarIcon } from '@/assets';
-import TopViewItem from './top-view-item';
+import { TopViewItem } from './top-view-item';
 import { useTopViewMovieListQuery } from '@/queries';
 
-export default function TopViewList() {
+export function TopViewList() {
   const { data: topViewMovieListData } = useTopViewMovieListQuery({
     enabled: true
   });

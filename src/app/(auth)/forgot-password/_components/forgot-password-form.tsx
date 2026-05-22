@@ -22,9 +22,9 @@ import { ArrowLeft } from 'lucide-react';
 import { Activity } from '@/components/activity';
 import { useNavigate } from '@/hooks';
 import { Separator } from '@/components/ui/separator';
-import ForgotPasswordHeader from './header';
-import StepOneFormSection from './step-one';
-import StepTwoFormSection from './step-two';
+import { ForgotPasswordHeader } from './header';
+import { StepOneFormSection } from './step-one';
+import { StepTwoFormSection } from './step-two';
 
 type ForgotPasswordStepType = 1 | 2;
 
@@ -113,7 +113,7 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
   }
 }
 
-export default function ForgotPasswordForm() {
+export function ForgotPasswordForm() {
   const navigate = useNavigate();
   const [step, setStep] = useState<ForgotPasswordStepType>(1);
   const [
