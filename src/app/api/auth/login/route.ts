@@ -1,5 +1,5 @@
-import { generateCsrfToken } from '../_lib/generate-csrf-token';
-import { makeCookieOption } from '../_lib/make-cookie-option';
+import { generateCsrfToken } from '@/app/api/auth/_lib/generate-csrf-token';
+import { makeCookieOption } from '@/app/api/auth/_lib/make-cookie-option';
 import {
   ACCESS_TOKEN_MAX_AGE,
   apiConfig,

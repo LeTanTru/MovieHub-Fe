@@ -11,8 +11,8 @@ import { http, isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 import { ApiResponse, ProfileResType } from '@/types';
-import { makeCookieOption } from '../../_lib/make-cookie-option';
-import { generateCsrfToken } from '../../_lib/generate-csrf-token';
+import { makeCookieOption } from '@/app/api/auth/_lib/make-cookie-option';
+import { generateCsrfToken } from '@/app/api/auth/_lib/generate-csrf-token';
 
 export async function POST(request: NextRequest) {
   try {
