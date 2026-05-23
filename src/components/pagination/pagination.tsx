@@ -7,11 +7,13 @@ import { usePathname } from 'next/navigation';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { scroller } from 'react-scroll';
 
+type ScrollOptions = Parameters<typeof scroller.scrollTo>[1];
+
 type PaginationProps = {
   totalPages: number;
   page?: number;
   to?: string;
-  scrollOptions?: any;
+  scrollOptions?: ScrollOptions;
   onChange?: (page: number) => void;
 };
 

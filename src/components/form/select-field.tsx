@@ -37,7 +37,11 @@ import {
 
 type SelectFieldProps<
   TFieldValues extends FieldValues,
-  TOption extends Record<string, any>
+  TOption extends {
+    label?: string | number;
+    value?: string | number;
+    prefix?: ReactNode;
+  }
 > = {
   control: Control<TFieldValues>;
   name: FieldPath<TFieldValues>;
@@ -79,7 +83,11 @@ const fuzzyMatch = (text: string, search: string) => {
 
 export function SelectField<
   TFieldValues extends FieldValues,
-  TOption extends Record<string, any>
+  TOption extends {
+    label?: string | number;
+    value?: string | number;
+    prefix?: ReactNode;
+  }
 >({
   control,
   name,
@@ -96,8 +104,8 @@ export function SelectField<
   labelClassName,
   disabled = false,
   renderOption,
-  getLabel = (opt) => opt.label,
-  getValue = (opt) => opt.value,
+  getLabel = (opt) => opt.label ?? '',
+  getValue = (opt) => opt.value ?? '',
   getPrefix = (opt) => opt.prefix,
   onValueChange
 }: SelectFieldProps<TFieldValues, TOption>) {

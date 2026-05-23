@@ -1,12 +1,13 @@
 import { apiConfig } from '@/constants';
-import {
+import type {
   ApiResponse,
   ApiResponseList,
   CommentResType,
   CommentSearchType,
   CommentVoteResType,
   CommentBodyType,
-  VoteCommentBodyType
+  VoteCommentBodyType,
+  ApiResponseNoData
 } from '@/types';
 import { http } from '@/utils';
 
@@ -16,22 +17,22 @@ export const getList = (params?: CommentSearchType) =>
   });
 
 export const create = (body: CommentBodyType) =>
-  http.post<ApiResponse<any>>(apiConfig.comment.create, {
+  http.post<ApiResponseNoData>(apiConfig.comment.create, {
     body
   });
 
 export const deleteById = (id: string) =>
-  http.delete<ApiResponse<any>>(apiConfig.comment.delete, {
+  http.delete<ApiResponseNoData>(apiConfig.comment.delete, {
     pathParams: { id }
   });
 
 export const update = (body: CommentBodyType) =>
-  http.put<ApiResponse<any>>(apiConfig.comment.update, {
+  http.put<ApiResponseNoData>(apiConfig.comment.update, {
     body
   });
 
 export const vote = (body: VoteCommentBodyType) =>
-  http.put<ApiResponse<any>>(apiConfig.comment.vote, {
+  http.put<ApiResponseNoData>(apiConfig.comment.vote, {
     body
   });
 

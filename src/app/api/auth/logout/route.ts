@@ -1,13 +1,13 @@
 import { apiConfig, storageKeys } from '@/constants';
 import { logger } from '@/logger';
-import { ApiResponse } from '@/types';
+import type { ApiResponseNoData } from '@/types';
 import { http, isAxiosError, removeCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {
-    const res = await http.post<ApiResponse<any>>(apiConfig.user.logout);
+    const res = await http.post<ApiResponseNoData>(apiConfig.user.logout);
 
     // Always clear cookies locally, even if the backend returns false
     await Promise.all([

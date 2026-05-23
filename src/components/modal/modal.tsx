@@ -8,17 +8,87 @@ import {
   createContext,
   useContext
 } from 'react';
-import { AnimatePresence, m, HTMLMotionProps } from 'framer-motion';
+import {
+  AnimatePresence,
+  m,
+  HTMLMotionProps,
+  MotionNodeAnimationOptions
+} from 'framer-motion';
 import { cn } from '@/lib';
 import { createPortal } from 'react-dom';
 import { useIsMounted } from '@/hooks';
 import { X, ChevronDown, Info } from 'lucide-react';
 import { Button } from '@/components/form';
 
-const SCROLLBAR_COMPENSATION_PX = 15;
 const SCROLL_BOTTOM_THRESHOLD_PX = 10;
 const SCROLL_DOWN_AMOUNT_PX = 200;
 const SCROLL_ARROW_ANIMATION_OFFSET_PX = 10;
+const MODAL_LOCK_ATTRIBUTE = 'data-modal-scroll-lock';
+
+let openModalCount = 0;
+let originalBodyOverflow = '';
+let originalBodyMarginRight = '';
+let originalHeaderPaddingRight: string | null = null;
+
+const getScrollbarCompensation = () => {
+  if (typeof window === 'undefined') return 0;
+
+  return window.innerWidth - document.documentElement.clientWidth;
+};
+
+const lockScroll = () => {
+  if (typeof document === 'undefined') return;
+
+  openModalCount += 1;
+
+  if (openModalCount > 1) return;
+
+  const body = document.body;
+  const header = document.querySelector<HTMLElement>('.header');
+  const hasVerticalScroll =
+    document.documentElement.scrollHeight > window.innerHeight;
+  const scrollbarCompensation = getScrollbarCompensation();
+
+  originalBodyOverflow = body.style.overflow;
+  originalBodyMarginRight = body.style.marginRight;
+
+  body.style.overflow = 'hidden';
+
+  if (hasVerticalScroll && scrollbarCompensation > 0) {
+    body.style.marginRight = `${scrollbarCompensation}px`;
+
+    if (header && getComputedStyle(header).position === 'fixed') {
+      originalHeaderPaddingRight = header.style.paddingRight;
+      header.style.paddingRight = `${scrollbarCompensation}px`;
+      header.setAttribute(MODAL_LOCK_ATTRIBUTE, 'true');
+    }
+  } else {
+    originalHeaderPaddingRight = null;
+  }
+};
+
+const unlockScroll = () => {
+  if (typeof document === 'undefined' || openModalCount === 0) return;
+
+  openModalCount -= 1;
+
+  if (openModalCount > 0) return;
+
+  const body = document.body;
+  const header = document.querySelector<HTMLElement>('.header');
+
+  body.style.overflow = originalBodyOverflow;
+  body.style.marginRight = originalBodyMarginRight;
+
+  if (header?.getAttribute(MODAL_LOCK_ATTRIBUTE) === 'true') {
+    header.style.paddingRight = originalHeaderPaddingRight ?? '';
+    header.removeAttribute(MODAL_LOCK_ATTRIBUTE);
+  }
+
+  originalBodyOverflow = '';
+  originalBodyMarginRight = '';
+  originalHeaderPaddingRight = null;
+};
 
 type ModalContextType = {
   open: boolean;
@@ -45,11 +115,7 @@ type ModalProps = Omit<HTMLMotionProps<'div'>, 'title'> & {
   onClose: () => void;
   confirmOnClose?: boolean;
   closeOnBackdrop?: boolean;
-  variants?: {
-    initial: Record<string, any>;
-    animate: Record<string, any>;
-    exit: Record<string, any>;
-  };
+  variants?: MotionNodeAnimationOptions;
 };
 
 type HeaderProps = {
@@ -89,31 +155,13 @@ export function Modal({
   useEffect(() => {
     if (!open) return;
 
-    const hasVerticalScroll =
-      document.documentElement.scrollHeight > window.innerHeight;
-
-    document.body.style.overflow = 'hidden';
-    if (hasVerticalScroll) {
-      document.body.style.marginRight = `${SCROLLBAR_COMPENSATION_PX}px`;
-      const header = document.querySelector('.header');
-      if (header && getComputedStyle(header).position === 'fixed') {
-        header.setAttribute(
-          'style',
-          `padding-right: ${SCROLLBAR_COMPENSATION_PX}px`
-        );
-      }
-    }
+    lockScroll();
 
     return () => {
-      document.body.style.cssText = '';
-      const header = document.querySelector('.header');
-      if (header && getComputedStyle(header).position === 'fixed') {
-        (header as HTMLElement).style.paddingRight = '';
-      }
+      unlockScroll();
     };
   }, [open]);
 
-  // Reset confirmation dialog when modal closes
   useEffect(() => {
     if (!open) setShowConfirm(false);
   }, [open]);

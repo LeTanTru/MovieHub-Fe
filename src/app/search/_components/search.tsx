@@ -12,6 +12,11 @@ import { useEffect, useState } from 'react';
 import { animateScroll, scroller } from 'react-scroll';
 import { useShallow } from 'zustand/shallow';
 
+type SearchFilter = {
+  key: SearchKeys;
+  value: string | number | string[];
+};
+
 export function Search() {
   const { keyword } = useSearchStore(
     useShallow((s) => ({
@@ -22,9 +27,7 @@ export function Search() {
   const [showFilter, setShowFilter] = useState<boolean>(false);
   const { searchParams, setQueryParams } = useQueryParams<SearchParamsType>();
   // Local state for filters to allow user to change them before applying
-  const [filters, setFilters] = useState<
-    { key: SearchKeys; value: string | number | string[] }[]
-  >([
+  const [filters, setFilters] = useState<SearchFilter[]>([
     { key: 'ageRating', value: searchParams.ageRating || 'all' },
     {
       key: 'categoryIds',
@@ -79,13 +82,7 @@ export function Search() {
     setShowFilter((prev) => !prev);
   };
 
-  const handleFilterChange = ({
-    key,
-    value
-  }: {
-    key: SearchKeys;
-    value: string | number | string[];
-  }) => {
+  const handleFilterChange = ({ key, value }: SearchFilter) => {
     // Update local filters state
     setFilters((prev) => {
       const existingIndex = prev.findIndex((item) => item.key === key);
@@ -100,7 +97,7 @@ export function Search() {
 
   const handleApplyFilters = () => {
     // Convert filters to URL params format
-    const filterParams: Partial<SearchParamsType> = {};
+    const filterParams: Partial<Record<SearchKeys, string>> = {};
 
     filters.forEach((item) => {
       if (item.value === 'all' || !item.value) return;
@@ -108,13 +105,12 @@ export function Search() {
       // Handle categoryIds as array - convert to comma-separated string
       if (item.key === 'categoryIds' && Array.isArray(item.value)) {
         if (item.value.length > 0 && item.value[0] !== 'all') {
-          (filterParams as Record<string, any>)[item.key] =
-            item.value.join(',');
+          filterParams[item.key] = item.value.join(',');
         }
       } else if (Array.isArray(item.value)) {
-        (filterParams as Record<string, any>)[item.key] = item.value.join(',');
+        filterParams[item.key] = item.value.join(',');
       } else {
-        (filterParams as Record<string, any>)[item.key] = item.value;
+        filterParams[item.key] = String(item.value);
       }
     });
 

@@ -41,13 +41,7 @@ export async function GET(request: Request) {
           padding: '48px'
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '16px'
-          }}
-        >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div
             style={{
               fontSize: '64px',
@@ -98,8 +92,6 @@ export async function GET(request: Request) {
         </div>
       </div>
     </div>,
-    {
-      ...size
-    }
+    { ...size }
   );
 }

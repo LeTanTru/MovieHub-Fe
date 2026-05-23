@@ -1,5 +1,5 @@
 import { apiConfig } from '@/constants';
-import {
+import type {
   ApiResponse,
   ApiResponseList,
   FavouriteDeleteType,
@@ -7,7 +7,8 @@ import {
   FavouriteGetType,
   FavouriteResType,
   FavouriteSearchType,
-  FavouriteListIdsResType
+  FavouriteListIdsResType,
+  ApiResponseNoData
 } from '@/types';
 import { http } from '@/utils';
 
@@ -27,7 +28,7 @@ export const create = (body: FavouriteBodyType) =>
   });
 
 export const deleteById = (params: FavouriteDeleteType) =>
-  http.delete<ApiResponse<any>>(apiConfig.favourite.delete, {
+  http.delete<ApiResponseNoData>(apiConfig.favourite.delete, {
     params
   });
 

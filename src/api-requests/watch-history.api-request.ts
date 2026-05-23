@@ -1,9 +1,10 @@
 import { apiConfig } from '@/constants';
-import {
+import type {
   ApiResponse,
   WatchHistoryResType,
   WatchHistorySearchType,
-  WatchHistoryBodyType
+  WatchHistoryBodyType,
+  ApiResponseNoData
 } from '@/types';
 import { http } from '@/utils';
 
@@ -13,9 +14,9 @@ export const getList = (params: WatchHistorySearchType) =>
   });
 
 export const tracking = (body: WatchHistoryBodyType) =>
-  http.post<ApiResponse<any>>(apiConfig.watchHistory.tracking, { body });
+  http.post<ApiResponseNoData>(apiConfig.watchHistory.tracking, { body });
 
 export const deleteById = (movieId: string) =>
-  http.delete<ApiResponse<any>>(apiConfig.watchHistory.delete, {
+  http.delete<ApiResponseNoData>(apiConfig.watchHistory.delete, {
     pathParams: { movieId }
   });
