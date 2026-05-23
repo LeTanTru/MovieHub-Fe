@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 export const setCookie = async (
   key: string,
-  value: any,
+  value: string,
   cookie?: Partial<ResponseCookie>
 ) => {
   const cookieStore = await cookies();

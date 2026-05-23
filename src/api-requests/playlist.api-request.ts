@@ -1,6 +1,7 @@
 import { apiConfig } from '@/constants';
 import {
   ApiResponse,
+  ApiResponseNoData,
   ApiResponseList,
   PlaylistBodyType,
   PlaylistIdsResType,
@@ -30,7 +31,7 @@ export const create = (body: PlaylistBodyType) =>
   });
 
 export const deleteById = (id: string) =>
-  http.delete<ApiResponseList<any>>(apiConfig.playlist.delete, {
+  http.delete<ApiResponseNoData>(apiConfig.playlist.delete, {
     pathParams: { id }
   });
 
@@ -43,16 +44,16 @@ export const getListByMovie = (movieId: string) =>
   });
 
 export const removeItem = (params: RemoveItemSearchType) =>
-  http.delete<ApiResponseList<any>>(apiConfig.playlist.removeItem, {
+  http.delete<ApiResponseNoData>(apiConfig.playlist.removeItem, {
     params
   });
 
 export const update = (body: PlaylistBodyType) =>
-  http.put<ApiResponseList<any>>(apiConfig.playlist.update, {
+  http.put<ApiResponseNoData>(apiConfig.playlist.update, {
     body
   });
 
 export const updateItem = (body: PlaylistItemBodyType) =>
-  http.post<ApiResponseList<any>>(apiConfig.playlist.updateItem, {
+  http.post<ApiResponseNoData>(apiConfig.playlist.updateItem, {
     body
   });

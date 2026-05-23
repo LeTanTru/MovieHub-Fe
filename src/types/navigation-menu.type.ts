@@ -1,8 +1,10 @@
+import type { ComponentType } from 'react';
+
 export type SubmenuProps = {
   href?: string;
   label: string;
   key: string;
-  [key: string]: any;
+  icon?: ComponentType<{ className?: string }>;
 };
 
 export type ItemProps = {

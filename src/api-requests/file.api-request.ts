@@ -1,5 +1,9 @@
 import { apiConfig, uploadOptions } from '@/constants';
-import { ApiResponse, UploadImageResponseType } from '@/types';
+import type {
+  ApiResponse,
+  ApiResponseNoData,
+  UploadImageResponseType
+} from '@/types';
 import { http } from '@/utils';
 
 export const uploadImage = (file: Blob) =>
@@ -11,6 +15,6 @@ export const uploadImage = (file: Blob) =>
   });
 
 export const deleteFile = (body: { filePath: string }) =>
-  http.post<ApiResponse<any>>(apiConfig.file.delete, {
+  http.post<ApiResponseNoData>(apiConfig.file.delete, {
     body
   });

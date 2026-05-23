@@ -1,7 +1,8 @@
 import { apiConfig } from '@/constants';
-import {
+import type {
   ApiResponse,
   ApiResponseList,
+  ApiResponseNoData,
   ReviewBodyType,
   ReviewResType,
   ReviewSearchType,
@@ -21,17 +22,17 @@ export const checkMovie = (movieId: string) =>
   });
 
 export const create = (body: ReviewBodyType) =>
-  http.post<ApiResponse<any>>(apiConfig.review.create, {
+  http.post<ApiResponseNoData>(apiConfig.review.create, {
     body
   });
 
 export const deleteById = (id: string) =>
-  http.delete<ApiResponse<any>>(apiConfig.review.delete, {
+  http.delete<ApiResponseNoData>(apiConfig.review.delete, {
     pathParams: { id }
   });
 
 export const vote = (body: ReviewVoteBodyType) =>
-  http.patch<ApiResponse<any>>(apiConfig.review.vote, {
+  http.patch<ApiResponseNoData>(apiConfig.review.vote, {
     body
   });
 

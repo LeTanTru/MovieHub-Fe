@@ -14,7 +14,7 @@ import { PlaylistIcon } from '@/assets';
 import { cn } from '@/lib';
 import { EpisodeList, WatchAskContinueModal } from '@/components/app/watch';
 import { useState } from 'react';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import { useDisclosure } from '@/hooks';
 import { Activity } from '@/components/activity';
 import { usePlayerSettings } from '@/app/watch/[slug]/_hooks';

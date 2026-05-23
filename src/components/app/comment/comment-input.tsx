@@ -17,6 +17,16 @@ import { type UseFormReturn } from 'react-hook-form';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { FaRegFaceGrinBeam } from 'react-icons/fa6';
 
+type EmojiClickEvent = Event & {
+  detail: {
+    unicode: string;
+  };
+};
+
+type EmojiPickerElement = HTMLElement & {
+  i18n: unknown;
+};
+
 type CommentInputProps = {
   isLoading?: boolean;
   movie: MovieResType;
@@ -119,9 +129,9 @@ export function CommentInput({
   };
 
   useEffect(() => {
-    let picker: any;
+    let picker: EmojiPickerElement | null = null;
     let mounted = true;
-    let emojiClickHandler: ((event: any) => void) | null = null;
+    let emojiClickHandler: EventListener | null = null;
 
     (async () => {
       const { Picker } = await import('emoji-picker-element');
@@ -129,7 +139,7 @@ export function CommentInput({
 
       if (!mounted) return;
 
-      picker = new Picker();
+      picker = new Picker() as EmojiPickerElement;
       picker.i18n = vi;
       picker.style.cssText = `
         position: absolute;
@@ -145,8 +155,9 @@ export function CommentInput({
       picker.style.setProperty('--border-radius', '8px');
       picker.style.setProperty('--border-size', '0');
 
-      emojiClickHandler = (event: any) => {
-        const emoji = event.detail.unicode;
+      emojiClickHandler = (event) => {
+        const emojiEvent = event as EmojiClickEvent;
+        const emoji = emojiEvent.detail.unicode;
         if (formMethodsRef.current) {
           const currentValue =
             formMethodsRef.current.getValues('content') || '';

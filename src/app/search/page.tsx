@@ -1,14 +1,6 @@
-import { categoryApiRequest } from '@/api-requests';
 import { Search } from '@/app/search/_components';
 import { Container } from '@/components/layout';
-import { getQueryClient } from '@/components/providers/query-provider';
-import {
-  MAX_PAGE_SIZE,
-  queryKeys,
-  OG_IMAGE_WIDTH,
-  OG_IMAGE_HEIGHT
-} from '@/constants';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { Metadata } from 'next';
 import { envConfig } from '@/config';
 
@@ -67,21 +59,11 @@ export async function generateMetadata({
 }
 
 export default async function SearchPage() {
-  const queryClient = getQueryClient();
-  const categoryFilters = { size: MAX_PAGE_SIZE };
-
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.CATEGORY_LIST, categoryFilters],
-    queryFn: () => categoryApiRequest.getList(categoryFilters)
-  });
-
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
-        <div className='max-640:gap-8 flex flex-col gap-12.5'>
-          <Search />
-        </div>
-      </Container>
-    </HydrationBoundary>
+    <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
+      <div className='max-640:gap-8 flex flex-col gap-12.5'>
+        <Search />
+      </div>
+    </Container>
   );
 }

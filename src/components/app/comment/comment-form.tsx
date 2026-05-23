@@ -15,6 +15,16 @@ import { useClickOutside, useAuth } from '@/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type UseFormReturn } from 'react-hook-form';
 
+type EmojiClickEvent = Event & {
+  detail: {
+    unicode: string;
+  };
+};
+
+type EmojiPickerElement = HTMLElement & {
+  i18n: unknown;
+};
+
 type CommentFormProps = {
   parentId: string;
   movieId: string;
@@ -135,9 +145,9 @@ export function CommentForm({
   };
 
   useEffect(() => {
-    let picker: any;
+    let picker: EmojiPickerElement | null = null;
     let mounted = true;
-    let emojiClickHandler: ((event: any) => void) | null = null;
+    let emojiClickHandler: EventListener | null = null;
 
     (async () => {
       const { Picker } = await import('emoji-picker-element');
@@ -145,7 +155,7 @@ export function CommentForm({
 
       if (!mounted) return;
 
-      picker = new Picker();
+      picker = new Picker() as EmojiPickerElement;
       picker.i18n = vi;
       picker.style.cssText = `
         position: absolute;
@@ -161,8 +171,9 @@ export function CommentForm({
       picker.style.setProperty('--border-radius', '8px');
       picker.style.setProperty('--border-size', '0');
 
-      emojiClickHandler = (event: any) => {
-        const emoji = event.detail.unicode;
+      emojiClickHandler = (event) => {
+        const emojiEvent = event as EmojiClickEvent;
+        const emoji = emojiEvent.detail.unicode;
         if (formMethodsRef.current) {
           const currentValue =
             formMethodsRef.current.getValues('content') || '';

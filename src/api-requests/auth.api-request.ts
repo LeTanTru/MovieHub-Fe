@@ -1,6 +1,7 @@
 import { apiConfig } from '@/constants';
-import {
+import type {
   ApiResponse,
+  ApiResponseNoData,
   ChangePasswordBodyType,
   ForgotPasswordBodyType,
   LoginBodyType,
@@ -13,7 +14,7 @@ import {
 import { http } from '@/utils';
 
 export const getGoogleLoginUrl = (loginType: string | number) =>
-  http.get<ApiResponse<any>>(apiConfig.user.auth.socialLogin, {
+  http.get<ApiResponse<string>>(apiConfig.user.auth.socialLogin, {
     params: { loginType }
   });
 
@@ -33,36 +34,36 @@ export const login = (body: LoginBodyType) =>
   });
 
 export const register = (body: RegisterBodyType) =>
-  http.post<ApiResponse<any>>(apiConfig.user.register, {
+  http.post<ApiResponseNoData>(apiConfig.user.register, {
     body: body
   });
 
 export const logout = () =>
-  http.post<ApiResponse<any>>(apiConfig.api.auth.logout);
+  http.post<ApiResponseNoData>(apiConfig.api.auth.logout);
 
 export const requestForgotPassword = (body: RequestForgotPasswordBodyType) =>
-  http.post<ApiResponse<any>>(apiConfig.user.requestForgotPassword, {
+  http.post<ApiResponseNoData>(apiConfig.user.requestForgotPassword, {
     body
   });
 
 export const forgotPassword = (body: Pick<ForgotPasswordBodyType, 'email'>) =>
-  http.post<ApiResponse<any>>(apiConfig.user.forgotPassword, {
+  http.post<ApiResponseNoData>(apiConfig.user.forgotPassword, {
     body
   });
 
 export const resendOtp = (body: { email: string }) =>
-  http.post<ApiResponse<any>>(apiConfig.user.resendOtp, {
+  http.post<ApiResponseNoData>(apiConfig.user.resendOtp, {
     body
   });
 
 export const verifyOtp = (body: VerifyOtpBodyType) =>
-  http.post<ApiResponse<any>>(apiConfig.user.verifyOtp, {
+  http.post<ApiResponseNoData>(apiConfig.user.verifyOtp, {
     body
   });
 
 export const changePassword = (
   body: Omit<ChangePasswordBodyType, 'confirmNewPassword'>
-) => http.post<ApiResponse<any>>(apiConfig.user.changePassword, { body });
+) => http.post<ApiResponseNoData>(apiConfig.user.changePassword, { body });
 
 export const session = () =>
   http.get<ApiResponse<SessionResType>>(apiConfig.api.auth.session);

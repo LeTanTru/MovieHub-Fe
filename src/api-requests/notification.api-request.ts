@@ -1,7 +1,8 @@
 import { apiConfig } from '@/constants';
-import {
+import type {
   ApiResponse,
   ApiResponseList,
+  ApiResponseNoData,
   NotificationResType,
   NotificationSearchType,
   UnreadCountNotificationResType,
@@ -21,17 +22,17 @@ export const countUnread = () =>
   );
 
 export const updateRead = (body: UpdateReadNotificationBodyType) =>
-  http.put<ApiResponse<any>>(apiConfig.notification.updateRead, {
+  http.put<ApiResponseNoData>(apiConfig.notification.updateRead, {
     body
   });
 
 export const readAll = () =>
-  http.put<ApiResponse<any>>(apiConfig.notification.readAll);
+  http.put<ApiResponseNoData>(apiConfig.notification.readAll);
 
 export const deleteById = (id: string) =>
-  http.delete<ApiResponse<any>>(apiConfig.notification.delete, {
+  http.delete<ApiResponseNoData>(apiConfig.notification.delete, {
     pathParams: { id }
   });
 
 export const deleteAll = () =>
-  http.delete<ApiResponse<any>>(apiConfig.notification.deleteAll);
+  http.delete<ApiResponseNoData>(apiConfig.notification.deleteAll);

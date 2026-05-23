@@ -2,7 +2,7 @@
 
 import './body-load.css';
 import { logoWithText } from '@/assets';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
