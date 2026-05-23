@@ -9,7 +9,10 @@ import { JsonLd } from '@/components/seo';
 import { MqttProvider } from '@/components/providers/mqtt-provider';
 import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { PerformanceMonitor } from '@/components/performance-monitor';
-import { QueryProvider } from '@/components/providers/query-provider';
+import {
+  CategoryPrefetchBoundary,
+  QueryProvider
+} from '@/components/providers/query-provider';
 import { Suspense } from 'react';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { ToastContainer } from 'react-toastify';
@@ -105,23 +108,25 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <JsonLd data={websiteSchema} />
         <BodyLoad />
         <QueryProvider>
-          <AppProvider>
-            <ThemeProvider
-              attribute='class'
-              defaultTheme='dark'
-              enableSystem
-              disableTransitionOnChange
-            >
-              {/* <WebVitals /> */}
-              <Suspense>{children}</Suspense>
-              <DisclaimerModal />
-              <MqttProvider />
-              <NextTopLoader showSpinner={false} />
-              <GoToTopButton />
-              <PerformanceMonitor />
-            </ThemeProvider>
-            <ToastContainer />
-          </AppProvider>
+          <CategoryPrefetchBoundary>
+            <AppProvider>
+              <ThemeProvider
+                attribute='class'
+                defaultTheme='dark'
+                enableSystem
+                disableTransitionOnChange
+              >
+                {/* <WebVitals /> */}
+                <Suspense>{children}</Suspense>
+                <DisclaimerModal />
+                <MqttProvider />
+                <NextTopLoader showSpinner={false} />
+                <GoToTopButton />
+                <PerformanceMonitor />
+              </ThemeProvider>
+              <ToastContainer />
+            </AppProvider>
+          </CategoryPrefetchBoundary>
         </QueryProvider>
       </body>
     </html>

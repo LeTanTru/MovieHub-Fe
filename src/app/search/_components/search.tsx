@@ -3,7 +3,7 @@
 import { Filter } from './filter';
 import { MovieList } from './movie-list';
 import { DEFAULT_PAGE_SIZE, SEARCH_MOVIE_LIST_ID } from '@/constants';
-import { useDebounce, useQueryParams } from '@/hooks';
+import { useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';
 import { useSearchStore } from '@/store';
 import { SearchKeys, SearchParamsType } from '@/types';
@@ -23,9 +23,9 @@ export function Search() {
       keyword: s.keyword
     }))
   );
-  const debouncedKeyword = useDebounce(keyword, 500);
   const [showFilter, setShowFilter] = useState<boolean>(false);
-  const { searchParams, setQueryParams } = useQueryParams<SearchParamsType>();
+  const { searchParams, queryString, setQueryParams } =
+    useQueryParams<SearchParamsType>();
   // Local state for filters to allow user to change them before applying
   const [filters, setFilters] = useState<SearchFilter[]>([
     { key: 'ageRating', value: searchParams.ageRating || 'all' },
@@ -197,16 +197,10 @@ export function Search() {
     });
   }, [keyword, searchParams.keyword]);
 
-  useEffect(() => {
-    if (debouncedKeyword !== undefined && debouncedKeyword !== null) {
-      getMovieList();
-    }
-  }, [debouncedKeyword, getMovieList]);
-
-  // Fetch when search params change (from filter apply or URL change)
+  // Fetch when the URL query string changes to avoid refetching on each render.
   useEffect(() => {
     getMovieList();
-  }, [searchParams, getMovieList]);
+  }, [queryString, getMovieList]);
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>
