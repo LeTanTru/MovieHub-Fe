@@ -14,14 +14,14 @@ import {
   OG_IMAGE_WIDTH,
   OG_IMAGE_HEIGHT
 } from '@/constants';
+import { Collection } from '@/app/(home)/_components/collection';
+import { envConfig } from '@/config';
+import { Recommendation } from '@/app/(home)/_components/recommendation';
 import { Slider } from '@/app/(home)/_components/slider';
 import { SuggestByWatched } from '@/app/(home)/_components/suggest-by-watched';
 import { TopicList } from '@/app/(home)/_components/topic-list';
 import { WatchContinue } from '@/app/(home)/_components/watch-continue';
-import { Collection } from '@/app/(home)/_components/collection';
-import envConfig from '@/config';
 import type { Metadata } from 'next';
-import { Recommendation } from '@/app/(home)/_components/recommendation';
 
 export const revalidate = 60;
 

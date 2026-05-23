@@ -5,7 +5,7 @@ import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { queryKeys, OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

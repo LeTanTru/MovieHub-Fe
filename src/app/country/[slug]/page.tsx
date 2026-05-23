@@ -15,7 +15,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { MovieList } from '@/app/country/[slug]/_components';
 import { Container } from '@/components/layout';
 import { BreadcrumbListJsonLd, ItemListJsonLd } from '@/components/seo';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 
 export const revalidate = 60;
 
@@ -111,7 +111,7 @@ export default async function CountryPage({ params }: CountryPageProps) {
       { name: 'Trang chủ', item: envConfig.NEXT_PUBLIC_URL },
       {
         name: 'Quốc gia',
-        item: `${envConfig.NEXT_PUBLIC_URL}/movie/single`
+        item: `${envConfig.NEXT_PUBLIC_URL}/country`
       },
       {
         name: countryName,

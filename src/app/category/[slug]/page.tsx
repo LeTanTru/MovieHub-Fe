@@ -14,7 +14,7 @@ import { MovieList } from '@/app/category/[slug]/_components';
 import { ApiResponseList, MovieResType, MovieSearchType } from '@/types';
 import { BreadcrumbListJsonLd, ItemListJsonLd } from '@/components/seo';
 import type { Metadata } from 'next';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 
 export const revalidate = 60;
 
@@ -118,7 +118,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       { name: 'Trang chủ', item: envConfig.NEXT_PUBLIC_URL },
       {
         name: 'Thể loại',
-        item: `${envConfig.NEXT_PUBLIC_URL}/movie/single`
+        item: `${envConfig.NEXT_PUBLIC_URL}/category`
       },
       {
         name: categoryName,

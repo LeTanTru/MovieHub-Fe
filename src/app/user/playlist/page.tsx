@@ -11,7 +11,7 @@ import {
 } from '@/constants';
 import { ApiResponse, PlaylistResType, PlaylistSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {

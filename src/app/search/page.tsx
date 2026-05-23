@@ -1,3 +1,4 @@
+import { categoryApiRequest } from '@/api-requests';
 import { Search } from '@/app/search/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
@@ -9,7 +10,7 @@ import {
 } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 
 export async function generateMetadata({
   searchParams
@@ -67,9 +68,11 @@ export async function generateMetadata({
 
 export default async function SearchPage() {
   const queryClient = getQueryClient();
+  const categoryFilters = { size: MAX_PAGE_SIZE };
 
   await queryClient.prefetchQuery({
-    queryKey: [queryKeys.CATEGORY_LIST, { size: MAX_PAGE_SIZE }]
+    queryKey: [queryKeys.CATEGORY_LIST, categoryFilters],
+    queryFn: () => categoryApiRequest.getList(categoryFilters)
   });
 
   return (

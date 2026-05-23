@@ -6,7 +6,7 @@ import {
 } from '@/api-requests';
 import { Movie } from '@/app/movie/[slug]/_components';
 import { getQueryClient } from '@/components/providers/query-provider';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import {
   AppConstants,
   DEFAULT_PAGE_SIZE,

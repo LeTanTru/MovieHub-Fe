@@ -11,9 +11,11 @@ import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/form';
 import { useEffect } from 'react';
 import { storageKeys } from '@/constants';
-import { getData, removeData, setData } from '@/utils';
+import { getData, setData } from '@/utils';
 import { useDisclosure, useIsMounted } from '@/hooks';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
+
+const DISCLAIMER_INTERVAL_MS = 2 * 60 * 60 * 1000;
 
 const DISCLAIMER_TEXT = {
   title: 'Cảnh báo quan trọng',
@@ -24,44 +26,54 @@ const DISCLAIMER_TEXT = {
   agree: 'Tôi đã hiểu và đồng ý'
 };
 
+const shouldShowDisclaimer = () => {
+  const lastAcknowledgedAt = Number(getData(storageKeys.DISCLAIMER_SHOWN) ?? 0);
+
+  if (!Number.isFinite(lastAcknowledgedAt) || lastAcknowledgedAt <= 0) {
+    return true;
+  }
+
+  return Date.now() - lastAcknowledgedAt >= DISCLAIMER_INTERVAL_MS;
+};
+
 export function DisclaimerModal() {
   const isMounted = useIsMounted();
-
-  const { opened, close } = useDisclosure(
-    getData(storageKeys.DISCLAIMER_SHOWN) !== 'true'
-  );
+  const { opened, open, close } = useDisclosure(false);
 
   const handleAgree = () => {
-    setData(storageKeys.DISCLAIMER_SHOWN, 'true');
+    setData(storageKeys.DISCLAIMER_SHOWN, Date.now().toString());
     close();
   };
 
   useEffect(() => {
-    if (isMounted) {
-      if (
-        getData(storageKeys.DISCLAIMER_SHOWN) !== 'true' &&
-        envConfig.NEXT_PUBLIC_NODE_ENV === 'production'
-      ) {
-        // show modal in prod if not agreed
-      } else {
-        close();
-      }
+    if (!isMounted || envConfig.NEXT_PUBLIC_NODE_ENV === 'development') {
+      close();
+      return;
     }
-  }, [isMounted]);
+
+    if (shouldShowDisclaimer()) {
+      open();
+      return;
+    }
+
+    close();
+  }, [close, isMounted, open]);
 
   if (!isMounted) return null;
 
   return (
     <Dialog open={opened}>
       <DialogContent
-        closeOnOverlay={false}
+        showCloseButton={false}
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
         className='max-520:w-[90%] pointer-events-auto border-gray-800 bg-[#0b0f19] p-6 text-white [&>button]:hidden'
       >
-        <DialogHeader className='flex flex-row items-center gap-3 text-[#ccd6f6]'>
-          <AlertTriangle className='size-8 animate-pulse text-amber-500' />
-          <DialogTitle className='text-lg font-semibold'>
-            {DISCLAIMER_TEXT.title}
-          </DialogTitle>
+        <DialogHeader className='flex flex-col items-center gap-3 text-center'>
+          <div className='flex size-14 shrink-0 items-center justify-center rounded-full bg-rose-500/10'>
+            <AlertTriangle className='size-8 animate-pulse text-rose-500' />
+          </div>
+          <DialogTitle className='text-xl'>{DISCLAIMER_TEXT.title}</DialogTitle>
         </DialogHeader>
         <div className='flex flex-col gap-4 text-sm leading-relaxed text-[#8892b0]'>
           <DialogDescription className='text-[#8892b0]'>
@@ -70,6 +82,9 @@ export function DisclaimerModal() {
           <div className='rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 text-amber-200/90'>
             {DISCLAIMER_TEXT.warning}
           </div>
+          <p className='text-center font-medium italic'>
+            Thông báo này sẽ xuất hiện lại sau 2 giờ.
+          </p>
           <Button
             onClick={handleAgree}
             className='w-full cursor-pointer transition-all duration-200 ease-linear'

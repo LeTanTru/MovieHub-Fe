@@ -12,7 +12,7 @@ import { FavouriteList } from '@/app/user/favourite/_components';
 import { FavouriteSearchType } from '@/types';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { Sidebar } from '@/app/user/_components';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
