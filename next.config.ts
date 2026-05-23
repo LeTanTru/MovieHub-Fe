@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next';
 import createBundleAnalyzer from '@next/bundle-analyzer';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import path from 'path';
 
 const nextConfig: NextConfig = {

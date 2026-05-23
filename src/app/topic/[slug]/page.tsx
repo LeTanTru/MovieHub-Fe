@@ -18,7 +18,7 @@ import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/topic/[slug]/_components';
 import { BreadcrumbListJsonLd, ItemListJsonLd } from '@/components/seo';
 import type { Metadata } from 'next';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 
 export const revalidate = 60;
 

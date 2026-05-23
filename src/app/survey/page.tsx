@@ -1,7 +1,7 @@
 import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { Survey } from '@/app/survey/_components';
 import type { Metadata } from 'next';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 
 export const metadata: Metadata = {
   title: 'Khảo sát',

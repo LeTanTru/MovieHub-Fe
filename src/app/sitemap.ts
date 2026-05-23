@@ -4,7 +4,7 @@ import {
   movieApiRequest,
   personApiRequest
 } from '@/api-requests';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import { MAX_PAGE_SIZE, countries } from '@/constants';
 import { generateSlug } from '@/utils';
 import type { MetadataRoute } from 'next';

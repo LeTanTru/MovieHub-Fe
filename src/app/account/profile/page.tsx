@@ -2,7 +2,7 @@ import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { ButtonBackToHome } from '@/app/account/_components';
 import { ProfileForm } from '@/app/account/profile/_components';
 import { logo } from '@/assets';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';

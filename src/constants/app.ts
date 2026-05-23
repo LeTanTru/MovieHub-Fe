@@ -1,4 +1,4 @@
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import { GOOGLE_WEB_LOGIN_TYPE } from '@/constants/constant';
 
 const authApiUrl = envConfig.NEXT_PUBLIC_AUTH_API_URL;

@@ -13,7 +13,7 @@ import {
   PERSON_KIND_ACTOR,
   queryKeys
 } from '@/constants';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import type { Metadata, ResolvingMetadata } from 'next';
 
 export const revalidate = 60;

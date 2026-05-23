@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import { CircleLoading } from '@/components/loading';
 import { useNavigate } from '@/hooks';
 

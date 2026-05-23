@@ -1,7 +1,7 @@
 import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { RegisterForm } from '@/app/(auth)/register/_components';
 import type { Metadata } from 'next';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 
 export const metadata: Metadata = {
   title: 'Đăng ký',

@@ -1,18 +1,18 @@
-import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import './globals.css';
 import { AppProvider } from '@/components/providers/app-provider';
 import { Be_Vietnam_Pro } from 'next/font/google';
 import { BodyLoad } from '@/components/app/body-load';
 import { DisclaimerModal } from '@/components/modal';
+import { envConfig } from '@/config';
 import { GoToTopButton } from '@/components/app/go-to-top-button';
 import { JsonLd } from '@/components/seo';
 import { MqttProvider } from '@/components/providers/mqtt-provider';
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { PerformanceMonitor } from '@/components/performance-monitor';
 import { QueryProvider } from '@/components/providers/query-provider';
 import { Suspense } from 'react';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { ToastContainer } from 'react-toastify';
-import envConfig from '@/config';
 import NextTopLoader from 'nextjs-toploader';
 import type { Metadata } from 'next';
 

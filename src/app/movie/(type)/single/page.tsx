@@ -13,7 +13,7 @@ import {
 import { MovieSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 
 export const metadata: Metadata = {
   title: 'Phim lẻ',

@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import { AppConstants, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useLoginGoogleMutation, useLoginGoogleQuery } from '@/queries';

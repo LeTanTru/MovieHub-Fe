@@ -7,7 +7,7 @@ import {
 import { Watch } from '@/app/watch/[slug]/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import {
   AppConstants,
   DEFAULT_PAGE_SIZE,

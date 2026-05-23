@@ -2,7 +2,7 @@ import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { Sidebar } from '@/app/user/_components';
 import { NotificationList } from '@/app/user/notification/_components';
 import { Container } from '@/components/layout';
-import envConfig from '@/config';
+import { envConfig } from '@/config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
