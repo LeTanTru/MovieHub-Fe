@@ -123,16 +123,14 @@ export function Header() {
         <div className='h-header max-1360:hidden max-1600:gap-2.5 flex grow items-center gap-4'>
           <NavigationMenu mode='desktop' />
           <div className='grow'></div>
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ButtonDownloadApp />
+          </m.div>
           <AnimatePresence mode='wait' initial={false}>
-            <m.div
-              key='download-app'
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <ButtonDownloadApp />
-            </m.div>
             {loading ? (
               <m.div
                 key='loading'
