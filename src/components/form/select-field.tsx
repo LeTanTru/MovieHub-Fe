@@ -179,7 +179,6 @@ export function SelectField<
                         'hover:border-input focus-visible:border-input focus-visible:ring-main-color bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                         {
                           'ring-main-color border-transparent! ring-2': open,
-                          '[&>div>span]:text-gray-300': fieldState.invalid,
                           'border-rose-500 ring-rose-500': !!fieldState.error
                         },
                         className

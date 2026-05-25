@@ -1,4 +1,5 @@
 export * as accountApiRequest from './account.api-request';
+export * as appVersionApiRequest from './app-version.api-request';
 export * as authApiRequest from './auth.api-request';
 export * as categoryApiRequest from './category.api-request';
 export * as collectionApiRequest from './collection.api-request';

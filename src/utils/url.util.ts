@@ -55,9 +55,13 @@ export const renderVttUrl = (
   return `https://${hostname}/v1/file/public-download${url}`;
 };
 
-export const renderFileUrl = (url: string) => {
+export const renderFileUrl = (url: string, isPublic: boolean = false) => {
   if (!url) return '';
-  return url.startsWith('https') ? url : `${AppConstants.contentRootUrl}${url}`;
+  const baseUrl = isPublic
+    ? AppConstants.publicContentUrl
+    : AppConstants.contentRootUrl;
+
+  return url.startsWith('https') ? url : `${baseUrl}${url}`;
 };
 
 export const getIdFromSlug = (slug: string) => {

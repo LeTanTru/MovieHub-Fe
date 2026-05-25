@@ -1,4 +1,5 @@
 export * from './account.query';
+export * from './app-version.query';
 export * from './auth.query';
 export * from './category.query';
 export * from './collection-item.query';
