@@ -1,5 +1,6 @@
 'use client';
 
+import { ButtonDownloadApp } from '@/components/app/button-dowload-app';
 import { ButtonLogout } from '@/components/app/button-logout';
 import { AvatarField, Button } from '@/components/form';
 import { List, ListItem } from '@/components/list';
@@ -105,7 +106,7 @@ export function NavigationMobile({ navigationList }: NavigationMobileProps) {
             className='bg-charade max-480:w-[95%] absolute top-15 w-110 rounded-md p-4'
           >
             {!profile ? (
-              <div className='flex justify-center'>
+              <div className='flex flex-col justify-center gap-2'>
                 <Button
                   onClick={() => navigate.push(route.login.path)}
                   className='w-full rounded-full'
@@ -150,6 +151,11 @@ export function NavigationMobile({ navigationList }: NavigationMobileProps) {
                 <Separator />
               </>
             )}
+
+            <div className='mt-4'>
+              <ButtonDownloadApp className='w-full' />
+            </div>
+            <Separator className='mt-4' />
 
             <List className='max-480:mt-1 max-480:gap-1 mt-4 grid w-full grid-cols-2 gap-2'>
               {navigationList.map((item, index) =>

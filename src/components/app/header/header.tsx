@@ -19,6 +19,7 @@ import { DropdownNotification } from './dropdown-notification';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SearchForm } from './search-form';
+import { ButtonDownloadApp } from '@/components/app/button-dowload-app';
 
 export function Header() {
   const [isFixed, setIsFixed] = useState<boolean>(false);
@@ -119,9 +120,16 @@ export function Header() {
         </AnimatePresence>
 
         {/* Right side */}
-        <div className='h-header max-1360:hidden max-1600:gap-2.5 flex grow items-center gap-8'>
+        <div className='h-header max-1360:hidden max-1600:gap-2.5 flex grow items-center gap-4'>
           <NavigationMenu mode='desktop' />
           <div className='grow'></div>
+          <m.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
+          >
+            <ButtonDownloadApp />
+          </m.div>
           <AnimatePresence mode='wait' initial={false}>
             {loading ? (
               <m.div
@@ -147,7 +155,7 @@ export function Header() {
                 </Button>
               </m.div>
             ) : (
-              <div className='flex h-full items-center gap-x-5'>
+              <div className='flex h-full items-center gap-4'>
                 <m.div
                   key='notification'
                   initial={{ opacity: 0 }}

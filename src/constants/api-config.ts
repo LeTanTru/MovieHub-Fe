@@ -616,5 +616,14 @@ export const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredXClientType: true
     }
+  },
+  appVersion: {
+    getLatest: {
+      baseUrl: `${AppConstants.apiUrl}/v1/app-version/latest`,
+      method: 'GET',
+      headers: baseHeader,
+      ignoreAuth: true,
+      isRequiredXClientType: true
+    }
   }
 });

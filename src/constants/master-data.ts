@@ -217,6 +217,7 @@ export const movieTypes = {
 };
 
 export const queryKeys = {
+  APP_VERSION_LATEST: 'app-version-latest',
   CATEGORY_LIST: 'category-list',
   CATEGORY: 'category',
   CHANGE_PASSWORD: 'change-password',
@@ -272,7 +273,6 @@ export const queryKeys = {
   PLAYLIST_CREATE: 'playlist-create',
   PLAYLIST_DELETE: 'playlist-delete',
   PLAYLIST_ITEM: 'playlist-item',
-  REMOVE_PLAYLIST_ITEM: 'remove-playlist-item',
   PLAYLIST_LIST: 'playlist-list',
   PLAYLIST_MOVIES: 'playlist-movies',
   PLAYLIST: 'playlist',
@@ -280,6 +280,7 @@ export const queryKeys = {
   PROFILE: 'profile',
   READ_ALL_NOTIFICATION: 'read-all-notification',
   REGISTER: 'register',
+  REMOVE_PLAYLIST_ITEM: 'remove-playlist-item',
   REQUEST_FORGOT_PASSWORD: 'request-forgot-password',
   RESEND_OTP: 'resend-otp',
   REVIEW_LIST: 'review-list',
