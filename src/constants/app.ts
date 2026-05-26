@@ -14,5 +14,5 @@ export const AppConstants = {
   publicContentUrl: `${mediaUrl}/v1/file/public-download`,
   videoRootUrl: `${mediaUrl}/v1/file/download-video-resource`,
   loginType: GOOGLE_WEB_LOGIN_TYPE,
-  qrDownloadUrl: `${publicUrl}/download/app`
+  qrDownloadUrl: `${publicUrl}/api/download/app`
 };
