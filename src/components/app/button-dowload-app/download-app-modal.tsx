@@ -1,5 +1,6 @@
 'use client';
 
+import { AndroidIcon } from '@/assets/icons/android';
 import { Modal } from '@/components/modal';
 import { AppVersionLatestResType } from '@/types';
 import { renderFileUrl } from '@/utils';
@@ -61,6 +62,10 @@ export function DownloadAppModal({
                   <span className='rounded-full bg-black/20 px-3 py-1 text-sm font-medium text-white/85'>
                     {appVersion.name}
                   </span>
+                  <div className='flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-medium'>
+                    <AndroidIcon />
+                    <span className='text-white/70'>Android</span>
+                  </div>
                 </div>
               </div>
             </div>
