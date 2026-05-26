@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { AppConstants } from '@/constants';
 import { Modal } from '@/components/modal';
 import { AppVersionLatestResType } from '@/types';
 import { renderFileUrl } from '@/utils';
@@ -19,49 +17,15 @@ export function DownloadAppModal({
   appVersion,
   onClose
 }: DownloadAppModalProps) {
-  const [isDownloading, setIsDownloading] = useState(false);
-  const downloadUrl = renderFileUrl(appVersion.filePath);
   const safeVersionName =
     appVersion.name
       .trim()
       .replace(/\s+/g, '_')
       .replace(/[<>:"/\\|?*\x00-\x1F]/g, '') || 'latest';
   const downloadFileName = `moviehub_${safeVersionName}.apk`;
-
-  const triggerDownload = (href: string) => {
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = downloadFileName;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  };
-
-  const handleDownload = async () => {
-    if (isDownloading) return;
-
-    setIsDownloading(true);
-
-    try {
-      const response = await fetch(downloadUrl);
-      if (!response.ok) {
-        throw new Error(`Download failed with status ${response.status}`);
-      }
-
-      const blob = await response.blob();
-      const objectUrl = URL.createObjectURL(blob);
-
-      try {
-        triggerDownload(objectUrl);
-      } finally {
-        URL.revokeObjectURL(objectUrl);
-      }
-    } catch {
-      triggerDownload(downloadUrl);
-    } finally {
-      setIsDownloading(false);
-    }
-  };
+  const rawDownloadUrl = renderFileUrl(appVersion.filePath);
+  const separator = rawDownloadUrl.includes('?') ? '&' : '?';
+  const downloadUrl = `${rawDownloadUrl}${separator}downloadFileName=${encodeURIComponent(downloadFileName)}`;
 
   return (
     <Modal
@@ -119,19 +83,20 @@ export function DownloadAppModal({
                 </p>
               </div>
 
-              <button
-                type='button'
-                onClick={handleDownload}
-                disabled={isDownloading}
-                className='bg-golden-glow hover:bg-golden-tainoi max-640:mx-auto inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold text-black transition disabled:cursor-not-allowed disabled:opacity-70'
+              <a
+                href={downloadUrl}
+                download={downloadFileName}
+                target='_blank'
+                rel='noreferrer'
+                className='bg-golden-glow hover:bg-golden-tainoi max-640:mx-auto inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold text-black transition'
               >
                 <Download className='size-4' />
-                {isDownloading ? 'Đang tải...' : 'Tải xuống'}
-              </button>
+                Tải xuống
+              </a>
             </div>
 
             <div className='mx-auto rounded-2xl bg-white p-4 shadow-[0_18px_40px_rgba(0,0,0,0.28)]'>
-              <QRCodeSVG value={AppConstants.qrDownloadUrl} size={188} />
+              <QRCodeSVG value={downloadUrl} size={188} />
             </div>
           </div>
         </div>
