@@ -4,6 +4,7 @@ import { GOOGLE_WEB_LOGIN_TYPE } from '@/constants/constant';
 const authApiUrl = envConfig.NEXT_PUBLIC_AUTH_API_URL;
 const apiUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT_URL;
 const mediaUrl = envConfig.NEXT_PUBLIC_API_MEDIA_URL;
+const publicUrl = envConfig.NEXT_PUBLIC_URL;
 
 export const AppConstants = {
   authApiUrl: `${authApiUrl}`,
@@ -12,5 +13,6 @@ export const AppConstants = {
   contentRootUrl: `${mediaUrl}/v1/file/download`,
   publicContentUrl: `${mediaUrl}/v1/file/public-download`,
   videoRootUrl: `${mediaUrl}/v1/file/download-video-resource`,
-  loginType: GOOGLE_WEB_LOGIN_TYPE
+  loginType: GOOGLE_WEB_LOGIN_TYPE,
+  qrDownloadUrl: `${publicUrl}/download/app`
 };
