@@ -15,8 +15,7 @@ import {
 import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
 import { logger } from '@/logger';
-import { invalidateQueries, notify } from '@/utils';
-import { route } from '@/routes';
+import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
 
@@ -99,7 +98,7 @@ export function ReviewList({
           Vui lòng&nbsp;
           <Link
             className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
+            href={buildLoginRedirectPath()}
           >
             đăng nhập
           </Link>

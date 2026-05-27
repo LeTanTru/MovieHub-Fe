@@ -23,10 +23,9 @@ import {
 import { cn } from '@/lib';
 import { cva, VariantProps } from 'class-variance-authority';
 import { logger } from '@/logger';
-import { invalidateQueries, notify } from '@/utils';
+import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import { PlaylistItemBodyType } from '@/types';
 import { PlusIcon } from '@/assets';
-import { route } from '@/routes';
 import { useMemo, useState } from 'react';
 import debounce from 'lodash/debounce';
 import Link from 'next/link';
@@ -91,7 +90,7 @@ export function ButtonAddToPlaylist({
           Vui lòng&nbsp;
           <Link
             className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
+            href={buildLoginRedirectPath()}
           >
             đăng nhập
           </Link>

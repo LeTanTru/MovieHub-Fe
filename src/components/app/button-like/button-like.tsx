@@ -15,8 +15,7 @@ import {
   useFavouriteMutation,
   useFavouriteQuery
 } from '@/queries';
-import { route } from '@/routes';
-import { invalidateQueries, notify } from '@/utils';
+import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import { cva, VariantProps } from 'class-variance-authority';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
@@ -119,7 +118,7 @@ export function ButtonLike({
           Vui lòng&nbsp;
           <Link
             className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
+            href={buildLoginRedirectPath()}
           >
             đăng nhập
           </Link>

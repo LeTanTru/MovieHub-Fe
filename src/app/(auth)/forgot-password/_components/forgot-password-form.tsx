@@ -8,7 +8,14 @@ import {
 } from '@/schemaValidations';
 import { ForgotPasswordBodyType } from '@/types';
 import { forgotPasswordErrorMaps, storageKeys } from '@/constants';
-import { applyFormErrors, getData, notify, removeData, setData } from '@/utils';
+import {
+  applyFormErrors,
+  buildAuthPathWithRedirect,
+  getData,
+  notify,
+  removeData,
+  setData
+} from '@/utils';
 import { BaseForm } from '@/components/form/base-form';
 import { useEffect, useReducer, useState, useRef } from 'react';
 import { logger } from '@/logger';
@@ -20,7 +27,7 @@ import {
 import { route } from '@/routes';
 import { ArrowLeft } from 'lucide-react';
 import { Activity } from '@/components/activity';
-import { useNavigate } from '@/hooks';
+import { useNavigate, useQueryParams } from '@/hooks';
 import { Separator } from '@/components/ui/separator';
 import { ForgotPasswordHeader } from './header';
 import { StepOneFormSection } from './step-one';
@@ -115,6 +122,9 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
 
 export function ForgotPasswordForm() {
   const navigate = useNavigate();
+  const {
+    searchParams: { redirect }
+  } = useQueryParams<{ redirect?: string }>();
   const [step, setStep] = useState<ForgotPasswordStepType>(1);
   const [
     { resendData, countdown, cooldownRemaining, lastResendTime },
@@ -332,7 +342,9 @@ export function ForgotPasswordForm() {
             if (res.result) {
               notify.success('Đặt lại mật khẩu thành công');
               handleClearForgotPassword();
-              navigate.push(route.login.path);
+              navigate.push(
+                buildAuthPathWithRedirect(route.login.path, redirect)
+              );
             } else {
               const errorCode = res.code;
               if (errorCode) {
@@ -405,7 +417,7 @@ export function ForgotPasswordForm() {
 
       <div className='mt-4 flex items-center justify-center text-center'>
         <Link
-          href={route.login.path}
+          href={buildAuthPathWithRedirect(route.login.path, redirect)}
           className='hover:text-golden-glow text-muted-foreground inline-flex items-center justify-center gap-2 transition-all duration-200 ease-linear'
           onClick={handleClearForgotPassword}
         >

@@ -162,7 +162,7 @@ export function CommentForm({
         z-index: 1000;
         opacity: 0;
         visibility: hidden;
-        right: 180px;
+        right: 170px;
         top: 0px;
         transition: all 0.2s linear;
         --border-radius: 8px;
@@ -204,9 +204,8 @@ export function CommentForm({
     const pickerEl = pickerContainerRef.current?.querySelector('emoji-picker');
 
     if (pickerEl) {
-      pickerEl.style.cssText = !showPicker
-        ? 'opacity: 0; visibility: hidden;'
-        : 'opacity: 1; visibility: visible;';
+      pickerEl.style.opacity = showPicker ? '1' : '0';
+      pickerEl.style.visibility = showPicker ? 'visible' : 'hidden';
     }
   }, [showPicker]);
 

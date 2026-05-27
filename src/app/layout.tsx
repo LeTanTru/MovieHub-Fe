@@ -8,7 +8,6 @@ import { GoToTopButton } from '@/components/app/go-to-top-button';
 import { JsonLd } from '@/components/seo';
 import { MqttProvider } from '@/components/providers/mqtt-provider';
 import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
-import { PerformanceMonitor } from '@/components/performance-monitor';
 import {
   CategoryPrefetchBoundary,
   QueryProvider
@@ -122,7 +121,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 <MqttProvider />
                 <NextTopLoader showSpinner={false} />
                 <GoToTopButton />
-                <PerformanceMonitor />
               </ThemeProvider>
               <ToastContainer />
             </AppProvider>

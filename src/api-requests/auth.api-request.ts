@@ -35,7 +35,7 @@ export const login = (body: LoginBodyType) =>
 
 export const register = (body: RegisterBodyType) =>
   http.post<ApiResponseNoData>(apiConfig.user.register, {
-    body: body
+    body
   });
 
 export const logout = () =>

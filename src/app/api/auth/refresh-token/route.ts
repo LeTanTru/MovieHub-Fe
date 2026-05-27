@@ -1,69 +1,22 @@
-import { getBasicAuthHeader } from '@/app/api/auth/_lib/auth';
-import { generateCsrfToken } from '@/app/api/auth/_lib/generate-csrf-token';
-import { makeCookieOption } from '@/app/api/auth/_lib/make-cookie-option';
-import {
-  ACCESS_TOKEN_MAX_AGE,
-  apiConfig,
-  CSRF_TOKEN_MAX_AGE,
-  REFRESH_TOKEN_MAX_AGE,
-  storageKeys
-} from '@/constants';
+import { refreshSession } from '../_lib/refresh-session';
 import { logger } from '@/logger';
-import { RefreshTokenResType } from '@/types';
-import { getCookie, http, isAxiosError, setCookie } from '@/utils';
+import { isAxiosError } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextResponse } from 'next/server';
 
 export async function POST() {
   try {
-    const refresh_token = await getCookie(storageKeys.REFRESH_TOKEN);
+    const refreshedSession = await refreshSession();
 
-    if (!refresh_token) {
+    if (!refreshedSession) {
       return NextResponse.json(
         { result: false, message: 'Refresh token is required' },
         { status: HttpStatusCode.BadRequest }
       );
     }
 
-    const res = await http.post<RefreshTokenResType>(
-      apiConfig.user.refreshToken,
-      {
-        body: {
-          refresh_token,
-          grant_type: process.env.GRANT_TYPE_REFRESH_TOKEN
-        },
-        options: {
-          headers: {
-            Authorization: getBasicAuthHeader()
-          }
-        }
-      }
-    );
-
-    const accessToken = res.access_token;
-    const refreshToken = res.refresh_token;
-    const csrfToken = generateCsrfToken();
-
-    await Promise.all([
-      setCookie(
-        storageKeys.ACCESS_TOKEN,
-        accessToken,
-        makeCookieOption(ACCESS_TOKEN_MAX_AGE)
-      ),
-      setCookie(
-        storageKeys.REFRESH_TOKEN,
-        refreshToken,
-        makeCookieOption(REFRESH_TOKEN_MAX_AGE)
-      ),
-      setCookie(
-        storageKeys.CSRF_TOKEN,
-        csrfToken,
-        makeCookieOption(CSRF_TOKEN_MAX_AGE)
-      )
-    ]);
-
     return NextResponse.json(
-      { result: true, data: { ...res, csrfToken } },
+      { result: true, data: refreshedSession.response },
       { status: HttpStatusCode.Ok }
     );
   } catch (error) {

@@ -1,26 +1,23 @@
-import { generateCsrfToken } from '@/app/api/auth/_lib/generate-csrf-token';
-import { makeCookieOption } from '@/app/api/auth/_lib/make-cookie-option';
+import { generateCsrfToken } from '../_lib/generate-csrf-token';
+import { getBasicAuthHeader } from '../_lib/auth';
+import { makeCookieOption } from '../_lib/make-cookie-option';
 import {
   ACCESS_TOKEN_MAX_AGE,
   apiConfig,
   CSRF_TOKEN_MAX_AGE,
   REFRESH_TOKEN_MAX_AGE,
-  storageKeys
+  storageKeys,
+  USER_KIND_MAX_AGE
 } from '@/constants';
 import { logger } from '@/logger';
-import {
-  ApiResponse,
-  LoginBodyType,
-  LoginResType,
-  ProfileResType
-} from '@/types';
+import { LoginResType } from '@/types';
 import { http, isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const body: LoginBodyType = await request.json();
+    const body = await request.json();
 
     if (!body) {
       return NextResponse.json(
@@ -39,40 +36,33 @@ export async function POST(request: NextRequest) {
     }
 
     const res = await http.post<LoginResType>(apiConfig.user.login, {
-      body: body
+      body: { ...body, grant_type: process.env.GRANT_TYPE },
+      options: {
+        headers: {
+          Authorization: getBasicAuthHeader()
+        }
+      }
     });
 
     const accessToken = res.access_token;
     const refreshToken = res.refresh_token;
+    const userKind = res.user_kind;
     const csrfToken = generateCsrfToken();
-
-    let profile: ProfileResType | null = null;
-    if (accessToken) {
-      const profileRes = await http.get<ApiResponse<ProfileResType>>(
-        apiConfig.user.getProfile,
-        {
-          options: {
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            }
-          }
-        }
-      );
-      if (profileRes.result && profileRes.data) {
-        profile = profileRes.data;
-      }
-    }
-
     await Promise.all([
       setCookie(
         storageKeys.ACCESS_TOKEN,
         accessToken,
-        makeCookieOption(ACCESS_TOKEN_MAX_AGE)
+        makeCookieOption(res.expires_in || ACCESS_TOKEN_MAX_AGE)
       ),
       setCookie(
         storageKeys.REFRESH_TOKEN,
         refreshToken,
         makeCookieOption(REFRESH_TOKEN_MAX_AGE)
+      ),
+      setCookie(
+        storageKeys.USER_KIND,
+        String(userKind),
+        makeCookieOption(USER_KIND_MAX_AGE)
       ),
       setCookie(
         storageKeys.CSRF_TOKEN,
@@ -81,10 +71,7 @@ export async function POST(request: NextRequest) {
       )
     ]);
 
-    return NextResponse.json(
-      { result: true, data: { ...res, profile } },
-      { status: HttpStatusCode.Ok }
-    );
+    return NextResponse.json({ result: true, data: res });
   } catch (error) {
     if (isAxiosError(error)) {
       const response = error.response?.data;

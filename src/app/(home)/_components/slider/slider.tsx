@@ -12,11 +12,15 @@ import {
   useFavouriteListIdsQuery,
   useFavouriteMutation
 } from '@/queries';
-import { invalidateQueries, notify, renderImageUrl } from '@/utils';
+import {
+  buildLoginRedirectPath,
+  invalidateQueries,
+  notify,
+  renderImageUrl
+} from '@/utils';
 import { SliderItem } from './slider-item';
 import { useAuth } from '@/hooks';
 import { FAVOURITE_TYPE_MOVIE, queryKeys } from '@/constants';
-import { route } from '@/routes';
 import Link from 'next/link';
 import { logger } from '@/logger';
 import { VerticalBarLoading } from '@/components/loading';
@@ -55,7 +59,7 @@ export function Slider({ sidebarList }: SliderProps) {
           Vui lòng&nbsp;
           <Link
             className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
+            href={buildLoginRedirectPath()}
           >
             đăng nhập
           </Link>

@@ -115,4 +115,7 @@ export const OG_IMAGE_HEIGHT = 630;
 
 export const ACCESS_TOKEN_MAX_AGE = 24 * 60 * 60; // 1 day
 export const REFRESH_TOKEN_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+export const USER_KIND_MAX_AGE = 24 * 60 * 60; // 1 day
 export const CSRF_TOKEN_MAX_AGE = 60 * 60; // 1 hour
+
+export const REDIRECT_AFTER_LOGIN_DURATION = 500;

@@ -14,6 +14,7 @@ import { MovieActionBar } from '@/components/app/movie-action-bar';
 import { MovieTabs } from '@/components/app/movie-tabs';
 import { NotFound } from './not-found';
 import { Skeleton } from '@/components/ui/skeleton';
+import { MAX_PAGE_SIZE } from '@/constants';
 
 type MovieProps = {
   id: string;
@@ -31,7 +32,8 @@ export function Movie({ id }: MovieProps) {
 
   const { data: moviePerson = [] } = useMoviePersonListQuery({
     params: {
-      movieId: id
+      movieId: id,
+      size: MAX_PAGE_SIZE
     },
     enabled: !!movie
   });

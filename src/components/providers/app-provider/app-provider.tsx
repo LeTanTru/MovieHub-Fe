@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from '@/queries';
+import { useProfileQuery, useSession } from '@/queries';
 import { useAuthStore } from '@/store';
 import { getData, removeData } from '@/utils';
 import { domAnimation, LazyMotion } from 'framer-motion';
@@ -8,7 +8,7 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useState
 } from 'react';
 import { useShallow } from 'zustand/shallow';
@@ -36,41 +36,76 @@ type AppProviderProps = { children: ReactNode };
 export function AppProvider({ children }: AppProviderProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { setAccessToken, setCsrfToken, setProfile } = useAuthStore(
+  const {
+    accessToken,
+    profile: storedProfile,
+    userKind,
+    setAccessToken,
+    setCsrfToken,
+    setProfile,
+    setUserKind
+  } = useAuthStore(
     useShallow((s) => ({
       accessToken: s.accessToken,
+      profile: s.profile,
+      userKind: s.userKind,
       setAccessToken: s.setAccessToken,
       setCsrfToken: s.setCsrfToken,
-      setProfile: s.setProfile
+      setProfile: s.setProfile,
+      setUserKind: s.setUserKind
     }))
   );
 
   const { data: session, isLoading: sessionLoading } = useSession();
 
-  useEffect(() => {
+  const { data: profile, isLoading: profileLoading } = useProfileQuery({
+    enabled: !!accessToken
+  });
+
+  useLayoutEffect(() => {
     if (session) {
       setAccessToken(session.accessToken);
       setCsrfToken(session.csrfToken);
-      setProfile(session.profile);
+      setUserKind(session.userKind);
+
+      if (!session.accessToken || session.userKind === null) {
+        setProfile(null);
+      }
     }
-  }, [session, setAccessToken, setCsrfToken, setProfile]);
+  }, [session, setUserKind, setAccessToken, setCsrfToken, setProfile]);
 
-  useEffect(() => {
-    const hasScroll = document.body.scrollHeight > window.innerHeight;
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
+  useLayoutEffect(() => {
+    if (profile) {
+      setProfile(profile);
+    }
+  }, [profile, setProfile]);
 
-    document.documentElement.style.setProperty(
-      '--scroll-padding',
-      hasScroll ? `${scrollbarWidth}px` : '0px'
-    );
-  }, []);
+  const isSessionHydrating = Boolean(
+    session?.accessToken &&
+    session.userKind !== null &&
+    (!accessToken || userKind === null)
+  );
+  const isProfileHydrating = Boolean(profile && !storedProfile);
+
+  // useEffect(() => {
+  //   if (pathname !== '/intro') {
+  //     const hasValidAccess = checkAccessExpiry();
+  //     if (!hasValidAccess) {
+  //       navigate.replace('/intro');
+  //     }
+  //   }
+  // }, [pathname, navigate]);
 
   return (
     <LazyMotion features={domAnimation} strict>
       <AppContext.Provider
         value={{
-          loading: loading || sessionLoading,
+          loading:
+            loading ||
+            sessionLoading ||
+            isSessionHydrating ||
+            profileLoading ||
+            isProfileHydrating,
           setLoading
         }}
       >

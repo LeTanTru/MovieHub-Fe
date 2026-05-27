@@ -4,13 +4,20 @@ import { Button, Col, OtpInputField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { Separator } from '@/components/ui/separator';
 import { storageKeys, verifyOtpErrorMaps } from '@/constants';
-import { useNavigate } from '@/hooks';
+import { useNavigate, useQueryParams } from '@/hooks';
 import { logger } from '@/logger';
 import { useResendOtpMutation, useVerifyOtpMutation } from '@/queries';
 import { route } from '@/routes';
 import { otpSchema } from '@/schemaValidations';
 import { VerifyOtpBodyType } from '@/types';
-import { applyFormErrors, getData, notify, removeData, setData } from '@/utils';
+import {
+  applyFormErrors,
+  buildAuthPathWithRedirect,
+  getData,
+  notify,
+  removeData,
+  setData
+} from '@/utils';
 import { useEffect, useReducer, useState, useRef } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
@@ -92,6 +99,9 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
 
 export function VerifyOtpForm() {
   const navigate = useNavigate();
+  const {
+    searchParams: { redirect }
+  } = useQueryParams<{ redirect?: string }>();
 
   const [
     { resendData, countdown, cooldownRemaining, lastResendTime },
@@ -240,7 +250,7 @@ export function VerifyOtpForm() {
 
   const handleBack = () => {
     handleClearData();
-    navigate.push(route.register.path);
+    navigate.push(buildAuthPathWithRedirect(route.register.path, redirect));
   };
 
   const onSubmit = async (
@@ -253,7 +263,7 @@ export function VerifyOtpForm() {
           notify.success('Xác thực OTP thành công');
           removeData(storageKeys.EMAIL);
           handleClearData();
-          navigate.push(route.login.path);
+          navigate.push(buildAuthPathWithRedirect(route.login.path, redirect));
         } else {
           const errorCode = res.code;
           if (errorCode) {

@@ -4,9 +4,8 @@ import { ReviewModal } from './review-modal';
 import { useAuth, useDisclosure } from '@/hooks';
 import { cn } from '@/lib';
 import { useCheckMovieQuery } from '@/queries';
-import { route } from '@/routes';
 import { useMovieStore } from '@/store';
-import { formatRating, notify } from '@/utils';
+import { buildLoginRedirectPath, formatRating, notify } from '@/utils';
 import Link from 'next/link';
 import { FaStar } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
@@ -35,7 +34,7 @@ export function ButtonReview({ movieId, className }: ButtonReviewProps) {
           Vui lòng&nbsp;
           <Link
             className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
+            href={buildLoginRedirectPath()}
           >
             đăng nhập
           </Link>

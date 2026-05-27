@@ -3,8 +3,13 @@
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import { getData, notify, removeData } from '@/utils';
-import { storageKeys } from '@/constants';
+import {
+  buildAuthPathWithRedirect,
+  getSafeRedirectPath,
+  notify,
+  removeData
+} from '@/utils';
+import { REDIRECT_AFTER_LOGIN_DURATION, storageKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
 import Link from 'next/link';
@@ -14,16 +19,21 @@ import { ButtonLoginGoogle } from './button-login-google';
 import { route } from '@/routes';
 import { Separator } from '@/components/ui/separator';
 import { useShallow } from 'zustand/shallow';
+import { useQueryParams } from '@/hooks';
 
 export function LoginForm() {
+  const {
+    searchParams: { redirect }
+  } = useQueryParams<{ redirect?: string }>();
+
   const { mutateAsync: loginMutate, isPending: loginLoading } =
     useLoginMutation();
 
-  const { setAccessToken, setProfile } = useAuthStore(
+  const { setAccessToken, setUserKind } = useAuthStore(
     useShallow((s) => {
       return {
         setAccessToken: s.setAccessToken,
-        setProfile: s.setProfile
+        setUserKind: s.setUserKind
       };
     })
   );
@@ -39,22 +49,24 @@ export function LoginForm() {
       onSuccess: async (res) => {
         if (res.result) {
           const accessToken = res.data?.access_token;
+          const userKind = res.data?.user_kind;
 
           setAccessToken(accessToken as string);
-
-          const profileData = res.data?.profile;
-
-          if (profileData) {
-            setProfile(profileData);
-          }
+          setUserKind(userKind as number);
 
           notify.success('Đăng nhập thành công');
 
           setTimeout(() => {
-            const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
-            removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
-            window.location.href = redirectPath || route.home.path;
-          }, 500);
+            if (redirect) {
+              window.location.href = getSafeRedirectPath(
+                redirect,
+                window.location.origin,
+                route.home.path
+              );
+            } else {
+              window.location.reload();
+            }
+          }, REDIRECT_AFTER_LOGIN_DURATION);
         }
       },
       onError: () => {
@@ -127,7 +139,10 @@ export function LoginForm() {
                 <div className='text-right'>
                   <Link
                     onClick={handleClearForgotPasswordData}
-                    href={route.forgotPassword.path}
+                    href={buildAuthPathWithRedirect(
+                      route.forgotPassword.path,
+                      redirect
+                    )}
                     className='text-muted-foreground hover:text-golden-glow transition-all duration-200 ease-linear'
                   >
                     Quên mật khẩu?
@@ -156,7 +171,7 @@ export function LoginForm() {
       <div className='text-muted-foreground mt-4 text-center'>
         Chưa có tài khoản? &nbsp;
         <Link
-          href={route.register.path}
+          href={buildAuthPathWithRedirect(route.register.path, redirect)}
           className='hover:text-golden-glow transition-all duration-200 ease-linear'
         >
           Đăng ký ngay

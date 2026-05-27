@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { getAnonymousToken } from '@/app/actions/anonymous';
+import { logger } from '@/logger';
 
 const MS_PER_SECOND = 1000;
 const SECONDS_PER_MINUTE = 60;
@@ -15,9 +16,14 @@ export const useAnonymousToken = () => {
     hasFetchedTokenRef.current = true;
 
     const handleGetToken = async () => {
-      const anonymousToken = await getAnonymousToken();
-      setToken(anonymousToken?.access_token || '');
-      setIsLoadingToken(false);
+      try {
+        const anonymousToken = await getAnonymousToken();
+        setToken(anonymousToken?.access_token || '');
+      } catch (error) {
+        logger.error('[ANONYMOUS_TOKEN_ERROR]', error);
+      } finally {
+        setIsLoadingToken(false);
+      }
     };
 
     const interval = setInterval(
