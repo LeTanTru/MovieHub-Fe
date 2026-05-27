@@ -8,9 +8,8 @@ import { FaXmark } from 'react-icons/fa6';
 import { logoWithText } from '@/assets';
 import { NavigationMenu } from './navigation';
 import { route } from '@/routes';
-import { setData } from '@/utils';
+import { buildLoginRedirectPath } from '@/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { storageKeys } from '@/constants';
 import { Suspense, useEffect, useState } from 'react';
 import { useAppContext } from '@/components/providers/app-provider';
 import { useAuth, useNavigate } from '@/hooks';
@@ -41,8 +40,7 @@ export function Header() {
   }, []);
 
   const handleLogin = () => {
-    setData(storageKeys.REDIRECT_PATH_AFTER_LOGIN, window.location.pathname);
-    navigate.push(route.login.path);
+    navigate.push(buildLoginRedirectPath());
   };
 
   return (

@@ -5,6 +5,7 @@ import { route } from '@/routes';
 import type { ApiConfig, Payload } from '@/types';
 import { useAuthStore } from '@/store';
 import { getCookie } from '@/utils';
+import { buildLoginRedirectPath } from './url.util';
 import axios, {
   AxiosError,
   HttpStatusCode,
@@ -16,6 +17,7 @@ import { redirect, unstable_rethrow } from 'next/navigation';
 
 const isClient = typeof window !== 'undefined';
 const axiosInstance = axios.create();
+const authAxios = axios.create();
 const TIME_OUT = 10000;
 
 let isRefreshing = false;
@@ -43,24 +45,28 @@ const processQueue = (error: unknown, token: string | null = null) => {
 };
 
 const refreshToken = async () => {
-  try {
-    const res = await axiosInstance.post(
-      apiConfig.api.auth.refreshToken.baseUrl
-    );
-    const data = res.data;
-
-    if (data?.result && data?.data) {
-      const newAccessToken = data.data.access_token;
-      const newCsrfToken = data.data.csrfToken;
-      if (isClient) {
-        useAuthStore.getState().setAccessToken(newAccessToken);
-        useAuthStore.getState().setCsrfToken(newCsrfToken);
-      }
-      return newAccessToken;
+  const res = await authAxios.post(
+    apiConfig.api.auth.refreshToken.baseUrl,
+    null,
+    {
+      timeout: TIME_OUT
     }
-  } catch (error) {
-    throw error;
+  );
+  const data = res.data;
+
+  if (data?.result && data?.data) {
+    const newAccessToken = data.data.access_token;
+    const userKind = data.data.user_kind;
+    const newCsrfToken = data.data.csrfToken;
+    if (isClient) {
+      useAuthStore.getState().setAccessToken(newAccessToken);
+      useAuthStore.getState().setUserKind(userKind);
+      useAuthStore.getState().setCsrfToken(newCsrfToken);
+    }
+    return newAccessToken;
   }
+
+  return null;
 };
 
 axiosInstance.interceptors.response.use(
@@ -118,18 +124,37 @@ axiosInstance.interceptors.response.use(
             error?.response?.status === HttpStatusCode.Forbidden)
         ) {
           try {
-            await axiosInstance.post(apiConfig.api.auth.logout.baseUrl);
+            await authAxios.post(apiConfig.api.auth.logout.baseUrl);
           } catch (e) {
             logger.error('[LOGOUT_ON_REFRESH_FAILED]', e);
           }
           if (isClient) {
             useAuthStore.getState().clearState();
-            const loginPath = route.login.path;
-            if (typeof loginPath === 'string' && loginPath.startsWith('/')) {
-              window.location.href = loginPath;
-            }
+            const loginRedirectPath = buildLoginRedirectPath(
+              window.location.pathname,
+              window.location.search
+            );
+            window.location.href = new URL(
+              loginRedirectPath,
+              window.location.origin
+            ).toString();
           } else {
-            redirect(route.login.path);
+            let redirectUrl = route.login.path;
+            try {
+              const { headers } = await import('next/headers');
+              const headersList = await headers();
+              const reqUrl = headersList.get(storageKeys.X_URL);
+              if (reqUrl) {
+                const parsedUrl = new URL(reqUrl);
+                redirectUrl = buildLoginRedirectPath(
+                  parsedUrl.pathname,
+                  parsedUrl.search
+                );
+              }
+            } catch (e) {
+              logger.error('[SERVER_REDIRECT_ERROR]', e);
+            }
+            redirect(redirectUrl);
           }
         }
         processQueue(error, null);

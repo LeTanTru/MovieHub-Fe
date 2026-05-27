@@ -13,9 +13,8 @@ import {
 import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
 import { logger } from '@/logger';
-import { invalidateQueries, notify } from '@/utils';
+import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
-import { route } from '@/routes';
 import { useCommentStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
@@ -128,7 +127,7 @@ export function CommentList({
           Vui lòng&nbsp;
           <Link
             className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
+            href={buildLoginRedirectPath()}
           >
             đăng nhập
           </Link>

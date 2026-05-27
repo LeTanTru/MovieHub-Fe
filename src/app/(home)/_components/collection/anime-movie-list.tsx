@@ -7,6 +7,7 @@ import './anime-movie-list.css';
 import { CollectionResType } from '@/types';
 import { route } from '@/routes';
 import {
+  buildLoginRedirectPath,
   generateSlug,
   invalidateQueries,
   notify,
@@ -61,7 +62,7 @@ export function AnimeMovieList({ collection }: AnimeMovieListProps) {
           Vui lòng&nbsp;
           <Link
             className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
+            href={buildLoginRedirectPath()}
           >
             đăng nhập
           </Link>

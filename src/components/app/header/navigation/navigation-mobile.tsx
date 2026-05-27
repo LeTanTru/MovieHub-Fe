@@ -14,9 +14,8 @@ import {
 } from '@/constants';
 import { useAuth, useClickOutside, useNavigate } from '@/hooks';
 import { cn } from '@/lib';
-import { route } from '@/routes';
 import { ItemProps, ProfileResType } from '@/types';
-import { renderImageUrl } from '@/utils';
+import { buildLoginRedirectPath, renderImageUrl } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import { ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
@@ -108,7 +107,7 @@ export function NavigationMobile({ navigationList }: NavigationMobileProps) {
             {!profile ? (
               <div className='flex flex-col justify-center gap-2'>
                 <Button
-                  onClick={() => navigate.push(route.login.path)}
+                  onClick={() => navigate.push(buildLoginRedirectPath())}
                   className='w-full rounded-full'
                 >
                   Đăng nhập

@@ -5,10 +5,14 @@ import { BaseForm } from '@/components/form/base-form';
 import { changePasswordErrorMaps, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useChangePasswordMutation, useLogoutMutation } from '@/queries';
-import { route } from '@/routes';
 import { changePasswordSchema } from '@/schemaValidations';
 import { ChangePasswordBodyType } from '@/types';
-import { applyFormErrors, notify, removeData } from '@/utils';
+import {
+  applyFormErrors,
+  buildLoginRedirectPath,
+  notify,
+  removeData
+} from '@/utils';
 import { UseFormReturn } from 'react-hook-form';
 import { useState } from 'react';
 import { ConfirmModal } from '@/components/modal';
@@ -52,7 +56,7 @@ export function ChangePasswordForm() {
         removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
         notify.success('Đổi mật khẩu thành công. Vui lòng đăng nhập lại');
         setTimeout(() => {
-          window.location.href = route.login.path;
+          window.location.href = buildLoginRedirectPath();
         }, 500);
       } else {
         const errorCode = res.code;

@@ -4,10 +4,9 @@ import { BaseForm } from '@/components/form/base-form';
 import { MOVIE_TYPE_SINGLE, queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateCommentMutation } from '@/queries';
-import { route } from '@/routes';
 import { commentSchema } from '@/schemaValidations';
 import { CommentBodyType, MovieResType } from '@/types';
-import { notify, invalidateQueries } from '@/utils';
+import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import Link from 'next/link';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -92,7 +91,7 @@ export function CommentInput({
           Vui lòng&nbsp;
           <Link
             className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={route.login.path}
+            href={buildLoginRedirectPath()}
           >
             đăng nhập
           </Link>

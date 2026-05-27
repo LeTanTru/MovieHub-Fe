@@ -1,4 +1,6 @@
+import { envConfig } from '@/config';
 import { AppConstants, VIDEO_LIBRARY_SOURCE_TYPE_EXTERNAL } from '@/constants';
+import { route } from '@/routes';
 import { removeAccents } from '@/utils/text.util';
 
 export const renderListPageUrl = (path: string, queryString: string) => {
@@ -6,23 +8,6 @@ export const renderListPageUrl = (path: string, queryString: string) => {
     return `${path}?${queryString}`;
   }
   return path;
-};
-
-export const getSafeRedirectPath = (
-  path: string | null | undefined,
-  baseUrl: string,
-  fallbackPath: string
-) => {
-  if (!path?.startsWith('/') || path.startsWith('//')) {
-    return fallbackPath;
-  }
-
-  try {
-    const url = new URL(path, baseUrl);
-    return url.origin === baseUrl ? path : fallbackPath;
-  } catch {
-    return fallbackPath;
-  }
 };
 
 export const generatePath = (
@@ -92,4 +77,58 @@ export const getIdFromSlug = (slug: string) => {
 
 export const generateSlug = (str: string) => {
   return removeAccents(str).toLowerCase().split(' ').join('-');
+};
+
+export const getSafeRedirectPath = (
+  path: string | null | undefined,
+  baseUrl: string,
+  fallbackPath: string
+) => {
+  if (!path?.startsWith('/') || path.startsWith('//')) {
+    return fallbackPath;
+  }
+
+  try {
+    const url = new URL(path, baseUrl);
+    const baseOrigin = new URL(baseUrl).origin;
+    return url.origin === baseOrigin ? path : fallbackPath;
+  } catch {
+    return fallbackPath;
+  }
+};
+
+export const buildAuthPathWithRedirect = (
+  pathname: string,
+  redirect?: string | null
+) => {
+  const safeRedirect = getSafeRedirectPath(
+    redirect,
+    envConfig.NEXT_PUBLIC_URL,
+    ''
+  );
+
+  if (!safeRedirect) {
+    return pathname;
+  }
+
+  const params = new URLSearchParams({ redirect: safeRedirect });
+  return `${pathname}?${params.toString()}`;
+};
+
+export const buildLoginRedirectPath = (
+  pathname?: string,
+  queryString?: string
+) => {
+  const currentPathname =
+    pathname ??
+    (typeof window === 'undefined'
+      ? route.home.path
+      : `${window.location.pathname}${window.location.search}`);
+
+  const redirectPath = queryString
+    ? `${currentPathname}${queryString.startsWith('?') ? '' : '?'}${queryString}`
+    : currentPathname;
+
+  const params = new URLSearchParams({ redirect: redirectPath });
+  return `${route.login.path}?${params.toString()}`;
 };

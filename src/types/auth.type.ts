@@ -31,8 +31,11 @@ export type LoginResType = {
   refresh_token: string;
   expires_in: number;
   scope: string;
+  user_kind: number;
+  user_id: string;
+  grant_type: string;
+  additional_info: string;
   jti: string;
-  profile?: ProfileResType | null;
 };
 
 export type RefreshTokenResType = {
@@ -41,18 +44,24 @@ export type RefreshTokenResType = {
   refresh_token: string;
   expires_in: number;
   scope: string;
+  user_kind: number;
+  user_id: string;
+  grant_type: string;
+  additional_info: string;
   jti: string;
 };
 
 export type SessionResType = {
-  accessToken: string;
+  accessToken: string | null;
   csrfToken: string;
+  userKind: number | null;
 };
 
 type AuthStoreState = {
   accessToken: string | null;
   csrfToken: string | null;
   profile: ProfileResType | null;
+  userKind: number | null;
 };
 
 type AuthStoreActions = {
@@ -60,6 +69,7 @@ type AuthStoreActions = {
   setAccessToken: (token: string | null) => void;
   setCsrfToken: (token: string | null) => void;
   setProfile: (profile: ProfileResType | null) => void;
+  setUserKind: (kind: number | null) => void;
 };
 
 export type AuthStoreType = AuthStoreState & AuthStoreActions;

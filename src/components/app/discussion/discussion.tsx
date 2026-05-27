@@ -1,8 +1,7 @@
 'use client';
 
 import { CommentDotIcon } from '@/assets';
-import { route } from '@/routes';
-import { getIdFromSlug, renderImageUrl } from '@/utils';
+import { buildLoginRedirectPath, getIdFromSlug, renderImageUrl } from '@/utils';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import {
@@ -183,7 +182,7 @@ export function Discussion({
               Vui lòng&nbsp;
               <Link
                 className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-                href={route.login.path}
+                href={buildLoginRedirectPath()}
               >
                 đăng nhập
               </Link>

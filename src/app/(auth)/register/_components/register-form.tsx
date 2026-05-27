@@ -13,17 +13,25 @@ import Link from 'next/link';
 import { registerSchema } from '@/schemaValidations';
 import { RegisterType } from '@/types';
 import { registerErrorMaps, storageKeys } from '@/constants';
-import { applyFormErrors, notify, setData } from '@/utils';
+import {
+  applyFormErrors,
+  buildAuthPathWithRedirect,
+  notify,
+  setData
+} from '@/utils';
 import { BaseForm } from '@/components/form/base-form';
 import { useState } from 'react';
 import { logger } from '@/logger';
 import { useRegisterMutation } from '@/queries';
 import { route } from '@/routes';
-import { useNavigate } from '@/hooks';
+import { useNavigate, useQueryParams } from '@/hooks';
 import { Separator } from '@/components/ui/separator';
 
 export function RegisterForm() {
   const navigate = useNavigate();
+  const {
+    searchParams: { redirect }
+  } = useQueryParams<{ redirect?: string }>();
   const defaultValues: RegisterType = {
     email: '',
     fullName: '',
@@ -44,7 +52,9 @@ export function RegisterForm() {
       if (res.result) {
         notify.success('Đăng ký thành công');
         setData(storageKeys.EMAIL, values.email);
-        navigate.push(route.verifyOtp.path);
+        navigate.push(
+          buildAuthPathWithRedirect(route.verifyOtp.path, redirect)
+        );
       } else {
         const errorCode = res.code;
         if (errorCode) {
@@ -164,7 +174,7 @@ export function RegisterForm() {
       <div className='text-muted-foreground mt-4 text-center text-sm'>
         Đã có tài khoản?&nbsp;
         <Link
-          href={route.login.path}
+          href={buildAuthPathWithRedirect(route.login.path, redirect)}
           className='hover:text-golden-glow transition-all duration-200 ease-linear'
         >
           Đăng nhập ngay

@@ -4,17 +4,30 @@ import { useRef } from 'react';
 import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
 import { envConfig } from '@/config';
-import { AppConstants, storageKeys } from '@/constants';
+import { AppConstants, REDIRECT_AFTER_LOGIN_DURATION } from '@/constants';
 import { logger } from '@/logger';
 import { useLoginGoogleMutation, useLoginGoogleQuery } from '@/queries';
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
-import { getData, getSafeRedirectPath, notify, removeData } from '@/utils';
+import { getSafeRedirectPath, notify } from '@/utils';
 import Image from 'next/image';
+import { useQueryParams } from '@/hooks';
+import { useShallow } from 'zustand/shallow';
 
 export function ButtonLoginGoogle() {
-  const setAccessToken = useAuthStore((s) => s.setAccessToken);
-  const setProfile = useAuthStore((s) => s.setProfile);
+  const {
+    searchParams: { redirect }
+  } = useQueryParams<{ redirect?: string }>();
+
+  const { setAccessToken, setUserKind } = useAuthStore(
+    useShallow((s) => {
+      return {
+        setAccessToken: s.setAccessToken,
+        setUserKind: s.setUserKind
+      };
+    })
+  );
+
   const messageListenerRef = useRef<((event: MessageEvent) => void) | null>(
     null
   );
@@ -34,25 +47,21 @@ export function ButtonLoginGoogle() {
       const res = await loginGoogleMutate(code);
       if (res.result) {
         setAccessToken(res.data?.access_token as string);
+        setUserKind(res.data?.user_kind as number);
 
         notify.success('Đăng nhập thành công');
 
-        const profileData = res.data?.profile;
-
-        if (profileData) {
-          setProfile(profileData);
-        }
-
         setTimeout(() => {
-          const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
-          const finalPath = getSafeRedirectPath(
-            redirectPath,
-            envConfig.NEXT_PUBLIC_URL,
-            route.home.path
-          );
-          removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
-          window.location.href = finalPath;
-        }, 500);
+          if (redirect) {
+            window.location.href = getSafeRedirectPath(
+              redirect,
+              window.location.origin,
+              route.home.path
+            );
+          } else {
+            window.location.reload();
+          }
+        }, REDIRECT_AFTER_LOGIN_DURATION);
       } else {
         notify.error('Đăng nhập thất bại');
       }

@@ -5,15 +5,18 @@ export const useAuthStore = create<AuthStoreType>((set) => ({
   accessToken: null,
   csrfToken: null,
   profile: null,
+  userKind: null,
 
   setAccessToken: (accessToken: string | null) => set({ accessToken }),
   setCsrfToken: (csrfToken) => set({ csrfToken }),
   setProfile: (profile: ProfileResType | null) => set({ profile }),
+  setUserKind: (userKind) => set({ userKind }),
 
   clearState: () =>
     set({
       accessToken: null,
       csrfToken: null,
-      profile: null
+      profile: null,
+      userKind: null
     })
 }));

@@ -8,7 +8,7 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useState
 } from 'react';
 import { useShallow } from 'zustand/shallow';
@@ -36,15 +36,25 @@ type AppProviderProps = { children: ReactNode };
 export function AppProvider({ children }: AppProviderProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { accessToken, setAccessToken, setCsrfToken, setProfile } =
-    useAuthStore(
-      useShallow((s) => ({
-        accessToken: s.accessToken,
-        setAccessToken: s.setAccessToken,
-        setCsrfToken: s.setCsrfToken,
-        setProfile: s.setProfile
-      }))
-    );
+  const {
+    accessToken,
+    profile: storedProfile,
+    userKind,
+    setAccessToken,
+    setCsrfToken,
+    setProfile,
+    setUserKind
+  } = useAuthStore(
+    useShallow((s) => ({
+      accessToken: s.accessToken,
+      profile: s.profile,
+      userKind: s.userKind,
+      setAccessToken: s.setAccessToken,
+      setCsrfToken: s.setCsrfToken,
+      setProfile: s.setProfile,
+      setUserKind: s.setUserKind
+    }))
+  );
 
   const { data: session, isLoading: sessionLoading } = useSession();
 
@@ -52,18 +62,30 @@ export function AppProvider({ children }: AppProviderProps) {
     enabled: !!accessToken
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (session) {
       setAccessToken(session.accessToken);
       setCsrfToken(session.csrfToken);
-    }
-  }, [session, setAccessToken, setCsrfToken]);
+      setUserKind(session.userKind);
 
-  useEffect(() => {
+      if (!session.accessToken || session.userKind === null) {
+        setProfile(null);
+      }
+    }
+  }, [session, setUserKind, setAccessToken, setCsrfToken, setProfile]);
+
+  useLayoutEffect(() => {
     if (profile) {
       setProfile(profile);
     }
   }, [profile, setProfile]);
+
+  const isSessionHydrating = Boolean(
+    session?.accessToken &&
+    session.userKind !== null &&
+    (!accessToken || userKind === null)
+  );
+  const isProfileHydrating = Boolean(profile && !storedProfile);
 
   // useEffect(() => {
   //   if (pathname !== '/intro') {
@@ -78,7 +100,12 @@ export function AppProvider({ children }: AppProviderProps) {
     <LazyMotion features={domAnimation} strict>
       <AppContext.Provider
         value={{
-          loading: loading || profileLoading || sessionLoading,
+          loading:
+            loading ||
+            sessionLoading ||
+            isSessionHydrating ||
+            profileLoading ||
+            isProfileHydrating,
           setLoading
         }}
       >
