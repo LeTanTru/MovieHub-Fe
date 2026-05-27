@@ -15,9 +15,7 @@ import axios, {
 import { redirect, unstable_rethrow } from 'next/navigation';
 
 const isClient = typeof window !== 'undefined';
-const axiosInstance = axios.create({
-  baseURL: isClient ? undefined : envConfig.NEXT_PUBLIC_URL
-});
+const axiosInstance = axios.create();
 const TIME_OUT = 10000;
 
 let isRefreshing = false;
@@ -63,7 +61,6 @@ const refreshToken = async () => {
   } catch (error) {
     throw error;
   }
-  return null;
 };
 
 axiosInstance.interceptors.response.use(

@@ -47,7 +47,6 @@ export type RefreshTokenResType = {
 export type SessionResType = {
   accessToken: string;
   csrfToken: string;
-  profile: ProfileResType;
 };
 
 type AuthStoreState = {

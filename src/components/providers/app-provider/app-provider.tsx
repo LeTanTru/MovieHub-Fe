@@ -1,6 +1,6 @@
 'use client';
 
-import { useSession } from '@/queries';
+import { useProfileQuery, useSession } from '@/queries';
 import { useAuthStore } from '@/store';
 import { getData, removeData } from '@/utils';
 import { domAnimation, LazyMotion } from 'framer-motion';
@@ -36,41 +36,49 @@ type AppProviderProps = { children: ReactNode };
 export function AppProvider({ children }: AppProviderProps) {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { setAccessToken, setCsrfToken, setProfile } = useAuthStore(
-    useShallow((s) => ({
-      accessToken: s.accessToken,
-      setAccessToken: s.setAccessToken,
-      setCsrfToken: s.setCsrfToken,
-      setProfile: s.setProfile
-    }))
-  );
+  const { accessToken, setAccessToken, setCsrfToken, setProfile } =
+    useAuthStore(
+      useShallow((s) => ({
+        accessToken: s.accessToken,
+        setAccessToken: s.setAccessToken,
+        setCsrfToken: s.setCsrfToken,
+        setProfile: s.setProfile
+      }))
+    );
 
   const { data: session, isLoading: sessionLoading } = useSession();
+
+  const { data: profile, isLoading: profileLoading } = useProfileQuery({
+    enabled: !!accessToken
+  });
 
   useEffect(() => {
     if (session) {
       setAccessToken(session.accessToken);
       setCsrfToken(session.csrfToken);
-      setProfile(session.profile);
     }
-  }, [session, setAccessToken, setCsrfToken, setProfile]);
+  }, [session, setAccessToken, setCsrfToken]);
 
   useEffect(() => {
-    const hasScroll = document.body.scrollHeight > window.innerHeight;
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
+    if (profile) {
+      setProfile(profile);
+    }
+  }, [profile, setProfile]);
 
-    document.documentElement.style.setProperty(
-      '--scroll-padding',
-      hasScroll ? `${scrollbarWidth}px` : '0px'
-    );
-  }, []);
+  // useEffect(() => {
+  //   if (pathname !== '/intro') {
+  //     const hasValidAccess = checkAccessExpiry();
+  //     if (!hasValidAccess) {
+  //       navigate.replace('/intro');
+  //     }
+  //   }
+  // }, [pathname, navigate]);
 
   return (
     <LazyMotion features={domAnimation} strict>
       <AppContext.Provider
         value={{
-          loading: loading || sessionLoading,
+          loading: loading || profileLoading || sessionLoading,
           setLoading
         }}
       >

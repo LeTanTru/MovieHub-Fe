@@ -9,6 +9,7 @@ import { WatchContainer } from './watch-container';
 import { WatchPlayer } from './watch-player';
 import { Discussion } from '@/components/app/discussion';
 import { Skeleton } from '@/components/ui/skeleton';
+import { MAX_PAGE_SIZE } from '@/constants';
 
 type WatchProps = {
   id: string;
@@ -25,7 +26,8 @@ export function Watch({ id }: WatchProps) {
 
   const { data: moviePerson = [] } = useMoviePersonListQuery({
     params: {
-      movieId: id
+      movieId: id,
+      size: MAX_PAGE_SIZE
     },
     enabled: !!movie
   });

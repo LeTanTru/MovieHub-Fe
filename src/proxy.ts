@@ -1,4 +1,5 @@
 import { storageKeys } from '@/constants';
+import { route } from '@/routes';
 import { NextRequest, NextResponse } from 'next/server';
 
 const authPaths = [
@@ -15,11 +16,11 @@ export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const accessToken = request.cookies.get(storageKeys.ACCESS_TOKEN)?.value;
   if (accessToken && authPaths.includes(pathname)) {
-    return NextResponse.redirect(new URL('/', request.nextUrl));
+    return NextResponse.redirect(new URL(route.home.path, request.nextUrl));
   }
   if (privatePaths.some((p) => pathname.startsWith(p))) {
     if (!accessToken) {
-      return NextResponse.redirect(new URL('/', request.nextUrl));
+      return NextResponse.redirect(new URL(route.home.path, request.nextUrl));
     }
   }
   return NextResponse.next();
