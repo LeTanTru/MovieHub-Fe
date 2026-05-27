@@ -15,7 +15,9 @@ import axios, {
 import { redirect, unstable_rethrow } from 'next/navigation';
 
 const isClient = typeof window !== 'undefined';
-const axiosInstance = axios.create();
+const axiosInstance = axios.create({
+  baseURL: isClient ? undefined : envConfig.NEXT_PUBLIC_URL
+});
 const TIME_OUT = 10000;
 
 let isRefreshing = false;
@@ -43,19 +45,24 @@ const processQueue = (error: unknown, token: string | null = null) => {
 };
 
 const refreshToken = async () => {
-  const res = await axiosInstance.post(apiConfig.api.auth.refreshToken.baseUrl);
-  const data = res.data;
+  try {
+    const res = await axiosInstance.post(
+      apiConfig.api.auth.refreshToken.baseUrl
+    );
+    const data = res.data;
 
-  if (data?.result && data?.data) {
-    const newAccessToken = data.data.access_token;
-    const newCsrfToken = data.data.csrfToken;
-    if (isClient) {
-      useAuthStore.getState().setAccessToken(newAccessToken);
-      useAuthStore.getState().setCsrfToken(newCsrfToken);
+    if (data?.result && data?.data) {
+      const newAccessToken = data.data.access_token;
+      const newCsrfToken = data.data.csrfToken;
+      if (isClient) {
+        useAuthStore.getState().setAccessToken(newAccessToken);
+        useAuthStore.getState().setCsrfToken(newCsrfToken);
+      }
+      return newAccessToken;
     }
-    return newAccessToken;
+  } catch (error) {
+    throw error;
   }
-
   return null;
 };
 
@@ -99,7 +106,14 @@ axiosInstance.interceptors.response.use(
         return axiosInstance.request(originalConfig);
       } catch (error) {
         unstable_rethrow(error);
-        logger.error('[REFRESH_TOKEN_ERROR]', error);
+        if (isAxiosError(error)) {
+          const response = error.response?.data;
+
+          logger.error('[REFRESH_TOKEN_ERROR]', response);
+        } else {
+          logger.error('[REFRESH_TOKEN_ERROR]', error);
+        }
+
         if (
           error instanceof AxiosError &&
           (error?.response?.status === HttpStatusCode.BadRequest ||
@@ -257,8 +271,7 @@ export const sendRequest = async <T>(
     const res: AxiosResponse = await axiosInstance.request<T>(axiosConfig);
     return res.data;
   } catch (error: unknown) {
-    const err = error as AxiosError;
-    throw err;
+    throw error;
   }
 };
 

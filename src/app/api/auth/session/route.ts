@@ -3,7 +3,7 @@ import { makeCookieOption } from '@/app/api/auth/_lib/make-cookie-option';
 import { apiConfig, CSRF_TOKEN_MAX_AGE, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { ApiResponse, ProfileResType } from '@/types';
-import { getCookie, http, setCookie } from '@/utils';
+import { getCookie, http, isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextResponse } from 'next/server';
 
@@ -50,6 +50,24 @@ export async function GET() {
       }
     );
   } catch (error) {
+    if (isAxiosError(error)) {
+      const response = error.response?.data;
+
+      logger.error('[SESSION_ERROR]', response);
+
+      if (response) {
+        return NextResponse.json(
+          { result: false, ...response },
+          { status: error.response?.status }
+        );
+      }
+
+      return NextResponse.json(
+        { result: false, message: 'Refresh token failed' },
+        { status: error.response?.status }
+      );
+    }
+
     logger.error('[SESSION_ERROR]', error);
 
     return NextResponse.json(

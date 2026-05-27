@@ -8,6 +8,23 @@ export const renderListPageUrl = (path: string, queryString: string) => {
   return path;
 };
 
+export const getSafeRedirectPath = (
+  path: string | null | undefined,
+  baseUrl: string,
+  fallbackPath: string
+) => {
+  if (!path?.startsWith('/') || path.startsWith('//')) {
+    return fallbackPath;
+  }
+
+  try {
+    const url = new URL(path, baseUrl);
+    return url.origin === baseUrl ? path : fallbackPath;
+  } catch {
+    return fallbackPath;
+  }
+};
+
 export const generatePath = (
   template: string,
   params: Record<string, string | number>

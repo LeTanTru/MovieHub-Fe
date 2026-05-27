@@ -1,9 +1,10 @@
 'use client';
 
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
+import { envConfig } from '@/config';
 import { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
-import { getData, notify, removeData } from '@/utils';
+import { getData, getSafeRedirectPath, notify, removeData } from '@/utils';
 import { storageKeys } from '@/constants';
 import { useAuthStore } from '@/store';
 import { BaseForm } from '@/components/form/base-form';
@@ -52,8 +53,13 @@ export function LoginForm() {
 
           setTimeout(() => {
             const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
+            const finalPath = getSafeRedirectPath(
+              redirectPath,
+              envConfig.NEXT_PUBLIC_URL,
+              route.home.path
+            );
             removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
-            window.location.href = redirectPath || route.home.path;
+            window.location.href = finalPath;
           }, 500);
         }
       },

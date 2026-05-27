@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     const res = await http.post<LoginResType>(apiConfig.user.login, {
-      body: body
+      body
     });
 
     const accessToken = res.access_token;

@@ -9,7 +9,7 @@ import { logger } from '@/logger';
 import { useLoginGoogleMutation, useLoginGoogleQuery } from '@/queries';
 import { route } from '@/routes';
 import { useAuthStore } from '@/store';
-import { getData, notify, removeData } from '@/utils';
+import { getData, getSafeRedirectPath, notify, removeData } from '@/utils';
 import Image from 'next/image';
 
 export function ButtonLoginGoogle() {
@@ -45,8 +45,13 @@ export function ButtonLoginGoogle() {
 
         setTimeout(() => {
           const redirectPath = getData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
+          const finalPath = getSafeRedirectPath(
+            redirectPath,
+            envConfig.NEXT_PUBLIC_URL,
+            route.home.path
+          );
           removeData(storageKeys.REDIRECT_PATH_AFTER_LOGIN);
-          window.location.href = redirectPath || route.home.path;
+          window.location.href = finalPath;
         }, 500);
       } else {
         notify.error('Đăng nhập thất bại');
