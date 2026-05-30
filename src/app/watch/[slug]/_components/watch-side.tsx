@@ -2,32 +2,15 @@
 
 import { ButtonReview, ButtonViewReview } from '@/components/app/button-review';
 import { ButtonViewComment } from '@/components/app/button-comment';
-import { getIdFromSlug } from '@/utils';
-import { MOVIE_WATCH_DISCUSSION_ID, PERSON_KIND_ACTOR } from '@/constants';
+import { MOVIE_WATCH_DISCUSSION_ID } from '@/constants';
 import { ActorList, SuggestionList } from '@/components/app/watch';
-import { useMovieStore } from '@/store';
-import { useParams } from 'next/navigation';
-import { useShallow } from 'zustand/shallow';
+import { useMovieInfo, useSlugId } from '@/hooks';
 import { useSuggestionMovieListQuery } from '@/queries';
-import type { PersonResType } from '@/types';
 
 export function WatchSide() {
-  const { slug } = useParams<{ slug: string }>();
-  const movieId = getIdFromSlug(slug);
+  const { id: movieId } = useSlugId();
 
-  const { movie, moviePerson } = useMovieStore(
-    useShallow((s) => ({
-      movie: s.movie,
-      moviePerson: s.moviePerson
-    }))
-  );
-
-  const actors = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {
-    if (moviePerson.kind === PERSON_KIND_ACTOR) {
-      acc.push(moviePerson.person);
-    }
-    return acc;
-  }, []);
+  const { movie, actors } = useMovieInfo();
 
   const { data: suggestionMovieList = [] } =
     useSuggestionMovieListQuery(movieId);

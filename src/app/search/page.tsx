@@ -1,6 +1,15 @@
 import { Search } from '@/app/search/_components';
 import { Container } from '@/components/layout';
-import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
+import { getQueryClient } from '@/components/providers/query-provider';
+import {
+  DEFAULT_PAGE_SIZE,
+  OG_IMAGE_WIDTH,
+  OG_IMAGE_HEIGHT,
+  queryKeys
+} from '@/constants';
+import { movieApiRequest } from '@/api-requests';
+import { MovieSearchType, SearchParamsType } from '@/types';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import { envConfig } from '@/config';
 
@@ -58,12 +67,52 @@ export async function generateMetadata({
   };
 }
 
-export default async function SearchPage() {
+export default async function SearchPage({
+  searchParams
+}: {
+  searchParams: Promise<Partial<SearchParamsType>>;
+}) {
+  const resolvedSearchParams = await searchParams;
+  const currentPage = resolvedSearchParams.page
+    ? Number(resolvedSearchParams.page) - 1
+    : 0;
+
+  const queryFilterParams = Object.fromEntries(
+    Object.entries(resolvedSearchParams).reduce<[string, string][]>(
+      (acc, [key, value]) => {
+        if (key !== 'page' && !!value) {
+          acc.push([
+            key,
+            Array.isArray(value) ? value.join(',') : String(value)
+          ]);
+        }
+
+        return acc;
+      },
+      []
+    )
+  ) as Partial<SearchParamsType>;
+
+  const movieFilters: MovieSearchType = {
+    ...queryFilterParams,
+    page: currentPage,
+    size: DEFAULT_PAGE_SIZE
+  };
+
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: [queryKeys.MOVIE_LIST, movieFilters],
+    queryFn: () => movieApiRequest.getList(movieFilters)
+  });
+
   return (
-    <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
-      <div className='max-640:gap-8 flex flex-col gap-12.5'>
-        <Search />
-      </div>
-    </Container>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
+        <div className='max-640:gap-8 flex flex-col gap-12.5'>
+          <Search />
+        </div>
+      </Container>
+    </HydrationBoundary>
   );
 }

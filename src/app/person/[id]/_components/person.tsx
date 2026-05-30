@@ -1,21 +1,21 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { usePersonQuery } from '@/queries';
 import { MovieList } from './movie-list';
 import { NotFound } from './not-found';
 import { PersonSidebar } from './person-sidebar';
+import { useSlugId } from '@/hooks';
 
 export function Person() {
-  const { id } = useParams<{ id: string }>();
-  const { data: person, isLoading } = usePersonQuery(id);
+  const { id: personId } = useSlugId();
+  const { data: person, isLoading } = usePersonQuery(personId);
 
   if (!person) return <NotFound />;
 
   return (
     <>
       <PersonSidebar person={person} loading={isLoading} />
-      <MovieList personId={id} />
+      <MovieList personId={personId} />
     </>
   );
 }

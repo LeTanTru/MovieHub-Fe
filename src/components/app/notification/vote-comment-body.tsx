@@ -1,7 +1,7 @@
 import { AvatarField, ImageField } from '@/components/form';
 import { DISCUSSION_TAB_COMMENT } from '@/constants';
 import { route } from '@/routes';
-import { useCommentStore, useMovieStore } from '@/store';
+import { useDiscussionTab, useNotificationCommentActions } from '@/hooks';
 import { NotificationResType, VoteCommentNotificationType } from '@/types';
 import {
   convertUTCToLocal,
@@ -23,9 +23,8 @@ export function VoteCommentBody({
     [notification.body]
   );
 
-  const setOpenParentIds = useCommentStore((s) => s.setOpenParentIds);
-  const setScrollTarget = useCommentStore((s) => s.setScrollTarget);
-  const setDiscussionTab = useMovieStore((s) => s.setDiscussionTab);
+  const { setOpenParentIds, setScrollTarget } = useNotificationCommentActions();
+  const { setDiscussionTab } = useDiscussionTab();
 
   const handleClick = () => {
     const parentId = body?.parentId;

@@ -1,14 +1,12 @@
 'use client';
 
 import { ReviewModal } from './review-modal';
-import { useAuth, useDisclosure } from '@/hooks';
+import { useAuth, useDisclosure, useMovie } from '@/hooks';
 import { cn } from '@/lib';
 import { useCheckMovieQuery } from '@/queries';
-import { useMovieStore } from '@/store';
 import { buildLoginRedirectPath, formatRating, notify } from '@/utils';
 import Link from 'next/link';
 import { FaStar } from 'react-icons/fa6';
-import { useShallow } from 'zustand/shallow';
 
 type ButtonReviewProps = {
   movieId: string;
@@ -20,7 +18,7 @@ export function ButtonReview({ movieId, className }: ButtonReviewProps) {
 
   const { opened, open, close } = useDisclosure();
 
-  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
+  const { movie } = useMovie();
 
   const { data: isReviewed } = useCheckMovieQuery({
     movieId: movieId,

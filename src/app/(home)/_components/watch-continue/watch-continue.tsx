@@ -5,16 +5,10 @@ import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './watch-continue.css';
 import { MovieHistoryCard } from '@/components/app/movie-card';
-import {
-  useDeleteWatchHistoryMutation,
-  useMovieHistoryListQuery
-} from '@/queries';
+import { useMovieHistoryListQuery } from '@/queries';
 import { route } from '@/routes';
 import { Navigation } from 'swiper/modules';
-import { invalidateQueries, notify } from '@/utils';
-import { queryKeys } from '@/constants';
-import { logger } from '@/logger';
-import { useAuth } from '@/hooks';
+import { useAuth, useWatchHistoryDelete } from '@/hooks';
 import { useRef } from 'react';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { VerticalBarLoading } from '@/components/loading';
@@ -30,25 +24,7 @@ export function WatchContinue() {
     enabled: isAuthenticated
   });
 
-  const { mutateAsync: deleteWatchHistoryMutate } =
-    useDeleteWatchHistoryMutation();
-
-  const handleDeleteWatchHistory = async (movieId: string) => {
-    await deleteWatchHistoryMutate(movieId, {
-      onSuccess: async (res) => {
-        if (res.result) {
-          notify.success('Xóa lịch sử xem thành công');
-          invalidateQueries([queryKeys.MOVIE_HISTORY]);
-        } else {
-          notify.error('Xóa lịch sử xem thất bại');
-        }
-      },
-      onError: (error) => {
-        logger.error('[DELETE_WATCH_HISTORY_ERROR]', error);
-        notify.error('Xóa lịch sử xem thất bại');
-      }
-    });
-  };
+  const { handleDeleteWatchHistory } = useWatchHistoryDelete();
 
   if (isLoading) return <VerticalBarLoading className='py-20' />;
 

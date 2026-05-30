@@ -23,6 +23,7 @@ const DISCLAIMER_TEXT = {
     'Trang web này chỉ được sử dụng cho mục đích học tập và phát triển kỹ năng lập trình web. Tất cả nội dung phim trên website này được thu thập từ các nguồn công khai và không nhằm mục đích thương mại.',
   warning:
     'Theo quy định của pháp luật Việt Nam, việc sử dụng và phân phối nội dung vi phạm bản quyền có thể bị xử lý hình sự và dân sự. Để tránh rủi ro pháp lý, hãy sử dụng các nền tảng phát trực tuyến có giấy phép hợp lệ như Netflix, Disney+, VietFilm,...',
+  notice: 'Cảnh báo này sẽ xuất hiện lại sau 2 giờ.',
   agree: 'Tôi đã hiểu và đồng ý'
 };
 
@@ -83,7 +84,7 @@ export function DisclaimerModal() {
             {DISCLAIMER_TEXT.warning}
           </div>
           <p className='text-center font-medium italic'>
-            Thông báo này sẽ xuất hiện lại sau 2 giờ.
+            {DISCLAIMER_TEXT.notice}
           </p>
           <Button
             onClick={handleAgree}

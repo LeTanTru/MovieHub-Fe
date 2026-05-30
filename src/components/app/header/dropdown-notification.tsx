@@ -12,21 +12,21 @@ import {
   NOTIFICATION_TYPE_COMMUNITY,
   NOTIFICATION_TYPE_MOVIE,
   notificationTabs,
-  queryKeys,
   storageKeys
 } from '@/constants';
-import { useAuth, useClickOutside, useDisclosure } from '@/hooks';
-import { logger } from '@/logger';
+import {
+  useAuth,
+  useClickOutside,
+  useDisclosure,
+  useNotificationActions
+} from '@/hooks';
 import {
   useCountUnreadNotificationQuery,
-  useDeleteAllNotificationMutation,
-  useDeleteNotificationMutation,
-  useNotificationListQuery,
-  useReadAllNotificationMutation
+  useNotificationListQuery
 } from '@/queries';
 import { route } from '@/routes';
 import { NotificationSearchType } from '@/types';
-import { getData, invalidateQueries, notify, setData } from '@/utils';
+import { getData, setData } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import { Bell, CheckCheck, Trash } from 'lucide-react';
 import Link from 'next/link';
@@ -66,64 +66,12 @@ export function DropdownNotification() {
     : 0;
 
   const {
-    mutateAsync: readAllNotificationMutate,
-    isPending: readAllNotificationLoading
-  } = useReadAllNotificationMutation();
-
-  const { mutateAsync: deleteNotifyMutate } = useDeleteNotificationMutation();
-
-  const {
-    mutateAsync: deleteAllNotificationMutate,
-    isPending: deleteAllNotificationLoading
-  } = useDeleteAllNotificationMutation();
-
-  const handleReadAll = async () => {
-    await readAllNotificationMutate(undefined, {
-      onSuccess: () => {
-        invalidateQueries(
-          [queryKeys.UNREAD_NOTIFICATION_COUNT],
-          [queryKeys.NOTIFICATION_LIST]
-        );
-        notify.success('Đọc tất cả thông báo thành công');
-      },
-      onError: (error) => {
-        logger.error('[READ_ALL_NOTIFICATION_ERROR]', error);
-        notify.error('Đọc tất cả thông báo thất bại');
-      }
-    });
-  };
-
-  const handleDeleteAll = async () => {
-    await deleteAllNotificationMutate(undefined, {
-      onSuccess: () => {
-        invalidateQueries(
-          [queryKeys.UNREAD_NOTIFICATION_COUNT],
-          [queryKeys.NOTIFICATION_LIST]
-        );
-        notify.success('Xóa tất cả thông báo thành công');
-      },
-      onError: (error) => {
-        logger.error('[DELETE_ALL_NOTIFICATION_ERROR]', error);
-        notify.error('Xóa tất cả thông báo thất bại');
-      }
-    });
-  };
-
-  const handleDelete = async (id: string) => {
-    await deleteNotifyMutate(id, {
-      onSuccess: () => {
-        invalidateQueries(
-          [queryKeys.UNREAD_NOTIFICATION_COUNT],
-          [queryKeys.NOTIFICATION_LIST]
-        );
-        notify.success('Xóa thông báo thành công');
-      },
-      onError: (error) => {
-        logger.error('[DELETE_NOTIFICATION_ERROR]', error);
-        notify.error('Xóa thông báo thất bại');
-      }
-    });
-  };
+    handleReadAll,
+    handleDeleteAll,
+    handleDelete,
+    readAllNotificationLoading,
+    deleteAllNotificationLoading
+  } = useNotificationActions();
 
   const handleChangeTab = (type: string) => {
     setParams((prev) => ({ ...prev, type: Number(type) }));

@@ -35,7 +35,7 @@ export async function generateMetadata(
 
   const res = await personApiRequest.getById(id);
   const title = res.data
-    ? `Diễn viên ${res.data?.otherName}`
+    ? `Diễn viên ${res.data.otherName || res.data.name}`
     : 'Không tìm thấy diễn viên';
   const description = truncate(
     stripHtml(res.data?.bio ?? 'Thông tin diễn viên'),

@@ -6,52 +6,16 @@ import { ButtonReview, ButtonViewReview } from '@/components/app/button-review';
 import { ButtonShareMovie } from '@/components/app/button-share';
 import { ButtonViewComment } from '@/components/app/button-comment';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
-import { MOVIE_DETAIL_DISCUSSION_ID, MOVIE_TYPE_SERIES } from '@/constants';
-import { route } from '@/routes';
-import { useMovieStore } from '@/store';
-import { useShallow } from 'zustand/shallow';
+import { MOVIE_DETAIL_DISCUSSION_ID } from '@/constants';
+import { useMovieInfo } from '@/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Calendar, Video } from 'lucide-react';
 import { cn } from '@/lib';
 
 export function MovieActionBar() {
-  const { movie, selectedSeason } = useMovieStore(
-    useShallow((s) => ({ movie: s.movie, selectedSeason: s.selectedSeason }))
-  );
+  const { movie, hasTrailer, watchLink } = useMovieInfo();
 
   if (!movie) return null;
-
-  const getWatchLink = () => {
-    if (!movie?.seasons?.length) return null;
-
-    const currentSeason = movie.seasons.find(
-      (season) => season.label === selectedSeason
-    );
-
-    const latestSeason = movie.seasons[movie.seasons.length - 1];
-
-    const targetSeason = currentSeason || latestSeason;
-
-    const isSeries = movie.type === MOVIE_TYPE_SERIES;
-
-    const latestEpisode = isSeries
-      ? targetSeason?.episodes?.[targetSeason?.episodes?.length - 1]
-      : null;
-
-    if (!latestEpisode && isSeries) return null;
-
-    const watchLink = isSeries
-      ? `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}&episode=${latestEpisode?.label}`
-      : `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}`;
-
-    return watchLink;
-  };
-
-  const hasTrailer = movie.seasons?.some(
-    (season) => season.trailer && season.trailer.video
-  );
-
-  const watchLink = getWatchLink();
 
   return (
     <div className='max-1120:py-5 max-1120:px-4 max-800:px-0 max-520:pb-2.5 max-860:px-2.5 relative z-3 p-7.5'>

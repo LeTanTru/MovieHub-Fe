@@ -2,8 +2,7 @@
 
 import { MotionWrapper } from './motion-wrapper';
 import { MOVIE_TAB_EPISODE, MOVIE_TYPE_SINGLE } from '@/constants';
-import { useMovieStore } from '@/store';
-import { useShallow } from 'zustand/shallow';
+import { useMovie } from '@/hooks';
 import { MovieTabSingle } from './movie-tab-single';
 import { MovieTabSeries } from './movie-tab-series';
 
@@ -16,7 +15,7 @@ export function MovieTabEpisode({
   direction = 0,
   className
 }: MovieTabEpisodeProps) {
-  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
+  const { movie } = useMovie();
 
   const Tab = movie
     ? movie.type === MOVIE_TYPE_SINGLE

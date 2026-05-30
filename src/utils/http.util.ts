@@ -315,6 +315,6 @@ export const http = {
   }
 };
 
-export function isAxiosError(error: unknown): error is AxiosError {
+export const isAxiosError = (error: unknown): error is AxiosError => {
   return (error as AxiosError)?.isAxiosError === true;
-}
+};

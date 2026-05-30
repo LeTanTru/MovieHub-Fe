@@ -119,3 +119,5 @@ export const USER_KIND_MAX_AGE = 24 * 60 * 60; // 1 day
 export const CSRF_TOKEN_MAX_AGE = 60 * 60; // 1 hour
 
 export const REDIRECT_AFTER_LOGIN_DURATION = 500;
+
+export const INDICATOR_AUTO_HIDE_MS = 800;
