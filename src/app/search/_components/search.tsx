@@ -24,8 +24,7 @@ export function Search() {
     }))
   );
   const [showFilter, setShowFilter] = useState<boolean>(false);
-  const { searchParams, queryString, setQueryParams } =
-    useQueryParams<SearchParamsType>();
+  const { searchParams, setQueryParams } = useQueryParams<SearchParamsType>();
   // Local state for filters to allow user to change them before applying
   const [filters, setFilters] = useState<SearchFilter[]>([
     { key: 'ageRating', value: searchParams.ageRating || 'all' },
@@ -58,17 +57,13 @@ export function Search() {
     )
   ) as Partial<SearchParamsType>;
 
-  const {
-    data: movieListData,
-    refetch: getMovieList,
-    isLoading
-  } = useMovieListQuery({
+  const { data: movieListData, isLoading } = useMovieListQuery({
     params: {
       ...queryFilterParams,
       page: currentPage,
       size: DEFAULT_PAGE_SIZE
     },
-    enabled: false,
+    enabled: true,
     isKeepPreviousData: true
   });
 
@@ -196,11 +191,6 @@ export function Search() {
       return prev;
     });
   }, [keyword, searchParams.keyword]);
-
-  // Fetch when the URL query string changes to avoid refetching on each render.
-  useEffect(() => {
-    getMovieList();
-  }, [queryString, getMovieList]);
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>

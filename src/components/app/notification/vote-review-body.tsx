@@ -1,7 +1,7 @@
 import { AvatarField, ImageField } from '@/components/form';
 import { DISCUSSION_TAB_REVIEW } from '@/constants';
 import { route } from '@/routes';
-import { useMovieStore } from '@/store';
+import { useDiscussionTab } from '@/hooks';
 import { NotificationResType, VoteReviewNotificationType } from '@/types';
 import {
   convertUTCToLocal,
@@ -23,7 +23,7 @@ export function VoteReviewBody({
     [notification.body]
   );
 
-  const setDiscussionTab = useMovieStore((s) => s.setDiscussionTab);
+  const { setDiscussionTab } = useDiscussionTab();
 
   const handleClick = () => {
     setDiscussionTab(DISCUSSION_TAB_REVIEW);

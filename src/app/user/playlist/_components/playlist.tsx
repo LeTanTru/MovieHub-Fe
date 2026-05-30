@@ -5,20 +5,13 @@ import { MAX_PLAYLIST_COUNT } from '@/constants';
 import { NoData } from '@/components/no-data';
 import { useEffect } from 'react';
 import { usePlaylistListQuery } from '@/queries';
-import { usePlaylistStore } from '@/store';
-import { useShallow } from 'zustand/shallow';
+import { useAuth, useSelectedPlaylist } from '@/hooks';
 import { PlaylistCard } from './playlist-card';
-import { useAuth } from '@/hooks';
 
 export function Playlist() {
   const { isAuthenticated } = useAuth();
 
-  const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
-    useShallow((s) => ({
-      selectedPlaylist: s.selectedPlaylist,
-      setSelectedPlaylist: s.setSelectedPlaylist
-    }))
-  );
+  const { selectedPlaylist, setSelectedPlaylist } = useSelectedPlaylist();
 
   const { data: playlist = [], isLoading } = usePlaylistListQuery({
     enabled: isAuthenticated

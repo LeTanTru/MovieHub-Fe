@@ -4,7 +4,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { BaseForm } from '@/components/form/base-form';
 import { cn } from '@/lib';
 import debounce from 'lodash/debounce';
-import type { FormEvent } from 'react';
+import { useEffect, useMemo, useRef, type FormEvent } from 'react';
 import { InputField } from '@/components/form';
 import type { SearchType } from '@/types';
 import { NoData } from '@/components/no-data';
@@ -68,11 +68,40 @@ export function SearchForm({ className, formClassName }: SearchFormProps) {
     keyword: searchParams.keyword || ''
   };
 
-  const handleOnChange = debounce((event: FormEvent<HTMLFormElement>) => {
+  const latestSearchSync = useRef({
+    isSearchPage,
+    setKeyword,
+    setQueryParam
+  });
+
+  useEffect(() => {
+    latestSearchSync.current = {
+      isSearchPage,
+      setKeyword,
+      setQueryParam
+    };
+  }, [isSearchPage, setKeyword, setQueryParam]);
+
+  const handleKeywordChange = useMemo(
+    () =>
+      debounce((value: string) => {
+        const { isSearchPage, setKeyword, setQueryParam } =
+          latestSearchSync.current;
+        setKeyword(value);
+        if (isSearchPage) setQueryParam('keyword', value);
+      }, 300),
+    []
+  );
+
+  useEffect(() => {
+    return () => handleKeywordChange.cancel();
+  }, [handleKeywordChange]);
+
+  const handleOnChange = (event: FormEvent<HTMLFormElement>) => {
     const target = event.target as HTMLInputElement;
-    setKeyword(target.value);
-    if (isSearchPage) setQueryParam('keyword', target.value);
-  }, 300);
+    if (target.name !== 'keyword') return;
+    handleKeywordChange(target.value);
+  };
 
   const onSubmit = (values: SearchType) => {
     if (!values.keyword || values.keyword.trim() === '' || isSearchPage) return;
@@ -113,9 +142,13 @@ export function SearchForm({ className, formClassName }: SearchFormProps) {
                     <X
                       size={16}
                       className='cursor-pointer text-white transition-colors duration-200 ease-linear hover:text-white/50'
-                      onClick={() => {
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        handleKeywordChange.cancel();
                         setKeyword('');
-                        form.reset();
+                        form.reset({ keyword: '' });
+                        if (isSearchPage) setQueryParam('keyword', null);
                       }}
                     />
                   ) : null

@@ -6,22 +6,16 @@ import {
 } from '@/components/app/button-playlist';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib';
-import { usePlaylistStore } from '@/store';
+import { useSelectedPlaylist } from '@/hooks';
 import { PlaylistResType } from '@/types';
 import { FaRegCirclePlay } from 'react-icons/fa6';
-import { useShallow } from 'zustand/shallow';
 
 type PlaylistCardProps = {
   playlist: PlaylistResType;
 };
 
 export function PlaylistCard({ playlist }: PlaylistCardProps) {
-  const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
-    useShallow((s) => ({
-      selectedPlaylist: s.selectedPlaylist,
-      setSelectedPlaylist: s.setSelectedPlaylist
-    }))
-  );
+  const { selectedPlaylist, setSelectedPlaylist } = useSelectedPlaylist();
 
   const handleSelectPlaylist = () => {
     setSelectedPlaylist(playlist);

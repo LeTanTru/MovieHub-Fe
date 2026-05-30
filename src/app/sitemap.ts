@@ -77,7 +77,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const topicUrls = topics.map((topic) => ({
-    url: `${baseUrl}/topic/${topic.name}.${topic.id}`,
+    url: `${baseUrl}/topic/${generateSlug(topic.name)}.${topic.id}`,
     lastModified: topic.modifiedDate || topic.createdDate || now,
     changeFrequency: 'weekly' as const,
     priority: 0.7

@@ -6,35 +6,21 @@ import {
   TagNormal,
   TagWrapper
 } from '@/components/app/tag';
-import {
-  ageRatings,
-  countries,
-  DEFAULT_DATE_FORMAT,
-  languages,
-  MOVIE_TYPE_SERIES,
-  MOVIE_TYPE_SINGLE,
-  PERSON_KIND_ACTOR,
-  PERSON_KIND_DIRECTOR
-} from '@/constants';
+import { DEFAULT_DATE_FORMAT } from '@/constants';
 import { route } from '@/routes';
 import {
   formatDate,
   formatDuration,
   generateSlug,
-  getYearFromDate,
-  parseJSON,
-  renderImageUrl,
-  sanitizeText
+  renderImageUrl
 } from '@/utils';
 import { Activity } from '@/components/activity';
 import { cn } from '@/lib';
-import { useMovieStore } from '@/store';
-import { useShallow } from 'zustand/shallow';
+import { useMovieInfo } from '@/hooks';
 import { ActorList } from './actor-list';
 import Image from 'next/image';
 import Link from 'next/link';
 import { TopViewList } from './top-view-list';
-import type { MetadataType, PersonResType } from '@/types';
 import { MovieProgress } from '@/components/app/movie-progress';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -42,79 +28,26 @@ const ACTOR_SKELETON_COUNT = 6;
 const TOP_VIEW_SKELETON_COUNT = 3;
 
 export function MovieSide() {
-  const { movie, moviePerson, selectedSeason } = useMovieStore(
-    useShallow((s) => ({
-      movie: s.movie,
-      moviePerson: s.moviePerson,
-      selectedSeason: s.selectedSeason
-    }))
-  );
-
-  const ageRating = ageRatings.find(
-    (age) => movie?.ageRating === age.value
-  )?.label;
-
-  const categories = movie?.categories || [];
-
-  const countryName =
-    countries.find((country) => country.value === movie?.country)?.label ||
-    'Đang cập nhật';
-
-  const languageName =
-    languages.find((language) => language.value === movie?.language)?.label ||
-    'Đang cập nhật';
-
-  const directors = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {
-    if (moviePerson.kind === PERSON_KIND_DIRECTOR) {
-      acc.push(moviePerson.person);
-    }
-    return acc;
-  }, []);
-
-  const actors = moviePerson.reduce<PersonResType[]>((acc, moviePerson) => {
-    if (moviePerson.kind === PERSON_KIND_ACTOR) {
-      acc.push(moviePerson.person);
-    }
-    return acc;
-  }, []);
-
-  const metadata = parseJSON<MetadataType>(movie?.metadata || '{}');
-
-  // For series movie
-  const latestSeason = selectedSeason || metadata?.latestSeason?.label;
-
-  const currentSeason = movie?.seasons?.find(
-    (season) => season.label === latestSeason?.toString()
-  );
-
-  const episodes = currentSeason?.episodes || [];
-
-  const latestEpisode = episodes?.length
-    ? episodes[episodes.length - 1]?.label
-    : metadata?.latestEpisode?.label;
-
-  const latestEpisodeVideo = episodes?.[episodes.length - 1]?.video;
-  // For series movie
-
-  const duration = metadata?.duration || latestEpisodeVideo?.duration;
-
-  const sanitizedDescription = sanitizeText(
-    currentSeason?.description || movie?.description || 'Đang cập nhật'
-  );
-
-  const releaseDate = currentSeason?.releaseDate || movie?.releaseDate;
-
-  const isComplete =
-    episodes.length > 0 && currentSeason?.totalEpisode === episodes.length;
-
-  const isSingle = movie?.type === MOVIE_TYPE_SINGLE;
-  const isSeries = movie?.type === MOVIE_TYPE_SERIES;
-
-  const releaseYear = getYearFromDate(
-    currentSeason?.releaseDate ||
-      metadata?.latestSeason?.releaseDate ||
-      movie?.releaseDate
-  );
+  const {
+    movie,
+    ageRating,
+    categories,
+    countryName,
+    languageName,
+    directors,
+    actors,
+    latestSeason,
+    currentSeason,
+    episodes,
+    latestEpisode,
+    duration,
+    sanitizedDescription,
+    releaseDate,
+    isComplete,
+    isSingle,
+    isSeries,
+    releaseYear
+  } = useMovieInfo();
 
   if (!movie)
     return (

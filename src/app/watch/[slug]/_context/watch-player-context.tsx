@@ -8,13 +8,11 @@ import {
   useReducer,
   useRef
 } from 'react';
-import { useAuth, useAnonymousToken, useNavigate } from '@/hooks';
+import { useAuth, useAnonymousToken, useNavigate, useMovie } from '@/hooks';
 import {
   useWatchHistoryTrackingMutation,
   useWatchHistoryListQuery
 } from '@/queries';
-import { useMovieStore } from '@/store';
-import { useShallow } from 'zustand/shallow';
 import type {
   MediaTimeUpdateEventDetail,
   MediaPlayerInstance
@@ -89,7 +87,7 @@ export function WatchPlayerProvider({
   const { isAuthenticated } = useAuth();
 
   const navigate = useNavigate();
-  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
+  const { movie } = useMovie();
   const { token, isLoadingToken } = useAnonymousToken();
 
   const playerRef = useRef<MediaPlayerInstance>(null);

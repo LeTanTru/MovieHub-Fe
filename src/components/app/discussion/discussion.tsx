@@ -1,9 +1,8 @@
 'use client';
 
 import { CommentDotIcon } from '@/assets';
-import { buildLoginRedirectPath, getIdFromSlug, renderImageUrl } from '@/utils';
+import { buildLoginRedirectPath, renderImageUrl } from '@/utils';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 import {
   DEFAULT_PAGE_SIZE,
   discussionActions,
@@ -18,7 +17,7 @@ import { CommentInput, CommentList } from '@/components/app/comment';
 import { Element } from 'react-scroll';
 import { ReviewList } from '@/components/app/review';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth, useLoadMore } from '@/hooks';
+import { useAuth, useLoadMore, useSlugId } from '@/hooks';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import { commentApiRequest, reviewApiRequest } from '@/api-requests';
@@ -43,8 +42,7 @@ export function Discussion({
   className,
   variant = 'detail'
 }: DiscussionProps) {
-  const { slug } = useParams<{ slug: string }>();
-  const id = getIdFromSlug(slug);
+  const { id } = useSlugId();
 
   const { profile } = useAuth();
   const { movie, discussionTab, selectedSeason, setDiscussionTab } =

@@ -6,7 +6,20 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/user/', '/account/', '/api/', '/auth/', '/_next/', '/search']
+      disallow: [
+        '/user/',
+        '/account/',
+        '/api/',
+        '/auth/',
+        '/_next/',
+        '/search',
+        '/login',
+        '/register',
+        '/forgot-password',
+        '/verify-otp',
+        '/intro',
+        '/survey'
+      ]
     },
     sitemap: `${envConfig.NEXT_PUBLIC_URL}/sitemap.xml`
   };

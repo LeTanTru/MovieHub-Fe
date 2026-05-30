@@ -13,7 +13,7 @@ import {
   OG_IMAGE_HEIGHT
 } from '@/constants';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getIdFromSlug, stripHtml, truncate } from '@/utils';
+import { generateSlug, getIdFromSlug, stripHtml, truncate } from '@/utils';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/topic/[slug]/_components';
 import { BreadcrumbListJsonLd, ItemListJsonLd } from '@/components/seo';
@@ -27,7 +27,7 @@ export async function generateStaticParams() {
     size: DEFAULT_PAGE_SIZE
   });
   return topicList.data.content.map((topic) => ({
-    slug: `${topic.name}.${topic.id}`
+    slug: `${generateSlug(topic.name)}.${topic.id}`
   }));
 }
 

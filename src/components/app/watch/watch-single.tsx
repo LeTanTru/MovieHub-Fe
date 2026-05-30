@@ -2,18 +2,16 @@
 
 import { caption } from '@/assets';
 import { MovieTabHeading } from '@/components/app/heading';
-import { useNavigate, useQueryParams } from '@/hooks';
+import { useNavigate, useQueryParams, useMovie } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
-import { useMovieStore } from '@/store';
 import { notify, renderImageUrl } from '@/utils';
 import Image from 'next/image';
-import { useShallow } from 'zustand/shallow';
 
 export function WatchSingle() {
   const navigate = useNavigate();
   const { searchParams } = useQueryParams<{ season: string }>();
-  const { movie } = useMovieStore(useShallow((s) => ({ movie: s.movie })));
+  const { movie } = useMovie();
 
   const seasons = movie?.seasons || [];
 

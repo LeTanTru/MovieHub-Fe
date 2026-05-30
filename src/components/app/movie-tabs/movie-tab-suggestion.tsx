@@ -1,9 +1,8 @@
 'use client';
 
-import { getIdFromSlug } from '@/utils';
 import { MOVIE_TAB_SUGGESTION } from '@/constants';
 import { MovieGrid } from '@/components/app/movie-grid';
-import { useParams } from 'next/navigation';
+import { useSlugId } from '@/hooks';
 import { useSuggestionMovieListQuery } from '@/queries';
 import { MotionWrapper } from './motion-wrapper';
 import { MovieTabHeading } from '@/components/app/heading';
@@ -13,8 +12,7 @@ type MovieTabSuggestionProps = {
 };
 
 export function MovieTabSuggestion({ direction }: MovieTabSuggestionProps) {
-  const { slug } = useParams<{ slug: string }>();
-  const movieId = getIdFromSlug(slug);
+  const { id: movieId } = useSlugId();
 
   const { data: suggestionMovieList = [], isLoading } =
     useSuggestionMovieListQuery(movieId);

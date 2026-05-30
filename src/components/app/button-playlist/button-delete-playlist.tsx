@@ -5,11 +5,9 @@ import { ConfirmModal } from '@/components/modal';
 import { queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useDeletePlaylistMutation } from '@/queries';
-import { usePlaylistStore } from '@/store';
+import { useAuth, useSelectedPlaylist } from '@/hooks';
 import { notify, invalidateQueries } from '@/utils';
 import { FaTrash } from 'react-icons/fa6';
-import { useShallow } from 'zustand/shallow';
-import { useAuth } from '@/hooks';
 
 type ButtonDeletePlaylistProps = {
   id: string;
@@ -18,12 +16,7 @@ type ButtonDeletePlaylistProps = {
 export function ButtonDeletePlaylist({ id }: ButtonDeletePlaylistProps) {
   const { isAuthenticated } = useAuth();
 
-  const { selectedPlaylist, setSelectedPlaylist } = usePlaylistStore(
-    useShallow((s) => ({
-      selectedPlaylist: s.selectedPlaylist,
-      setSelectedPlaylist: s.setSelectedPlaylist
-    }))
-  );
+  const { selectedPlaylist, setSelectedPlaylist } = useSelectedPlaylist();
 
   const { mutateAsync: deletePlaylistMutate, isPending } =
     useDeletePlaylistMutation();
