@@ -25,7 +25,7 @@ export function MovieGridByYear({
   const grouped = groupByYear(movieList);
 
   return Object.keys(grouped)
-    .sort((a, b) => Number(b) - Number(a))
+    .toSorted((a, b) => Number(b) - Number(a))
     .map((year, index) => (
       <div
         key={year}

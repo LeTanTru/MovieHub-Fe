@@ -80,12 +80,12 @@ export function AvatarField({
     if (!breakpoints?.length)
       return [] as Array<{ breakpoint: number; size: number }>;
 
-    return [...breakpoints]
+    return breakpoints
       .filter(
         (rule) =>
           typeof rule?.breakpoint === 'number' && typeof rule?.size === 'number'
       )
-      .sort((a, b) => a.breakpoint - b.breakpoint);
+      .toSorted((a, b) => a.breakpoint - b.breakpoint);
   }, [breakpoints]);
 
   const resolvedSize = useMemo(() => {
