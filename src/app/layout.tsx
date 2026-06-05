@@ -71,6 +71,18 @@ export const metadata: Metadata = {
     description:
       'Khám phá kho phim đa dạng, cập nhật mỗi ngày và xem phim chất lượng cao tại MovieHub. Trải nghiệm giải trí tuyệt vời hoàn toàn miễn phí.',
     images: ['/og']
+  },
+  icons: {
+    icon: [
+      {
+        url: '/favicon-light.png',
+        media: '(prefers-color-scheme: light)'
+      },
+      {
+        url: '/favicon-dark.png',
+        media: '(prefers-color-scheme: dark)'
+      }
+    ]
   }
 };
 
