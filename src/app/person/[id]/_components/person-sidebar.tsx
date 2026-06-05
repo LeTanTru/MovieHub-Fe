@@ -60,7 +60,7 @@ export function PersonSidebar({ person, loading }: PersonSidebarProps) {
   const role =
     person?.kinds
       ?.map((kind) => movieTabPersonTitles[kind])
-      ?.sort((a, b) => a.localeCompare(b))
+      ?.toSorted((a, b) => a.localeCompare(b))
       .join(', ') || '';
 
   if (loading) return <PersonSidebar.Skeleton />;

@@ -3,7 +3,11 @@
 import { Button, Col, OtpInputField, Row } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { Separator } from '@/components/ui/separator';
-import { storageKeys, verifyOtpErrorMaps } from '@/constants';
+import {
+  REDIRECT_AFTER_LOGIN_DURATION,
+  storageKeys,
+  verifyOtpErrorMaps
+} from '@/constants';
 import { useNavigate, useQueryParams } from '@/hooks';
 import { logger } from '@/logger';
 import { useResendOtpMutation, useVerifyOtpMutation } from '@/queries';
@@ -108,17 +112,21 @@ export function VerifyOtpForm() {
     dispatch
   ] = useReducer(resendReducer, initialResendState);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
+  const navigateRef = useRef(navigate);
   const lastResendTimeRef = useRef(lastResendTime);
+  const missingEmailNotifiedRef = useRef(false);
 
   const { mutateAsync: resendOtpMutate, isPending: resendOtpLoading } =
     useResendOtpMutation();
   const { mutateAsync: verifyOtpMutate, isPending: verifyOtpLoading } =
     useVerifyOtpMutation();
+  const email = getData(storageKeys.EMAIL) ?? '';
 
   const defaultValues: VerifyOtpBodyType = {
-    email: getData(storageKeys.EMAIL) ?? '',
+    email,
     otp: ''
   };
+  const registerPath = buildAuthPathWithRedirect(route.register.path, redirect);
 
   const getResendData = () => {
     const data = getData(storageKeys.RESEND_OTP_TIME);
@@ -127,6 +135,12 @@ export function VerifyOtpForm() {
   };
 
   useEffect(() => {
+    navigateRef.current = navigate;
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!email) return;
+
     const lastTime = getData(storageKeys.LAST_RESEND_TIME);
     const now = Date.now();
     const resolvedLastResendTime = lastTime ? parseInt(lastTime) : now;
@@ -142,7 +156,22 @@ export function VerifyOtpForm() {
         lastResendTime: resolvedLastResendTime
       }
     });
-  }, []);
+  }, [email]);
+
+  useEffect(() => {
+    if (email) return;
+
+    if (!missingEmailNotifiedRef.current) {
+      notify.error('Vui lòng đăng ký trước khi xác thực OTP');
+      missingEmailNotifiedRef.current = true;
+    }
+
+    const timeout = setTimeout(() => {
+      navigateRef.current.replace(registerPath);
+    }, REDIRECT_AFTER_LOGIN_DURATION);
+
+    return () => clearTimeout(timeout);
+  }, [email, registerPath]);
 
   const setResendDataToLS = (count: number, timestamp: number) => {
     // count: store how many times which resend has been done
@@ -250,7 +279,7 @@ export function VerifyOtpForm() {
 
   const handleBack = () => {
     handleClearData();
-    navigate.push(buildAuthPathWithRedirect(route.register.path, redirect));
+    navigate.push(registerPath);
   };
 
   const onSubmit = async (

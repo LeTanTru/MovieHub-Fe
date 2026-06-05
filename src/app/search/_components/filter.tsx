@@ -93,7 +93,7 @@ export function Filter({
         label: category.name,
         value: category.id
       }))
-      .sort((a, b) => a.label.localeCompare(b.label)) || [];
+      .toSorted((a, b) => a.label.localeCompare(b.label)) || [];
 
   // Define filter conditions and their options
   const searchConditions: {

@@ -38,7 +38,7 @@ export function NavigationMenu({ mode }: NavigationMenuProps) {
           key: generateSlug(category.name),
           label: category.name
         }))
-        .sort((a, b) => a.label.localeCompare(b.label)),
+        .toSorted((a, b) => a.label.localeCompare(b.label)),
       isDropdown: true,
       key: 'category'
     },

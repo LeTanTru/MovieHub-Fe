@@ -203,6 +203,8 @@ export function Modal({
       {open && (
         <>
           <m.div
+            data-modal-backdrop=''
+            data-modal-portal=''
             className='backdrop fixed inset-0 z-50 bg-black/50 backdrop-blur-xs'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -219,6 +221,7 @@ export function Modal({
             }}
           >
             <m.div
+              data-modal-portal=''
               className='fixed inset-0 z-50 overflow-auto'
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -230,6 +233,8 @@ export function Modal({
               }}
             >
               <m.div
+                role='dialog'
+                aria-modal='true'
                 className={cn(
                   'bg-charade relative top-25 mx-auto w-175 rounded-lg shadow-black/40',
                   className
@@ -349,6 +354,8 @@ function Confirm({ message, className }: ConfirmProps) {
     <AnimatePresence>
       {showConfirm && (
         <m.div
+          data-modal-backdrop=''
+          data-modal-portal=''
           className='fixed inset-0 z-9999 flex items-center justify-center rounded-lg bg-black/40'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
