@@ -80,11 +80,12 @@ export default async function HomePage() {
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: [queryKeys.SIDEBAR_LIST, sidebarFilters],
-      queryFn: () => sidebarApiRequest.getList(sidebarFilters)
+      queryFn: ({ signal }) => sidebarApiRequest.getList(sidebarFilters, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.COLLECTION_TOPIC_LIST, collectionFilters],
-      queryFn: () => collectionApiRequest.getTopicList(collectionFilters)
+      queryFn: ({ signal }) =>
+        collectionApiRequest.getTopicList(collectionFilters, signal)
     })
   ]);
 

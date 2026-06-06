@@ -17,7 +17,8 @@ export const usePlaylistMoviesQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.PLAYLIST_MOVIES, playlistId, params],
-    queryFn: () => playlistApiRequest.getListMovies(playlistId, params),
+    queryFn: ({ signal }) =>
+      playlistApiRequest.getListMovies(playlistId, params, signal),
     enabled: !!playlistId,
     select: (data) => data.data
   });
@@ -40,7 +41,7 @@ export const useDeletePlaylistMutation = () => {
 export const usePlaylistListQuery = ({ enabled }: { enabled?: boolean }) => {
   return useQuery({
     queryKey: [queryKeys.PLAYLIST_LIST],
-    queryFn: () => playlistApiRequest.getList(),
+    queryFn: ({ signal }) => playlistApiRequest.getList(signal),
     enabled,
     select: (data) => data.data
   });
@@ -55,7 +56,7 @@ export const usePlaylistByMovieQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.PLAYLIST_BY_MOVIES, movieId],
-    queryFn: () => playlistApiRequest.getListByMovie(movieId),
+    queryFn: ({ signal }) => playlistApiRequest.getListByMovie(movieId, signal),
     enabled,
     select: (data) => data.data
   });

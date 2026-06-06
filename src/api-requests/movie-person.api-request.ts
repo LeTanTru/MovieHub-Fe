@@ -6,7 +6,8 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: MoviePersonSearchType) =>
+export const getList = (params?: MoviePersonSearchType, signal?: AbortSignal) =>
   http.get<ApiResponseList<MoviePersonResType>>(apiConfig.moviePerson.getList, {
-    params
+    params,
+    signal
   });

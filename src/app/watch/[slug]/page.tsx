@@ -132,24 +132,28 @@ export default async function WatchPage({ params }: WatchPageProps) {
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE, id],
-      queryFn: () => movieApiRequest.getById(id)
+      queryFn: ({ signal }) => movieApiRequest.getById(id, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
-      queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
+      queryFn: ({ signal }) =>
+        moviePersonApiRequest.getList(moviePersonFilters, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
-      queryFn: () => movieApiRequest.getSuggestionList(id)
+      queryFn: ({ signal }) => movieApiRequest.getSuggestionList(id, signal)
     }),
     queryClient.prefetchInfiniteQuery({
       queryKey: [queryKeys.COMMENT_LIST, commentFilters],
-      queryFn: ({ pageParam }) =>
-        commentApiRequest.getList({
-          movieId: id,
-          page: pageParam,
-          size: DEFAULT_PAGE_SIZE
-        }),
+      queryFn: ({ pageParam, signal }) =>
+        commentApiRequest.getList(
+          {
+            movieId: id,
+            page: pageParam,
+            size: DEFAULT_PAGE_SIZE
+          },
+          signal
+        ),
       initialPageParam: DEFAULT_PAGE_START,
       getNextPageParam: (
         lastPage: ApiResponseList<CommentResType>,
@@ -158,12 +162,15 @@ export default async function WatchPage({ params }: WatchPageProps) {
     }),
     queryClient.prefetchInfiniteQuery({
       queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
-      queryFn: ({ pageParam }) =>
-        reviewApiRequest.getList({
-          movieId: id,
-          page: pageParam,
-          size: DEFAULT_PAGE_SIZE
-        }),
+      queryFn: ({ pageParam, signal }) =>
+        reviewApiRequest.getList(
+          {
+            movieId: id,
+            page: pageParam,
+            size: DEFAULT_PAGE_SIZE
+          },
+          signal
+        ),
       initialPageParam: DEFAULT_PAGE_START,
       getNextPageParam: (
         lastPage: ApiResponseList<ReviewResType>,
@@ -172,7 +179,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_NEXT_EPISODE, id],
-      queryFn: () => movieApiRequest.getNextEpisode(id)
+      queryFn: ({ signal }) => movieApiRequest.getNextEpisode(id, signal)
     })
   ]);
 

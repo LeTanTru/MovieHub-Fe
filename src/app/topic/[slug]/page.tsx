@@ -104,11 +104,13 @@ export default async function TopicDetailPage({
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: [queryKeys.COLLECTION, collectionId],
-      queryFn: () => collectionApiRequest.getById(collectionId)
+      queryFn: ({ signal }) =>
+        collectionApiRequest.getById(collectionId, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.COLLECTION_ITEM_LIST, collectionItemFilters],
-      queryFn: () => collectionItemApiRequest.getList(collectionItemFilters)
+      queryFn: ({ signal }) =>
+        collectionItemApiRequest.getList(collectionItemFilters, signal)
     })
   ]);
 

@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 export const useSurveyListQuery = (enabled: boolean = false) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_SURVEY_LIST],
-    queryFn: () => surveyApiRequest.getSurveyList(),
+    queryFn: ({ signal }) => surveyApiRequest.getSurveyList(signal),
     enabled,
     select: (data) => data.data
   });

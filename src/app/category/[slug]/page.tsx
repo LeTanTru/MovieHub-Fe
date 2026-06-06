@@ -93,11 +93,11 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: [queryKeys.CATEGORY, id],
-      queryFn: () => categoryApiRequest.getById(id)
+      queryFn: ({ signal }) => categoryApiRequest.getById(id, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_LIST, movieFilters],
-      queryFn: () => movieApiRequest.getList(movieFilters)
+      queryFn: ({ signal }) => movieApiRequest.getList(movieFilters, signal)
     })
   ]);
 

@@ -12,7 +12,7 @@ export const useMoviePersonListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE_PERSON_LIST, params],
-    queryFn: () => moviePersonApiRequest.getList(params),
+    queryFn: ({ signal }) => moviePersonApiRequest.getList(params, signal),
     enabled,
     select: (data) => data.data.content
   });

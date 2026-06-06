@@ -12,7 +12,7 @@ export const useWatchHistoryListQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.WATCH_HISTORY_LIST, params],
-    queryFn: () => watchHistoryApiRequest.getList(params),
+    queryFn: ({ signal }) => watchHistoryApiRequest.getList(params, signal),
     enabled,
     select: (data) => data.data
   });

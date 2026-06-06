@@ -15,13 +15,15 @@ import { http } from '@/utils';
 
 export const getListMovies = (
   playlistId: string,
-  params?: PlaylistSearchType
+  params?: PlaylistSearchType,
+  signal?: AbortSignal
 ) =>
   http.get<ApiResponseList<PlaylistMovieResType>>(
     apiConfig.playlist.getListMovies,
     {
       pathParams: { id: playlistId },
-      params
+      params,
+      signal
     }
   );
 
@@ -35,12 +37,15 @@ export const deleteById = (id: string) =>
     pathParams: { id }
   });
 
-export const getList = () =>
-  http.get<ApiResponse<PlaylistResType[]>>(apiConfig.playlist.getList);
+export const getList = (signal?: AbortSignal) =>
+  http.get<ApiResponse<PlaylistResType[]>>(apiConfig.playlist.getList, {
+    signal
+  });
 
-export const getListByMovie = (movieId: string) =>
+export const getListByMovie = (movieId: string, signal?: AbortSignal) =>
   http.get<ApiResponse<PlaylistIdsResType>>(apiConfig.playlist.getListByMovie, {
-    pathParams: { movieId }
+    pathParams: { movieId },
+    signal
   });
 
 export const removeItem = (params: RemoveItemSearchType) =>

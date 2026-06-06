@@ -8,30 +8,24 @@ import {
 import { ErrorMaps } from '@/types/form-error.type';
 
 export const ErrorCode = {
-  ACCOUNT_ERROR_NOT_FOUND: 'ERROR-ACCOUNT-ERROR-0000',
-
-  ACCOUNT_ERROR_EMAIL_EXISTED: 'ERROR-ACCOUNT-ERROR-0004',
-
-  ACCOUNT_ERROR_EMAIL_NOT_FOUND: 'ERROR-ACCOUNT-00015',
-
+  // === User error code ===
+  USER_ERROR_NOT_FOUND: 'ERROR-USER-ERROR-0000',
   USER_ERROR_USERNAME_EXISTED: 'ERROR-USER-ERROR-0002',
   USER_ERROR_PHONE_EXISTED: 'ERROR-USER-ERROR-0003',
+  USER_ERROR_EMAIL_EXISTED: 'ERROR-USER-ERROR-0004',
   USER_ERROR_WRONG_PASSWORD: 'ERROR-USER-ERROR-0005',
   USER_ERROR_NEW_PASSWORD_SAME_OLD_PASSWORD: 'ERROR-USER-ERROR-0006',
   USER_ERROR_OTP_INVALID: 'ERROR-USER-ERROR-0007',
-  USER_ERROR_CONFIRM_PASSWORD_INVALID: 'ERROR-USER-ERROR-0009',
-
-  ERROR_FAVOURITE_NOT_FOUND: 'ERROR-FAVOURITE-ERROR-0000',
-
-  ERROR_USER_ERROR_0000: 'ERROR-USER-ERROR-0000'
+  USER_ERROR_RESEND_OTP_LIMIT: 'ERROR-USER-ERROR-0008',
+  USER_ERROR_CONFIRM_PASSWORD_INVALID: 'ERROR-USER-ERROR-0009'
 } as const;
 
 export const registerErrorMaps: ErrorMaps<RegisterType> = {
-  [ErrorCode.ACCOUNT_ERROR_EMAIL_EXISTED]: [
-    ['email', { type: 'manual', message: 'Email đã tồn tại' }]
-  ],
-  [ErrorCode.ACCOUNT_ERROR_EMAIL_NOT_FOUND]: [
+  [ErrorCode.USER_ERROR_NOT_FOUND]: [
     ['email', { type: 'manual', message: 'Email không tồn tại' }]
+  ],
+  [ErrorCode.USER_ERROR_EMAIL_EXISTED]: [
+    ['email', { type: 'manual', message: 'Email đã tồn tại' }]
   ]
 };
 
@@ -45,7 +39,7 @@ export const profileErrorMaps: ErrorMaps<UpdateProfileBodyType> = {
 };
 
 export const forgotPasswordErrorMaps: ErrorMaps<ForgotPasswordBodyType> = {
-  [ErrorCode.ACCOUNT_ERROR_NOT_FOUND]: [
+  [ErrorCode.USER_ERROR_NOT_FOUND]: [
     [
       'email',
       {

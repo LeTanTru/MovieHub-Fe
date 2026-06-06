@@ -59,7 +59,7 @@ export default async function MovieSeriesPage() {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_LIST, movieFilters],
-    queryFn: () => movieApiRequest.getList(movieFilters)
+    queryFn: ({ signal }) => movieApiRequest.getList(movieFilters, signal)
   });
 
   return (

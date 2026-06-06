@@ -10,7 +10,7 @@ export const useProfileQuery = ({
 }: { enabled?: boolean } = {}) => {
   return useQuery({
     queryKey: [queryKeys.PROFILE],
-    queryFn: () => accountApiRequest.getProfile(),
+    queryFn: ({ signal }) => accountApiRequest.getProfile(signal),
     enabled: enabled,
     select: (data) => data.data
   });

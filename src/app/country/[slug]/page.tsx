@@ -97,7 +97,7 @@ export default async function CountryPage({ params }: CountryPageProps) {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_LIST, movieFilters],
-    queryFn: () => movieApiRequest.getList(movieFilters)
+    queryFn: ({ signal }) => movieApiRequest.getList(movieFilters, signal)
   });
 
   const moviesRes = queryClient.getQueryData<ApiResponseList<MovieResType>>([

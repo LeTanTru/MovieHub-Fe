@@ -44,7 +44,8 @@ export function DropdownNotification() {
   const dropdownRef = useClickOutside<HTMLDivElement>(() => closeDropDown());
 
   const [params, setParams] = useState<NotificationSearchType>({
-    type: getData(storageKeys.NOTIFICATION_TAB) || NOTIFICATION_TYPE_MOVIE,
+    type:
+      getData(storageKeys.NOTIFICATION_TAB) || String(NOTIFICATION_TYPE_MOVIE),
     page: DEFAULT_PAGE_START,
     size: NOTIFICATION_PAGE_SIZE
   });
@@ -74,8 +75,8 @@ export function DropdownNotification() {
   } = useNotificationActions();
 
   const handleChangeTab = (type: string) => {
-    setParams((prev) => ({ ...prev, type: Number(type) }));
-    setData(storageKeys.NOTIFICATION_TAB, String(type));
+    setParams((prev) => ({ ...prev, type }));
+    setData(storageKeys.NOTIFICATION_TAB, type);
   };
 
   const handleItemClick = () => {
@@ -111,7 +112,7 @@ export function DropdownNotification() {
               ease: 'linear'
             }}
             onMouseDown={(e) => e.stopPropagation()}
-            className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex max-h-[80dvh] min-h-[80dvh] w-150 flex-col justify-between overflow-hidden rounded before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
+            className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex w-150 flex-col justify-between rounded before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11.5 h-2 w-4'>
               <div className='bg-charade size-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
@@ -214,17 +215,15 @@ export function DropdownNotification() {
                 />
               </TabsContent>
             </Tabs>
-            {notificationList.length > 0 && (
-              <>
-                <Separator />
-                <Link
-                  className='hover:text-golden-glow mt-auto block w-full rounded-br rounded-bl px-4 py-2 text-center text-slate-400 transition-all duration-500 ease-linear hover:bg-black/10'
-                  href={route.user.notification.path}
-                >
-                  Xem tất cả
-                </Link>
-              </>
-            )}
+            <>
+              <Separator />
+              <Link
+                className='hover:text-golden-glow mt-auto block w-full rounded-br rounded-bl px-4 py-2 text-center text-slate-400 transition-all duration-500 ease-linear hover:bg-black/10'
+                href={route.user.notification.path}
+              >
+                Xem tất cả
+              </Link>
+            </>
           </m.div>
         )}
       </AnimatePresence>

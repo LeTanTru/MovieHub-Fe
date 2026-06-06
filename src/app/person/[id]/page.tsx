@@ -97,11 +97,12 @@ export default async function PersonDetailPage({
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: [queryKeys.PERSON, id],
-      queryFn: () => personApiRequest.getById(id)
+      queryFn: ({ signal }) => personApiRequest.getById(id, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
-      queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
+      queryFn: ({ signal }) =>
+        moviePersonApiRequest.getList(moviePersonFilters, signal)
     })
   ]);
 

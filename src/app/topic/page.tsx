@@ -54,7 +54,8 @@ export default async function TopicPage() {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.COLLECTION_TOPIC_LIST, movieFilters],
-    queryFn: () => collectionApiRequest.getTopicList(movieFilters)
+    queryFn: ({ signal }) =>
+      collectionApiRequest.getTopicList(movieFilters, signal)
   });
 
   return (

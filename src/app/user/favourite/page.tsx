@@ -72,7 +72,7 @@ export default async function FavouritePage() {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.FAVOURITE_LIST, movieFilters],
-    queryFn: () => favouriteApiRequest.getList(movieFilters)
+    queryFn: ({ signal }) => favouriteApiRequest.getList(movieFilters, signal)
   });
 
   return (

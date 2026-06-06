@@ -11,9 +11,10 @@ import type {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: CommentSearchType) =>
+export const getList = (params?: CommentSearchType, signal?: AbortSignal) =>
   http.get<ApiResponseList<CommentResType>>(apiConfig.comment.getList, {
-    params
+    params,
+    signal
   });
 
 export const create = (body: CommentBodyType) =>
@@ -36,7 +37,8 @@ export const vote = (body: VoteCommentBodyType) =>
     body
   });
 
-export const getVoteList = (movieId: string) =>
+export const getVoteList = (movieId: string, signal?: AbortSignal) =>
   http.get<ApiResponse<CommentVoteResType[]>>(apiConfig.comment.getVoteList, {
-    pathParams: { movieId }
+    pathParams: { movieId },
+    signal
   });

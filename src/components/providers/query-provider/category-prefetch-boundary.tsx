@@ -15,7 +15,7 @@ export async function CategoryPrefetchBoundary({
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.CATEGORY_LIST, categoryFilters],
-    queryFn: () => categoryApiRequest.getList(categoryFilters)
+    queryFn: ({ signal }) => categoryApiRequest.getList(categoryFilters, signal)
   });
 
   return (

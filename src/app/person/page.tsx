@@ -63,7 +63,7 @@ export default async function PersonPage() {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.PERSON_LIST, movieFilters],
-    queryFn: () => personApiRequest.getList(movieFilters)
+    queryFn: ({ signal }) => personApiRequest.getList(movieFilters, signal)
   });
 
   return (

@@ -6,10 +6,14 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: CollectionItemSearchType) =>
+export const getList = (
+  params?: CollectionItemSearchType,
+  signal?: AbortSignal
+) =>
   http.get<ApiResponseList<CollectionItemResType>>(
     apiConfig.collectionItem.getList,
     {
-      params
+      params,
+      signal
     }
   );
