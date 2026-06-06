@@ -288,7 +288,7 @@ export function UploadImageField<T extends FieldValues>({
             className={cn(
               'group relative inline-flex cursor-pointer items-center justify-center rounded',
               {
-                'border-input border-2 border-dashed transition-all transition-colors duration-200 ease-linear hover:bg-gray-100':
+                'border-input hover:bg-gunmetal-blue border-2 border-dashed transition-all transition-colors duration-200 ease-linear':
                   !value,
                 'rounded-full': avatar,
                 'border-gray-300 bg-gray-100': isDragging,
@@ -351,7 +351,7 @@ export function UploadImageField<T extends FieldValues>({
                         type='button'
                         title='Xóa ảnh'
                         className={cn(
-                          'border-background absolute size-6 rounded-full border-none text-white hover:text-rose-500'
+                          'border-background bg-accent hover:bg-accent/80 absolute size-6 rounded-full border-none text-white hover:text-rose-500'
                         )}
                         style={{
                           top: avatar
@@ -409,7 +409,7 @@ export function UploadImageField<T extends FieldValues>({
         }}
       >
         <DialogContent
-          className='gap-0 overflow-hidden rounded-tl-sm rounded-tr-sm border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
+          className='bg-accent gap-0 overflow-hidden rounded-tl-sm rounded-tr-sm border-none p-0 sm:max-w-85 md:max-w-90 lg:max-w-95 xl:max-w-100 2xl:max-w-115'
           showCloseButton={false}
         >
           <DialogHeader className='text-left'>
@@ -452,7 +452,7 @@ export function UploadImageField<T extends FieldValues>({
           </AspectRatio>
 
           <DialogFooter className='flex flex-col flex-wrap gap-4 border-t px-4 py-6 sm:justify-between'>
-            {!keepOriginalSize && (
+            {!keepOriginalSize && shouldCrop && (
               <div className='mx-auto flex w-full max-w-80 items-center gap-4'>
                 <ZoomOutIcon
                   className='shrink-0 opacity-60'
@@ -465,7 +465,8 @@ export function UploadImageField<T extends FieldValues>({
                   step={ZOOM_SLIDER_STEP}
                   onValueChange={(val) => setZoom(val[0])}
                   showTooltip
-                  className='cursor-pointer [&_span[role="slider"]]:bg-gray-500'
+                  className='cursor-pointer [&_span[role="slider"]]:border-none [&_span[role="slider"]]:bg-black'
+                  trackClassName='bg-gray-500'
                 />
                 <ZoomInIcon
                   className='shrink-0 opacity-60'
