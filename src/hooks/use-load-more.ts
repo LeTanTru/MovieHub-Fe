@@ -39,7 +39,7 @@ export const useLoadMore = <
 
         return nextPage < totalPages ? nextPage : undefined;
       },
-      enabled: enabled
+      enabled
     });
 
   const handleLoadMore = useCallback(() => {
