@@ -11,14 +11,16 @@ import type {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: ReviewSearchType) =>
+export const getList = (params?: ReviewSearchType, signal?: AbortSignal) =>
   http.get<ApiResponseList<ReviewResType>>(apiConfig.review.getList, {
-    params
+    params,
+    signal
   });
 
-export const checkMovie = (movieId: string) =>
+export const checkMovie = (movieId: string, signal?: AbortSignal) =>
   http.get<ApiResponse<ReviewResType>>(apiConfig.review.checkMovie, {
-    pathParams: { movieId }
+    pathParams: { movieId },
+    signal
   });
 
 export const create = (body: ReviewBodyType) =>
@@ -36,7 +38,8 @@ export const vote = (body: ReviewVoteBodyType) =>
     body
   });
 
-export const getVoteList = (movieId: string) =>
+export const getVoteList = (movieId: string, signal?: AbortSignal) =>
   http.get<ApiResponse<ReviewVoteResType[]>>(apiConfig.review.getVoteList, {
-    pathParams: { movieId }
+    pathParams: { movieId },
+    signal
   });

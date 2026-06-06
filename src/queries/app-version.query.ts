@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 export const useAppVersionLatestQuery = ({ enabled }: { enabled: boolean }) => {
   return useQuery({
     queryKey: [queryKeys.APP_VERSION_LATEST],
-    queryFn: () => appVersionApiRequest.getLatest(),
+    queryFn: ({ signal }) => appVersionApiRequest.getLatest(signal),
     select: (data) => data.data,
     enabled
   });

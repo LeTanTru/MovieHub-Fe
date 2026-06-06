@@ -146,36 +146,43 @@ export default async function MoviePage({ params }: MoviePageProps) {
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE, id],
-      queryFn: () => movieApiRequest.getById(id)
+      queryFn: ({ signal }) => movieApiRequest.getById(id, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_PERSON_LIST, moviePersonFilters],
-      queryFn: () => moviePersonApiRequest.getList(moviePersonFilters)
+      queryFn: ({ signal }) =>
+        moviePersonApiRequest.getList(moviePersonFilters, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_PERSON_LIST, actorFilters],
-      queryFn: () => moviePersonApiRequest.getList(actorFilters)
+      queryFn: ({ signal }) =>
+        moviePersonApiRequest.getList(actorFilters, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_PERSON_LIST, directorFilters],
-      queryFn: () => moviePersonApiRequest.getList(directorFilters)
+      queryFn: ({ signal }) =>
+        moviePersonApiRequest.getList(directorFilters, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_SUGGESTION_LIST, id],
-      queryFn: () => movieApiRequest.getSuggestionList(id)
+      queryFn: ({ signal }) => movieApiRequest.getSuggestionList(id, signal)
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_TOP_VIEW_LIST, topViewFilters],
-      queryFn: () => movieApiRequest.getTopViewList(topViewFilters)
+      queryFn: ({ signal }) =>
+        movieApiRequest.getTopViewList(topViewFilters, signal)
     }),
     queryClient.prefetchInfiniteQuery({
       queryKey: [queryKeys.COMMENT_LIST, commentFilters],
-      queryFn: ({ pageParam }) =>
-        commentApiRequest.getList({
-          movieId: id,
-          page: pageParam,
-          size: DEFAULT_PAGE_SIZE
-        }),
+      queryFn: ({ pageParam, signal }) =>
+        commentApiRequest.getList(
+          {
+            movieId: id,
+            page: pageParam,
+            size: DEFAULT_PAGE_SIZE
+          },
+          signal
+        ),
       initialPageParam: DEFAULT_PAGE_START,
       getNextPageParam: (
         lastPage: ApiResponseList<CommentResType>,
@@ -184,12 +191,15 @@ export default async function MoviePage({ params }: MoviePageProps) {
     }),
     queryClient.prefetchInfiniteQuery({
       queryKey: [queryKeys.REVIEW_LIST, reviewFilters],
-      queryFn: ({ pageParam }) =>
-        reviewApiRequest.getList({
-          movieId: id,
-          page: pageParam,
-          size: DEFAULT_PAGE_SIZE
-        }),
+      queryFn: ({ pageParam, signal }) =>
+        reviewApiRequest.getList(
+          {
+            movieId: id,
+            page: pageParam,
+            size: DEFAULT_PAGE_SIZE
+          },
+          signal
+        ),
       initialPageParam: DEFAULT_PAGE_START,
       getNextPageParam: (
         lastPage: ApiResponseList<ReviewResType>,
@@ -198,7 +208,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
     }),
     queryClient.prefetchQuery({
       queryKey: [queryKeys.MOVIE_NEXT_EPISODE, id],
-      queryFn: () => movieApiRequest.getNextEpisode(id)
+      queryFn: ({ signal }) => movieApiRequest.getNextEpisode(id, signal)
     })
   ]);
 

@@ -12,58 +12,78 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: MovieSearchType) =>
+export const getList = (params?: MovieSearchType, signal?: AbortSignal) =>
   http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
-    params
+    params,
+    signal
   });
 
-export const getById = (id: string) =>
+export const getById = (id: string, signal?: AbortSignal) =>
   http.get<ApiResponse<MovieResType>>(apiConfig.movie.getById, {
     pathParams: {
       id
-    }
+    },
+    signal
   });
 
-export const getSuggestionList = (id: string) =>
+export const getSuggestionList = (id: string, signal?: AbortSignal) =>
   http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.getSuggestionList, {
     pathParams: {
       id
-    }
+    },
+    signal
   });
 
-export const getHistoryList = () =>
-  http.get<ApiResponse<MovieHistoryResType[]>>(apiConfig.movie.getHistoryList);
+export const getHistoryList = (signal?: AbortSignal) =>
+  http.get<ApiResponse<MovieHistoryResType[]>>(apiConfig.movie.getHistoryList, {
+    signal
+  });
 
-export const getTopViewList = (params?: MovieSearchType) =>
+export const getTopViewList = (
+  params?: MovieSearchType,
+  signal?: AbortSignal
+) =>
   http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getTopViewList, {
-    params
+    params,
+    signal
   });
 
-export const getScheduleList = (params: { date: string }) =>
+export const getScheduleList = (
+  params: { date: string },
+  signal?: AbortSignal
+) =>
   http.get<ApiResponse<MovieScheduleResType[]>>(
     apiConfig.movie.getScheduleList,
     {
-      params
+      params,
+      signal
     }
   );
 
-export const getNextEpisode = (id: string) =>
+export const getNextEpisode = (id: string, signal?: AbortSignal) =>
   http.get<ApiResponse<MovieNextEpisodeResType>>(
     apiConfig.movie.getNextEpisode,
     {
       pathParams: {
         id
-      }
+      },
+      signal
     }
   );
 
-export const getSuggestByWatched = (params: MovieSuggestByWatchedSearchType) =>
+export const getSuggestByWatched = (
+  params: MovieSuggestByWatchedSearchType,
+  signal?: AbortSignal
+) =>
   http.get<ApiResponse<MovieSuggestByWatchedType>>(
     apiConfig.movie.suggestByWatched,
     {
-      params
+      params,
+      signal
     }
   );
 
-export const getRecommendation = () =>
-  http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.recommendation);
+export const getRecommendation = (signal?: AbortSignal) =>
+  http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.recommendation, {
+    signal
+  });

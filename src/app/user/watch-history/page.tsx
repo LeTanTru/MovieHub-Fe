@@ -55,7 +55,7 @@ export default async function WatchHistoryPage() {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_HISTORY],
-    queryFn: () => movieApiRequest.getHistoryList()
+    queryFn: ({ signal }) => movieApiRequest.getHistoryList(signal)
   });
 
   return (

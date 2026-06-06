@@ -13,9 +13,13 @@ import type {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getGoogleLoginUrl = (loginType: string | number) =>
+export const getGoogleLoginUrl = (
+  loginType: string | number,
+  signal?: AbortSignal
+) =>
   http.get<ApiResponse<string>>(apiConfig.user.auth.socialLogin, {
-    params: { loginType }
+    params: { loginType },
+    signal
   });
 
 export const loginGoogle = (code: string) =>
@@ -65,5 +69,7 @@ export const changePassword = (
   body: Omit<ChangePasswordBodyType, 'confirmNewPassword'>
 ) => http.post<ApiResponseNoData>(apiConfig.user.changePassword, { body });
 
-export const session = () =>
-  http.get<ApiResponse<SessionResType>>(apiConfig.api.auth.session);
+export const session = (signal?: AbortSignal) =>
+  http.get<ApiResponse<SessionResType>>(apiConfig.api.auth.session, {
+    signal
+  });

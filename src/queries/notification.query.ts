@@ -15,7 +15,7 @@ export const useNotificationListQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.NOTIFICATION_LIST, params],
-    queryFn: () => notificationApiRequest.getList(params),
+    queryFn: ({ signal }) => notificationApiRequest.getList(params, signal),
     select: (data) => data.data,
     enabled
   });
@@ -28,7 +28,7 @@ export const useCountUnreadNotificationQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.UNREAD_NOTIFICATION_COUNT],
-    queryFn: () => notificationApiRequest.countUnread(),
+    queryFn: ({ signal }) => notificationApiRequest.countUnread(signal),
     select: (data) => data.data,
     enabled
   });

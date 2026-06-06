@@ -7,8 +7,10 @@ import type {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getSurveyList = () =>
-  http.get<ApiResponse<SurveyResType[]>>(apiConfig.survey.getSurveyList);
+export const getSurveyList = (signal?: AbortSignal) =>
+  http.get<ApiResponse<SurveyResType[]>>(apiConfig.survey.getSurveyList, {
+    signal
+  });
 
 export const makeSurvey = (body: SurveyBodyType) =>
   http.post<ApiResponseNoData>(apiConfig.survey.makeSurvey, {

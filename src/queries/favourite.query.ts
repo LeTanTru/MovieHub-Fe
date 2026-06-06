@@ -32,7 +32,7 @@ export const useFavouriteQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.FAVOURITE, params],
-    queryFn: () => favouriteApiRequest.get(params),
+    queryFn: ({ signal }) => favouriteApiRequest.get(params, signal),
     enabled,
     select: (data) => data.data
   });
@@ -47,7 +47,7 @@ export const useFavouriteListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.FAVOURITE_LIST, params],
-    queryFn: () => favouriteApiRequest.getList(params),
+    queryFn: ({ signal }) => favouriteApiRequest.getList(params, signal),
     enabled,
     select: (data) => data.data
   });
@@ -62,7 +62,7 @@ export const useFavouriteListIdsQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.FAVOURITE_GET_LIST_IDS, params],
-    queryFn: () => favouriteApiRequest.getListIds(params),
+    queryFn: ({ signal }) => favouriteApiRequest.getListIds(params, signal),
     enabled,
     select: (data) => data.data
   });

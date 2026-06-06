@@ -9,7 +9,7 @@ export const useCollectionItemListQuery = ({
 }: { params?: CollectionItemSearchType; enabled?: boolean } = {}) => {
   return useQuery({
     queryKey: [queryKeys.COLLECTION_ITEM_LIST, params],
-    queryFn: () => collectionItemApiRequest.getList(params),
+    queryFn: ({ signal }) => collectionItemApiRequest.getList(params, signal),
     enabled,
     select: (data) => data.data
   });

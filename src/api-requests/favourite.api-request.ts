@@ -12,14 +12,16 @@ import type {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: FavouriteSearchType) =>
+export const getList = (params?: FavouriteSearchType, signal?: AbortSignal) =>
   http.get<ApiResponseList<FavouriteResType>>(apiConfig.favourite.getList, {
-    params
+    params,
+    signal
   });
 
-export const get = (params: FavouriteGetType) =>
+export const get = (params: FavouriteGetType, signal?: AbortSignal) =>
   http.get<ApiResponse<{ id: string }>>(apiConfig.favourite.get, {
-    params
+    params,
+    signal
   });
 
 export const create = (body: FavouriteBodyType) =>
@@ -32,10 +34,14 @@ export const deleteById = (params: FavouriteDeleteType) =>
     params
   });
 
-export const getListIds = (params?: FavouriteSearchType) =>
+export const getListIds = (
+  params?: FavouriteSearchType,
+  signal?: AbortSignal
+) =>
   http.get<ApiResponse<FavouriteListIdsResType>>(
     apiConfig.favourite.getListIds,
     {
-      params
+      params,
+      signal
     }
   );

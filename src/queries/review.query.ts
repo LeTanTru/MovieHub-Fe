@@ -12,7 +12,7 @@ export const useCheckMovieQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.CHECK_MOVIE, movieId],
-    queryFn: () => reviewApiRequest.checkMovie(movieId),
+    queryFn: ({ signal }) => reviewApiRequest.checkMovie(movieId, signal),
     enabled,
     select: (data) => data.data
   });
@@ -48,7 +48,7 @@ export const useVoteReviewListQuery = ({
 }) => {
   return useQuery({
     queryKey: [queryKeys.REVIEW_VOTE_LIST, movieId],
-    queryFn: () => reviewApiRequest.getVoteList(movieId),
+    queryFn: ({ signal }) => reviewApiRequest.getVoteList(movieId, signal),
     enabled,
     select: (data) => data.data
   });

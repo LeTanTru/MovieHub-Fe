@@ -8,7 +8,7 @@ type LoadMoreMode = 'scroll' | 'click' | 'both';
 type UseLoadMoreProps<S extends BaseSearchType, R> = {
   queryKey: string;
   params: S;
-  queryFn: (params: S) => Promise<ApiResponseList<R>>;
+  queryFn: (params: S, signal?: AbortSignal) => Promise<ApiResponseList<R>>;
   enabled?: boolean;
   mode?: LoadMoreMode;
   threshold?: number;
@@ -31,7 +31,8 @@ export const useLoadMore = <
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useInfiniteQuery({
       queryKey: [queryKey, params],
-      queryFn: ({ pageParam }) => queryFn({ ...params, page: pageParam }),
+      queryFn: ({ pageParam, signal }) =>
+        queryFn({ ...params, page: pageParam }, signal),
       initialPageParam: DEFAULT_PAGE_START,
       getNextPageParam: (lastPage, pages) => {
         const totalPages = lastPage?.data?.totalPages || 0;

@@ -10,15 +10,19 @@ import type {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: NotificationSearchType) =>
+export const getList = (
+  params?: NotificationSearchType,
+  signal?: AbortSignal
+) =>
   http.get<ApiResponseList<NotificationResType>>(
     apiConfig.notification.getList,
-    { params }
+    { params, signal }
   );
 
-export const countUnread = () =>
+export const countUnread = (signal?: AbortSignal) =>
   http.get<ApiResponse<UnreadCountNotificationResType>>(
-    apiConfig.notification.countUnread
+    apiConfig.notification.countUnread,
+    { signal }
   );
 
 export const updateRead = (body: UpdateReadNotificationBodyType) =>

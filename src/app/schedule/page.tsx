@@ -58,7 +58,7 @@ export default async function SchedulePage() {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.MOVIE_SCHEDULE_LIST, { date }],
-    queryFn: () => movieApiRequest.getScheduleList({ date })
+    queryFn: ({ signal }) => movieApiRequest.getScheduleList({ date }, signal)
   });
 
   return (

@@ -12,7 +12,7 @@ export const useCollectionTopicListQuery = ({
 } = {}) => {
   return useQuery({
     queryKey: [queryKeys.COLLECTION_TOPIC_LIST, params],
-    queryFn: () => collectionApiRequest.getTopicList(params),
+    queryFn: ({ signal }) => collectionApiRequest.getTopicList(params, signal),
     enabled,
     select: (data) => data.data
   });
@@ -21,7 +21,7 @@ export const useCollectionTopicListQuery = ({
 export const useCollectionQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.COLLECTION, id],
-    queryFn: () => collectionApiRequest.getById(id),
+    queryFn: ({ signal }) => collectionApiRequest.getById(id, signal),
     enabled: !!id,
     select: (data) => data.data
   });

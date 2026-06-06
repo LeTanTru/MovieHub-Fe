@@ -65,7 +65,7 @@ export default async function PlaylistPage() {
 
   await queryClient.prefetchQuery({
     queryKey: [queryKeys.PLAYLIST_LIST],
-    queryFn: () => playlistApiRequest.getList()
+    queryFn: ({ signal }) => playlistApiRequest.getList(signal)
   });
 
   const res: ApiResponse<PlaylistResType[]> | undefined =
@@ -80,8 +80,12 @@ export default async function PlaylistPage() {
         firstPlaylistId,
         playlistMoviesFilters
       ],
-      queryFn: () =>
-        playlistApiRequest.getListMovies(firstPlaylistId, playlistMoviesFilters)
+      queryFn: ({ signal }) =>
+        playlistApiRequest.getListMovies(
+          firstPlaylistId,
+          playlistMoviesFilters,
+          signal
+        )
     });
   }
 

@@ -8,9 +8,10 @@ import type {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params: WatchHistorySearchType) =>
+export const getList = (params: WatchHistorySearchType, signal?: AbortSignal) =>
   http.get<ApiResponse<WatchHistoryResType>>(apiConfig.watchHistory.getList, {
-    params
+    params,
+    signal
   });
 
 export const tracking = (body: WatchHistoryBodyType) =>

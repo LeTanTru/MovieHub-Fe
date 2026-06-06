@@ -7,14 +7,16 @@ import {
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: CategorySearchType) =>
+export const getList = (params?: CategorySearchType, signal?: AbortSignal) =>
   http.get<ApiResponseList<CategoryResType>>(apiConfig.category.getList, {
-    params
+    params,
+    signal
   });
 
-export const getById = (id: string) =>
+export const getById = (id: string, signal?: AbortSignal) =>
   http.get<ApiResponse<CategoryResType>>(apiConfig.category.getById, {
     pathParams: {
       id
-    }
+    },
+    signal
   });
