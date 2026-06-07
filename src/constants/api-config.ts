@@ -623,5 +623,13 @@ export const apiConfig = defineApiConfig({
       ignoreAuth: true,
       isRequiredXClientType: true
     }
+  },
+  videoLibrarySubtitle: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/video-library-subtitle/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    }
   }
 });

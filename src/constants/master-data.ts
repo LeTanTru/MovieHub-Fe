@@ -294,6 +294,7 @@ export const queryKeys = {
   UPDATE_READ_NOTIFICATION: 'update-read-notification',
   UPDATE_SETTING: 'update-settings',
   VERIFY_OTP: 'verify-otp',
+  VIDEO_LIBRARY_SUBTITLE_LIST: 'video-library-subtitle-list',
   VOTE_COMMENT: 'vote-comment',
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_DELETE: 'watch-history-delete',
