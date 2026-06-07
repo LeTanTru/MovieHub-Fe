@@ -19,6 +19,9 @@ import { useDisclosure } from '@/hooks';
 import { Activity } from '@/components/activity';
 import { usePlayerSettings } from '@/app/watch/[slug]/_hooks';
 import { useWatchPlayer } from '@/app/watch/[slug]/_context';
+import { useVideoLibrarySubtitleListQuery } from '@/queries';
+import { VideoLibrarySubtitleResType } from '@/types';
+import { TrackProps } from '@vidstack/react';
 
 export function WatchPlayerVideoArea() {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -53,6 +56,16 @@ export function WatchPlayerVideoArea() {
     handlePlayerCanPlay
   } = useWatchPlayer();
 
+  const { data: videoLibrarySubtitleListData } =
+    useVideoLibrarySubtitleListQuery({
+      params: {
+        videoLibraryId: video?.id || ''
+      },
+      enabled: !!video
+    });
+
+  const videoLibrarySubtitles = videoLibrarySubtitleListData?.content || [];
+
   if (!video) {
     return (
       <div className='aspect-video rounded-tl rounded-tr bg-black'>
@@ -62,6 +75,17 @@ export function WatchPlayerVideoArea() {
       </div>
     );
   }
+
+  const textTracks: TrackProps[] = videoLibrarySubtitles.map(
+    (subtitle: VideoLibrarySubtitleResType) => ({
+      src: renderVttUrl(video.hostname, subtitle.fileUrl, video.sourceType),
+      label: subtitle.label,
+      language: subtitle.language,
+      kind: 'subtitles',
+      type: 'vtt',
+      default: subtitle.isDefault
+    })
+  );
 
   return (
     <div className='max-800:rounded-none relative aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px]'>
@@ -136,6 +160,7 @@ export function WatchPlayerVideoArea() {
             onEnded={handleVideoEnded}
             onLoadedMetadata={handlePlayerCanPlay}
             onFullscreenChange={setIsFullscreen}
+            textTracks={textTracks}
           />
           <WatchAskContinueModal
             opened={isShowContinueModal}
