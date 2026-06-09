@@ -81,6 +81,12 @@ export const route = defineRoute({
     settings: {
       path: '/account/settings'
     }
+  },
+  room: {
+    path: '/room',
+    manage: {
+      path: '/room/manage'
+    }
   }
 });
 

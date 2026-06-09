@@ -556,7 +556,7 @@ export const apiConfig = defineApiConfig({
   room: {
     check: {
       baseUrl: `${AppConstants.apiUrl}/v1/room/check`,
-      method: 'POST',
+      method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true
     },
@@ -585,13 +585,13 @@ export const apiConfig = defineApiConfig({
       isRequiredXClientType: true
     },
     getById: {
-      baseUrl: `${AppConstants.apiUrl}/v1/room/get/:id}`,
+      baseUrl: `${AppConstants.apiUrl}/v1/room/get/:id`,
       method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true
     },
     join: {
-      baseUrl: `${AppConstants.apiUrl}/v1/room/join`,
+      baseUrl: `${AppConstants.apiUrl}/v1/room/join/:id`,
       method: 'POST',
       headers: baseHeader,
       isRequiredXClientType: true
@@ -602,7 +602,7 @@ export const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredXClientType: true
     },
-    getMyRooms: {
+    myRooms: {
       baseUrl: `${AppConstants.apiUrl}/v1/room/my-rooms`,
       method: 'GET',
       headers: baseHeader,

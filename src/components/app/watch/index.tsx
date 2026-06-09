@@ -3,7 +3,7 @@ export { ButtonAutoNextEpisode } from './button-auto-next-episode';
 export { ButtonMovieTheater } from './button-movie-theater';
 export { ButtonReport } from './button-report';
 export { ButtonSkipIntro } from './button-skip-intro';
-export { ButtonWatchTogether } from './button-watch-together';
+export { ButtonRoom } from './button-room';
 export { EpisodeList } from './episode-list';
 export { SuggestionList } from './suggestion-list';
 export { WatchAskContinueModal } from './watch-ask-continue-modal';

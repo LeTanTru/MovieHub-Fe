@@ -8,7 +8,7 @@ import {
   ButtonMovieTheater,
   ButtonReport,
   ButtonSkipIntro,
-  ButtonWatchTogether
+  ButtonRoom
 } from '@/components/app/watch';
 import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 
@@ -53,7 +53,7 @@ export function WatchPlayerControls() {
           variant='watch'
           className='max-640:px-2! max-520:px-4!'
         />
-        <ButtonWatchTogether className='max-640:px-2! max-520:px-4!' />
+        <ButtonRoom className='max-640:px-2! max-520:px-4!' />
         <div className='grow'></div>
         <ButtonReport className='max-640:px-2! max-520:px-4!' />
       </div>

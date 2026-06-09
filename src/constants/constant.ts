@@ -121,3 +121,6 @@ export const CSRF_TOKEN_MAX_AGE = 60 * 60; // 1 hour
 export const REDIRECT_AFTER_LOGIN_DURATION = 500;
 
 export const INDICATOR_AUTO_HIDE_MS = 800;
+
+export const ROOM_TAB_LATEST = 'latest';
+export const ROOM_TAB_POPULAR = 'popular';
