@@ -50,7 +50,9 @@ import {
   VIDEO_QUALITY_1440,
   VIDEO_QUALITY_720,
   VIDEO_QUALITY_AUTO,
-  VIDEO_QUALITY_MAX
+  VIDEO_QUALITY_MAX,
+  ROOM_TAB_LATEST,
+  ROOM_TAB_POPULAR
 } from '@/constants/constant';
 import { route } from '@/routes';
 import {
@@ -260,6 +262,9 @@ export const queryKeys = {
   MOVIE_PERSON_LIST: 'movie-person-list',
   MOVIE_PERSON: 'movie-person',
   MOVIE_RECOMMENDATION: 'movie-recommendation',
+  MOVIE_RECOMMENDATION_KNN: 'movie-recommendation-knn',
+  MOVIE_RECOMMENDATION_RECENT_WATCHED_CATEGORY:
+    'movie-recommendation-recent-watched-category',
   MOVIE_SCHEDULE_LIST: 'movie-schedule-list',
   MOVIE_SUGGESTION_LIST: 'suggestion-movie-list',
   MOVIE_SURVEY_LIST: 'movie-survey-list',
@@ -299,7 +304,16 @@ export const queryKeys = {
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
+  CHECK_ROOM: 'check-room',
+  ROOM_CREATE: 'room-create',
+  ROOM_DELETE: 'room-delete',
+  ROOM_END: 'room-end',
+  ROOM_JOIN: 'room-join',
+  ROOM_LIST: 'room-list',
+  ROOM_MY_ROOMS: 'room-my-rooms',
+  ROOM_START: 'room-start',
+  ROOM: 'room'
 };
 
 export const countries: OptionType[] = [
@@ -1701,4 +1715,9 @@ export const notificationTabs: OptionType[] = [
     value: NOTIFICATION_TYPE_COMMUNITY,
     label: 'Cộng đồng'
   }
+];
+
+export const roomActions: { key: string; label: string }[] = [
+  { key: ROOM_TAB_LATEST, label: 'Mới nhất' },
+  { key: ROOM_TAB_POPULAR, label: 'Phổ biến' }
 ];

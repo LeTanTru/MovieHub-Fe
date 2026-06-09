@@ -2,13 +2,13 @@
 
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
-import { CiStreamOn } from 'react-icons/ci';
+import { Podcast } from 'lucide-react';
 
-type ButtonWatchTogetherProps = {
+type ButtonRoomProps = {
   className?: string;
 };
 
-export function ButtonWatchTogether({ className }: ButtonWatchTogetherProps) {
+export function ButtonRoom({ className }: ButtonRoomProps) {
   return (
     <Button
       variant='ghost'
@@ -17,7 +17,7 @@ export function ButtonWatchTogether({ className }: ButtonWatchTogetherProps) {
         className
       )}
     >
-      <CiStreamOn className='size-5' />
+      <Podcast className='size-5' />
       <span className='max-520:hidden'>Xem chung</span>
     </Button>
   );

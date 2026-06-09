@@ -171,9 +171,24 @@ export function NavigationMobile({ navigationList }: NavigationMobileProps) {
                     {item.label}
                     <ChevronDown className='size-5' />
                     {item.isNew && (
-                      <div className='bg-golden-glow text-main-background absolute -top-4 -right-7 rounded px-1 text-xs'>
+                      <m.div
+                        animate={{
+                          scale: [1, 1.05, 1],
+                          boxShadow: [
+                            '0 0 4px rgba(255, 216, 117, 0.4)',
+                            '0 0 12px rgba(255, 216, 117, 0.8)',
+                            '0 0 4px rgba(255, 216, 117, 0.4)'
+                          ]
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: 'easeInOut'
+                        }}
+                        className='bg-golden-glow text-main-background absolute -top-4 -right-7 rounded px-1.5 py-0.5 text-[9px] leading-none font-bold uppercase select-none'
+                      >
                         Mới
-                      </div>
+                      </m.div>
                     )}
                   </ListItem>
                 ) : (
@@ -184,9 +199,24 @@ export function NavigationMobile({ navigationList }: NavigationMobileProps) {
                     >
                       {item.label}
                       {item.isNew && (
-                        <div className='bg-golden-glow text-main-background absolute -top-3 -right-7 rounded px-1 text-xs'>
+                        <m.div
+                          animate={{
+                            scale: [1, 1.05, 1],
+                            boxShadow: [
+                              '0 0 4px rgba(255, 216, 117, 0.4)',
+                              '0 0 12px rgba(255, 216, 117, 0.8)',
+                              '0 0 4px rgba(255, 216, 117, 0.4)'
+                            ]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: 'easeInOut'
+                          }}
+                          className='bg-golden-glow text-main-background absolute -top-3 -right-7 rounded px-1.5 py-0.5 text-[9px] leading-none font-bold uppercase select-none'
+                        >
                           Mới
-                        </div>
+                        </m.div>
                       )}
                     </Link>
                   </ListItem>

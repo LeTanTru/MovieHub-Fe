@@ -18,6 +18,7 @@ export * from './notification.type';
 export * from './person.type';
 export * from './playlist.type';
 export * from './review.type';
+export * from './room.type';
 export * from './search.type';
 export * from './settings.type';
 export * from './sidebar.type';

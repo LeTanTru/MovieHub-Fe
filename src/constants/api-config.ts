@@ -196,11 +196,10 @@ export const apiConfig = defineApiConfig({
     }
   },
   movie: {
-    getList: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie/list`,
+    getHistoryList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/history`,
       method: 'GET',
       headers: baseHeader,
-      ignoreAuth: true,
       isRequiredXClientType: true
     },
     getById: {
@@ -210,28 +209,8 @@ export const apiConfig = defineApiConfig({
       ignoreAuth: true,
       isRequiredXClientType: true
     },
-    getSuggestionList: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie/suggestion/:id`,
-      method: 'GET',
-      headers: baseHeader,
-      ignoreAuth: true,
-      isRequiredXClientType: true
-    },
-    getHistoryList: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie/history`,
-      method: 'GET',
-      headers: baseHeader,
-      isRequiredXClientType: true
-    },
-    getTopViewList: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie/top-views`,
-      method: 'GET',
-      headers: baseHeader,
-      ignoreAuth: true,
-      isRequiredXClientType: true
-    },
-    getScheduleList: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie/schedule`,
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/list`,
       method: 'GET',
       headers: baseHeader,
       ignoreAuth: true,
@@ -244,16 +223,49 @@ export const apiConfig = defineApiConfig({
       ignoreAuth: true,
       isRequiredXClientType: true
     },
+    recommendation: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/recommendation`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    recommendationKNN: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/recommendation/knn`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    recommendationRecentWatchedCategory: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/recommendation/recent-watched-category`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    getScheduleList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/schedule`,
+      method: 'GET',
+      headers: baseHeader,
+      ignoreAuth: true,
+      isRequiredXClientType: true
+    },
     suggestByWatched: {
       baseUrl: `${AppConstants.apiUrl}/v1/movie/suggest-by-watched`,
       method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true
     },
-    recommendation: {
-      baseUrl: `${AppConstants.apiUrl}/v1/movie/recommendation`,
+    getSuggestionList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/suggestion/:id`,
       method: 'GET',
       headers: baseHeader,
+      ignoreAuth: true,
+      isRequiredXClientType: true
+    },
+    getTopViewList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie/top-views`,
+      method: 'GET',
+      headers: baseHeader,
+      ignoreAuth: true,
       isRequiredXClientType: true
     }
   },
@@ -556,7 +568,7 @@ export const apiConfig = defineApiConfig({
   room: {
     check: {
       baseUrl: `${AppConstants.apiUrl}/v1/room/check`,
-      method: 'POST',
+      method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true
     },
@@ -585,13 +597,13 @@ export const apiConfig = defineApiConfig({
       isRequiredXClientType: true
     },
     getById: {
-      baseUrl: `${AppConstants.apiUrl}/v1/room/get/:id}`,
+      baseUrl: `${AppConstants.apiUrl}/v1/room/get/:id`,
       method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true
     },
     join: {
-      baseUrl: `${AppConstants.apiUrl}/v1/room/join`,
+      baseUrl: `${AppConstants.apiUrl}/v1/room/join/:id`,
       method: 'POST',
       headers: baseHeader,
       isRequiredXClientType: true
@@ -602,7 +614,7 @@ export const apiConfig = defineApiConfig({
       headers: baseHeader,
       isRequiredXClientType: true
     },
-    getMyRooms: {
+    myRooms: {
       baseUrl: `${AppConstants.apiUrl}/v1/room/my-rooms`,
       method: 'GET',
       headers: baseHeader,

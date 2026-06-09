@@ -12,6 +12,7 @@ export * from './notification.schema';
 export * from './person.schema';
 export * from './playlist.schema';
 export * from './review.schema';
+export * from './room.schema';
 export * from './search.schema';
 export * from './settings.schema';
 export * from './sidebar.schema';

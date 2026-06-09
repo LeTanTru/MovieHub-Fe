@@ -13,6 +13,7 @@ export * as notificationApiRequest from './notification.api-request';
 export * as personApiRequest from './person.api-request';
 export * as playlistApiRequest from './playlist.api-request';
 export * as reviewApiRequest from './review.api-request';
+export * as roomApiRequest from './room.api-request';
 export * as settingsApiRequest from './settings.api-request';
 export * as sidebarApiRequest from './sidebar.api-request';
 export * as surveyApiRequest from './survey.api-request';

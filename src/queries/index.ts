@@ -13,6 +13,7 @@ export * from './notification.query';
 export * from './person.query';
 export * from './playlist.query';
 export * from './review.query';
+export * from './room.query';
 export * from './settings.query';
 export * from './sidebar.query';
 export * from './survey.query';

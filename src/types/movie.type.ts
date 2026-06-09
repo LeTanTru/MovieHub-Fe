@@ -145,6 +145,11 @@ export type MovieSuggestByWatchedType = {
   };
 };
 
+export type RecentWatchedCategoryResType = {
+  category: CategoryResType;
+  movies: MovieResType[];
+};
+
 export type MovieSuggestByWatchedSearchType = BaseSearchType;
 
 type MovieState = {

@@ -39,9 +39,24 @@ export function NavigationDesktop({ navigationList }: NavigationDesktopProps) {
                   )}
                 />
                 {item.isNew && (
-                  <div className='bg-golden-glow text-main-background absolute -top-4.5 -right-1 rounded p-0.5 text-xs'>
+                  <m.div
+                    animate={{
+                      scale: [1, 1.05, 1],
+                      boxShadow: [
+                        '0 0 4px rgba(255, 216, 117, 0.4)',
+                        '0 0 12px rgba(255, 216, 117, 0.8)',
+                        '0 0 4px rgba(255, 216, 117, 0.4)'
+                      ]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: 'easeInOut'
+                    }}
+                    className='bg-golden-glow text-main-background absolute -top-4.5 -right-1 rounded px-1.5 py-0.5 text-[9px] leading-none font-bold uppercase select-none'
+                  >
                     Mới
-                  </div>
+                  </m.div>
                 )}
               </div>
 
@@ -109,9 +124,24 @@ export function NavigationDesktop({ navigationList }: NavigationDesktopProps) {
               className='hover:text-golden-glow relative p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear'
             >
               {item.isNew && (
-                <div className='bg-golden-glow text-main-background absolute -top-2.5 -right-4 rounded p-0.5 text-xs'>
+                <m.div
+                  animate={{
+                    scale: [1, 1.05, 1],
+                    boxShadow: [
+                      '0 0 4px rgba(255, 216, 117, 0.4)',
+                      '0 0 12px rgba(255, 216, 117, 0.8)',
+                      '0 0 4px rgba(255, 216, 117, 0.4)'
+                    ]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                  }}
+                  className='bg-golden-glow text-main-background absolute -top-1.5 -right-4 rounded px-1.5 py-0.5 text-[9px] leading-none font-bold uppercase select-none'
+                >
                   Mới
-                </div>
+                </m.div>
               )}
               <Link
                 href={item.href!}

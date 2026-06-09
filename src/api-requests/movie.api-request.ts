@@ -8,13 +8,13 @@ import {
   MovieScheduleResType,
   MovieSearchType,
   MovieSuggestByWatchedSearchType,
-  MovieSuggestByWatchedType
+  MovieSuggestByWatchedType,
+  RecentWatchedCategoryResType
 } from '@/types';
 import { http } from '@/utils';
 
-export const getList = (params?: MovieSearchType, signal?: AbortSignal) =>
-  http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
-    params,
+export const getHistoryList = (signal?: AbortSignal) =>
+  http.get<ApiResponse<MovieHistoryResType[]>>(apiConfig.movie.getHistoryList, {
     signal
   });
 
@@ -26,27 +26,40 @@ export const getById = (id: string, signal?: AbortSignal) =>
     signal
   });
 
-export const getSuggestionList = (id: string, signal?: AbortSignal) =>
-  http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.getSuggestionList, {
-    pathParams: {
-      id
-    },
-    signal
-  });
-
-export const getHistoryList = (signal?: AbortSignal) =>
-  http.get<ApiResponse<MovieHistoryResType[]>>(apiConfig.movie.getHistoryList, {
-    signal
-  });
-
-export const getTopViewList = (
-  params?: MovieSearchType,
-  signal?: AbortSignal
-) =>
-  http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getTopViewList, {
+export const getList = (params?: MovieSearchType, signal?: AbortSignal) =>
+  http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getList, {
     params,
     signal
   });
+
+export const getNextEpisode = (id: string, signal?: AbortSignal) =>
+  http.get<ApiResponse<MovieNextEpisodeResType>>(
+    apiConfig.movie.getNextEpisode,
+    {
+      pathParams: {
+        id
+      },
+      signal
+    }
+  );
+
+export const getRecommendation = (signal?: AbortSignal) =>
+  http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.recommendation, {
+    signal
+  });
+
+export const getRecommendationKNN = (signal?: AbortSignal) =>
+  http.get<ApiResponseList<MovieResType>>(apiConfig.movie.recommendationKNN, {
+    signal
+  });
+
+export const getRecommendationRecentWatchedCategory = (signal?: AbortSignal) =>
+  http.get<ApiResponse<RecentWatchedCategoryResType>>(
+    apiConfig.movie.recommendationRecentWatchedCategory,
+    {
+      signal
+    }
+  );
 
 export const getScheduleList = (
   params: { date: string },
@@ -56,17 +69,6 @@ export const getScheduleList = (
     apiConfig.movie.getScheduleList,
     {
       params,
-      signal
-    }
-  );
-
-export const getNextEpisode = (id: string, signal?: AbortSignal) =>
-  http.get<ApiResponse<MovieNextEpisodeResType>>(
-    apiConfig.movie.getNextEpisode,
-    {
-      pathParams: {
-        id
-      },
       signal
     }
   );
@@ -83,7 +85,19 @@ export const getSuggestByWatched = (
     }
   );
 
-export const getRecommendation = (signal?: AbortSignal) =>
-  http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.recommendation, {
+export const getSuggestionList = (id: string, signal?: AbortSignal) =>
+  http.get<ApiResponse<MovieResType[]>>(apiConfig.movie.getSuggestionList, {
+    pathParams: {
+      id
+    },
+    signal
+  });
+
+export const getTopViewList = (
+  params?: MovieSearchType,
+  signal?: AbortSignal
+) =>
+  http.get<ApiResponseList<MovieResType>>(apiConfig.movie.getTopViewList, {
+    params,
     signal
   });

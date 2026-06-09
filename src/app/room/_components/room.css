@@ -1,0 +1,73 @@
+.room {
+  & .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 500px;
+    width: 100%;
+    mask-image: linear-gradient(0deg, transparent, black 80%);
+    -webkit-mask-image: linear-gradient(0deg, transparent, black 80%);
+
+    &::before {
+      content: '';
+      background-image: url(/dotted.webp);
+      background-repeat: repeat;
+      filter: none;
+      z-index: 2;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    & .blur {
+      width: 100%;
+      height: 350px;
+      filter: blur(100px);
+      top: -150px;
+      border-radius: 50%;
+      animation: light-blur 3s infinite;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    & img {
+      opacity: 1;
+      z-index: 1;
+      object-fit: cover;
+      mask-image: linear-gradient(0deg, transparent, black);
+      -webkit-mask-image: linear-gradient(0deg, transparent, black);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+@keyframes light-blur {
+  0% {
+    background-color: #fffa;
+  }
+
+  33% {
+    background-color: #db586e;
+  }
+
+  66% {
+    background-color: #6477c2;
+  }
+
+  to {
+    background-color: #fffa;
+  }
+}

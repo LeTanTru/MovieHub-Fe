@@ -44,20 +44,20 @@ export function NavigationMenu({ mode }: NavigationMenuProps) {
     },
     {
       label: 'Phim lẻ',
-      href: `${route.movieType.single.path}`,
+      href: route.movieType.single.path,
       key: 'single'
     },
     {
       label: 'Phim bộ',
-      href: `${route.movieType.series.path}`,
+      href: route.movieType.series.path,
       key: 'series'
     },
-    // {
-    //   label: 'Xem chung',
-    //   href: '#',
-    //   isNew: true,
-    //   key: 'watch-together'
-    // },
+    {
+      label: 'Xem chung',
+      href: route.room.path,
+      isNew: true,
+      key: 'room'
+    },
     {
       label: 'Quốc gia',
       submenu: true,
