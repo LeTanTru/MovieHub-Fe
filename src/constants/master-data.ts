@@ -262,6 +262,9 @@ export const queryKeys = {
   MOVIE_PERSON_LIST: 'movie-person-list',
   MOVIE_PERSON: 'movie-person',
   MOVIE_RECOMMENDATION: 'movie-recommendation',
+  MOVIE_RECOMMENDATION_KNN: 'movie-recommendation-knn',
+  MOVIE_RECOMMENDATION_RECENT_WATCHED_CATEGORY:
+    'movie-recommendation-recent-watched-category',
   MOVIE_SCHEDULE_LIST: 'movie-schedule-list',
   MOVIE_SUGGESTION_LIST: 'suggestion-movie-list',
   MOVIE_SURVEY_LIST: 'movie-survey-list',
