@@ -7,10 +7,7 @@ export const loginSchema = z.object({
 
 export const registerSchema = z
   .object({
-    email: z
-      .string()
-      .nonempty('Bắt buộc phải nhập email')
-      .email('Email không hợp lệ'),
+    email: z.string().nonempty('Bắt buộc').email('Email không hợp lệ'),
     fullName: z.string().nonempty('Bắt buộc'),
     password: z
       .string()
