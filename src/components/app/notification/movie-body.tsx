@@ -23,12 +23,13 @@ export function MovieBody({
       className='max-480:flex-col max-480:gap-1 flex flex-1 items-center justify-between gap-2 pl-1'
       href={`${route.movie.path}/${body.slug}.${body.id}`}
     >
-      <div className='max-480:hidden relative w-20 shrink-0'>
+      <div className='max-480:hidden relative aspect-video w-20 shrink-0'>
         <ImageField
           src={renderImageUrl(body?.thumbnailUrl)}
           alt={body?.title}
           aspect={16 / 9}
           disablePreview
+          className='h-full'
         />
       </div>
       <div className='flex flex-1 flex-col justify-between gap-2'>

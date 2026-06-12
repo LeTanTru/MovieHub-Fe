@@ -53,7 +53,7 @@ export function ReviewItem({
   const ratingInfo = rate !== undefined ? reviewRatingMaps[rate] : null;
   const GenderIcon = genderIconMaps[gender];
 
-  const isHiddenReview = review.status === STATUS_HIDE;
+  const isHidden = review.status === STATUS_HIDE;
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showBlurredContent, setShowBlurredContent] = useState(false);
@@ -137,7 +137,7 @@ export function ReviewItem({
             </span>
           </span>
         </div>
-        {isHiddenReview && !showBlurredContent ? (
+        {isHidden && !showBlurredContent ? (
           <button
             type='button'
             className='max-640:text-[13px] relative mt-2 w-full cursor-pointer p-0 text-left break-all text-white'
@@ -200,7 +200,7 @@ export function ReviewItem({
             </div>
           </div>
           <div className='relative' ref={dropdownRef}>
-            {(isAuthor || isHiddenReview) && (
+            {(isAuthor || isHidden) && (
               <button
                 type='button'
                 className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
@@ -228,7 +228,7 @@ export function ReviewItem({
                   transition={{ duration: 0.1, ease: 'linear' }}
                   className='max-640:min-w-36 absolute top-5 -left-5 z-10 min-w-40 origin-[10px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg'
                 >
-                  {isHiddenReview && (
+                  {isHidden && (
                     <button
                       className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
                       onClick={handleToggleBlurredContent}
