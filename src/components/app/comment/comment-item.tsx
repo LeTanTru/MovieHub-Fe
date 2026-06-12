@@ -91,7 +91,7 @@ export function CommentItem({
     setShowDropdown(false)
   );
 
-  const isHiddenComment = comment.status === STATUS_HIDE;
+  const isHidden = comment.status === STATUS_HIDE;
 
   const isActiveParent = openParentIds.includes(comment.id);
 
@@ -209,7 +209,7 @@ export function CommentItem({
     });
   };
 
-  const showMore = isHiddenComment || isAuthor;
+  const showMore = isHidden || isAuthor;
 
   useEffect(() => {
     if (targetCommentId !== comment.id) return; // only scroll if this comment is the target
@@ -302,7 +302,7 @@ export function CommentItem({
 
           <CommentContent
             comment={comment}
-            isHiddenComment={isHiddenComment}
+            isHidden={isHidden}
             showBlurredContent={showBlurredContent}
             onToggleBlurredContent={handleToggleBlurredContent}
             renderMention={renderMention}
@@ -314,7 +314,7 @@ export function CommentItem({
             isAuthenticated={isAuthenticated}
             isAuthor={isAuthor}
             isVoteLoading={isVoteLoading}
-            isHiddenComment={isHiddenComment}
+            isHidden={isHidden}
             showBlurredContent={showBlurredContent}
             showDropdown={showDropdown}
             showMore={showMore}

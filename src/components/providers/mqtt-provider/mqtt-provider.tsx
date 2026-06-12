@@ -4,8 +4,13 @@ import { mqttCMDs, mqttTopics, queryKeys } from '@/constants';
 import { useAuth, useMqtt } from '@/hooks';
 import { getMqttClient } from '@/lib/mqtt';
 import { logger } from '@/logger';
-import { NotificationResType } from '@/types';
-import { generateMqttTopic, invalidateQueries, parseJSON } from '@/utils';
+import type { NotificationResType } from '@/types';
+import {
+  generateMqttTopic,
+  invalidateQueries,
+  notify,
+  parseJSON
+} from '@/utils';
 import { useEffect } from 'react';
 
 export function MqttProvider() {
@@ -87,6 +92,7 @@ export function MqttProvider() {
             [queryKeys.UNREAD_NOTIFICATION_COUNT],
             [queryKeys.NOTIFICATION_LIST]
           );
+          notify.success(data.title);
           break;
       }
     }
@@ -103,13 +109,15 @@ export function MqttProvider() {
         case mqttCMDs.NEW_MOVIE_ITEM:
         case mqttCMDs.NEW_MOVIE:
         case mqttCMDs.REPLY_COMMENT:
-        case mqttCMDs.VOTE_COMMENT:
-        case mqttCMDs.VOTE_REVIEW:
+        case mqttCMDs.TOXIC_COMMENT_LOCKED:
+        case mqttCMDs.VOTE_COMMENT: {
           invalidateQueries(
             [queryKeys.UNREAD_NOTIFICATION_COUNT],
             [queryKeys.NOTIFICATION_LIST]
           );
+          notify.success(data.title);
           break;
+        }
       }
     }
   });

@@ -9,10 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   DEFAULT_PAGE_START,
   NOTIFICATION_PAGE_SIZE,
-  NOTIFICATION_TYPE_COMMUNITY,
   NOTIFICATION_TYPE_MOVIE,
-  notificationTabs,
-  storageKeys
+  notificationTabs
 } from '@/constants';
 import {
   useAuth,
@@ -26,7 +24,6 @@ import {
 } from '@/queries';
 import { route } from '@/routes';
 import { NotificationSearchType } from '@/types';
-import { getData, setData } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import { Bell, CheckCheck, Trash } from 'lucide-react';
 import Link from 'next/link';
@@ -44,8 +41,7 @@ export function DropdownNotification() {
   const dropdownRef = useClickOutside<HTMLDivElement>(() => closeDropDown());
 
   const [params, setParams] = useState<NotificationSearchType>({
-    type:
-      getData(storageKeys.NOTIFICATION_TAB) || String(NOTIFICATION_TYPE_MOVIE),
+    type: String(NOTIFICATION_TYPE_MOVIE),
     page: DEFAULT_PAGE_START,
     size: NOTIFICATION_PAGE_SIZE
   });
@@ -76,7 +72,6 @@ export function DropdownNotification() {
 
   const handleChangeTab = (type: string) => {
     setParams((prev) => ({ ...prev, type }));
-    setData(storageKeys.NOTIFICATION_TAB, type);
   };
 
   const handleItemClick = () => {
@@ -118,10 +113,7 @@ export function DropdownNotification() {
               <div className='bg-charade size-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
             </div>
             <Tabs
-              defaultValue={
-                getData(storageKeys.NOTIFICATION_TAB) ||
-                String(NOTIFICATION_TYPE_MOVIE)
-              }
+              defaultValue={String(NOTIFICATION_TYPE_MOVIE)}
               className='flex-1 gap-0 rounded'
               onValueChange={handleChangeTab}
             >
@@ -198,22 +190,16 @@ export function DropdownNotification() {
                   </div>
                 )}
               </div>
-              <TabsContent value={NOTIFICATION_TYPE_MOVIE.toString()}>
-                <NotificationList
-                  notificationList={notificationList}
-                  loading={isLoading}
-                  onDelete={handleDelete}
-                  onItemClick={handleItemClick}
-                />
-              </TabsContent>
-              <TabsContent value={NOTIFICATION_TYPE_COMMUNITY.toString()}>
-                <NotificationList
-                  notificationList={notificationList}
-                  loading={isLoading}
-                  onDelete={handleDelete}
-                  onItemClick={handleItemClick}
-                />
-              </TabsContent>
+              {notificationTabs.map((tab) => (
+                <TabsContent key={tab.value} value={tab.value.toString()}>
+                  <NotificationList
+                    notificationList={notificationList}
+                    loading={isLoading}
+                    onDelete={handleDelete}
+                    onItemClick={handleItemClick}
+                  />
+                </TabsContent>
+              ))}
             </Tabs>
             <>
               <Separator />

@@ -1,8 +1,9 @@
-import { mqttCMDs } from '@/constants';
-import { NotificationResType } from '@/types';
 import { MovieBody } from './movie-body';
 import { MovieItemBody } from './movie-item-body';
+import { mqttCMDs } from '@/constants';
+import { NotificationResType } from '@/types';
 import { ReplyCommentBody } from './reply-comment-body';
+import { ToxicCommentLockedBody } from './toxic-comment-locked-body';
 import { VoteCommentBody } from './vote-comment-body';
 import { VoteReviewBody } from './vote-review-body';
 
@@ -22,6 +23,10 @@ export function NotificationBody({
 
     case mqttCMDs.REPLY_COMMENT: {
       return <ReplyCommentBody notification={notification} />;
+    }
+
+    case mqttCMDs.TOXIC_COMMENT_LOCKED: {
+      return <ToxicCommentLockedBody notification={notification} />;
     }
 
     case mqttCMDs.VOTE_COMMENT: {

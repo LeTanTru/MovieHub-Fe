@@ -3,7 +3,7 @@ import { AppConstants, VIDEO_LIBRARY_SOURCE_TYPE_EXTERNAL } from '@/constants';
 import { route } from '@/routes';
 import { removeAccents } from '@/utils/text.util';
 
-export const renderListPageUrl = (path: string, queryString: string) => {
+export const renderListPageUrl = (path: string, queryString?: string) => {
   if (queryString) {
     return `${path}?${queryString}`;
   }

@@ -72,12 +72,13 @@ export function VoteCommentBody({
           </div>
         </div>
       </div>
-      <div className='max-480:hidden relative w-20 shrink-0'>
+      <div className='max-480:hidden relative aspect-video w-20 shrink-0'>
         <ImageField
           src={renderImageUrl(body?.movieThumbnail)}
           alt={body?.movieTitle}
           aspect={16 / 9}
           disablePreview
+          className='h-full'
         />
       </div>
     </Link>

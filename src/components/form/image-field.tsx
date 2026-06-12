@@ -197,7 +197,7 @@ export function ImageField({
           }
         }}
         className={cn(
-          'relative flex items-center justify-center rounded bg-gray-100 select-none',
+          'relative flex items-center justify-center rounded bg-black/50 select-none',
           {
             'cursor-pointer': !shouldDisablePreview,
             'flex items-center justify-center bg-black': originalSize,
