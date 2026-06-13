@@ -28,8 +28,10 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import { AvatarField, Button, ImageField } from '@/components/form';
-import { ConfirmModal } from '@/components/modal';
+import { AvatarField } from './avatar-field';
+import { Button } from './button';
+import { ImageField } from './image-field';
+import { ConfirmModal } from '@/components/modal/confirm-modal';
 import { FormLabel } from '@/components/ui/form';
 import { cn } from '@/lib';
 import { useFileUpload } from '@/hooks';

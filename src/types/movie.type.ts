@@ -1,9 +1,9 @@
 import { movieSearchSchema } from '@/schemaValidations';
-import { CategoryResType } from '@/types/category.type';
-import { MovieItemResType } from '@/types/movie-item.type';
-import { MoviePersonResType } from '@/types/movie-person.type';
-import { BaseSearchType } from '@/types/search.type';
-import { VideoResType } from '@/types/video.type';
+import type { CategoryResType } from '@/types/category.type';
+import type { MovieItemResType } from '@/types/movie-item.type';
+import type { MoviePersonResType } from '@/types/movie-person.type';
+import type { BaseSearchType } from '@/types/search.type';
+import type { VideoResType } from '@/types/video.type';
 import { z } from 'zod';
 
 export type MetadataType = {

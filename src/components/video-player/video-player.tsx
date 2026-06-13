@@ -11,7 +11,6 @@ import {
   FullscreenToggleButton,
   NextButton,
   PiPToggleButton,
-  PlayPauseIndicator,
   PlayToggleButton,
   PreviousButton,
   SeekBackwardButton,
@@ -20,9 +19,10 @@ import {
   SkipIntroButton,
   SkipOutroButton,
   TimeSlider,
-  VolumeIndicator,
   VolumeToggleButton
 } from './_components';
+import { PlayPauseIndicator } from './_components/play-pause-indicatior';
+import { VolumeIndicator } from './_components/volume-indicator';
 import {
   Gesture,
   isHLSProvider,
@@ -42,8 +42,6 @@ import {
   DefaultVideoLayoutSlots
 } from '@vidstack/react/player/layouts/default';
 import {
-  createContext,
-  useContext,
   useCallback,
   useEffect,
   useRef,
@@ -54,27 +52,21 @@ import {
 import { cn } from '@/lib';
 
 import './video-player.css';
-
-type IndicatorAction = 'initial' | 'play-pause' | 'volume' | 'none';
-const IndicatorContext = createContext<{
-  currentAction: IndicatorAction;
-  setCurrentAction: (action: IndicatorAction) => void;
-}>({
-  currentAction: 'initial',
-  setCurrentAction: () => {}
-});
-
-export const useIndicator = () => useContext(IndicatorContext);
+import { TimeSliderMarkerType } from '@/types';
+import { IndicatorAction, IndicatorContext } from './indicator-context';
 
 type VideoPlayerProps = Omit<
   ComponentProps<typeof MediaPlayer>,
   'ref' | 'children' | 'viewType' | 'streamType'
 > & {
+  activeMarkerId?: string | null;
   auth: boolean;
   defaultQuality?: number;
   duration: number;
+  hideVolumeIndicator?: boolean;
   introEnd: number;
   introStart: number;
+  markers?: TimeSliderMarkerType[];
   next?: boolean;
   outroStart: number;
   prev?: boolean;
@@ -87,34 +79,35 @@ type VideoPlayerProps = Omit<
   onNextClick?: () => void;
   onPrevClick?: () => void;
   onSeeked?: (currentTime: number) => void;
-  hideVolumeIndicator?: boolean;
 };
 
 export function VideoPlayer({
+  activeMarkerId,
   auth,
+  autoPlay = true,
+  className,
   defaultQuality = 0,
   duration,
+  hideVolumeIndicator = false,
   introEnd,
   introStart,
+  markers,
   next,
   outroStart,
   prev,
+  ref,
   skipOutro = false,
   slots,
   textTracks,
   thumbnailUrl,
   token,
+  volume = 0.5,
   vttUrl,
+  onEnded,
   onNextClick,
   onPrevClick,
   onSeeked,
-  hideVolumeIndicator = false,
   onTimeUpdate,
-  onEnded,
-  autoPlay = true,
-  volume = 0.5,
-  className,
-  ref,
   ...mediaPlayerProps
 }: VideoPlayerProps & { ref?: Ref<MediaPlayerInstance> }) {
   const playerRef = useRef<MediaPlayerInstance | null>(null);
@@ -244,6 +237,8 @@ export function VideoPlayer({
                 duration={duration}
                 outroStart={outroStart}
                 vttUrl={vttUrl}
+                markers={markers}
+                activeMarkerId={activeMarkerId}
               />
             ),
             bufferingIndicator: (
@@ -276,23 +271,17 @@ function TextTrackSync({
   textTracks?: TrackProps[];
   playerRef: React.RefObject<MediaPlayerInstance | null>;
 }) {
+  const addedTracksRef = useRef<TextTrack[]>([]);
+
   useEffect(() => {
     const player = playerRef.current;
     if (!player) return;
 
-    // Clear all existing sideloaded subtitle tracks
-    const existingTracks = [...player.textTracks];
-    for (const track of existingTracks) {
-      // Only remove tracks we manage (subtitles/captions added via src)
-      if (
-        (track.kind === 'subtitles' || track.kind === 'captions') &&
-        track.src
-      ) {
-        player.textTracks.remove(track);
-      }
+    for (const track of addedTracksRef.current) {
+      player.textTracks.remove(track);
     }
+    addedTracksRef.current = [];
 
-    // Add fresh tracks
     if (textTracks?.length) {
       for (const t of textTracks) {
         const textTrack = new TextTrack({
@@ -304,21 +293,15 @@ function TextTrackSync({
           default: t.default
         });
         player.textTracks.add(textTrack);
+        addedTracksRef.current.push(textTrack);
       }
     }
 
     return () => {
-      // Cleanup on unmount
-      if (!player) return;
-      const tracks = [...player.textTracks];
-      for (const track of tracks) {
-        if (
-          (track.kind === 'subtitles' || track.kind === 'captions') &&
-          track.src
-        ) {
-          player.textTracks.remove(track);
-        }
+      for (const track of addedTracksRef.current) {
+        player.textTracks.remove(track);
       }
+      addedTracksRef.current = [];
     };
   }, [textTracks, playerRef]);
 

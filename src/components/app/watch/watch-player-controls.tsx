@@ -1,15 +1,13 @@
 'use client';
 
-import { ButtonLike } from '@/components/app/button-like';
-import { ButtonShareMovie } from '@/components/app/button-share';
 import { ButtonAddToPlaylist } from '@/components/app/button-add-to-playlist';
-import {
-  ButtonAutoNextEpisode,
-  ButtonMovieTheater,
-  ButtonReport,
-  ButtonSkipIntro,
-  ButtonRoom
-} from '@/components/app/watch';
+import { ButtonAutoNextEpisode } from './button-auto-next-episode';
+import { ButtonLike } from '@/components/app/button-like';
+import { ButtonMovieTheater } from './button-movie-theater';
+import { ButtonReport } from './button-report';
+import { ButtonRoom } from './button-room';
+import { ButtonShareMovie } from '@/components/app/button-share';
+import { ButtonSkipIntro } from './button-skip-intro';
 import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 
 export function WatchPlayerControls() {

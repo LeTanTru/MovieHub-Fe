@@ -26,5 +26,6 @@ export * from './style.type';
 export * from './survey.type';
 export * from './upload.type';
 export * from './video-library-subtitle.type';
+export * from './video-player.type';
 export * from './video.type';
 export * from './watch-history.type';
