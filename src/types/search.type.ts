@@ -1,5 +1,5 @@
 import { baseSearchSchema, searchSchema } from '@/schemaValidations';
-import { MovieSearchType } from '@/types/movie.type';
+import type { MovieSearchType } from '@/types/movie.type';
 import { z } from 'zod';
 
 export type BaseSearchType = z.infer<typeof baseSearchSchema>;

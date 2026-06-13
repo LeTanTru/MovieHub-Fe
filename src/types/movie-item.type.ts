@@ -1,6 +1,6 @@
 import { movieItemSearchSchema } from '@/schemaValidations';
-import { EpisodeResType, MovieResType } from '@/types/movie.type';
-import { BaseSearchType } from '@/types/search.type';
+import type { EpisodeResType, MovieResType } from '@/types/movie.type';
+import type { BaseSearchType } from '@/types/search.type';
 import { VideoResType } from '@/types/video.type';
 import { z } from 'zod';
 

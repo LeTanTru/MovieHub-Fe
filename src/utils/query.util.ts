@@ -1,4 +1,4 @@
-import { getQueryClient } from '@/components/providers/query-provider';
+import { getQueryClient } from '@/components/providers/query-provider/get-query-client';
 
 export const invalidateQueries = (...args: (string | number | object)[][]) => {
   const queryClient = getQueryClient();

@@ -6,7 +6,7 @@ import { FaChevronRight } from 'react-icons/fa6';
 import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { generateSlug, getColorList } from '@/utils';
-import { LatestCountryMovieCard } from '@/components/app/collection';
+import { LatestCountryMovieCard } from './latest-country-movie-card';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 type LatestCountryMovieItemProps = {
