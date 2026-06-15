@@ -84,6 +84,13 @@ const initialResendState: ResendState = {
   lastResendTime: 0
 };
 
+const defaultValues: ForgotPasswordBodyType = {
+  email: '',
+  otp: '',
+  password: '',
+  confirmPassword: ''
+};
+
 function resendReducer(state: ResendState, action: ResendAction): ResendState {
   switch (action.type) {
     case 'init':
@@ -145,13 +152,6 @@ export function ForgotPasswordForm() {
 
   const { mutateAsync: resendOtpMutate, isPending: resendOtpLoading } =
     useResendOtpMutation();
-
-  const defaultValues: ForgotPasswordBodyType = {
-    email: '',
-    otp: '',
-    password: '',
-    confirmPassword: ''
-  };
 
   useEffect(() => {
     let nextLastResendTime = 0;

@@ -18,6 +18,12 @@ import { useState } from 'react';
 import { ConfirmModal } from '@/components/modal';
 import { useAuth } from '@/hooks';
 
+const defaultValues: ChangePasswordBodyType = {
+  confirmNewPassword: '',
+  newPassword: '',
+  oldPassword: ''
+};
+
 export function ChangePasswordForm() {
   const { isAuthenticated } = useAuth();
 
@@ -30,12 +36,6 @@ export function ChangePasswordForm() {
   } = useChangePasswordMutation();
 
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
-
-  const defaultValues: ChangePasswordBodyType = {
-    confirmNewPassword: '',
-    newPassword: '',
-    oldPassword: ''
-  };
 
   const onSubmit = async (
     values: ChangePasswordBodyType,

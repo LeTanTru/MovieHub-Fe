@@ -28,10 +28,10 @@ import { useState } from 'react';
 export function NotificationList() {
   const { isAuthenticated } = useAuth();
 
-  const [activeTab, setActiveTab] = useState(NOTIFICATION_TYPE_MOVIE);
+  const [activeTab, setActiveTab] = useState(String(NOTIFICATION_TYPE_MOVIE));
 
   const [params, setParams] = useState<NotificationSearchType>({
-    type: NOTIFICATION_TYPE_MOVIE,
+    type: String(NOTIFICATION_TYPE_MOVIE),
     page: DEFAULT_PAGE_START,
     size: NOTIFICATION_PAGE_SIZE
   });
@@ -90,8 +90,8 @@ export function NotificationList() {
     );
   };
 
-  const handleChangeTab = (type: number) => {
-    setParams((prev) => ({ ...prev, type: String(type) }));
+  const handleChangeTab = (type: string) => {
+    setParams((prev) => ({ ...prev, page: DEFAULT_PAGE_START, type }));
     setActiveTab(type);
   };
 
@@ -108,16 +108,16 @@ export function NotificationList() {
               className={cn(
                 'min-w-25 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear hover:bg-white hover:text-black',
                 {
-                  'bg-white text-black': activeTab === tab.value,
-                  'bg-white/5 text-white': activeTab !== tab.value
+                  'bg-white text-black': activeTab === String(tab.value),
+                  'bg-white/5 text-white': activeTab !== String(tab.value)
                 }
               )}
               role='tab'
               id={`notification-tab-${tab.value}`}
               aria-controls={`notification-tabpanel-${tab.value}`}
-              aria-selected={activeTab === tab.value}
-              tabIndex={activeTab === tab.value ? 0 : -1}
-              onClick={() => handleChangeTab(tab.value as number)}
+              aria-selected={activeTab === String(tab.value)}
+              tabIndex={activeTab === String(tab.value) ? 0 : -1}
+              onClick={() => handleChangeTab(String(tab.value))}
               variant='default'
             >
               {tab.label}

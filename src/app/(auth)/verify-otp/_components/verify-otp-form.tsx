@@ -22,7 +22,7 @@ import {
   removeData,
   setData
 } from '@/utils';
-import { useEffect, useReducer, useState, useRef } from 'react';
+import { useEffect, useMemo, useReducer, useState, useRef } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 const MAX_RESEND = 3; // RESEND LIMIT EACH 10 MINUTES
@@ -68,6 +68,11 @@ const initialResendState: ResendState = {
   countdown: 0,
   cooldownRemaining: 0,
   lastResendTime: 0
+};
+
+const defaultValues: VerifyOtpBodyType = {
+  email: '',
+  otp: ''
 };
 
 function resendReducer(state: ResendState, action: ResendAction): ResendState {
@@ -122,10 +127,14 @@ export function VerifyOtpForm() {
     useVerifyOtpMutation();
   const email = getData(storageKeys.EMAIL) ?? '';
 
-  const defaultValues: VerifyOtpBodyType = {
-    email,
-    otp: ''
-  };
+  const initialValues: VerifyOtpBodyType = useMemo(
+    () => ({
+      ...defaultValues,
+      email
+    }),
+    [email]
+  );
+
   const registerPath = buildAuthPathWithRedirect(route.register.path, redirect);
 
   const getResendData = () => {
@@ -329,6 +338,7 @@ export function VerifyOtpForm() {
         schema={otpSchema}
         onSubmit={onSubmit}
         defaultValues={defaultValues}
+        initialValues={initialValues}
         onChange={() => setIsFormChanged(true)}
         className='bg-transparent p-0'
       >

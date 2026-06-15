@@ -32,6 +32,12 @@ type CommentInputProps = {
   selectedSeason: string;
 };
 
+const defaultValues: CommentBodyType = {
+  content: '',
+  movieId: '',
+  movieItemId: ''
+};
+
 export function CommentInput({
   isLoading = false,
   movie,
@@ -63,20 +69,14 @@ export function CommentInput({
     (epi) => epi.label === episode
   );
 
-  const defaultValues: CommentBodyType = {
-    content: '',
-    movieId: '',
-    movieItemId: ''
-  };
-
   const initialValues = useMemo<CommentBodyType>(
     () => ({
-      content: '',
-      movieId: String(movie.id),
+      content: defaultValues.content,
+      movieId: String(movie.id ?? defaultValues.movieId),
       movieItemId:
         movie.type === MOVIE_TYPE_SINGLE
-          ? String(currentSeason?.id || '')
-          : String(currentEpisode?.id || '')
+          ? String(currentSeason?.id ?? defaultValues.movieItemId)
+          : String(currentEpisode?.id ?? defaultValues.movieItemId)
     }),
     [movie.id, movie.type, currentSeason?.id, currentEpisode?.id]
   );

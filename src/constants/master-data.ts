@@ -53,7 +53,16 @@ import {
   AGE_RATING_PG13,
   AGE_RATING_R,
   AGE_RATING_NC17,
-  AGE_RATING_18_PLUS
+  AGE_RATING_18_PLUS,
+  SUBTITLE_FONT_SIZE_SMALL,
+  SUBTITLE_FONT_SIZE_MEDIUM,
+  SUBTITLE_FONT_SIZE_LARGE,
+  SUBTITLE_TEXT_COLOR_YELLOW,
+  SUBTITLE_TEXT_COLOR_WHITE,
+  SUBTITLE_TEXT_COLOR_BLACK,
+  SUBTITLE_BACKGROUND_COLOR_YELLOW,
+  SUBTITLE_BACKGROUND_COLOR_WHITE,
+  SUBTITLE_BACKGROUND_COLOR_BLACK
 } from '@/constants/constant';
 import { route } from '@/routes';
 import {
@@ -230,6 +239,7 @@ export const queryKeys = {
   CATEGORY: 'category',
   CHANGE_PASSWORD: 'change-password',
   CHECK_MOVIE: 'check-movie',
+  CHECK_ROOM: 'check-room',
   COLLECTION_ITEM_LIST: 'collection-item-list',
   COLLECTION_ITEM: 'collection-item',
   COLLECTION_LIST: 'collection-list',
@@ -267,10 +277,10 @@ export const queryKeys = {
   MOVIE_NEXT_EPISODE: 'movie-next-episode',
   MOVIE_PERSON_LIST: 'movie-person-list',
   MOVIE_PERSON: 'movie-person',
-  MOVIE_RECOMMENDATION: 'movie-recommendation',
   MOVIE_RECOMMENDATION_KNN: 'movie-recommendation-knn',
   MOVIE_RECOMMENDATION_RECENT_WATCHED_CATEGORY:
     'movie-recommendation-recent-watched-category',
+  MOVIE_RECOMMENDATION: 'movie-recommendation',
   MOVIE_SCHEDULE_LIST: 'movie-schedule-list',
   MOVIE_SUGGESTION_LIST: 'suggestion-movie-list',
   MOVIE_SURVEY_LIST: 'movie-survey-list',
@@ -297,6 +307,14 @@ export const queryKeys = {
   REVIEW_LIST: 'review-list',
   REVIEW_VOTE_LIST: 'review-vote-list',
   REVIEW: 'review',
+  ROOM_CREATE: 'room-create',
+  ROOM_DELETE: 'room-delete',
+  ROOM_END: 'room-end',
+  ROOM_JOIN: 'room-join',
+  ROOM_LIST: 'room-list',
+  ROOM_MY_ROOMS: 'room-my-rooms',
+  ROOM_START: 'room-start',
+  ROOM: 'room',
   SESSION: 'session',
   SIDEBAR_LIST: 'sidebar-list',
   SUGGEST_BY_WATCHED: 'suggest-by-watched',
@@ -310,16 +328,7 @@ export const queryKeys = {
   VOTE_REVIEW: 'vote-review',
   WATCH_HISTORY_DELETE: 'watch-history-delete',
   WATCH_HISTORY_LIST: 'watch-history-list',
-  WATCH_HISTORY_TRACKING: 'watch-history-tracking',
-  CHECK_ROOM: 'check-room',
-  ROOM_CREATE: 'room-create',
-  ROOM_DELETE: 'room-delete',
-  ROOM_END: 'room-end',
-  ROOM_JOIN: 'room-join',
-  ROOM_LIST: 'room-list',
-  ROOM_MY_ROOMS: 'room-my-rooms',
-  ROOM_START: 'room-start',
-  ROOM: 'room'
+  WATCH_HISTORY_TRACKING: 'watch-history-tracking'
 };
 
 export const countries: OptionType[] = [
@@ -1727,4 +1736,46 @@ export const notificationTabs: OptionType[] = [
 export const roomActions: { key: string; label: string }[] = [
   { key: ROOM_TAB_LATEST, label: 'Mới nhất' },
   { key: ROOM_TAB_POPULAR, label: 'Phổ biến' }
+];
+
+export const subtitleFontSizes: OptionType[] = [
+  { value: SUBTITLE_FONT_SIZE_SMALL, label: 'Nhỏ', pixels: 14 },
+  { value: SUBTITLE_FONT_SIZE_MEDIUM, label: 'Vừa', pixels: 18 },
+  { value: SUBTITLE_FONT_SIZE_LARGE, label: 'Lớn', pixels: 20 }
+];
+
+export const subtitleTextColors: OptionType[] = [
+  {
+    value: SUBTITLE_TEXT_COLOR_YELLOW,
+    label: 'Vàng',
+    color: '#FFF09B'
+  },
+  {
+    value: SUBTITLE_TEXT_COLOR_WHITE,
+    label: 'Trắng',
+    color: '#FFFFFF'
+  },
+  {
+    value: SUBTITLE_TEXT_COLOR_BLACK,
+    label: 'Đen',
+    color: '#000000'
+  }
+];
+
+export const subtitleBackgroundColors: OptionType[] = [
+  {
+    value: SUBTITLE_BACKGROUND_COLOR_YELLOW,
+    label: 'Vàng',
+    color: '#FFF09B'
+  },
+  {
+    value: SUBTITLE_BACKGROUND_COLOR_WHITE,
+    label: 'Trắng',
+    color: '#FFFFFF'
+  },
+  {
+    value: SUBTITLE_BACKGROUND_COLOR_BLACK,
+    label: 'Đen',
+    color: '#000000'
+  }
 ];

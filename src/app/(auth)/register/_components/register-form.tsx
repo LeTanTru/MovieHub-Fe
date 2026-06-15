@@ -27,18 +27,19 @@ import { route } from '@/routes';
 import { useNavigate, useQueryParams } from '@/hooks';
 import { Separator } from '@/components/ui/separator';
 
+const defaultValues: RegisterType = {
+  email: '',
+  fullName: '',
+  password: '',
+  confirmPassword: '',
+  terms: false
+};
+
 export function RegisterForm() {
   const navigate = useNavigate();
   const {
     searchParams: { redirect }
   } = useQueryParams<{ redirect?: string }>();
-  const defaultValues: RegisterType = {
-    email: '',
-    fullName: '',
-    password: '',
-    confirmPassword: '',
-    terms: false
-  };
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const { mutateAsync: registerMutate, isPending: registerLoading } =
     useRegisterMutation();

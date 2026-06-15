@@ -28,8 +28,18 @@ import { UpdateProfileBodyType } from '@/types';
 import { applyFormErrors, notify, renderImageUrl } from '@/utils';
 import type { UseFormReturn } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ConfirmModal } from '@/components/modal';
+
+const defaultValues: UpdateProfileBodyType = {
+  id: '',
+  fullName: '',
+  email: '',
+  phone: '',
+  username: '',
+  gender: GENDER_MALE,
+  avatarPath: ''
+};
 
 export function ProfileForm() {
   const { profile } = useAuthStore(useShallow((s) => ({ profile: s.profile })));
@@ -48,25 +58,28 @@ export function ProfileForm() {
     onOpen: true
   });
 
-  const defaultValues: UpdateProfileBodyType = {
-    id: '',
-    fullName: '',
-    email: '',
-    phone: '',
-    username: '',
-    gender: GENDER_MALE,
-    avatarPath: ''
-  };
-
-  const initialValues = {
-    id: profile?.id || '',
-    fullName: profile?.fullName || '',
-    email: profile?.email || '',
-    phone: profile?.phone || '',
-    username: profile?.username || '',
-    gender: GENDER.includes(profile?.gender!) ? profile?.gender! : GENDER_MALE,
-    avatarPath: profile?.avatarPath || ''
-  };
+  const initialValues: UpdateProfileBodyType = useMemo(
+    () => ({
+      id: profile?.id ?? defaultValues.id,
+      fullName: profile?.fullName ?? defaultValues.fullName,
+      email: profile?.email ?? defaultValues.email,
+      phone: profile?.phone ?? defaultValues.phone,
+      username: profile?.username ?? defaultValues.username,
+      gender: GENDER.includes(profile?.gender!)
+        ? profile?.gender!
+        : defaultValues.gender,
+      avatarPath: profile?.avatarPath ?? defaultValues.avatarPath
+    }),
+    [
+      profile?.avatarPath,
+      profile?.email,
+      profile?.fullName,
+      profile?.gender,
+      profile?.id,
+      profile?.phone,
+      profile?.username
+    ]
+  );
 
   const onSubmit = async (
     values: UpdateProfileBodyType,

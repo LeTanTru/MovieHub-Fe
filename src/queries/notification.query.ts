@@ -1,25 +1,7 @@
 import { notificationApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import type {
-  NotificationSearchType,
-  UpdateReadNotificationBodyType
-} from '@/types';
+import type { UpdateReadNotificationBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
-
-export const useNotificationListQuery = ({
-  params,
-  enabled
-}: {
-  params?: NotificationSearchType;
-  enabled?: boolean;
-}) => {
-  return useQuery({
-    queryKey: [queryKeys.NOTIFICATION_LIST, params],
-    queryFn: ({ signal }) => notificationApiRequest.getList(params, signal),
-    select: (data) => data.data,
-    enabled
-  });
-};
 
 export const useCountUnreadNotificationQuery = ({
   enabled

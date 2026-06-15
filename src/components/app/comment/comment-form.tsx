@@ -34,6 +34,15 @@ type CommentFormProps = {
   onCancel?: () => void;
 };
 
+const defaultValues: CommentBodyType = {
+  content: '',
+  movieId: '',
+  movieItemId: '',
+  parentId: '',
+  replyToId: '',
+  replyToKind: 0
+};
+
 export function CommentForm({
   parentId,
   movieId,
@@ -71,23 +80,15 @@ export function CommentForm({
 
   const pickerContainerRef = useRef<HTMLDivElement>(null);
 
-  const defaultValues: CommentBodyType = {
-    content: '',
-    movieId,
-    movieItemId: '',
-    parentId: parentId,
-    replyToId: '',
-    replyToKind: 0
-  };
-
   const initialValues: CommentBodyType = useMemo(
     () => ({
-      content: editingComment?.content || '',
-      movieId: editingComment?.movieId || movieId,
-      movieItemId: editingComment?.movieItem?.id || '',
-      parentId: editingComment?.parent?.id || parentId,
-      replyToId: authorInfo?.id?.toString() || '',
-      replyToKind: authorInfo?.kind || 0
+      content: editingComment?.content ?? defaultValues.content,
+      movieId: editingComment?.movieId ?? movieId ?? defaultValues.movieId,
+      movieItemId: editingComment?.movieItem?.id ?? defaultValues.movieItemId,
+      parentId:
+        editingComment?.parent?.id ?? parentId ?? defaultValues.parentId,
+      replyToId: authorInfo?.id?.toString() ?? defaultValues.replyToId,
+      replyToKind: authorInfo?.kind ?? defaultValues.replyToKind
     }),
     [
       authorInfo?.id,

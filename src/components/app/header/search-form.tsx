@@ -29,6 +29,10 @@ type SearchFormProps = {
   formClassName?: string;
 };
 
+const defaultValues: SearchType = {
+  keyword: ''
+};
+
 export function SearchForm({ className, formClassName }: SearchFormProps) {
   const navigate = useNavigate();
   const pathname = usePathname();
@@ -64,9 +68,12 @@ export function SearchForm({ className, formClassName }: SearchFormProps) {
 
   const movieList = movieListData?.content || [];
 
-  const defaultValues: SearchType = {
-    keyword: searchParams.keyword || ''
-  };
+  const initialValues = useMemo<SearchType>(
+    () => ({
+      keyword: searchParams.keyword ?? defaultValues.keyword
+    }),
+    [searchParams.keyword]
+  );
 
   const latestSearchSync = useRef({
     isSearchPage,
@@ -125,6 +132,7 @@ export function SearchForm({ className, formClassName }: SearchFormProps) {
       <BaseForm
         schema={searchSchema}
         defaultValues={defaultValues}
+        initialValues={initialValues}
         onSubmit={onSubmit}
         className={cn('bg-transparent', formClassName)}
         onChange={handleOnChange}
