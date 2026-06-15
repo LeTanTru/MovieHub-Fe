@@ -11,13 +11,20 @@ import { reviewSchema } from '@/schemaValidations';
 import { MovieResType, ReviewBodyType } from '@/types';
 import { formatRating, notify, invalidateQueries } from '@/utils';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAuth } from '@/hooks';
 
 type ReviewModalProps = {
   opened: boolean;
   movie: MovieResType;
   onClose: () => void;
+};
+
+const defaultValues: ReviewBodyType = {
+  id: '',
+  content: '',
+  movieId: '',
+  rate: 0 // no selection
 };
 
 export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
@@ -29,19 +36,15 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
   const { mutateAsync: createReviewMutate, isPending: createReviewLoading } =
     useCreateReviewMutation();
 
-  const defaultValues: ReviewBodyType = {
-    id: '',
-    content: '',
-    movieId: '',
-    rate: 0 // no selection
-  };
-
-  const initialValues: ReviewBodyType = {
-    id: '',
-    content: '',
-    movieId: movie.id,
-    rate: 0
-  };
+  const initialValues: ReviewBodyType = useMemo(
+    () => ({
+      id: defaultValues.id,
+      content: defaultValues.content,
+      movieId: movie.id ?? defaultValues.movieId,
+      rate: defaultValues.rate
+    }),
+    [movie.id]
+  );
 
   const handleSelectRating = (rating: number) => {
     setSelectedRating(rating);

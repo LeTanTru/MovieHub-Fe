@@ -21,6 +21,11 @@ import { Separator } from '@/components/ui/separator';
 import { useShallow } from 'zustand/shallow';
 import { useQueryParams } from '@/hooks';
 
+const defaultValues: LoginType = {
+  email: '',
+  password: ''
+};
+
 export function LoginForm() {
   const {
     searchParams: { redirect }
@@ -39,10 +44,6 @@ export function LoginForm() {
   );
 
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
-  const defaultValues: LoginType = {
-    email: '',
-    password: ''
-  };
 
   const onSubmit = async (values: LoginBodyType) => {
     await loginMutate(values, {

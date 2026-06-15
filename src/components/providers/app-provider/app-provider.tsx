@@ -1,5 +1,6 @@
 'use client';
 
+import { useIsMounted } from '@/hooks';
 import { useProfileQuery, useSession } from '@/queries';
 import { useAuthStore } from '@/store';
 import { getData, removeData } from '@/utils';
@@ -35,6 +36,7 @@ type AppProviderProps = { children: ReactNode };
 
 export function AppProvider({ children }: AppProviderProps) {
   const [loading, setLoading] = useState<boolean>(false);
+  const isMounted = useIsMounted();
 
   const {
     accessToken,
@@ -101,6 +103,7 @@ export function AppProvider({ children }: AppProviderProps) {
       <AppContext.Provider
         value={{
           loading:
+            !isMounted ||
             loading ||
             sessionLoading ||
             isSessionHydrating ||

@@ -13,11 +13,11 @@ const introSchema = z.object({
   key: z.string().nonempty('Bắt buộc')
 });
 
-export function IntroForm() {
-  const defaultValues: z.infer<typeof introSchema> = {
-    key: ''
-  };
+const defaultValues: z.infer<typeof introSchema> = {
+  key: ''
+};
 
+export function IntroForm() {
   const onSubmit = async (
     data: z.infer<typeof introSchema>,
     form: UseFormReturn<z.infer<typeof introSchema>>

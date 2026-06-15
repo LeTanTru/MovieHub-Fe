@@ -12,13 +12,18 @@ import {
 import { playlistSchema } from '@/schemaValidations';
 import { PlaylistBodyType, PlaylistResType } from '@/types';
 import { notify, invalidateQueries } from '@/utils';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAuth } from '@/hooks';
 
 type PlaylistModalProps = {
   opened: boolean;
   onClose: () => void;
   playlist?: PlaylistResType;
+};
+
+const defaultValues: PlaylistBodyType = {
+  id: '',
+  name: ''
 };
 
 export function PlaylistModal({
@@ -43,15 +48,13 @@ export function PlaylistModal({
   const loading = createPlaylistLoading || updatePlaylistLoading;
   const isEditing = !!playlist;
 
-  const defaultValues: PlaylistBodyType = {
-    id: '',
-    name: ''
-  };
-
-  const initialValues: PlaylistBodyType = {
-    id: playlist?.id || '',
-    name: playlist?.name || ''
-  };
+  const initialValues: PlaylistBodyType = useMemo(
+    () => ({
+      id: playlist?.id ?? defaultValues.id,
+      name: playlist?.name ?? defaultValues.name
+    }),
+    [playlist?.id, playlist?.name]
+  );
 
   const handleClose = () => {
     onClose();

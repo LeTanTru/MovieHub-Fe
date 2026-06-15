@@ -125,3 +125,15 @@ export const INDICATOR_AUTO_HIDE_MS = 800;
 
 export const ROOM_TAB_LATEST = 'latest';
 export const ROOM_TAB_POPULAR = 'popular';
+
+export const SUBTITLE_FONT_SIZE_SMALL = 0;
+export const SUBTITLE_FONT_SIZE_MEDIUM = 1;
+export const SUBTITLE_FONT_SIZE_LARGE = 2;
+
+export const SUBTITLE_TEXT_COLOR_YELLOW = 0;
+export const SUBTITLE_TEXT_COLOR_WHITE = 1;
+export const SUBTITLE_TEXT_COLOR_BLACK = 2;
+
+export const SUBTITLE_BACKGROUND_COLOR_YELLOW = 0;
+export const SUBTITLE_BACKGROUND_COLOR_WHITE = 1;
+export const SUBTITLE_BACKGROUND_COLOR_BLACK = 2;

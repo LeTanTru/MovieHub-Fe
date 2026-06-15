@@ -1,5 +1,6 @@
 'use client';
 
+import { notificationApiRequest } from '@/api-requests';
 import { NotificationList } from './notification-list';
 import { Button } from '@/components/form';
 import { CircleLoading } from '@/components/loading';
@@ -10,20 +11,19 @@ import {
   DEFAULT_PAGE_START,
   NOTIFICATION_PAGE_SIZE,
   NOTIFICATION_TYPE_MOVIE,
-  notificationTabs
+  notificationTabs,
+  queryKeys
 } from '@/constants';
 import {
   useAuth,
   useClickOutside,
   useDisclosure,
+  useLoadMore,
   useNotificationActions
 } from '@/hooks';
-import {
-  useCountUnreadNotificationQuery,
-  useNotificationListQuery
-} from '@/queries';
+import { useCountUnreadNotificationQuery } from '@/queries';
 import { route } from '@/routes';
-import { NotificationSearchType } from '@/types';
+import { NotificationResType, NotificationSearchType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
 import { Bell, CheckCheck, Trash } from 'lucide-react';
 import Link from 'next/link';
@@ -46,13 +46,17 @@ export function DropdownNotification() {
     size: NOTIFICATION_PAGE_SIZE
   });
 
-  const { data: notificationListData, isLoading } = useNotificationListQuery({
+  const {
+    data: notificationList,
+    isLoading,
+    totalElements
+  } = useLoadMore<HTMLDivElement, NotificationSearchType, NotificationResType>({
+    queryKey: queryKeys.NOTIFICATION_LIST,
     params,
-    enabled: isAuthenticated && openedDropdown
+    queryFn: notificationApiRequest.getList,
+    enabled: isAuthenticated,
+    mode: 'click'
   });
-
-  const notificationList = notificationListData?.content || [];
-  const totalElements = notificationListData?.totalElements || 0;
 
   const { data: totalUnreadData } = useCountUnreadNotificationQuery({
     enabled: isAuthenticated
@@ -114,7 +118,7 @@ export function DropdownNotification() {
             </div>
             <Tabs
               defaultValue={String(NOTIFICATION_TYPE_MOVIE)}
-              className='flex-1 gap-0 rounded'
+              className='flex-1 gap-0 overflow-hidden rounded'
               onValueChange={handleChangeTab}
             >
               <div className='flex justify-between border-b'>
