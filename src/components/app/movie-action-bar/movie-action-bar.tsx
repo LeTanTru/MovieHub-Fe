@@ -103,10 +103,13 @@ MovieActionBar.Skeleton = function () {
         <Skeleton className='skeleton max-640:h-12.5 max-800:min-w-55 max-640:min-w-44 h-15 w-44 rounded-4xl!' />
         <div className='max-800:gap-4 flex grow items-center justify-between'>
           <div className='max-1120:gap-2 max-800:gap-3 max-640:gap-2 flex grow items-center gap-4'>
-            {Array.from({ length: 4 }).map((_, index) => (
+            {Array.from({ length: 5 }).map((_, index) => (
               <Skeleton
                 key={`action-skeleton-${index}`}
-                className='skeleton max-520:hidden:max-860:min-w-15 max-640:text-[13px] max-520:text-xs size-15 rounded-lg!'
+                className={cn(
+                  'skeleton size-15 rounded-lg!',
+                  index >= 3 && 'max-520:hidden'
+                )}
               />
             ))}
           </div>

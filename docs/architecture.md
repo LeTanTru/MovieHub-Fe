@@ -25,7 +25,7 @@ Do not call backend URLs directly from components. Add or change endpoints in th
 - `isRequiredCsrfToken`
 - upload behavior with `isUpload`
 
-Endpoints are grouped by domain, such as `movie`, `category`, `person`, `user`, `file`, `notification`, `playlist`, `review`, and `comment`.
+Endpoints are grouped by domain, such as `movie`, `category`, `person`, `user`, `file`, `notification`, `playlist`, `review`, `comment`, and `room`.
 
 Path parameters use `:id` placeholders:
 
@@ -111,6 +111,7 @@ High-value examples:
 - `src/app/movie/[slug]/page.tsx`
 - `src/app/watch/[slug]/page.tsx`
 - `src/app/search/page.tsx`
+- `src/app/room/page.tsx`
 - category, country, person, topic pages
 
 The route page should prefetch the same query key and params used by the client query hook. If the key or params differ, hydration is missed and the client will refetch.
@@ -143,6 +144,28 @@ Zustand stores in `src/store/` hold client-only state:
 
 Use `useShallow` for selectors that return objects. Several hooks in `src/hooks/` wrap store selectors to avoid repeated selector code in components.
 
+## Content Moderation — Toxic Spans
+
+The platform flags toxic content using character-level span annotations.
+
+`ToxicSpan` is the canonical type defined in `src/types/comment.type.ts`:
+
+```ts
+export type ToxicSpan = { start: number; end: number };
+```
+
+- `CommentResType.toxicSpans` — JSON-serialized `ToxicSpan[]` or `null`.
+- `ReviewResType.toxicSpans` — same format.
+- `ToxicCommentLockedNotificationType.toxicSpans` — already parsed `ToxicSpan[]` delivered via MQTT notification.
+
+Rendering pattern in `CommentItem` and `ReviewItem`:
+
+1. Parse `toxicSpans` string with `parseJSON<ToxicSpan[]>()`.
+2. `renderContent()` splits content text into normal segments and `<span className="blur-xs select-none">` toxic segments.
+3. `isBlurWholeContent` — blurs the entire block when status is hidden AND no specific toxic spans exist AND the user has not toggled visibility.
+4. `canViewHiddenContent` — true when hidden OR has toxic spans; enables the click-to-reveal UI.
+5. Reveal state is local: `isVisible` toggled by `handleViewContent()`.
+
 ## Auth And Session Architecture
 
 The browser does not call auth backend endpoints directly for core session work. It uses internal Next routes under `src/app/api/auth/*`.
@@ -165,6 +188,7 @@ Route protection is in `src/proxy.ts`:
 - Public auth pages: `/forgot-password`, `/intro`, `/login`, `/register`, `/verify-otp`
 - Authenticated users are redirected away from auth pages.
 - Unauthenticated users are redirected to login with a `redirect` query param.
+- The middleware matcher also explicitly includes `/room` and `/download` but those do not require auth.
 
 ## Video Playback Architecture
 

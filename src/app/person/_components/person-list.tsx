@@ -62,7 +62,12 @@ export function PersonList() {
           )}
         >
           {personList.map((person) => (
-            <PersonCard person={person} key={person.id} willNavigate />
+            <PersonCard
+              person={person}
+              key={person.id}
+              willNavigate
+              showFullName
+            />
           ))}
         </div>
       )}

@@ -1650,12 +1650,12 @@ export const reviewRatings: (Pick<OptionType, 'value' | 'label'> & {
   { value: REVIEW_RATING_WONDERFUL, label: 'Tuyệt vời', icon: ratingWonderful }
 ];
 
-export const discussionActions: { key: string; label: string }[] = [
+export const discussionTabs: { key: string; label: string }[] = [
   { key: DISCUSSION_TAB_COMMENT, label: 'Bình luận' },
   { key: DISCUSSION_TAB_REVIEW, label: 'Đánh giá' }
 ];
 
-export const movieListActions: { key: string; label: string }[] = [
+export const movieListTabs: { key: string; label: string }[] = [
   { key: MOVIE_LIST_TAB_ALL, label: 'Tất cả' },
   { key: MOVIE_LIST_TAB_TIME, label: 'Thời gian' }
 ];
@@ -1665,25 +1665,25 @@ export const movieTabPersonTitles: Record<number, string> = {
   [PERSON_KIND_DIRECTOR]: 'Đạo diễn'
 };
 
-export const movieTabs = [
+export const movieTabs: OptionType[] = [
   {
-    key: MOVIE_TAB_EPISODE,
+    value: MOVIE_TAB_EPISODE,
     label: 'Tập phim'
   },
   {
-    key: MOVIE_TAB_TRAILER,
+    value: MOVIE_TAB_TRAILER,
     label: 'Trailer'
   },
   {
-    key: MOVIE_TAB_ACTOR,
+    value: MOVIE_TAB_ACTOR,
     label: 'Diễn viên'
   },
   {
-    key: MOVIE_TAB_DIRECTOR,
+    value: MOVIE_TAB_DIRECTOR,
     label: 'Đạo diễn'
   },
   {
-    key: MOVIE_TAB_SUGGESTION,
+    value: MOVIE_TAB_SUGGESTION,
     label: 'Đề xuất'
   }
 ];

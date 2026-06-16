@@ -163,6 +163,12 @@ export function PersonCard({
 
 PersonCard.Skeleton = function () {
   return (
-    <Skeleton className='skeleton h-0 w-full shrink-0 animate-pulse overflow-hidden pb-[calc(100%+40px)]' />
+    <div className='relative flex flex-col gap-0'>
+      <Skeleton className='skeleton h-0 w-full shrink-0 overflow-hidden pb-[calc(100%+60px)]' />
+      <div className='relative z-2 -mt-10 flex flex-col items-center gap-1.5 px-2 py-3 text-center'>
+        <Skeleton className='skeleton h-4 w-3/4 rounded' />
+        <Skeleton className='skeleton h-3 w-1/2 rounded' />
+      </div>
+    </div>
   );
 };

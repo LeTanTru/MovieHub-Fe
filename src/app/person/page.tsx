@@ -53,9 +53,14 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function PersonPage() {
+export default async function PersonPage({
+  searchParams
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page } = await searchParams;
   const movieFilters: PersonSearchType = {
-    page: DEFAULT_PAGE_START,
+    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE,
     kind: PERSON_KIND_ACTOR
   };

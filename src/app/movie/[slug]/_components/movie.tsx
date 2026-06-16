@@ -83,8 +83,10 @@ export function Movie({ id }: MovieProps) {
 
 Movie.Skeleton = function () {
   return (
-    <div className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
-      <Skeleton className='skeleton pb-[40%]' />
+    <>
+      <div className='movie-detail'>
+        <Skeleton className='skeleton h-full w-full' />
+      </div>
       <Container className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
         <div className='max-1900:-mt-25 max-1120:flex-col max-1120:-mt-37.5 max-640:-mt-30 max-640:px-4 max-640:py-0 max-1120:flex-col relative z-3 mx-auto -mt-50 flex w-full max-w-410 items-stretch justify-between px-5'>
           <MovieSide.Skeleton />
@@ -95,6 +97,6 @@ Movie.Skeleton = function () {
           </div>
         </div>
       </Container>
-    </div>
+    </>
   );
 };

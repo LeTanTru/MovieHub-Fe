@@ -15,6 +15,7 @@ import { NotificationResType } from '@/types';
 import { EllipsisVertical } from 'lucide-react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { ListItem } from '@/components/list';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type NotificationItemProps = {
   notification: NotificationResType;
@@ -75,3 +76,22 @@ export function NotificationItem({
     </ListItem>
   );
 }
+
+NotificationItem.Skeleton = function () {
+  return (
+    <ListItem className='max-640:py-1.5 flex items-center justify-between py-2'>
+      <div className='max-480:flex-col max-480:items-start max-480:gap-2 flex flex-1 items-center justify-between gap-2 pl-1'>
+        <div className='flex flex-1 items-center gap-2'>
+          <Skeleton className='max-640:size-8 max-520:size-7 size-10 shrink-0 rounded-full' />
+          <div className='flex flex-1 flex-col justify-between gap-2'>
+            <Skeleton className='h-4 w-11/12 rounded' />
+            <Skeleton className='h-4 w-2/3 rounded' />
+            <Skeleton className='h-3 w-24 rounded' />
+          </div>
+        </div>
+        <Skeleton className='max-480:hidden aspect-video w-20 shrink-0 rounded-sm' />
+      </div>
+      <Skeleton className='mx-2 size-8 shrink-0 rounded' />
+    </ListItem>
+  );
+};

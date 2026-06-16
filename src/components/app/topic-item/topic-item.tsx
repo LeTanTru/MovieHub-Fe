@@ -87,6 +87,6 @@ export function TopicItem({ topic, isSwitched }: TopicItemProps) {
 
 TopicItem.Skeleton = () => {
   return (
-    <Skeleton className='topic-item skeleton max-1900:min-h-37.5 max-1280:min-h-35 max-800:min-h-30 max-480:min-h-22.5 max-480:shrink-0 max-480:w-30 min-h-37.5' />
+    <Skeleton className='topic-item skeleton bg-main-background/30 max-1900:min-h-37.5 max-1280:min-h-35 max-800:min-h-30 max-480:min-h-22.5 max-480:shrink-0 max-480:w-30 min-h-37.5 rounded-tl-[20px] rounded-tr-[40px] rounded-br-[20px] rounded-bl-[40px]' />
   );
 };

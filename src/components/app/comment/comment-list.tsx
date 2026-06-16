@@ -21,7 +21,7 @@ import Link from 'next/link';
 import { m } from 'framer-motion';
 import { useEffect } from 'react';
 
-const COMMENT_SKELETON_COUNT = 3;
+const COMMENT_SKELETON_COUNT = 10;
 
 type CommentListProps = {
   movie: MovieResType;

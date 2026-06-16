@@ -81,17 +81,22 @@ export async function generateMetadata(
   };
 }
 
-type PersonDetailPageProps = { params: Promise<{ id: string }> };
+type PersonDetailPageProps = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ kind?: MoviePersonSearchType['kind'] }>;
+};
 
 export default async function PersonDetailPage({
-  params
+  params,
+  searchParams
 }: PersonDetailPageProps) {
   const { id } = await params;
+  const { kind } = await searchParams;
   const queryClient = getQueryClient();
   const moviePersonFilters: MoviePersonSearchType = {
     personId: id,
     size: MAX_PAGE_SIZE,
-    kind: PERSON_KIND_ACTOR
+    kind: kind || PERSON_KIND_ACTOR
   };
 
   await Promise.all([

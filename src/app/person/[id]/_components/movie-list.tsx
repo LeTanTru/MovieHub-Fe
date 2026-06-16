@@ -6,7 +6,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import {
   MAX_PAGE_SIZE,
   MOVIE_LIST_TAB_ALL,
-  movieListActions,
+  movieListTabs,
   PERSON_KIND_ACTOR
 } from '@/constants';
 import { PersonSearchType } from '@/types';
@@ -14,13 +14,14 @@ import { MovieGrid, MovieGridByYear } from '@/components/app/movie-grid';
 import { ButtonAction } from '@/components/app/button-action';
 import { NoData } from '@/components/no-data';
 import { useQueryParams } from '@/hooks';
+import { cn } from '@/lib';
 
 type MovieListProps = {
   personId: string;
 };
 
 export function MovieList({ personId }: MovieListProps) {
-  const [activeKey, setActiveKey] = useState<string>(MOVIE_LIST_TAB_ALL);
+  const [activeTab, setActiveTab] = useState<string>(MOVIE_LIST_TAB_ALL);
   const { searchParams } = useQueryParams<PersonSearchType>();
 
   const { data: moviePersonList = [], isLoading } = useMoviePersonListQuery({
@@ -42,35 +43,35 @@ export function MovieList({ personId }: MovieListProps) {
             <h3 className='max-640:text-lg max-480:text-base items-center text-xl font-semibold'>
               Các phim đã tham gia
             </h3>
-            {!isLoading && movieList.length > 0 && (
-              <div
-                className='relative flex shrink-0 items-stretch overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
-                role='tablist'
-              >
-                {movieListActions.map((action) => (
-                  <ButtonAction
-                    key={action.key}
-                    label={action.label}
-                    action={action.key}
-                    activeKey={activeKey}
-                    setActiveKey={setActiveKey}
-                    className='max-640:text-[13px] max-480:text-xs max-640:py-1 max-640:px-1.5'
-                  />
-                ))}
-              </div>
-            )}
+            <div
+              className={cn('relative flex shrink-0 items-stretch', {
+                invisible: isLoading && movieList.length === 0
+              })}
+              role='tablist'
+            >
+              {movieListTabs.map((action) => (
+                <ButtonAction
+                  key={action.key}
+                  label={action.label}
+                  action={action.key}
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                  className='max-640:text-[13px] max-480:text-xs max-640:py-1 max-640:px-1.5'
+                />
+              ))}
+            </div>
           </div>
           <AnimatePresence mode='popLayout'>
             <m.div
-              key={activeKey}
+              key={activeTab}
               initial={{
                 opacity: 0,
-                y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
+                y: activeTab === MOVIE_LIST_TAB_ALL ? -10 : 10
               }}
               animate={{ opacity: 1, y: 0 }}
               exit={{
                 opacity: 0,
-                y: activeKey === MOVIE_LIST_TAB_ALL ? -10 : 10
+                y: activeTab === MOVIE_LIST_TAB_ALL ? -10 : 10
               }}
               className='block'
             >
@@ -91,7 +92,7 @@ export function MovieList({ personId }: MovieListProps) {
                     </>
                   }
                 />
-              ) : activeKey === MOVIE_LIST_TAB_ALL ? (
+              ) : activeTab === MOVIE_LIST_TAB_ALL ? (
                 <MovieGrid
                   movieList={movieList}
                   dir='down'

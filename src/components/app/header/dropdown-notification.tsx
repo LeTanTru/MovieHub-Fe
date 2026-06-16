@@ -24,7 +24,7 @@ import {
 import { useCountUnreadNotificationQuery } from '@/queries';
 import { route } from '@/routes';
 import { NotificationResType, NotificationSearchType } from '@/types';
-import { AnimatePresence, m } from 'framer-motion';
+import { AnimatePresence, domMax, LazyMotion, m } from 'framer-motion';
 import { Bell, CheckCheck, Trash } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -114,7 +114,7 @@ export function DropdownNotification() {
             className='bg-charade absolute top-[calc(100%+8px)] -right-8 mt-2 flex w-150 flex-col justify-between rounded before:absolute before:-top-4 before:right-0 before:left-0 before:h-4 before:w-full before:bg-transparent before:content-[""]'
           >
             <div className='absolute -top-2 right-11.5 h-2 w-4'>
-              <div className='bg-charade size-4 rotate-45 shadow-[-3px_-3px_4px_0px_var(--accent)]' />
+              <div className='bg-charade size-4 rotate-45' />
             </div>
             <Tabs
               defaultValue={String(NOTIFICATION_TYPE_MOVIE)}
@@ -123,7 +123,7 @@ export function DropdownNotification() {
             >
               <div className='flex justify-between border-b'>
                 <div className='flex-1'>
-                  <TabsList className='relative flex w-fit justify-start gap-0 rounded-none border-none bg-transparent p-0'>
+                  <TabsList className='relative flex w-fit justify-start gap-0 rounded-none border-none bg-transparent p-0 pl-1'>
                     {notificationTabs.map((notification) => {
                       const isActive =
                         params.type.toString() ===
@@ -134,16 +134,18 @@ export function DropdownNotification() {
                           key={notification.value}
                           className='relative flex h-full items-center'
                         >
-                          {isActive && (
-                            <m.div
-                              layoutId='notification-tab-bg'
-                              className='bg-black-denim absolute inset-0'
-                              transition={{ duration: 0.1, ease: 'linear' }}
-                            />
-                          )}
+                          <LazyMotion features={domMax}>
+                            {isActive && (
+                              <m.div
+                                layoutId='notification-tab-bg'
+                                className='bg-black-denim absolute inset-0 top-1/2 h-7 -translate-y-1/2 rounded-full'
+                                transition={{ duration: 0.1, ease: 'linear' }}
+                              />
+                            )}
+                          </LazyMotion>
                           <TabsTrigger
                             value={notification.value.toString()}
-                            className='data-[state=active]:text-golden-glow! relative z-10 inline-block h-full min-w-25 flex-0 cursor-pointer rounded-none border-0 border-none! border-transparent bg-transparent! transition-all duration-200 ease-linear data-[state=active]:shadow-none data-[state=inactive]:hover:text-white!'
+                            className='dark:data-[state=active]:text-golden-glow dark:data-[state=inactive]:hover:text-golden-glow relative z-10 inline-block min-w-20 flex-0 cursor-pointer rounded-full border-0 border-none! border-transparent bg-transparent! transition-all duration-200 ease-linear data-[state=active]:shadow-none'
                           >
                             {notification.label}
                           </TabsTrigger>

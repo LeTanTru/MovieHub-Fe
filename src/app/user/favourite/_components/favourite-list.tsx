@@ -3,7 +3,6 @@
 import { MovieList } from './movie-list';
 import { PersonList } from './person-list';
 import { Activity } from '@/components/activity';
-import { Button } from '@/components/form';
 import { Pagination } from '@/components/pagination';
 import {
   FAVOURITE_TYPE_MOVIE,
@@ -11,12 +10,12 @@ import {
   favouriteTabs,
   queryKeys
 } from '@/constants';
-import { cn } from '@/lib';
 import { useDeleteFavouriteMutation, useFavouriteListQuery } from '@/queries';
 import { invalidateQueries, notify } from '@/utils';
 import { useState } from 'react';
 import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
+import { ButtonAction } from '@/components/app/button-action';
 
 export function FavouriteList() {
   const { isAuthenticated } = useAuth();
@@ -49,8 +48,8 @@ export function FavouriteList() {
 
   const totalPages = favouriteListData?.totalPages || 0;
 
-  const handleTabChange = (type: number) => {
-    setActiveTab(type);
+  const handleTabChange = (type: string) => {
+    setActiveTab(Number(type));
     setPage(1);
   };
 
@@ -96,27 +95,18 @@ export function FavouriteList() {
         Yêu thích
       </h3>
       <div className='flex flex-wrap gap-2' role='tablist'>
-        {favouriteTabs.map((tab) => (
-          <Button
-            key={tab.value}
-            className={cn(
-              'min-w-25 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear hover:bg-white hover:text-black',
-              {
-                'bg-white text-black': activeTab === tab.value,
-                'bg-white/5 text-white': activeTab !== tab.value
-              }
-            )}
-            role='tab'
-            id={`favourite-tab-${tab.value}`}
-            aria-controls={`favourite-tabpanel-${tab.value}`}
-            aria-selected={activeTab === tab.value}
-            tabIndex={activeTab === tab.value ? 0 : -1}
-            onClick={() => handleTabChange(tab.value)}
-            variant='ghost'
-          >
-            {tab.label}
-          </Button>
-        ))}
+        <div className='relative flex shrink-0 items-stretch'>
+          {favouriteTabs.map((action) => (
+            <ButtonAction
+              key={action.value}
+              label={action.label}
+              action={String(action.value)}
+              activeTab={String(activeTab)}
+              setActiveTab={handleTabChange}
+              className='max-640:text-[13px] max-480:text-xs max-640:py-1 max-640:px-1.5'
+            />
+          ))}
+        </div>
       </div>
       <div className='block w-full' key={activeTab}>
         <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
