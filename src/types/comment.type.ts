@@ -8,12 +8,18 @@ import { MovieItemResType } from '@/types/movie-item.type';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
+export type ToxicSpan = {
+  start: number;
+  end: number;
+};
+
 export type CommentResType = {
   author: ProfileResType;
   content: string;
   createdDate: string;
   id: string;
   isPinned: boolean;
+  toxicSpans: string | null;
   modifiedDate: string;
   movieId: string;
   movieItem: MovieItemResType;

@@ -1,34 +1,31 @@
 import { cn } from '@/lib';
-import { CommentResType } from '@/types';
 import { ReactNode } from 'react';
 
 type CommentContentProps = {
-  comment: CommentResType;
-  isHidden: boolean;
-  showBlurredContent: boolean;
+  canViewHiddenContent: boolean;
+  isBlurWholeContent: boolean;
   onToggleBlurredContent: () => void;
-  renderMention: () => ReactNode;
+  renderContent: () => ReactNode;
 };
 
 export function CommentContent({
-  comment,
-  isHidden,
-  showBlurredContent,
+  canViewHiddenContent,
+  isBlurWholeContent,
   onToggleBlurredContent,
-  renderMention
+  renderContent
 }: CommentContentProps) {
+  const canToggleContent = canViewHiddenContent;
+
   return (
     <div
-      role='button'
-      tabIndex={isHidden && !showBlurredContent ? 0 : undefined}
+      role={canToggleContent ? 'button' : undefined}
+      tabIndex={canToggleContent ? 0 : undefined}
       className={cn('max-640:text-[13px] relative mt-2 break-all text-white', {
-        'cursor-pointer': isHidden && !showBlurredContent
+        'cursor-pointer': canToggleContent
       })}
-      onClick={
-        isHidden && !showBlurredContent ? onToggleBlurredContent : undefined
-      }
+      onClick={canToggleContent ? onToggleBlurredContent : undefined}
       onKeyDown={
-        isHidden && !showBlurredContent
+        canToggleContent
           ? (e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -40,12 +37,10 @@ export function CommentContent({
     >
       <div
         className={cn({
-          'max-640:text-[13px] blur-xs select-none':
-            isHidden && !showBlurredContent
+          'max-640:text-[13px] blur-xs select-none': isBlurWholeContent
         })}
       >
-        {renderMention()}
-        {comment.content}
+        {renderContent()}
       </div>
     </div>
   );

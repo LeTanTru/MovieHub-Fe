@@ -89,7 +89,7 @@ export function CommentHeader({
           title={convertUTCToLocal(comment.modifiedDate, DATE_TIME_FORMAT)}
           className='max-640:text-[13px] max-520:text-xs whitespace-nowrap text-gray-400'
         >
-          (đã chỉnh sửa)
+          (đã cập nhật)
         </span>
       </Activity>
       <Activity visible={comment.isPinned}>

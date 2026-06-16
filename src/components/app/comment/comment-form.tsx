@@ -125,21 +125,21 @@ export function CommentForm({
       onSuccess: async (res) => {
         if (res.result) {
           notify.success(
-            `${editingComment ? 'Chỉnh sửa' : 'Trả lời'} bình luận thành công`
+            `${editingComment ? 'Cập nhật' : 'Trả lời'} bình luận thành công`
           );
           setEditingComment(null);
           onSubmit?.();
           form?.reset(initialValues);
         } else {
           notify.error(
-            `${editingComment ? 'Chỉnh sửa' : 'Trả lời'} bình luận thất bại`
+            `${editingComment ? 'Cập nhật' : 'Trả lời'} bình luận thất bại`
           );
         }
       },
       onError: (error) => {
         logger.error('[UPDATE_COMMENT_ERROR]', error);
         notify.error(
-          `${editingComment ? 'Chỉnh sửa' : 'Trả lời'} bình luận thất bại`
+          `${editingComment ? 'Cập nhật' : 'Trả lời'} bình luận thất bại`
         );
       }
     });

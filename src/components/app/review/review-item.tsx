@@ -16,11 +16,11 @@ import {
 } from '@/constants';
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
-import { ReviewResType } from '@/types';
-import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
+import { ReviewResType, ToxicSpan } from '@/types';
+import { convertUTCToLocal, parseJSON, renderImageUrl, timeAgo } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import Image, { StaticImageData } from 'next/image';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ConfirmModal } from '@/components/modal';
@@ -56,17 +56,61 @@ export function ReviewItem({
   const isHidden = review.status === STATUS_HIDE;
 
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showBlurredContent, setShowBlurredContent] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
   );
+  const toxicSpans = review.toxicSpans
+    ? parseJSON<ToxicSpan[]>(review.toxicSpans) || []
+    : [];
+  const hasToxicSpans = toxicSpans.length > 0;
+  const [isVisible, setIsVisible] = useState(false);
+  const canViewHiddenContent = isHidden || !!hasToxicSpans;
+  const isBlurWholeContent = isHidden && !isVisible && !hasToxicSpans;
 
   const handleDropdownToggle = () => {
     setShowDropdown((prev) => !prev);
   };
 
-  const handleToggleBlurredContent = () => {
-    setShowBlurredContent((prev) => !prev);
+  const renderContent = () => {
+    const content = review.content;
+
+    if (!hasToxicSpans) return content;
+
+    const result: ReactNode[] = [];
+    let lastIndex = 0;
+
+    toxicSpans.forEach((span, index) => {
+      const start = Math.min(Math.max(span.start, lastIndex), content.length);
+      const end = Math.min(Math.max(span.end, start), content.length);
+
+      if (start > lastIndex) {
+        result.push(content.slice(lastIndex, start));
+      }
+
+      if (start === end) {
+        lastIndex = start;
+        return;
+      }
+
+      result.push(
+        <span
+          className={cn({ 'blur-xs select-none': !isVisible })}
+          key={`${start}-${end}-${index}`}
+        >
+          {content.slice(start, end)}
+        </span>
+      );
+
+      lastIndex = end;
+    });
+
+    result.push(content.slice(lastIndex));
+
+    return result;
+  };
+
+  const handleViewContent = () => {
+    setIsVisible((prev) => !prev);
     setShowDropdown(false);
   };
 
@@ -137,21 +181,35 @@ export function ReviewItem({
             </span>
           </span>
         </div>
-        {isHidden && !showBlurredContent ? (
-          <button
-            type='button'
-            className='max-640:text-[13px] relative mt-2 w-full cursor-pointer p-0 text-left break-all text-white'
-            onClick={handleToggleBlurredContent}
+        <div
+          role={canViewHiddenContent ? 'button' : undefined}
+          tabIndex={canViewHiddenContent ? 0 : undefined}
+          className={cn(
+            'max-640:text-[13px] relative mt-2 break-all text-white',
+            {
+              'cursor-pointer': canViewHiddenContent
+            }
+          )}
+          onClick={canViewHiddenContent ? handleViewContent : undefined}
+          onKeyDown={
+            canViewHiddenContent
+              ? (e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleViewContent();
+                  }
+                }
+              : undefined
+          }
+        >
+          <div
+            className={cn({
+              'max-640:text-[13px] blur-xs select-none': isBlurWholeContent
+            })}
           >
-            <div className='max-640:text-[13px] blur-xs select-none'>
-              {review.content}
-            </div>
-          </button>
-        ) : (
-          <div className='max-640:text-[13px] relative mt-2 break-all text-white'>
-            <div>{review.content}</div>
+            {renderContent()}
           </div>
-        )}
+        </div>
         <div className='max-640:mt-3 relative mt-4 flex items-center gap-4'>
           <div className='flex items-center gap-2'>
             <div className='flex items-center gap-4'>
@@ -231,9 +289,9 @@ export function ReviewItem({
                   {isHidden && (
                     <button
                       className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
-                      onClick={handleToggleBlurredContent}
+                      onClick={handleViewContent}
                     >
-                      {showBlurredContent ? (
+                      {isVisible ? (
                         <>
                           <FaEyeSlash />
                           Ẩn nội dung

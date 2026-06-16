@@ -26,7 +26,7 @@ type CommentActionProps = {
   isAuthor: boolean;
   isVoteLoading: boolean;
   isHidden: boolean;
-  showBlurredContent: boolean;
+  isBlurWholeContent: boolean;
   showDropdown: boolean;
   showMore: boolean;
   voteMap: Record<string, number>;
@@ -46,7 +46,7 @@ export function CommentAction({
   isAuthor,
   isVoteLoading,
   isHidden,
-  showBlurredContent,
+  isBlurWholeContent,
   showDropdown,
   showMore,
   voteMap,
@@ -126,7 +126,7 @@ export function CommentAction({
           onClick={onEdit}
         >
           <AiOutlineEdit />
-          <span>Chỉnh sửa</span>
+          <span>Cập nhật</span>
         </button>
       </Activity>
       <div className='relative' ref={dropdownRef}>
@@ -179,7 +179,7 @@ export function CommentAction({
                   onClick={onEdit}
                 >
                   <AiOutlineEdit />
-                  <span>Chỉnh sửa</span>
+                  <span>Cập nhật</span>
                 </button>
               </Activity>
               {isHidden && (
@@ -187,15 +187,15 @@ export function CommentAction({
                   className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
                   onClick={onToggleBlurredContent}
                 >
-                  {showBlurredContent ? (
-                    <>
-                      <FaEyeSlash />
-                      Ẩn nội dung
-                    </>
-                  ) : (
+                  {isBlurWholeContent ? (
                     <>
                       <FaEye />
                       Xem nội dung
+                    </>
+                  ) : (
+                    <>
+                      <FaEyeSlash />
+                      Ẩn nội dung
                     </>
                   )}
                 </button>

@@ -10,8 +10,8 @@ import {
   STATUS_HIDE
 } from '@/constants';
 import { useClickOutside, useLoadMore } from '@/hooks';
-import { CommentResType, CommentSearchType } from '@/types';
-import { renderImageUrl, invalidateQueries } from '@/utils';
+import { CommentResType, CommentSearchType, ToxicSpan } from '@/types';
+import { renderImageUrl, invalidateQueries, parseJSON } from '@/utils';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { commentApiRequest } from '@/api-requests';
 import { CommentHeader } from './comment-header';
@@ -86,7 +86,6 @@ export function CommentItem({
   const movieItem = comment.movieItem;
 
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showBlurredContent, setShowBlurredContent] = useState(false);
   const dropdownRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
   );
@@ -98,6 +97,14 @@ export function CommentItem({
   const scrollTargetName = useMemo(() => `comment-${comment.id}`, [comment.id]); // unique name for scroll target
 
   const [isScrollTarget, setIsScrollTarget] = useState(false); // state to trigger highlight effect
+
+  const toxicSpans = comment.toxicSpans
+    ? parseJSON<ToxicSpan[]>(comment.toxicSpans) || []
+    : [];
+  const hasToxicSpans = toxicSpans.length > 0;
+  const [isVisible, setIsVisible] = useState(false);
+  const canViewHiddenContent = isHidden || !!hasToxicSpans;
+  const isBlurWholeContent = isHidden && !isVisible && !hasToxicSpans;
 
   const {
     data: commentList,
@@ -182,17 +189,66 @@ export function CommentItem({
     );
   };
 
+  const renderContent = () => {
+    const content = comment.content;
+
+    if (!hasToxicSpans)
+      return (
+        <>
+          {renderMention()}
+          {comment.content}
+        </>
+      );
+
+    const result: ReactNode[] = [];
+    let lastIndex = 0;
+
+    toxicSpans.forEach((span, index) => {
+      const start = Math.min(Math.max(span.start, lastIndex), content.length);
+      const end = Math.min(Math.max(span.end, start), content.length);
+
+      if (start > lastIndex) {
+        result.push(content.slice(lastIndex, start));
+      }
+
+      if (start === end) {
+        lastIndex = start;
+        return;
+      }
+
+      result.push(
+        <span
+          className={cn({ 'blur-xs select-none': !isVisible })}
+          key={`${start}-${end}-${index}`}
+        >
+          {content.slice(start, end)}
+        </span>
+      );
+
+      lastIndex = end;
+    });
+
+    result.push(content.slice(lastIndex));
+
+    return (
+      <>
+        {renderMention()}
+        {result}
+      </>
+    );
+  };
+
   const handleViewReplies = (parentId: string) => {
     setOpenParentIds((prev) => [...prev, parentId]);
   };
 
-  const handleHideReplies = (parentId: string) => {
-    setOpenParentIds((prev) => prev.filter((value) => value !== parentId));
+  const handleViewContent = () => {
+    setIsVisible((prev) => !prev);
+    setShowDropdown(false);
   };
 
-  const handleToggleBlurredContent = () => {
-    setShowBlurredContent((prev) => !prev);
-    setShowDropdown(false);
+  const handleHideReplies = (parentId: string) => {
+    setOpenParentIds((prev) => prev.filter((value) => value !== parentId));
   };
 
   const handleVote = (id: string, type: number) => {
@@ -301,11 +357,10 @@ export function CommentItem({
           />
 
           <CommentContent
-            comment={comment}
-            isHidden={isHidden}
-            showBlurredContent={showBlurredContent}
-            onToggleBlurredContent={handleToggleBlurredContent}
-            renderMention={renderMention}
+            canViewHiddenContent={canViewHiddenContent}
+            isBlurWholeContent={isBlurWholeContent}
+            onToggleBlurredContent={handleViewContent}
+            renderContent={renderContent}
           />
 
           <CommentAction
@@ -315,7 +370,7 @@ export function CommentItem({
             isAuthor={isAuthor}
             isVoteLoading={isVoteLoading}
             isHidden={isHidden}
-            showBlurredContent={showBlurredContent}
+            isBlurWholeContent={isBlurWholeContent}
             showDropdown={showDropdown}
             showMore={showMore}
             voteMap={voteMap}
@@ -324,7 +379,7 @@ export function CommentItem({
             onReply={handleReplyComment}
             onEdit={() => handleEditComment(comment)}
             onToggleDropdown={handleDropdownToggle}
-            onToggleBlurredContent={handleToggleBlurredContent}
+            onToggleBlurredContent={handleViewContent}
             onDelete={handleDeleteComment}
           />
 
