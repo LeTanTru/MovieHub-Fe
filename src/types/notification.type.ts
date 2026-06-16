@@ -2,6 +2,7 @@ import {
   notificationSearchSchema,
   updateReadNotificationSchema
 } from '@/schemaValidations';
+import { ToxicSpan } from '@/types/comment.type';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
@@ -112,11 +113,6 @@ export type VoteReviewNotificationType = {
     fullName: string;
     avatarPath: string;
   };
-};
-
-export type ToxicSpan = {
-  start: number;
-  end: number;
 };
 
 export type ToxicCommentLockedNotificationType = {

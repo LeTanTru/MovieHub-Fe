@@ -22,6 +22,7 @@ export type ReviewResType = {
   status: number;
   totalDislike: number;
   totalLike: number;
+  toxicSpans: string | null;
 };
 
 export type ReviewVoteResType = {
