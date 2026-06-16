@@ -19,7 +19,7 @@ import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
 
-const REVIEW_SKELETON_COUNT = 3;
+const REVIEW_SKELETON_COUNT = 10;
 
 type ReviewListProps = {
   movie: MovieResType;

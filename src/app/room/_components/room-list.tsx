@@ -14,17 +14,14 @@ export function RoomList() {
         <h3 className='mr-4 text-[28px] leading-[1.4] font-bold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'>
           Xem chung
         </h3>
-        <div
-          className='relative flex shrink-0 items-center overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
-          role='tablist'
-        >
+        <div className='relative flex shrink-0 items-stretch' role='tablist'>
           {roomActions.map((action) => (
             <ButtonAction
               key={action.key}
               label={action.label}
               action={action.key}
-              activeKey={activeTab}
-              setActiveKey={setActiveTab}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
               className='max-640:text-[13px] max-520:text-xs'
             />
           ))}

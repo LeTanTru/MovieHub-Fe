@@ -5,7 +5,7 @@ import { buildLoginRedirectPath, renderImageUrl } from '@/utils';
 import Link from 'next/link';
 import {
   DEFAULT_PAGE_SIZE,
-  discussionActions,
+  discussionTabs,
   DISCUSSION_TAB_COMMENT,
   DISCUSSION_TAB_REVIEW,
   queryKeys
@@ -130,7 +130,7 @@ export function Discussion({
             </div>
             <span className='max-640:text-sm text-base'>
               {
-                discussionActions.find((action) => action.key === discussionTab)
+                discussionTabs.find((action) => action.key === discussionTab)
                   ?.label
               }
               &nbsp;(
@@ -142,17 +142,14 @@ export function Discussion({
               )
             </span>
           </div>
-          <div
-            className='relative flex shrink-0 items-center overflow-hidden rounded border border-solid border-white p-0.5 text-sm font-normal'
-            role='tablist'
-          >
-            {discussionActions.map((action) => (
+          <div className='relative flex shrink-0 items-stretch' role='tablist'>
+            {discussionTabs.map((action) => (
               <ButtonAction
                 key={action.key}
                 label={action.label}
                 action={action.key}
-                activeKey={discussionTab}
-                setActiveKey={setDiscussionTab}
+                activeTab={discussionTab}
+                setActiveTab={setDiscussionTab}
                 className='max-640:text-[13px] max-520:text-xs'
               />
             ))}
@@ -247,12 +244,30 @@ Discussion.Skeleton = function ({ className }: DiscussionSkeletonProps) {
       <Skeleton className='skeleton mb-4 h-25 w-full rounded!' />
       <div className='flex flex-col gap-8'>
         {Array.from({ length: DISCUSSION_SKELETON_COUNT }).map((_, index) => (
-          <div key={`discussion-skeleton-${index}`} className='flex gap-4'>
-            <Skeleton className='skeleton size-12.5 rounded-full!' />
-            <div className='flex grow flex-col gap-3'>
-              <Skeleton className='skeleton h-4 w-40 rounded!' />
-              <Skeleton className='skeleton h-4 w-full rounded!' />
-              <Skeleton className='skeleton h-4 w-3/4 rounded!' />
+          <div
+            key={`discussion-skeleton-${index}`}
+            className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'
+          >
+            <div className='flex shrink-0 flex-col items-center gap-y-0.5'>
+              <Skeleton className='skeleton size-[45px] rounded-full! sm:size-[50px]' />
+            </div>
+            <div className='grow'>
+              {/* Header */}
+              <div className='flex h-[26px] items-center gap-2 sm:h-[30px]'>
+                <Skeleton className='skeleton h-4 w-24 rounded!' />
+                <Skeleton className='skeleton h-4 w-16 rounded!' />
+              </div>
+              {/* Content */}
+              <div className='mt-2 space-y-2'>
+                <Skeleton className='skeleton h-4 w-full rounded!' />
+                <Skeleton className='skeleton h-4 w-3/4 rounded!' />
+              </div>
+              {/* Action */}
+              <div className='max-640:mt-3 mt-4 flex items-center gap-4'>
+                <Skeleton className='skeleton h-4 w-10 rounded!' />
+                <Skeleton className='skeleton h-4 w-10 rounded!' />
+                <Skeleton className='skeleton h-4 w-14 rounded!' />
+              </div>
             </div>
           </div>
         ))}

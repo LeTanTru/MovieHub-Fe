@@ -3,11 +3,12 @@ import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
 import {
   DEFAULT_PAGE_SIZE,
+  MAX_PAGE_SIZE,
   OG_IMAGE_WIDTH,
   OG_IMAGE_HEIGHT,
   queryKeys
 } from '@/constants';
-import { movieApiRequest } from '@/api-requests';
+import { categoryApiRequest, movieApiRequest } from '@/api-requests';
 import { MovieSearchType, SearchParamsType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
@@ -100,11 +101,19 @@ export default async function SearchPage({
   };
 
   const queryClient = getQueryClient();
+  const categoryFilters = { size: MAX_PAGE_SIZE };
 
-  await queryClient.prefetchQuery({
-    queryKey: [queryKeys.MOVIE_LIST, movieFilters],
-    queryFn: ({ signal }) => movieApiRequest.getList(movieFilters, signal)
-  });
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.MOVIE_LIST, movieFilters],
+      queryFn: ({ signal }) => movieApiRequest.getList(movieFilters, signal)
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [queryKeys.CATEGORY_LIST, categoryFilters],
+      queryFn: ({ signal }) =>
+        categoryApiRequest.getList(categoryFilters, signal)
+    })
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

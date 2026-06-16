@@ -5,19 +5,19 @@ import { domMax, LazyMotion, m } from 'framer-motion';
 type ButtonActionProps = {
   action: string;
   label: string;
-  activeKey: string;
+  activeTab: string;
   className?: string;
-  setActiveKey: (key: string) => void;
+  setActiveTab: (key: string) => void;
 };
 
 export function ButtonAction({
   action,
   label,
-  activeKey,
+  activeTab,
   className,
-  setActiveKey
+  setActiveTab
 }: ButtonActionProps) {
-  const isActive = action === activeKey;
+  const isActive = action === activeTab;
 
   return (
     <div className='relative flex-1'>
@@ -25,7 +25,7 @@ export function ButtonAction({
         {isActive && (
           <m.div
             layoutId='tab-bg'
-            className='absolute inset-0 rounded bg-white'
+            className='absolute inset-0 rounded-full bg-white'
             transition={{ duration: 0.1, ease: 'linear' }}
           />
         )}
@@ -34,14 +34,14 @@ export function ButtonAction({
       <Button
         variant='ghost'
         className={cn(
-          'relative flex h-6.5 cursor-pointer items-center rounded-none! px-2 transition-all duration-200 ease-linear hover:bg-transparent',
+          'relative flex h-7 min-w-20 cursor-pointer items-center rounded-none px-2 transition-all duration-200 ease-linear hover:bg-transparent',
           {
             'text-gray-200 hover:opacity-80': !isActive,
             'text-black hover:text-black': isActive
           },
           className
         )}
-        onClick={() => setActiveKey(action)}
+        onClick={() => setActiveTab(action)}
       >
         <span className='relative z-10'>{label}</span>
       </Button>

@@ -12,6 +12,7 @@ import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
   DEFAULT_PAGE_START,
+  MAX_PAGE_SIZE,
   queryKeys
 } from '@/constants';
 import {
@@ -114,7 +115,8 @@ export default async function WatchPage({ params }: WatchPageProps) {
   const id = getIdFromSlug(slug);
 
   const moviePersonFilters: MoviePersonSearchType = {
-    movieId: id
+    movieId: id,
+    size: MAX_PAGE_SIZE
   };
 
   const commentFilters: CommentSearchType = {

@@ -12,6 +12,7 @@ The repo is a single Next.js application, not a monorepo.
 | ------------- | --------------------------------------------------- |
 | Runtime       | Node.js 20 in Docker, Next.js standalone output     |
 | Framework     | Next.js 16 App Router, React 19                     |
+| Font          | Be Vietnam Pro (Google Fonts, variable font)        |
 | Language      | TypeScript                                          |
 | Data fetching | TanStack Query 5 with SSR hydration                 |
 | HTTP          | Axios through `src/utils/http.util.ts`              |
@@ -59,6 +60,9 @@ src/app/country/       Country movie lists
 src/app/person/        Person directory and person detail page
 src/app/topic/         Topic collections
 src/app/schedule/      Movie schedule
+src/app/room/          Watch-together room lobby (SSR prefetch)
+src/app/download/      App download landing page
+src/app/survey/        Protected onboarding survey (genre/preference picker)
 src/app/user/          Protected user pages: favourites, notifications, playlists, history
 src/app/account/       Protected account pages: profile, settings, password change
 src/app/api/auth/      Internal auth/session routes used by the client app
@@ -76,12 +80,14 @@ QueryProvider
   CategoryPrefetchBoundary
     AppProvider
       ThemeProvider
-        children
+        Suspense → children
         DisclaimerModal
         MqttProvider
         NextTopLoader
         GoToTopButton
       ToastContainer
+BodyLoad          ← injects scroll-behavior and body classes
+JsonLd            ← Organization + WebSite schema at root level
 ```
 
 Important implications:

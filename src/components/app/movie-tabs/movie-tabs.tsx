@@ -99,11 +99,11 @@ export function MovieTabs() {
                 'text-golden-glow opacity-100': tab.key === activeKey
               }
             )}
-            onClick={() => handleClick(tab.key)}
+            onClick={() => handleClick(String(tab.key))}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                handleClick(tab.key);
+                handleClick(String(tab.key));
               }
             }}
             tabIndex={tab.key === activeKey ? 0 : -1}
@@ -136,12 +136,12 @@ export function MovieTabs() {
 
 MovieTabs.Skeleton = function () {
   return (
-    <div className='max-1120:px-5 max-800:px-0 flex flex-col gap-x-5 px-10'>
-      <div className='max-800:justify-center max-480:justify-evenly max-420:justify-center max-640:gap-4 max-520:-mx-4 relative flex flex-nowrap gap-6 border-b border-solid pb-2'>
+    <div className='max-1120:px-5 max-800:px-0 flex flex-col px-10'>
+      <div className='max-800:justify-center max-480:justify-evenly max-420:justify-center max-640:gap-4 max-520:-mx-4 relative flex flex-nowrap gap-6 border-b border-solid'>
         {Array.from({ length: TAB_SKELETON_COUNT }).map((_, index) => (
           <Skeleton
             key={`tab-skeleton-${index}`}
-            className='skeleton max-640:px-3 max-520:px-2 max-480:px-1 max-640:text-[13px] max-520:text-xs h-8 w-24 px-4 py-3'
+            className='skeleton max-640:px-3 max-520:px-2 max-480:px-1 h-[45px] w-24'
           />
         ))}
       </div>

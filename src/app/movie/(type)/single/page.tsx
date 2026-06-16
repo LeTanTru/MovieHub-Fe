@@ -48,9 +48,14 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function MovieSinglePage() {
+export default async function MovieSinglePage({
+  searchParams
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const { page } = await searchParams;
   const movieFilters: MovieSearchType = {
-    page: DEFAULT_PAGE_START,
+    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
     type: movieTypes.MOVIE_TYPE_SINGLE,
     size: DEFAULT_PAGE_SIZE
   };

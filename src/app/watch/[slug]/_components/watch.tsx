@@ -64,7 +64,7 @@ Watch.Skeleton = function () {
           <Skeleton className='skeleton size-9 rounded-full' />
           <Skeleton className='skeleton h-7 w-64' />
         </div>
-        <div className='watch-player-wrapper'>
+        <div className='watch-player-container'>
           <div className='max-800:rounded-none relative aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px] bg-black'>
             <Skeleton className='skeleton absolute inset-0 h-full w-full rounded-none!' />
           </div>
@@ -72,9 +72,9 @@ Watch.Skeleton = function () {
             <div className='max-1280:px-0 max-640:gap-0 max-640:px-0.5 max-1280:gap-0 max-520:px-4 max-520:gap-4 flex w-full items-center gap-2 px-4'>
               <Skeleton className='skeleton h-9 w-20' />
               <Skeleton className='skeleton h-9 w-20' />
-              <Skeleton className='skeleton h-9 w-20' />
-              <Skeleton className='skeleton h-9 w-20' />
-              <Skeleton className='skeleton h-9 w-20' />
+              <Skeleton className='skeleton max-990:hidden h-9 w-20' />
+              <Skeleton className='skeleton max-990:hidden h-9 w-20' />
+              <Skeleton className='skeleton max-1120:hidden h-9 w-20' />
               <Skeleton className='skeleton h-9 w-20' />
               <Skeleton className='skeleton h-9 w-20' />
               <div className='grow'></div>

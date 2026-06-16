@@ -14,7 +14,6 @@ import {
   queryKeys
 } from '@/constants';
 import { useAuth, useLoadMore, useNotificationActions } from '@/hooks';
-import { cn } from '@/lib';
 import {
   useCountUnreadNotificationQuery,
   useUpdateReadNotificationMutation
@@ -24,6 +23,7 @@ import { invalidateQueries } from '@/utils';
 import { logger } from '@/logger';
 import { CheckCheck, Trash } from 'lucide-react';
 import { useState } from 'react';
+import { ButtonAction } from '@/components/app/button-action';
 
 export function NotificationList() {
   const { isAuthenticated } = useAuth();
@@ -102,32 +102,23 @@ export function NotificationList() {
       </h3>
       <div className='max-640:flex-col max-640:gap-3 flex w-full items-center justify-between gap-4'>
         <div className='flex flex-wrap gap-2' role='tablist'>
-          {notificationTabs.map((tab) => (
-            <Button
-              key={tab.value}
-              className={cn(
-                'min-w-25 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear hover:bg-white hover:text-black',
-                {
-                  'bg-white text-black': activeTab === String(tab.value),
-                  'bg-white/5 text-white': activeTab !== String(tab.value)
-                }
-              )}
-              role='tab'
-              id={`notification-tab-${tab.value}`}
-              aria-controls={`notification-tabpanel-${tab.value}`}
-              aria-selected={activeTab === String(tab.value)}
-              tabIndex={activeTab === String(tab.value) ? 0 : -1}
-              onClick={() => handleChangeTab(String(tab.value))}
-              variant='default'
-            >
-              {tab.label}
-            </Button>
-          ))}
+          <div className='relative flex shrink-0 items-stretch'>
+            {notificationTabs.map((action) => (
+              <ButtonAction
+                key={action.value}
+                label={action.label}
+                action={String(action.value)}
+                activeTab={activeTab}
+                setActiveTab={handleChangeTab}
+                className='max-640:text-[13px] max-480:text-xs max-640:py-1 max-640:px-1.5'
+              />
+            ))}
+          </div>
         </div>
         <div className='flex items-center gap-2'>
           {totalUnread > 0 && (
             <Button
-              className='min-w-25 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear'
+              className='h-7 min-w-20 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear'
               variant='default'
               onClick={handleReadAll}
             >
@@ -149,7 +140,7 @@ export function NotificationList() {
                   type='button'
                   variant='ghost'
                   disabled={deleteAllNotificationLoading}
-                  className='min-w-25 cursor-pointer rounded-full bg-rose-500/80 px-4 py-2 text-center transition-all duration-200 ease-linear hover:bg-rose-500'
+                  className='h-7 min-w-20 cursor-pointer rounded-full bg-rose-500/80 px-4 py-2 text-center transition-all duration-200 ease-linear hover:bg-rose-500'
                 >
                   {deleteAllNotificationLoading ? (
                     <CircleLoading className='stroke-main-color size-4' />
@@ -164,9 +155,11 @@ export function NotificationList() {
         </div>
       </div>
       {isLoading ? (
-        <div className='flex min-h-[50vh] w-full items-center justify-center'>
-          <VerticalBarLoading className='stroke-main-color' />
-        </div>
+        <List className='w-full'>
+          {Array.from({ length: 6 }).map((_, index) => (
+            <NotificationItem.Skeleton key={`notification-skeleton-${index}`} />
+          ))}
+        </List>
       ) : (
         <List className='w-full'>
           {notificationList.map((notification) => (

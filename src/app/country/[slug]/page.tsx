@@ -78,17 +78,24 @@ export async function generateMetadata({
   };
 }
 
-type CountryPageProps = { params: Promise<{ slug: string }> };
+type CountryPageProps = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
+};
 
-export default async function CountryPage({ params }: CountryPageProps) {
+export default async function CountryPage({
+  params,
+  searchParams
+}: CountryPageProps) {
   const { slug } = await params;
+  const { page } = await searchParams;
   const countryCode = getIdFromSlug(slug);
   const countryName =
     countries.find((country) => country.value === countryCode)?.label ||
     'quốc gia';
 
   const movieFilters: MovieSearchType = {
-    page: DEFAULT_PAGE_START,
+    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
     country: countryCode,
     size: DEFAULT_PAGE_SIZE
   };

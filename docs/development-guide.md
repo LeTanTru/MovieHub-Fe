@@ -102,6 +102,13 @@ For auth pages:
 1. Add the path to `authPaths` in `src/proxy.ts` if authenticated users should be redirected away.
 2. Update robots rules if the page should not be indexed.
 
+For public feature pages (e.g., `/room`, `/download`):
+
+1. Add a route under `src/app/<name>/`.
+2. SSR-prefetch data with `getQueryClient()` + `HydrationBoundary` when available.
+3. No `proxy.ts` changes needed unless the route is auth-sensitive.
+4. Add `metadata` / `generateMetadata()` for SEO visibility.
+
 ## Route And Slug Rules
 
 Movie, watch, category, country, and topic links generally use:
@@ -195,3 +202,5 @@ Pushing to `main` triggers the Docker build/deploy workflow. Treat `main` as dep
 - Do not read real secret files or commit environment values.
 - Do not use `console.log`; use `logger`.
 - Do not assume `slug` always contains an id. Plain `[id]` routes exist.
+- Do not define `ToxicSpan` locally; import from `@/types/comment.type`.
+- Do not store `toxicSpans` as a parsed array in API types; it arrives as a JSON string and must be parsed with `parseJSON<ToxicSpan[]>()`.

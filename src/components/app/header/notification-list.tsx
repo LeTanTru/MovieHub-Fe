@@ -7,7 +7,6 @@ import { NoData } from '@/components/no-data';
 import { invalidateQueries } from '@/utils';
 import { queryKeys } from '@/constants';
 import { NotificationItem } from '@/components/app/notification';
-import { VerticalBarLoading } from '@/components/loading';
 import { useAuth } from '@/hooks';
 
 type Props = {
@@ -50,16 +49,18 @@ export function NotificationList({
 
   if (loading) {
     return (
-      <div className='flex min-h-[50vh] items-center justify-center'>
-        <VerticalBarLoading className='stroke-main-color' />
-      </div>
+      <List className='scrollbar-none flex h-[80vh] flex-col overflow-hidden'>
+        {Array.from({ length: 8 }).map((_, index) => (
+          <NotificationItem.Skeleton key={`header-notification-${index}`} />
+        ))}
+      </List>
     );
   }
 
   if (!notificationList.length) {
     return (
       <NoData
-        className='min-h-[50vh] pt-0'
+        className='h-[80vh] pt-0'
         width={120}
         content='Không có thông báo nào'
       />
@@ -67,7 +68,7 @@ export function NotificationList({
   }
 
   return (
-    <List className='scrollbar-none flex max-h-[80vh] min-h-[50vh] flex-col overflow-y-auto'>
+    <List className='scrollbar-none flex h-[80vh] flex-col overflow-y-auto'>
       {notificationList.map((notification) => (
         <NotificationItem
           key={notification.id}

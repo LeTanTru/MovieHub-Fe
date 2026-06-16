@@ -25,8 +25,8 @@ export function ProfileSection({ profile }: ProfileSectionProps) {
         size={60}
       />
 
-      <div className='mt-4 flex items-start gap-x-1'>
-        <h3 className='mb-2'>{profile.fullName}</h3>
+      <div className='mt-4 flex items-start gap-1'>
+        <h3>{profile.fullName}</h3>
         <GenderIcon
           className={cn('ml-1 size-4.5 shrink-0', {
             'text-cyan-500': profile.gender === GENDER_MALE,
@@ -35,7 +35,7 @@ export function ProfileSection({ profile }: ProfileSectionProps) {
           })}
         />
       </div>
-      <p className='mt-0 text-[13px] text-slate-400'>{profile.email}</p>
+      <p className='text-xs text-slate-400'>{profile.email}</p>
     </>
   );
 }
@@ -44,11 +44,11 @@ ProfileSection.Skeleton = function () {
   return (
     <>
       <Skeleton className='skeleton size-15 rounded-full!' />
-      <div className='mt-4 flex items-center gap-x-1'>
-        <Skeleton className='skeleton h-4 w-full' />
-        <Skeleton className='skeleton size-4.5' />
+      <div className='mt-4 mb-0.5 flex items-start gap-1'>
+        <Skeleton className='skeleton h-4 w-32 rounded!' />
+        <Skeleton className='skeleton size-4.5 shrink-0 rounded!' />
       </div>
-      <Skeleton className='skeleton mt-2 h-4 w-full text-xs' />
+      <Skeleton className='skeleton h-4! w-40 rounded! text-xs' />
     </>
   );
 };

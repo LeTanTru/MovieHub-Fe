@@ -415,16 +415,23 @@ export function CommentItem({
 
 CommentItem.Skeleton = function () {
   return (
-    <div className='flex justify-start gap-4'>
-      <Skeleton className='skeleton size-12.5 rounded-full!' />
-      <div className='flex grow flex-col gap-3'>
-        <div className='flex items-center gap-2'>
+    <div className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'>
+      <div className='flex shrink-0 flex-col items-center gap-y-0.5'>
+        <Skeleton className='skeleton size-[45px] rounded-full! sm:size-[50px]' />
+      </div>
+      <div className='grow'>
+        {/* Header */}
+        <div className='flex h-[26px] items-center gap-2 sm:h-[30px]'>
           <Skeleton className='skeleton h-4 w-24 rounded!' />
           <Skeleton className='skeleton h-4 w-16 rounded!' />
         </div>
-        <Skeleton className='skeleton h-4 w-full rounded!' />
-        <Skeleton className='skeleton h-4 w-3/4 rounded!' />
-        <div className='flex items-center gap-3'>
+        {/* Content */}
+        <div className='mt-2 space-y-2'>
+          <Skeleton className='skeleton h-4 w-full rounded!' />
+          <Skeleton className='skeleton h-4 w-3/4 rounded!' />
+        </div>
+        {/* Action */}
+        <div className='max-640:mt-3 mt-4 flex items-center gap-4'>
           <Skeleton className='skeleton h-4 w-10 rounded!' />
           <Skeleton className='skeleton h-4 w-10 rounded!' />
           <Skeleton className='skeleton h-4 w-14 rounded!' />

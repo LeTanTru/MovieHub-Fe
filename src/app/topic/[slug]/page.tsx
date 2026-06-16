@@ -86,18 +86,23 @@ export async function generateMetadata({
   };
 }
 
-type TopicDetailPageProps = { params: Promise<{ slug: string }> };
+type TopicDetailPageProps = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
+};
 
 export default async function TopicDetailPage({
-  params
+  params,
+  searchParams
 }: TopicDetailPageProps) {
   const { slug } = await params;
+  const { page } = await searchParams;
   const collectionId = getIdFromSlug(slug);
   const queryClient = getQueryClient();
 
   const collectionItemFilters: CollectionItemSearchType = {
     collectionId,
-    page: DEFAULT_PAGE_START,
+    page: page ? Number(page) - 1 : DEFAULT_PAGE_START,
     size: DEFAULT_PAGE_SIZE
   };
 
