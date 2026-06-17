@@ -8,9 +8,9 @@ import {
   storageKeys,
   verifyOtpErrorMaps
 } from '@/constants';
-import { useNavigate, useQueryParams } from '@/hooks';
+import { useNavigate, useQueryParams, useResendOtpTimer } from '@/hooks';
 import { logger } from '@/logger';
-import { useResendOtpMutation, useVerifyOtpMutation } from '@/queries';
+import { useVerifyOtpMutation } from '@/queries';
 import { route } from '@/routes';
 import { otpSchema } from '@/schemaValidations';
 import { VerifyOtpBodyType } from '@/types';
@@ -18,111 +18,38 @@ import {
   applyFormErrors,
   buildAuthPathWithRedirect,
   getData,
-  notify,
-  removeData,
-  setData
+  notify
 } from '@/utils';
-import { useEffect, useMemo, useReducer, useState, useRef } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
-const MAX_RESEND = 3; // RESEND LIMIT EACH 10 MINUTES
-const RESEND_INTERVAL = 10 * 60 * 1000; // TIME TO RESEND AFTER REACH LIMIT
-const COOLDOWN_TIME = 60 * 1000; // COOL DOWN BETWEEN EACH RESENDS
-
-type ResendState = {
-  resendData: {
-    count: number;
-    timestamp: number;
-  };
-  countdown: number;
-  cooldownRemaining: number;
-  lastResendTime: number;
-};
-
-type ResendAction =
-  | {
-      type: 'init';
-      payload: {
-        resendData: ResendState['resendData'];
-        lastResendTime: number;
-      };
-    }
-  | {
-      type: 'tick';
-      payload: {
-        countdown: number;
-        cooldownRemaining: number;
-        resetResendData: boolean;
-      };
-    }
-  | {
-      type: 'resend-success';
-      payload: {
-        count: number;
-        timestamp: number;
-      };
-    };
-
-const initialResendState: ResendState = {
-  resendData: { count: 0, timestamp: 0 },
-  countdown: 0,
-  cooldownRemaining: 0,
-  lastResendTime: 0
-};
+const MAX_RESEND = 3;
 
 const defaultValues: VerifyOtpBodyType = {
   email: '',
   otp: ''
 };
 
-function resendReducer(state: ResendState, action: ResendAction): ResendState {
-  switch (action.type) {
-    case 'init':
-      return {
-        ...state,
-        resendData: action.payload.resendData,
-        lastResendTime: action.payload.lastResendTime
-      };
-    case 'tick':
-      return {
-        ...state,
-        countdown: action.payload.countdown,
-        cooldownRemaining: action.payload.cooldownRemaining,
-        resendData: action.payload.resetResendData
-          ? { count: 0, timestamp: 0 }
-          : state.resendData
-      };
-    case 'resend-success':
-      return {
-        ...state,
-        resendData: {
-          count: action.payload.count,
-          timestamp: action.payload.timestamp
-        },
-        lastResendTime: action.payload.timestamp
-      };
-    default:
-      return state;
-  }
-}
-
 export function VerifyOtpForm() {
   const navigate = useNavigate();
   const {
     searchParams: { redirect }
   } = useQueryParams<{ redirect?: string }>();
-
-  const [
-    { resendData, countdown, cooldownRemaining, lastResendTime },
-    dispatch
-  ] = useReducer(resendReducer, initialResendState);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
   const navigateRef = useRef(navigate);
-  const lastResendTimeRef = useRef(lastResendTime);
   const missingEmailNotifiedRef = useRef(false);
 
-  const { mutateAsync: resendOtpMutate, isPending: resendOtpLoading } =
-    useResendOtpMutation();
+  const {
+    resendCount,
+    countdown,
+    cooldownRemaining,
+    isResendDisabled,
+    resendOtpLoading,
+    handleResendOtp,
+    formatCountdown,
+    clearTimerData
+  } = useResendOtpTimer();
+
   const { mutateAsync: verifyOtpMutate, isPending: verifyOtpLoading } =
     useVerifyOtpMutation();
   const email = getData(storageKeys.EMAIL) ?? '';
@@ -137,35 +64,9 @@ export function VerifyOtpForm() {
 
   const registerPath = buildAuthPathWithRedirect(route.register.path, redirect);
 
-  const getResendData = () => {
-    const data = getData(storageKeys.RESEND_OTP_TIME);
-    if (!data) return { count: 0, timestamp: 0 };
-    return JSON.parse(data);
-  };
-
   useEffect(() => {
     navigateRef.current = navigate;
   }, [navigate]);
-
-  useEffect(() => {
-    if (!email) return;
-
-    const lastTime = getData(storageKeys.LAST_RESEND_TIME);
-    const now = Date.now();
-    const resolvedLastResendTime = lastTime ? parseInt(lastTime) : now;
-
-    if (!lastTime) {
-      setData(storageKeys.LAST_RESEND_TIME, now.toString());
-    }
-
-    dispatch({
-      type: 'init',
-      payload: {
-        resendData: getResendData(),
-        lastResendTime: resolvedLastResendTime
-      }
-    });
-  }, [email]);
 
   useEffect(() => {
     if (email) return;
@@ -182,112 +83,8 @@ export function VerifyOtpForm() {
     return () => clearTimeout(timeout);
   }, [email, registerPath]);
 
-  const setResendDataToLS = (count: number, timestamp: number) => {
-    // count: store how many times which resend has been done
-    // timestamp: store the time which resend has been done
-    setData(storageKeys.RESEND_OTP_TIME, JSON.stringify({ count, timestamp }));
-  };
-
-  useEffect(() => {
-    lastResendTimeRef.current = lastResendTime;
-  }, [lastResendTime]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = Date.now();
-      const { timestamp } = getResendData();
-      const remaining = RESEND_INTERVAL - (now - timestamp);
-      const shouldResetResendData = remaining <= 0 && resendData.count > 0;
-
-      if (shouldResetResendData) {
-        setResendDataToLS(0, 0);
-      }
-
-      const cooldown =
-        lastResendTimeRef.current > 0
-          ? COOLDOWN_TIME - (now - lastResendTimeRef.current)
-          : 0;
-
-      dispatch({
-        type: 'tick',
-        payload: {
-          countdown: remaining > 0 ? remaining : 0,
-          cooldownRemaining: cooldown > 0 ? cooldown : 0,
-          resetResendData: shouldResetResendData
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [resendData.count]);
-
-  const handleResendOtp = async () => {
-    const email = getData(storageKeys.EMAIL);
-    if (!email) return;
-
-    const now = Date.now();
-    let { count, timestamp } = getResendData();
-
-    if (cooldownRemaining > 0) {
-      notify.error(
-        `Vui lòng đợi ${Math.ceil(cooldownRemaining / 1000)} giây trước khi gửi lại`
-      );
-      return;
-    }
-
-    if (now - timestamp > RESEND_INTERVAL) {
-      count = 0;
-      timestamp = now;
-    }
-
-    if (count >= MAX_RESEND) {
-      notify.error('Bạn đã gửi OTP quá 3 lần, vui lòng thử lại sau 10 phút');
-      return;
-    }
-
-    await resendOtpMutate(
-      { email },
-      {
-        onSuccess: (res) => {
-          if (res.result) {
-            notify.success('Gửi lại OTP thành công');
-            count += 1;
-            timestamp = now;
-            setResendDataToLS(count, timestamp);
-            dispatch({
-              type: 'resend-success',
-              payload: { count, timestamp }
-            });
-            setData(storageKeys.LAST_RESEND_TIME, now.toString());
-          } else {
-            notify.error('Gửi lại OTP thất bại');
-          }
-        },
-        onError: (error) => {
-          logger.error('[RESEND_OTP_ERROR]', error);
-          notify.error('Gửi lại OTP thất bại');
-        }
-      }
-    );
-  };
-
-  const formatCountdown = (ms: number) => {
-    const totalSeconds = Math.floor(ms / 1000);
-    const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-    const seconds = String(totalSeconds % 60).padStart(2, '0');
-    return `${minutes}:${seconds}`;
-  };
-
-  const handleClearData = () => {
-    removeData([
-      storageKeys.EMAIL,
-      storageKeys.RESEND_OTP_TIME,
-      storageKeys.LAST_RESEND_TIME
-    ]);
-  };
-
   const handleBack = () => {
-    handleClearData();
+    clearTimerData();
     navigate.push(registerPath);
   };
 
@@ -299,8 +96,7 @@ export function VerifyOtpForm() {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Xác thực OTP thành công');
-          removeData(storageKeys.EMAIL);
-          handleClearData();
+          clearTimerData();
           navigate.push(buildAuthPathWithRedirect(route.login.path, redirect));
         } else {
           const errorCode = res.code;
@@ -321,9 +117,6 @@ export function VerifyOtpForm() {
       }
     });
   };
-
-  const isResendDisabled =
-    (resendData.count >= MAX_RESEND && countdown > 0) || cooldownRemaining > 0;
 
   return (
     <section className='bg-vintage-blue max-520:px-4 rounded-lg p-4'>
@@ -365,8 +158,8 @@ export function VerifyOtpForm() {
             <Row className='mb-2'>
               <Col className='grid-c-12'>
                 <span className='block text-center text-sm text-gray-300'>
-                  Số lần đã gửi: {resendData.count} / {MAX_RESEND}
-                  {countdown > 0 && resendData.count >= MAX_RESEND && (
+                  Số lần đã gửi: {resendCount} / {MAX_RESEND}
+                  {countdown > 0 && resendCount >= MAX_RESEND && (
                     <>
                       <br />
                       Bạn có thể gửi lại sau: {formatCountdown(countdown)}

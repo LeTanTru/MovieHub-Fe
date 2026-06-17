@@ -25,8 +25,8 @@ type CommentActionProps = {
   isAuthenticated: boolean;
   isAuthor: boolean;
   isVoteLoading: boolean;
-  isHidden: boolean;
-  isBlurWholeContent: boolean;
+  canViewHiddenContent: boolean;
+  isVisible: boolean;
   showDropdown: boolean;
   showMore: boolean;
   voteMap: Record<string, number>;
@@ -35,7 +35,7 @@ type CommentActionProps = {
   onReply: () => void;
   onEdit: () => void;
   onToggleDropdown: () => void;
-  onToggleBlurredContent: () => void;
+  onViewContent: () => void;
   onDelete: () => void;
 };
 
@@ -45,8 +45,8 @@ export function CommentAction({
   isAuthenticated,
   isAuthor,
   isVoteLoading,
-  isHidden,
-  isBlurWholeContent,
+  canViewHiddenContent,
+  isVisible,
   showDropdown,
   showMore,
   voteMap,
@@ -55,11 +55,11 @@ export function CommentAction({
   onReply,
   onEdit,
   onToggleDropdown,
-  onToggleBlurredContent,
+  onViewContent,
   onDelete
 }: CommentActionProps) {
   return (
-    <div className='max-640:mt-3 relative mt-4 flex items-center gap-4'>
+    <div className='relative mt-3 flex items-center gap-4'>
       <div className='flex items-center gap-2'>
         <span
           title={convertUTCToLocal(comment.createdDate, DATE_TIME_FORMAT)}
@@ -182,20 +182,20 @@ export function CommentAction({
                   <span>Cập nhật</span>
                 </button>
               </Activity>
-              {isHidden && (
+              {canViewHiddenContent && (
                 <button
                   className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
-                  onClick={onToggleBlurredContent}
+                  onClick={onViewContent}
                 >
-                  {isBlurWholeContent ? (
-                    <>
-                      <FaEye />
-                      Xem nội dung
-                    </>
-                  ) : (
+                  {isVisible ? (
                     <>
                       <FaEyeSlash />
                       Ẩn nội dung
+                    </>
+                  ) : (
+                    <>
+                      <FaEye />
+                      Xem nội dung
                     </>
                   )}
                 </button>

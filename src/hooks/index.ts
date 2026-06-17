@@ -18,6 +18,7 @@ export { useNavigate } from './use-navigate';
 export { useNotificationActions } from './use-notification-actions';
 export { useNotificationCommentActions } from './use-notification-comment-actions';
 export { useQueryParams } from './use-query-params';
+export { useResendOtpTimer } from './use-resend-otp-timer';
 export { useSelectedPlaylist } from './use-selected-playlist';
 export { useSlugId } from './use-slug-id';
 export { useToggleFavourite } from './use-toggle-favourite';
