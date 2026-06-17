@@ -8,6 +8,7 @@ import type {
   NotificationResType,
   ReplyCommentNotificationType,
   ToxicCommentLockedNotificationType,
+  ToxicReviewLockedNotificationType,
   VoteCommentNotificationType,
   VoteReviewNotificationType
 } from '@/types';
@@ -197,6 +198,13 @@ export function MqttProvider() {
           invalidateCommentQueries({
             movieId: body.movieId,
             parentId: body.parentId
+          });
+          break;
+        }
+        case mqttCMDs.TOXIC_REVIEW_LOCKED: {
+          const body = parseJSON<ToxicReviewLockedNotificationType>(data.body);
+          invalidateReviewQueries({
+            movieId: body.movieId
           });
           break;
         }

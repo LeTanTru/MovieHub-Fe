@@ -14,7 +14,6 @@ const defaultOptions: Omit<ToastOptions, 'position'> = {
   theme: 'dark',
   transition: Bounce,
   className: `
-    whitespace-nowrap
     pr-10!
     min-w-80!
     max-w-120!

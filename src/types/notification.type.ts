@@ -131,3 +131,19 @@ export type ToxicCommentLockedNotificationType = {
   };
   toxicSpans: ToxicSpan[];
 };
+
+export type ToxicReviewLockedNotificationType = {
+  id: string;
+  movieId: string;
+  movieTitle: string;
+  movieThumbnail: string;
+  content: string;
+  author: {
+    id: string;
+    username: string;
+    email: string;
+    fullName: string;
+    avatarPath: string;
+  };
+  toxicSpans: ToxicSpan[];
+};
