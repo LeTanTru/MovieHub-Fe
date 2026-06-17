@@ -357,9 +357,7 @@ export function CommentItem({
           />
 
           <CommentContent
-            canViewHiddenContent={canViewHiddenContent}
             isBlurWholeContent={isBlurWholeContent}
-            onToggleBlurredContent={handleViewContent}
             renderContent={renderContent}
           />
 
@@ -369,8 +367,8 @@ export function CommentItem({
             isAuthenticated={isAuthenticated}
             isAuthor={isAuthor}
             isVoteLoading={isVoteLoading}
-            isHidden={isHidden}
-            isBlurWholeContent={isBlurWholeContent}
+            canViewHiddenContent={canViewHiddenContent}
+            isVisible={isVisible}
             showDropdown={showDropdown}
             showMore={showMore}
             voteMap={voteMap}
@@ -379,7 +377,7 @@ export function CommentItem({
             onReply={handleReplyComment}
             onEdit={() => handleEditComment(comment)}
             onToggleDropdown={handleDropdownToggle}
-            onToggleBlurredContent={handleViewContent}
+            onViewContent={handleViewContent}
             onDelete={handleDeleteComment}
           />
 
@@ -417,11 +415,11 @@ CommentItem.Skeleton = function () {
   return (
     <div className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'>
       <div className='flex shrink-0 flex-col items-center gap-y-0.5'>
-        <Skeleton className='skeleton size-[45px] rounded-full! sm:size-[50px]' />
+        <Skeleton className='skeleton size-11.25 rounded-full! sm:size-12.5' />
       </div>
       <div className='grow'>
         {/* Header */}
-        <div className='flex h-[26px] items-center gap-2 sm:h-[30px]'>
+        <div className='flex h-6.5 items-center gap-2 sm:h-7.5'>
           <Skeleton className='skeleton h-4 w-24 rounded!' />
           <Skeleton className='skeleton h-4 w-16 rounded!' />
         </div>

@@ -45,8 +45,10 @@ export function MovieTabs() {
   }, [activeKey]);
 
   const handleClick = (key: string) => {
-    const currentIndex = movieTabs.findIndex((tab) => tab.key === activeKey);
-    const newIndex = movieTabs.findIndex((tab) => tab.key === key);
+    const currentIndex = movieTabs.findIndex(
+      (tab) => String(tab.value) === activeKey
+    );
+    const newIndex = movieTabs.findIndex((tab) => String(tab.value) === key);
 
     setDirection(newIndex > currentIndex ? 1 : -1);
     setActiveKey(key);
@@ -83,34 +85,39 @@ export function MovieTabs() {
         role='tablist'
         aria-label='Movie tabs'
       >
-        {movieTabs.map((tab) => (
-          <div
-            role='tab'
-            key={tab.key}
-            id={`movie-tab-${tab.key}`}
-            aria-controls={`movie-tabpanel-${tab.key}`}
-            aria-selected={tab.key === activeKey}
-            ref={(el) => {
-              tabRefs.current[tab.key] = el;
-            }}
-            className={cn(
-              'max-640:px-3 max-520:px-2 max-480:px-1 max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center justify-center px-4 py-3 font-medium text-white opacity-90 transition-opacity duration-200 ease-linear',
-              {
-                'text-golden-glow opacity-100': tab.key === activeKey
-              }
-            )}
-            onClick={() => handleClick(String(tab.key))}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleClick(String(tab.key));
-              }
-            }}
-            tabIndex={tab.key === activeKey ? 0 : -1}
-          >
-            {tab.label}
-          </div>
-        ))}
+        {movieTabs.map((tab) => {
+          const tabKey = String(tab.value);
+          const isActive = tabKey === activeKey;
+
+          return (
+            <div
+              role='tab'
+              key={tabKey}
+              id={`movie-tab-${tabKey}`}
+              aria-controls={`movie-tabpanel-${tabKey}`}
+              aria-selected={isActive}
+              ref={(el) => {
+                tabRefs.current[tabKey] = el;
+              }}
+              className={cn(
+                'max-640:px-3 max-520:px-2 max-480:px-1 max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center justify-center px-4 py-3 font-medium text-white opacity-90 transition-opacity duration-200 ease-linear',
+                {
+                  'text-golden-glow opacity-100': isActive
+                }
+              )}
+              onClick={() => handleClick(tabKey)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleClick(tabKey);
+                }
+              }}
+              tabIndex={isActive ? 0 : -1}
+            >
+              {tab.label}
+            </div>
+          );
+        })}
 
         <div
           className='bg-golden-glow absolute -bottom-px h-0.5 rounded transition-all duration-300 ease-in-out'
@@ -141,7 +148,7 @@ MovieTabs.Skeleton = function () {
         {Array.from({ length: TAB_SKELETON_COUNT }).map((_, index) => (
           <Skeleton
             key={`tab-skeleton-${index}`}
-            className='skeleton max-640:px-3 max-520:px-2 max-480:px-1 h-[45px] w-24'
+            className='skeleton max-640:px-3 max-520:px-2 max-480:px-1 h-11.25 w-24'
           />
         ))}
       </div>

@@ -9,49 +9,14 @@ import {
   MOVIE_TYPE_SERIES,
   MOVIE_TYPE_SINGLE
 } from '@/constants';
-import { cn } from '@/lib';
 import { useCategoryListQuery } from '@/queries';
 import { MovieSearchType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
 import { FaArrowRight, FaFilter } from 'react-icons/fa6';
 
+import { FilterConditionRow } from './filter-condition-row';
+
 type SearchKeys = keyof MovieSearchType;
-
-// Function to check if a filter key is for multi-select fields
-const isMultiSelectField = (key: SearchKeys): boolean => {
-  return key === 'categoryIds';
-};
-
-// Helper function to get selected values for a filter key
-const getSelectedValues = (
-  filters: { key: SearchKeys; value: string | number | string[] }[],
-  key: SearchKeys
-): (string | number | string[])[] => {
-  const filter = filters.find((item) => item.key === key);
-  if (!filter) return [];
-
-  if (isMultiSelectField(key) && Array.isArray(filter.value)) {
-    return filter.value;
-  }
-
-  return filter.value ? [filter.value] : [];
-};
-
-// Helper function to check if a specific value is selected for a filter key
-const isValueSelected = (
-  filters: { key: SearchKeys; value: string | number | string[] }[],
-  key: SearchKeys,
-  value: string | number
-): boolean => {
-  const filter = filters.find((item) => item.key === key);
-  if (!filter) return false;
-
-  if (isMultiSelectField(key) && Array.isArray(filter.value)) {
-    return filter.value.includes(String(value));
-  }
-
-  return filter.value === value;
-};
 
 type FilterProps = {
   filters: { key: SearchKeys; value: string | number | string[] }[];
@@ -178,91 +143,14 @@ export function Filter({
                 className='max-640:-mx-4 max-640:rounded-none max-640:border-x-0 max-640:border-b-0 max-640:pt-2 max-640:text-[13px] -mt-3.75 mb-3 rounded border border-solid border-white/10 pt-4 max-[640px]:mb-1.5'
               >
                 {searchConditions.map((condition) => (
-                  <div
+                  <FilterConditionRow
                     key={condition.key}
-                    className='max-800:gap-4 max-640:px-0 flex items-start justify-between gap-8 border-b border-dashed border-white/10 px-4 py-2'
-                  >
-                    <div className='max-800:w-20 max-640:text-center w-30 shrink-0 py-1.25 text-right text-white'>
-                      {condition.label}
-                    </div>
-                    <div className='flex grow flex-wrap justify-start gap-2'>
-                      {condition.value.map((value) => {
-                        // Determine if the current value is selected based on filters state
-                        const isSelected = isValueSelected(
-                          filters,
-                          condition.key,
-                          value.value
-                        );
-
-                        const handleClick = () => {
-                          // Handle multi-select logic for categoryIds, and single-select for others
-                          if (isMultiSelectField(condition.key)) {
-                            // Get current selected values for this filter key from filters state
-                            const currentValues = getSelectedValues(
-                              filters,
-                              condition.key
-                            ) as string[];
-
-                            // Toggle the clicked value in the current selected values
-                            const valueStr = String(value.value);
-                            let newValues: string[];
-
-                            // If "all" is clicked, toggle between selecting all or none
-                            if (valueStr === 'all') {
-                              // If "all" is currently selected, deselect all. Otherwise, select all.
-                              newValues = isSelected ? [] : ['all'];
-                              onFilterChange({
-                                key: condition.key,
-                                value: newValues
-                              });
-                            } else {
-                              // For other values, toggle the specific value and ensure "all" is deselected if any specific value is selected
-                              if (isSelected) {
-                                // If currently selected, remove it from the array
-                                newValues = currentValues.filter(
-                                  (v) => String(v) !== valueStr
-                                );
-                              } else {
-                                // If not currently selected, add it to the array
-                                newValues = [...currentValues, valueStr];
-                              }
-                              // If any specific value is selected, ensure "all" is not selected. If no specific values are selected, select "all".
-                              onFilterChange({
-                                key: condition.key,
-                                value:
-                                  newValues.length > 0
-                                    ? newValues.filter((v) => v !== 'all')
-                                    : ['all']
-                              });
-                            }
-                          } else {
-                            // For single-select fields, simply set the selected value
-                            onFilterChange({
-                              key: condition.key,
-                              value: value.value
-                            });
-                          }
-                        };
-
-                        return (
-                          <button
-                            type='button'
-                            key={value.value}
-                            className={cn(
-                              'hover:text-golden-glow cursor-pointer rounded border border-solid border-transparent px-2.5 py-1.25 transition-all duration-200 ease-linear',
-                              {
-                                'border-golden-glow text-golden-glow':
-                                  isSelected
-                              }
-                            )}
-                            onClick={handleClick}
-                          >
-                            {value.label}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
+                    label={condition.label}
+                    filterKey={condition.key}
+                    options={condition.value}
+                    filters={filters}
+                    onFilterChange={onFilterChange}
+                  />
                 ))}
                 <div className='max-640:gap-0 max-640:px-2 max-640:py-4 flex items-start justify-between gap-8 px-4 py-6'>
                   <div className='max-800:w-20 w-30'></div>

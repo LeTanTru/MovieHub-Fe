@@ -170,7 +170,7 @@ export function LoginForm() {
       <Separator orientation='horizontal' className='h-[0.5px]! bg-gray-500' />
 
       <div className='text-muted-foreground mt-4 text-center'>
-        Chưa có tài khoản? &nbsp;
+        Chưa có tài khoản ? &nbsp;
         <Link
           href={buildAuthPathWithRedirect(route.register.path, redirect)}
           className='hover:text-golden-glow transition-all duration-200 ease-linear'
