@@ -4,6 +4,7 @@ import { GOOGLE_WEB_LOGIN_TYPE } from '@/constants/constant';
 const authApiUrl = envConfig.NEXT_PUBLIC_AUTH_API_URL;
 const apiUrl = envConfig.NEXT_PUBLIC_API_ENDPOINT_URL;
 const mediaUrl = envConfig.NEXT_PUBLIC_API_MEDIA_URL;
+
 export const AppConstants = {
   authApiUrl: `${authApiUrl}`,
   apiUrl: `${apiUrl}`,
