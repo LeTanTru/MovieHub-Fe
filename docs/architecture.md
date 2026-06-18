@@ -1,5 +1,7 @@
 # MovieHub FE Architecture
 
+Reviewed: 2026-06-18
+
 ## Architecture Shape
 
 MovieHub FE is a Next.js App Router application with a strict domain-layered data flow:
@@ -15,7 +17,7 @@ Do not call backend URLs directly from components. Add or change endpoints in th
 
 ## API Configuration Layer
 
-`src/constants/api-config.ts` is the source of truth for backend endpoints. Each endpoint defines:
+`src/constants/api-config.ts` is the source of truth for backend endpoints. Each endpoint can define:
 
 - `baseUrl`
 - HTTP `method`
@@ -25,7 +27,7 @@ Do not call backend URLs directly from components. Add or change endpoints in th
 - `isRequiredCsrfToken`
 - upload behavior with `isUpload`
 
-Endpoints are grouped by domain, such as `movie`, `category`, `person`, `user`, `file`, `notification`, `playlist`, `review`, `comment`, and `room`.
+Endpoints are grouped by domain, such as `movie`, `category`, `person`, `account`, `file`, `notification`, `playlist`, `review`, `comment`, `room`, `survey`, and `settings`.
 
 Path parameters use `:id` placeholders:
 
@@ -57,7 +59,7 @@ Refresh flow:
 4. On success, queued requests retry with the new access token.
 5. On hard auth failure, cookies/state are cleared and the user is redirected to login.
 
-This means auth/session behavior should be changed in the internal auth routes or HTTP utility, not in individual feature components.
+Change auth/session behavior in the internal auth route handlers or HTTP utility, not in individual feature components.
 
 ## API Request Layer
 
@@ -76,7 +78,7 @@ Conventions:
 
 - File name: `<domain>.api-request.ts`.
 - Return `ApiResponse<T>` or `ApiResponseList<T>`.
-- Keep request body/params/path params explicit.
+- Keep request body, query params, and path params explicit.
 - Export through `src/api-requests/index.ts`.
 
 ## Query Layer
@@ -99,7 +101,7 @@ Important conventions:
 - Query keys come from `queryKeys` in `src/constants/master-data.ts`.
 - Every `useQuery` should unwrap API responses with `select`.
 - Components receive unwrapped data and should not chain `data.data`.
-- Use `keepPreviousData` for paginated/filter UIs that should not blank during navigation.
+- Use `keepPreviousData` for paginated or filtered UIs that should not blank during navigation.
 - Use `invalidateQueries()` from `src/utils/query.util.ts` after successful mutations.
 
 ## SSR Prefetch And Hydration
@@ -108,18 +110,19 @@ Route pages prefetch data on the server with `getQueryClient()`, then wrap the c
 
 High-value examples:
 
+- `src/app/(home)/page.tsx`
 - `src/app/movie/[slug]/page.tsx`
 - `src/app/watch/[slug]/page.tsx`
 - `src/app/search/page.tsx`
 - `src/app/room/page.tsx`
-- category, country, person, topic pages
+- category, country, person, topic, schedule, and listing pages
 
 The route page should prefetch the same query key and params used by the client query hook. If the key or params differ, hydration is missed and the client will refetch.
 
 `getQueryClient()` returns:
 
-- a fresh QueryClient on the server
-- a singleton QueryClient in the browser
+- a fresh `QueryClient` on the server
+- a singleton `QueryClient` in the browser
 
 Default query behavior:
 
@@ -144,31 +147,9 @@ Zustand stores in `src/store/` hold client-only state:
 
 Use `useShallow` for selectors that return objects. Several hooks in `src/hooks/` wrap store selectors to avoid repeated selector code in components.
 
-## Content Moderation — Toxic Spans
-
-The platform flags toxic content using character-level span annotations.
-
-`ToxicSpan` is the canonical type defined in `src/types/comment.type.ts`:
-
-```ts
-export type ToxicSpan = { start: number; end: number };
-```
-
-- `CommentResType.toxicSpans` — JSON-serialized `ToxicSpan[]` or `null`.
-- `ReviewResType.toxicSpans` — same format.
-- `ToxicCommentLockedNotificationType.toxicSpans` — already parsed `ToxicSpan[]` delivered via MQTT notification.
-
-Rendering pattern in `CommentItem` and `ReviewItem`:
-
-1. Parse `toxicSpans` string with `parseJSON<ToxicSpan[]>()`.
-2. `renderContent()` splits content text into normal segments and `<span className="blur-xs select-none">` toxic segments.
-3. `isBlurWholeContent` — blurs the entire block when status is hidden AND no specific toxic spans exist AND the user has not toggled visibility.
-4. `canViewHiddenContent` — true when hidden OR has toxic spans; enables the click-to-reveal UI.
-5. Reveal state is local: `isVisible` toggled by `handleViewContent()`.
-
 ## Auth And Session Architecture
 
-The browser does not call auth backend endpoints directly for core session work. It uses internal Next routes under `src/app/api/auth/*`.
+The browser does not call auth backend endpoints directly for core session work. It uses internal Next route handlers under `src/app/api/auth/*`.
 
 Key routes:
 
@@ -187,8 +168,28 @@ Route protection is in `src/proxy.ts`:
 - Protected prefixes: `/account`, `/survey`, `/user`
 - Public auth pages: `/forgot-password`, `/intro`, `/login`, `/register`, `/verify-otp`
 - Authenticated users are redirected away from auth pages.
-- Unauthenticated users are redirected to login with a `redirect` query param.
-- The middleware matcher also explicitly includes `/room` and `/download` but those do not require auth.
+- Unauthenticated users are redirected to login with a `redirect` query param for protected pages.
+
+## Content Moderation: Toxic Spans
+
+The platform flags toxic content using character-level span annotations.
+
+`ToxicSpan` is the canonical type defined in `src/types/comment.type.ts`:
+
+```ts
+export type ToxicSpan = { start: number; end: number };
+```
+
+- `CommentResType.toxicSpans`: JSON-serialized `ToxicSpan[]` or `null`.
+- `ReviewResType.toxicSpans`: same format.
+- `ToxicCommentLockedNotificationType.toxicSpans`: already parsed `ToxicSpan[]` delivered via MQTT notification.
+
+Rendering pattern in comments and reviews:
+
+1. Parse `toxicSpans` strings with `parseJSON<ToxicSpan[]>()`.
+2. Blur specific toxic text segments when span data exists.
+3. Blur the whole block when hidden content has no specific spans.
+4. Keep reveal state local to the rendered item.
 
 ## Video Playback Architecture
 
@@ -196,7 +197,7 @@ The watch page is centered around:
 
 - `src/app/watch/[slug]/page.tsx` for SSR prefetch and metadata.
 - `src/app/watch/[slug]/_context/watch-player-context.tsx` for playback state/actions.
-- `src/components/app/watch/watch-player-video-area.tsx` for player rendering.
+- `src/app/watch/[slug]/_hooks/` for continue-watching, episode navigation, intro/outro skip, player settings, watch history, and player data.
 - `src/components/video-player/video-player.tsx` for the reusable Vidstack player.
 
 The player supports:
@@ -206,9 +207,9 @@ The player supports:
 - Quality selection.
 - Captions/subtitles.
 - VTT thumbnails.
-- skip intro/outro controls.
-- previous/next episode buttons.
-- watch-history time updates and resume modal.
+- Skip intro/outro controls.
+- Previous/next episode buttons.
+- Watch-history time updates and resume modal.
 
 Keep video domain logic in watch context/hooks where possible. Keep the reusable player generic.
 
@@ -229,11 +230,11 @@ The app uses Next metadata APIs plus JSON-LD components in `src/components/seo`.
 
 Patterns:
 
-- Route pages define `generateMetadata()`.
-- SSG pages use `generateStaticParams()` and `revalidate = 60`.
-- Movie detail emits `Movie` schema.
-- Watch page emits `VideoObject` schema.
-- Person page emits `Person` schema.
+- Route pages define `metadata` or `generateMetadata()`.
+- Some public pages use `generateStaticParams()` and `revalidate`.
+- Movie detail emits movie schema.
+- Watch page emits video schema.
+- Person page emits person schema.
 - `src/app/sitemap.ts` generates sitemap URLs.
 - `src/app/robots.ts` controls crawl access.
 - `src/app/og/route.tsx` generates the Open Graph image.
