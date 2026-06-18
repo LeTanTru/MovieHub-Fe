@@ -82,33 +82,24 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   }, [profile, setProfile]);
 
-  const isSessionHydrating = Boolean(
-    session?.accessToken &&
-    session.userKind !== null &&
-    (!accessToken || userKind === null)
-  );
-  const isProfileHydrating = Boolean(profile && !storedProfile);
+  const isSessionPending =
+    sessionLoading ||
+    Boolean(
+      session?.accessToken &&
+      session.userKind !== null &&
+      (!accessToken || userKind === null)
+    );
 
-  // useEffect(() => {
-  //   if (pathname !== '/intro') {
-  //     const hasValidAccess = checkAccessExpiry();
-  //     if (!hasValidAccess) {
-  //       navigate.replace('/intro');
-  //     }
-  //   }
-  // }, [pathname, navigate]);
+  const isProfilePending = profileLoading || Boolean(profile && !storedProfile);
+
+  const isAppLoading =
+    !isMounted || isSessionPending || isProfilePending || loading;
 
   return (
     <LazyMotion features={domAnimation} strict>
       <AppContext.Provider
         value={{
-          loading:
-            !isMounted ||
-            loading ||
-            sessionLoading ||
-            isSessionHydrating ||
-            profileLoading ||
-            isProfileHydrating,
+          loading: isAppLoading,
           setLoading
         }}
       >
