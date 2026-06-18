@@ -1,125 +1,178 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code when working in this repository.
+
+## Project Snapshot
+
+MovieHub FE is a Vietnamese movie streaming frontend built as a single Next.js App Router application.
+
+- Framework: Next.js 16, React 19
+- Language: TypeScript
+- Styling: Tailwind CSS v4, shadcn/ui, Radix primitives, Framer Motion
+- Data: TanStack Query 5, Axios
+- Client state: Zustand
+- Forms: React Hook Form + Zod
+- Video: Vidstack + HLS.js
+- Realtime: MQTT
+- Deployment: standalone Next.js Docker image deployed by GitHub Actions
 
 ## Build Commands
 
 ```bash
 yarn install          # Install dependencies
-yarn dev              # Dev server (port 3000, Turbopack)
-yarn clean-dev        # Clean .next cache + start dev
+yarn dev              # Dev server on port 3000 with Turbopack
+yarn clean-dev        # Remove .next and start dev
 yarn build            # Production build
 yarn build:analyze    # Production build with bundle analyzer
 yarn start            # Production server
 yarn lint             # ESLint all files
-yarn lint -- src/path # Lint single file
+yarn lint -- src/path # Lint a focused file
 yarn format           # Prettier format
 ```
 
-No test runner is configured. For verification use `yarn lint`.
-
-When changing dependencies or build config, run `yarn lint && yarn build` to verify.
-
-## Pre-commit
-
-Husky + lint-staged runs ESLint + Prettier on staged files automatically on commit.
+No test runner is configured. For verification use `yarn lint`; when changing dependencies, build config, or shared behavior, run `yarn lint && yarn build`.
 
 ## Architecture
 
-### Data Flow (4-layer pattern)
+### Data Flow
 
+Follow the 4-layer API pattern for backend data:
+
+```text
+src/constants/api-config.ts
+  -> src/api-requests/<domain>.api-request.ts
+  -> src/queries/<domain>.query.ts
+  -> component/hook/route
 ```
-api-config.ts → *.api-request.ts → *.query.ts → Component
+
+Add new query keys to `queryKeys` in `src/constants/master-data.ts`.
+
+Every `useQuery` should unwrap responses with `select: (data) => data.data` or `data.data.content`. Components should receive unwrapped data and should not use `data.data`.
+
+### HTTP Layer
+
+`src/utils/http.util.ts` wraps Axios and handles:
+
+- Bearer token injection from cookies or Zustand
+- `X-Client-Type` when required by endpoint config
+- CSRF header support when configured
+- 401 refresh queue to avoid parallel refresh races
+- FormData uploads
+- `:id` path parameter substitution
+- request timeout
+
+Core auth sync goes through internal route handlers under `src/app/api/auth/*`; do not bypass these for login, logout, session, or refresh.
+
+### App Composition
+
+`src/app/layout.tsx` composes:
+
+```text
+JsonLd + BodyLoad
+QueryProvider
+  CategoryPrefetchBoundary
+    AppProvider
+      ThemeProvider
+        Suspense -> children
+        DisclaimerModal
+        MqttProvider
+        NextTopLoader
+        GoToTopButton
+      ToastContainer
 ```
 
-1. Define endpoint in `src/constants/api-config.ts`
-2. Wrap in `src/api-requests/<domain>.api-request.ts`
-3. Create React Query hook in `src/queries/<domain>.query.ts`
-4. Consume with `queryKeys` from `src/constants/master-data.ts`
+### Route Protection
 
-### HTTP Layer (`src/utils/http.util.ts`)
-
-Axios instance with automatic:
-
-- `Authorization: Bearer <token>` from cookies/localStorage
-- `X-Client-Type` header when `isRequiredXClientType: true`
-- 401 token refresh with queued request handling (prevents parallel refresh races)
-- FormData support for file uploads (auto-strips Content-Type for multipart)
-
-Auth sync: refreshed tokens sync through internal API routes (`src/app/api/auth/*`) - do not bypass this mechanism.
-
-### Route Protection (`src/proxy.ts`)
+`src/proxy.ts` controls auth redirects.
 
 - Protected prefixes: `/user`, `/account`, `/survey`
 - Public auth pages: `/login`, `/register`, `/forgot-password`, `/verify-otp`, `/intro`
-- Authenticated users accessing auth pages redirect to `/`
+- Authenticated users are redirected away from auth pages.
+- Unauthenticated users hitting protected pages are redirected to login with `redirect`.
 
-### Server State (TanStack Query)
+## Server And Client State
 
-`QueryClient` defaults in `src/components/providers/query-provider/get-query-provider.ts`:
-
-- `staleTime: 60s`, `retry: false`, `refetchOnWindowFocus: false`
-
-SSR prefetch pattern in home/movie/watch pages:
-
-```tsx
-const dehydratedState = dehydrate(queryClient);
-return (
-  <HydrationBoundary state={dehydratedState}>
-    <ClientComponent />
-  </HydrationBoundary>
-);
-```
-
-### Client State (Zustand)
-
-Stores in `src/store/` using `useShallow` for selector optimization. Auth state via `useAuthStore`.
-
-### App Composition (`src/app/layout.tsx`)
-
-Root layout wraps with (inside-out): `ThemeProvider` → `AppProvider` → `QueryProvider` → `NextTopLoader` → children → `ToastContainer`.
+- Query defaults in `src/components/providers/query-provider/get-query-client.ts`: `staleTime: 60s`, `retry: false`, `refetchOnWindowFocus: false`.
+- SSR prefetch uses `getQueryClient()`, `dehydrate`, and `HydrationBoundary`.
+- Zustand stores live in `src/store/`; use `useShallow` for selectors that return objects.
+- Realtime MQTT events should invalidate query keys rather than patching component state directly.
 
 ## Key Conventions
 
-- Use `@/*` alias for all `src/*` imports
-- Server components by default; add `'use client'` for client components
-- Use `cn()` from `@/lib/utils.ts` for className composition
-- Query keys centralized in `queryKeys` object in `src/constants/master-data.ts`
-- Tailwind v4 with custom breakpoints: `max-990`, `max-860`, `max-768`, `max-640`, `max-520`, `max-480`, `max-420`
-- Notifications: `notify.success()` / `notify.error()` from `@/utils`
-- Logging: use `logger` from `@/logger`, not `console.log`
-- Dynamic routes use `slug.id` convention; extract ID via `getIdFromSlug()`
-- Video player: Vidstack + HLS.js, caption labels normalized via `getLanguageLabel()`
-- Conventional commits enforced: `type(scope): description`
-- Barrel exports via `index.ts` in: `api-requests/`, `queries/`, `hooks/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, `schemaValidations/`
+- Use `@/*` alias for `src/*` imports.
+- Server components by default; add `'use client'` only when needed.
+- Use `cn()` from `@/lib` for className composition.
+- Query keys are centralized in `src/constants/master-data.ts`.
+- Tailwind custom breakpoints: `max-990`, `max-860`, `max-768`, `max-640`, `max-520`, `max-480`, `max-420`.
+- Notifications: `notify.success()` and `notify.error()` from `@/utils` for API mutations.
+- Logging: use `logger` from `@/logger`; do not use `console.log`.
+- Dynamic movie-like routes use `slug.id`; extract ID with `getIdFromSlug()` or `useSlugId()`.
+- Plain id routes, such as `/person/[id]`, use the raw `id`.
+- Video player logic uses Vidstack + HLS.js and watch-specific hooks/context under `src/app/watch/[slug]/`.
+- Conventional commits: `type(scope): description`.
+- Barrel exports are expected in `api-requests/`, `queries/`, `hooks/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, and `schemaValidations/`.
 
 ## Environment Variables
 
-Validated at startup in `src/config.ts` with Zod. Required keys:
+Validated at startup in `src/config.ts`.
 
-```
-NEXT_PUBLIC_NODE_ENV, NEXT_PUBLIC_AUTH_API_URL, NEXT_PUBLIC_API_ENDPOINT_URL,
-NEXT_PUBLIC_API_MEDIA_URL, NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL, NEXT_PUBLIC_URL, NEXT_PUBLIC_MEDIA_HOST,
+Required public variables:
+
+```text
+NEXT_PUBLIC_NODE_ENV
+NEXT_PUBLIC_AUTH_API_URL
+NEXT_PUBLIC_API_ENDPOINT_URL
+NEXT_PUBLIC_API_MEDIA_URL
+NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL
+NEXT_PUBLIC_URL
+NEXT_PUBLIC_MEDIA_HOST
 NEXT_PUBLIC_CLIENT_TYPE
+NEXT_PUBLIC_MQTT_BROKER
+NEXT_PUBLIC_MQTT_USERNAME
+NEXT_PUBLIC_MQTT_PASSWORD
 ```
+
+Server-only runtime variables:
+
+```text
+APP_USERNAME
+APP_PASSWORD
+GRANT_TYPE_REFRESH_TOKEN
+ACCESS_KEY
+```
+
+Do not read `.env`, `.env.local`, `supersecrets.txt`, or `credentials.json`.
 
 ## Naming Conventions
 
-| Type           | Pattern                   | Example                |
-| -------------- | ------------------------- | ---------------------- |
-| API files      | `<domain>.api-request.ts` | `movie.api-request.ts` |
-| Query files    | `<domain>.query.ts`       | `movie.query.ts`       |
-| Type files     | `<domain>.type.ts`        | `movie.type.ts`        |
-| Schema files   | `<domain>.schema.ts`      | `auth.schema.ts`       |
-| Store files    | `<domain>.store.ts`       | `auth.store.ts`        |
-| Response types | `*ResType`                | `MovieResType`         |
-| Search types   | `*SearchType`             | `MovieSearchType`      |
-| Body types     | `*BodyType`               | `LoginBodyType`        |
-| Store types    | `*StoreType`              | `AuthStoreType`        |
-| Private dirs   | `_components/` prefix     | `_components/slider/`  |
+| Type           | Pattern                                | Example                |
+| -------------- | -------------------------------------- | ---------------------- |
+| API files      | `<domain>.api-request.ts`              | `movie.api-request.ts` |
+| Query files    | `<domain>.query.ts`                    | `movie.query.ts`       |
+| Type files     | `<domain>.type.ts`                     | `movie.type.ts`        |
+| Schema files   | `<domain>.schema.ts`                   | `auth.schema.ts`       |
+| Store files    | `<domain>.store.ts`                    | `auth.store.ts`        |
+| Utils          | `<name>.util.ts`                       | `http.util.ts`         |
+| Response types | `*ResType`                             | `MovieResType`         |
+| Search types   | `*SearchType`                          | `MovieSearchType`      |
+| Body types     | `*BodyType`                            | `LoginBodyType`        |
+| Store types    | `*StoreType`                           | `AuthStoreType`        |
+| Private dirs   | `_components/`, `_hooks/`, `_context/` | `_components/slider/`  |
+
+## Documentation
+
+Start with `docs/README.md`. When architecture, routes, env vars, or conventions change, keep these files aligned:
+
+- `docs/project-overview.md`
+- `docs/architecture.md`
+- `docs/development-guide.md`
+- `AGENTS.md`
+- `CLAUDE.md`
+- `GEMINI.md`
 
 ## Important Notes
 
-- Every API mutation must show a success/error notification
-- Auth refresh relies on internal routes under `src/app/api/auth/*` - new auth flows must go through this mechanism
-- When adding new API endpoints, always add corresponding query keys to `queryKeys` in `master-data.ts`
+- Every API mutation should show a success/error notification.
+- Auth refresh relies on internal routes under `src/app/api/auth/*`.
+- Do not add protected or auth routes without checking `src/proxy.ts`.
+- Do not store parsed `toxicSpans` arrays in API types; toxic spans arrive as JSON strings and should be parsed at render/use boundaries.

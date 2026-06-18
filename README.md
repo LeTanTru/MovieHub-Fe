@@ -87,6 +87,19 @@ Guarded by `src/proxy.ts` (Next.js middleware):
 - **Protected**: `/user/*`, `/account/*`, `/survey`
 - **Public Auth**: `/login`, `/register`, `/forgot-password`, `/verify-otp`
 
+## Documentation
+
+The full documentation index lives in [docs/README.md](./docs/README.md).
+
+Core references:
+
+- [Project overview](./docs/project-overview.md)
+- [Architecture](./docs/architecture.md)
+- [Development guide](./docs/development-guide.md)
+- [Export style conventions](./docs/export-style.md)
+- [Security best practices report](./docs/security-best-practices-report.md)
+- [Component split analysis](./docs/component-split-analysis-app.md)
+
 ## Project Structure
 
 ```
@@ -133,7 +146,7 @@ src/
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - Yarn
 
 ### Installation
@@ -160,6 +173,9 @@ NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL=
 NEXT_PUBLIC_URL=http://localhost:3000
 NEXT_PUBLIC_MEDIA_HOST=
 NEXT_PUBLIC_CLIENT_TYPE=
+NEXT_PUBLIC_MQTT_BROKER=
+NEXT_PUBLIC_MQTT_USERNAME=
+NEXT_PUBLIC_MQTT_PASSWORD=
 ```
 
 > Environment variables are validated at startup via Zod in `src/config.ts`. Missing or invalid values will fail the build.
@@ -190,6 +206,9 @@ docker build \
   --build-arg NEXT_PUBLIC_URL=... \
   --build-arg NEXT_PUBLIC_MEDIA_HOST=... \
   --build-arg NEXT_PUBLIC_CLIENT_TYPE=... \
+  --build-arg NEXT_PUBLIC_MQTT_BROKER=... \
+  --build-arg NEXT_PUBLIC_MQTT_USERNAME=... \
+  --build-arg NEXT_PUBLIC_MQTT_PASSWORD=... \
   -t moviehub-fe .
 
 docker run -p 3000:3000 \
