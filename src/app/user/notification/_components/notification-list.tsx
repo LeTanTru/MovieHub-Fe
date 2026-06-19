@@ -60,7 +60,7 @@ export function NotificationList() {
     ? Number(totalUnreadData.totalUnread)
     : 0;
 
-  const { mutateAsync: updateReadNotificationMutate } =
+  const { mutate: updateReadNotificationMutate } =
     useUpdateReadNotificationMutation();
 
   const {
@@ -71,10 +71,10 @@ export function NotificationList() {
     deleteAllNotificationLoading
   } = useNotificationActions();
 
-  const handleUpdateRead = async (notification: NotificationResType) => {
+  const handleUpdateRead = (notification: NotificationResType) => {
     if (notification.isRead) return;
 
-    await updateReadNotificationMutate(
+    updateReadNotificationMutate(
       { ids: [notification.id] },
       {
         onSuccess: () => {

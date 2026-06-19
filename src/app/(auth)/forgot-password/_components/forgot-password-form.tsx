@@ -61,14 +61,12 @@ export function ForgotPasswordForm() {
   } = useResendOtpTimer();
 
   const {
-    mutateAsync: requestForgotPasswordMutate,
+    mutate: requestForgotPasswordMutate,
     isPending: requestForgotPasswordLoading
   } = useRequestForgotPasswordMutation();
 
-  const {
-    mutateAsync: forgotPasswordMutate,
-    isPending: forgotPasswordLoading
-  } = useForgotPasswordMutation();
+  const { mutate: forgotPasswordMutate, isPending: forgotPasswordLoading } =
+    useForgotPasswordMutation();
 
   useEffect(() => {
     if (getData(storageKeys.EMAIL)) {
@@ -85,12 +83,12 @@ export function ForgotPasswordForm() {
     clearTimerData();
   };
 
-  const onSubmit = async (
+  const onSubmit = (
     values: ForgotPasswordBodyType,
     form: UseFormReturn<ForgotPasswordBodyType>
   ) => {
     if (step === 1) {
-      await requestForgotPasswordMutate(values, {
+      requestForgotPasswordMutate(values, {
         onSuccess: (res) => {
           setData(storageKeys.EMAIL, values.email);
           if (res.result) {
@@ -116,7 +114,7 @@ export function ForgotPasswordForm() {
         }
       });
     } else if (step === 2) {
-      await forgotPasswordMutate(
+      forgotPasswordMutate(
         {
           ...values,
           email: getData(storageKeys.EMAIL)!

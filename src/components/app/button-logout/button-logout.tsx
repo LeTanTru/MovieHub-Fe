@@ -16,22 +16,23 @@ type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function ButtonLogout({ className, ...props }: ButtonLogoutProps) {
   const clearState = useAuthStore((s) => s.clearState);
-  const { mutateAsync: logoutMutate, isPending: logoutLoading } =
+  const { mutate: logoutMutate, isPending: logoutLoading } =
     useLogoutMutation();
 
-  const handleLogout = async () => {
-    try {
-      await logoutMutate();
-    } catch (error) {
-      logger.error('[LOGOUT_ERROR]', error);
-    } finally {
-      removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
-      clearState();
-      notify.success('Đăng xuất thành công');
-      setTimeout(() => {
-        window.location.reload();
-      }, LOGOUT_REDIRECT_DELAY);
-    }
+  const handleLogout = () => {
+    logoutMutate(undefined, {
+      onError: (error) => {
+        logger.error('[LOGOUT_ERROR]', error);
+      },
+      onSettled: () => {
+        removeData([storageKeys.ACCESS_TOKEN, storageKeys.REFRESH_TOKEN]);
+        clearState();
+        notify.success('Đăng xuất thành công');
+        setTimeout(() => {
+          window.location.reload();
+        }, LOGOUT_REDIRECT_DELAY);
+      }
+    });
   };
   return (
     <ConfirmModal

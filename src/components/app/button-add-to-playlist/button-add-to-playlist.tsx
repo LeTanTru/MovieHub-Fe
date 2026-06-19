@@ -74,7 +74,7 @@ export function ButtonAddToPlaylist({
   });
 
   const {
-    mutateAsync: updatePlaylistItemMutate,
+    mutate: updatePlaylistItemMutate,
     isPending: updatePlaylistItemLoading
   } = useUpdatePlaylistItemMutation();
 
@@ -107,7 +107,7 @@ export function ButtonAddToPlaylist({
     toggle();
   };
 
-  const handleAddToPlaylist = debounce(async (playlistId: string) => {
+  const handleAddToPlaylist = debounce((playlistId: string) => {
     const currentCheckedPlaylist = hasTouchedSelection
       ? checkedPlaylist
       : playlistByMovie;
@@ -136,7 +136,7 @@ export function ButtonAddToPlaylist({
 
     if (isLoading) return;
 
-    await updatePlaylistItemMutate(payload, {
+    updatePlaylistItemMutate(payload, {
       onSuccess: (res) => {
         if (res.result) {
           invalidateQueries(

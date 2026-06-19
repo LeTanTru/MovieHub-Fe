@@ -11,19 +11,19 @@ import { invalidateQueries, notify } from '@/utils';
 
 export const useNotificationActions = () => {
   const {
-    mutateAsync: readAllNotificationMutate,
+    mutate: readAllNotificationMutate,
     isPending: readAllNotificationLoading
   } = useReadAllNotificationMutation();
 
   const {
-    mutateAsync: deleteAllNotificationMutate,
+    mutate: deleteAllNotificationMutate,
     isPending: deleteAllNotificationLoading
   } = useDeleteAllNotificationMutation();
 
-  const { mutateAsync: deleteNotifyMutate } = useDeleteNotificationMutation();
+  const { mutate: deleteNotifyMutate } = useDeleteNotificationMutation();
 
-  const handleReadAll = async () => {
-    await readAllNotificationMutate(undefined, {
+  const handleReadAll = () => {
+    readAllNotificationMutate(undefined, {
       onSuccess: () => {
         invalidateQueries(
           [queryKeys.UNREAD_NOTIFICATION_COUNT],
@@ -38,8 +38,8 @@ export const useNotificationActions = () => {
     });
   };
 
-  const handleDeleteAll = async () => {
-    await deleteAllNotificationMutate(undefined, {
+  const handleDeleteAll = () => {
+    deleteAllNotificationMutate(undefined, {
       onSuccess: () => {
         invalidateQueries(
           [queryKeys.UNREAD_NOTIFICATION_COUNT],
@@ -54,8 +54,8 @@ export const useNotificationActions = () => {
     });
   };
 
-  const handleDelete = async (id: string) => {
-    await deleteNotifyMutate(id, {
+  const handleDelete = (id: string) => {
+    deleteNotifyMutate(id, {
       onSuccess: () => {
         invalidateQueries(
           [queryKeys.UNREAD_NOTIFICATION_COUNT],

@@ -32,8 +32,7 @@ export function MovieList() {
     }
   });
 
-  const { mutateAsync: removePlaylistItemMutate } =
-    useRemovePlaylistItemMutation();
+  const { mutate: removePlaylistItemMutate } = useRemovePlaylistItemMutation();
 
   const movieList = playlistMoviesData?.content || [];
   const totalPages = playlistMoviesData?.totalPages || 0;
@@ -42,12 +41,12 @@ export function MovieList() {
     setPage(page);
   };
 
-  const handleDeleteMovieFromPlaylist = async (movieId: string) => {
+  const handleDeleteMovieFromPlaylist = (movieId: string) => {
     if (!isAuthenticated) return;
 
     if (!playlist) return;
 
-    await removePlaylistItemMutate(
+    removePlaylistItemMutate(
       {
         playlistId: playlist.id,
         movieId

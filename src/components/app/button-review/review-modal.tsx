@@ -33,7 +33,7 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
 
-  const { mutateAsync: createReviewMutate, isPending: createReviewLoading } =
+  const { mutate: createReviewMutate, isPending: createReviewLoading } =
     useCreateReviewMutation();
 
   const initialValues: ReviewBodyType = useMemo(
@@ -50,7 +50,7 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
     setSelectedRating(rating);
   };
 
-  const handleSubmit = async (values: ReviewBodyType) => {
+  const handleSubmit = (values: ReviewBodyType) => {
     if (!isAuthenticated) return;
 
     if (selectedRating === null) {
@@ -63,7 +63,7 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
       return;
     }
 
-    await createReviewMutate(
+    createReviewMutate(
       {
         ...values,
         rate: selectedRating || values.rate

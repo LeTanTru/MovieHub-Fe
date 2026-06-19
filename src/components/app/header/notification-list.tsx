@@ -24,15 +24,15 @@ export function NotificationList({
 }: Props) {
   const { isAuthenticated } = useAuth();
 
-  const { mutateAsync: updateReadNotificationMutate } =
+  const { mutate: updateReadNotificationMutate } =
     useUpdateReadNotificationMutation();
 
-  const handleUpdateRead = async (notification: NotificationResType) => {
+  const handleUpdateRead = (notification: NotificationResType) => {
     if (!isAuthenticated) return;
 
     if (notification.isRead) return;
 
-    await updateReadNotificationMutate(
+    updateReadNotificationMutate(
       { ids: [notification.id] },
       {
         onSuccess: () => {
@@ -40,11 +40,10 @@ export function NotificationList({
             [queryKeys.UNREAD_NOTIFICATION_COUNT],
             [queryKeys.NOTIFICATION_LIST]
           );
+          onItemClick?.();
         }
       }
     );
-
-    onItemClick?.();
   };
 
   if (loading) {
