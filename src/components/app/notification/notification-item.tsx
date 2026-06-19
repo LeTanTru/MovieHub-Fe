@@ -19,7 +19,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 type NotificationItemProps = {
   notification: NotificationResType;
-  onUpdateRead: (notification: NotificationResType) => Promise<void>;
+  onUpdateRead: (notification: NotificationResType) => void;
   onDelete: (id: string) => void;
 };
 
