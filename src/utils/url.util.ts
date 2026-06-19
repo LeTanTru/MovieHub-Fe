@@ -72,7 +72,7 @@ export const renderFileUrl = (
 };
 
 export const getIdFromSlug = (slug: string) => {
-  return slug.split('.')[1];
+  return slug.split('.').at(-1) || '';
 };
 
 export const generateSlug = (str: string) => {

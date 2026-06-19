@@ -66,7 +66,7 @@ export const route = defineRoute({
     path: '/forgot-password'
   },
   verifyOtp: {
-    path: 'verify-otp'
+    path: '/verify-otp'
   },
   search: {
     path: '/search'
