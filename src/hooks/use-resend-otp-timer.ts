@@ -94,7 +94,7 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
 export const useResendOtpTimer = () => {
   const [state, dispatch] = useReducer(resendReducer, initialResendState);
   const lastResendTimeRef = useRef(state.lastResendTime);
-  const { mutateAsync: resendOtpMutate, isPending: resendOtpLoading } =
+  const { mutate: resendOtpMutate, isPending: resendOtpLoading } =
     useResendOtpMutation();
 
   const getResendData = () => {
@@ -160,7 +160,7 @@ export const useResendOtpTimer = () => {
     return () => clearInterval(interval);
   }, [state.resendData.count]);
 
-  const handleResendOtp = async () => {
+  const handleResendOtp = () => {
     const email = getData(storageKeys.EMAIL);
     if (!email) return;
 
@@ -184,7 +184,7 @@ export const useResendOtpTimer = () => {
       return;
     }
 
-    await resendOtpMutate(
+    resendOtpMutate(
       { email },
       {
         onSuccess: (res) => {

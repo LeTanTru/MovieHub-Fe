@@ -14,10 +14,10 @@ import { useAuth } from './use-auth';
 export const useToggleFavourite = (type: number = FAVOURITE_TYPE_MOVIE) => {
   const { isAuthenticated } = useAuth();
 
-  const { mutateAsync: addFavourite, isPending: addFavouriteLoading } =
+  const { mutate: addFavourite, isPending: addFavouriteLoading } =
     useFavouriteMutation();
 
-  const { mutateAsync: removeFavourite, isPending: removeFavouriteLoading } =
+  const { mutate: removeFavourite, isPending: removeFavouriteLoading } =
     useDeleteFavouriteMutation();
 
   const { data: favouriteListIdsData } = useFavouriteListIdsQuery({
@@ -27,7 +27,7 @@ export const useToggleFavourite = (type: number = FAVOURITE_TYPE_MOVIE) => {
 
   const favouriteListIds = favouriteListIdsData?.ids || [];
 
-  const handleVote = async (targetId: string, isLiked: boolean) => {
+  const handleVote = (targetId: string, isLiked: boolean) => {
     if (!isAuthenticated) {
       notify.error(
         <span>
@@ -50,7 +50,7 @@ export const useToggleFavourite = (type: number = FAVOURITE_TYPE_MOVIE) => {
 
     if (loading) return;
 
-    await mutate(
+    mutate(
       { targetId, type },
       {
         onSuccess: (res) => {

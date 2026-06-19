@@ -67,7 +67,7 @@ export function SettingsForm() {
     [profile?.settings]
   );
 
-  const { mutateAsync: updateSettingMutate, isPending } =
+  const { mutate: updateSettingMutate, isPending } =
     useUpdateSettingsMutation();
 
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
@@ -98,11 +98,11 @@ export function SettingsForm() {
     [settings]
   );
 
-  const onSubmit = async (
+  const onSubmit = (
     values: SettingBodyType,
     form: UseFormReturn<SettingBodyType>
   ) => {
-    await updateSettingMutate(values, {
+    updateSettingMutate(values, {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Cập nhật cài đặt thành công');

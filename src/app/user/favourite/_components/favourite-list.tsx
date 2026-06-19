@@ -34,7 +34,7 @@ export function FavouriteList() {
     enabled: isAuthenticated
   });
 
-  const { mutateAsync: deleteFavouriteMutate } = useDeleteFavouriteMutation();
+  const { mutate: deleteFavouriteMutate } = useDeleteFavouriteMutation();
 
   const favouriteList = favouriteListData?.content || [];
 
@@ -53,10 +53,10 @@ export function FavouriteList() {
     setPage(1);
   };
 
-  const handleDeleteFavourite = async (targetId: string) => {
+  const handleDeleteFavourite = (targetId: string) => {
     if (!isAuthenticated) return;
 
-    await deleteFavouriteMutate(
+    deleteFavouriteMutate(
       { targetId, type: activeTab },
       {
         onSuccess: (res) => {

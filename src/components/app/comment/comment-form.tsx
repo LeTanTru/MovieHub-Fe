@@ -64,9 +64,9 @@ export function CommentForm({
 
   const authorInfo = replyingComment?.author;
 
-  const { mutateAsync: createCommentMutate, isPending: createCommentLoading } =
+  const { mutate: createCommentMutate, isPending: createCommentLoading } =
     useCreateCommentMutation();
-  const { mutateAsync: updateCommentMutate, isPending: updateCommentLoading } =
+  const { mutate: updateCommentMutate, isPending: updateCommentLoading } =
     useUpdateCommentMutation();
 
   const mutationLoading = createCommentLoading || updateCommentLoading;
@@ -102,7 +102,7 @@ export function CommentForm({
     ]
   );
 
-  const handleSubmit = async (
+  const handleSubmit = (
     values: CommentBodyType,
     form?: UseFormReturn<CommentBodyType>
   ) => {
@@ -121,7 +121,7 @@ export function CommentForm({
       ? { ...values, id: editingComment.id }
       : values;
 
-    await mutate(payload, {
+    mutate(payload, {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success(
@@ -252,7 +252,7 @@ export function CommentForm({
                     onClick={() => setShowPicker((prev) => !prev)}
                     className='flex h-fit items-center justify-center px-0! py-0 hover:bg-transparent'
                     variant='ghost'
-                    disabled={form.formState.isSubmitting}
+                    disabled={mutationLoading}
                   >
                     <FaRegFaceGrinBeam className='text-golden-glow size-5' />
                   </Button>

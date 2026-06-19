@@ -65,12 +65,12 @@ export function ReviewList({
     }
   });
 
-  const { mutateAsync: deleteReviewMutate } = useDeleteReviewMutation();
-  const { mutateAsync: voteReviewMutate, isPending: voteReviewLoading } =
+  const { mutate: deleteReviewMutate } = useDeleteReviewMutation();
+  const { mutate: voteReviewMutate, isPending: voteReviewLoading } =
     useVoteReviewMutation();
 
-  const handleDeleteReview = async (id: string) => {
-    await deleteReviewMutate(id, {
+  const handleDeleteReview = (id: string) => {
+    deleteReviewMutate(id, {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa đánh giá thành công');
@@ -91,7 +91,7 @@ export function ReviewList({
     });
   };
 
-  const handleVote = async (id: string, type: number) => {
+  const handleVote = (id: string, type: number) => {
     if (!isAuthenticated) {
       notify.error(
         <span>
@@ -111,7 +111,7 @@ export function ReviewList({
 
     if (voteReviewLoading) return;
 
-    await voteReviewMutate(
+    voteReviewMutate(
       { id, type },
       {
         onSuccess: (res) => {

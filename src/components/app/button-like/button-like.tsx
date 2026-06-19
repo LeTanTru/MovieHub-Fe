@@ -82,10 +82,10 @@ export function ButtonLike({
   const label = variant ? labels[variant] : 'phim';
   const defaultText = variant ? textVariants[variant] : 'Thích';
 
-  const { mutateAsync: addFavourite, isPending: addFavouriteLoading } =
+  const { mutate: addFavourite, isPending: addFavouriteLoading } =
     useFavouriteMutation();
 
-  const { mutateAsync: removeFavourite, isPending: removeFavouriteLoading } =
+  const { mutate: removeFavourite, isPending: removeFavouriteLoading } =
     useDeleteFavouriteMutation();
 
   const { data: favouriteId, refetch: getFavourite } = useFavouriteQuery({
@@ -109,7 +109,7 @@ export function ButtonLike({
     setIsLiked(!!favouriteId && isAuthenticated);
   }, [favouriteId, isAuthenticated]);
 
-  const handleVote = async () => {
+  const handleVote = () => {
     startAnimation();
 
     if (!isAuthenticated) {
@@ -134,7 +134,7 @@ export function ButtonLike({
 
     if (loading) return;
 
-    await mutate(
+    mutate(
       { targetId, type: favouriteType },
       {
         onSuccess: () => {

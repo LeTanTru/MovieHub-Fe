@@ -31,8 +31,7 @@ export function LoginForm() {
     searchParams: { redirect }
   } = useQueryParams<{ redirect?: string }>();
 
-  const { mutateAsync: loginMutate, isPending: loginLoading } =
-    useLoginMutation();
+  const { mutate: loginMutate, isPending: loginLoading } = useLoginMutation();
 
   const { setAccessToken, setUserKind } = useAuthStore(
     useShallow((s) => {
@@ -45,8 +44,8 @@ export function LoginForm() {
 
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
 
-  const onSubmit = async (values: LoginBodyType) => {
-    await loginMutate(values, {
+  const onSubmit = (values: LoginBodyType) => {
+    loginMutate(values, {
       onSuccess: async (res) => {
         if (res.result) {
           const accessToken = res.data?.access_token;

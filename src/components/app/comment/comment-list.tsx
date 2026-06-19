@@ -72,9 +72,9 @@ export function CommentList({
 
   const targetRootId = targetParentId || targetCommentId;
 
-  const { mutateAsync: deleteCommentMutate } = useDeleteCommentMutation();
+  const { mutate: deleteCommentMutate } = useDeleteCommentMutation();
 
-  const { mutateAsync: voteCommentMutate, isPending: voteCommentLoading } =
+  const { mutate: voteCommentMutate, isPending: voteCommentLoading } =
     useVoteCommentMutation();
 
   const { data: voteCommentList = [] } = useVoteCommentListQuery({
@@ -89,8 +89,8 @@ export function CommentList({
     }
   });
 
-  const handleDeleteComment = async (comment: CommentResType) => {
-    await deleteCommentMutate(comment.id, {
+  const handleDeleteComment = (comment: CommentResType) => {
+    deleteCommentMutate(comment.id, {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa bình luận thành công');
@@ -116,11 +116,7 @@ export function CommentList({
     });
   };
 
-  const handleVote = async (
-    id: string,
-    type: number,
-    onSuccess?: () => void
-  ) => {
+  const handleVote = (id: string, type: number, onSuccess?: () => void) => {
     if (!isAuthenticated) {
       notify.error(
         <span>
@@ -140,7 +136,7 @@ export function CommentList({
 
     if (voteCommentLoading) return;
 
-    await voteCommentMutate(
+    voteCommentMutate(
       { id, type },
       {
         onSuccess: (res) => {

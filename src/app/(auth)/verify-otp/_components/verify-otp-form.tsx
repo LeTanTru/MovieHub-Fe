@@ -50,7 +50,7 @@ export function VerifyOtpForm() {
     clearTimerData
   } = useResendOtpTimer();
 
-  const { mutateAsync: verifyOtpMutate, isPending: verifyOtpLoading } =
+  const { mutate: verifyOtpMutate, isPending: verifyOtpLoading } =
     useVerifyOtpMutation();
   const email = getData(storageKeys.EMAIL) ?? '';
 
@@ -88,11 +88,11 @@ export function VerifyOtpForm() {
     navigate.push(registerPath);
   };
 
-  const onSubmit = async (
+  const onSubmit = (
     values: VerifyOtpBodyType,
     form: UseFormReturn<VerifyOtpBodyType>
   ) => {
-    await verifyOtpMutate(values, {
+    verifyOtpMutate(values, {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Xác thực OTP thành công');

@@ -16,7 +16,7 @@ export function SurveyList() {
   const { data: movieList = [], isLoading } =
     useSurveyListQuery(!!isAuthenticated);
 
-  const { mutateAsync: makeSurveyMutate, isPending } = useMakeSurveyMutation();
+  const { mutate: makeSurveyMutate, isPending } = useMakeSurveyMutation();
 
   const [selectedMovieIds, setSelectedMovieIds] = useState<string[]>([]);
 
@@ -28,8 +28,8 @@ export function SurveyList() {
     );
   };
 
-  const handleSubmit = async () => {
-    await makeSurveyMutate(
+  const handleSubmit = () => {
+    makeSurveyMutate(
       {
         movieIds: selectedMovieIds
       },

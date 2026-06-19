@@ -18,13 +18,13 @@ export function ButtonDeletePlaylist({ id }: ButtonDeletePlaylistProps) {
 
   const { selectedPlaylist, setSelectedPlaylist } = useSelectedPlaylist();
 
-  const { mutateAsync: deletePlaylistMutate, isPending } =
+  const { mutate: deletePlaylistMutate, isPending } =
     useDeletePlaylistMutation();
 
-  const handleDelete = async () => {
+  const handleDelete = () => {
     if (!isAuthenticated) return;
 
-    await deletePlaylistMutate(id, {
+    deletePlaylistMutate(id, {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Xóa danh sách phát thành công');
