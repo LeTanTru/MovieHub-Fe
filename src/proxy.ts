@@ -16,8 +16,12 @@ export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const accessToken = request.cookies.get(storageKeys.ACCESS_TOKEN)?.value;
   const refreshToken = request.cookies.get(storageKeys.REFRESH_TOKEN)?.value;
-  const isAuthPath = authPaths.some((path) => pathname.startsWith(path));
-  const isPrivatePath = privatePaths.some((path) => pathname.startsWith(path));
+  const isAuthPath = authPaths.some(
+    (path) => pathname === path || pathname.startsWith(path + '/')
+  );
+  const isPrivatePath = privatePaths.some(
+    (path) => pathname === path || pathname.startsWith(path + '/')
+  );
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(storageKeys.X_URL, request.url);

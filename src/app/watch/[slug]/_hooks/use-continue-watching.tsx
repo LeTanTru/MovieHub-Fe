@@ -48,8 +48,9 @@ export const useContinueWatching = ({
       showContinueModal();
     } else {
       setLastWatchedSeconds(0);
+      closeContinueModal();
     }
-  }, [movieItemId, watchHistories, showContinueModal]);
+  }, [movieItemId, watchHistories, showContinueModal, closeContinueModal]);
 
   const handleContinueWatching = () => {
     if (playerRef.current && lastWatchedSeconds > 0) {

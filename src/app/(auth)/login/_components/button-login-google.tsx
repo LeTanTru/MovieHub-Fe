@@ -95,8 +95,10 @@ export function ButtonLoginGoogle() {
       );
 
       const onMessage = async (event: MessageEvent) => {
-        if (event.origin !== envConfig.NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL)
-          return;
+        const callbackOrigin = new URL(
+          envConfig.NEXT_PUBLIC_GOOGLE_LOGIN_CALLBACK_URL
+        ).origin;
+        if (event.origin !== callbackOrigin) return;
         if (event.data?.code) {
           window.removeEventListener('message', onMessage);
           messageListenerRef.current = null;

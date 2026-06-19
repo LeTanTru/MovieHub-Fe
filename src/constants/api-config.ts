@@ -59,13 +59,15 @@ export const apiConfig = defineApiConfig({
         baseUrl: `${AppConstants.authApiUrl}/v1/user/auth/social-login`,
         method: 'GET',
         headers: baseHeader,
-        isRequiredXClientType: true
+        isRequiredXClientType: true,
+        ignoreAuth: true
       },
       webCallback: {
         baseUrl: `${AppConstants.authApiUrl}/v1/user/auth/web-callback`,
         method: 'POST',
         headers: baseHeader,
-        isRequiredXClientType: true
+        isRequiredXClientType: true,
+        ignoreAuth: true
       }
     },
     changePassword: {
@@ -78,13 +80,15 @@ export const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.authApiUrl}/v1/user/forgot-password`,
       method: 'POST',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      ignoreAuth: true
     },
     login: {
       baseUrl: `${AppConstants.authApiUrl}/v1/user/login`,
       method: 'POST',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      ignoreAuth: true
     },
     getProfile: {
       baseUrl: `${AppConstants.authApiUrl}/v1/user/profile`,
@@ -96,19 +100,22 @@ export const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.authApiUrl}/v1/user/register`,
       method: 'POST',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      ignoreAuth: true
     },
     requestForgotPassword: {
       baseUrl: `${AppConstants.authApiUrl}/v1/user/request-forgot-password`,
       method: 'POST',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      ignoreAuth: true
     },
     resendOtp: {
       baseUrl: `${AppConstants.authApiUrl}/v1/user/resend-otp`,
       method: 'POST',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      ignoreAuth: true
     },
     updateProfile: {
       baseUrl: `${AppConstants.authApiUrl}/v1/user/update-profile`,
@@ -120,7 +127,8 @@ export const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.authApiUrl}/v1/user/verify-otp`,
       method: 'POST',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      ignoreAuth: true
     },
     refreshToken: {
       baseUrl: `${AppConstants.authApiUrl}/api/token`,

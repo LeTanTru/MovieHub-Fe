@@ -13,6 +13,7 @@ export async function POST() {
     await Promise.all([
       removeCookie(storageKeys.ACCESS_TOKEN),
       removeCookie(storageKeys.REFRESH_TOKEN),
+      removeCookie(storageKeys.USER_KIND),
       removeCookie(storageKeys.CSRF_TOKEN)
     ]);
 
@@ -34,6 +35,7 @@ export async function POST() {
       await Promise.all([
         removeCookie(storageKeys.ACCESS_TOKEN),
         removeCookie(storageKeys.REFRESH_TOKEN),
+        removeCookie(storageKeys.USER_KIND),
         removeCookie(storageKeys.CSRF_TOKEN)
       ]);
 
@@ -56,6 +58,7 @@ export async function POST() {
     await Promise.all([
       removeCookie(storageKeys.ACCESS_TOKEN),
       removeCookie(storageKeys.REFRESH_TOKEN),
+      removeCookie(storageKeys.USER_KIND),
       removeCookie(storageKeys.CSRF_TOKEN)
     ]);
 

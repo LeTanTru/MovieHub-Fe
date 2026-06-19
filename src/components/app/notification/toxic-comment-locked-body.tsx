@@ -8,7 +8,6 @@ import {
 } from '@/types';
 import {
   convertUTCToLocal,
-  generatePath,
   parseJSON,
   renderImageUrl,
   renderListPageUrl,
@@ -46,9 +45,7 @@ export function ToxicCommentLockedBody({
       onClick={handleClick}
       className='flex flex-1 items-center justify-between gap-2 pl-1'
       href={renderListPageUrl(
-        generatePath(route.movie.path, {
-          id: body?.movieId || ''
-        }),
+        `${route.movie.path}/${body?.movieId}`,
         serializeParams({
           movieTitle: body?.movieTitle
         })

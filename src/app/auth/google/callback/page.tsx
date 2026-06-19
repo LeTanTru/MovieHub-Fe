@@ -12,9 +12,10 @@ export default function GoogleCallback() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
+    const targetOrigin = new URL(callbackUrl).origin;
 
     if (code && window.opener) {
-      window.opener.postMessage({ code }, callbackUrl);
+      window.opener.postMessage({ code }, targetOrigin);
 
       window.close();
     } else {

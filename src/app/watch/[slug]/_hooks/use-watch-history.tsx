@@ -45,11 +45,9 @@ export const useWatchHistory = ({
 
   // Save on episode/movie item change, then reset position
   useEffect(() => {
-    saveWatchHistory().then(() => {
-      currentSecondsRef.current = 0;
-      onEpisodeChange?.();
-    });
-  }, [movieItemId, saveWatchHistory]); // eslint-disable-line react-hooks/exhaustive-deps
+    currentSecondsRef.current = 0;
+    onEpisodeChange?.();
+  }, [currentSecondsRef, movieItemId, onEpisodeChange]);
 
   // Save every 60 seconds during playback
   useEffect(() => {

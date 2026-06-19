@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     const res = await http.post<LoginResType>(apiConfig.user.login, {
-      body: { ...body, grant_type: process.env.GRANT_TYPE },
+      body: { ...body, grant_type: process.env.GRANT_TYPE_REFRESH_TOKEN },
       options: {
         headers: {
           Authorization: getBasicAuthHeader()

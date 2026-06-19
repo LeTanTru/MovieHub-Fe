@@ -25,7 +25,7 @@ export const useUpdateProfileMutation = () => {
       const queryClient = getQueryClient();
       const res = await accountApiRequest.getProfile();
       useAuthStore.getState().setProfile(res.data as ProfileResType);
-      queryClient.setQueryData([queryKeys.PROFILE], res.data);
+      queryClient.setQueryData([queryKeys.PROFILE], res);
     }
   });
 };
