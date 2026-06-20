@@ -17,7 +17,7 @@ export function ButtonReport({ className }: ButtonReportProps) {
         className
       )}
     >
-      <FaFlag /> <span className='max-520:hidden'>Báo lỗi</span>
+      <FaFlag /> <span className='max-640:sr-only'>Báo lỗi</span>
     </Button>
   );
 }

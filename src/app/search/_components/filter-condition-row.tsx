@@ -65,8 +65,8 @@ export function FilterConditionRow({
   onFilterChange
 }: FilterConditionRowProps) {
   return (
-    <div className='max-800:gap-4 max-640:px-0 flex items-start justify-between gap-8 border-b border-dashed border-white/10 px-4 py-2'>
-      <div className='max-800:w-20 max-640:text-center w-30 shrink-0 py-1.25 text-right text-white'>
+    <div className='max-800:gap-3 max-640:px-0 flex items-start justify-between gap-4 border-b border-dashed border-white/10 px-4 py-2'>
+      <div className='max-640:w-30 min-w-25 shrink-0 py-1.25 text-center text-white'>
         {label}
       </div>
       <div className='flex grow flex-wrap justify-start gap-2'>

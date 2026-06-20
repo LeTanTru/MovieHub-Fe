@@ -22,8 +22,8 @@ import type { ApiResponseNoData } from '@/types';
 import { ImageCropperDialog } from './image-cropper-dialog';
 
 const DEFAULT_FIELD_SIZE = 70;
-const REMOVE_BUTTON_OFFSET_PERCENT = 6;
-const REMOVE_BUTTON_OFFSET_PX = -8;
+const REMOVE_BUTTON_OFFSET_PERCENT = 4;
+const REMOVE_BUTTON_OFFSET_PX = -4;
 
 type UploadImageFieldProps<T extends FieldValues> = {
   control: Control<T>;
