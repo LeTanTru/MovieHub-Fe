@@ -9,9 +9,6 @@ import { useEffect } from 'react';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import { Discussion } from '@/components/app/discussion';
-import { MovieActionBar } from '@/components/app/movie-action-bar';
-import { MovieTabs } from '@/components/app/movie-tabs';
 import { NotFound } from './not-found';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MAX_PAGE_SIZE } from '@/constants';
@@ -90,11 +87,7 @@ Movie.Skeleton = function () {
       <Container className='relative z-9 min-h-[calc(100vh-400px)] pb-40'>
         <div className='max-1900:-mt-25 max-1120:flex-col max-1120:-mt-37.5 max-640:-mt-30 max-640:px-4 max-640:py-0 max-1120:flex-col relative z-3 mx-auto -mt-50 flex w-full max-w-410 items-stretch justify-between px-5'>
           <MovieSide.Skeleton />
-          <div className='bg-main-background/60 max-1120:bg-transparent max-1120:rounded-none max-1120:backdrop-blur-none flex grow flex-col rounded-tl-[48px] rounded-tr-[20px] rounded-br-[20px] rounded-bl-[20px] backdrop-blur-[20px]'>
-            <MovieActionBar.Skeleton />
-            <MovieTabs.Skeleton />
-            <Discussion.Skeleton />
-          </div>
+          <MovieMain.Skeleton />
         </div>
       </Container>
     </>

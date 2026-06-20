@@ -3,6 +3,7 @@
 import { ActorCell } from './actor-cell';
 import { cn } from '@/lib';
 import { PersonResType } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type ActorListProps = {
   actors: PersonResType[];
@@ -37,3 +38,22 @@ export function ActorList({ actors }: ActorListProps) {
     </div>
   );
 }
+
+ActorList.Skeleton = function () {
+  return (
+    <div className='border-t border-solid border-white/10 pt-7.5'>
+      <Skeleton className='skeleton mb-8 h-6 w-24' />
+      <div className='max-1120:grid-cols-6 max-640:grid-cols-3 max-800:grid-cols-5 max-480:grid-cols-2 max-640:text-[13px] max-520:text-xs grid grid-cols-3 gap-x-2.5 gap-y-6'>
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div
+            key={`actor-${index}`}
+            className='flex flex-col items-center gap-3 text-center'
+          >
+            <Skeleton className='skeleton size-20 rounded-full!' />
+            <Skeleton className='skeleton h-4 w-16' />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

@@ -40,7 +40,7 @@ export function ReviewAction({
   onDelete,
   onOpenReportModal
 }: ReviewActionProps) {
-  const showMore = canDelete || canReport || isHidden;
+  const showMore = isHidden || canDelete || canReport;
 
   return (
     <div className='max-640:mt-3 relative mt-4 flex items-center gap-4'>

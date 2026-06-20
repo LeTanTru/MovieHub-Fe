@@ -64,7 +64,7 @@ export function CommentAction({
   onDelete,
   onOpenReportModal
 }: CommentActionProps) {
-  const showMore = isHidden || canReply || canEdit || canDelete || canReport;
+  const showMore = isHidden || canDelete || canReport;
 
   return (
     <div className='relative mt-3 flex items-center gap-4'>

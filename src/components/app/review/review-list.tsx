@@ -23,7 +23,6 @@ import { logger } from '@/logger';
 import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
-import { cn } from '@/lib';
 import { useState } from 'react';
 import ReviewReportModal from './review-report-modal';
 
@@ -224,11 +223,7 @@ export function ReviewList({
 
   return (
     <>
-      <div
-        className={cn('flex flex-col justify-between gap-4', {
-          'max-640:mt-6 max-520:mt-4 mt-8': isAuthenticated
-        })}
-      >
+      <div className='mt-4 flex flex-col justify-between gap-4'>
         <AnimatePresence initial={false}>
           {reviewList
             .filter((review) => review?.id)

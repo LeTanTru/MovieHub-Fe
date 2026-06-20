@@ -300,7 +300,7 @@ export function CommentList({
 
   if (isLoading)
     return (
-      <div className='mt-12 flex flex-col justify-between gap-6'>
+      <div className='mt-6 flex flex-col justify-between gap-6'>
         {Array.from({ length: COMMENT_SKELETON_COUNT }).map((_, index) => (
           <CommentItem.Skeleton key={`comment-skeleton-${index}`} />
         ))}
@@ -328,7 +328,7 @@ export function CommentList({
     <>
       <div
         className={cn('flex flex-col justify-between gap-4', {
-          'max-640:mt-6 max-520:mt-4 mt-8': isAuthenticated
+          'mt-4': isAuthenticated
         })}
       >
         {renderChildren(commentList, 0)}

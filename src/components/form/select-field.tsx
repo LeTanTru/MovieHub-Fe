@@ -218,7 +218,7 @@ export function SelectField<
                   </PopoverTrigger>
                   <PopoverContent
                     sideOffset={8}
-                    className='w-(--radix-popover-trigger-width) border-none p-0 shadow-[0px_0px_10px_2px] shadow-gray-200'
+                    className='w-(--radix-popover-trigger-width) border-none p-0'
                   >
                     <Command
                       ref={commandRef}
@@ -249,7 +249,7 @@ export function SelectField<
                         }}
                       />
 
-                      <CommandEmpty className='mx-auto py-4 text-center text-sm'>
+                      <CommandEmpty className='mx-auto py-4 text-center'>
                         <Image
                           src={emptyData.src}
                           width={120}

@@ -1,10 +1,13 @@
 import { ActorCell } from './actor-cell';
 import { cn } from '@/lib';
 import { PersonResType } from '@/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type ActorListProps = {
   actors: PersonResType[];
 };
+
+const ACTOR_SKELETON_COUNT = 6;
 
 export function ActorList({ actors }: ActorListProps) {
   return (
@@ -32,3 +35,22 @@ export function ActorList({ actors }: ActorListProps) {
     </div>
   );
 }
+
+ActorList.Skeleton = function () {
+  return (
+    <div className='max-1120:hidden mb-5'>
+      <Skeleton className='skeleton mb-8 h-8 w-32' />
+      <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
+        {Array.from({ length: ACTOR_SKELETON_COUNT }).map((_, index) => (
+          <div
+            key={`actor-skeleton-${index}`}
+            className='flex flex-col items-center gap-3 text-center'
+          >
+            <Skeleton className='skeleton size-20 rounded-full!' />
+            <Skeleton className='skeleton h-4 w-16' />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};

@@ -12,10 +12,9 @@ Use this index to find the right project notes quickly. These docs describe the 
 
 ## Conventions And Workflows
 
-| Document                                                        | Purpose                                                                     |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [Export style conventions](./export-style.md)                   | Canonical export style by file category.                                    |
-| [Skeleton loading audit plan](./skeleton-loading-audit-plan.md) | Checklist and workflow for verifying skeleton loaders against real layouts. |
+| Document                                      | Purpose                                  |
+| --------------------------------------------- | ---------------------------------------- |
+| [Export style conventions](./export-style.md) | Canonical export style by file category. |
 
 ## Reviews And Audit Reports
 

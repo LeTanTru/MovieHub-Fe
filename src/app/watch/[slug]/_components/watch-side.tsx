@@ -6,6 +6,7 @@ import { MOVIE_WATCH_DISCUSSION_ID } from '@/constants';
 import { ActorList, SuggestionList } from '@/components/app/watch';
 import { useMovieInfo, useSlugId } from '@/hooks';
 import { useSuggestionMovieListQuery } from '@/queries';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function WatchSide() {
   const { id: movieId } = useSlugId();
@@ -38,3 +39,18 @@ export function WatchSide() {
     </div>
   );
 }
+
+WatchSide.Skeleton = function () {
+  return (
+    <div className='max-1360:w-95 max-1120:border-none max-1120:w-full max-1120:p-7.5 max-990:p-5 max-640:pt-0 flex w-110 shrink-0 flex-col gap-7.5 border-l border-solid border-white/10 p-10'>
+      <div className='flex items-center justify-end gap-4'>
+        <Skeleton className='skeleton h-9 w-28' />
+        <Skeleton className='skeleton h-9 w-28' />
+        <Skeleton className='skeleton h-9 w-28' />
+      </div>
+
+      <ActorList.Skeleton />
+      <SuggestionList.Skeleton />
+    </div>
+  );
+};
