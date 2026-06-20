@@ -69,16 +69,16 @@ Watch.Skeleton = function () {
             <Skeleton className='skeleton absolute inset-0 h-full w-full rounded-none!' />
           </div>
           <div className='player-controls bg-covert-black max-990:h-13.5 max-800:rounded-none flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
-            <div className='max-1280:px-0 max-640:gap-0 max-640:px-0.5 max-1280:gap-0 max-520:px-4 max-520:gap-4 flex w-full items-center gap-2 px-4'>
-              <Skeleton className='skeleton h-9 w-20' />
-              <Skeleton className='skeleton h-9 w-20' />
+            <div className='max-1280:px-0 max-640:gap-2 max-640:px-2 max-1280:gap-0 max-520:px-4 max-520:gap-4 flex w-full items-center gap-2 px-4'>
+              <Skeleton className='skeleton max-640:w-9 max-520:w-13 h-9 w-20' />
+              <Skeleton className='skeleton max-640:w-9 max-520:w-13 h-9 w-20' />
               <Skeleton className='skeleton max-990:hidden h-9 w-20' />
               <Skeleton className='skeleton max-990:hidden h-9 w-20' />
               <Skeleton className='skeleton max-1120:hidden h-9 w-20' />
-              <Skeleton className='skeleton h-9 w-20' />
-              <Skeleton className='skeleton h-9 w-20' />
+              <Skeleton className='skeleton max-640:w-9 max-520:w-13 h-9 w-20' />
+              <Skeleton className='skeleton max-640:w-9 max-520:w-13 h-9 w-20' />
               <div className='grow'></div>
-              <Skeleton className='skeleton h-9 w-20' />
+              <Skeleton className='skeleton max-640:w-9 max-520:w-13 h-9 w-20' />
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@ Watch.Skeleton = function () {
           {/* WatchEpisode Skeleton */}
           <div>
             <Skeleton className='skeleton mb-4 h-6 w-40' />
-            <div className='grid grid-cols-6 gap-4'>
+            <div className='max-1360:grid-cols-5 max-1360:gap-y-6 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-y-4 max-520:grid-cols-2 grid grid-cols-6 gap-x-2.5 gap-y-8'>
               {Array.from({ length: 6 }).map((_, index) => (
                 <Skeleton
                   key={`tab-content-skeleton-${index}`}

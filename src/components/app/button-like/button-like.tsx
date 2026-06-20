@@ -182,7 +182,7 @@ export function ButtonLike({
       <HeartIcon ref={iconRef} />
       <span
         className={cn({
-          'max-520:hidden': variant === 'watch'
+          'max-640:sr-only': variant === 'watch'
         })}
       >
         {text || defaultText}

@@ -154,7 +154,7 @@ MovieTabs.Skeleton = function () {
       </div>
       <div className='max-1120:pt-7.5 max-1120:pb-5 max-640:py-5 max-520:py-4 py-7.5'>
         <Skeleton className='skeleton mb-4 h-6 w-40' />
-        <div className='grid grid-cols-6 gap-4'>
+        <div className='max-1360:grid-cols-5 max-1360:gap-y-6 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-y-4 max-520:grid-cols-2 grid grid-cols-6 gap-x-2.5 gap-y-8'>
           {Array.from({ length: TAB_CONTENT_SKELETON_COUNT }).map(
             (_, index) => (
               <Skeleton

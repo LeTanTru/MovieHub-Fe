@@ -4,6 +4,7 @@ import { useQueryParams } from '@/hooks';
 import { cn } from '@/lib';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import type { ReactNode } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa6';
 import { scroller } from 'react-scroll';
 
@@ -16,6 +17,15 @@ type PaginationProps = {
   scrollOptions?: ScrollOptions;
   onChange?: (page: number) => void;
 };
+
+const pageControlClassName =
+  'hover:bg-muted max-640:size-9 flex size-10 items-center justify-center rounded transition-colors duration-200 ease-linear max-640:text-sm';
+const disabledPageControlClassName =
+  'max-640:size-9 flex size-10 items-center justify-center rounded opacity-50';
+const mobilePageControlClassName =
+  'hover:bg-muted flex size-9 items-center justify-center rounded transition-colors duration-200 ease-linear';
+const mobileDisabledPageControlClassName =
+  'flex size-9 items-center justify-center rounded opacity-50';
 
 export function Pagination({
   totalPages,
@@ -70,15 +80,59 @@ export function Pagination({
     }
   };
 
+  const renderNavigation = ({
+    targetPage,
+    disabled,
+    ariaLabel,
+    className = pageControlClassName,
+    disabledClassName = disabledPageControlClassName,
+    children
+  }: {
+    targetPage: number;
+    disabled: boolean;
+    ariaLabel: string;
+    className?: string;
+    disabledClassName?: string;
+    children: ReactNode;
+  }) => {
+    if (disabled) {
+      return (
+        <span className={disabledClassName} aria-hidden='true'>
+          {children}
+        </span>
+      );
+    }
+
+    return isControlled ? (
+      <button
+        type='button'
+        onClick={() => handlePageClick(targetPage)}
+        className={className}
+        aria-label={ariaLabel}
+      >
+        {children}
+      </button>
+    ) : (
+      <Link
+        href={createPageLink(targetPage)}
+        onClick={handleScroll}
+        className={className}
+        aria-label={ariaLabel}
+      >
+        {children}
+      </Link>
+    );
+  };
+
   const renderPage = (page: number) => {
     const isActive = page === currentPage;
     return isActive ? (
       <span
         key={page}
         className={cn(
-          'bg-background flex size-10 items-center justify-center rounded font-medium'
+          'bg-background max-640:size-9 max-640:text-sm flex size-10 items-center justify-center rounded font-medium'
         )}
-        aria-label='current page'
+        aria-current='page'
       >
         {page}
       </span>
@@ -87,9 +141,8 @@ export function Pagination({
         key={page}
         type='button'
         onClick={() => handlePageClick(page)}
-        className={cn(
-          'hover:bg-muted flex size-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
-        )}
+        className={cn(pageControlClassName, 'cursor-pointer')}
+        aria-label={`Page ${page}`}
       >
         {page}
       </button>
@@ -98,9 +151,8 @@ export function Pagination({
         key={page}
         href={createPageLink(page)}
         onClick={handleScroll}
-        className={cn(
-          'hover:bg-muted flex size-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
-        )}
+        className={cn(pageControlClassName)}
+        aria-label={`Page ${page}`}
       >
         {page}
       </Link>
@@ -142,69 +194,63 @@ export function Pagination({
   const pages = getVisiblePages();
 
   return (
-    <div className='mx-auto mt-5 flex w-full items-center justify-center gap-2'>
-      {currentPage > 1 ? (
-        isControlled ? (
-          <button
-            type='button'
-            onClick={() => handlePageClick(currentPage - 1)}
-            className='hover:bg-muted flex size-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
-            aria-label='Prev button'
-          >
-            <FaAngleLeft />
-          </button>
-        ) : (
-          <Link
-            href={createPageLink(currentPage - 1)}
-            onClick={handleScroll}
-            className='hover:bg-muted flex size-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
-          >
-            <FaAngleLeft />
-          </Link>
-        )
-      ) : (
-        <span className='flex size-10 items-center justify-center rounded opacity-50'>
-          <FaAngleLeft />
-        </span>
-      )}
+    <nav className='mt-5 w-full' aria-label='Pagination'>
+      <div className='max-640:gap-1 max-480:hidden mx-auto flex w-full items-center justify-center gap-2'>
+        {renderNavigation({
+          targetPage: currentPage - 1,
+          disabled: currentPage <= 1,
+          ariaLabel: 'Previous page',
+          children: <FaAngleLeft />
+        })}
 
-      {pages.map((p, i) =>
-        p === '...' ? (
-          <span
-            key={`dots-${i === 1 ? 'start' : 'end'}`}
-            className='text-muted-foreground flex size-10 items-center justify-center'
-          >
-            …
-          </span>
-        ) : (
-          renderPage(p as number)
-        )
-      )}
+        {pages.map((p, i) =>
+          p === '...' ? (
+            <span
+              key={`dots-${i === 1 ? 'start' : 'end'}`}
+              className='text-muted-foreground max-640:size-9 max-640:text-sm flex size-10 items-center justify-center'
+            >
+              ...
+            </span>
+          ) : (
+            renderPage(p as number)
+          )
+        )}
 
-      {currentPage < totalPages ? (
-        isControlled ? (
-          <button
-            type='button'
-            onClick={() => handlePageClick(currentPage + 1)}
-            className='hover:bg-muted flex size-10 cursor-pointer items-center justify-center rounded transition-colors duration-200 ease-linear'
-            aria-label='Next button'
-          >
-            <FaAngleRight />
-          </button>
-        ) : (
-          <Link
-            href={createPageLink(currentPage + 1)}
-            onClick={handleScroll}
-            className='hover:bg-muted flex size-10 items-center justify-center rounded transition-colors duration-200 ease-linear'
-          >
-            <FaAngleRight />
-          </Link>
-        )
-      ) : (
-        <span className='flex size-10 items-center justify-center rounded opacity-50'>
-          <FaAngleRight />
+        {renderNavigation({
+          targetPage: currentPage + 1,
+          disabled: currentPage >= totalPages,
+          ariaLabel: 'Next page',
+          children: <FaAngleRight />
+        })}
+      </div>
+
+      <div className='max-480:flex mx-auto hidden w-full items-center justify-center gap-2'>
+        {renderNavigation({
+          targetPage: currentPage - 1,
+          disabled: currentPage <= 1,
+          ariaLabel: 'Previous page',
+          className: mobilePageControlClassName,
+          disabledClassName: mobileDisabledPageControlClassName,
+          children: <FaAngleLeft />
+        })}
+
+        <span
+          className='bg-background flex h-9 min-w-20 items-center justify-center rounded px-3 text-sm font-medium'
+          aria-current='page'
+          aria-label={`Page ${currentPage} of ${totalPages}`}
+        >
+          {currentPage} / {totalPages}
         </span>
-      )}
-    </div>
+
+        {renderNavigation({
+          targetPage: currentPage + 1,
+          disabled: currentPage >= totalPages,
+          ariaLabel: 'Next page',
+          className: mobilePageControlClassName,
+          disabledClassName: mobileDisabledPageControlClassName,
+          children: <FaAngleRight />
+        })}
+      </div>
+    </nav>
   );
 }

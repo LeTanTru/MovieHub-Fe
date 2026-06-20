@@ -57,14 +57,17 @@ export function SurveyList() {
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
-  }, [profile?.isMakeSurvey]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [navigate, profile?.isMakeSurvey]);
 
   return (
     <>
       <div
-        className={cn('mb-4 grid grid-cols-5 gap-4', {
-          'pointer-events-none': isPending
-        })}
+        className={cn(
+          'max-1360:grid-cols-4 max-990:grid-cols-5 max-860:grid-cols-4 max-640:grid-cols-3 max-520:grid-cols-2 max-480:gap-3 mb-4 grid grid-cols-5 gap-4',
+          {
+            'pointer-events-none': isPending
+          }
+        )}
       >
         {isLoading
           ? Array.from({ length: 20 }).map((_, index) => (
@@ -79,14 +82,16 @@ export function SurveyList() {
               />
             ))}
       </div>
-      <Button
-        className='ml-auto w-50'
-        disabled={selectedMovieIds.length < 3 || isPending}
-        onClick={handleSubmit}
-        loading={isPending}
-      >
-        Hoàn thành
-      </Button>
+      {!isLoading && (
+        <Button
+          className='max-640:w-full mx-auto w-1/2'
+          disabled={selectedMovieIds.length < 3 || isPending}
+          onClick={handleSubmit}
+          loading={isPending}
+        >
+          Hoàn thành (Chọn ít nhất 3 phim)
+        </Button>
+      )}
     </>
   );
 }

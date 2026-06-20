@@ -73,25 +73,25 @@ export function OtpInputField<T extends FieldValues>({
             </FormLabel>
           )}
           <FormControl>
-            <div>
+            <div className='w-full'>
               <InputOTP
                 maxLength={length}
                 pattern={REGEXP_ONLY_DIGITS}
                 disabled={disabled}
                 {...field}
                 className={cn('flex justify-center', className)}
-                containerClassName={cn('w-full', containerClassName)}
+                containerClassName={cn('w-full max-w-full', containerClassName)}
               >
                 <InputOTPGroup
                   className={cn(
-                    'w-full justify-center gap-x-2',
+                    'max-420:gap-x-1.5 w-full max-w-full justify-center gap-x-2 max-[360px]:gap-x-1',
                     groupClassName
                   )}
                 >
                   {Array.from({ length: length }).map((_, i) => (
                     <InputOTPSlot
                       className={cn(
-                        'data-[active=true]:ring-emerald-primary h-12 w-12 rounded-md border-l text-base duration-200 ease-linear disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none data-[active=true]:border-none data-[active=true]:ring-2',
+                        'data-[active=true]:ring-emerald-primary max-420:size-10 size-12 shrink-0 rounded-md border-l text-base duration-200 ease-linear disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none data-[active=true]:border-none data-[active=true]:ring-2 max-[360px]:size-9',
                         {
                           'border-rose-500 data-[active=true]:ring-rose-500':
                             !!fieldState.error

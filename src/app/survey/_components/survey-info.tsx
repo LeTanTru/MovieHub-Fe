@@ -8,12 +8,12 @@ export function SurveyInfo() {
   if (!profile) return null;
 
   return (
-    <div className=''>
-      <h1 className='mb-4 text-4xl leading-12 font-semibold'>
+    <div className='sticky top-4'>
+      <h1 className='max-1536:text-3xl max-1536:leading-10 max-640:text-xl max-480:leading-7 max-860:mb-3 max-860:text-3xl max-640:mb-2 mb-4 text-4xl leading-12 font-semibold'>
         {profile.fullName.split(' ').at(-1)}, hãy chọn những phim mà bạn thích
         nhé!
       </h1>
-      <p className='text-base leading-10'>
+      <p className='max-640:leading-7 max-640:text-sm text-justify text-base leading-8'>
         Việc này sẽ giúp chúng tôi hiểu hơn về sở thích của bạn và đưa ra những
         gợi ý phù hợp hơn trong tương lai.&nbsp;
         <span className='text-golden-glow font-semibold'>

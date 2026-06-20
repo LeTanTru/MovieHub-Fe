@@ -28,24 +28,19 @@ export function SurveyCard({ movie, isSelected, onClick }: SurveyCardProps) {
       transitionSpeed={1500}
     >
       <m.div
-        className='relative h-0 cursor-pointer pb-[150%]'
+        className='relative h-0 cursor-pointer overflow-hidden rounded-md pb-[150%]'
         whileTap={{
           scale: 0.98
         }}
         onClick={() => onClick(movie)}
       >
-        <div
-          className={cn(
-            'absolute inset-0 z-10 flex items-center justify-center transition-all duration-200 ease-linear',
-            {
-              'bg-black/50': isSelected,
-              'bg-transparent': !isSelected
-            }
+        <div className='absolute inset-0 z-10 flex items-center justify-center transition-all duration-200 ease-linear'>
+          {isSelected && (
+            <div className='absolute inset-0 size-full bg-black/50 transition-all duration-200 ease-linear'></div>
           )}
-        >
           <IoMdCheckmarkCircleOutline
             className={cn(
-              'size-18 text-white transition-all duration-200 ease-in-out',
+              'max-990:size-14 max-480:size-10 size-18 text-white transition-all duration-200 ease-in-out',
               {
                 'opacity-100': isSelected,
                 'opacity-0': !isSelected
@@ -58,8 +53,8 @@ export function SurveyCard({ movie, isSelected, onClick }: SurveyCardProps) {
           alt={movie.title}
           fill
           unoptimized
-          sizes='(max-width: 480px) 50vw, (max-width: 640px) 50vw, (max-width: 1120px) 33vw, 25vw'
-          className='absolute inset-0 size-full rounded-md object-cover select-none'
+          sizes='(max-width: 520px) 50vw, (max-width: 640px) 33vw, (max-width: 860px) 25vw, (max-width: 990px) 20vw, 16vw'
+          className='absolute inset-0 size-full object-cover select-none'
         />
       </m.div>
     </Tilt>

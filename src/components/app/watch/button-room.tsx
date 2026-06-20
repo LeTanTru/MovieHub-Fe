@@ -18,7 +18,7 @@ export function ButtonRoom({ className }: ButtonRoomProps) {
       )}
     >
       <Podcast className='size-5' />
-      <span className='max-520:hidden'>Xem chung</span>
+      <span className='max-640:sr-only'>Xem chung</span>
     </Button>
   );
 }

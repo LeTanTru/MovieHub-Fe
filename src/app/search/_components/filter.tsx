@@ -119,12 +119,12 @@ export function Filter({
   ];
 
   return (
-    <div className='tab-list max-990:mb-6 max-640:mb-4 mb-8' role='tablist'>
+    <div className='tab-list max-640:mb-3 max-480:mb-3 mb-6' role='tablist'>
       <div className='tab-content' role='tab-content'>
         <div className='block'>
           <button
             type='button'
-            className='max-640:px-0 inline-flex h-7.5 cursor-pointer items-center gap-2 rounded bg-transparent pr-3 pl-2 font-medium text-white'
+            className='max-640:px-0 max-640:text-sm inline-flex h-7.5 cursor-pointer items-center gap-2 rounded bg-transparent pr-3 pl-2 text-base font-medium text-white'
             onClick={onShowFilter}
           >
             <FaFilter className='size-5' />
@@ -152,34 +152,36 @@ export function Filter({
                     onFilterChange={onFilterChange}
                   />
                 ))}
-                <div className='max-640:gap-0 max-640:px-2 max-640:py-4 flex items-start justify-between gap-8 px-4 py-6'>
-                  <div className='max-800:w-20 w-30'></div>
-                  <div className='max-640:gap-2 flex grow items-center gap-4'>
+                <div className='max-640:gap-0 max-640:flex-col max-640:px-2 max-640:py-4 flex items-start justify-between gap-8 px-4 py-6'>
+                  <div className='max-800:w-20 max-640:hidden w-30'></div>
+                  <div className='max-640:flex-col max-640:gap-2 max-640:w-full flex grow items-center gap-4'>
                     <Button
                       variant='primary'
-                      className='bg-golden-glow hover:bg-golden-glow/80 max-640:text-[13px] min-h-10 rounded-full'
+                      className='bg-golden-glow hover:bg-golden-glow/80 max-640:w-full max-640:text-[13px] min-h-10 rounded-full'
                       onClick={onApplyFilters}
                     >
                       Lọc kết quả
                       <FaArrowRight />
                     </Button>
-                    <Button
-                      type='button'
-                      className='max-640:text-[13px] min-h-10 rounded-full border-gray-200 px-5 text-white hover:border-gray-200/80 hover:text-white/80 hover:opacity-80 disabled:border-gray-200/80 disabled:text-white/80 disabled:opacity-50 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
-                      variant='outline'
-                      disabled={isAllFiltersDefault}
-                      onClick={onClearFilters}
-                    >
-                      Xóa bộ lọc
-                    </Button>
-                    <Button
-                      type='button'
-                      className='max-640:text-[13px] min-h-10 rounded-full px-5 hover:opacity-80'
-                      variant='outline'
-                      onClick={onCloseFilters}
-                    >
-                      Đóng
-                    </Button>
+                    <div className='max-640:grid max-640:w-full max-640:grid-cols-2 max-640:gap-2 contents'>
+                      <Button
+                        type='button'
+                        className='max-640:text-[13px] max-640:w-full min-h-10 rounded-full border-gray-200 px-5 text-white hover:border-gray-200/80 hover:text-white/80 hover:opacity-80 disabled:border-gray-200/80 disabled:text-white/80 disabled:opacity-50 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
+                        variant='outline'
+                        disabled={isAllFiltersDefault}
+                        onClick={onClearFilters}
+                      >
+                        Xóa bộ lọc
+                      </Button>
+                      <Button
+                        type='button'
+                        className='max-640:text-[13px] max-640:w-full min-h-10 rounded-full px-5 hover:opacity-80'
+                        variant='outline'
+                        onClick={onCloseFilters}
+                      >
+                        Đóng
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </m.div>
