@@ -17,6 +17,7 @@ export const queryKeys = {
   CREATE_COMMENT: 'create-comment',
   CREATE_FAVOURITE: 'create-favourite',
   CREATE_REVIEW: 'create-review',
+  CREATE_USER_REPORT: 'create-user-report',
   DELETE_ALL_NOTIFICATION: 'delete-all-notification',
   DELETE_COMMENT: 'delete-comment',
   DELETE_FAVOURITE: 'delete-favourite',

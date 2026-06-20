@@ -10,10 +10,16 @@ import {
   DEFAULT_PAGE_START,
   NOTIFICATION_PAGE_SIZE,
   NOTIFICATION_TYPE_MOVIE,
+  apiConfig,
   notificationTabs,
   queryKeys
 } from '@/constants';
-import { useAuth, useLoadMore, useNotificationActions } from '@/hooks';
+import {
+  useAuth,
+  useLoadMore,
+  useNotificationActions,
+  useValidatePermission
+} from '@/hooks';
 import {
   useCountUnreadNotificationQuery,
   useUpdateReadNotificationMutation
@@ -27,6 +33,13 @@ import { ButtonAction } from '@/components/app/button-action';
 
 export function NotificationList() {
   const { isAuthenticated } = useAuth();
+  const hasPermission = useValidatePermission();
+
+  const canListNotification =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.notification.getList.permissionCode]
+    });
 
   const [activeTab, setActiveTab] = useState(String(NOTIFICATION_TYPE_MOVIE));
 
@@ -48,12 +61,12 @@ export function NotificationList() {
     queryKey: queryKeys.NOTIFICATION_LIST,
     params,
     queryFn: notificationApiRequest.getList,
-    enabled: isAuthenticated,
+    enabled: canListNotification,
     mode: 'click'
   });
 
   const { data: totalUnreadData } = useCountUnreadNotificationQuery({
-    enabled: isAuthenticated
+    enabled: canListNotification
   });
 
   const totalUnread = totalUnreadData?.totalUnread
@@ -67,12 +80,16 @@ export function NotificationList() {
     handleReadAll,
     handleDeleteAll,
     handleDelete,
+    canUpdateNotification,
+    canDeleteNotification,
     readAllNotificationLoading,
     deleteAllNotificationLoading
   } = useNotificationActions();
 
   const handleUpdateRead = (notification: NotificationResType) => {
     if (notification.isRead) return;
+
+    if (!canUpdateNotification) return;
 
     updateReadNotificationMutate(
       { ids: [notification.id] },
@@ -116,7 +133,7 @@ export function NotificationList() {
           </div>
         </div>
         <div className='flex items-center gap-2'>
-          {totalUnread > 0 && (
+          {canUpdateNotification && totalUnread > 0 && (
             <Button
               className='h-7 min-w-20 cursor-pointer rounded-full px-4 py-2 text-center transition-all duration-200 ease-linear'
               variant='default'
@@ -131,7 +148,7 @@ export function NotificationList() {
             </Button>
           )}
 
-          {totalElements > 0 && (
+          {canDeleteNotification && totalElements > 0 && (
             <ConfirmModal
               message='Bạn có chắc chắn muốn xóa tất cả không báo không?'
               onConfirm={handleDeleteAll}
@@ -166,6 +183,7 @@ export function NotificationList() {
             <NotificationItem
               key={notification.id}
               notification={notification}
+              canDelete={canDeleteNotification}
               onUpdateRead={handleUpdateRead}
               onDelete={handleDelete}
             />

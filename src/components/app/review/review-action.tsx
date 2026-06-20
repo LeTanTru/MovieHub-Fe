@@ -1,20 +1,18 @@
 import { DislikeIcon, LikeIcon } from '@/assets';
 import { ConfirmModal } from '@/components/modal';
-import {
-  REACTION_TYPE_DISLIKE,
-  REACTION_TYPE_LIKE,
-  STATUS_HIDE
-} from '@/constants';
+import { REACTION_TYPE_DISLIKE, REACTION_TYPE_LIKE } from '@/constants';
 import { cn } from '@/lib';
 import { ReviewResType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
+import { Flag } from 'lucide-react';
 import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';
 
 type ReviewActionProps = {
   review: ReviewResType;
-  isAuthenticated: boolean;
-  isAuthor: boolean;
-  isVoteLoading: boolean;
+  isHidden: boolean;
+  canDelete: boolean;
+  canReport: boolean;
+  canVote: boolean;
   isVisible: boolean;
   showDropdown: boolean;
   voteType: number;
@@ -23,13 +21,15 @@ type ReviewActionProps = {
   onToggleDropdown: () => void;
   onToggleBlurredContent: () => void;
   onDelete: () => void;
+  onOpenReportModal: () => void;
 };
 
 export function ReviewAction({
   review,
-  isAuthenticated,
-  isAuthor,
-  isVoteLoading,
+  isHidden,
+  canDelete,
+  canReport,
+  canVote,
   isVisible,
   showDropdown,
   voteType,
@@ -37,10 +37,10 @@ export function ReviewAction({
   onVote,
   onToggleDropdown,
   onToggleBlurredContent,
-  onDelete
+  onDelete,
+  onOpenReportModal
 }: ReviewActionProps) {
-  const isHidden = review.status === STATUS_HIDE;
-  const showMore = isAuthor || isHidden;
+  const showMore = canDelete || canReport || isHidden;
 
   return (
     <div className='max-640:mt-3 relative mt-4 flex items-center gap-4'>
@@ -51,7 +51,7 @@ export function ReviewAction({
               size={16}
               onClick={() => onVote(review.id, REACTION_TYPE_LIKE)}
               iconClassName={cn('transition-colors duration-200 ease-linear', {
-                'hover:text-golden-glow': isAuthenticated && !isVoteLoading,
+                'hover:text-golden-glow': canVote,
                 'text-golden-glow': voteType === REACTION_TYPE_LIKE
               })}
             />
@@ -68,7 +68,7 @@ export function ReviewAction({
               size={16}
               onClick={() => onVote(review.id, REACTION_TYPE_DISLIKE)}
               iconClassName={cn('transition-colors duration-200 ease-linear', {
-                'hover:text-red-beauty': isAuthenticated && !isVoteLoading,
+                'hover:text-red-beauty': canVote,
                 'text-red-beauty': voteType === REACTION_TYPE_DISLIKE
               })}
             />
@@ -130,7 +130,7 @@ export function ReviewAction({
                   )}
                 </button>
               )}
-              {isAuthor && (
+              {canDelete && (
                 <ConfirmModal
                   message='Bạn có chắc chắn muốn xóa đánh giá này không?'
                   onConfirm={onDelete}
@@ -144,6 +144,16 @@ export function ReviewAction({
                     </button>
                   }
                 />
+              )}
+              {canReport && (
+                <button
+                  type='button'
+                  className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                  onClick={onOpenReportModal}
+                >
+                  <Flag className='size-4 fill-black' />
+                  <span>Báo cáo</span>
+                </button>
               )}
             </m.div>
           )}

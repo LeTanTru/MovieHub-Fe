@@ -7,6 +7,7 @@ export { ImageField } from './image-field';
 export { InputField } from './input-field';
 export { OtpInputField } from './otp-input-field';
 export { PasswordField } from './password-field';
+export { RadioGroupField } from './radio-group-field';
 export { Row } from './row';
 export { SelectField } from './select-field';
 export { SliderField } from './slider-field';

@@ -12,7 +12,6 @@ import { MovieResType, ReviewBodyType } from '@/types';
 import { formatRating, notify, invalidateQueries } from '@/utils';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
-import { useAuth } from '@/hooks';
 
 type ReviewModalProps = {
   opened: boolean;
@@ -28,8 +27,6 @@ const defaultValues: ReviewBodyType = {
 };
 
 export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
-  const { isAuthenticated } = useAuth();
-
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
 
@@ -51,8 +48,6 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
   };
 
   const handleSubmit = (values: ReviewBodyType) => {
-    if (!isAuthenticated) return;
-
     if (selectedRating === null) {
       notify.error('Bạn chưa chọn mức độ hài lòng');
       return;

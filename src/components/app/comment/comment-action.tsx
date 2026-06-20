@@ -1,5 +1,4 @@
 import { DislikeIcon, LikeIcon } from '@/assets';
-import { Activity } from '@/components/activity';
 import {
   DATE_TIME_FORMAT,
   REACTION_TYPE_DISLIKE,
@@ -18,17 +17,20 @@ import {
   FaTrash
 } from 'react-icons/fa6';
 import { ConfirmModal } from '@/components/modal';
+import { Flag } from 'lucide-react';
 
 type CommentActionProps = {
   comment: CommentResType;
   level: number;
-  isAuthenticated: boolean;
-  isAuthor: boolean;
-  isVoteLoading: boolean;
+  isHidden: boolean;
+  canReply: boolean;
+  canEdit: boolean;
+  canDelete: boolean;
+  canVote: boolean;
   canViewHiddenContent: boolean;
+  canReport: boolean;
   isVisible: boolean;
   showDropdown: boolean;
-  showMore: boolean;
   voteMap: Record<string, number>;
   dropdownRef: React.RefObject<HTMLDivElement | null>;
   onVote: (id: string, type: number) => void;
@@ -37,18 +39,21 @@ type CommentActionProps = {
   onToggleDropdown: () => void;
   onViewContent: () => void;
   onDelete: () => void;
+  onOpenReportModal: () => void;
 };
 
 export function CommentAction({
   comment,
   level,
-  isAuthenticated,
-  isAuthor,
-  isVoteLoading,
+  isHidden,
+  canReply,
+  canEdit,
+  canDelete,
+  canVote,
   canViewHiddenContent,
+  canReport,
   isVisible,
   showDropdown,
-  showMore,
   voteMap,
   dropdownRef,
   onVote,
@@ -56,8 +61,11 @@ export function CommentAction({
   onEdit,
   onToggleDropdown,
   onViewContent,
-  onDelete
+  onDelete,
+  onOpenReportModal
 }: CommentActionProps) {
+  const showMore = isHidden || canReply || canEdit || canDelete || canReport;
+
   return (
     <div className='relative mt-3 flex items-center gap-4'>
       <div className='flex items-center gap-2'>
@@ -73,7 +81,7 @@ export function CommentAction({
               size={16}
               onClick={() => onVote(comment.id, REACTION_TYPE_LIKE)}
               iconClassName={cn('transition-colors duration-200 ease-linear', {
-                'hover:text-golden-glow': isAuthenticated && !isVoteLoading,
+                'hover:text-golden-glow': canVote,
                 'text-golden-glow': voteMap[comment.id] === REACTION_TYPE_LIKE
               })}
             />
@@ -90,7 +98,7 @@ export function CommentAction({
               size={16}
               onClick={() => onVote(comment.id, REACTION_TYPE_DISLIKE)}
               iconClassName={cn('transition-colors duration-200 ease-linear', {
-                'hover:text-red-beauty': isAuthenticated && !isVoteLoading,
+                'hover:text-red-beauty': canVote,
                 'text-red-beauty': voteMap[comment.id] === REACTION_TYPE_DISLIKE
               })}
             />
@@ -104,7 +112,7 @@ export function CommentAction({
           </div>
         </div>
       </div>
-      <Activity visible={isAuthenticated}>
+      {canReply && (
         <button
           type='button'
           className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center gap-2 text-gray-400 transition-all duration-200 ease-linear select-none'
@@ -113,8 +121,8 @@ export function CommentAction({
           <FaReply />
           <span>Trả lời</span>
         </button>
-      </Activity>
-      <Activity visible={isAuthor && isAuthenticated}>
+      )}
+      {canEdit && (
         <button
           type='button'
           className={cn(
@@ -128,7 +136,7 @@ export function CommentAction({
           <AiOutlineEdit />
           <span>Cập nhật</span>
         </button>
-      </Activity>
+      )}
       <div className='relative' ref={dropdownRef}>
         {showMore && (
           <button
@@ -161,19 +169,20 @@ export function CommentAction({
                 {
                   'max-420:-left-12.5 max-420:origin-[40px_-50%] max-480:-left-10 max-480:origin-[40px_-50%]':
                     level === 0,
-                  'max-480:-left-7.5 max-480:origin-[30px_-50%] max-420:-left-[70px] max-420:origin-[80px_-50%]':
+                  'max-480:-left-7.5 max-480:origin-[30px_-50%] max-420:-left-17.5 max-420:origin-[80px_-50%]':
                     level > 0
                 }
               )}
             >
-              <Activity visible={isAuthor && isAuthenticated}>
+              {/* Mobile update */}
+              {canEdit && (
                 <button
                   type='button'
                   className={cn(
                     'max-640:text-[13px] max-520:text-xs w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80',
                     {
                       'max-420:flex hidden': level === 0,
-                      '520:hidden flex': level > 0
+                      'max-520:flex hidden': level > 0
                     }
                   )}
                   onClick={onEdit}
@@ -181,7 +190,7 @@ export function CommentAction({
                   <AiOutlineEdit />
                   <span>Cập nhật</span>
                 </button>
-              </Activity>
+              )}
               {canViewHiddenContent && (
                 <button
                   className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
@@ -200,7 +209,7 @@ export function CommentAction({
                   )}
                 </button>
               )}
-              {isAuthor && (
+              {canDelete && (
                 <ConfirmModal
                   message='Bạn có chắc chắn muốn xóa bình luận này không?'
                   onConfirm={onDelete}
@@ -214,6 +223,16 @@ export function CommentAction({
                     </button>
                   }
                 />
+              )}
+              {canReport && (
+                <button
+                  type='button'
+                  className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                  onClick={onOpenReportModal}
+                >
+                  <Flag className='size-4 fill-black' />
+                  <span>Báo cáo</span>
+                </button>
               )}
             </m.div>
           )}

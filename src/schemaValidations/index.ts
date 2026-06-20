@@ -17,5 +17,6 @@ export * from './search.schema';
 export * from './settings.schema';
 export * from './sidebar.schema';
 export * from './style.schema';
+export * from './user-report.schema';
 export * from './video-library-subtitle.schema';
 export * from './watch-history.schema';

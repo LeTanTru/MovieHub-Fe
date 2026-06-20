@@ -1,3 +1,4 @@
+export * from './age-rating';
 export * from './countries';
 export * from './gender';
 export * from './languages';
@@ -8,4 +9,5 @@ export * from './notification';
 export * from './query-keys';
 export * from './room';
 export * from './subtitle';
+export * from './user-report';
 export * from './user';

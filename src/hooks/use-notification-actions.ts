@@ -1,6 +1,7 @@
 'use client';
 
-import { queryKeys } from '@/constants';
+import { apiConfig, queryKeys } from '@/constants';
+import { useValidatePermission } from '@/hooks/use-validate-permission';
 import { logger } from '@/logger';
 import {
   useDeleteAllNotificationMutation,
@@ -10,6 +11,15 @@ import {
 import { invalidateQueries, notify } from '@/utils';
 
 export const useNotificationActions = () => {
+  const hasPermission = useValidatePermission();
+
+  const canUpdateNotification = hasPermission({
+    requiredPermissions: [apiConfig.notification.updateRead.permissionCode]
+  });
+  const canDeleteNotification = hasPermission({
+    requiredPermissions: [apiConfig.notification.delete.permissionCode]
+  });
+
   const {
     mutate: readAllNotificationMutate,
     isPending: readAllNotificationLoading
@@ -74,6 +84,8 @@ export const useNotificationActions = () => {
     handleReadAll,
     handleDeleteAll,
     handleDelete,
+    canUpdateNotification,
+    canDeleteNotification,
     readAllNotificationLoading,
     deleteAllNotificationLoading
   };

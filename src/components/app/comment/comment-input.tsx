@@ -1,16 +1,20 @@
 'use client';
 
 import { BaseForm } from '@/components/form/base-form';
-import { MOVIE_TYPE_SINGLE, queryKeys } from '@/constants';
+import { apiConfig, MOVIE_TYPE_SINGLE, queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateCommentMutation } from '@/queries';
 import { commentSchema } from '@/schemaValidations';
 import { CommentBodyType, MovieResType } from '@/types';
-import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
-import Link from 'next/link';
+import { invalidateQueries, notify } from '@/utils';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth, useClickOutside, useQueryParams } from '@/hooks';
+import {
+  useAuth,
+  useClickOutside,
+  useQueryParams,
+  useValidatePermission
+} from '@/hooks';
 import { Button, Col, Row, TextAreaField } from '@/components/form';
 import { type UseFormReturn } from 'react-hook-form';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -44,6 +48,13 @@ export function CommentInput({
   selectedSeason
 }: CommentInputProps) {
   const { isAuthenticated } = useAuth();
+  const hasPermission = useValidatePermission();
+
+  const canCreate =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.comment.create.permissionCode]
+    });
 
   const formMethodsRef = useRef<UseFormReturn<CommentBodyType> | null>(null);
   const [showPicker, setShowPicker] = useState<boolean>(false);
@@ -85,22 +96,6 @@ export function CommentInput({
     values: CommentBodyType,
     form?: UseFormReturn<CommentBodyType>
   ) => {
-    if (!isAuthenticated) {
-      notify.error(
-        <span>
-          Vui lòng&nbsp;
-          <Link
-            className='text-golden-glow transition-all duration-200 ease-linear hover:opacity-80'
-            href={buildLoginRedirectPath()}
-          >
-            đăng nhập
-          </Link>
-          &nbsp;để tham gia bình luận
-        </span>
-      );
-      return;
-    }
-
     if (values.content?.trim().length === 0) {
       notify.error('Bạn chưa nhập nội dung bình luận');
       return;
@@ -203,6 +198,8 @@ export function CommentInput({
         </div>
       </div>
     );
+
+  if (!canCreate) return null;
 
   return (
     <BaseForm

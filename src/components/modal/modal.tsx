@@ -340,7 +340,7 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
             className='absolute bottom-4 left-1/2 z-999 -translate-x-1/2 rounded-full p-2 text-white shadow-[0px_0px_10px_2px] shadow-gray-300'
             aria-label='Scroll down'
           >
-            <ChevronDown className='size-5 text-slate-800' />
+            <ChevronDown className='size-5 text-gray-400' />
           </m.button>
         )}
       </AnimatePresence>

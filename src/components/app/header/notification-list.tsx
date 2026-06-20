@@ -5,13 +5,14 @@ import { NotificationResType } from '@/types';
 import { useUpdateReadNotificationMutation } from '@/queries';
 import { NoData } from '@/components/no-data';
 import { invalidateQueries } from '@/utils';
-import { queryKeys } from '@/constants';
+import { apiConfig, queryKeys } from '@/constants';
 import { NotificationItem } from '@/components/app/notification';
-import { useAuth } from '@/hooks';
+import { useAuth, useValidatePermission } from '@/hooks';
 
 type Props = {
   notificationList: NotificationResType[];
   loading?: boolean;
+  canDelete?: boolean;
   onDelete: (id: string) => void;
   onItemClick?: () => void;
 };
@@ -19,16 +20,24 @@ type Props = {
 export function NotificationList({
   notificationList,
   loading,
+  canDelete = true,
   onDelete,
   onItemClick
 }: Props) {
   const { isAuthenticated } = useAuth();
+  const hasPermission = useValidatePermission();
+
+  const canUpdateNotification =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.notification.updateRead.permissionCode]
+    });
 
   const { mutate: updateReadNotificationMutate } =
     useUpdateReadNotificationMutation();
 
   const handleUpdateRead = (notification: NotificationResType) => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !canUpdateNotification) return;
 
     if (notification.isRead) return;
 
@@ -72,6 +81,7 @@ export function NotificationList({
         <NotificationItem
           key={notification.id}
           notification={notification}
+          canDelete={canDelete}
           onUpdateRead={handleUpdateRead}
           onDelete={onDelete}
         />
