@@ -17,5 +17,6 @@ export * as roomApiRequest from './room.api-request';
 export * as settingsApiRequest from './settings.api-request';
 export * as sidebarApiRequest from './sidebar.api-request';
 export * as surveyApiRequest from './survey.api-request';
+export * as userReportApiRequest from './user-report.api-request';
 export * as videoLibrarySubtitleApiRequest from './video-library-subtitle.api-request';
 export * as watchHistoryApiRequest from './watch-history.api-request';

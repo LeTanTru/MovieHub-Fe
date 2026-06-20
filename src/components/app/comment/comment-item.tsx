@@ -5,23 +5,24 @@ import {
   DEFAULT_PAGE_SIZE,
   GENDER_OTHER,
   genderIconMaps,
+  KIND_ADMIN,
   kindMaps,
   queryKeys,
   STATUS_HIDE
 } from '@/constants';
-import { useClickOutside, useLoadMore } from '@/hooks';
-import { CommentResType, CommentSearchType, ToxicSpan } from '@/types';
-import { renderImageUrl, invalidateQueries, parseJSON } from '@/utils';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { cn } from '@/lib';
+import { CommentAction } from './comment-action';
 import { commentApiRequest } from '@/api-requests';
-import { CommentHeader } from './comment-header';
 import { CommentContent } from './comment-content';
+import { CommentHeader } from './comment-header';
 import { CommentReplyForm } from './comment-reply-form';
 import { CommentReplyList } from './comment-reply-list';
-import { CommentAction } from './comment-action';
-import { Skeleton } from '@/components/ui/skeleton';
+import { CommentResType, CommentSearchType, ToxicSpan } from '@/types';
 import { Element, scroller } from 'react-scroll';
-import { cn } from '@/lib';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { renderImageUrl, invalidateQueries, parseJSON } from '@/utils';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useClickOutside, useLoadMore } from '@/hooks';
 
 const SCROLL_DELAY = 100;
 const HIGHLIGHT_DURATION = 2000;
@@ -29,8 +30,6 @@ const HIGHLIGHT_DURATION = 2000;
 type CommentItemProps = {
   comment: CommentResType & { children?: CommentResType[] };
   editingComment: CommentResType | null;
-  isAuthenticated: boolean;
-  isVoteLoading: boolean;
   level: number;
   openParentIds: string[];
   replyingComment: CommentResType | null;
@@ -39,8 +38,14 @@ type CommentItemProps = {
   rootId: string;
   userId: string;
   voteMap: Record<string, number>;
+  canCreate: boolean;
+  canUpdate: boolean;
+  canDelete: boolean;
+  canReport: boolean;
+  canVote: boolean;
   onCloseReply: () => void;
   onDelete: (id: string) => void;
+  onOpenReportModal: (commentId: string) => void;
   onVote: (id: string, type: number, onSuccess?: () => void) => void;
   openReply: (replyingComment: CommentResType | null) => void;
   renderChildren: (
@@ -56,8 +61,6 @@ type CommentItemProps = {
 export function CommentItem({
   comment,
   editingComment,
-  isAuthenticated,
-  isVoteLoading,
   level,
   openParentIds,
   replyingComment,
@@ -66,8 +69,14 @@ export function CommentItem({
   rootId,
   userId,
   voteMap,
+  canCreate,
+  canUpdate,
+  canDelete,
+  canReport,
+  canVote,
   onCloseReply,
   onDelete,
+  onOpenReportModal,
   onVote,
   openReply,
   renderChildren,
@@ -77,6 +86,8 @@ export function CommentItem({
 }: CommentItemProps) {
   const author = comment.author;
   const isAuthor = userId && author.id ? userId === author.id : false;
+  const isAdmin = author.kind === KIND_ADMIN;
+
   const kind = author.kind !== undefined ? kindMaps[author.kind] : undefined;
   const replyToInfo = comment.replyTo;
 
@@ -265,8 +276,6 @@ export function CommentItem({
     });
   };
 
-  const showMore = isHidden || isAuthor;
-
   useEffect(() => {
     if (targetCommentId !== comment.id) return; // only scroll if this comment is the target
 
@@ -321,6 +330,11 @@ export function CommentItem({
     targetParentId
   ]);
 
+  const handleOpenReportModal = () => {
+    setShowDropdown(false);
+    onOpenReportModal(comment.id);
+  };
+
   return (
     <Element name={scrollTargetName}>
       <div
@@ -364,13 +378,15 @@ export function CommentItem({
           <CommentAction
             comment={comment}
             level={level}
-            isAuthenticated={isAuthenticated}
-            isAuthor={isAuthor}
-            isVoteLoading={isVoteLoading}
+            isHidden={isHidden}
+            canReply={canCreate}
+            canEdit={canUpdate && isAuthor}
+            canDelete={canDelete && isAuthor}
+            canVote={canVote}
             canViewHiddenContent={canViewHiddenContent}
+            canReport={canReport && !isAuthor && !isAdmin}
             isVisible={isVisible}
             showDropdown={showDropdown}
-            showMore={showMore}
             voteMap={voteMap}
             dropdownRef={dropdownRef}
             onVote={handleVote}
@@ -379,6 +395,7 @@ export function CommentItem({
             onToggleDropdown={handleDropdownToggle}
             onViewContent={handleViewContent}
             onDelete={handleDeleteComment}
+            onOpenReportModal={handleOpenReportModal}
           />
 
           <CommentReplyForm

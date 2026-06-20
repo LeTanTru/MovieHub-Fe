@@ -1,6 +1,7 @@
 'use client';
 
 import { BaseForm } from '@/components/form/base-form';
+import { apiConfig } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateCommentMutation, useUpdateCommentMutation } from '@/queries';
 import { commentSchema } from '@/schemaValidations';
@@ -11,7 +12,7 @@ import { FaTelegramPlane } from 'react-icons/fa';
 import { FaRegFaceGrinBeam } from 'react-icons/fa6';
 import { Button, Col, Row, TextAreaField } from '@/components/form';
 import { useShallow } from 'zustand/shallow';
-import { useClickOutside, useAuth } from '@/hooks';
+import { useAuth, useClickOutside, useValidatePermission } from '@/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { type UseFormReturn } from 'react-hook-form';
 
@@ -52,6 +53,19 @@ export function CommentForm({
   onCancel
 }: CommentFormProps) {
   const { isAuthenticated } = useAuth();
+  const hasPermission = useValidatePermission();
+
+  const canCreate =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.comment.create.permissionCode]
+    });
+
+  const canUpdate =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.comment.update.permissionCode]
+    });
 
   const { editingComment, replyingComment, setEditingComment } =
     useCommentStore(
@@ -80,6 +94,8 @@ export function CommentForm({
 
   const pickerContainerRef = useRef<HTMLDivElement>(null);
 
+  const canSubmit = editingComment ? canUpdate : canCreate;
+
   const initialValues: CommentBodyType = useMemo(
     () => ({
       content: editingComment?.content ?? defaultValues.content,
@@ -106,11 +122,6 @@ export function CommentForm({
     values: CommentBodyType,
     form?: UseFormReturn<CommentBodyType>
   ) => {
-    if (!isAuthenticated) {
-      notify.error('Vui lòng đăng nhập để bình luận');
-      return;
-    }
-
     if (values.content?.trim().length === 0) {
       notify.error('Bạn chưa nhập nội dung bình luận');
       return;
@@ -209,6 +220,8 @@ export function CommentForm({
       pickerEl.style.visibility = showPicker ? 'visible' : 'hidden';
     }
   }, [showPicker]);
+
+  if (!canSubmit) return null;
 
   return (
     <BaseForm

@@ -17,5 +17,6 @@ export * from './room.query';
 export * from './settings.query';
 export * from './sidebar.query';
 export * from './survey.query';
+export * from './user-report.query';
 export * from './video-library-subtitle.query';
 export * from './watch-history.query';

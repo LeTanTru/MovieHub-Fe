@@ -5,8 +5,13 @@ import { ReviewItem } from './review-item';
 import { MovieResType, ReviewResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { StaticImageData } from 'next/image';
-import { queryKeys, reviewRatings, REACTION_TYPE_LIKE } from '@/constants';
-import { useAuth } from '@/hooks';
+import {
+  apiConfig,
+  queryKeys,
+  reviewRatings,
+  REACTION_TYPE_LIKE
+} from '@/constants';
+import { useAuth, useValidatePermission } from '@/hooks';
 import {
   useDeleteReviewMutation,
   useVoteReviewListQuery,
@@ -18,6 +23,8 @@ import { logger } from '@/logger';
 import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
+import { useState } from 'react';
+import ReviewReportModal from './review-report-modal';
 
 const REVIEW_SKELETON_COUNT = 10;
 
@@ -41,6 +48,10 @@ export function ReviewList({
   onLoadMore
 }: ReviewListProps) {
   const { profile, isAuthenticated } = useAuth();
+  const hasPermission = useValidatePermission();
+  const [selectedReportReviewId, setSelectedReportReviewId] = useState<
+    string | null
+  >(null);
 
   const reviewRatingMaps: Record<
     number,
@@ -68,6 +79,33 @@ export function ReviewList({
   const { mutate: deleteReviewMutate } = useDeleteReviewMutation();
   const { mutate: voteReviewMutate, isPending: voteReviewLoading } =
     useVoteReviewMutation();
+
+  const canVote =
+    isAuthenticated &&
+    !voteReviewLoading &&
+    hasPermission({
+      requiredPermissions: [apiConfig.review.vote.permissionCode]
+    });
+
+  const canDelete =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.review.delete.permissionCode]
+    });
+
+  const canReport =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.userReport.create.permissionCode]
+    });
+
+  const handleOpenReportModal = (reviewId: string) => {
+    setSelectedReportReviewId(reviewId);
+  };
+
+  const handleCloseReportModal = () => {
+    setSelectedReportReviewId(null);
+  };
 
   const handleDeleteReview = (id: string) => {
     deleteReviewMutate(id, {
@@ -184,49 +222,60 @@ export function ReviewList({
     );
 
   return (
-    <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
-      <AnimatePresence initial={false}>
-        {reviewList
-          .filter((review) => review?.id)
-          .map((review, index) => (
-            <m.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                duration: 0.1,
-                ease: 'linear',
-                delay: index * 0.05
-              }}
-              key={review.id}
+    <>
+      <div className='mt-4 flex flex-col justify-between gap-4'>
+        <AnimatePresence initial={false}>
+          {reviewList
+            .filter((review) => review?.id)
+            .map((review, index) => (
+              <m.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 0.1,
+                  ease: 'linear',
+                  delay: index * 0.05
+                }}
+                key={review.id}
+              >
+                <ReviewItem
+                  review={review}
+                  reviewRatingMaps={reviewRatingMaps}
+                  isAuthor={profile?.id === review.author?.id}
+                  canDelete={canDelete}
+                  canReport={canReport}
+                  canVote={canVote}
+                  onVote={handleVote}
+                  onDelete={handleDeleteReview}
+                  onOpenReportModal={handleOpenReportModal}
+                  voteType={voteMaps[review.id]}
+                />
+              </m.div>
+            ))}
+        </AnimatePresence>
+        {hasMore && (
+          <div className='flex justify-center'>
+            <Button
+              className='hover:text-golden-glow hover:bg-transparent'
+              variant='ghost'
+              onClick={onLoadMore}
             >
-              <ReviewItem
-                review={review}
-                reviewRatingMaps={reviewRatingMaps}
-                isAuthor={profile?.id === review.author?.id}
-                isAuthenticated={isAuthenticated}
-                isVoteLoading={voteReviewLoading}
-                onVote={handleVote}
-                onDelete={handleDeleteReview}
-                voteType={voteMaps[review.id]}
-              />
-            </m.div>
-          ))}
-      </AnimatePresence>
-      {hasMore && (
-        <div className='flex justify-center'>
-          <Button
-            className='hover:text-golden-glow hover:bg-transparent'
-            variant='ghost'
-            onClick={onLoadMore}
-          >
-            {isLoadingMore ? (
-              <VerticalBarLoading />
-            ) : (
-              remainingCount > 0 && `Xem thêm ${remainingCount} đánh giá`
-            )}
-          </Button>
-        </div>
+              {isLoadingMore ? (
+                <VerticalBarLoading />
+              ) : (
+                remainingCount > 0 && `Xem thêm ${remainingCount} đánh giá`
+              )}
+            </Button>
+          </div>
+        )}
+      </div>
+      {canReport && (
+        <ReviewReportModal
+          open={!!selectedReportReviewId}
+          onClose={handleCloseReportModal}
+          reviewId={selectedReportReviewId ?? ''}
+        />
       )}
-    </div>
+    </>
   );
 }

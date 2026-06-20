@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { CommentDotIcon } from '@/assets';
 import { buildLoginRedirectPath, renderImageUrl } from '@/utils';
 import Link from 'next/link';
@@ -28,6 +29,7 @@ import {
   ReviewSearchType
 } from '@/types';
 import { cn } from '@/lib';
+import { CommentFilter } from './comment-filter';
 
 const DISCUSSION_SKELETON_COUNT = 3;
 
@@ -55,6 +57,8 @@ export function Discussion({
       }))
     );
 
+  const [selectedEpisodeId, setSelectedEpisodeId] = useState<string>('all');
+
   const {
     data: commentList,
     isLoading: commentListLoading,
@@ -67,6 +71,7 @@ export function Discussion({
     queryKey: queryKeys.COMMENT_LIST,
     params: {
       movieId: id,
+      movieItemId: selectedEpisodeId !== 'all' ? selectedEpisodeId : undefined,
       size: DEFAULT_PAGE_SIZE
     },
     queryFn: commentApiRequest.getList,
@@ -192,6 +197,13 @@ export function Discussion({
           />
         </Activity>
         <Activity visible={isCommentTab}>
+          {discussionTab === DISCUSSION_TAB_COMMENT && (
+            <CommentFilter
+              movie={movie}
+              selectedEpisodeId={selectedEpisodeId}
+              onValueChange={setSelectedEpisodeId}
+            />
+          )}
           <CommentList
             movie={movie}
             commentList={filteredCommentList}
@@ -249,11 +261,11 @@ Discussion.Skeleton = function ({ className }: DiscussionSkeletonProps) {
             className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'
           >
             <div className='flex shrink-0 flex-col items-center gap-y-0.5'>
-              <Skeleton className='skeleton size-[45px] rounded-full! sm:size-[50px]' />
+              <Skeleton className='skeleton size-11.25 rounded-full! sm:size-12.5' />
             </div>
             <div className='grow'>
               {/* Header */}
-              <div className='flex h-[26px] items-center gap-2 sm:h-[30px]'>
+              <div className='flex h-6.5 items-center gap-2 sm:h-7.5'>
                 <Skeleton className='skeleton h-4 w-24 rounded!' />
                 <Skeleton className='skeleton h-4 w-16 rounded!' />
               </div>

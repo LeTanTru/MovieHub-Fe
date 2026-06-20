@@ -1,7 +1,13 @@
 'use client';
 
 import { ReviewModal } from './review-modal';
-import { useAuth, useDisclosure, useMovie } from '@/hooks';
+import {
+  useAuth,
+  useDisclosure,
+  useMovie,
+  useValidatePermission
+} from '@/hooks';
+import { apiConfig } from '@/constants';
 import { cn } from '@/lib';
 import { useCheckMovieQuery } from '@/queries';
 import { buildLoginRedirectPath, formatRating, notify } from '@/utils';
@@ -15,6 +21,13 @@ type ButtonReviewProps = {
 
 export function ButtonReview({ movieId, className }: ButtonReviewProps) {
   const { isAuthenticated } = useAuth();
+  const hasPermission = useValidatePermission();
+
+  const canCreate =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.review.create.permissionCode]
+    });
 
   const { opened, open, close } = useDisclosure();
 
@@ -22,7 +35,7 @@ export function ButtonReview({ movieId, className }: ButtonReviewProps) {
 
   const { data: isReviewed } = useCheckMovieQuery({
     movieId: movieId,
-    enabled: !!movieId && isAuthenticated
+    enabled: !!movieId && canCreate
   });
 
   const handleOpenReviewModal = () => {
@@ -50,7 +63,7 @@ export function ButtonReview({ movieId, className }: ButtonReviewProps) {
     open();
   };
 
-  if (!movie) return null;
+  if (!movie || !canCreate) return null;
 
   return (
     <>

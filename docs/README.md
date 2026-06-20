@@ -12,10 +12,9 @@ Use this index to find the right project notes quickly. These docs describe the 
 
 ## Conventions And Workflows
 
-| Document                                                        | Purpose                                                                     |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [Export style conventions](./export-style.md)                   | Canonical export style by file category.                                    |
-| [Skeleton loading audit plan](./skeleton-loading-audit-plan.md) | Checklist and workflow for verifying skeleton loaders against real layouts. |
+| Document                                      | Purpose                                  |
+| --------------------------------------------- | ---------------------------------------- |
+| [Export style conventions](./export-style.md) | Canonical export style by file category. |
 
 ## Reviews And Audit Reports
 
@@ -25,6 +24,7 @@ Use this index to find the right project notes quickly. These docs describe the 
 | [Component split analysis: `src/components/app`](./component-split-analysis-app.md) | Current split/refactor candidates for shared app components.         |
 | [Responsive UI audit](./responsive-ui-audit.md)                                     | Static responsive layout findings and recommended fixes.             |
 | [Security best practices report](./security-best-practices-report.md)               | Static security review findings and recommended remediation work.    |
+| [Comment permissions report](./comment-permission-report.md)                        | Summary of actions, required permissions, and checks for comments.   |
 
 ## Root-Level References
 

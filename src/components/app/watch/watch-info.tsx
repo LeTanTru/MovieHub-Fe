@@ -21,6 +21,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa6';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function WatchInfo() {
   const {
@@ -173,3 +174,39 @@ export function WatchInfo() {
     </div>
   );
 }
+
+WatchInfo.Skeleton = function () {
+  return (
+    <div className='max-1280:hidden flex gap-6 border-b border-solid border-white/10 pb-10'>
+      <div className='w-25 shrink-0'>
+        <Skeleton className='skeleton mb-6 h-0 w-full pb-[150%]' />
+      </div>
+      <div className='w-110 shrink-0'>
+        <Skeleton className='skeleton mb-2 h-6 w-3/4' />
+        <Skeleton className='skeleton mb-3 h-5 w-1/2' />
+        <div className='mb-3 flex gap-2'>
+          <Skeleton className='skeleton h-6 w-12' />
+          <Skeleton className='skeleton h-6 w-16' />
+          <Skeleton className='skeleton h-6 w-20' />
+        </div>
+        <div className='mb-3 flex gap-2'>
+          <Skeleton className='skeleton h-6 w-20' />
+          <Skeleton className='skeleton h-6 w-24' />
+        </div>
+        <div className='mb-3 flex items-center justify-between'>
+          <Skeleton className='skeleton h-5 w-32' />
+          <Skeleton className='skeleton h-5 w-24' />
+        </div>
+        <div className='mb-3 flex items-center justify-between'>
+          <Skeleton className='skeleton h-5 w-24' />
+          <Skeleton className='skeleton h-5 w-24' />
+        </div>
+        <Skeleton className='skeleton h-5 w-40' />
+      </div>
+      <div className='grow pl-10'>
+        <Skeleton className='skeleton mb-6 h-20 w-full' />
+        <Skeleton className='skeleton h-5 w-28' />
+      </div>
+    </div>
+  );
+};

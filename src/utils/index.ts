@@ -14,3 +14,4 @@ export * from './storage.util';
 export * from './text.util';
 export * from './time.util';
 export * from './url.util';
+export * from './validate-permission.util';

@@ -330,25 +330,29 @@ export const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.apiUrl}/v1/comment/create`,
       method: 'POST',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'CMT_C'
     },
     delete: {
       baseUrl: `${AppConstants.apiUrl}/v1/comment/delete/:id`,
       method: 'DELETE',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'CMT_D'
     },
     update: {
       baseUrl: `${AppConstants.apiUrl}/v1/comment/update`,
       method: 'PUT',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'CMT_U'
     },
     vote: {
       baseUrl: `${AppConstants.apiUrl}/v1/comment/vote`,
       method: 'PUT',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'CMT_VOTE'
     },
     getVoteList: {
       baseUrl: `${AppConstants.apiUrl}/v1/comment/vote-list/:movieId`,
@@ -368,13 +372,15 @@ export const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.apiUrl}/v1/review/create`,
       method: 'POST',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'REV_C'
     },
     delete: {
       baseUrl: `${AppConstants.apiUrl}/v1/review/delete/:id`,
       method: 'DELETE',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'REV_D'
     },
     getList: {
       baseUrl: `${AppConstants.apiUrl}/v1/review/list`,
@@ -393,7 +399,8 @@ export const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.apiUrl}/v1/review/vote`,
       method: 'PATCH',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'REV_VOTE'
     },
     getVoteList: {
       baseUrl: `${AppConstants.apiUrl}/v1/review/vote-list/:movieId`,
@@ -538,7 +545,8 @@ export const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.apiUrl}/v1/notification/list`,
       method: 'GET',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'NOTI_L'
     },
     readAll: {
       baseUrl: `${AppConstants.apiUrl}/v1/notification/read-all`,
@@ -550,19 +558,22 @@ export const apiConfig = defineApiConfig({
       baseUrl: `${AppConstants.apiUrl}/v1/notification/update-read`,
       method: 'PUT',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'NOTI_U'
     },
     deleteAll: {
       baseUrl: `${AppConstants.apiUrl}/v1/notification/delete-all`,
       method: 'DELETE',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'NOTI_D'
     },
     delete: {
       baseUrl: `${AppConstants.apiUrl}/v1/notification/delete/:id`,
       method: 'DELETE',
       headers: baseHeader,
-      isRequiredXClientType: true
+      isRequiredXClientType: true,
+      permissionCode: 'NOTI_D'
     }
   },
   chat: {
@@ -650,6 +661,15 @@ export const apiConfig = defineApiConfig({
       method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true
+    }
+  },
+  userReport: {
+    create: {
+      baseUrl: `${AppConstants.apiUrl}/v1/user-report/create`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredXClientType: true,
+      permissionCode: 'URP_C'
     }
   }
 });

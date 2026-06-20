@@ -4,7 +4,7 @@ import { NoData } from '@/components/no-data';
 import { CommentItem } from './comment-item';
 import { CommentResType, MovieResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
-import { useAuth } from '@/hooks';
+import { useAuth, useValidatePermission } from '@/hooks';
 import {
   useDeleteCommentMutation,
   useVoteCommentListQuery,
@@ -14,12 +14,14 @@ import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
 import { logger } from '@/logger';
 import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
-import { queryKeys, REACTION_TYPE_LIKE } from '@/constants';
+import { apiConfig, queryKeys, REACTION_TYPE_LIKE } from '@/constants';
 import { useCommentStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import Link from 'next/link';
 import { m } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import CommentReportModal from './comment-report-modal';
+import { cn } from '@/lib';
 
 const COMMENT_SKELETON_COUNT = 10;
 
@@ -43,6 +45,12 @@ export function CommentList({
   onLoadMore
 }: CommentListProps) {
   const { profile, isAuthenticated } = useAuth();
+  const hasPermission = useValidatePermission();
+  const [selectedReportCommentId, setSelectedReportCommentId] = useState<
+    string | null
+  >(null);
+
+  const commentCount = commentList.length;
 
   const {
     openParentIds,
@@ -81,6 +89,37 @@ export function CommentList({
     movieId: movie.id,
     enabled: isAuthenticated && !!movie.id
   });
+
+  const canReport =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.userReport.create.permissionCode]
+    });
+
+  const canCreate =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.comment.create.permissionCode]
+    });
+
+  const canUpdate =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.comment.update.permissionCode]
+    });
+
+  const canDelete =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.comment.delete.permissionCode]
+    });
+
+  const canVote =
+    isAuthenticated &&
+    !voteCommentLoading &&
+    hasPermission({
+      requiredPermissions: [apiConfig.comment.vote.permissionCode]
+    });
 
   const voteMap: Record<string, number> = {};
   voteCommentList.forEach((vote) => {
@@ -180,6 +219,14 @@ export function CommentList({
     );
   };
 
+  const handleOpenReportModal = (commentId: string) => {
+    setSelectedReportCommentId(commentId);
+  };
+
+  const handleCloseReportModal = () => {
+    setSelectedReportCommentId(null);
+  };
+
   useEffect(() => {
     if (!targetParentId) return;
 
@@ -224,8 +271,6 @@ export function CommentList({
           <CommentItem
             comment={comment}
             editingComment={editingComment}
-            isAuthenticated={isAuthenticated}
-            isVoteLoading={voteCommentLoading}
             level={level}
             openParentIds={openParentIds}
             replyingComment={replyingComment}
@@ -234,8 +279,14 @@ export function CommentList({
             rootId={rootId ?? comment.id}
             userId={profile?.id || ''}
             voteMap={voteMap}
+            canCreate={canCreate}
+            canUpdate={canUpdate}
+            canDelete={canDelete}
+            canReport={canReport}
+            canVote={canVote}
             onCloseReply={closeReply}
             onDelete={() => handleDeleteComment(comment)}
+            onOpenReportModal={handleOpenReportModal}
             onVote={handleVote}
             openReply={openReply}
             renderChildren={renderChildren}
@@ -249,14 +300,14 @@ export function CommentList({
 
   if (isLoading)
     return (
-      <div className='mt-12 flex flex-col justify-between gap-6'>
+      <div className='mt-6 flex flex-col justify-between gap-6'>
         {Array.from({ length: COMMENT_SKELETON_COUNT }).map((_, index) => (
           <CommentItem.Skeleton key={`comment-skeleton-${index}`} />
         ))}
       </div>
     );
 
-  if (!commentList.length)
+  if (!commentCount)
     return (
       <NoData
         className='bg-background/30 max-640:text-[13px] max-520:text-xs mt-4 min-h-40 rounded-lg px-8 py-12 opacity-50'
@@ -274,23 +325,36 @@ export function CommentList({
     );
 
   return (
-    <div className='max-640:mt-6 max-520:mt-4 mt-8 flex flex-col justify-between gap-4'>
-      {renderChildren(commentList, 0)}
-      {hasMore && (
-        <div className='flex justify-center'>
-          {isLoadingMore ? (
-            <VerticalBarLoading className='py-10' />
-          ) : (
-            <Button
-              className='hover:text-golden-glow hover:bg-transparent'
-              variant='ghost'
-              onClick={onLoadMore}
-            >
-              {remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`}
-            </Button>
-          )}
-        </div>
+    <>
+      <div
+        className={cn('flex flex-col justify-between gap-4', {
+          'mt-4': isAuthenticated
+        })}
+      >
+        {renderChildren(commentList, 0)}
+        {hasMore && (
+          <div className='flex justify-center'>
+            {isLoadingMore ? (
+              <VerticalBarLoading className='py-10' />
+            ) : (
+              <Button
+                className='hover:text-golden-glow hover:bg-transparent'
+                variant='ghost'
+                onClick={onLoadMore}
+              >
+                {remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`}
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+      {canReport && (
+        <CommentReportModal
+          open={!!selectedReportCommentId}
+          onClose={handleCloseReportModal}
+          commentId={selectedReportCommentId ?? ''}
+        />
       )}
-    </div>
+    </>
   );
 }

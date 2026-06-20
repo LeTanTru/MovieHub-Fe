@@ -22,22 +22,26 @@ type ReviewItemProps = {
   review: ReviewResType;
   reviewRatingMaps: Record<number, { label: string; icon: StaticImageData }>;
   isAuthor: boolean;
-  isAuthenticated: boolean;
-  isVoteLoading: boolean;
+  canDelete: boolean;
+  canReport: boolean;
+  canVote: boolean;
   voteType: number;
   onVote: (id: string, type: number) => void;
   onDelete: (id: string) => void;
+  onOpenReportModal: (reviewId: string) => void;
 };
 
 export function ReviewItem({
   review,
   reviewRatingMaps,
   isAuthor,
-  isAuthenticated,
-  isVoteLoading,
+  canDelete,
+  canReport,
+  canVote,
   voteType,
   onVote,
-  onDelete
+  onDelete,
+  onOpenReportModal
 }: ReviewItemProps) {
   const author = review.author;
   const gender = author.gender || GENDER_OTHER;
@@ -112,6 +116,11 @@ export function ReviewItem({
     onDelete(review.id);
   };
 
+  const handleOpenReportModal = () => {
+    setShowDropdown(false);
+    onOpenReportModal(review.id);
+  };
+
   return (
     <div className='max-640:gap-3 max-520:gap-2 relative flex justify-start gap-4'>
       <AvatarField
@@ -140,9 +149,10 @@ export function ReviewItem({
 
         <ReviewAction
           review={review}
-          isAuthenticated={isAuthenticated}
-          isAuthor={isAuthor}
-          isVoteLoading={isVoteLoading}
+          isHidden={isHidden}
+          canDelete={canDelete && isAuthor}
+          canReport={canReport && !isAuthor}
+          canVote={canVote}
           isVisible={isVisible}
           showDropdown={showDropdown}
           voteType={voteType}
@@ -151,6 +161,7 @@ export function ReviewItem({
           onToggleDropdown={handleDropdownToggle}
           onToggleBlurredContent={handleViewContent}
           onDelete={handleDeleteReview}
+          onOpenReportModal={handleOpenReportModal}
         />
       </div>
     </div>
@@ -160,10 +171,10 @@ export function ReviewItem({
 ReviewItem.Skeleton = () => {
   return (
     <div className='max-640:gap-3 max-520:gap-2 relative flex justify-start gap-4'>
-      <Skeleton className='skeleton size-[45px] shrink-0 rounded-full! sm:size-[50px]' />
+      <Skeleton className='skeleton size-11.25 shrink-0 rounded-full! sm:size-12.5' />
       <div className='grow'>
         {/* Header */}
-        <div className='flex h-[26px] items-center gap-2 sm:h-[30px]'>
+        <div className='flex h-6.5 items-center gap-2 sm:h-7.5'>
           <Skeleton className='skeleton h-4 w-20' />
           <Skeleton className='skeleton h-4 w-24' />
         </div>

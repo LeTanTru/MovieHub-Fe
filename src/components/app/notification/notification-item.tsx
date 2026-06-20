@@ -19,12 +19,14 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 type NotificationItemProps = {
   notification: NotificationResType;
+  canDelete?: boolean;
   onUpdateRead: (notification: NotificationResType) => void;
   onDelete: (id: string) => void;
 };
 
 export function NotificationItem({
   notification,
+  canDelete = true,
   onUpdateRead,
   onDelete
 }: NotificationItemProps) {
@@ -40,39 +42,41 @@ export function NotificationItem({
     >
       <NotificationBody notification={notification} />
 
-      <DropdownMenu modal={false}>
-        <DropdownMenuTrigger
-          className='border-none bg-transparent shadow-none'
-          asChild
-        >
-          <Button variant='outline' className='px-2!'>
-            <EllipsisVertical />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          sideOffset={0}
-          className='dark:bg-charade w-40 border-none'
-          align='center'
-        >
-          <DropdownMenuGroup>
-            <DropdownMenuItem className='dark:hover:bg-black-denim cursor-pointer p-0! transition-all duration-200 ease-linear'>
-              <ConfirmModal
-                message='Bạn có chắc chắn muốn xóa thông báo này không ?'
-                onConfirm={() => onDelete(notification.id)}
-                trigger={
-                  <Button
-                    variant='ghost'
-                    className='h-fit w-full justify-start border-none bg-transparent p-2! text-rose-500 shadow-none hover:bg-transparent hover:text-rose-500/50'
-                  >
-                    <AiOutlineDelete className='size-5' />
-                    Xóa
-                  </Button>
-                }
-              />
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {canDelete && (
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger
+            className='border-none bg-transparent shadow-none'
+            asChild
+          >
+            <Button variant='outline' className='px-2!'>
+              <EllipsisVertical />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            sideOffset={0}
+            className='dark:bg-charade w-40 border-none'
+            align='center'
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuItem className='dark:hover:bg-black-denim cursor-pointer p-0! transition-all duration-200 ease-linear'>
+                <ConfirmModal
+                  message='Bạn có chắc chắn muốn xóa thông báo này không ?'
+                  onConfirm={() => onDelete(notification.id)}
+                  trigger={
+                    <Button
+                      variant='ghost'
+                      className='h-fit w-full justify-start border-none bg-transparent p-2! text-rose-500 shadow-none hover:bg-transparent hover:text-rose-500/50'
+                    >
+                      <AiOutlineDelete className='size-5' />
+                      Xóa
+                    </Button>
+                  }
+                />
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </ListItem>
   );
 }

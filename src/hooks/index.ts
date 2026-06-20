@@ -22,4 +22,5 @@ export { useResendOtpTimer } from './use-resend-otp-timer';
 export { useSelectedPlaylist } from './use-selected-playlist';
 export { useSlugId } from './use-slug-id';
 export { useToggleFavourite } from './use-toggle-favourite';
+export { useValidatePermission } from './use-validate-permission';
 export { useWatchHistoryDelete } from './use-watch-history-delete';

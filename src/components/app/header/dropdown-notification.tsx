@@ -11,6 +11,7 @@ import {
   DEFAULT_PAGE_START,
   NOTIFICATION_PAGE_SIZE,
   NOTIFICATION_TYPE_MOVIE,
+  apiConfig,
   notificationTabs,
   queryKeys
 } from '@/constants';
@@ -19,7 +20,8 @@ import {
   useClickOutside,
   useDisclosure,
   useLoadMore,
-  useNotificationActions
+  useNotificationActions,
+  useValidatePermission
 } from '@/hooks';
 import { useCountUnreadNotificationQuery } from '@/queries';
 import { route } from '@/routes';
@@ -31,6 +33,13 @@ import { useState } from 'react';
 
 export function DropdownNotification() {
   const { isAuthenticated } = useAuth();
+  const hasPermission = useValidatePermission();
+
+  const canListNotification =
+    isAuthenticated &&
+    hasPermission({
+      requiredPermissions: [apiConfig.notification.getList.permissionCode]
+    });
 
   const {
     opened: openedDropdown,
@@ -54,12 +63,12 @@ export function DropdownNotification() {
     queryKey: queryKeys.NOTIFICATION_LIST,
     params,
     queryFn: notificationApiRequest.getList,
-    enabled: isAuthenticated,
+    enabled: canListNotification,
     mode: 'click'
   });
 
   const { data: totalUnreadData } = useCountUnreadNotificationQuery({
-    enabled: isAuthenticated
+    enabled: canListNotification
   });
 
   const totalUnread = totalUnreadData?.totalUnread
@@ -70,6 +79,8 @@ export function DropdownNotification() {
     handleReadAll,
     handleDeleteAll,
     handleDelete,
+    canUpdateNotification,
+    canDeleteNotification,
     readAllNotificationLoading,
     deleteAllNotificationLoading
   } = useNotificationActions();
@@ -81,6 +92,8 @@ export function DropdownNotification() {
   const handleItemClick = () => {
     closeDropDown();
   };
+
+  if (!canListNotification) return null;
 
   return (
     <div ref={dropdownRef} className='relative'>
@@ -156,7 +169,7 @@ export function DropdownNotification() {
                 </div>
                 {notificationList.length > 0 && !isLoading && (
                   <div className='flex items-center gap-4 pr-2'>
-                    {totalUnread > 0 && (
+                    {canUpdateNotification && totalUnread > 0 && (
                       <Button
                         type='button'
                         variant='ghost'
@@ -172,7 +185,7 @@ export function DropdownNotification() {
                         Đọc tất cả
                       </Button>
                     )}
-                    {totalElements > 0 && (
+                    {canDeleteNotification && totalElements > 0 && (
                       <ConfirmModal
                         message='Bạn có chắc chắn muốn xóa tất cả không báo không?'
                         onConfirm={handleDeleteAll}
@@ -201,6 +214,7 @@ export function DropdownNotification() {
                   <NotificationList
                     notificationList={notificationList}
                     loading={isLoading}
+                    canDelete={canDeleteNotification}
                     onDelete={handleDelete}
                     onItemClick={handleItemClick}
                   />
