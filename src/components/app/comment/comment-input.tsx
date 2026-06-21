@@ -8,7 +8,6 @@ import { commentSchema } from '@/schemaValidations';
 import { CommentBodyType, MovieResType } from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { FaTelegramPlane } from 'react-icons/fa';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   useAuth,
   useClickOutside,
@@ -31,7 +30,6 @@ type EmojiPickerElement = HTMLElement & {
 };
 
 type CommentInputProps = {
-  isLoading?: boolean;
   movie: MovieResType;
   selectedSeason: string;
 };
@@ -42,11 +40,7 @@ const defaultValues: CommentBodyType = {
   movieItemId: ''
 };
 
-export function CommentInput({
-  isLoading = false,
-  movie,
-  selectedSeason
-}: CommentInputProps) {
+export function CommentInput({ movie, selectedSeason }: CommentInputProps) {
   const { isAuthenticated } = useAuth();
   const hasPermission = useValidatePermission();
 
@@ -187,18 +181,6 @@ export function CommentInput({
     }
   }, [showPicker]);
 
-  if (isLoading)
-    return (
-      <div className='bg-transparent-white flex flex-col gap-2 rounded-md border border-zinc-600/50 p-2'>
-        <Skeleton className='skeleton h-45 w-full' />
-        <div className='flex items-center gap-4'>
-          <Skeleton className='skeleton h-8 w-24' />
-          <div className='grow'></div>
-          <Skeleton className='skeleton h-10 w-20' />
-        </div>
-      </div>
-    );
-
   if (!canCreate) return null;
 
   return (
@@ -227,7 +209,7 @@ export function CommentInput({
             <Row className='mb-0 items-center gap-2'>
               <Col className='grid-c-12'>
                 <div
-                  className='relative ml-auto flex w-fit items-center gap-6'
+                  className='relative ml-auto flex w-fit items-center gap-4'
                   ref={wrapperRef}
                 >
                   <div ref={pickerContainerRef} />

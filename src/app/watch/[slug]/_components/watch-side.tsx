@@ -19,8 +19,8 @@ export function WatchSide() {
   if (!movie) return null;
 
   return (
-    <div className='max-1360:w-95 max-1120:border-none max-1120:w-full max-1120:p-7.5 max-990:p-5 max-640:pt-0 flex w-110 shrink-0 flex-col gap-7.5 border-l border-solid border-white/10 p-10'>
-      <div className='flex items-center justify-end gap-4'>
+    <div className='max-1360:w-95 max-1120:border-none max-1120:w-full max-640:p-2 flex w-110 shrink-0 flex-col border-l border-solid border-white/10 p-4'>
+      <div className='max-640:pb-2 flex items-center justify-end gap-4 pb-4'>
         <ButtonViewComment
           className='max-1120:hidden'
           to={MOVIE_WATCH_DISCUSSION_ID}
@@ -42,11 +42,11 @@ export function WatchSide() {
 
 WatchSide.Skeleton = function () {
   return (
-    <div className='max-1360:w-95 max-1120:border-none max-1120:w-full max-1120:p-7.5 max-990:p-5 max-640:pt-0 flex w-110 shrink-0 flex-col gap-7.5 border-l border-solid border-white/10 p-10'>
-      <div className='flex items-center justify-end gap-4'>
-        <Skeleton className='skeleton h-9 w-28' />
-        <Skeleton className='skeleton h-9 w-28' />
-        <Skeleton className='skeleton h-9 w-28' />
+    <div className='max-1360:w-95 max-1120:border-none max-1120:w-ful max-640:p-2l flex w-110 shrink-0 flex-col border-l border-solid border-white/10 p-4'>
+      <div className='max-640:pb-2 flex items-center justify-end gap-4 pb-4'>
+        <Skeleton className='skeleton max-1120:hidden h-15 w-20' />
+        <Skeleton className='skeleton max-1120:hidden h-15 w-20' />
+        <Skeleton className='skeleton h-9 w-16.5' />
       </div>
 
       <ActorList.Skeleton />

@@ -256,7 +256,7 @@ export function CommentForm({
             <Row className='max-640:gap-2 mb-0 flex items-center gap-2'>
               <Col className='grid-c-12'>
                 <div
-                  className='relative ml-auto flex w-fit items-center gap-6'
+                  className='relative ml-auto flex w-fit items-center gap-4'
                   ref={wrapperRef}
                 >
                   <div ref={pickerContainerRef} />

@@ -25,29 +25,29 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function WatchInfo() {
   const {
-    movie,
     ageRating,
     categories,
     countryName,
-    languageName,
-    directors,
-    latestSeason,
     currentSeason,
-    episodes,
-    latestEpisode,
+    directors,
     duration,
-    releaseDate,
-    sanitizedDescription,
+    episodes,
     isComplete,
-    isSingle,
     isSeries,
-    releaseYear
+    isSingle,
+    languageName,
+    latestEpisode,
+    latestSeason,
+    movie,
+    releaseDate,
+    releaseYear,
+    sanitizedDescription
   } = useMovieInfo();
 
   if (!movie) return null;
 
   return (
-    <div className='max-1280:hidden flex gap-6 border-b border-solid border-white/10 pb-10'>
+    <div className='max-1280:hidden flex gap-6 border-b border-solid border-white/10 pb-4'>
       <div className='w-25 shrink-0'>
         <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded pb-[150%]'>
           <Image
@@ -160,7 +160,7 @@ export function WatchInfo() {
       </div>
       <div className='grow pl-10'>
         <div
-          className='mb-6 line-clamp-4'
+          className='max-640:mb-2 mb-4 line-clamp-4 leading-normal'
           dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
         />
         <Link
@@ -177,9 +177,11 @@ export function WatchInfo() {
 
 WatchInfo.Skeleton = function () {
   return (
-    <div className='max-1280:hidden flex gap-6 border-b border-solid border-white/10 pb-10'>
+    <div className='max-1280:hidden flex gap-6 border-b border-solid border-white/10 pb-4'>
       <div className='w-25 shrink-0'>
-        <Skeleton className='skeleton mb-6 h-0 w-full pb-[150%]' />
+        <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded pb-[150%]'>
+          <Skeleton className='skeleton absolute! top-0 left-0 size-full rounded!' />
+        </div>
       </div>
       <div className='w-110 shrink-0'>
         <Skeleton className='skeleton mb-2 h-6 w-3/4' />
@@ -204,7 +206,7 @@ WatchInfo.Skeleton = function () {
         <Skeleton className='skeleton h-5 w-40' />
       </div>
       <div className='grow pl-10'>
-        <Skeleton className='skeleton mb-6 h-20 w-full' />
+        <Skeleton className='skeleton max-640:mb-2 mb-4 h-20 w-full' />
         <Skeleton className='skeleton h-5 w-28' />
       </div>
     </div>

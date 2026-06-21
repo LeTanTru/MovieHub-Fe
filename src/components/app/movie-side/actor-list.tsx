@@ -18,7 +18,7 @@ export function ActorList({ actors }: ActorListProps) {
     >
       <h3
         className={cn('font-medium whitespace-nowrap text-white', {
-          'mb-8 text-xl': actors.length > 0
+          'mb-4 text-xl': actors.length > 0
         })}
       >
         Diễn viên:
@@ -39,7 +39,7 @@ export function ActorList({ actors }: ActorListProps) {
 ActorList.Skeleton = function () {
   return (
     <div className='max-1120:hidden mb-5'>
-      <Skeleton className='skeleton mb-8 h-8 w-32' />
+      <Skeleton className='skeleton mb-4 h-8 w-32' />
       <div className='grid grid-cols-3 gap-x-2.5 gap-y-6'>
         {Array.from({ length: ACTOR_SKELETON_COUNT }).map((_, index) => (
           <div

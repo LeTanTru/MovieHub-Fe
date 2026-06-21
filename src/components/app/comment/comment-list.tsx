@@ -21,14 +21,10 @@ import Link from 'next/link';
 import { m } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import CommentReportModal from './comment-report-modal';
-import { cn } from '@/lib';
-
-const COMMENT_SKELETON_COUNT = 10;
 
 type CommentListProps = {
   movie: MovieResType;
   commentList: CommentResType[];
-  isLoading?: boolean;
   hasMore?: boolean;
   remainingCount?: number;
   isLoadingMore?: boolean;
@@ -38,7 +34,6 @@ type CommentListProps = {
 export function CommentList({
   movie,
   commentList,
-  isLoading = false,
   hasMore = false,
   remainingCount = 0,
   isLoadingMore = false,
@@ -236,19 +231,12 @@ export function CommentList({
   }, [setOpenParentIds, targetParentId]);
 
   useEffect(() => {
-    if (!targetRootId || isLoading || isLoadingMore || !hasMore) return;
+    if (!targetRootId || isLoadingMore || !hasMore) return;
 
     if (commentList.some((comment) => comment.id === targetRootId)) return;
 
     onLoadMore?.();
-  }, [
-    commentList,
-    hasMore,
-    isLoadingMore,
-    isLoading,
-    onLoadMore,
-    targetRootId
-  ]);
+  }, [commentList, hasMore, isLoadingMore, onLoadMore, targetRootId]);
 
   const renderChildren = (
     commentList: CommentResType[],
@@ -298,15 +286,6 @@ export function CommentList({
       ));
   };
 
-  if (isLoading)
-    return (
-      <div className='mt-6 flex flex-col justify-between gap-6'>
-        {Array.from({ length: COMMENT_SKELETON_COUNT }).map((_, index) => (
-          <CommentItem.Skeleton key={`comment-skeleton-${index}`} />
-        ))}
-      </div>
-    );
-
   if (!commentCount)
     return (
       <NoData
@@ -326,11 +305,7 @@ export function CommentList({
 
   return (
     <>
-      <div
-        className={cn('flex flex-col justify-between gap-4', {
-          'mt-4': isAuthenticated
-        })}
-      >
+      <div className='flex flex-col justify-between gap-4'>
         {renderChildren(commentList, 0)}
         {hasMore && (
           <div className='flex justify-center'>
