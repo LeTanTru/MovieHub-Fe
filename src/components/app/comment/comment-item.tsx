@@ -341,7 +341,7 @@ export function CommentItem({
         className={cn(
           'max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4',
           {
-            'ring-golden-glow rounded-lg ring-2 transition-colors duration-200 ease-linear':
+            'bg-charade rounded-lg transition-colors duration-200 ease-linear':
               isScrollTarget
           }
         )}

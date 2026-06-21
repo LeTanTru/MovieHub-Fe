@@ -3,7 +3,10 @@ import { DISCUSSION_TAB_REVIEW } from '@/constants';
 import { route } from '@/routes';
 import { useDiscussionTab } from '@/hooks';
 import { useReviewStore } from '@/store';
-import { NotificationResType, VoteReviewNotificationType } from '@/types';
+import {
+  NotificationResType,
+  ToxicReviewLockedNotificationType
+} from '@/types';
 import {
   convertUTCToLocal,
   generateSlug,
@@ -14,13 +17,13 @@ import {
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-export function VoteReviewBody({
+export function ToxicReviewLockedBody({
   notification
 }: {
   notification: NotificationResType;
 }) {
   const body = useMemo(
-    () => parseJSON<VoteReviewNotificationType>(notification.body),
+    () => parseJSON<ToxicReviewLockedNotificationType>(notification.body),
     [notification.body]
   );
 
@@ -38,7 +41,11 @@ export function VoteReviewBody({
     <Link
       onClick={handleClick}
       className='max-480:flex-col max-480:gap-1 flex flex-1 items-center justify-between gap-2 pl-1'
-      href={`${route.movie.path}/${generateSlug(body.movieTitle)}.${body.movieId}`}
+      href={
+        body?.movieId
+          ? `${route.movie.path}/${generateSlug(body.movieTitle)}.${body.movieId}`
+          : '#'
+      }
     >
       <div className='flex flex-1 items-center gap-2'>
         <div className='max-640:w-8 max-520:w-7 flex w-10 shrink-0 justify-center'>
@@ -54,7 +61,9 @@ export function VoteReviewBody({
             className='max-640:text-[13px] max-520:text-xs line-clamp-2'
             title={notification.title}
           >
-            {notification.title}&nbsp;trong phim&nbsp;
+            {notification.title}:&nbsp;
+            <span className='font-semibold'>&quot;{body?.content}&quot;</span>
+            &nbsp;trong phim&nbsp;
             <span className='text-golden-glow font-semibold'>
               {body?.movieTitle}
             </span>

@@ -34,8 +34,8 @@ export function ReplyCommentBody({
         prev.includes(parentId) ? prev : [...prev, parentId]
       );
     }
-    setDiscussionTab(DISCUSSION_TAB_COMMENT);
     setScrollTarget({ commentId: body?.id, parentId });
+    setDiscussionTab(DISCUSSION_TAB_COMMENT);
   };
 
   return (

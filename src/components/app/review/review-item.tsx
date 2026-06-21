@@ -11,12 +11,16 @@ import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
 import { ReviewResType, ToxicSpan } from '@/types';
 import { parseJSON, renderImageUrl } from '@/utils';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { Element, scroller } from 'react-scroll';
 import { ReviewAction } from './review-action';
 import { ReviewContent } from './review-content';
 import { ReviewHeader } from './review-header';
 import { Skeleton } from '@/components/ui/skeleton';
 import { StaticImageData } from 'next/image';
+
+const SCROLL_DELAY = 100;
+const HIGHLIGHT_DURATION = 2000;
 
 type ReviewItemProps = {
   review: ReviewResType;
@@ -29,6 +33,8 @@ type ReviewItemProps = {
   onVote: (id: string, type: number) => void;
   onDelete: (id: string) => void;
   onOpenReportModal: (reviewId: string) => void;
+  targetReviewId: string | null;
+  clearScrollTarget: () => void;
 };
 
 export function ReviewItem({
@@ -41,7 +47,9 @@ export function ReviewItem({
   voteType,
   onVote,
   onDelete,
-  onOpenReportModal
+  onOpenReportModal,
+  targetReviewId,
+  clearScrollTarget
 }: ReviewItemProps) {
   const author = review.author;
   const gender = author.gender || GENDER_OTHER;
@@ -121,50 +129,91 @@ export function ReviewItem({
     onOpenReportModal(review.id);
   };
 
+  const scrollTargetName = useMemo(() => `review-${review.id}`, [review.id]);
+  const [isScrollTarget, setIsScrollTarget] = useState(false);
+
+  useEffect(() => {
+    if (targetReviewId !== review.id) return;
+
+    let clearHighlightTimeout: NodeJS.Timeout | null = null;
+
+    const scrollTimeout = setTimeout(() => {
+      scroller.scrollTo(scrollTargetName, {
+        duration: 500,
+        smooth: 'easeInOutQuart',
+        offset: -250
+      });
+
+      setIsScrollTarget(true);
+      clearHighlightTimeout = setTimeout(() => {
+        setIsScrollTarget(false);
+        clearScrollTarget();
+      }, HIGHLIGHT_DURATION);
+    }, SCROLL_DELAY);
+
+    return () => {
+      setIsScrollTarget(false);
+      clearTimeout(scrollTimeout);
+      if (clearHighlightTimeout) {
+        clearTimeout(clearHighlightTimeout);
+      }
+    };
+  }, [clearScrollTarget, review.id, scrollTargetName, targetReviewId]);
+
   return (
-    <div className='max-640:gap-3 max-520:gap-2 relative flex justify-start gap-4'>
-      <AvatarField
-        src={renderImageUrl(author?.avatarPath)}
-        size={45}
-        alt={author?.fullName}
-        breakpoints={[{ breakpoint: 640, size: 50 }]}
-      />
-      <div className='grow'>
-        <ReviewHeader
-          review={review}
-          isAuthor={isAuthor}
-          kind={kind}
-          gender={gender}
-          GenderIcon={GenderIcon}
-          author={author}
-          ratingInfo={ratingInfo}
+    <Element name={scrollTargetName}>
+      <div
+        className={cn(
+          'max-640:gap-3 max-520:gap-2 relative flex justify-start gap-4',
+          {
+            'bg-charade rounded-lg transition-colors duration-200 ease-linear':
+              isScrollTarget
+          }
+        )}
+      >
+        <AvatarField
+          src={renderImageUrl(author?.avatarPath)}
+          size={45}
+          alt={author?.fullName}
+          breakpoints={[{ breakpoint: 640, size: 50 }]}
         />
+        <div className='grow'>
+          <ReviewHeader
+            review={review}
+            isAuthor={isAuthor}
+            kind={kind}
+            gender={gender}
+            GenderIcon={GenderIcon}
+            author={author}
+            ratingInfo={ratingInfo}
+          />
 
-        <ReviewContent
-          canViewHiddenContent={canViewHiddenContent}
-          isBlurWholeContent={isBlurWholeContent}
-          onToggleBlurredContent={handleViewContent}
-          renderContent={renderContent}
-        />
+          <ReviewContent
+            canViewHiddenContent={canViewHiddenContent}
+            isBlurWholeContent={isBlurWholeContent}
+            onToggleBlurredContent={handleViewContent}
+            renderContent={renderContent}
+          />
 
-        <ReviewAction
-          review={review}
-          isHidden={isHidden}
-          canDelete={canDelete && isAuthor}
-          canReport={canReport && !isAuthor}
-          canVote={canVote}
-          isVisible={isVisible}
-          showDropdown={showDropdown}
-          voteType={voteType}
-          dropdownRef={dropdownRef}
-          onVote={onVote}
-          onToggleDropdown={handleDropdownToggle}
-          onToggleBlurredContent={handleViewContent}
-          onDelete={handleDeleteReview}
-          onOpenReportModal={handleOpenReportModal}
-        />
+          <ReviewAction
+            review={review}
+            isHidden={isHidden}
+            canDelete={canDelete && isAuthor}
+            canReport={canReport && !isAuthor}
+            canVote={canVote}
+            isVisible={isVisible}
+            showDropdown={showDropdown}
+            voteType={voteType}
+            dropdownRef={dropdownRef}
+            onVote={onVote}
+            onToggleDropdown={handleDropdownToggle}
+            onToggleBlurredContent={handleViewContent}
+            onDelete={handleDeleteReview}
+            onOpenReportModal={handleOpenReportModal}
+          />
+        </div>
       </div>
-    </div>
+    </Element>
   );
 }
 

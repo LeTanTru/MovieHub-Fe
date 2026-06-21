@@ -23,7 +23,9 @@ import { logger } from '@/logger';
 import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useReviewStore } from '@/store';
+import { useShallow } from 'zustand/shallow';
 import ReviewReportModal from './review-report-modal';
 
 type ReviewListProps = {
@@ -48,6 +50,21 @@ export function ReviewList({
   const [selectedReportReviewId, setSelectedReportReviewId] = useState<
     string | null
   >(null);
+
+  const { targetReviewId, clearScrollTarget } = useReviewStore(
+    useShallow((s) => ({
+      targetReviewId: s.targetReviewId,
+      clearScrollTarget: s.clearScrollTarget
+    }))
+  );
+
+  useEffect(() => {
+    if (!targetReviewId || isLoadingMore || !hasMore) return;
+
+    if (reviewList.some((review) => review.id === targetReviewId)) return;
+
+    onLoadMore?.();
+  }, [reviewList, hasMore, isLoadingMore, onLoadMore, targetReviewId]);
 
   const reviewRatingMaps: Record<
     number,
@@ -236,6 +253,8 @@ export function ReviewList({
                   onDelete={handleDeleteReview}
                   onOpenReportModal={handleOpenReportModal}
                   voteType={voteMaps[review.id]}
+                  targetReviewId={targetReviewId}
+                  clearScrollTarget={clearScrollTarget}
                 />
               </m.div>
             ))}

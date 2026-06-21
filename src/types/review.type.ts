@@ -36,3 +36,14 @@ export type ReviewVoteBodyType = z.infer<typeof reviewVoteSchema>;
 
 export type ReviewSearchType = z.infer<typeof reviewSearchSchema> &
   BaseSearchType;
+
+export type ReviewStoreState = {
+  targetReviewId: string | null;
+};
+
+export type ReviewStoreActions = {
+  setScrollTarget: (target: { reviewId?: string | null }) => void;
+  clearScrollTarget: () => void;
+};
+
+export type ReviewStoreType = ReviewStoreState & ReviewStoreActions;

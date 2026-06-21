@@ -35,8 +35,8 @@ export function VoteCommentBody({
       );
     }
 
-    setDiscussionTab(DISCUSSION_TAB_COMMENT);
     setScrollTarget({ commentId: body?.id, parentId });
+    setDiscussionTab(DISCUSSION_TAB_COMMENT);
   };
 
   return (

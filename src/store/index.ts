@@ -4,3 +4,4 @@ export { useCommentStore } from './comment.store';
 export { useMovieStore } from './movie.store';
 export { usePlaylistStore } from './playlist.store';
 export { useSearchStore } from './search.store';
+export { useReviewStore } from './review.store';
