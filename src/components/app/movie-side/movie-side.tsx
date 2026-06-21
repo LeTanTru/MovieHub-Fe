@@ -26,24 +26,24 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function MovieSide() {
   const {
-    movie,
+    actors,
     ageRating,
     categories,
     countryName,
-    languageName,
-    directors,
-    actors,
-    latestSeason,
     currentSeason,
-    episodes,
-    latestEpisode,
+    directors,
     duration,
-    sanitizedDescription,
-    releaseDate,
+    episodes,
     isComplete,
-    isSingle,
     isSeries,
-    releaseYear
+    isSingle,
+    languageName,
+    latestEpisode,
+    latestSeason,
+    movie,
+    releaseDate,
+    releaseYear,
+    sanitizedDescription
   } = useMovieInfo();
 
   if (!movie)
@@ -199,10 +199,6 @@ MovieSide.Skeleton = function () {
           <Skeleton className='skeleton h-6.5 w-16 rounded!' />
           <Skeleton className='skeleton h-6.5 w-14 rounded!' />
           <Skeleton className='skeleton h-6.5 w-12 rounded!' />
-        </div>
-        {/* MovieProgress skeleton */}
-        <div className='mb-3'>
-          <Skeleton className='skeleton h-8 w-36 rounded-4xl!' />
         </div>
         {/* Description */}
         <div className='mb-5'>

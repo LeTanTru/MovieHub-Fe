@@ -26,12 +26,9 @@ import { AnimatePresence, m } from 'framer-motion';
 import { useState } from 'react';
 import ReviewReportModal from './review-report-modal';
 
-const REVIEW_SKELETON_COUNT = 10;
-
 type ReviewListProps = {
   movie: MovieResType;
   reviewList: ReviewResType[];
-  isLoading?: boolean;
   hasMore?: boolean;
   remainingCount?: number;
   isLoadingMore?: boolean;
@@ -41,7 +38,6 @@ type ReviewListProps = {
 export function ReviewList({
   movie,
   reviewList,
-  isLoading = false,
   hasMore = false,
   remainingCount = 0,
   isLoadingMore = false,
@@ -194,15 +190,6 @@ export function ReviewList({
       }
     );
   };
-
-  if (isLoading)
-    return (
-      <div className='mt-12 flex flex-col justify-between gap-8'>
-        {Array.from({ length: REVIEW_SKELETON_COUNT }).map((_, index) => (
-          <ReviewItem.Skeleton key={`review-skeleton-${index}`} />
-        ))}
-      </div>
-    );
 
   if (!reviewList.length)
     return (

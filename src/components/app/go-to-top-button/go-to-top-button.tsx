@@ -33,7 +33,7 @@ export function GoToTopButton() {
       aria-label='Lên đầu trang'
       onClick={handleGoTop}
       className={cn(
-        'fixed right-6 bottom-6 z-50 inline-flex size-11 cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-200 ease-linear hover:border-white/40 hover:bg-black/85',
+        'fixed right-6 bottom-6 z-50 inline-flex size-11 animate-bounce cursor-pointer items-center justify-center rounded-full border border-white/20 bg-black/70 text-white shadow-lg backdrop-blur-sm transition-all duration-200 ease-linear hover:border-white/40 hover:bg-black/85',
         {
           'pointer-events-none translate-y-2 opacity-0': !isVisible,
           'translate-y-0 opacity-100': isVisible

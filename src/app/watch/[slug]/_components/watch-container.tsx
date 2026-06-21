@@ -3,7 +3,7 @@ import { WatchMain } from './watch-main';
 
 export function WatchContainer() {
   return (
-    <div className='max-1600:px-0 max-1120:flex-col relative z-2 mx-auto flex w-full max-w-410 items-stretch justify-between px-5'>
+    <div className='max-1120:flex-col relative z-2 mx-auto flex w-full max-w-410 items-stretch justify-between'>
       <WatchMain />
       <WatchSide />
     </div>
@@ -12,7 +12,7 @@ export function WatchContainer() {
 
 WatchContainer.Skeleton = function () {
   return (
-    <div className='max-1600:px-0 max-1120:flex-col relative z-2 mx-auto flex w-full max-w-410 items-stretch justify-between px-5'>
+    <div className='max-1120:flex-col relative z-2 mx-auto flex w-full max-w-410 items-stretch justify-between'>
       <WatchMain.Skeleton />
       <WatchSide.Skeleton />
     </div>

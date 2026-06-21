@@ -59,7 +59,7 @@ export function CommentFilter({
 
   return (
     <Form {...form}>
-      <div className='flex justify-end'>
+      <div className='mt-4 flex justify-end'>
         <SelectField
           control={control}
           name='episodeId'
@@ -69,7 +69,7 @@ export function CommentFilter({
               onValueChange(String(val));
             }
           }}
-          className='max-640:w-36 max-480:w-28 mt-4 h-8 w-40 rounded-md px-2! text-xs text-white'
+          className='max-640:w-36 max-480:w-28 h-8 w-40 rounded-md px-2! text-xs text-white'
           formItemClassName='text-xs'
           renderOption={(option) => (
             <span title={option.label} className='text-xs'>

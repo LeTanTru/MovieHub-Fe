@@ -37,7 +37,7 @@ export function EpisodeCard({
           {
             'bg-charade hover:text-golden-glow max-640:h-10.5 flex h-12.5 items-center justify-center gap-2 rounded-sm px-[3.5px]':
               toggle,
-            'bg-golden-glow hover:bg-golden-glow/85 text-black hover:text-black/80':
+            'bg-golden-glow hover:bg-golden-glow/80 text-black hover:text-black/80':
               isPlaying && toggle
           }
         )}
@@ -83,14 +83,7 @@ export function EpisodeCard({
             </div>
           )}
         </m.div>
-        <div
-          className={cn(
-            'group-hover:text-golden-glow max-640:gap-1 max-640:text-[13px] max-520:text-xs flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear',
-            {
-              'text-golden-glow': isPlaying && !toggle
-            }
-          )}
-        >
+        <div className='max-640:gap-1 max-640:text-[13px] max-520:text-xs flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear group-hover:text-black/80'>
           <div className='block shrink-0 text-xs'>
             <FaPlay />
           </div>

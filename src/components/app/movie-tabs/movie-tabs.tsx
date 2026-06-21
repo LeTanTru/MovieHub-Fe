@@ -133,7 +133,7 @@ export function MovieTabs() {
         role='tabpanel'
         id={`movie-tabpanel-${activeKey}`}
         aria-labelledby={`movie-tab-${activeKey}`}
-        className='max-1120:pt-7.5 max-1120:pb-5 max-640:py-5 max-520:py-4 py-7.5'
+        className='max-640:pt-2 py-4'
       >
         <AnimatePresence mode='wait'>{activeTabContent}</AnimatePresence>
       </div>
@@ -144,15 +144,15 @@ export function MovieTabs() {
 MovieTabs.Skeleton = function () {
   return (
     <div className='max-1120:px-5 max-800:px-0 flex flex-col px-10'>
-      <div className='max-800:justify-center max-480:justify-evenly max-420:justify-center max-640:gap-4 max-520:-mx-4 relative flex flex-nowrap gap-6 border-b border-solid'>
+      <div className='max-800:justify-center max-480:justify-evenly max-420:justify-center max-640:gap-4 max-520:-mx-4 relative flex flex-nowrap gap-6 border-b border-solid pb-1'>
         {Array.from({ length: TAB_SKELETON_COUNT }).map((_, index) => (
           <Skeleton
             key={`tab-skeleton-${index}`}
-            className='skeleton max-640:px-3 max-520:px-2 max-480:px-1 h-11.25 w-24'
+            className='skeleton max-640:px-3 max-520:px-2 max-480:px-1 h-11 w-24'
           />
         ))}
       </div>
-      <div className='max-1120:pt-7.5 max-1120:pb-5 max-640:py-5 max-520:py-4 py-7.5'>
+      <div className='max-640:pt-2 py-4'>
         <Skeleton className='skeleton mb-4 h-6 w-40' />
         <div className='max-1360:grid-cols-5 max-1360:gap-y-6 max-800:grid-cols-4 max-640:grid-cols-3 max-640:gap-y-4 max-520:grid-cols-2 grid grid-cols-6 gap-x-2.5 gap-y-8'>
           {Array.from({ length: TAB_CONTENT_SKELETON_COUNT }).map(

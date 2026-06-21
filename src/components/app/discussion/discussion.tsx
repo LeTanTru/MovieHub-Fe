@@ -122,7 +122,7 @@ export function Discussion({
     <Element name={toId} id={toId}>
       <div
         className={cn(
-          'max-1120:px-5 max-800:px-0 relative block px-10 py-5',
+          'max-1120:px-5 max-800:px-0 relative block px-10',
           { 'max-1120:px-0': variant === 'watch' },
           className
         )}
@@ -190,11 +190,7 @@ export function Discussion({
               {isCommentTab ? 'bình luận' : 'đánh giá'}.
             </div>
           )}
-          <CommentInput
-            isLoading={isActiveLoading}
-            movie={movie}
-            selectedSeason={selectedSeason}
-          />
+          <CommentInput movie={movie} selectedSeason={selectedSeason} />
         </Activity>
         <Activity visible={isCommentTab}>
           {discussionTab === DISCUSSION_TAB_COMMENT && (
@@ -207,7 +203,6 @@ export function Discussion({
           <CommentList
             movie={movie}
             commentList={filteredCommentList}
-            isLoading={commentListLoading}
             hasMore={!!hasMoreComments}
             remainingCount={remainingComments}
             isLoadingMore={isFetchingMoreComments}
@@ -218,7 +213,6 @@ export function Discussion({
           <ReviewList
             movie={movie}
             reviewList={filteredReviewList}
-            isLoading={reviewListLoading}
             hasMore={!!hasMoreReviews}
             remainingCount={remainingReviews}
             isLoadingMore={isFetchingMoreReviews}
@@ -253,7 +247,10 @@ Discussion.Skeleton = function ({ className }: DiscussionSkeletonProps) {
           <Skeleton className='skeleton h-4 w-32 rounded!' />
         </div>
       </div>
-      <Skeleton className='skeleton mb-4 h-25 w-full rounded!' />
+      <Skeleton className='skeleton mb-4 h-50 w-full rounded!' />
+      <div className='flex w-full justify-end'>
+        <Skeleton className='skeleton max-640:w-36 max-480:w-28 h-8 w-40 rounded!' />
+      </div>
       <div className='flex flex-col gap-8'>
         {Array.from({ length: DISCUSSION_SKELETON_COUNT }).map((_, index) => (
           <div

@@ -13,15 +13,15 @@ export function ActorList({ actors }: ActorListProps) {
   return (
     <div
       className={cn(
-        'flex-wrap items-end gap-2 border-t border-solid border-white/10 pt-7.5',
+        'max-640:py-2 flex-wrap items-end gap-2 border-t border-solid border-white/10 py-4',
         {
           flex: actors.length === 0
         }
       )}
     >
       <h3
-        className={cn('font-medium whitespace-nowrap text-white', {
-          'max-640:mb-6 mb-8 text-xl': actors.length > 0
+        className={cn('text-xl font-medium whitespace-nowrap text-white', {
+          'mb-4': actors.length > 0
         })}
       >
         Diễn viên:
@@ -41,8 +41,8 @@ export function ActorList({ actors }: ActorListProps) {
 
 ActorList.Skeleton = function () {
   return (
-    <div className='border-t border-solid border-white/10 pt-7.5'>
-      <Skeleton className='skeleton mb-8 h-6 w-24' />
+    <div className='max-640:py-2 border-t border-solid border-white/10 py-4'>
+      <Skeleton className='skeleton mb-4 h-7 w-24' />
       <div className='max-1120:grid-cols-6 max-640:grid-cols-3 max-800:grid-cols-5 max-480:grid-cols-2 max-640:text-[13px] max-520:text-xs grid grid-cols-3 gap-x-2.5 gap-y-6'>
         {Array.from({ length: 6 }).map((_, index) => (
           <div

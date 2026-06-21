@@ -90,7 +90,7 @@ export function MovieTabSeries({ movie }: MovieTabSeriesProps) {
     <>
       <ScheduleBadge />
       {/* Header */}
-      <div className='max-1120:mb-4 max-640:mb-3 mb-6 flex items-center justify-between'>
+      <div className='max-640:mb-2 mb-4 flex items-center justify-between'>
         <div className='relative' ref={dropdownRef}>
           {currentSeason ? (
             <button

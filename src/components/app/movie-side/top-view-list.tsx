@@ -17,8 +17,8 @@ export function TopViewList() {
   if (topViewMovieList.length === 0) return null;
 
   return (
-    <div className='max-1120:hidden border-t border-solid border-white/10 pt-8'>
-      <div className='mb-4 flex min-h-10 items-center gap-4 text-xl font-semibold text-white'>
+    <div className='max-1120:hidden border-t border-solid border-white/10 pt-4'>
+      <div className='mb-4 flex items-center gap-4 text-xl font-semibold text-white'>
         <div className='size-6 shrink-0'>
           <FallingStarIcon className='size-full' />
         </div>
@@ -35,8 +35,8 @@ export function TopViewList() {
 
 TopViewList.Skeleton = function () {
   return (
-    <div className='max-1120:hidden border-t border-solid border-white/10 pt-8'>
-      <div className='mb-4 flex min-h-10 items-center gap-4'>
+    <div className='max-1120:hidden border-t border-solid border-white/10 pt-4'>
+      <div className='mb-4 flex h-7 items-center gap-4'>
         <Skeleton className='skeleton size-6 rounded!' />
         <Skeleton className='skeleton h-6 w-32' />
       </div>
@@ -49,7 +49,9 @@ TopViewList.Skeleton = function () {
             <Skeleton className='skeleton h-14 w-15 shrink-0' />
             <div className='flex grow items-center justify-between rounded bg-white/5 p-2.5'>
               <div className='w-20 shrink-0'>
-                <Skeleton className='skeleton h-full w-full rounded! pb-[150%]' />
+                <div className='bg-gunmetal-blue relative block h-0 w-full rounded pb-[150%]'>
+                  <Skeleton className='skeleton absolute! top-0 left-0 size-full rounded!' />
+                </div>
               </div>
               <div className='grow px-4'>
                 <Skeleton className='skeleton mb-1.5 h-4 w-3/4' />
