@@ -1,5 +1,6 @@
 import { AvatarField, ImageField } from '@/components/form';
-import { useQueryParams } from '@/hooks';
+import { DISCUSSION_TAB_COMMENT } from '@/constants';
+import { useDiscussionTab, useQueryParams } from '@/hooks';
 import { route } from '@/routes';
 import { useCommentStore } from '@/store';
 import {
@@ -29,6 +30,7 @@ export function ToxicCommentLockedBody({
   const { serializeParams } = useQueryParams();
   const setOpenParentIds = useCommentStore((s) => s.setOpenParentIds);
   const setScrollTarget = useCommentStore((s) => s.setScrollTarget);
+  const { setDiscussionTab } = useDiscussionTab();
 
   const handleClick = () => {
     const parentId = body?.parentId;
@@ -38,6 +40,7 @@ export function ToxicCommentLockedBody({
       );
     }
     setScrollTarget({ commentId: body?.id, parentId });
+    setDiscussionTab(DISCUSSION_TAB_COMMENT);
   };
 
   return (

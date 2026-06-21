@@ -31,6 +31,8 @@ import { CheckCheck, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { ButtonAction } from '@/components/app/button-action';
 
+const NOTIFICATION_SKELETON_COUNT = 10;
+
 export function NotificationList() {
   const { isAuthenticated } = useAuth();
   const hasPermission = useValidatePermission();
@@ -173,9 +175,18 @@ export function NotificationList() {
       </div>
       {isLoading ? (
         <List className='w-full'>
-          {Array.from({ length: 6 }).map((_, index) => (
-            <NotificationItem.Skeleton key={`notification-skeleton-${index}`} />
-          ))}
+          {Array.from({ length: NOTIFICATION_SKELETON_COUNT }).map(
+            (_, index) =>
+              activeTab === String(NOTIFICATION_TYPE_MOVIE) ? (
+                <NotificationItem.MovieSkeleton
+                  key={`notification-skeleton-${index}`}
+                />
+              ) : (
+                <NotificationItem.CommunitySkeleton
+                  key={`notification-skeleton-${index}`}
+                />
+              )
+          )}
         </List>
       ) : (
         <List className='w-full'>

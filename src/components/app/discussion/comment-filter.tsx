@@ -54,7 +54,7 @@ export function CommentFilter({
   }, [movie]);
 
   if (movie.type !== MOVIE_TYPE_SERIES || filterOptions.length === 0) {
-    return null;
+    return <div className='mt-4' />;
   }
 
   return (
