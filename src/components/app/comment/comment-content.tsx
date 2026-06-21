@@ -12,7 +12,7 @@ export function CommentContent({
 }: CommentContentProps) {
   return (
     <p
-      className={cn('mt-2 break-all', {
+      className={cn('max-640:text-[13px] mt-2 break-all', {
         'max-640:text-xs blur-xs select-none': isBlurWholeContent
       })}
     >

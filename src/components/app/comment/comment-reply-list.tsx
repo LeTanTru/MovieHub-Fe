@@ -73,7 +73,7 @@ export function CommentReplyList({
           <VerticalBarLoading className='py-10' />
         ) : (
           <div
-            className='max-640:mt-2 mt-4 flex items-center gap-4'
+            className='max-640:ml-0! max-640:mt-2 mt-4 flex items-center gap-4'
             style={{ marginLeft: level * REPLY_CHILD_MARGIN_LEFT }}
           >
             {hasMoreComments && (

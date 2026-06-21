@@ -36,7 +36,7 @@ export function ReviewHeader({
   ratingInfo
 }: ReviewHeaderProps) {
   return (
-    <div className='relative flex items-center justify-start gap-2'>
+    <div className='relative flex flex-wrap items-center justify-start gap-x-2 gap-y-1.5'>
       <div className='flex items-center gap-x-2'>
         {kind && (
           <Badge
