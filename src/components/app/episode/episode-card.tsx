@@ -83,7 +83,14 @@ export function EpisodeCard({
             </div>
           )}
         </m.div>
-        <div className='max-640:gap-1 max-640:text-[13px] max-520:text-xs flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear group-hover:text-black/80'>
+        <div
+          className={cn(
+            'max-640:gap-1 max-640:text-[13px] max-520:text-xs group-hover:text-golden-glow flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear',
+            {
+              'group-hover:text-black': isPlaying && toggle
+            }
+          )}
+        >
           <div className='block shrink-0 text-xs'>
             <FaPlay />
           </div>

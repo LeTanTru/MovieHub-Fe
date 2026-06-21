@@ -37,7 +37,7 @@ export function CommentHeader({
   movieItem
 }: CommentHeaderProps) {
   return (
-    <div className='max-640:gap-1 max-768:gap-1.5 relative flex items-center justify-start gap-2'>
+    <div className='max-640:gap-x-1.5 max-640:gap-y-1 max-768:gap-x-2 relative flex flex-wrap items-center justify-start gap-x-2 gap-y-1.5'>
       <div className='max-640:gap-x-1 flex items-center gap-x-2'>
         {kind && (
           <Badge

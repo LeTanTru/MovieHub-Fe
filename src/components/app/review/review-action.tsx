@@ -43,9 +43,9 @@ export function ReviewAction({
   const showMore = isHidden || canDelete || canReport;
 
   return (
-    <div className='max-640:mt-3 relative mt-4 flex items-center gap-4'>
+    <div className='max-640:mt-3 max-640:gap-3 max-480:gap-2.5 relative mt-4 flex items-center gap-4'>
       <div className='flex items-center gap-2'>
-        <div className='flex items-center gap-4'>
+        <div className='max-640:gap-3 max-480:gap-2.5 flex items-center gap-4'>
           <div className='max-640:gap-1.5 flex items-center gap-2'>
             <LikeIcon
               size={16}

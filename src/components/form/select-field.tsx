@@ -122,6 +122,20 @@ export function SelectField<
     if (!searchValue) setHighlightedIndex(-1);
   }, [searchValue]);
 
+  useEffect(() => {
+    if (highlightedIndex < 0 || !commandRef.current) return;
+
+    const items = commandRef.current.querySelectorAll('[cmdk-item]');
+    const activeItem = items[highlightedIndex] as HTMLElement;
+
+    if (activeItem) {
+      activeItem.scrollIntoView({
+        block: 'nearest',
+        inline: 'nearest'
+      });
+    }
+  }, [highlightedIndex]);
+
   return (
     <FormField
       control={control}
@@ -176,7 +190,7 @@ export function SelectField<
                       aria-label='Select'
                       disabled={disabled}
                       className={cn(
-                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
+                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color bg-charade w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                         {
                           'ring-main-color border-transparent! ring-2': open,
                           'border-rose-500 ring-rose-500': !!fieldState.error
@@ -218,11 +232,11 @@ export function SelectField<
                   </PopoverTrigger>
                   <PopoverContent
                     sideOffset={8}
-                    className='w-(--radix-popover-trigger-width) border-none p-0'
+                    className='w-(--radix-popover-trigger-width) border-none bg-transparent p-0'
                   >
                     <Command
                       ref={commandRef}
-                      className='bg-input'
+                      className='bg-charade'
                       shouldFilter={false}
                     >
                       <CommandInput
@@ -287,8 +301,8 @@ export function SelectField<
                               className={cn(
                                 'dark:hover:bg-main-color/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                                 {
-                                  'bg-main-color/10': isSelected,
-                                  'bg-main-color/30 text-accent-foreground':
+                                  'dark:bg-main-color/10': isSelected,
+                                  'dark:bg-main-color/30 dark:text-accent-foreground':
                                     highlightedIndex === idx
                                 }
                               )}

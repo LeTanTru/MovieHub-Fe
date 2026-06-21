@@ -67,7 +67,7 @@ export function CommentAction({
   const showMore = isHidden || canDelete || canReport;
 
   return (
-    <div className='relative mt-3 flex items-center gap-4'>
+    <div className='max-640:gap-3 max-480:gap-2.5 relative mt-3 flex items-center gap-4'>
       <div className='flex items-center gap-2'>
         <span
           title={convertUTCToLocal(comment.createdDate, DATE_TIME_FORMAT)}
@@ -75,7 +75,7 @@ export function CommentAction({
         >
           {timeAgo(comment.createdDate, true)}
         </span>
-        <div className='flex items-center gap-4'>
+        <div className='max-640:gap-3 max-480:gap-2.5 flex items-center gap-4'>
           <div className='max-640:gap-1.5 flex items-center gap-2'>
             <LikeIcon
               size={16}

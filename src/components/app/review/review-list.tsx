@@ -216,12 +216,12 @@ export function ReviewList({
             .filter((review) => review?.id)
             .map((review, index) => (
               <m.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  duration: 0.1,
-                  ease: 'linear',
-                  delay: index * 0.05
+                  duration: 0.25,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: Math.min(index * 0.03, 0.3)
                 }}
                 key={review.id}
               >

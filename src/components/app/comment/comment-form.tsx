@@ -169,16 +169,11 @@ export function CommentForm({
 
       picker = new Picker() as EmojiPickerElement;
       picker.i18n = vi;
+      picker.className = 'comment-form-emoji-picker';
       picker.style.cssText = `
-        position: absolute;
-        z-index: 1000;
         opacity: 0;
         visibility: hidden;
-        right: 170px;
-        top: 0px;
         transition: all 0.2s linear;
-        --border-radius: 8px;
-        --border-size: 0;
       `;
       picker.style.setProperty('--border-radius', '8px');
       picker.style.setProperty('--border-size', '0');

@@ -176,11 +176,51 @@
   }
   * {
     @apply border-border outline-ring/50 focus:outline-none;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-mid-gray) transparent;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--color-mid-gray);
+      border-radius: 9999px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: var(--color-golden-glow);
+    }
   }
 
   html {
     background: transparent;
     scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-mid-gray) transparent;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--color-mid-gray);
+      border-radius: 9999px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: var(--color-golden-glow);
+    }
   }
 
   body {
@@ -272,5 +312,43 @@
   }
   100% {
     background-position: 0% 50%;
+  }
+}
+
+.comment-form-emoji-picker {
+  position: absolute !important;
+  z-index: 1000 !important;
+  opacity: 0;
+  visibility: hidden;
+  right: 0px !important;
+  top: 35px !important;
+  transition: all 0.2s linear;
+  --border-radius: 8px;
+  --border-size: 0;
+}
+
+@media (min-width: 641px) {
+  .comment-form-emoji-picker {
+    right: 170px !important;
+    top: 0px !important;
+  }
+}
+
+.comment-input-emoji-picker {
+  position: absolute !important;
+  z-index: 1000 !important;
+  opacity: 0;
+  visibility: hidden;
+  right: 0px !important;
+  top: 35px !important;
+  transition: all 0.2s linear;
+  --border-radius: 8px;
+  --border-size: 0;
+}
+
+@media (min-width: 641px) {
+  .comment-input-emoji-picker {
+    right: 120px !important;
+    top: 0px !important;
   }
 }
