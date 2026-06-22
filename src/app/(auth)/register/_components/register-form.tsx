@@ -41,8 +41,7 @@ export function RegisterForm() {
     searchParams: { redirect }
   } = useQueryParams<{ redirect?: string }>();
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
-  const { mutateAsync: registerMutate, isPending: registerLoading } =
-    useRegisterMutation();
+  const { mutateAsync: registerMutate, isPending } = useRegisterMutation();
 
   const onSubmit = async (
     values: RegisterType,
@@ -156,8 +155,8 @@ export function RegisterForm() {
                   type='submit'
                   variant='primary'
                   className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/50 disabled:hover:bg-golden-glow/50 w-full'
-                  disabled={registerLoading || !isFormChanged}
-                  loading={registerLoading}
+                  disabled={isPending || !isFormChanged}
+                  loading={isPending}
                 >
                   Đăng ký
                 </Button>

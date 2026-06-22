@@ -35,7 +35,7 @@ export default function CommentReportModal({
 }: CommentReportModalProps) {
   const [selectedReason, setSelectedReason] = useState('');
 
-  const { mutate, isPending } = useCreateUserReportMutation();
+  const { mutate: createUserReport, isPending } = useCreateUserReportMutation();
 
   const defaultValues: UserReportBodyType = useMemo(() => {
     return { content: '', objectId: commentId, type: USER_REPORT_TYPE_COMMENT };
@@ -68,7 +68,7 @@ export default function CommentReportModal({
       return;
     }
 
-    mutate(
+    createUserReport(
       {
         ...values,
         content

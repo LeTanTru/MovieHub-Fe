@@ -31,7 +31,7 @@ export function LoginForm() {
     searchParams: { redirect }
   } = useQueryParams<{ redirect?: string }>();
 
-  const { mutate: loginMutate, isPending: loginLoading } = useLoginMutation();
+  const { mutate: login, isPending } = useLoginMutation();
 
   const { setAccessToken, setUserKind } = useAuthStore(
     useShallow((s) => {
@@ -45,7 +45,7 @@ export function LoginForm() {
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
 
   const onSubmit = (values: LoginBodyType) => {
-    loginMutate(values, {
+    login(values, {
       onSuccess: async (res) => {
         if (res.result) {
           const accessToken = res.data?.access_token;
@@ -128,8 +128,8 @@ export function LoginForm() {
               type='submit'
               variant='primary'
               className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 w-full'
-              disabled={!isFormChanged || loginLoading}
-              loading={loginLoading}
+              disabled={!isFormChanged || isPending}
+              loading={isPending}
             >
               Đăng nhập
             </Button>

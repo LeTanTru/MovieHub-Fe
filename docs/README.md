@@ -18,13 +18,9 @@ Use this index to find the right project notes quickly. These docs describe the 
 
 ## Reviews And Audit Reports
 
-| Document                                                                            | Purpose                                                              |
-| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Component decomposition review](./component-decomposition-review.md)               | Current status of broad component decomposition work across the app. |
-| [Component split analysis: `src/components/app`](./component-split-analysis-app.md) | Current split/refactor candidates for shared app components.         |
-| [Responsive UI audit](./responsive-ui-audit.md)                                     | Static responsive layout findings and recommended fixes.             |
-| [Security best practices report](./security-best-practices-report.md)               | Static security review findings and recommended remediation work.    |
-| [Comment permissions report](./comment-permission-report.md)                        | Summary of actions, required permissions, and checks for comments.   |
+| Document                                                              | Purpose                                                           |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [Security best practices report](./security-best-practices-report.md) | Static security review findings and recommended remediation work. |
 
 ## Root-Level References
 

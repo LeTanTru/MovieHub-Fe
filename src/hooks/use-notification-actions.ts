@@ -20,20 +20,18 @@ export const useNotificationActions = () => {
     requiredPermissions: [apiConfig.notification.delete.permissionCode]
   });
 
-  const {
-    mutate: readAllNotificationMutate,
-    isPending: readAllNotificationLoading
-  } = useReadAllNotificationMutation();
+  const { mutate: readAllNotification, isPending: readAllNotificationLoading } =
+    useReadAllNotificationMutation();
 
   const {
-    mutate: deleteAllNotificationMutate,
+    mutate: deleteAllNotification,
     isPending: deleteAllNotificationLoading
   } = useDeleteAllNotificationMutation();
 
-  const { mutate: deleteNotifyMutate } = useDeleteNotificationMutation();
+  const { mutate: deleteNotify } = useDeleteNotificationMutation();
 
   const handleReadAll = () => {
-    readAllNotificationMutate(undefined, {
+    readAllNotification(undefined, {
       onSuccess: () => {
         invalidateQueries(
           [queryKeys.UNREAD_NOTIFICATION_COUNT],
@@ -49,7 +47,7 @@ export const useNotificationActions = () => {
   };
 
   const handleDeleteAll = () => {
-    deleteAllNotificationMutate(undefined, {
+    deleteAllNotification(undefined, {
       onSuccess: () => {
         invalidateQueries(
           [queryKeys.UNREAD_NOTIFICATION_COUNT],
@@ -65,7 +63,7 @@ export const useNotificationActions = () => {
   };
 
   const handleDelete = (id: string) => {
-    deleteNotifyMutate(id, {
+    deleteNotify(id, {
       onSuccess: () => {
         invalidateQueries(
           [queryKeys.UNREAD_NOTIFICATION_COUNT],

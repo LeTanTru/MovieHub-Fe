@@ -46,6 +46,8 @@ export type VoteCommentBodyType = z.infer<typeof voteCommentSchema>;
 export type CommentSearchType = z.infer<typeof commentSearchSchema> &
   BaseSearchType;
 
+export type CommentSortType = 'newest' | 'topLiked' | 'topDisliked';
+
 type CommentStoreState = {
   replyingComment: CommentResType | null;
   editingComment: CommentResType | null;

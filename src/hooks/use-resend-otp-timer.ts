@@ -94,7 +94,7 @@ function resendReducer(state: ResendState, action: ResendAction): ResendState {
 export const useResendOtpTimer = () => {
   const [state, dispatch] = useReducer(resendReducer, initialResendState);
   const lastResendTimeRef = useRef(state.lastResendTime);
-  const { mutate: resendOtpMutate, isPending: resendOtpLoading } =
+  const { mutate: resendOtp, isPending: resendOtpLoading } =
     useResendOtpMutation();
 
   const getResendData = () => {
@@ -184,7 +184,7 @@ export const useResendOtpTimer = () => {
       return;
     }
 
-    resendOtpMutate(
+    resendOtp(
       { email },
       {
         onSuccess: (res) => {

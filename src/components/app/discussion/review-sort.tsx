@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { SelectField } from '@/components/form';
 import { Form } from '@/components/ui/form';
-
-export type ReviewSortType = 'newest' | 'topLiked' | 'topDisliked';
+import { ReviewSortType } from '@/types';
 
 type ReviewSortProps = {
   selectedSort: ReviewSortType;

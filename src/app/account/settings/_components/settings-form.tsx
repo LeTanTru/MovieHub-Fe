@@ -67,8 +67,7 @@ export function SettingsForm() {
     [profile?.settings]
   );
 
-  const { mutate: updateSettingMutate, isPending } =
-    useUpdateSettingsMutation();
+  const { mutate: updateSetting, isPending } = useUpdateSettingsMutation();
 
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
 
@@ -102,7 +101,7 @@ export function SettingsForm() {
     values: SettingBodyType,
     form: UseFormReturn<SettingBodyType>
   ) => {
-    updateSettingMutate(values, {
+    updateSetting(values, {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Cập nhật cài đặt thành công');

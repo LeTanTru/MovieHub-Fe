@@ -50,8 +50,7 @@ export function VerifyOtpForm() {
     clearTimerData
   } = useResendOtpTimer();
 
-  const { mutate: verifyOtpMutate, isPending: verifyOtpLoading } =
-    useVerifyOtpMutation();
+  const { mutate: verifyOtp, isPending } = useVerifyOtpMutation();
   const email = getData(storageKeys.EMAIL) ?? '';
 
   const initialValues: VerifyOtpBodyType = useMemo(
@@ -92,7 +91,7 @@ export function VerifyOtpForm() {
     values: VerifyOtpBodyType,
     form: UseFormReturn<VerifyOtpBodyType>
   ) => {
-    verifyOtpMutate(values, {
+    verifyOtp(values, {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Xác thực OTP thành công');
@@ -201,8 +200,8 @@ export function VerifyOtpForm() {
                   type='submit'
                   variant='primary'
                   className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
-                  disabled={verifyOtpLoading || !isFormChanged}
-                  loading={verifyOtpLoading}
+                  disabled={isPending || !isFormChanged}
+                  loading={isPending}
                 >
                   Xác thực OTP
                 </Button>

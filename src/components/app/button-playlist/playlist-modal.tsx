@@ -33,10 +33,10 @@ export function PlaylistModal({
 }: PlaylistModalProps) {
   const { isAuthenticated } = useAuth();
 
-  const { mutate: createPlaylistMutate, isPending: createPlaylistLoading } =
+  const { mutate: createPlaylist, isPending: createPlaylistLoading } =
     useCreatePlayListMutation();
 
-  const { mutate: updatePlaylistMutate, isPending: updatePlaylistLoading } =
+  const { mutate: updatePlaylist, isPending: updatePlaylistLoading } =
     useUpdatePlaylistMutation();
 
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
@@ -59,7 +59,7 @@ export function PlaylistModal({
   const handleSubmit = (values: PlaylistBodyType) => {
     if (!isAuthenticated) return;
 
-    const mutate = isEditing ? updatePlaylistMutate : createPlaylistMutate;
+    const mutate = isEditing ? updatePlaylist : createPlaylist;
     mutate(
       {
         ...values
