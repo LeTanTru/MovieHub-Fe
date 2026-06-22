@@ -19,10 +19,12 @@ MovieHub FE is a Vietnamese movie streaming frontend built as a single Next.js A
 ## Key Commands
 
 ```bash
+yarn install          # Install dependencies
 yarn dev              # Dev server on port 3000 with Turbopack
 yarn clean-dev        # Remove .next and start dev
 yarn build            # Production build
 yarn build:analyze    # Bundle analyzer build
+yarn start            # Production server
 yarn lint             # ESLint all files
 yarn lint -- src/path # Lint a focused file
 yarn format           # Prettier format

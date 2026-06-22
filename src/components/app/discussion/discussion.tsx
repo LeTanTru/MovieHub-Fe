@@ -25,13 +25,15 @@ import { commentApiRequest, reviewApiRequest } from '@/api-requests';
 import {
   CommentResType,
   CommentSearchType,
+  CommentSortType,
   ReviewResType,
-  ReviewSearchType
+  ReviewSearchType,
+  ReviewSortType
 } from '@/types';
 import { cn } from '@/lib';
 import { CommentFilter } from './comment-filter';
-import { CommentSort, CommentSortType } from './comment-sort';
-import { ReviewSort, ReviewSortType } from './review-sort';
+import { CommentSort } from './comment-sort';
+import { ReviewSort } from './review-sort';
 
 const DISCUSSION_SKELETON_COUNT = 3;
 
@@ -213,6 +215,7 @@ export function Discussion({
             />
           </div>
           <CommentList
+            animationKey={`${sortBy}-${selectedEpisodeId}`}
             movie={movie}
             commentList={filteredCommentList}
             hasMore={!!hasMoreComments}
@@ -233,6 +236,7 @@ export function Discussion({
             />
           </div>
           <ReviewList
+            animationKey={sortByReview}
             movie={movie}
             reviewList={filteredReviewList}
             hasMore={!!hasMoreReviews}

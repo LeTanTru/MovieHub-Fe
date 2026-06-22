@@ -32,7 +32,7 @@ export function MovieList() {
     }
   });
 
-  const { mutate: removePlaylistItemMutate } = useRemovePlaylistItemMutation();
+  const { mutate: removePlaylistItem } = useRemovePlaylistItemMutation();
 
   const movieList = playlistMoviesData?.content || [];
   const totalPages = playlistMoviesData?.totalPages || 0;
@@ -46,7 +46,7 @@ export function MovieList() {
 
     if (!playlist) return;
 
-    removePlaylistItemMutate(
+    removePlaylistItem(
       {
         playlistId: playlist.id,
         movieId

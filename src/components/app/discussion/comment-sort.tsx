@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { SelectField } from '@/components/form';
 import { Form } from '@/components/ui/form';
-
-export type CommentSortType = 'newest' | 'topLiked' | 'topDisliked';
+import { sortOptions } from '@/constants';
+import { CommentSortType } from '@/types';
 
 type CommentSortProps = {
   selectedSort: CommentSortType;
@@ -13,12 +13,6 @@ type CommentSortProps = {
 type FormValues = {
   sortType: CommentSortType;
 };
-
-const sortOptions = [
-  { value: 'newest', label: 'Mới nhất' },
-  { value: 'topLiked', label: 'Nhiều lượt thích nhất' },
-  { value: 'topDisliked', label: 'Nhiều lượt không thích nhất' }
-];
 
 export function CommentSort({ selectedSort, onSortChange }: CommentSortProps) {
   const form = useForm<FormValues>({

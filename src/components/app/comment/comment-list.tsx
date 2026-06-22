@@ -28,6 +28,7 @@ type CommentListProps = {
   hasMore?: boolean;
   remainingCount?: number;
   isLoadingMore?: boolean;
+  animationKey?: string;
   onLoadMore?: () => void;
 };
 
@@ -37,6 +38,7 @@ export function CommentList({
   hasMore = false,
   remainingCount = 0,
   isLoadingMore = false,
+  animationKey,
   onLoadMore
 }: CommentListProps) {
   const { profile, isAuthenticated } = useAuth();
@@ -75,10 +77,9 @@ export function CommentList({
 
   const targetRootId = targetParentId || targetCommentId;
 
-  const { mutate: deleteCommentMutate } = useDeleteCommentMutation();
+  const { mutate: deleteComment } = useDeleteCommentMutation();
 
-  const { mutate: voteCommentMutate, isPending: voteCommentLoading } =
-    useVoteCommentMutation();
+  const { mutate: voteComment, isPending } = useVoteCommentMutation();
 
   const { data: voteCommentList = [] } = useVoteCommentListQuery({
     movieId: movie.id,
@@ -111,7 +112,7 @@ export function CommentList({
 
   const canVote =
     isAuthenticated &&
-    !voteCommentLoading &&
+    !isPending &&
     hasPermission({
       requiredPermissions: [apiConfig.comment.vote.permissionCode]
     });
@@ -124,7 +125,7 @@ export function CommentList({
   });
 
   const handleDeleteComment = (comment: CommentResType) => {
-    deleteCommentMutate(comment.id, {
+    deleteComment(comment.id, {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa bình luận thành công');
@@ -168,9 +169,9 @@ export function CommentList({
       return;
     }
 
-    if (voteCommentLoading) return;
+    if (isPending) return;
 
-    voteCommentMutate(
+    voteComment(
       { id, type },
       {
         onSuccess: (res) => {
@@ -306,7 +307,9 @@ export function CommentList({
   return (
     <>
       <div className='flex flex-col justify-between gap-4'>
-        {renderChildren(commentList, 0)}
+        <div className='flex flex-col gap-4' key={animationKey}>
+          {renderChildren(commentList, 0)}
+        </div>
         {hasMore && (
           <div className='flex justify-center'>
             {isLoadingMore ? (

@@ -35,6 +35,7 @@ type ReviewListProps = {
   remainingCount?: number;
   isLoadingMore?: boolean;
   onLoadMore?: () => void;
+  animationKey?: string;
 };
 
 export function ReviewList({
@@ -43,7 +44,8 @@ export function ReviewList({
   hasMore = false,
   remainingCount = 0,
   isLoadingMore = false,
-  onLoadMore
+  onLoadMore,
+  animationKey
 }: ReviewListProps) {
   const { profile, isAuthenticated } = useAuth();
   const hasPermission = useValidatePermission();
@@ -89,13 +91,12 @@ export function ReviewList({
     }
   });
 
-  const { mutate: deleteReviewMutate } = useDeleteReviewMutation();
-  const { mutate: voteReviewMutate, isPending: voteReviewLoading } =
-    useVoteReviewMutation();
+  const { mutate: deleteReview } = useDeleteReviewMutation();
+  const { mutate: voteReview, isPending } = useVoteReviewMutation();
 
   const canVote =
     isAuthenticated &&
-    !voteReviewLoading &&
+    !isPending &&
     hasPermission({
       requiredPermissions: [apiConfig.review.vote.permissionCode]
     });
@@ -121,7 +122,7 @@ export function ReviewList({
   };
 
   const handleDeleteReview = (id: string) => {
-    deleteReviewMutate(id, {
+    deleteReview(id, {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa đánh giá thành công');
@@ -160,9 +161,9 @@ export function ReviewList({
       return;
     }
 
-    if (voteReviewLoading) return;
+    if (isPending) return;
 
-    voteReviewMutate(
+    voteReview(
       { id, type },
       {
         onSuccess: (res) => {
@@ -227,38 +228,41 @@ export function ReviewList({
 
   return (
     <>
-      <div className='mt-4 flex flex-col justify-between gap-4'>
-        <AnimatePresence initial={false}>
-          {reviewList
-            .filter((review) => review?.id)
-            .map((review, index) => (
-              <m.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.25,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: Math.min(index * 0.03, 0.3)
-                }}
-                key={review.id}
-              >
-                <ReviewItem
-                  review={review}
-                  reviewRatingMaps={reviewRatingMaps}
-                  isAuthor={profile?.id === review.author?.id}
-                  canDelete={canDelete}
-                  canReport={canReport}
-                  canVote={canVote}
-                  onVote={handleVote}
-                  onDelete={handleDeleteReview}
-                  onOpenReportModal={handleOpenReportModal}
-                  voteType={voteMaps[review.id]}
-                  targetReviewId={targetReviewId}
-                  clearScrollTarget={clearScrollTarget}
-                />
-              </m.div>
-            ))}
-        </AnimatePresence>
+      <div className='flex flex-col justify-between gap-4'>
+        <div className='flex flex-col gap-4' key={animationKey}>
+          <AnimatePresence>
+            {reviewList
+              .filter((review) => review?.id)
+              .map((review, index) => (
+                <m.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 12, height: 0, overflow: 'hidden' }}
+                  transition={{
+                    duration: 0.25,
+                    ease: [0.16, 1, 0.3, 1],
+                    delay: Math.min(index * 0.03, 0.3)
+                  }}
+                  key={review.id}
+                >
+                  <ReviewItem
+                    review={review}
+                    reviewRatingMaps={reviewRatingMaps}
+                    isAuthor={profile?.id === review.author?.id}
+                    canDelete={canDelete}
+                    canReport={canReport}
+                    canVote={canVote}
+                    onVote={handleVote}
+                    onDelete={handleDeleteReview}
+                    onOpenReportModal={handleOpenReportModal}
+                    voteType={voteMaps[review.id]}
+                    targetReviewId={targetReviewId}
+                    clearScrollTarget={clearScrollTarget}
+                  />
+                </m.div>
+              ))}
+          </AnimatePresence>
+        </div>
         {hasMore && (
           <div className='flex justify-center'>
             <Button

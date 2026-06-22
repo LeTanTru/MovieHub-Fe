@@ -78,9 +78,9 @@ export function CommentForm({
 
   const authorInfo = replyingComment?.author;
 
-  const { mutate: createCommentMutate, isPending: createCommentLoading } =
+  const { mutate: createComment, isPending: createCommentLoading } =
     useCreateCommentMutation();
-  const { mutate: updateCommentMutate, isPending: updateCommentLoading } =
+  const { mutate: updateComment, isPending: updateCommentLoading } =
     useUpdateCommentMutation();
 
   const mutationLoading = createCommentLoading || updateCommentLoading;
@@ -127,7 +127,7 @@ export function CommentForm({
       return;
     }
 
-    const mutate = editingComment ? updateCommentMutate : createCommentMutate;
+    const mutate = editingComment ? updateComment : createComment;
     const payload = editingComment
       ? { ...values, id: editingComment.id }
       : values;

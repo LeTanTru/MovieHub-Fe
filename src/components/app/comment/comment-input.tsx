@@ -61,8 +61,7 @@ export function CommentInput({ movie, selectedSeason }: CommentInputProps) {
 
   const { searchParams } = useQueryParams<{ episode: string }>();
 
-  const { mutate: createCommentMutate, isPending: createCommentLoading } =
-    useCreateCommentMutation();
+  const { mutate: createComment, isPending } = useCreateCommentMutation();
 
   const seasons = movie.seasons || [];
   const episode = searchParams.episode;
@@ -95,7 +94,7 @@ export function CommentInput({ movie, selectedSeason }: CommentInputProps) {
       return;
     }
 
-    createCommentMutate(values, {
+    createComment(values, {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Bình luận thành công');
@@ -213,13 +212,13 @@ export function CommentInput({ movie, selectedSeason }: CommentInputProps) {
                     onClick={() => setShowPicker((prev) => !prev)}
                     className='flex h-fit items-center justify-center px-0! py-0 hover:bg-transparent'
                     variant='ghost'
-                    disabled={createCommentLoading}
+                    disabled={isPending}
                   >
                     <FaRegFaceGrinBeam className='text-golden-glow size-5' />
                   </Button>
                   <Button
                     className='text-golden-glow hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:pr-2! max-640:py-0 h-fit gap-2 bg-transparent px-2! py-0 font-medium hover:bg-transparent'
-                    disabled={createCommentLoading || !form.formState.isDirty}
+                    disabled={isPending || !form.formState.isDirty}
                     type='submit'
                     variant='ghost'
                   >

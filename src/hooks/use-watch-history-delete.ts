@@ -9,12 +9,12 @@ import { useAuth } from './use-auth';
 export const useWatchHistoryDelete = () => {
   const { isAuthenticated } = useAuth();
 
-  const { mutate: deleteWatchHistoryMutate } = useDeleteWatchHistoryMutation();
+  const { mutate: deleteWatchHistory } = useDeleteWatchHistoryMutation();
 
   const handleDeleteWatchHistory = (movieId: string) => {
     if (!isAuthenticated) return;
 
-    deleteWatchHistoryMutate(movieId, {
+    deleteWatchHistory(movieId, {
       onSuccess: async (res) => {
         if (res.result) {
           notify.success('Xóa lịch sử xem thành công');

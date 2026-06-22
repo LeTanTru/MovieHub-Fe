@@ -1,4 +1,5 @@
 export * from './age-rating';
+export * from './comment';
 export * from './countries';
 export * from './gender';
 export * from './languages';

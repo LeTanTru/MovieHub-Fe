@@ -33,7 +33,7 @@ export function NotificationList({
       requiredPermissions: [apiConfig.notification.updateRead.permissionCode]
     });
 
-  const { mutate: updateReadNotificationMutate } =
+  const { mutate: updateReadNotification } =
     useUpdateReadNotificationMutation();
 
   const handleUpdateRead = (notification: NotificationResType) => {
@@ -41,7 +41,7 @@ export function NotificationList({
 
     if (notification.isRead) return;
 
-    updateReadNotificationMutate(
+    updateReadNotification(
       { ids: [notification.id] },
       {
         onSuccess: () => {

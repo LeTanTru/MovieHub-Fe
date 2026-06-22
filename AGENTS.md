@@ -2,10 +2,12 @@
 
 ## Commands
 
+- `yarn install`: Install dependencies.
 - `yarn dev`: Start the dev server on port 3000 with Turbopack.
 - `yarn clean-dev`: Remove `.next` and start the dev server.
 - `yarn build`: Production build; `prebuild` removes `.next` and `out`.
 - `yarn build:analyze`: Production build with bundle analyzer.
+- `yarn start`: Start the production server.
 - `yarn lint`: Run ESLint across the repo.
 - `yarn lint -- src/path/to/file.tsx`: Focused single-file verification.
 - `yarn format`: Format files with Prettier.

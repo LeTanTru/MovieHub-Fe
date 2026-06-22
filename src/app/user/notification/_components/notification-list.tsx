@@ -75,7 +75,7 @@ export function NotificationList() {
     ? Number(totalUnreadData.totalUnread)
     : 0;
 
-  const { mutate: updateReadNotificationMutate } =
+  const { mutate: updateReadNotification } =
     useUpdateReadNotificationMutation();
 
   const {
@@ -93,7 +93,7 @@ export function NotificationList() {
 
     if (!canUpdateNotification) return;
 
-    updateReadNotificationMutate(
+    updateReadNotification(
       { ids: [notification.id] },
       {
         onSuccess: () => {

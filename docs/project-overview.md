@@ -70,6 +70,7 @@ src/app/user/               Protected user pages: favourites, notifications, pla
 src/app/account/            Protected account pages: profile, settings, password change
 src/app/api/auth/           Internal auth/session route handlers
 src/app/api/intro/          Intro access validation route
+src/app/api/watch-history/  Server-side watch history updates route
 src/app/og/                 Dynamic Open Graph image route
 ```
 

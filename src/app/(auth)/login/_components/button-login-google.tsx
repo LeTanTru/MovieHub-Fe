@@ -37,10 +37,10 @@ export function ButtonLoginGoogle() {
     isLoading,
     isFetching
   } = useLoginGoogleQuery({ loginType: AppConstants.loginType });
-  const { mutateAsync: loginGoogleMutate, isPending: loginGoogleLoading } =
+  const { mutateAsync: loginGoogleMutate, isPending } =
     useLoginGoogleMutation();
 
-  const loading = isLoading || isFetching || loginGoogleLoading;
+  const loading = isLoading || isFetching || isPending;
 
   const handleLogin = async (code: string) => {
     try {

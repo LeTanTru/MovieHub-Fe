@@ -37,6 +37,8 @@ export type ReviewVoteBodyType = z.infer<typeof reviewVoteSchema>;
 export type ReviewSearchType = z.infer<typeof reviewSearchSchema> &
   BaseSearchType;
 
+export type ReviewSortType = 'newest' | 'topLiked' | 'topDisliked';
+
 export type ReviewStoreState = {
   targetReviewId: string | null;
 };

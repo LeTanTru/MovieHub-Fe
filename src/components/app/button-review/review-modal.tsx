@@ -30,8 +30,7 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
   const [isFormChanged, setIsFormChanged] = useState<boolean>(false);
 
-  const { mutate: createReviewMutate, isPending: createReviewLoading } =
-    useCreateReviewMutation();
+  const { mutate: createReview, isPending } = useCreateReviewMutation();
 
   const initialValues: ReviewBodyType = useMemo(
     () => ({
@@ -58,7 +57,7 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
       return;
     }
 
-    createReviewMutate(
+    createReview(
       {
         ...values,
         rate: selectedRating || values.rate
@@ -178,11 +177,9 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
                 <Button
                   className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
                   variant='primary'
-                  loading={createReviewLoading}
+                  loading={isPending}
                   disabled={
-                    !form.formState.isDirty ||
-                    !selectedRating ||
-                    createReviewLoading
+                    !form.formState.isDirty || !selectedRating || isPending
                   }
                 >
                   Gửi đánh giá

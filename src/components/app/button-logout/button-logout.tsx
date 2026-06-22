@@ -16,11 +16,10 @@ type ButtonLogoutProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export function ButtonLogout({ className, ...props }: ButtonLogoutProps) {
   const clearState = useAuthStore((s) => s.clearState);
-  const { mutate: logoutMutate, isPending: logoutLoading } =
-    useLogoutMutation();
+  const { mutate: logout, isPending } = useLogoutMutation();
 
   const handleLogout = () => {
-    logoutMutate(undefined, {
+    logout(undefined, {
       onError: (error) => {
         logger.error('[LOGOUT_ERROR]', error);
       },
@@ -44,12 +43,12 @@ export function ButtonLogout({ className, ...props }: ButtonLogoutProps) {
           className={cn(
             'w-full rounded-none rounded-br rounded-bl hover:bg-black/20',
             {
-              'justify-start': !logoutLoading,
-              'pointer-events-none': logoutLoading
+              'justify-start': !isPending,
+              'pointer-events-none': isPending
             },
             className
           )}
-          loading={logoutLoading}
+          loading={isPending}
           {...props}
         >
           <LogOutIcon size={16} className='opacity-60' />

@@ -73,10 +73,8 @@ export function ButtonAddToPlaylist({
     enabled: opened && isAuthenticated
   });
 
-  const {
-    mutate: updatePlaylistItemMutate,
-    isPending: updatePlaylistItemLoading
-  } = useUpdatePlaylistItemMutation();
+  const { mutate: updatePlaylistItem, isPending } =
+    useUpdatePlaylistItemMutation();
 
   const playlistByMovie = useMemo(
     () => playlistByMovieData?.ids || [],
@@ -136,7 +134,7 @@ export function ButtonAddToPlaylist({
 
     if (isLoading) return;
 
-    updatePlaylistItemMutate(payload, {
+    updatePlaylistItem(payload, {
       onSuccess: (res) => {
         if (res.result) {
           invalidateQueries(
@@ -210,9 +208,7 @@ export function ButtonAddToPlaylist({
                   playlist={playlist}
                   checked={currentCheckedPlaylist.includes(playlist.id)}
                   onToggle={handleAddToPlaylist}
-                  disabled={
-                    updatePlaylistItemLoading && playlist.id === playlistId
-                  }
+                  disabled={isPending && playlist.id === playlistId}
                 />
               ))
             )}
