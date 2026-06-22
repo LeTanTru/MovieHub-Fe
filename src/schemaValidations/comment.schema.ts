@@ -22,5 +22,8 @@ export const commentSearchSchema = z.object({
   isPinned: z.string().optional().nullable(),
   movieId: z.string().optional().nullable(),
   movieItemId: z.string().optional().nullable(),
-  parentId: z.string().optional().nullable()
+  parentId: z.string().optional().nullable(),
+  newest: z.boolean().optional().nullable(),
+  topDisliked: z.boolean().optional().nullable(),
+  topLiked: z.boolean().optional().nullable()
 });

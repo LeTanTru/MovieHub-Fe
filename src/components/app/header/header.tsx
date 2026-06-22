@@ -54,8 +54,7 @@ export function Header() {
         className={cn(
           'max-1600:px-5 max-1600:gap-6 max-640:px-2 max-640:gap-2 max-1360:gap-4 max-1360:px-4 max-640:h-14 max-480:gap-2 flex items-center gap-8 pr-10 pl-8 transition-all duration-200 ease-linear',
           {
-            'bg-fixed-header h-fixed-header max-640:h-15 max-1360:h-17.5':
-              isFixed,
+            'bg-fixed-header h-fixed-header max-640:h-15': isFixed,
             'h-header max-1360:h-15 bg-transparent': !isFixed
           }
         )}
@@ -136,7 +135,7 @@ export function Header() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                style={{ marginRight: 24 }}
+                className='mr-6'
               >
                 <Skeleton className='skeleton size-10 rounded-full!' />
               </m.div>

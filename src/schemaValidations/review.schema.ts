@@ -15,5 +15,8 @@ export const reviewVoteSchema = z.object({
 export const reviewSearchSchema = z.object({
   authorId: z.string().optional().nullable(),
   id: z.string().optional().nullable(),
-  movieId: z.string().optional().nullable()
+  movieId: z.string().optional().nullable(),
+  newest: z.boolean().optional().nullable(),
+  topDisliked: z.boolean().optional().nullable(),
+  topLiked: z.boolean().optional().nullable()
 });

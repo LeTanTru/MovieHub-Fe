@@ -28,7 +28,20 @@ export function NavigationDesktop({ navigationList }: NavigationDesktopProps) {
               onMouseEnter={() => setHovered(item.label)}
               onMouseLeave={() => setHovered(null)}
             >
-              <div className='hover:text-golden-glow relative flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear'>
+              <div
+                className={cn(
+                  'hover:text-golden-glow relative flex items-center gap-1 whitespace-nowrap transition-colors duration-200 ease-linear',
+                  {
+                    'text-golden-glow': item.subItems?.some(
+                      (sub) =>
+                        sub.href &&
+                        pathname.startsWith(
+                          sub.href.split('/').slice(0, 2).join('/')
+                        )
+                    )
+                  }
+                )}
+              >
                 {item.label}
                 <ChevronDown
                   className={cn(
@@ -102,7 +115,13 @@ export function NavigationDesktop({ navigationList }: NavigationDesktopProps) {
                         <ListItem
                           key={sub.label}
                           title={sub.label}
-                          className='hover:text-golden-glow rounded transition-all duration-100 ease-linear hover:bg-white/5'
+                          className={cn(
+                            'hover:text-golden-glow rounded transition-all duration-100 ease-linear hover:bg-white/5',
+                            {
+                              'text-golden-glow bg-white/5':
+                                pathname === sub.href
+                            }
+                          )}
                         >
                           <Link
                             className='line-clamp-1 block truncate px-5 py-2.5'
@@ -121,7 +140,12 @@ export function NavigationDesktop({ navigationList }: NavigationDesktopProps) {
           ) : (
             <ListItem
               key={item.label}
-              className='hover:text-golden-glow relative p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear'
+              className={cn(
+                'hover:text-golden-glow relative p-2 text-sm whitespace-nowrap transition-all duration-200 ease-linear',
+                {
+                  'text-golden-glow': pathname === item.href
+                }
+              )}
             >
               {item.isNew && (
                 <m.div
@@ -143,14 +167,7 @@ export function NavigationDesktop({ navigationList }: NavigationDesktopProps) {
                   Mới
                 </m.div>
               )}
-              <Link
-                href={item.href!}
-                className={cn({
-                  'text-white': pathname === item.href
-                })}
-              >
-                {item.label}
-              </Link>
+              <Link href={item.href!}>{item.label}</Link>
             </ListItem>
           )
         )}

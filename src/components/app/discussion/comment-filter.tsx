@@ -54,30 +54,28 @@ export function CommentFilter({
   }, [movie]);
 
   if (movie.type !== MOVIE_TYPE_SERIES || filterOptions.length === 0) {
-    return <div className='mt-4' />;
+    return null;
   }
 
   return (
     <Form {...form}>
-      <div className='mt-4 flex justify-end'>
-        <SelectField
-          control={control}
-          name='episodeId'
-          options={filterOptions}
-          onValueChange={(val) => {
-            if (val) {
-              onValueChange(String(val));
-            }
-          }}
-          className='max-640:w-36 max-480:w-28 h-8 w-40 rounded-md px-2! text-xs text-white'
-          formItemClassName='text-xs'
-          renderOption={(option) => (
-            <span title={option.label} className='text-xs'>
-              {option.label}
-            </span>
-          )}
-        />
-      </div>
+      <SelectField
+        control={control}
+        name='episodeId'
+        options={filterOptions}
+        onValueChange={(val) => {
+          if (val) {
+            onValueChange(String(val));
+          }
+        }}
+        className='max-640:w-36 max-480:w-28 h-8 w-40 rounded-md px-2! text-xs text-white'
+        formItemClassName='text-xs'
+        renderOption={(option) => (
+          <span title={option.label} className='text-xs'>
+            {option.label}
+          </span>
+        )}
+      />
     </Form>
   );
 }

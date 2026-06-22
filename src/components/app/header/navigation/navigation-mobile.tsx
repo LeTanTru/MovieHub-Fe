@@ -168,8 +168,23 @@ export function NavigationMobile({ navigationList }: NavigationMobileProps) {
                       handleSubmenuToggle(item.key, index);
                     }}
                   >
-                    {item.label}
-                    <ChevronDown className='size-5' />
+                    <span
+                      className={cn(
+                        'flex items-center gap-2 transition-colors duration-200 ease-linear',
+                        {
+                          'text-golden-glow': item.subItems?.some(
+                            (sub) =>
+                              sub.href &&
+                              pathname.startsWith(
+                                sub.href.split('/').slice(0, 2).join('/')
+                              )
+                          )
+                        }
+                      )}
+                    >
+                      {item.label}
+                      <ChevronDown className='size-5' />
+                    </span>
                     {item.isNew && (
                       <m.div
                         animate={{
@@ -192,7 +207,12 @@ export function NavigationMobile({ navigationList }: NavigationMobileProps) {
                     )}
                   </ListItem>
                 ) : (
-                  <ListItem className='p-2' key={item.label}>
+                  <ListItem
+                    className={cn('p-2', {
+                      'text-golden-glow': pathname === item.href
+                    })}
+                    key={item.label}
+                  >
                     <Link
                       href={item.href as string}
                       className='max-480:text-[13px] relative'
@@ -247,7 +267,12 @@ export function NavigationMobile({ navigationList }: NavigationMobileProps) {
                       <Link
                         key={sub.label}
                         href={sub.href as string}
-                        className='max-480:text-[13px] flex cursor-pointer items-center gap-2 py-2 whitespace-nowrap'
+                        className={cn(
+                          'max-480:text-[13px] flex cursor-pointer items-center gap-2 rounded px-2 py-2 whitespace-nowrap transition-colors duration-150 ease-linear',
+                          {
+                            'text-golden-glow bg-white/5': pathname === sub.href
+                          }
+                        )}
                         onClick={() => {
                           setOpen(false);
                           setSelectedItem(null);
