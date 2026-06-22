@@ -104,9 +104,10 @@ Core references:
 
 ```
 src/
-├── api-requests/          # Domain-based API request wrappers (18 files)
+├── api-requests/          # Domain-based API request wrappers
 ├── app/                   # Next.js App Router pages & layouts
 │   ├── (auth)/            # Auth route group (login, register, etc.)
+│   ├── auth/google/       # Google OAuth callback route
 │   ├── (home)/            # Homepage with slider, topics, collections
 │   ├── movie/[slug]/      # Movie detail pages
 │   ├── watch/[slug]/      # Video playback pages
@@ -116,24 +117,29 @@ src/
 │   ├── person/            # People directory
 │   ├── topic/             # Topic listings
 │   ├── schedule/          # Movie schedule
+│   ├── room/              # Watch-together room lobby
+│   ├── survey/            # Protected onboarding survey
 │   ├── user/              # Protected user pages (favorites, playlists, etc.)
 │   ├── account/           # Protected account pages (profile, settings)
 │   ├── api/auth/          # Server-side auth API routes
+│   ├── api/intro/         # Intro access validation route
+│   ├── api/watch-history/ # Server-side watch history updates route
+│   ├── og/                # Dynamic Open Graph image route
 │   └── actions/           # Server actions
 ├── components/
-│   ├── ui/                # shadcn/ui primitives (21 components)
-│   ├── form/              # Form components with validation (17 files)
+│   ├── ui/                # shadcn/ui primitives
+│   ├── form/              # Form components with validation
 │   ├── video-player/      # Custom Vidstack-based video player
 │   ├── app/               # App-level components (movie cards, header, footer, etc.)
 │   ├── layout/            # Layout wrappers
 │   ├── providers/         # React context providers
 │   └── modal/             # Modal components
 ├── constants/             # API endpoints, query keys, master data
-├── hooks/                 # Custom React hooks (15 hooks)
-├── queries/               # React Query hooks (18 files)
-├── store/                 # Zustand stores (7 stores)
-├── schemaValidations/     # Zod validation schemas (19 files)
-├── types/                 # TypeScript type definitions (27 files)
+├── hooks/                 # Custom React hooks
+├── queries/               # React Query hooks
+├── store/                 # Zustand stores
+├── schemaValidations/     # Zod validation schemas
+├── types/                 # TypeScript type definitions
 ├── utils/                 # Utility functions (HTTP, notify, storage, etc.)
 ├── routes/                # Route definitions
 ├── lib/                   # Utility library (cn function)
@@ -227,6 +233,7 @@ docker run -p 3000:3000 \
 | `yarn dev`                          | Start dev server (port 3000, Turbopack)  |
 | `yarn clean-dev`                    | Clean `.next` cache and start dev server |
 | `yarn build`                        | Build production bundle                  |
+| `yarn build:analyze`                | Production build with bundle analyzer    |
 | `yarn start`                        | Start production server                  |
 | `yarn lint`                         | Run ESLint on all files                  |
 | `yarn lint -- src/path/to/file.tsx` | Lint a single file                       |
