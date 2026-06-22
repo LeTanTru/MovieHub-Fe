@@ -30,6 +30,8 @@ import {
 } from '@/types';
 import { cn } from '@/lib';
 import { CommentFilter } from './comment-filter';
+import { CommentSort, CommentSortType } from './comment-sort';
+import { ReviewSort, ReviewSortType } from './review-sort';
 
 const DISCUSSION_SKELETON_COUNT = 3;
 
@@ -46,7 +48,7 @@ export function Discussion({
 }: DiscussionProps) {
   const { id } = useSlugId();
 
-  const { profile } = useAuth();
+  const { profile, isAuthenticated } = useAuth();
   const { movie, discussionTab, selectedSeason, setDiscussionTab } =
     useMovieStore(
       useShallow((s) => ({
@@ -57,7 +59,12 @@ export function Discussion({
       }))
     );
 
+  const isCommentTab = discussionTab === DISCUSSION_TAB_COMMENT;
+  const isReviewTab = discussionTab === DISCUSSION_TAB_REVIEW;
+
   const [selectedEpisodeId, setSelectedEpisodeId] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<CommentSortType>('newest');
+  const [sortByReview, setSortByReview] = useState<ReviewSortType>('newest');
 
   const {
     data: commentList,
@@ -72,10 +79,13 @@ export function Discussion({
     params: {
       movieId: id,
       movieItemId: selectedEpisodeId !== 'all' ? selectedEpisodeId : undefined,
-      size: DEFAULT_PAGE_SIZE
+      size: DEFAULT_PAGE_SIZE,
+      newest: sortBy === 'newest' ? true : undefined,
+      topLiked: sortBy === 'topLiked' ? true : undefined,
+      topDisliked: sortBy === 'topDisliked' ? true : undefined
     },
     queryFn: commentApiRequest.getList,
-    enabled: !!id && discussionTab === DISCUSSION_TAB_COMMENT,
+    enabled: !!id && isCommentTab,
     mode: 'click'
   });
 
@@ -91,10 +101,13 @@ export function Discussion({
     queryKey: queryKeys.REVIEW_LIST,
     params: {
       movieId: id,
-      size: DEFAULT_PAGE_SIZE
+      size: DEFAULT_PAGE_SIZE,
+      newest: sortByReview === 'newest' ? true : undefined,
+      topLiked: sortByReview === 'topLiked' ? true : undefined,
+      topDisliked: sortByReview === 'topDisliked' ? true : undefined
     },
     queryFn: reviewApiRequest.getList,
-    enabled: !!id && discussionTab === DISCUSSION_TAB_REVIEW,
+    enabled: !!id && isReviewTab,
     mode: 'click'
   });
 
@@ -108,13 +121,7 @@ export function Discussion({
     [DISCUSSION_TAB_REVIEW]: totalReviews
   };
 
-  const isActiveLoading =
-    discussionTab === DISCUSSION_TAB_COMMENT
-      ? commentListLoading
-      : reviewListLoading;
-
-  const isCommentTab = discussionTab === DISCUSSION_TAB_COMMENT;
-  const isReviewTab = discussionTab === DISCUSSION_TAB_REVIEW;
+  const isActiveLoading = isCommentTab ? commentListLoading : reviewListLoading;
 
   if (!movie) return null;
 
@@ -193,13 +200,18 @@ export function Discussion({
           <CommentInput movie={movie} selectedSeason={selectedSeason} />
         </Activity>
         <Activity visible={isCommentTab}>
-          {discussionTab === DISCUSSION_TAB_COMMENT && (
+          <div
+            className={cn('my-2 flex items-center gap-2', {
+              'my-4': isAuthenticated
+            })}
+          >
+            <CommentSort selectedSort={sortBy} onSortChange={setSortBy} />
             <CommentFilter
               movie={movie}
               selectedEpisodeId={selectedEpisodeId}
               onValueChange={setSelectedEpisodeId}
             />
-          )}
+          </div>
           <CommentList
             movie={movie}
             commentList={filteredCommentList}
@@ -210,6 +222,16 @@ export function Discussion({
           />
         </Activity>
         <Activity visible={isReviewTab}>
+          <div
+            className={cn('my-2 flex items-center gap-2', {
+              'my-4': isAuthenticated
+            })}
+          >
+            <ReviewSort
+              selectedSort={sortByReview}
+              onSortChange={setSortByReview}
+            />
+          </div>
           <ReviewList
             movie={movie}
             reviewList={filteredReviewList}

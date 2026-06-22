@@ -190,7 +190,7 @@ export function SelectField<
                       aria-label='Select'
                       disabled={disabled}
                       className={cn(
-                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color bg-charade w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
+                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color bg-input w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                         {
                           'ring-main-color border-transparent! ring-2': open,
                           'border-rose-500 ring-rose-500': !!fieldState.error
