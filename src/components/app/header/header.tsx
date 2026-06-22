@@ -12,7 +12,7 @@ import { buildLoginRedirectPath } from '@/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Suspense, useEffect, useState } from 'react';
 import { useAppContext } from '@/components/providers/app-provider';
-import { useAuth, useNavigate } from '@/hooks';
+import { useAuth, useIsMounted, useNavigate } from '@/hooks';
 import { DropdownAvatar } from './dropdown-avatar';
 import { DropdownNotification } from './dropdown-notification';
 import Image from 'next/image';
@@ -26,6 +26,7 @@ export function Header() {
 
   const { profile } = useAuth();
   const { loading } = useAppContext();
+  const isMounted = useIsMounted();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -128,7 +129,7 @@ export function Header() {
             <ButtonDownloadApp />
           </m.div>
           <AnimatePresence mode='wait' initial={false}>
-            {loading ? (
+            {loading || !isMounted ? (
               <m.div
                 key='loading'
                 initial={{ opacity: 0 }}
