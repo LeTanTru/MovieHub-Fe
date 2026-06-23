@@ -14,22 +14,24 @@ export function NotificationBody({
   notification: NotificationResType;
 }) {
   switch (notification.cmd) {
-    case mqttCMDs.NEW_MOVIE: {
-      return <MovieBody notification={notification} />;
+    case mqttCMDs.COMMENT_UNLOCKED:
+    case mqttCMDs.TOXIC_COMMENT_LOCKED: {
+      return <ToxicCommentLockedBody notification={notification} />;
     }
 
     case mqttCMDs.NEW_MOVIE_ITEM: {
       return <MovieItemBody notification={notification} />;
     }
 
+    case mqttCMDs.NEW_MOVIE: {
+      return <MovieBody notification={notification} />;
+    }
+
     case mqttCMDs.REPLY_COMMENT: {
       return <ReplyCommentBody notification={notification} />;
     }
 
-    case mqttCMDs.TOXIC_COMMENT_LOCKED: {
-      return <ToxicCommentLockedBody notification={notification} />;
-    }
-
+    case mqttCMDs.REVIEW_UNLOCKED:
     case mqttCMDs.TOXIC_REVIEW_LOCKED: {
       return <ToxicReviewLockedBody notification={notification} />;
     }

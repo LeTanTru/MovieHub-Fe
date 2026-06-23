@@ -183,6 +183,15 @@ export function MqttProvider() {
       notify.success(data.title);
 
       switch (data.cmd) {
+        case mqttCMDs.COMMENT_UNLOCKED:
+        case mqttCMDs.TOXIC_COMMENT_LOCKED: {
+          const body = parseJSON<ToxicCommentLockedNotificationType>(data.body);
+          invalidateCommentQueries({
+            movieId: body.movieId,
+            parentId: body.parentId
+          });
+          break;
+        }
         case mqttCMDs.NEW_MOVIE_ITEM:
         case mqttCMDs.NEW_MOVIE:
         case mqttCMDs.REPLY_COMMENT: {
@@ -193,14 +202,7 @@ export function MqttProvider() {
           });
           break;
         }
-        case mqttCMDs.TOXIC_COMMENT_LOCKED: {
-          const body = parseJSON<ToxicCommentLockedNotificationType>(data.body);
-          invalidateCommentQueries({
-            movieId: body.movieId,
-            parentId: body.parentId
-          });
-          break;
-        }
+        case mqttCMDs.REVIEW_UNLOCKED:
         case mqttCMDs.TOXIC_REVIEW_LOCKED: {
           const body = parseJSON<ToxicReviewLockedNotificationType>(data.body);
           invalidateReviewQueries({
