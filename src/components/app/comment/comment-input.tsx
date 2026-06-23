@@ -12,7 +12,8 @@ import {
   useAuth,
   useClickOutside,
   useQueryParams,
-  useValidatePermission
+  useValidatePermission,
+  useIsomorphicLayoutEffect
 } from '@/hooks';
 import { Button, Col, Row, TextAreaField } from '@/components/form';
 import { type UseFormReturn } from 'react-hook-form';
@@ -166,7 +167,7 @@ export function CommentInput({ movie, selectedSeason }: CommentInputProps) {
     };
   }, []);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const pickerEl = pickerContainerRef.current?.querySelector('emoji-picker');
 
     if (pickerEl) {

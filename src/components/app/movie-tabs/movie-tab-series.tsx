@@ -10,8 +10,12 @@ import { MovieTabHeading } from '@/components/app/heading';
 import { parseJSON } from '@/utils';
 import { route } from '@/routes';
 import { ScheduleBadge } from '@/components/app/schedule-badge';
-import { useClickOutside, useNavigate } from '@/hooks';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  useClickOutside,
+  useNavigate,
+  useIsomorphicLayoutEffect
+} from '@/hooks';
+import { useMemo, useState } from 'react';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 
@@ -70,7 +74,7 @@ export function MovieTabSeries({ movie }: MovieTabSeriesProps) {
     setShowDropdown(false);
   };
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (latestSeason) {
       setSelectedSeason(latestSeason);
     } else if (seasons.length > 0) {

@@ -11,3 +11,11 @@ export type SettingResType = {
   audio: number;
   playbackSpeed: number;
 };
+
+export type PublicSettingResType = {
+  id: string;
+  groupName: string;
+  description: string;
+  keyName: string;
+  valueData: string;
+};

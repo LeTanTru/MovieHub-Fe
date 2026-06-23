@@ -671,5 +671,14 @@ export const apiConfig = defineApiConfig({
       isRequiredXClientType: true,
       permissionCode: 'URP_C'
     }
+  },
+  setting: {
+    public: {
+      baseUrl: `${AppConstants.apiUrl}/v1/setting/public`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true,
+      ignoreAuth: true
+    }
   }
 });

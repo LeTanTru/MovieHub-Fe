@@ -2,6 +2,7 @@ import './globals.css';
 import { AppProvider } from '@/components/providers/app-provider';
 import { Be_Vietnam_Pro } from 'next/font/google';
 import { BodyLoad } from '@/components/app/body-load';
+import { DevToolsBlockerProvider } from '@/components/providers/devtools-blocker-provider';
 import { DisclaimerModal } from '@/components/modal';
 import { envConfig } from '@/config';
 import { GoToTopButton } from '@/components/app/go-to-top-button';
@@ -135,6 +136,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
                 <GoToTopButton />
               </ThemeProvider>
               <ToastContainer />
+              <DevToolsBlockerProvider />
             </AppProvider>
           </CategoryPrefetchBoundary>
         </QueryProvider>

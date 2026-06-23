@@ -2,12 +2,13 @@
 
 import { cn } from '@/lib';
 import { ChevronUpIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useIsomorphicLayoutEffect } from '@/hooks';
 
 export function GoToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const handleScroll = () => {
       setIsVisible(window.scrollY > 0);
     };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useIsomorphicLayoutEffect } from '@/hooks';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
@@ -30,11 +30,11 @@ export function Watch({ id }: WatchProps) {
     enabled: !!movie
   });
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (movie) setMovie(movie);
   }, [movie, setMovie]);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setMoviePerson(moviePerson);
   }, [moviePerson, setMoviePerson]);
 
