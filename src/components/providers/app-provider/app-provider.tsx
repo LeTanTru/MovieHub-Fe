@@ -1,17 +1,11 @@
 'use client';
 
-import { useIsMounted } from '@/hooks';
+import { useIsMounted, useIsomorphicLayoutEffect } from '@/hooks';
 import { useProfileQuery, useSession } from '@/queries';
 import { useAuthStore } from '@/store';
 import { getData, removeData } from '@/utils';
 import { domAnimation, LazyMotion } from 'framer-motion';
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useLayoutEffect,
-  useState
-} from 'react';
+import { createContext, ReactNode, useContext, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 type AppContextType = {
@@ -64,7 +58,7 @@ export function AppProvider({ children }: AppProviderProps) {
     enabled: !!accessToken
   });
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (session) {
       setAccessToken(session.accessToken);
       setCsrfToken(session.csrfToken);
@@ -76,7 +70,7 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   }, [session, setUserKind, setAccessToken, setCsrfToken, setProfile]);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (profile) {
       setProfile(profile);
     }

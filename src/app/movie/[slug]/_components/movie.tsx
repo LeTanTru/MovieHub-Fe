@@ -2,16 +2,16 @@
 
 import './movie.css';
 import { Container } from '@/components/layout';
+import { MAX_PAGE_SIZE } from '@/constants';
 import { MovieMain } from '@/components/app/movie-main';
 import { MovieSide } from '@/components/app/movie-side';
+import { NotFound } from './not-found';
 import { renderImageUrl } from '@/utils';
-import { useEffect } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useIsomorphicLayoutEffect } from '@/hooks';
 import { useMoviePersonListQuery, useMovieQuery } from '@/queries';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
-import { NotFound } from './not-found';
-import { Skeleton } from '@/components/ui/skeleton';
-import { MAX_PAGE_SIZE } from '@/constants';
 
 type MovieProps = {
   id: string;
@@ -35,11 +35,11 @@ export function Movie({ id }: MovieProps) {
     enabled: !!movie
   });
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (movie) setMovie(movie);
   }, [movie, setMovie]);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setMoviePerson(moviePerson);
   }, [moviePerson, setMoviePerson]);
 

@@ -10,9 +10,14 @@ import { NavigationMenu } from './navigation';
 import { route } from '@/routes';
 import { buildLoginRedirectPath } from '@/utils';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useAppContext } from '@/components/providers/app-provider';
-import { useAuth, useIsMounted, useNavigate } from '@/hooks';
+import {
+  useAuth,
+  useIsMounted,
+  useNavigate,
+  useIsomorphicLayoutEffect
+} from '@/hooks';
 import { DropdownAvatar } from './dropdown-avatar';
 import { DropdownNotification } from './dropdown-notification';
 import Image from 'next/image';
@@ -29,7 +34,7 @@ export function Header() {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const handleOnScroll = () => {
       const scrollTop = window.scrollY;
       setIsFixed(scrollTop > 0);

@@ -1,10 +1,10 @@
 'use client';
 
-import { queryKeys } from '@/constants';
-import { logger } from '@/logger';
-import { useDeleteWatchHistoryMutation } from '@/queries';
 import { invalidateQueries, notify } from '@/utils';
+import { logger } from '@/logger';
+import { queryKeys } from '@/constants';
 import { useAuth } from './use-auth';
+import { useDeleteWatchHistoryMutation } from '@/queries';
 
 export const useWatchHistoryDelete = () => {
   const { isAuthenticated } = useAuth();

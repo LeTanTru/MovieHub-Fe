@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { AvatarField, Button } from '@/components/form';
 import {
   DEFAULT_DATE_FORMAT,
@@ -12,7 +12,11 @@ import { formatDate, renderImageUrl, sanitizeText } from '@/utils';
 import { X } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import { FaArrowDown } from 'react-icons/fa6';
-import { useDisclosure, useQueryParams } from '@/hooks';
+import {
+  useDisclosure,
+  useQueryParams,
+  useIsomorphicLayoutEffect
+} from '@/hooks';
 import { ButtonLike } from '@/components/app/button-like';
 import { ButtonSharePerson } from '@/components/app/button-share';
 import { PersonResType, PersonSearchType } from '@/types';
@@ -33,7 +37,7 @@ export function PersonSidebar({ person, loading }: PersonSidebarProps) {
   const handleOpenModal = () => open();
   const handleCloseModal = () => close();
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!opened) return;
     const el = modalContentRef.current;
     if (!el) return;
@@ -191,7 +195,7 @@ export function PersonSidebar({ person, loading }: PersonSidebarProps) {
 PersonSidebar.Skeleton = function () {
   return (
     <div className='border-r-transparent-white max-1600:w-85 max-1120:border-none max-1120:pr-0 max-1120:pb-5 max-1120:w-full max-1120:items-center w-110 shrink-0 border-r pr-10'>
-      <Skeleton className='skeleton mx-auto mb-6 size-[120px] rounded-full! sm:size-[160px]' />
+      <Skeleton className='skeleton mx-auto mb-6 size-30 rounded-full! sm:size-40' />
 
       <Skeleton className='max-800:text-xl max-640:text-lg max-640:mb-0 max-640:mt-2 skeleton mx-auto mt-4 mb-2 h-8 w-3/4' />
 

@@ -12,7 +12,8 @@ import {
 } from '@/constants';
 import { AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
+import { useIsomorphicLayoutEffect } from '@/hooks';
 import { MovieTabEpisode } from './movie-tab-episode';
 import { MovieTabPerson } from './movie-tab-person';
 import { MovieTabSuggestion } from './movie-tab-suggestion';
@@ -29,7 +30,7 @@ export function MovieTabs() {
   const tabRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const activeTab = tabRefs.current[activeKey];
     const container = containerRef.current;
 

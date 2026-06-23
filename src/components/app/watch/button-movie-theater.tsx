@@ -2,7 +2,8 @@
 
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useIsomorphicLayoutEffect } from '@/hooks';
 
 type ButtonMovieTheaterProps = {
   className?: string;
@@ -11,7 +12,7 @@ type ButtonMovieTheaterProps = {
 export function ButtonMovieTheater({ className }: ButtonMovieTheaterProps) {
   const [isMovieTheater, setIsMovieTheater] = useState(false);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (isMovieTheater) {
       document.body.classList.add('movie-theater');
     } else {

@@ -1,18 +1,23 @@
 'use client';
 
-import { ButtonToggle } from '@/components/app/button-toggle';
-import { MovieTabHeading } from '@/components/app/heading';
-import { useClickOutside, useNavigate, useQueryParams } from '@/hooks';
-import { cn } from '@/lib';
-import { route } from '@/routes';
-import { useMovieStore } from '@/store';
-import { MetadataType } from '@/types';
-import { notify, parseJSON } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
-import { FaBarsStaggered, FaCaretDown } from 'react-icons/fa6';
-import { useShallow } from 'zustand/shallow';
+import { ButtonToggle } from '@/components/app/button-toggle';
+import { cn } from '@/lib';
 import { EpisodeCard } from '@/components/app/episode';
+import { FaBarsStaggered, FaCaretDown } from 'react-icons/fa6';
+import { MetadataType } from '@/types';
+import { MovieTabHeading } from '@/components/app/heading';
+import { notify, parseJSON } from '@/utils';
+import { route } from '@/routes';
+import {
+  useClickOutside,
+  useNavigate,
+  useQueryParams,
+  useIsomorphicLayoutEffect
+} from '@/hooks';
+import { useMemo, useState } from 'react';
+import { useMovieStore } from '@/store';
+import { useShallow } from 'zustand/shallow';
 
 export function WatchSeries() {
   const ANIMATION_DURATION = 300;
@@ -70,7 +75,7 @@ export function WatchSeries() {
     setShowDropdown(false);
   };
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (searchParams.season) {
       setSelectedSeason(searchParams.season);
     } else if (latestSeason) {
