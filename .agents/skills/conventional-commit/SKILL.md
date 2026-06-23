@@ -6,6 +6,9 @@ description: >-
   commit messages in line with the Conventional Commits specification,
   including instructions, examples, and validation.
 ---
+
+> ⚠️ **Do not run `git add` — staging is the user's responsibility.**
+
 ### Instructions
 ```xml
   <description>This file contains a prompt template for generating conventional
@@ -17,14 +20,16 @@ description: >-
 **Follow these steps:**
 1. Run `git status` to review changed files.
 2. Run `git diff` or `git diff --cached` to inspect changes.
-3. Stage your changes with `git add <file>`.
-4. Construct your commit message using the following XML structure.
-5. After generating your commit message, Copilot will automatically run the
-   following command in your integrated terminal (no confirmation needed):
+3. Construct your commit message using the following XML structure.
+4. After generating your commit message, run the commit command below.
+5. If the request includes pushing to GitHub, run `git push` after committing.
+
 ```bash
 git commit -m "type(scope): description"
+# If push is requested:
+git push
 ```
-6. Just execute this prompt and Copilot will handle the commit for you in the terminal.
+
 ### Commit Message Structure
 ```xml
 <commit-message>
@@ -66,8 +71,8 @@ git commit -m "type(scope): description"
 ```xml
 <final-step>
   <cmd>git commit -m "type(scope): description"</cmd>
+  <push>git push (only if push to GitHub is explicitly requested)</push>
+  <warning>Never run git add — staging is the user's responsibility.</warning>
   <note>Replace with your constructed message. Include body/footer if needed.</note>
 </final-step>
 ```
-
----
