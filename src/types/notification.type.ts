@@ -147,3 +147,7 @@ export type ToxicReviewLockedNotificationType = {
   };
   toxicSpans: ToxicSpan[];
 };
+
+export type CommentUnlockedNotificationType =
+  ToxicCommentLockedNotificationType;
+export type ReviewUnlockedNotificationType = ToxicReviewLockedNotificationType;
