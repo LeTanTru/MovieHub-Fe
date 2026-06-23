@@ -70,4 +70,4 @@ git commit -m "type(scope): description"
 </final-step>
 ```
 
----c
+---
