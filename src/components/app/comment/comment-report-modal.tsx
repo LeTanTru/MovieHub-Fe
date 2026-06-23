@@ -12,7 +12,8 @@ import { Modal } from '@/components/modal';
 import {
   reportReasons,
   USER_REPORT_REASON_OTHER,
-  USER_REPORT_TYPE_COMMENT
+  USER_REPORT_TYPE_COMMENT,
+  userReportCommentErrorMaps
 } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateUserReportMutation } from '@/queries';
@@ -79,7 +80,15 @@ export default function CommentReportModal({
             notify.success('Báo cáo bình luận thành công');
             handleClose();
           } else {
-            notify.error('Báo cáo bình luận thất bại');
+            const errorCode = res.code;
+            if (errorCode) {
+              const message = userReportCommentErrorMaps[errorCode];
+              if (message) {
+                notify.info(message[0][1].message);
+              }
+            } else {
+              notify.error('Báo cáo bình luận thất bại');
+            }
           }
         },
         onError: (error) => {

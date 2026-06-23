@@ -12,7 +12,8 @@ import { Modal } from '@/components/modal';
 import {
   reportReasons,
   USER_REPORT_REASON_OTHER,
-  USER_REPORT_TYPE_REVIEW
+  USER_REPORT_TYPE_REVIEW,
+  userReportReviewErrorMaps
 } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateUserReportMutation } from '@/queries';
@@ -79,7 +80,15 @@ export default function ReviewReportModal({
             notify.success('Báo cáo đánh giá thành công');
             handleClose();
           } else {
-            notify.error('Báo cáo đánh giá thất bại');
+            const errorCode = res.code;
+            if (errorCode) {
+              const message = userReportReviewErrorMaps[errorCode];
+              if (message) {
+                notify.info(message[0][1].message);
+              }
+            } else {
+              notify.error('Báo cáo đánh giá thất bại');
+            }
           }
         },
         onError: (error) => {
