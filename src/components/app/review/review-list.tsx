@@ -273,7 +273,7 @@ export function ReviewList({
               {isLoadingMore ? (
                 <VerticalBarLoading />
               ) : (
-                remainingCount > 0 && `Xem thêm ${remainingCount} đánh giá`
+                remainingCount > 0 && `Xem thêm (${remainingCount}) đánh giá`
               )}
             </Button>
           </div>

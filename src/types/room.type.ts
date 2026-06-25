@@ -1,34 +1,57 @@
-import { MovieItemResType } from '@/types/movie-item.type';
 import { roomSchema, roomSearchSchema } from '@/schemaValidations';
+import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
-export type HostType = {
-  avatarPath: string;
+type Host = {
+  id: string;
   email: string;
   fullName: string;
-  gender: number;
-  id: number;
-  isVip: boolean;
+  avatarPath: string;
   kind: number;
-  username: string;
+  gender: number;
+};
+
+type Movie = {
+  id: string;
+  title: string;
+  originalTitle: string;
+  slug: string;
+  thumbnailUrl: string;
+  posterUrl: string;
+  type: number;
+};
+
+type Season = {
+  id: string;
+  kind: number;
+  label: string;
+  totalEpisode: number;
+};
+
+type MovieItem = {
+  id: string;
+  title: string;
+  kind: number;
+  label: string;
+  movie: Movie;
+  season: Season;
+  thumbnailUrl: string;
 };
 
 export type RoomResType = {
-  code: string;
-  createdDate: string;
-  endTime: string;
-  host: HostType;
   id: string;
-  kind: number;
-  modifiedDate: string;
-  movieItem: MovieItemResType;
+  createdDate: string;
   name: string;
-  participantCount: number;
+  code: string;
+  kind: number;
+  movieItem: MovieItem;
+  host: Host;
   startTime: string;
+  endTime: string;
   state: number;
-  status: number;
+  participantCount: number;
 };
 
-export type RoomSearchType = z.infer<typeof roomSearchSchema>;
+export type RoomSearchType = z.infer<typeof roomSearchSchema> & BaseSearchType;
 
 export type RoomBodyType = z.infer<typeof roomSchema>;

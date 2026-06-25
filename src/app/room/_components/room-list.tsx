@@ -1,35 +1,68 @@
 'use client';
 
-import { ButtonAction } from '@/components/app/button-action';
-import { ROOM_TAB_LATEST, roomActions } from '@/constants';
-import { EllipsisVertical } from 'lucide-react';
+import { RoomCard } from '@/app/room/_components/room-card';
+import { RoomHeader } from './room-header';
+import { queryKeys, ROOM_STATE_ALL, ROOM_TAB_LATEST } from '@/constants';
 import { useState } from 'react';
+import { useAuth, useLoadMore } from '@/hooks';
+import { RoomResType, RoomSearchType } from '@/types';
+import { roomApiRequest } from '@/api-requests';
+import { VerticalBarLoading } from '@/components/loading';
+import { Button } from '@/components/form';
+
+const ROOM_SKELETON_COUNT = 20;
 
 export function RoomList() {
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState<string>(ROOM_TAB_LATEST);
+  const [roomState, setRoomState] = useState<number>(ROOM_STATE_ALL);
+
+  const {
+    data: roomList = [],
+    isLoading,
+    hasMore,
+    isLoadingMore,
+    handleLoadMore,
+    totalElements,
+    remainingElements
+  } = useLoadMore<HTMLDivElement, RoomSearchType, RoomResType>({
+    enabled: isAuthenticated,
+    params: { state: roomState !== ROOM_STATE_ALL ? roomState : undefined },
+    queryFn: roomApiRequest.getList,
+    queryKey: queryKeys.ROOM_LIST
+  });
 
   return (
-    <div className='relative mx-auto flex h-50 w-full max-w-475 items-center justify-start px-12.5'>
-      <div className='flex-start relative mb-5 flex min-h-11 items-center gap-4'>
-        <h3 className='mr-4 text-[28px] leading-[1.4] font-bold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'>
-          Xem chung
-        </h3>
-        <div className='relative flex shrink-0 items-stretch' role='tablist'>
-          {roomActions.map((action) => (
-            <ButtonAction
-              key={action.key}
-              label={action.label}
-              action={action.key}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              className='max-640:text-[13px] max-520:text-xs'
-            />
-          ))}
-        </div>
-        <div className='relative flex size-7.5 cursor-pointer items-center justify-center rounded-full border border-white bg-transparent transition-all duration-200 ease-linear hover:opacity-80'>
-          <EllipsisVertical size={16} />
-        </div>
+    <div className='relative mx-auto w-full max-w-475 px-12.5'>
+      <RoomHeader
+        activeTab={activeTab}
+        roomState={roomState}
+        setActiveTab={setActiveTab}
+        setRoomState={setRoomState}
+        totalRoom={totalElements}
+      />
+      <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
+        {isLoading
+          ? Array.from({ length: ROOM_SKELETON_COUNT }).map((_, index) => (
+              <RoomCard.Skeleton key={index} />
+            ))
+          : roomList.map((room) => <RoomCard key={room.id} room={room} />)}
       </div>
+      {hasMore && (
+        <div className='flex justify-center pt-10'>
+          {isLoadingMore ? (
+            <VerticalBarLoading />
+          ) : (
+            <Button
+              className='hover:text-golden-glow hover:border-golden-glow border border-solid border-white hover:bg-transparent'
+              variant='ghost'
+              onClick={handleLoadMore}
+            >
+              {remainingElements > 0 && `Xem thêm (${remainingElements}) phòng`}
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

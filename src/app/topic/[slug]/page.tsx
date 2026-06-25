@@ -157,7 +157,7 @@ export default async function TopicDetailPage({
     <HydrationBoundary state={dehydrate(queryClient)}>
       <BreadcrumbListJsonLd items={breadcrumbLd.items} />
       {itemListLd.items.length > 0 && <ItemListJsonLd {...itemListLd} />}
-      <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
+      <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 min-h-page-height relative py-40'>
         <div className='max-640:gap-8 flex flex-col gap-12.5'>
           <MovieList collectionId={collectionId} />
         </div>

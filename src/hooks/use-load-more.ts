@@ -5,6 +5,23 @@ import { useCallback, useEffect, useRef } from 'react';
 
 type LoadMoreMode = 'scroll' | 'click' | 'both';
 
+/**
+ * Props for the `useLoadMore` hook.
+ *
+ * @template S - The search/query params type, extending `BaseSearchType`.
+ * @template R - The type of a single item in the response list.
+ *
+ * @param queryKey - Unique key used to identify and cache the infinite query.
+ * @param params - Query parameters forwarded to `queryFn` on each page fetch.
+ * @param queryFn - Async function that fetches a page of results given `params` and an optional `AbortSignal`.
+ * @param enabled - When `false`, the query is disabled and no requests are made. Defaults to `true`.
+ * @param mode - Controls how additional pages are triggered.
+ *   - `'scroll'` (default) — automatically fetches the next page when the sentinel element enters the viewport.
+ *   - `'click'` — only fetches the next page when `handleLoadMore` is called explicitly.
+ *   - `'both'` — supports both scroll-based and manual triggering.
+ * @param threshold - `IntersectionObserver` threshold (0–1) that determines how much of the sentinel element
+ *   must be visible before the next page is fetched. Only used in `'scroll'` and `'both'` modes. Defaults to `1`.
+ */
 type UseLoadMoreProps<S extends BaseSearchType, R> = {
   queryKey: string;
   params: S;
@@ -14,6 +31,30 @@ type UseLoadMoreProps<S extends BaseSearchType, R> = {
   threshold?: number;
 };
 
+/**
+ * Hook for infinite-scroll / load-more pagination backed by TanStack Query.
+ *
+ * @template T - The HTML element type of the scroll sentinel ref (e.g. `HTMLDivElement`).
+ * @template S - The search/query params type, extending `BaseSearchType`.
+ * @template R - The type of a single item in the response list.
+ *
+ * @param queryKey - Unique key used to identify and cache the infinite query.
+ * @param params - Query parameters forwarded to `queryFn` on each page fetch.
+ * @param queryFn - Async function that fetches a page of results given `params` and an optional `AbortSignal`.
+ * @param enabled - When `false`, the query is disabled and no requests are made. Defaults to `true`.
+ * @param mode - Trigger mode for loading more pages (`'scroll'` | `'click'` | `'both'`). Defaults to `'scroll'`.
+ * @param threshold - IntersectionObserver visibility threshold (0–1) for the sentinel element. Defaults to `1`.
+ *
+ * @returns An object containing:
+ * - `data` — Flattened array of all fetched items across pages.
+ * - `hasMore` — Whether a next page is available.
+ * - `isLoadingMore` — Whether the next page is currently being fetched.
+ * - `isLoading` — Whether the initial page load is in progress.
+ * - `loadMoreRef` — Ref to attach to the sentinel element for scroll-based triggering.
+ * - `remainingElements` — Number of items not yet loaded (`totalElements - data.length`).
+ * - `totalElements` — Total number of items reported by the first page response.
+ * - `handleLoadMore` — Callback to manually trigger fetching the next page (used in `'click'` or `'both'` modes).
+ */
 export const useLoadMore = <
   T extends HTMLElement,
   S extends BaseSearchType,
@@ -74,9 +115,9 @@ export const useLoadMore = <
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, mode, threshold]);
 
-  const dataList =
-    data?.pages?.flatMap((page) => page.data.content?.filter(Boolean)) || [];
-
+  const dataList = (
+    data?.pages?.flatMap((page) => page.data?.content) || []
+  )?.filter(Boolean);
   const totalElements = data?.pages?.[0]?.data?.totalElements || 0;
 
   const remainingElements = Math.max(totalElements - dataList.length, 0);

@@ -1,6 +1,7 @@
 import { apiConfig } from '@/constants';
 import {
   ApiResponse,
+  ApiResponseList,
   ApiResponseNoData,
   RoomBodyType,
   RoomResType,
@@ -36,7 +37,7 @@ export const join = (id: string) =>
   http.post<ApiResponseNoData>(apiConfig.room.join, { pathParams: { id } });
 
 export const getList = (params?: RoomSearchType, signal?: AbortSignal) =>
-  http.get<ApiResponse<RoomResType[]>>(apiConfig.room.getList, {
+  http.get<ApiResponseList<RoomResType>>(apiConfig.room.getList, {
     params,
     signal
   });

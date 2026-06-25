@@ -1,6 +1,6 @@
 import { roomApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { RoomBodyType, RoomSearchType } from '@/types';
+import { RoomBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useCheckRoomMutation = () => {
@@ -65,21 +65,6 @@ export const useJoinRoomMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.ROOM_JOIN],
     mutationFn: (id: string) => roomApiRequest.join(id)
-  });
-};
-
-export const useRoomListQuery = ({
-  params = {},
-  enabled
-}: {
-  params?: RoomSearchType;
-  enabled?: boolean;
-} = {}) => {
-  return useQuery({
-    queryKey: [queryKeys.ROOM_LIST, params],
-    queryFn: ({ signal }) => roomApiRequest.getList(params, signal),
-    enabled,
-    select: (data) => data.data
   });
 };
 
