@@ -40,7 +40,7 @@ export function RoomCard({ room }: RoomCardProps) {
         <div className='before:absolute before:inset-0 before:z-2 before:bg-[/dotted.webp] before:opacity-30 before:content-[""]'></div>
         {isPending && (
           <>
-            <div className='absolute top-2 left-2 z-3 flex h-6 items-center gap-1 rounded bg-amber-600 px-1.5 text-xs leading-5 font-semibold text-white uppercase shadow-[0_0_5px_5px_#0001]'>
+            <div className='absolute top-2 left-2 z-3 flex h-6 items-center gap-1 rounded bg-amber-600 px-1.5 text-xs leading-5 font-semibold text-white uppercase shadow-[0_0_5px_5px_var(--color-transparent-black-1)]'>
               <div className='live-flash block size-1.5 rounded-full bg-white before:content-[""]'></div>
               Đang chờ
             </div>
@@ -48,19 +48,19 @@ export function RoomCard({ room }: RoomCardProps) {
         )}
         {isLive && (
           <>
-            <div className='bg-thunderbird absolute top-2 left-2 z-3 flex h-6 items-center gap-1 rounded px-1.5 text-xs leading-5 font-semibold text-white uppercase shadow-[0_0_5px_5px_#0001]'>
+            <div className='bg-thunderbird absolute top-2 left-2 z-3 flex h-6 items-center gap-1 rounded px-1.5 text-xs leading-5 font-semibold text-white uppercase shadow-[0_0_5px_5px_var(--color-transparent-black-1)]'>
               <div className='live-flash block size-1.5 rounded-full bg-white before:content-[""]'></div>
               LIVE
             </div>
-            <div className='absolute bottom-2 left-2 z-3 flex items-center gap-1 rounded-sm border border-solid border-white bg-[#0009] px-2 py-1.5 text-xs font-semibold text-white shadow-[0_0_5px_5px_#0001] backdrop-blur-[10px]'>
+            <div className='bg-transparent-black-9 absolute bottom-2 left-2 z-3 flex items-center gap-1 rounded-sm border border-solid border-white px-2 py-1.5 text-xs font-semibold text-white shadow-[0_0_5px_5px_var(--color-transparent-black-1)] backdrop-blur-[10px]'>
               <EyeIcon className='size-4' />
               {room.participantCount} đang xem
             </div>
           </>
         )}
         {isEnd && (
-          <div className='absolute bottom-2 left-2 z-3 flex items-center gap-1 rounded-sm border border-solid border-[#fe476a] bg-[#0009] px-2 py-1.5 text-xs font-semibold text-[#fe476a] shadow-[0_0_5px_5px_#0001] backdrop-blur-[10px]'>
-            <VideoOff className='size-4 fill-[#fe476a]' />
+          <div className='border-french-rose bg-transparent-black-9 text-french-rose absolute bottom-2 left-2 z-3 flex items-center gap-1 rounded-sm border border-solid px-2 py-1.5 text-xs font-semibold shadow-[0_0_5px_5px_var(--color-transparent-black-1)] backdrop-blur-[10px]'>
+            <VideoOff className='fill-french-rose size-4' />
             Đã kết thúc
           </div>
         )}
@@ -75,7 +75,7 @@ export function RoomCard({ room }: RoomCardProps) {
           className='absolute inset-0 size-full origin-[center_center] scale-120 object-cover opacity-60 blur-[20px]'
         />
         <div
-          className='room-mask absolute top-0 left-1/2 z-2 h-full w-[39%] -translate-x-1/2 bg-cover bg-top shadow-[0_10px_10px_0_#0002]'
+          className='room-mask absolute top-0 left-1/2 z-2 h-full w-[39%] -translate-x-1/2 bg-cover bg-top shadow-[0_10px_10px_0_var(--color-transparent-black-2)]'
           style={{
             backgroundImage: `url("${renderImageUrl(room.movieItem.movie.posterUrl)}")`
           }}

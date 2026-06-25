@@ -116,7 +116,7 @@ export function ComingSoonMovieCard({
             setModalPos(null);
           }}
         >
-          <div className='absolute bottom-0 left-4 z-3 overflow-hidden rounded-tl-sm rounded-tr-sm bg-white px-2 py-1 text-xs font-medium text-[#333] shadow-[0_0_5px_2px_rgba(0,0,0,.1)]'>
+          <div className='text-mine-shaft absolute bottom-0 left-4 z-3 overflow-hidden rounded-tl-sm rounded-tr-sm bg-white px-2 py-1 text-xs font-medium shadow-[0_0_5px_2px_var(--color-black-alpha-10)]'>
             Sắp chiếu
           </div>
           <Image

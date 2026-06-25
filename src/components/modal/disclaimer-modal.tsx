@@ -68,7 +68,7 @@ export function DisclaimerModal() {
         showCloseButton={false}
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
-        className='max-520:w-[90%] pointer-events-auto border-gray-800 bg-[#0b0f19] p-6 text-white [&>button]:hidden'
+        className='max-520:w-[90%] bg-deep-blue pointer-events-auto border-gray-800 p-6 text-white [&>button]:hidden'
       >
         <DialogHeader className='flex flex-col items-center gap-3 text-center'>
           <div className='flex size-14 shrink-0 items-center justify-center rounded-full bg-rose-500/10'>
@@ -76,8 +76,8 @@ export function DisclaimerModal() {
           </div>
           <DialogTitle className='text-xl'>{DISCLAIMER_TEXT.title}</DialogTitle>
         </DialogHeader>
-        <div className='flex flex-col gap-4 text-sm leading-relaxed text-[#8892b0]'>
-          <DialogDescription className='text-[#8892b0]'>
+        <div className='text-slate-gray flex flex-col gap-4 text-sm leading-relaxed'>
+          <DialogDescription className='text-slate-gray'>
             {DISCLAIMER_TEXT.description}
           </DialogDescription>
           <div className='rounded-lg border border-amber-500/20 bg-amber-500/5 p-4 text-amber-200/90'>

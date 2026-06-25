@@ -18,7 +18,7 @@ export function ScheduleItem({ schedule }: ScheduleItemProps) {
   return (
     <MotionLink
       href={`${route.movie.path}/${schedule.movie.slug}.${schedule.movie.id}`}
-      className='hover:border-golden-glow relative flex items-center justify-between gap-4 rounded-[12px] border border-solid border-[#ffffff20] bg-[#363840] p-2.5 transition-all duration-200 ease-linear'
+      className='hover:border-golden-glow border-transparent-white-20 bg-outer-space relative flex items-center justify-between gap-4 rounded-[12px] border border-solid p-2.5 transition-all duration-200 ease-linear'
       whileHover={{
         y: -10
       }}
@@ -55,7 +55,7 @@ export function ScheduleItem({ schedule }: ScheduleItemProps) {
 
 ScheduleItem.Skeleton = function () {
   return (
-    <div className='relative flex items-center justify-between gap-4 rounded-[12px] border border-solid border-[#ffffff20] bg-[#363840] p-2.5'>
+    <div className='border-transparent-white-20 bg-outer-space relative flex items-center justify-between gap-4 rounded-[12px] border border-solid p-2.5'>
       <div className='w-12.5 shrink-0'>
         <Skeleton className='h-0 w-full rounded-sm pb-[150%]' />
       </div>
