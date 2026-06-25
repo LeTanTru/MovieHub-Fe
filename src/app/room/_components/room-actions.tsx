@@ -1,11 +1,11 @@
 'use client';
 
-import { ButtonNew } from './button-new';
+import { RoomCreateButton } from './room-create-button';
 import { Podcast } from 'lucide-react';
 import { route } from '@/routes';
 import Link from 'next/link';
 
-export function RoomManager() {
+export function RoomActions() {
   return (
     <div className='relative mx-auto flex h-50 w-full max-w-475 items-center justify-center px-12.5'>
       <div className='inline-flex items-center gap-4'>
@@ -15,7 +15,7 @@ export function RoomManager() {
         >
           <Podcast size={18} /> Quản lý
         </Link>
-        <ButtonNew />
+        <RoomCreateButton />
       </div>
     </div>
   );

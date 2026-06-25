@@ -1,7 +1,7 @@
 'use client';
 
 import { RoomCard } from '@/app/room/_components/room-card';
-import { RoomHeader } from './room-header';
+import { RoomListHeader } from './room-list-header';
 import { queryKeys, ROOM_STATE_ALL, ROOM_TAB_LATEST } from '@/constants';
 import { useState } from 'react';
 import { useAuth, useLoadMore } from '@/hooks';
@@ -34,7 +34,7 @@ export function RoomList() {
 
   return (
     <div className='relative mx-auto w-full max-w-475 px-12.5'>
-      <RoomHeader
+      <RoomListHeader
         activeTab={activeTab}
         roomState={roomState}
         setActiveTab={setActiveTab}
