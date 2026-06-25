@@ -13,7 +13,7 @@ export default async function RoomPage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container className='bg-vulcan max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 room relative min-h-[calc(100dvh-400px)] py-40'>
+      <Container className='bg-vulcan max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 room min-h-page-height relative py-40'>
         <Background />
         <Room />
       </Container>

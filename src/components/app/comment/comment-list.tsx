@@ -320,7 +320,7 @@ export function CommentList({
                 variant='ghost'
                 onClick={onLoadMore}
               >
-                {remainingCount > 0 && `Xem thêm ${remainingCount} bình luận`}
+                {remainingCount > 0 && `Xem thêm (${remainingCount}) bình luận`}
               </Button>
             )}
           </div>

@@ -153,7 +153,7 @@ export default async function PersonDetailPage({
     <HydrationBoundary state={dehydrate(queryClient)}>
       {jsonLd && <JsonLd data={jsonLd} />}
       {breadcrumbLd && <BreadcrumbListJsonLd items={breadcrumbLd.items} />}
-      <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 relative min-h-[calc(100dvh-400px)] py-40'>
+      <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 min-h-page-height relative py-40'>
         <div className='max-1120:flex-col relative mx-auto flex w-full max-w-410 justify-between px-5'>
           <Person />
         </div>

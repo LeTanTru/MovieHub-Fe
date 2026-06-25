@@ -123,9 +123,6 @@ export const REDIRECT_AFTER_LOGIN_DURATION = 500;
 
 export const INDICATOR_AUTO_HIDE_MS = 800;
 
-export const ROOM_TAB_LATEST = 'latest';
-export const ROOM_TAB_POPULAR = 'popular';
-
 export const SUBTITLE_FONT_SIZE_SMALL = 0;
 export const SUBTITLE_FONT_SIZE_MEDIUM = 1;
 export const SUBTITLE_FONT_SIZE_LARGE = 2;
@@ -144,3 +141,11 @@ export const USER_REPORT_TYPE_REVIEW = 2;
 export const IS_DEV_MODE = 'is_dev_mode';
 export const ENV_PRODUCTION = 'production';
 export const ENV_DEVELOPMENT = 'development';
+
+export const ROOM_TAB_LATEST = 'latest';
+export const ROOM_TAB_POPULAR = 'popular';
+
+export const ROOM_STATE_ALL = -1;
+export const ROOM_STATE_PENDING = 0;
+export const ROOM_STATE_RUNNING = 1;
+export const ROOM_STATE_ENDING = 2;
