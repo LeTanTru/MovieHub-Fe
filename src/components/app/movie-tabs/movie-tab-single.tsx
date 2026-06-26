@@ -2,7 +2,7 @@
 
 import { caption } from '@/assets';
 import { MovieTabHeading } from '@/components/app/heading';
-import { useNavigate } from '@/hooks';
+import { useMovieInfo, useNavigate } from '@/hooks';
 import { route } from '@/routes';
 import { MovieResType, SeasonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
@@ -15,18 +15,22 @@ type MovieTabSingleProps = {
 export function MovieTabSingle({ movie }: MovieTabSingleProps) {
   const navigate = useNavigate();
 
+  const { watchLink } = useMovieInfo();
+
   const handleSeasonClick = (season: SeasonResType) => {
     navigate.push(
       `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}`
     );
   };
 
+  const seasons = movie.seasons;
+
   return (
     <>
       <MovieTabHeading title='Các bản chiếu' />
-      {movie.seasons && movie.seasons.length > 0 ? (
+      {seasons && seasons.length > 0 && watchLink ? (
         <div className='max-990:grid-cols-2 max-520:grid-cols-1 grid grid-cols-3 gap-4'>
-          {movie.seasons.map((season) => (
+          {seasons.map((season) => (
             <button
               onClick={() => handleSeasonClick(season)}
               key={season.id}

@@ -11,9 +11,10 @@ import { useMovieInfo } from '@/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Calendar, Video } from 'lucide-react';
 import { cn } from '@/lib';
+import Link from 'next/link';
 
 export function MovieActionBar() {
-  const { movie, hasTrailer, watchLink } = useMovieInfo();
+  const { movie, hasTrailer, watchLink, trailerLink } = useMovieInfo();
 
   if (!movie) return null;
 
@@ -38,16 +39,11 @@ export function MovieActionBar() {
           >
             <div className='pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full' />
 
-            {hasTrailer && (
-              <div className='flex items-center justify-center gap-2 px-5 py-2.5 font-bold tracking-wide'>
-                <Video size={20} className='fill-black/80' />
-                <span className='text-sm'>Xem Trailer</span>
-              </div>
-            )}
+            {hasTrailer && <TrailerButton trailerLink={trailerLink} />}
 
             <div
               className={cn(
-                'flex w-full items-center justify-center gap-2 border-t border-black/10 bg-black/8 px-4 py-2 text-xs font-semibold tracking-widest',
+                'flex w-full items-center justify-center gap-2 border-t border-black/10 bg-black/8 px-4 py-2 text-xs font-medium tracking-widest',
                 {
                   'border-none bg-transparent px-5 py-3 text-sm': !hasTrailer,
                   'bg-gray-200': hasTrailer
@@ -92,6 +88,27 @@ export function MovieActionBar() {
           />
         </div>
       </div>
+    </div>
+  );
+}
+
+function TrailerButton({ trailerLink }: { trailerLink: string | null }) {
+  const cls =
+    'flex items-center justify-center gap-2 px-5 py-2.5 font-semibold tracking-wide';
+
+  if (trailerLink) {
+    return (
+      <Link href={trailerLink} className={cls}>
+        <Video size={20} className='fill-black/80' />
+        <span className='text-sm'>Xem Trailer</span>
+      </Link>
+    );
+  }
+
+  return (
+    <div className={cls}>
+      <Video size={20} className='fill-black/80' />
+      <span className='text-sm'>Xem Trailer</span>
     </div>
   );
 }

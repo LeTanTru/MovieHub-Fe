@@ -49,7 +49,8 @@ export const useMovieInfo = () => {
       isSeries: false,
       releaseYear: undefined,
       hasTrailer: false,
-      watchLink: null
+      watchLink: null,
+      trailerLink: null
     };
   }
 
@@ -121,8 +122,12 @@ export const useMovieInfo = () => {
     movie.seasons?.some((season) => season.trailer && season.trailer.video) ||
     false;
 
-  const getWatchLink = () => {
-    if (!movie.seasons?.length) return null;
+  const watchLink = (() => {
+    const hasVideo = movie.seasons?.some(
+      (season) => season.video || season.episodes?.some((ep) => ep.video)
+    );
+
+    if (!movie.seasons?.length || !hasVideo) return null;
 
     const activeSeason = movie.seasons.find(
       (season) => season.label === selectedSeason
@@ -140,9 +145,15 @@ export const useMovieInfo = () => {
     return isSeries
       ? `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}&episode=${latestEp?.label}`
       : `${route.watch.path}/${movie.slug}.${movie.id}?season=${targetSeason.label}`;
-  };
+  })();
 
-  const watchLink = getWatchLink();
+  const trailerLink = (() => {
+    const trailerSeason = movie.seasons?.find(
+      (season) => season.trailer && season.trailer.video
+    );
+    if (!trailerSeason) return null;
+    return `${route.watch.path}/${movie.slug}.${movie.id}?season=${trailerSeason.label}`;
+  })();
 
   return {
     movie,
@@ -168,6 +179,7 @@ export const useMovieInfo = () => {
     isSeries,
     releaseYear,
     hasTrailer,
-    watchLink
+    watchLink,
+    trailerLink
   };
 };
