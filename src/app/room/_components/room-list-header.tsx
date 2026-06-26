@@ -12,7 +12,7 @@ type RoomheaderProps = {
   setRoomState: (state: number) => void;
 };
 
-export function RoomHeader({
+export function RoomListHeader({
   activeTab,
   roomState,
   totalRoom,

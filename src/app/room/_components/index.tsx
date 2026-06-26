@@ -1,2 +1,2 @@
-export { Background } from './background';
-export { Room } from './room';
+export { RoomHero } from './room-hero';
+export { RoomList } from './room-list';

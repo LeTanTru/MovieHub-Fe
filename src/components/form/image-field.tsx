@@ -26,7 +26,6 @@ import { createPortal } from 'react-dom';
 const ZOOM_STEP = 0.1;
 const SCALE_MIN = 1;
 const SCALE_MAX = 3;
-const SCROLLBAR_COMPENSATION_PX = 15;
 
 type ImageFieldProps = {
   src?: string;
@@ -147,31 +146,22 @@ export function ImageField({
     return () => node.removeEventListener('wheel', handleWheel);
   }, [handleWheel, open]);
 
-  // Lock body scroll without layout shift when modal opens
+  // Lock body scroll without layout shift when preview opens
   useIsomorphicLayoutEffect(() => {
     if (!open) return;
 
-    const hasVerticalScroll =
-      document.documentElement.scrollHeight > window.innerHeight;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
 
-    document.body.style.overflow = 'hidden';
-    if (hasVerticalScroll) {
-      document.body.style.marginRight = `${SCROLLBAR_COMPENSATION_PX}px`;
-      const header = document.querySelector('.header');
-      if (header && getComputedStyle(header).position === 'fixed') {
-        header.setAttribute(
-          'style',
-          `padding-right: ${SCROLLBAR_COMPENSATION_PX}px`
-        );
-      }
-    }
+    document.documentElement.style.setProperty(
+      '--scrollbar-width',
+      `${scrollbarWidth}px`
+    );
+    document.documentElement.classList.add('modal-open');
 
     return () => {
-      document.body.style.cssText = '';
-      const header = document.querySelector('.header');
-      if (header && getComputedStyle(header).position === 'fixed') {
-        (header as HTMLElement).style.paddingRight = '';
-      }
+      document.documentElement.classList.remove('modal-open');
+      document.documentElement.style.removeProperty('--scrollbar-width');
     };
   }, [open]);
 

@@ -2,6 +2,20 @@
 @import 'tw-animate-css';
 @import '../styles/grid.css';
 
+/* Scroll lock: applied to <html> when a modal is open */
+html.modal-open {
+  overflow: hidden;
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+html.modal-open .header {
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+html.modal-open [data-modal-portal] {
+  padding-right: var(--scrollbar-width, 0px);
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -81,6 +95,7 @@
   --color-deep-blue: #0b0f19;
   --color-slate-gray: #8892b0;
   --color-mine-shaft: #333333;
+  --color-transparent-white-1: #fff1;
   --color-transparent-black-1: #0001;
   --color-transparent-black-2: #0002;
   --color-transparent-black-9: #0009;
