@@ -27,7 +27,7 @@ export function MovieProgress({
         {isComplete ? (
           <FaCheckCircle className='fill-malachite stroke-malachite/30 size-4' />
         ) : (
-          <CircleLoading className='stroke-vivid-orange max-1536:size-4 animate-spin' />
+          <CircleLoading className='stroke-vivid-orange size-4 animate-spin' />
         )}
         <span>
           {isComplete ? 'Đã hoàn thành' : 'Đã chiếu'}: {currentTotalEpisode}

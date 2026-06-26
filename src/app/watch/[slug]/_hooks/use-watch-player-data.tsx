@@ -54,15 +54,25 @@ export const useWatchPlayerData = (movie: MovieResType | null) => {
   const isLastEpisode = currentEpisodeIndex === episodes.length - 1;
 
   const getVideo = () => {
-    if (isSeries) return selectedEpisode?.video;
-    if (isSingle) return season?.video;
-    return season?.video || selectedEpisode?.video || null;
+    if (isSeries)
+      return selectedEpisode?.video || season?.trailer?.video || null;
+    if (isSingle) return season?.video || season?.trailer?.video || null;
+    return (
+      season?.video || selectedEpisode?.video || season?.trailer?.video || null
+    );
   };
 
   const video = getVideo();
 
+  const isPlayingTrailer = !!(
+    video?.id &&
+    season?.trailer?.video?.id &&
+    video.id === season.trailer.video.id
+  );
+
   const getVideoTitle = () => {
     if (!movie) return '';
+    if (isPlayingTrailer) return `Trailer - ${movie.title}`;
     if (isSeries && season && selectedEpisode) {
       return `${season.title} - Phần ${season.label} - Tập ${selectedEpisode.label}. ${selectedEpisode.title}`;
     }
@@ -75,6 +85,7 @@ export const useWatchPlayerData = (movie: MovieResType | null) => {
 
   return {
     isSeries,
+    isPlayingTrailer,
     season,
     selectedEpisode,
     episodes,
