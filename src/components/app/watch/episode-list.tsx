@@ -13,14 +13,14 @@ import { EpisodeItem } from './episode-item';
 
 type EpisodeListProps = {
   isOpen?: boolean;
-  onToggle?: () => void;
   seasons: SeasonResType[];
+  onToggle?: () => void;
 };
 
 export function EpisodeList({
   isOpen = false,
-  onToggle,
-  seasons
+  seasons,
+  onToggle
 }: EpisodeListProps) {
   const pathname = usePathname();
   const { searchParams } = useQueryParams<{

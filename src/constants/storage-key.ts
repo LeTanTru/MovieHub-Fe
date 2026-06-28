@@ -8,6 +8,8 @@ export const storageKeys = {
   PREVIOUS_PATH: 'previous_path',
   REFRESH_TOKEN: 'refresh_token',
   RESEND_OTP_TIME: 'resend_otp_time',
+  ROOM_CURRENT_SEASON_ID: 'room_current_season_id',
+  ROOM_MOVIE_ITEM_ID: 'room_movie_item_id',
   USER_KIND: 'user_kind',
   WATCH_AUTO_NEXT_EPISODE: 'watch_auto_next_episode',
   WATCH_RESOLUTION: 'watch_resolution',

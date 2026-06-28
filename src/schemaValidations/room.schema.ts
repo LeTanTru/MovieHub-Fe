@@ -9,11 +9,21 @@ export const roomSearchSchema = z.object({
   state: z.number().optional().nullable()
 });
 
-export const roomSchema = z.object({
-  accountIds: z.array(z.string()).nonempty('Bắt buộc'),
-  isStartNow: z.boolean('Bắt buộc').default(false),
-  kind: z.number('Bắt buộc'),
-  movieItemId: z.string().nonempty('Bắt buộc'),
-  name: z.string().nonempty('Bắt buộc'),
-  startTime: z.string().nonempty('Bắt buộc')
-});
+export const roomSchema = z
+  .object({
+    accountIds: z.array(z.string()).optional().nullable(),
+    isStartNow: z.boolean('Bắt buộc').default(false),
+    kind: z.number('Bắt buộc'),
+    movieItemId: z.string().nonempty('Bắt buộc'),
+    name: z.string().nonempty('Bắt buộc'),
+    startTime: z.string().optional().nullable()
+  })
+  .superRefine((data, ctx) => {
+    if (!data.isStartNow && !data.startTime) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Bắt buộc',
+        path: ['startTime']
+      });
+    }
+  });

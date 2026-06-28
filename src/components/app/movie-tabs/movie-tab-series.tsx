@@ -78,11 +78,13 @@ export function MovieTabSeries({ movie }: MovieTabSeriesProps) {
     if (latestSeason) {
       setSelectedSeason(latestSeason);
     } else if (seasons.length > 0) {
-      setSelectedSeason(seasons[0].label);
+      setSelectedSeason(seasons[seasons.length - 1].label);
     }
-  }, [latestSeason, setSelectedSeason, seasons]);
 
-  const label = selectedSeason || currentSeason?.label;
+    return () => {
+      setSelectedSeason('1');
+    };
+  }, [latestSeason, setSelectedSeason, seasons]);
 
   const handleEpisodeClick = (episode: EpisodeResType) => {
     navigate.push(
@@ -103,7 +105,7 @@ export function MovieTabSeries({ movie }: MovieTabSeriesProps) {
               onClick={handleDropdownToggle}
             >
               <FaBarsStaggered className='text-golden-glow' />
-              Phần {label}
+              Phần {selectedSeason}
               <FaCaretDown />
             </button>
           ) : (

@@ -16,13 +16,13 @@ import {
 import {
   TagAgeRating,
   TagCategory,
+  TagImdb,
   TagNormal,
   TagWrapper
 } from '@/components/app/tag';
 import { route } from '@/routes';
 import { cn } from '@/lib';
 import { ButtonWatchNow } from '@/components/app/button-watch-now';
-import { Activity } from '@/components/activity';
 import { ButtonLike } from '@/components/app/button-like';
 
 type MovieModalProps = {
@@ -42,6 +42,10 @@ export function MovieModal({ movie, pos }: MovieModalProps) {
   const releaseYear = getYearFromDate(
     latestSeason?.releaseDate || movie.releaseDate
   );
+
+  const ageRating = ageRatings.find(
+    (age) => age.value === movie.ageRating
+  )?.label;
 
   return (
     <AnimatePresence>
@@ -108,51 +112,55 @@ export function MovieModal({ movie, pos }: MovieModalProps) {
                 </Link>
               </div>
               <TagWrapper className='gap-1.25'>
-                <TagAgeRating
-                  className='flex shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-5.5 font-medium text-black'
-                  value={
-                    ageRatings.find((age) => age.value === movie.ageRating)
-                      ?.label || 'N/A'
-                  }
-                />
+                {movie.imdbRating && <TagImdb value={movie.imdbRating} />}
+                {ageRating && (
+                  <TagAgeRating
+                    className='flex shrink-0 items-center overflow-hidden rounded bg-white px-2 text-xs leading-5.5 font-medium text-black'
+                    value={ageRating}
+                  />
+                )}
                 <TagNormal
                   className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
                   value={releaseYear}
                 />
-                <Activity visible={movie.type === MOVIE_TYPE_SINGLE}>
-                  <Activity visible={!!latestSeason}>
-                    <TagNormal
-                      className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                      value={`Phần ${latestSeason?.label}`}
-                    />
-                  </Activity>
-                  <Activity visible={!!duration}>
-                    <TagNormal
-                      className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                      value={formatDuration(duration)}
-                    />
-                  </Activity>
-                </Activity>
-                <Activity visible={movie.type === MOVIE_TYPE_SERIES}>
-                  <Activity visible={!!latestSeason}>
-                    <TagNormal
-                      className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                      value={`Phần ${latestSeason?.label}`}
-                    />
-                  </Activity>
-                  <Activity visible={!!latestEpisode}>
-                    <TagNormal
-                      className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                      value={`Tập ${latestEpisode?.label}`}
-                    />
-                  </Activity>
-                  <Activity visible={!!duration}>
-                    <TagNormal
-                      className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
-                      value={formatDuration(duration)}
-                    />
-                  </Activity>
-                </Activity>
+                {movie.type === MOVIE_TYPE_SINGLE && (
+                  <>
+                    {!!latestSeason && (
+                      <TagNormal
+                        className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                        value={`Phần ${latestSeason?.label}`}
+                      />
+                    )}
+                    {!!duration && (
+                      <TagNormal
+                        className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                        value={formatDuration(duration)}
+                      />
+                    )}
+                  </>
+                )}
+                {movie.type === MOVIE_TYPE_SERIES && (
+                  <>
+                    {!!latestSeason && (
+                      <TagNormal
+                        className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                        value={`Phần ${latestSeason?.label}`}
+                      />
+                    )}
+                    {!!latestEpisode && (
+                      <TagNormal
+                        className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                        value={`Tập ${latestEpisode?.label}`}
+                      />
+                    )}
+                    {!!duration && (
+                      <TagNormal
+                        className='bg-transparent-white inline-flex h-5.5 items-center rounded border-none px-1.5 text-xs text-white'
+                        value={formatDuration(duration)}
+                      />
+                    )}
+                  </>
+                )}
               </TagWrapper>
               <TagWrapper className='mt-2 gap-1.25'>
                 {movie.categories.map((item, index) => (

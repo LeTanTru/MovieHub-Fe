@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const movieItemSearchSchema = z.object({
-  id: z.number().optional(),
-  kind: z.number().optional(),
-  movieId: z.string().optional(),
-  parentId: z.number().optional(),
-  title: z.string().optional()
+  id: z.string().optional().nullable(),
+  kind: z.number().optional().nullable(),
+  movieId: z.string().optional().nullable(),
+  parentId: z.string().optional().nullable(),
+  title: z.string().optional().nullable()
 });

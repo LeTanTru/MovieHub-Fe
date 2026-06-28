@@ -14,16 +14,15 @@ type MovieTabSingleProps = {
 
 export function MovieTabSingle({ movie }: MovieTabSingleProps) {
   const navigate = useNavigate();
-
   const { watchLink } = useMovieInfo();
+
+  const seasons = movie.seasons;
 
   const handleSeasonClick = (season: SeasonResType) => {
     navigate.push(
       `${route.watch.path}/${movie.slug}.${movie.id}?season=${season.label}`
     );
   };
-
-  const seasons = movie.seasons;
 
   return (
     <>

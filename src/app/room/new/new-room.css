@@ -1,0 +1,9 @@
+.new-room-mask {
+  mask-image: linear-gradient(0deg, transparent, transparent 10%, black 70%);
+  -webkit-mask-image: linear-gradient(
+    0deg,
+    transparent,
+    transparent 10%,
+    black 70%
+  );
+}

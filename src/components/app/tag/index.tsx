@@ -1,6 +1,6 @@
 export {
   TagWrapper,
-  TagIMDb,
+  TagImdb,
   TagAgeRating,
   TagNormal,
   TagCategory,

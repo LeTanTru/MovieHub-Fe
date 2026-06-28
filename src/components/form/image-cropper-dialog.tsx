@@ -211,7 +211,7 @@ export function ImageCropperDialog({
             >
               <CropperDescription />
               <CropperImage />
-              <CropperCropArea className='border-main-color border-2' />
+              <CropperCropArea className='border-light-gray border-2' />
             </Cropper>
           ) : (
             previewUrl && (

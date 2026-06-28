@@ -9,7 +9,6 @@ import {
   Row
 } from '@/components/form';
 import { ForgotPasswordBodyType } from '@/types';
-import { Activity } from '@/components/activity';
 import { Separator } from '@/components/ui/separator';
 
 const MAX_RESEND = 3; // RESEND LIMIT EACH 10 MINUTES
@@ -40,7 +39,7 @@ export function StepTwoFormSection({
   formatCountdown
 }: StepTwoFormSectionProps) {
   return (
-    <Activity visible>
+    <>
       <Row className='mb-6'>
         <Col className='grid-c-12'>
           <OtpInputField
@@ -142,6 +141,6 @@ export function StepTwoFormSection({
           </Button>
         </Col>
       </Row>
-    </Activity>
+    </>
   );
 }

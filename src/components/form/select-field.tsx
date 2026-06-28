@@ -190,9 +190,9 @@ export function SelectField<
                       aria-label='Select'
                       disabled={disabled}
                       className={cn(
-                        'hover:border-input focus-visible:border-input focus-visible:ring-main-color bg-input w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
+                        'hover:border-input focus-visible:border-input focus-visible:ring-light-gray bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                         {
-                          'ring-main-color border-transparent! ring-2': open,
+                          'ring-light-gray border-transparent! ring-2': open,
                           'border-rose-500 ring-rose-500': !!fieldState.error
                         },
                         className
@@ -299,10 +299,10 @@ export function SelectField<
                               onMouseEnter={() => setHighlightedIndex(idx)}
                               onSelect={() => handleSelect(val)}
                               className={cn(
-                                'dark:hover:bg-main-color/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
+                                'dark:hover:bg-input/30 block cursor-pointer truncate rounded transition-all duration-200 ease-linear',
                                 {
-                                  'dark:bg-main-color/10': isSelected,
-                                  'dark:bg-main-color/30 dark:text-accent-foreground':
+                                  'dark:bg-light-gray/10': isSelected,
+                                  'dark:bg-light-gray/30 dark:text-accent-foreground':
                                     highlightedIndex === idx
                                 }
                               )}

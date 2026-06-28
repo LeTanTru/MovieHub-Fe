@@ -79,8 +79,10 @@ export type MovieResType = {
   createdDate: string;
   description: string;
   id: string;
-  isFeatured: boolean;
   imageTitleUrl: string;
+  imdbId: string;
+  imdbRating: number;
+  isFeatured: boolean;
   language: string;
   metadata: string;
   modifiedDate: string;
@@ -88,7 +90,7 @@ export type MovieResType = {
   posterUrl: string;
   releaseDate: string;
   reviewCount: number;
-  seasons?: SeasonResType[] | null;
+  seasons: SeasonResType[] | null;
   slug: string;
   status: number;
   thumbnailUrl: string;

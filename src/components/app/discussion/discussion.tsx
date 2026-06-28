@@ -200,8 +200,6 @@ export function Discussion({
             </div>
           )}
           <CommentInput movie={movie} selectedSeason={selectedSeason} />
-        </Activity>
-        <Activity visible={isCommentTab}>
           <div
             className={cn('my-2 flex items-center gap-2', {
               'my-4': isAuthenticated

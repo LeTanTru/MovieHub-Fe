@@ -231,7 +231,7 @@ export function UploadImageField<T extends FieldValues>({
                 )}
               </div>
             ) : loading ? (
-              <CircleLoading className='stroke-main-color' />
+              <CircleLoading className='stroke-light-gray' />
             ) : avatar ? (
               <CircleUserRoundIcon
                 strokeWidth={1}

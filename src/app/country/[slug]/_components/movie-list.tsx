@@ -1,6 +1,5 @@
 'use client';
 
-import { Activity } from '@/components/activity';
 import { countries, DEFAULT_PAGE_SIZE } from '@/constants';
 import { ListHeading } from '@/components/app/heading';
 import { MovieGrid } from '@/components/app/movie-grid';
@@ -63,9 +62,7 @@ export function MovieList({ countryCode }: MovieListProps) {
           movieList={movieList}
         />
       )}
-      <Activity visible={!!totalPages}>
-        <Pagination totalPages={totalPages} />
-      </Activity>
+      {!!totalPages && <Pagination totalPages={totalPages} />}
     </div>
   );
 }

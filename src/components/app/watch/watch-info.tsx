@@ -1,14 +1,15 @@
 'use client';
 
-import { Activity } from '@/components/activity';
 import { MovieProgress } from '@/components/app/movie-progress';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   TagAgeRating,
   TagCategoryLink,
+  TagImdb,
   TagNormal,
   TagWrapper
 } from '@/components/app/tag';
-import { DEFAULT_DATE_FORMAT } from '@/constants';
+import { DATE_FORMAT } from '@/constants';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useMovieInfo } from '@/hooks';
@@ -21,7 +22,6 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa6';
-import { Skeleton } from '@/components/ui/skeleton';
 
 export function WatchInfo() {
   const {
@@ -76,19 +76,25 @@ export function WatchInfo() {
         </h2>
         <p className='text-golden-glow mb-3'>{movie.originalTitle}</p>
         <TagWrapper className='mb-3'>
-          {ageRating ? <TagAgeRating value={ageRating} /> : null}
+          {movie.imdbRating && <TagImdb value={movie.imdbRating} />}
+          {ageRating && <TagAgeRating value={ageRating} />}
           <TagNormal value={releaseYear} />
           {/* Single movie */}
-          <Activity visible={isSingle && !!duration}>
+          {isSingle && !!duration && (
             <TagNormal value={formatDuration(duration)} />
-          </Activity>
+          )}
           {/* Series movie */}
-          <Activity visible={isSeries}>
-            <TagNormal value={`Phần ${latestSeason}`} />
-            <Activity visible={!!latestEpisode}>
-              <TagNormal value={`Tập ${latestEpisode}`} />
-            </Activity>
-          </Activity>
+          {isSeries && (
+            <>
+              <TagNormal value={`Phần ${latestSeason}`} />
+              {!!latestEpisode && <TagNormal value={`Tập ${latestEpisode}`} />}
+            </>
+          )}
+          {isSeries && isComplete && (
+            <TagNormal
+              value={`Hoàn tất ${episodes.length} / ${currentSeason?.totalEpisode || '?'} tập`}
+            />
+          )}
         </TagWrapper>
         <TagWrapper className='mb-3'>
           {categories.map((category) => (
@@ -112,7 +118,7 @@ export function WatchInfo() {
               Ngày phát hành:
             </div>
             <div className='text-foreground/80'>
-              {formatDate(releaseDate, DEFAULT_DATE_FORMAT)}
+              {formatDate(releaseDate, DATE_FORMAT)}
             </div>
           </div>
           <div className='mb-3 flex items-end gap-2'>
@@ -160,7 +166,7 @@ export function WatchInfo() {
       </div>
       <div className='grow pl-10'>
         <div
-          className='max-640:mb-2 mb-4 line-clamp-4 leading-normal'
+          className='max-640:mb-2 mb-4 line-clamp-4 text-justify leading-normal'
           dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
         />
         <Link

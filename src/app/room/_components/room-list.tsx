@@ -9,6 +9,7 @@ import { RoomResType, RoomSearchType } from '@/types';
 import { roomApiRequest } from '@/api-requests';
 import { VerticalBarLoading } from '@/components/loading';
 import { Button } from '@/components/form';
+import { useJoinRoomMutation } from '@/queries';
 
 const ROOM_SKELETON_COUNT = 20;
 
@@ -32,9 +33,12 @@ export function RoomList() {
     queryKey: queryKeys.ROOM_LIST
   });
 
+  const { mutate: joinRoom } = useJoinRoomMutation();
+
   return (
     <div className='relative mx-auto w-full max-w-475 px-12.5'>
       <RoomListHeader
+        loading={isLoading}
         activeTab={activeTab}
         roomState={roomState}
         setActiveTab={setActiveTab}
@@ -46,7 +50,9 @@ export function RoomList() {
           ? Array.from({ length: ROOM_SKELETON_COUNT }).map((_, index) => (
               <RoomCard.Skeleton key={index} />
             ))
-          : roomList.map((room) => <RoomCard key={room.id} room={room} />)}
+          : roomList.map((room) => (
+              <RoomCard key={room.id} room={room} onJoin={joinRoom} />
+            ))}
       </div>
       {hasMore && (
         <div className='flex justify-center pt-10'>
