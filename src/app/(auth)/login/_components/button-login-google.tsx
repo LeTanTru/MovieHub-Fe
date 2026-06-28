@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { googleIcon } from '@/assets';
 import { Button } from '@/components/form';
 import { envConfig } from '@/config';
@@ -112,6 +112,14 @@ export function ButtonLoginGoogle() {
       logger.error('[LOGIN_GOOGLE_ERROR]', error);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (messageListenerRef.current) {
+        window.removeEventListener('message', messageListenerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Button
