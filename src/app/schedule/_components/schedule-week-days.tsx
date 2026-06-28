@@ -1,6 +1,6 @@
 'use client';
 
-import { DATE_SHORT, DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT } from '@/constants';
+import { DATE_SHORT, DATE_TIME_FORMAT, DATE_FORMAT } from '@/constants';
 import { cn } from '@/lib';
 import { formatDate } from '@/utils';
 import { eachDayOfInterval, endOfWeek, startOfWeek } from 'date-fns';
@@ -36,7 +36,7 @@ export function ScheduleWeekDays({
         const formattedDateForState = formatDate(
           currentDate.toLocaleDateString('vi-VN'),
           DATE_TIME_FORMAT,
-          DEFAULT_DATE_FORMAT
+          DATE_FORMAT
         );
 
         const isSelected = date === formattedDateForState;

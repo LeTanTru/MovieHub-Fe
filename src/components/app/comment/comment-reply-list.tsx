@@ -1,4 +1,3 @@
-import { Activity } from '@/components/activity';
 import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
 import { CommentResType } from '@/types';
@@ -60,8 +59,8 @@ export function CommentReplyList({
         )}
       </AnimatePresence>
 
-      <Activity visible={comment.totalChildren > 0}>
-        {!isActiveParent ? (
+      {comment.totalChildren > 0 &&
+        (!isActiveParent ? (
           <button
             className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs mt-4 flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
             onClick={onViewReplies}
@@ -96,8 +95,7 @@ export function CommentReplyList({
               <FaChevronUp /> Ẩn trả lời
             </Button>
           </div>
-        )}
-      </Activity>
+        ))}
     </>
   );
 }

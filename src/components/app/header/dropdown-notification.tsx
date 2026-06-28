@@ -178,7 +178,7 @@ export function DropdownNotification() {
                         className='hover:text-golden-glow flex h-fit cursor-pointer items-center gap-1 p-0! transition-all duration-200 ease-linear hover:bg-transparent disabled:cursor-not-allowed disabled:opacity-50'
                       >
                         {readAllNotificationLoading ? (
-                          <CircleLoading className='stroke-main-color size-4' />
+                          <CircleLoading className='stroke-light-gray size-4' />
                         ) : (
                           <CheckCheck className='size-4' />
                         )}
@@ -197,7 +197,7 @@ export function DropdownNotification() {
                             className='flex h-fit cursor-pointer items-center gap-1 p-0! transition-all duration-200 ease-linear hover:bg-transparent hover:text-rose-500 disabled:cursor-not-allowed disabled:opacity-50'
                           >
                             {deleteAllNotificationLoading ? (
-                              <CircleLoading className='stroke-main-color size-4' />
+                              <CircleLoading className='stroke-light-gray size-4' />
                             ) : (
                               <Trash className='size-4' />
                             )}

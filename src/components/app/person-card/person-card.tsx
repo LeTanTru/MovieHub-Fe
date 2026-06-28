@@ -8,7 +8,6 @@ import { renderImageUrl } from '@/utils';
 import { User, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Activity } from '@/components/activity';
 import { m, Transition, Variants } from 'framer-motion';
 import { useQueryParams } from '@/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -126,11 +125,11 @@ export function PersonCard({
           >
             {person.otherName}
           </h4>
-          <Activity visible={!!showFullName}>
+          {!!showFullName && (
             <span title={person.name} className='text-pinkest text-xs'>
               {person.name}
             </span>
-          </Activity>
+          )}
         </div>
       </div>
       {onDelete && (

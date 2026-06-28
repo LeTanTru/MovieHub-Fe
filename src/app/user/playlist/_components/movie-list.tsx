@@ -1,6 +1,5 @@
 'use client';
 
-import { Activity } from '@/components/activity';
 import { MovieCard } from '@/components/app/movie-card';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
@@ -114,13 +113,13 @@ export function MovieList() {
           </div>
         )}
       </div>
-      <Activity visible={!!totalPages}>
+      {!!totalPages && (
         <Pagination
           totalPages={totalPages}
           onChange={handlePageChange}
           page={page}
         />
-      </Activity>
+      )}
     </>
   );
 }

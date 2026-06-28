@@ -162,7 +162,7 @@ export function NotificationList() {
                   className='h-7 min-w-20 cursor-pointer rounded-full bg-rose-500/80 px-4 py-2 text-center transition-all duration-200 ease-linear hover:bg-rose-500'
                 >
                   {deleteAllNotificationLoading ? (
-                    <CircleLoading className='stroke-main-color size-4' />
+                    <CircleLoading className='stroke-light-gray size-4' />
                   ) : (
                     <Trash className='size-4' />
                   )}

@@ -3,7 +3,6 @@
 import type { UseFormReturn } from 'react-hook-form';
 import { Button, Col, InputField, Row } from '@/components/form';
 import { ForgotPasswordBodyType } from '@/types';
-import { Activity } from '@/components/activity';
 
 type StepOneFormSectionProps = {
   form: UseFormReturn<ForgotPasswordBodyType>;
@@ -17,7 +16,7 @@ export function StepOneFormSection({
   isFormChanged
 }: StepOneFormSectionProps) {
   return (
-    <Activity visible>
+    <>
       <Row>
         <Col className='grid-c-12'>
           <InputField
@@ -42,6 +41,6 @@ export function StepOneFormSection({
           </Button>
         </Col>
       </Row>
-    </Activity>
+    </>
   );
 }

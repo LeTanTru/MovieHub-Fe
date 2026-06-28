@@ -48,6 +48,12 @@ export const apiConfig = defineApiConfig({
     }
   },
   user: {
+    autoComplete: {
+      baseUrl: `${AppConstants.authApiUrl}/v1/user/auto-complete`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
     activeVip: {
       baseUrl: `${AppConstants.authApiUrl}/v1/user/active-vip`,
       method: 'POST',
@@ -271,6 +277,22 @@ export const apiConfig = defineApiConfig({
     },
     getTopViewList: {
       baseUrl: `${AppConstants.apiUrl}/v1/movie/top-views`,
+      method: 'GET',
+      headers: baseHeader,
+      ignoreAuth: true,
+      isRequiredXClientType: true
+    }
+  },
+  movieItem: {
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie-item/list`,
+      method: 'GET',
+      headers: baseHeader,
+      ignoreAuth: true,
+      isRequiredXClientType: true
+    },
+    getById: {
+      baseUrl: `${AppConstants.apiUrl}/v1/movie-item/get/:id`,
       method: 'GET',
       headers: baseHeader,
       ignoreAuth: true,

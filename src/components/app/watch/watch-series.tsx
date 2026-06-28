@@ -5,7 +5,7 @@ import { ButtonToggle } from '@/components/app/button-toggle';
 import { cn } from '@/lib';
 import { EpisodeCard } from '@/components/app/episode';
 import { FaBarsStaggered, FaCaretDown } from 'react-icons/fa6';
-import { MetadataType } from '@/types';
+import { EpisodeResType, MetadataType } from '@/types';
 import { MovieTabHeading } from '@/components/app/heading';
 import { notify, parseJSON } from '@/utils';
 import { route } from '@/routes';
@@ -81,15 +81,17 @@ export function WatchSeries() {
     } else if (latestSeason) {
       setSelectedSeason(latestSeason);
     } else if (seasons.length > 0) {
-      setSelectedSeason(seasons[0].label);
+      setSelectedSeason(seasons[seasons.length - 1].label);
     }
-  }, [latestSeason, searchParams.season, setSelectedSeason, seasons]);
 
-  const label = selectedSeason || currentSeason?.label;
+    return () => {
+      setSelectedSeason('1');
+    };
+  }, [latestSeason, searchParams.season, setSelectedSeason, seasons]);
 
   if (!movie) return null;
 
-  const handleEpisodeClick = (episode: (typeof episodes)[0]) => {
+  const handleEpisodeClick = (episode: EpisodeResType) => {
     if (
       episode.label === searchParams.episode &&
       currentSeason?.label === searchParams.season
@@ -115,7 +117,7 @@ export function WatchSeries() {
                 onClick={handleDropdownToggle}
               >
                 <FaBarsStaggered className='text-golden-glow' />
-                Phần {label}
+                Phần {selectedSeason}
                 <FaCaretDown />
               </button>{' '}
               <AnimatePresence>

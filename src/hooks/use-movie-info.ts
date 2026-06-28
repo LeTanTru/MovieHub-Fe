@@ -54,6 +54,9 @@ export const useMovieInfo = () => {
     };
   }
 
+  const isSingle = movie.type === MOVIE_TYPE_SINGLE;
+  const isSeries = movie.type === MOVIE_TYPE_SERIES;
+
   const ageRating = ageRatings.find(
     (age) => movie.ageRating === age.value
   )?.label;
@@ -84,7 +87,9 @@ export const useMovieInfo = () => {
 
   const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
 
-  const latestSeason = selectedSeason || metadata?.latestSeason?.label;
+  const latestSeason = isSingle
+    ? metadata?.latestSeason?.label
+    : selectedSeason || metadata?.latestSeason?.label;
 
   const currentSeason = movie.seasons?.find(
     (season) => season.label === latestSeason?.toString()
@@ -108,9 +113,6 @@ export const useMovieInfo = () => {
 
   const isComplete =
     episodes.length > 0 && currentSeason?.totalEpisode === episodes.length;
-
-  const isSingle = movie.type === MOVIE_TYPE_SINGLE;
-  const isSeries = movie.type === MOVIE_TYPE_SERIES;
 
   const releaseYear = getYearFromDate(
     currentSeason?.releaseDate ||

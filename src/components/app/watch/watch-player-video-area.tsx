@@ -7,7 +7,6 @@ import {
   isMobileDevice,
   isTabletDevice
 } from '@/utils';
-import { Activity } from '@/components/activity';
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { envConfig } from '@/config';
@@ -171,13 +170,13 @@ export function WatchPlayerVideoArea() {
           />
         </>
       )}
-      <Activity visible={isSeries}>
+      {isSeries && (
         <EpisodeList
           seasons={movie?.seasons || []}
           isOpen={isEpisodeListOpen}
           onToggle={closeEpisodeList}
         />
-      </Activity>
+      )}
     </div>
   );
 }

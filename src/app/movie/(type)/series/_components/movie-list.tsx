@@ -1,6 +1,5 @@
 'use client';
 
-import { Activity } from '@/components/activity';
 import { ListHeading } from '@/components/app/heading';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
@@ -50,9 +49,7 @@ export function MovieList() {
           movieList={movieList}
         />
       )}
-      <Activity visible={!!totalPages}>
-        <Pagination totalPages={totalPages} />
-      </Activity>
+      {!!totalPages && <Pagination totalPages={totalPages} />}
     </div>
   );
 }

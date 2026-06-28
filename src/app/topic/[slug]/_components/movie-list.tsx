@@ -1,7 +1,6 @@
 'use client';
 
 import './topic-detail.css';
-import { Activity } from '@/components/activity';
 import { DEFAULT_PAGE_SIZE } from '@/constants';
 import { getColorList } from '@/utils';
 import { MovieGrid } from '@/components/app/movie-grid';
@@ -87,9 +86,7 @@ export function MovieList({ collectionId }: MovieListProps) {
           movieList={[...movieList] as unknown as MovieResType[]}
         />
       )}
-      <Activity visible={!!totalPages}>
-        <Pagination totalPages={totalPages} />
-      </Activity>
+      {!!totalPages && <Pagination totalPages={totalPages} />}
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import { Activity } from '@/components/activity';
 import { Badge } from '@/components/ui/badge';
 import {
   DATE_TIME_FORMAT,
@@ -84,19 +83,19 @@ export function CommentHeader({
           P. {movieItem.parent.label} - T. {movieItem.label}
         </Badge>
       )}
-      <Activity visible={comment.createdDate !== comment.modifiedDate}>
+      {comment.createdDate !== comment.modifiedDate && (
         <span
           title={convertUTCToLocal(comment.modifiedDate, DATE_TIME_FORMAT)}
           className='max-640:text-[13px] max-520:text-xs whitespace-nowrap text-gray-400'
         >
           (đã cập nhật)
         </span>
-      </Activity>
-      <Activity visible={comment.isPinned}>
+      )}
+      {comment.isPinned && (
         <span title='Đã ghim' className='ml-auto'>
           <Pin className='text-golden-glow fill-golden-glow size-5 rotate-45' />
         </span>
-      </Activity>
+      )}
     </div>
   );
 }

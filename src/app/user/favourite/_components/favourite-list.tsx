@@ -125,13 +125,13 @@ export function FavouriteList() {
         </Activity>
       </div>
 
-      <Activity visible={!!totalPages}>
+      {!!totalPages && (
         <Pagination
           totalPages={totalPages}
           onChange={handlePageChange}
           page={page}
         />
-      </Activity>
+      )}
     </div>
   );
 }

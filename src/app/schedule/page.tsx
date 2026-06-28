@@ -7,7 +7,7 @@ import { envConfig } from '@/config';
 import {
   queryKeys,
   DATE_TIME_FORMAT,
-  DEFAULT_DATE_FORMAT,
+  DATE_FORMAT,
   OG_IMAGE_WIDTH,
   OG_IMAGE_HEIGHT
 } from '@/constants';
@@ -53,7 +53,7 @@ export default async function SchedulePage() {
   const date = formatDate(
     new Date().toLocaleDateString('vi-VN'),
     DATE_TIME_FORMAT,
-    DEFAULT_DATE_FORMAT
+    DATE_FORMAT
   );
 
   await queryClient.prefetchQuery({

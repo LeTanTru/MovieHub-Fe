@@ -113,7 +113,7 @@ export const sanitizeText = (str: string) => {
       colgroup: ['span']
     },
 
-    allowedSchemes: ['http', 'https', 'mailto', 'tel', 'data'],
+    allowedSchemes: ['http', 'https', 'mailto', 'tel'],
 
     allowedSchemesByTag: {
       img: ['http', 'https', 'data'],
@@ -150,7 +150,11 @@ export const sanitizeText = (str: string) => {
         'text-decoration': [/^none$/, /^underline$/, /^line-through$/],
         'font-size': [/^\d+(?:px|em|rem|%|pt)$/],
         'font-weight': [/^\d+$/, /^bold$/, /^normal$/, /^lighter$/, /^bolder$/],
-        'font-family': [/.*/],
+
+        'font-family': [
+          /^(?:"[^"<>]*"|'[^'<>]*'|[\w\s-]+)(?:,\s*(?:"[^"<>]*"|'[^'<>]*'|[\w\s-]+))*$/
+        ],
+
         'font-style': [/^normal$/, /^italic$/, /^oblique$/],
         'line-height': [/^\d+(?:\.\d+)?(?:px|em|rem|%)?$/],
         'letter-spacing': [/^-?\d+(?:px|em|rem)$/],
@@ -173,14 +177,8 @@ export const sanitizeText = (str: string) => {
         'min-width': [/^\d+(?:px|em|rem|%|vw)$/],
         'min-height': [/^\d+(?:px|em|rem|%|vh)$/],
 
-        display: [
-          /^block$/,
-          /^inline$/,
-          /^inline-block$/,
-          /^flex$/,
-          /^grid$/,
-          /^none$/
-        ],
+        display: [/^block$/, /^inline$/, /^inline-block$/, /^flex$/, /^grid$/],
+
         'vertical-align': [/^top$/, /^middle$/, /^bottom$/, /^baseline$/],
 
         border: [
@@ -235,7 +233,7 @@ export const sanitizeText = (str: string) => {
 
     disallowedTagsMode: 'discard',
 
-    allowProtocolRelative: true,
+    allowProtocolRelative: false,
 
     enforceHtmlBoundary: false
   });

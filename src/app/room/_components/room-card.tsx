@@ -18,9 +18,10 @@ import Link from 'next/link';
 
 type RoomCardProps = {
   room: RoomResType;
+  onJoin: (id: string) => void;
 };
 
-export function RoomCard({ room }: RoomCardProps) {
+export function RoomCard({ room, onJoin }: RoomCardProps) {
   const isPending = room.state === ROOM_STATE_PENDING;
   const isLive = room.state === ROOM_STATE_RUNNING;
   const isEnd = room.state === ROOM_STATE_ENDING;
@@ -34,8 +35,15 @@ export function RoomCard({ room }: RoomCardProps) {
     return `P.${room.movieItem.season.label} - T.${room.movieItem.label} - ${room.movieItem.movie.title}`;
   };
 
+  const handleJoinRoom = () => {
+    onJoin(room.id);
+  };
+
   return (
-    <div className='flex flex-col gap-3'>
+    <div
+      className='flex cursor-pointer flex-col gap-3'
+      onClick={handleJoinRoom}
+    >
       <div className='relative block h-0 w-full overflow-hidden rounded-md bg-transparent pb-[56.25%] select-none'>
         <div className='before:absolute before:inset-0 before:z-2 before:bg-[/dotted.webp] before:opacity-30 before:content-[""]'></div>
         {isPending && (
@@ -66,7 +74,7 @@ export function RoomCard({ room }: RoomCardProps) {
         )}
         <Link
           href={`${route.room.path}/${room.id}`}
-          className='absolute inset-0 z-3'
+          className='sr-only absolute inset-0 z-3'
         ></Link>
         <Image
           src={renderImageUrl(room.movieItem.thumbnailUrl)}

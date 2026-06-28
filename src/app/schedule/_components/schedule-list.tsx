@@ -1,6 +1,6 @@
 'use client';
 
-import { DATE_TIME_FORMAT, DEFAULT_DATE_FORMAT } from '@/constants';
+import { DATE_TIME_FORMAT, DATE_FORMAT } from '@/constants';
 import { FaRegCalendarCheck } from 'react-icons/fa6';
 import { formatDate } from '@/utils';
 import { ScheduleMovieList } from './schedule-movie-list';
@@ -13,7 +13,7 @@ export function ScheduleList() {
     formatDate(
       new Date().toLocaleDateString('vi-VN'),
       DATE_TIME_FORMAT,
-      DEFAULT_DATE_FORMAT
+      DATE_FORMAT
     )
   );
 

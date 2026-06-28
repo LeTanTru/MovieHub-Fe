@@ -1,4 +1,6 @@
 import {
+  ROOM_KIND_PRIVATE,
+  ROOM_KIND_PUBLIC,
   ROOM_STATE_ALL,
   ROOM_STATE_ENDING,
   ROOM_STATE_PENDING,
@@ -29,5 +31,16 @@ export const roomStates: OptionType[] = [
   {
     label: 'Đã kết thúc',
     value: ROOM_STATE_ENDING
+  }
+];
+
+export const roomKinds: OptionType[] = [
+  {
+    label: 'Công khai',
+    value: ROOM_KIND_PUBLIC
+  },
+  {
+    label: 'Riêng tư',
+    value: ROOM_KIND_PRIVATE
   }
 ];

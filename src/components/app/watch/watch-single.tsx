@@ -5,6 +5,7 @@ import { MovieTabHeading } from '@/components/app/heading';
 import { useNavigate, useQueryParams, useMovie } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
+import { SeasonResType } from '@/types';
 import { notify, renderImageUrl } from '@/utils';
 import Image from 'next/image';
 
@@ -15,11 +16,12 @@ export function WatchSingle() {
 
   const seasons = movie?.seasons || [];
 
-  const handleSeasonClick = (season: (typeof seasons)[0]) => {
+  const handleSeasonClick = (season: SeasonResType) => {
     if (season.label === searchParams.season) {
       notify.info('Bản này đang được phát');
       return;
     }
+
     navigate.push(
       `${route.watch.path}/${movie?.slug}.${movie?.id}?season=${season.label}`
     );

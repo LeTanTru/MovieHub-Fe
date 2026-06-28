@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import { AvatarField, Button } from '@/components/form';
 import {
-  DEFAULT_DATE_FORMAT,
+  DATE_FORMAT,
   genderOptions,
   movieTabPersonTitles,
   PERSON_KIND_ACTOR
@@ -111,8 +111,7 @@ export function PersonSidebar({ person, loading }: PersonSidebarProps) {
         <div className='mb-2 flex'>
           Ngày sinh:&nbsp;
           <p className='text-foreground/80'>
-            {formatDate(person?.dateOfBirth, DEFAULT_DATE_FORMAT) ??
-              'Đang cập nhật'}
+            {formatDate(person?.dateOfBirth, DATE_FORMAT) ?? 'Đang cập nhật'}
           </p>
         </div>
         <div className='mb-2 flex'>

@@ -3,7 +3,6 @@
 import { Pagination } from '@/components/pagination';
 import { usePersonListQuery } from '@/queries';
 import { DEFAULT_PAGE_SIZE, PERSON_KIND_ACTOR } from '@/constants';
-import { Activity } from '@/components/activity';
 import { useQueryParams } from '@/hooks';
 import { NoData } from '@/components/no-data';
 import { ListHeading } from '@/components/app/heading';
@@ -71,9 +70,7 @@ export function PersonList() {
           ))}
         </div>
       )}
-      <Activity visible={!!totalPages}>
-        <Pagination totalPages={totalPages} />
-      </Activity>
+      {!!totalPages && <Pagination totalPages={totalPages} />}
     </div>
   );
 }

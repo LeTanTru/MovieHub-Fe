@@ -3,10 +3,11 @@
 import {
   TagAgeRating,
   TagCategoryLink,
+  TagImdb,
   TagNormal,
   TagWrapper
 } from '@/components/app/tag';
-import { DEFAULT_DATE_FORMAT } from '@/constants';
+import { DATE_FORMAT } from '@/constants';
 import { route } from '@/routes';
 import {
   formatDate,
@@ -14,7 +15,6 @@ import {
   generateSlug,
   renderImageUrl
 } from '@/utils';
-import { Activity } from '@/components/activity';
 import { cn } from '@/lib';
 import { useMovieInfo } from '@/hooks';
 import { ActorList } from './actor-list';
@@ -80,21 +80,20 @@ export function MovieSide() {
       </div>
       <div className='max-1120:p-6 max-640:p-4 max-1120:rounded-md max-1120:bg-[rgba(0,0,0,.2)] max-1120:text-left'>
         <TagWrapper className='mb-3'>
-          {ageRating ? <TagAgeRating value={ageRating} /> : null}
+          {movie.imdbRating && <TagImdb value={movie.imdbRating} />}
+          {ageRating && <TagAgeRating value={ageRating} />}
           <TagNormal value={releaseYear} />
           {/* Single movie */}
-          <Activity visible={isSingle && !!duration}>
+          {isSingle && !!duration && (
             <TagNormal value={formatDuration(duration)} />
-          </Activity>
+          )}
           {/* Series movie */}
-          <Activity visible={isSeries}>
-            <Activity visible={!!latestSeason}>
-              <TagNormal value={`Phần ${latestSeason}`} />
-            </Activity>
-            <Activity visible={!!latestEpisode}>
-              <TagNormal value={`Tập ${latestEpisode}`} />
-            </Activity>
-          </Activity>
+          {isSeries && (
+            <>
+              {!!latestSeason && <TagNormal value={`Phần ${latestSeason}`} />}
+              {!!latestEpisode && <TagNormal value={`Tập ${latestEpisode}`} />}
+            </>
+          )}
           {isSeries && isComplete && (
             <TagNormal
               value={`Hoàn tất ${episodes.length} / ${currentSeason?.totalEpisode || '?'} tập`}
@@ -129,7 +128,7 @@ export function MovieSide() {
             Ngày phát hành:
           </div>
           <div className='text-foreground/80'>
-            {formatDate(releaseDate, DEFAULT_DATE_FORMAT)}
+            {formatDate(releaseDate, DATE_FORMAT)}
           </div>
         </div>
         <div className='mb-5 flex items-start gap-2'>

@@ -19,11 +19,11 @@ export function TagWrapper({ children, className }: TagWrapperProps) {
   );
 }
 
-type TagIMDbProps = {
+type TagImdbProps = {
   value: string | number;
 };
 
-export function TagIMDb({ value }: TagIMDbProps) {
+export function TagImdb({ value }: TagImdbProps) {
   return (
     <div className='border-golden-glow before:text-golden-glow inline-flex shrink-0 items-center rounded-[0.33rem] border border-solid bg-transparent px-[0.4rem] py-0 text-xs leading-6 text-white before:relative before:pr-1 before:text-[10px] before:font-medium before:content-["IMDb"]'>
       <span>{value}</span>

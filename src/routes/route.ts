@@ -86,6 +86,9 @@ export const route = defineRoute({
     path: '/room',
     manage: {
       path: '/room/manage'
+    },
+    new: {
+      path: '/room/new'
     }
   }
 });
