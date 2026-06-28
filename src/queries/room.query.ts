@@ -68,15 +68,6 @@ export const useJoinRoomMutation = () => {
   });
 };
 
-export const useMyRoomsQuery = ({ enabled }: { enabled?: boolean } = {}) => {
-  return useQuery({
-    queryKey: [queryKeys.ROOM_MY_ROOMS],
-    queryFn: ({ signal }) => roomApiRequest.getMyRooms(signal),
-    enabled,
-    select: (data) => data.data
-  });
-};
-
 export const useStartRoomMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.ROOM_START],

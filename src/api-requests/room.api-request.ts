@@ -42,8 +42,11 @@ export const getList = (params?: RoomSearchType, signal?: AbortSignal) =>
     signal
   });
 
-export const getMyRooms = (signal?: AbortSignal) =>
-  http.get<ApiResponse<RoomResType[]>>(apiConfig.room.myRooms, { signal });
+export const getMyRooms = (params?: RoomSearchType, signal?: AbortSignal) =>
+  http.get<ApiResponseList<RoomResType>>(apiConfig.room.myRooms, {
+    params,
+    signal
+  });
 
 export const start = (id: string) =>
   http.post<ApiResponseNoData>(apiConfig.room.start, { pathParams: { id } });

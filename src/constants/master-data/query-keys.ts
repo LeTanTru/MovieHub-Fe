@@ -128,7 +128,6 @@ export const roomQueryKeys = {
   ROOM_END: 'room-end',
   ROOM_JOIN: 'room-join',
   ROOM_LIST: 'room-list',
-  ROOM_MY_ROOMS: 'room-my-rooms',
   ROOM_START: 'room-start',
   ROOM: 'room'
 };

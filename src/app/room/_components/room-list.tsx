@@ -1,18 +1,18 @@
 'use client';
 
-import { RoomCard } from '@/app/room/_components/room-card';
-import { RoomListHeader } from './room-list-header';
-import { queryKeys, ROOM_STATE_ALL, ROOM_TAB_LATEST } from '@/constants';
-import { useEffect, useState } from 'react';
-import { useAuth, useIsMounted, useLoadMore, useNavigate } from '@/hooks';
-import { RoomResType, RoomSearchType } from '@/types';
-import { roomApiRequest } from '@/api-requests';
-import { VerticalBarLoading } from '@/components/loading';
-import { Button } from '@/components/form';
-import { useJoinRoomMutation } from '@/queries';
-import { route } from '@/routes';
 import { buildAuthPathWithRedirect } from '@/utils';
+import { Button } from '@/components/form';
+import { queryKeys, ROOM_STATE_ALL, ROOM_TAB_LATEST } from '@/constants';
+import { roomApiRequest } from '@/api-requests';
+import { RoomCard } from './room-card';
+import { RoomListHeader } from './room-list-header';
+import { RoomResType, RoomSearchType } from '@/types';
+import { route } from '@/routes';
+import { useAuth, useIsMounted, useLoadMore, useNavigate } from '@/hooks';
+import { useEffect, useState } from 'react';
+import { useJoinRoomMutation } from '@/queries';
 import { usePathname } from 'next/navigation';
+import { VerticalBarLoading } from '@/components/loading';
 
 const ROOM_SKELETON_COUNT = 20;
 

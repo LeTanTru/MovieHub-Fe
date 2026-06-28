@@ -27,7 +27,7 @@ export function RoomListHeader({
       <h3 className='flex items-center text-2xl leading-[1.4] font-bold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'>
         Xem chung&nbsp;
         {loading ? (
-          <Skeleton className='skeleton h-6 w-13.5' />
+          <Skeleton className='skeleton h-6 w-10' />
         ) : (
           `(${totalRoom})`
         )}

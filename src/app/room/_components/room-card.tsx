@@ -19,7 +19,7 @@ import { FaHourglassHalf } from 'react-icons/fa6';
 
 type RoomCardProps = {
   room: RoomResType;
-  isOwner: boolean;
+  isOwner?: boolean;
   onJoin: (id: string) => void;
 };
 
