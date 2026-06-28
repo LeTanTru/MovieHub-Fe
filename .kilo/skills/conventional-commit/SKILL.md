@@ -71,7 +71,7 @@ git push
 ```xml
 <final-step>
   <cmd>git commit -m "type(scope): description"</cmd>
-  <push>git push (only if push to GitHub is explicitly requested)</push>
+  <push>git push</push>
   <warning>Never run git add — staging is the user's responsibility.</warning>
   <note>Replace with your constructed message. Include body/footer if needed.</note>
 </final-step>

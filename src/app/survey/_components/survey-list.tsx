@@ -37,6 +37,7 @@ export function SurveyList() {
         onSuccess: (res) => {
           if (res.result) {
             notify.success('Hoàn thành khảo sát thành công');
+            window.location.reload();
           } else {
             notify.error('Hoàn thành khảo sát thất bại');
           }
@@ -73,12 +74,13 @@ export function SurveyList() {
           ? Array.from({ length: 20 }).map((_, index) => (
               <SurveyCard.Skeleton key={index} />
             ))
-          : movieList.map((movie) => (
+          : movieList.map((movie, index) => (
               <SurveyCard
                 key={movie.id}
                 movie={movie}
                 onClick={handleClick}
                 isSelected={selectedMovieIds.includes(movie.id)}
+                priority={index < 10}
               />
             ))}
       </div>

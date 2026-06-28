@@ -82,6 +82,9 @@ export const route = defineRoute({
       path: '/account/settings'
     }
   },
+  survey: {
+    path: '/survey'
+  },
   room: {
     path: '/room',
     manage: {

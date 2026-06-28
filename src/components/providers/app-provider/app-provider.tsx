@@ -1,10 +1,12 @@
 'use client';
 
-import { useIsMounted, useIsomorphicLayoutEffect } from '@/hooks';
+import { useIsMounted, useIsomorphicLayoutEffect, useNavigate } from '@/hooks';
 import { useProfileQuery, useSession } from '@/queries';
+import { route } from '@/routes';
 import { useAuthStore } from '@/store';
 import { getData, removeData } from '@/utils';
 import { domAnimation, LazyMotion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import { createContext, ReactNode, useContext, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
 
@@ -29,6 +31,8 @@ export const useAppContext = () => {
 type AppProviderProps = { children: ReactNode };
 
 export function AppProvider({ children }: AppProviderProps) {
+  const pathname = usePathname();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const isMounted = useIsMounted();
 
@@ -73,8 +77,12 @@ export function AppProvider({ children }: AppProviderProps) {
   useIsomorphicLayoutEffect(() => {
     if (profile) {
       setProfile(profile);
+
+      if (!profile.isMakeSurvey && pathname !== route.survey.path) {
+        navigate.push(route.survey.path);
+      }
     }
-  }, [profile, setProfile]);
+  }, [navigate, pathname, profile, setProfile]);
 
   const isSessionPending =
     sessionLoading ||
