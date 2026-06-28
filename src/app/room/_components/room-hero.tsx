@@ -7,7 +7,7 @@ export function RoomHero() {
     <>
       <div className='background'>
         <div className='blur'></div>
-        <Image fill src='/room-cover.webp' alt='room-cover' />
+        <Image fill src='/room-cover.webp' alt='room-cover' loading='eager' />
       </div>
       <RoomActions />
     </>

@@ -3,20 +3,27 @@
 import { RoomCard } from '@/app/room/_components/room-card';
 import { RoomListHeader } from './room-list-header';
 import { queryKeys, ROOM_STATE_ALL, ROOM_TAB_LATEST } from '@/constants';
-import { useState } from 'react';
-import { useAuth, useLoadMore } from '@/hooks';
+import { useEffect, useState } from 'react';
+import { useAuth, useIsMounted, useLoadMore, useNavigate } from '@/hooks';
 import { RoomResType, RoomSearchType } from '@/types';
 import { roomApiRequest } from '@/api-requests';
 import { VerticalBarLoading } from '@/components/loading';
 import { Button } from '@/components/form';
 import { useJoinRoomMutation } from '@/queries';
+import { route } from '@/routes';
+import { buildAuthPathWithRedirect } from '@/utils';
+import { usePathname } from 'next/navigation';
 
 const ROOM_SKELETON_COUNT = 20;
 
 export function RoomList() {
-  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const pathname = usePathname();
+  const isMounted = useIsMounted();
+
   const [activeTab, setActiveTab] = useState<string>(ROOM_TAB_LATEST);
   const [roomState, setRoomState] = useState<number>(ROOM_STATE_ALL);
+  const { isAuthenticated, profile } = useAuth();
 
   const {
     data: roomList = [],
@@ -35,6 +42,16 @@ export function RoomList() {
 
   const { mutate: joinRoom } = useJoinRoomMutation();
 
+  useEffect(() => {
+    if (!isMounted) return;
+
+    if (!isAuthenticated) {
+      navigate.push(
+        buildAuthPathWithRedirect(route.login.path as string, pathname)
+      );
+    }
+  }, [isAuthenticated, isMounted, navigate, pathname]);
+
   return (
     <div className='relative mx-auto w-full max-w-475 px-12.5'>
       <RoomListHeader
@@ -51,7 +68,12 @@ export function RoomList() {
               <RoomCard.Skeleton key={index} />
             ))
           : roomList.map((room) => (
-              <RoomCard key={room.id} room={room} onJoin={joinRoom} />
+              <RoomCard
+                key={room.id}
+                room={room}
+                isOwner={room.host.id === profile?.id}
+                onJoin={joinRoom}
+              />
             ))}
       </div>
       {hasMore && (

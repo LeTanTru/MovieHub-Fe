@@ -15,13 +15,15 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { EyeIcon, VideoOff } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaHourglassHalf } from 'react-icons/fa6';
 
 type RoomCardProps = {
   room: RoomResType;
+  isOwner: boolean;
   onJoin: (id: string) => void;
 };
 
-export function RoomCard({ room, onJoin }: RoomCardProps) {
+export function RoomCard({ room, isOwner, onJoin }: RoomCardProps) {
   const isPending = room.state === ROOM_STATE_PENDING;
   const isLive = room.state === ROOM_STATE_RUNNING;
   const isEnd = room.state === ROOM_STATE_ENDING;
@@ -48,9 +50,8 @@ export function RoomCard({ room, onJoin }: RoomCardProps) {
         <div className='before:absolute before:inset-0 before:z-2 before:bg-[/dotted.webp] before:opacity-30 before:content-[""]'></div>
         {isPending && (
           <>
-            <div className='absolute top-2 left-2 z-3 flex h-6 items-center gap-1 rounded bg-amber-600 px-1.5 text-xs leading-5 font-semibold text-white uppercase shadow-[0_0_5px_5px_var(--color-transparent-black-1)]'>
-              <div className='live-flash block size-1.5 rounded-full bg-white before:content-[""]'></div>
-              Đang chờ
+            <div className='bg-transparent-black-9 absolute bottom-2 left-2 z-3 flex items-center gap-1 rounded-sm border border-solid border-white px-2 py-1.5 text-xs font-semibold text-white shadow-[0_0_5px_5px_var(--color-transparent-black-1)] backdrop-blur-[10px]'>
+              <FaHourglassHalf className='live-pending' /> Đang chờ
             </div>
           </>
         )}
@@ -112,7 +113,11 @@ export function RoomCard({ room, onJoin }: RoomCardProps) {
             {renderMovieTitle()}
           </h5>
           <div className='flex items-center gap-2'>
-            <div className='text-dark-gray text-xs whitespace-nowrap'>
+            <div
+              className={cn('text-dark-gray text-xs whitespace-nowrap', {
+                'text-golden-glow': isOwner
+              })}
+            >
               <span>{room.host.fullName}</span>
             </div>
             <div className='size-1 rounded-full bg-white/19'></div>
