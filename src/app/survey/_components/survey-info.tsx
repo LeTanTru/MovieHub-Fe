@@ -9,7 +9,7 @@ export function SurveyInfo() {
 
   return (
     <div className='sticky top-4'>
-      <h1 className='max-1536:text-3xl max-1536:leading-10 max-640:text-xl max-480:leading-7 max-860:mb-3 max-860:text-3xl max-640:mb-2 mb-4 text-4xl leading-12 font-semibold'>
+      <h1 className='max-1536:text-2xl max-1536:leading-8 max-640:text-xl max-480:leading-7 max-860:mb-3 max-860:text-3xl max-640:mb-2 mb-4 text-3xl leading-10 font-semibold'>
         {profile.fullName.split(' ').at(-1)}, hãy chọn những phim mà bạn thích
         nhé!
       </h1>

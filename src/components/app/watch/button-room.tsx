@@ -6,7 +6,13 @@ import { notify, setData } from '@/utils';
 import { Podcast } from 'lucide-react';
 import { route } from '@/routes';
 import { storageKeys } from '@/constants';
-import { useMovieInfo, useNavigate, useQueryParams } from '@/hooks';
+import {
+  useAuth,
+  useIsMounted,
+  useMovieInfo,
+  useNavigate,
+  useQueryParams
+} from '@/hooks';
 
 type ButtonRoomProps = {
   className?: string;
@@ -14,7 +20,10 @@ type ButtonRoomProps = {
 
 export function ButtonRoom({ className }: ButtonRoomProps) {
   const navigate = useNavigate();
+
+  const { isAuthenticated } = useAuth();
   const { currentSeason, isSingle, isSeries } = useMovieInfo();
+  const isMounted = useIsMounted();
 
   const {
     searchParams: { episode }
@@ -42,6 +51,8 @@ export function ButtonRoom({ className }: ButtonRoomProps) {
     setData(storageKeys.ROOM_MOVIE_ITEM_ID, movieItemId);
     navigate.push(route.room.new.path);
   };
+
+  if (!isMounted || !isAuthenticated) return null;
 
   return (
     <Button

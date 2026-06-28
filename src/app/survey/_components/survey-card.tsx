@@ -13,9 +13,15 @@ type SurveyCardProps = {
   movie: SurveyResType;
   isSelected: boolean;
   onClick: (movie: SurveyResType) => void;
+  priority?: boolean;
 };
 
-export function SurveyCard({ movie, isSelected, onClick }: SurveyCardProps) {
+export function SurveyCard({
+  movie,
+  isSelected,
+  onClick,
+  priority
+}: SurveyCardProps) {
   return (
     <Tilt
       scale={1.1}
@@ -53,6 +59,7 @@ export function SurveyCard({ movie, isSelected, onClick }: SurveyCardProps) {
           alt={movie.title}
           fill
           unoptimized
+          priority={priority}
           sizes='(max-width: 520px) 50vw, (max-width: 640px) 33vw, (max-width: 860px) 25vw, (max-width: 990px) 20vw, 16vw'
           className='absolute inset-0 size-full object-cover select-none'
         />
