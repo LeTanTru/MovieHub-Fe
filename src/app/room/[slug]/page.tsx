@@ -55,7 +55,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <BreadcrumbListJsonLd items={breadcrumbItems} />
-      <Container className='bg-vulcan min-h-page-height pt-header relative flex flex-col gap-16'>
+      <Container className='min-h-page-height pt-header'>
         <Room />
       </Container>
     </HydrationBoundary>

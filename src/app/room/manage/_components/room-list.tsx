@@ -15,7 +15,7 @@ import { RoomResType, RoomSearchType } from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { ChevronLeft, PlusCircle } from 'lucide-react';
 
-const ROOM_SKELETON_COUNT = 20;
+const ROOM_SKELETON_COUNT = 10;
 
 export function RoomList() {
   const navigate = useNavigate();

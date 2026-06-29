@@ -9,6 +9,7 @@ type Host = {
   avatarPath: string;
   kind: number;
   gender: number;
+  username: string;
 };
 
 type Movie = {

@@ -132,7 +132,7 @@ export function RoomCard({
             >
               <span>{room.host.fullName}</span>
             </div>
-            <div className='size-1 rounded-full bg-white/19'></div>
+            <div className='bg-dark-gray size-1 rounded-full'></div>
             <div className='text-dark-gray text-xs whitespace-nowrap'>
               <span title={convertUTCToLocal(room.createdDate)}>
                 {timeAgo(room.createdDate)}

@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { Chat } from './chat';
-import { Player } from './player';
+import { Watch } from './watch';
 import { getIdFromSlug } from '@/utils';
 import { useRoomQuery } from '@/queries';
 import { useRoomStore } from '@/store';
@@ -36,7 +36,7 @@ export function Room() {
 
   return (
     <div className='relative flex w-full items-start justify-between overflow-auto bg-black'>
-      <Player />
+      <Watch />
       <Chat />
     </div>
   );

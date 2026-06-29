@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Image from 'next/image';
 import {
   formatDuration,
   getData,
   getYearFromDate,
-  removeData,
+  parseJSON,
   renderImageUrl,
   sanitizeText
 } from '@/utils';
@@ -28,6 +28,7 @@ import {
 import { route } from '@/routes';
 import { useAuth } from '@/hooks';
 import { PlayIcon } from 'lucide-react';
+import { MetadataType } from '@/types';
 
 export function MovieInfo() {
   const { isAuthenticated } = useAuth();
@@ -49,7 +50,7 @@ export function MovieInfo() {
     enabled: isAuthenticated && !!movieItemId
   });
 
-  const movieItemListLength = movieItemList?.length || 0;
+  const totalEpisodes = movieItemList?.length || 0;
 
   // useEffect(() => {
   //   const handleBeforeUnload = () => {
@@ -64,7 +65,7 @@ export function MovieInfo() {
   //   };
   // }, []);
 
-  if (movieItemListLength === 0 || !movieItem) return <MovieInfo.Skeleton />;
+  if (totalEpisodes === 0 || !movieItem) return <MovieInfo.Skeleton />;
 
   const movie = movieItem.movie;
 
@@ -86,7 +87,16 @@ export function MovieInfo() {
 
   const episode = movieItem.label;
 
-  const isComplete = movieItemList[movieItemListLength - 1].id === movieItem.id;
+  const metadata = parseJSON<MetadataType>(movie.metadata || '{}');
+
+  const currentSeason = movie.seasons?.find(
+    (season) => season.label === metadata?.latestSeason?.label?.toString()
+  );
+
+  const episodes = currentSeason?.episodes || [];
+
+  const isComplete =
+    episodes.length > 0 && currentSeason?.totalEpisode === episodes.length;
 
   return (
     <div className='bg-cloud-burst relative flex w-107.5 shrink-0 flex-col justify-end gap-5 overflow-hidden rounded-lg p-8'>
@@ -125,7 +135,7 @@ export function MovieInfo() {
           )}
           {isSeries && isComplete && (
             <TagNormal
-              value={`Hoàn tất ${movieItemListLength} / ${movieItemListLength} tập`}
+              value={`Hoàn tất ${totalEpisodes} / ${totalEpisodes} tập`}
             />
           )}
         </TagWrapper>
