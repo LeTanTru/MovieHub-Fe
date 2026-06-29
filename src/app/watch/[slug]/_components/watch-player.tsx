@@ -22,7 +22,7 @@ export function WatchPlayer() {
   );
 }
 
-WatchPlayer.Skeleton = function () {
+WatchPlayer.Skeleton = function WatchPlayerSkeleton() {
   return (
     <div className='watch-player max-800:max-w-none max-800:w-full max-640:-mt-10 max-640:flex max-640:flex-col-reverse relative mx-auto max-w-410'>
       <div className='max-640:mt-4 max-640:mb-2 max-640:gap-2 max-640:gap-2 max-640:px-2 mb-4 inline-flex w-full items-center gap-4 px-4'>

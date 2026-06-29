@@ -39,7 +39,7 @@ export function ActorList({ actors }: ActorListProps) {
   );
 }
 
-ActorList.Skeleton = function () {
+ActorList.Skeleton = function ActorListSkeleton() {
   return (
     <div className='max-640:py-2 border-t border-solid border-white/10 py-4'>
       <Skeleton className='skeleton mb-4 h-7 w-24' />

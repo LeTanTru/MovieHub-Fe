@@ -81,7 +81,7 @@ export function NotificationItem({
   );
 }
 
-NotificationItem.Skeleton = function () {
+NotificationItem.Skeleton = function NotificationItemSkeleton() {
   return (
     <ListItem className='max-640:py-1.5 flex items-center justify-between py-2'>
       <div className='max-480:flex-col max-480:items-start max-480:gap-2 flex flex-1 items-center justify-between gap-2 pl-1'>

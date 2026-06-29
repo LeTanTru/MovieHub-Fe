@@ -80,7 +80,7 @@ export function PlayerFooter() {
   );
 }
 
-PlayerFooter.Skeleton = function () {
+PlayerFooter.Skeleton = function PlayerFooterSkeleton() {
   return (
     <div className='bg-transparent-black-b0 relative flex h-20 shrink-0 items-center justify-between gap-2 px-6'>
       <div className='flex w-full items-center justify-between gap-8'>

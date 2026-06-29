@@ -40,7 +40,7 @@ export function ProfileSection({ profile }: ProfileSectionProps) {
   );
 }
 
-ProfileSection.Skeleton = function () {
+ProfileSection.Skeleton = function ProfileSectionSkeleton() {
   return (
     <>
       <Skeleton className='skeleton size-15 rounded-full!' />

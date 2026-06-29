@@ -219,7 +219,7 @@ export default function NewRoomForm() {
   );
 }
 
-NewRoomForm.Skeleton = function () {
+NewRoomForm.Skeleton = function NewRoomFormSkeleton() {
   return (
     <div className='w-full'>
       {/* Room name */}

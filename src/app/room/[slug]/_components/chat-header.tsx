@@ -2,25 +2,45 @@
 
 import { ButtonToggle } from '@/components/app/button-toggle';
 import { PortalDropdown } from '@/components/dropdown';
+import { useChatStore } from '@/store';
 import { MenuIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useShallow } from 'zustand/shallow';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function ChatHeader() {
-  const [toggleChat, setToggletChat] = useState<boolean>(false);
-  const [toggletHeader, setToggleHeader] = useState<boolean>(false);
-  const [toggletChatLeft, setToggletChatLeft] = useState<boolean>(false);
-  const [toggleChatLayout, setToggleChatLayout] = useState<boolean>(false);
+  const {
+    toggleChat,
+    toggleHeader,
+    toggleChatLeft,
+    toggleChatLayout,
+    setToggleChat,
+    setToggleHeader,
+    setToggleChatLeft,
+    setToggleChatLayout
+  } = useChatStore(
+    useShallow((state) => ({
+      toggleChat: state.toggleChat,
+      toggleHeader: state.toggleHeader,
+      toggleChatLeft: state.toggleChatLeft,
+      toggleChatLayout: state.toggleChatLayout,
 
-  const handleToggletChat = () => {
-    setToggletChat(!toggleChat);
+      setToggleChat: state.setToggleChat,
+      setToggleHeader: state.setToggleHeader,
+      setToggleChatLeft: state.setToggleChatLeft,
+      setToggleChatLayout: state.setToggleChatLayout
+    }))
+  );
+
+  const handleToggleChat = () => {
+    setToggleChat(!toggleChat);
   };
 
   const handleToggleHeader = () => {
-    setToggleHeader(!toggletHeader);
+    setToggleHeader(!toggleHeader);
   };
 
-  const handleToggletChatLeft = () => {
-    setToggletChatLeft(!toggletChatLeft);
+  const handleToggleChatLeft = () => {
+    setToggleChatLeft(!toggleChatLeft);
   };
 
   const handleToggleChatLayout = () => {
@@ -45,7 +65,7 @@ export function ChatHeader() {
           <div className='px-4 py-2'>
             <ButtonToggle
               text='Ẩn đầu trang'
-              toggle={toggletHeader}
+              toggle={toggleHeader}
               onToggle={handleToggleHeader}
               align='left'
               className='justify-between'
@@ -54,8 +74,8 @@ export function ChatHeader() {
           <div className='px-4 py-2'>
             <ButtonToggle
               text='Khung chat trái'
-              toggle={toggletChatLeft}
-              onToggle={handleToggletChatLeft}
+              toggle={toggleChatLeft}
+              onToggle={handleToggleChatLeft}
               align='left'
               className='justify-between'
             />
@@ -77,10 +97,26 @@ export function ChatHeader() {
         <ButtonToggle
           text='Ẩn chat'
           toggle={toggleChat}
-          onToggle={handleToggletChat}
+          onToggle={handleToggleChat}
           align='left'
         />
       </div>
     </div>
   );
 }
+
+ChatHeader.Skeleton = function ChatHeaderSkeleton() {
+  return (
+    <div className='flex shrink-0 items-center gap-4 p-4'>
+      <div className='inline-flex items-center gap-2'>
+        <Skeleton className='bg-transparent-black-8 skeleton size-4 rounded!' />
+        <Skeleton className='bg-transparent-black-8 skeleton h-4 w-16 rounded!' />
+      </div>
+      <div className='grow'></div>
+      <div className='inline-flex items-center gap-2'>
+        <Skeleton className='bg-transparent-black-8 skeleton h-4 w-12 rounded!' />
+        <Skeleton className='bg-transparent-black-8 skeleton h-5 w-9 rounded-full!' />
+      </div>
+    </div>
+  );
+};

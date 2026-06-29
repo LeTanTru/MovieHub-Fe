@@ -61,7 +61,7 @@ export function PlayerHeader() {
   );
 }
 
-PlayerHeader.Skeleton = function () {
+PlayerHeader.Skeleton = function PlayerHeaderSkeleton() {
   return (
     <div className='bg-transparent-black-b0 sticky top-0 z-4 flex h-17.5 shrink-0 items-center justify-start gap-2 px-6'>
       <Skeleton className='bg-transparent-black-8 skeleton size-7.5! rounded-full! border border-solid border-white/30' />

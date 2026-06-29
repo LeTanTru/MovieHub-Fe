@@ -40,7 +40,7 @@ export function WatchSide() {
   );
 }
 
-WatchSide.Skeleton = function () {
+WatchSide.Skeleton = function WatchSideSkeleton() {
   return (
     <div className='max-1360:w-95 max-1120:border-none max-1120:w-ful max-640:p-2l flex w-110 shrink-0 flex-col border-l border-solid border-white/10 p-4'>
       <div className='max-640:pb-2 flex items-center justify-end gap-4 pb-4'>

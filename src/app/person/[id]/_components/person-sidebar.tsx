@@ -191,7 +191,7 @@ export function PersonSidebar({ person, loading }: PersonSidebarProps) {
   );
 }
 
-PersonSidebar.Skeleton = function () {
+PersonSidebar.Skeleton = function PersonSidebarSkeleton() {
   return (
     <div className='border-r-transparent-white max-1600:w-85 max-1120:border-none max-1120:pr-0 max-1120:pb-5 max-1120:w-full max-1120:items-center w-110 shrink-0 border-r pr-10'>
       <Skeleton className='skeleton mx-auto mb-6 size-30 rounded-full! sm:size-40' />

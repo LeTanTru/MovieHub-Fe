@@ -428,7 +428,7 @@ export function CommentItem({
   );
 }
 
-CommentItem.Skeleton = function () {
+CommentItem.Skeleton = function CommentItemSkeleton() {
   return (
     <div className='max-640:gap-3 max-520:gap-2.5 max-480:gap-2 relative flex justify-start gap-4'>
       <div className='flex shrink-0 flex-col items-center gap-y-0.5'>

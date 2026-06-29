@@ -11,3 +11,13 @@ export function Player() {
     </div>
   );
 }
+
+Player.Skeleton = function PlayerSkeleton() {
+  return (
+    <div className='h-page-height flex shrink-0 flex-col justify-between'>
+      <PlayerHeader.Skeleton />
+      <PlayerMain.Skeleton />
+      <PlayerFooter.Skeleton />
+    </div>
+  );
+};

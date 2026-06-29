@@ -252,7 +252,9 @@ type DiscussionSkeletonProps = {
   className?: string;
 };
 
-Discussion.Skeleton = function ({ className }: DiscussionSkeletonProps) {
+Discussion.Skeleton = function DiscussionSkeleton({
+  className
+}: DiscussionSkeletonProps) {
   return (
     <div
       className={cn(

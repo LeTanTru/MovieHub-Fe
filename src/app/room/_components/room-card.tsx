@@ -177,7 +177,7 @@ export function RoomCard({
   );
 }
 
-RoomCard.Skeleton = function () {
+RoomCard.Skeleton = function RoomCardSkeleton() {
   return (
     <div className='flex flex-col gap-3'>
       <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md pb-[56.25%]' />

@@ -36,7 +36,7 @@ export function ActorList({ actors }: ActorListProps) {
   );
 }
 
-ActorList.Skeleton = function () {
+ActorList.Skeleton = function ActorListSkeleton() {
   return (
     <div className='max-1120:hidden mb-5'>
       <Skeleton className='skeleton mb-4 h-8 w-32' />

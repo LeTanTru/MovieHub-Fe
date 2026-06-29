@@ -171,7 +171,7 @@ export function MovieInfo() {
   );
 }
 
-MovieInfo.Skeleton = function () {
+MovieInfo.Skeleton = function MovieInfoSkeleton() {
   return (
     <div className='bg-cloud-burst relative flex w-107.5 shrink-0 flex-col justify-end gap-5 overflow-hidden rounded-lg p-8'>
       {/* Skeleton poster */}

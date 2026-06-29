@@ -56,7 +56,7 @@ export function PlaylistCard({ playlist }: PlaylistCardProps) {
   );
 }
 
-PlaylistCard.Skeleton = function () {
+PlaylistCard.Skeleton = function PlaylistCardSkeleton() {
   return (
     <div className='max-520:w-50 max-520:shrink-0 rounded-md border-2 p-4 shadow-[inset_0_0_0_3px_#ffffff03]'>
       <Skeleton className='skeleton mb-4 h-5 w-3/4 rounded!' />
