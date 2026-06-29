@@ -46,7 +46,7 @@ export const useRoomByCodeQuery = ({
   });
 };
 
-export const useRoomByIdQuery = ({
+export const useRoomQuery = ({
   id,
   enabled
 }: {

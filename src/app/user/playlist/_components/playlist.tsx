@@ -21,6 +21,10 @@ export function Playlist() {
     if (!selectedPlaylist && playlist.length > 0) {
       setSelectedPlaylist(playlist[0]);
     }
+
+    return () => {
+      setSelectedPlaylist(null);
+    };
   }, [playlist, selectedPlaylist, setSelectedPlaylist]);
 
   return (

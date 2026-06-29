@@ -1,8 +1,9 @@
-import { Room } from '@/app/room/[id]/_components';
+import { Room } from '@/app/room/[slug]/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { BreadcrumbListJsonLd } from '@/components/seo';
 import { envConfig } from '@/config';
+import { getIdFromSlug } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
@@ -36,15 +37,19 @@ export const metadata: Metadata = {
   }
 };
 
-type RoomPageProps = { params: Promise<{ id: string }> };
+type RoomPageProps = { params: Promise<{ slug: string }> };
 
 export default async function RoomPage({ params }: RoomPageProps) {
-  const { id } = await params;
+  const { slug } = await params;
+  const id = getIdFromSlug(slug);
   const queryClient = getQueryClient();
 
   const breadcrumbItems = [
     { name: 'Trang chủ', item: envConfig.NEXT_PUBLIC_URL },
-    { name: 'Phòng xem phim', item: `${envConfig.NEXT_PUBLIC_URL}/room/${id}` }
+    {
+      name: 'Phòng xem phim',
+      item: `${envConfig.NEXT_PUBLIC_URL}/room/${id}`
+    }
   ];
 
   return (
