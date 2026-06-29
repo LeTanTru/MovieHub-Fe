@@ -4,12 +4,16 @@ import { roomApiRequest } from '@/api-requests';
 import { RoomCard, RoomCreateButton } from '@/app/room/_components';
 import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
+import { NoData } from '@/components/no-data';
 import { Skeleton } from '@/components/ui/skeleton';
 import { queryKeys } from '@/constants';
 import { useAuth, useLoadMore, useNavigate } from '@/hooks';
-import { useJoinRoomMutation } from '@/queries';
+import { cn } from '@/lib';
+import { logger } from '@/logger';
+import { useDeleteRoomMutation, useJoinRoomMutation } from '@/queries';
 import { RoomResType, RoomSearchType } from '@/types';
-import { ChevronLeft } from 'lucide-react';
+import { invalidateQueries, notify } from '@/utils';
+import { ChevronLeft, PlusCircle } from 'lucide-react';
 
 const ROOM_SKELETON_COUNT = 20;
 
@@ -29,10 +33,29 @@ export function RoomList() {
     enabled: isAuthenticated,
     params: {},
     queryFn: roomApiRequest.getMyRooms,
-    queryKey: queryKeys.ROOM_LIST
+    queryKey: queryKeys.MY_ROOM_LIST
   });
 
   const { mutate: joinRoom } = useJoinRoomMutation();
+
+  const { mutate: deleteRoom } = useDeleteRoomMutation();
+
+  const handleDeleteRoom = (id: string) => {
+    deleteRoom(id, {
+      onSuccess: (res) => {
+        if (res.result) {
+          notify.success('Xóa phòng thành công');
+          invalidateQueries([queryKeys.ROOM_LIST], [queryKeys.MY_ROOM_LIST]);
+        } else {
+          notify.error('Xóa phòng thất bại');
+        }
+      },
+      onError: (error) => {
+        logger.error('[DELETE_ROOM_ERROR]', error);
+        notify.error('Xóa phòng thất bại');
+      }
+    });
+  };
 
   return (
     <div className='relative mx-auto w-full max-w-475 px-12.5'>
@@ -46,7 +69,7 @@ export function RoomList() {
         </Button>
         <h3 className='flex items-center text-2xl leading-[1.4] font-bold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'>
           Quản lý xem chung&nbsp;
-          {isLoading ? (
+          {!isAuthenticated || isLoading ? (
             <Skeleton className='skeleton h-6 w-10' />
           ) : (
             `(${totalElements})`
@@ -54,15 +77,50 @@ export function RoomList() {
         </h3>
         <RoomCreateButton className='h-8 bg-white px-3! text-black hover:text-black hover:opacity-80' />
       </div>
-      <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
-        {isLoading
-          ? Array.from({ length: ROOM_SKELETON_COUNT }).map((_, index) => (
-              <RoomCard.Skeleton key={index} />
-            ))
-          : roomList.map((room) => (
-              <RoomCard key={room.id} room={room} onJoin={joinRoom} />
-            ))}
-      </div>
+      {!isAuthenticated || isLoading ? (
+        <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
+          {Array.from({ length: ROOM_SKELETON_COUNT }).map((_, index) => (
+            <RoomCard.Skeleton key={index} />
+          ))}
+        </div>
+      ) : roomList.length === 0 ? (
+        <NoData
+          className='max-640:pb-20 max-640:pt-10 w-full pt-25 pb-40'
+          imageClassName='max-640:size-40 max-480:size-30'
+          content={
+            <>
+              Bạn chưa tạo phòng nào.
+              <div className='flex items-center justify-center'>
+                Hãy nhấn vào nút&nbsp;
+                <Button
+                  className={cn(
+                    'group flex items-center justify-center gap-2 rounded-4xl border border-white font-medium text-white backdrop-blur-[10px] hover:border-white/80 hover:text-white/80',
+                    'h-8 bg-white px-3! text-black hover:text-black hover:opacity-80'
+                  )}
+                  variant='outline'
+                >
+                  <PlusCircle className='max-640:size-4 size-4.5 fill-white text-black group-hover:opacity-80' />
+                  Tạo mới
+                </Button>
+                &nbsp; để xem hướng dẫn tạo phòng xem chung nhé 😊
+              </div>
+            </>
+          }
+        />
+      ) : (
+        <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
+          {roomList.map((room) => (
+            <RoomCard
+              key={room.id}
+              room={room}
+              onJoin={joinRoom}
+              isOwner
+              onDelete={() => handleDeleteRoom(room.id)}
+            />
+          ))}
+        </div>
+      )}
+
       {hasMore && (
         <div className='flex justify-center pt-10'>
           {isLoadingMore ? (

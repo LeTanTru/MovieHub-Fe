@@ -1,25 +1,19 @@
 'use client';
 
 import { RoomFilter } from './room-filter';
-import { ButtonAction } from '@/components/app/button-action';
 import { Skeleton } from '@/components/ui/skeleton';
-import { roomActions } from '@/constants';
 
 type RoomheaderProps = {
-  activeTab: string;
+  loading: boolean;
   roomState: number;
   totalRoom: number;
-  loading: boolean;
-  setActiveTab: (tab: string) => void;
   setRoomState: (state: number) => void;
 };
 
 export function RoomListHeader({
-  activeTab,
+  loading,
   roomState,
   totalRoom,
-  loading,
-  setActiveTab,
   setRoomState
 }: RoomheaderProps) {
   return (
@@ -32,18 +26,6 @@ export function RoomListHeader({
           `(${totalRoom})`
         )}
       </h3>
-      <div className='relative flex shrink-0 items-stretch' role='tablist'>
-        {roomActions.map((action) => (
-          <ButtonAction
-            key={action.key}
-            label={action.label}
-            action={action.key}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            className='max-640:text-[13px] max-520:text-xs'
-          />
-        ))}
-      </div>
       <RoomFilter roomState={roomState} setRoomState={setRoomState} />
     </div>
   );

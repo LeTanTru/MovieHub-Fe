@@ -21,11 +21,11 @@ import {
 } from '@/constants';
 import { useIsMounted } from '@/hooks';
 import { logger } from '@/logger';
-import { useCreateRoomMutation } from '@/queries';
+import { useCreateRoomMutation, useMovieItemQuery } from '@/queries';
 import { roomSchema } from '@/schemaValidations';
 import { RoomBodyType, UserAutoCompleteResType } from '@/types';
 import { getData, notify, removeData } from '@/utils';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 export default function NewRoomForm() {
@@ -37,6 +37,11 @@ export default function NewRoomForm() {
     () => getData(storageKeys.ROOM_MOVIE_ITEM_ID) || ''
   );
 
+  const { data: movieItem } = useMovieItemQuery({
+    id: movieItemId,
+    enabled: !!movieItemId
+  });
+
   const defaultValues: RoomBodyType = {
     accountIds: [],
     isStartNow: false,
@@ -45,6 +50,17 @@ export default function NewRoomForm() {
     name: '',
     startTime: ''
   };
+
+  const initialValues: RoomBodyType = useMemo(() => {
+    return {
+      accountIds: [],
+      isStartNow: false,
+      kind: ROOM_KIND_PUBLIC,
+      movieItemId,
+      name: `Cùng xem ${movieItem?.movie?.title || ''}`,
+      startTime: ''
+    };
+  }, [movieItem?.movie?.title, movieItemId]);
 
   const onSubmit = (values: RoomBodyType) => {
     createRoom(values, {
@@ -74,6 +90,7 @@ export default function NewRoomForm() {
     <BaseForm
       className='w-full bg-transparent p-0'
       defaultValues={defaultValues}
+      initialValues={initialValues}
       onSubmit={onSubmit}
       schema={roomSchema}
     >

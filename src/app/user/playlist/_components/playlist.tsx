@@ -31,7 +31,7 @@ export function Playlist() {
         </h3>
         {playlist.length < MAX_PLAYLIST_COUNT && <ButtonAddPlayList />}
       </div>
-      {isLoading ? (
+      {!isAuthenticated || isLoading ? (
         <div className='max-1360:gap-4 max-1360:grid-cols-4 max-990:grid-cols-3 max-768:grid-cols-2 max-520:flex max-520:flex-nowrap max-520:overflow-x-auto scrollbar-none max-520:gap-2 grid w-full grid-cols-5 gap-6'>
           {Array.from({ length: MAX_PLAYLIST_COUNT }).map((_, index) => (
             <PlaylistCard.Skeleton key={index} />

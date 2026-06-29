@@ -4,7 +4,7 @@ import './new-room.css';
 import { Button } from '@/components/form';
 import { ChevronLeft, Film } from 'lucide-react';
 import { MovieInfo } from './movie-info';
-import { useNavigate } from '@/hooks';
+import { useNavigate, useIsMounted } from '@/hooks';
 import NewRoomForm from './new-room-form';
 import { useState } from 'react';
 import { storageKeys } from '@/constants';
@@ -12,6 +12,7 @@ import { getData } from '@/utils';
 
 export function NewRoom() {
   const navigate = useNavigate();
+  const isMounted = useIsMounted();
 
   const [seasonId] = useState(
     () => getData(storageKeys.ROOM_CURRENT_SEASON_ID) || ''
@@ -20,7 +21,7 @@ export function NewRoom() {
     () => getData(storageKeys.ROOM_MOVIE_ITEM_ID) || ''
   );
 
-  if (!seasonId || !movieItemId) {
+  if (!isMounted || !seasonId || !movieItemId) {
     return (
       <div className='relative mx-auto w-full max-w-300 px-12.5'>
         <div className='relative mb-4 flex min-h-11 items-center justify-center gap-4'>

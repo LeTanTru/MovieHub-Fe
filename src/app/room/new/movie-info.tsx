@@ -51,18 +51,18 @@ export function MovieInfo() {
 
   const movieItemListLength = movieItemList?.length || 0;
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      removeData(storageKeys.ROOM_CURRENT_SEASON_ID);
-      removeData(storageKeys.ROOM_MOVIE_ITEM_ID);
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = () => {
+  //     removeData(storageKeys.ROOM_CURRENT_SEASON_ID);
+  //     removeData(storageKeys.ROOM_MOVIE_ITEM_ID);
+  //   };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
 
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, []);
 
   if (movieItemListLength === 0 || !movieItem) return <MovieInfo.Skeleton />;
 

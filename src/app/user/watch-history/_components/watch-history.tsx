@@ -20,7 +20,7 @@ export function WatchHistory() {
       <h3 className='max-640:text-base text-xl leading-normal font-semibold text-white'>
         Xem tiếp
       </h3>
-      {isLoading ? (
+      {!isAuthenticated || isLoading ? (
         <MovieGrid.Skeleton
           className='max-1600:grid-cols-5 max-1360:grid-cols-4 max-1120:grid-cols-5 max-800:grid-cols-4 max-640:grid-cols-3 max-480:grid-cols-2 max-1600:gap-4 max-640:gap-y-6 max-480:gap-y-4 grid w-full grow grid-cols-6 gap-6'
           skeletonCount={12}

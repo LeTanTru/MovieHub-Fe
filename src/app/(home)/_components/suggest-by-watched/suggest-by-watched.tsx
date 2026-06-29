@@ -26,17 +26,19 @@ export function SuggestByWatched({ page }: { page: number }) {
   const watchedMovie = movieListData?.watchedMovie;
   const movieList = movieListData?.suggestedMovies || [];
 
-  if (!isAuthenticated || !watchedMovie) return null;
-
-  if (isLoading) return <VerticalBarLoading />;
+  if (!isAuthenticated) return null;
 
   return (
     <div ref={ref}>
-      <MovieList
-        loading={isLoading}
-        movieList={movieList}
-        title={`Vì bạn đã xem ${watchedMovie?.title}`}
-      />
+      {isLoading ? (
+        <VerticalBarLoading />
+      ) : watchedMovie ? (
+        <MovieList
+          loading={isLoading}
+          movieList={movieList}
+          title={`Vì bạn đã xem ${watchedMovie.title}`}
+        />
+      ) : null}
     </div>
   );
 }

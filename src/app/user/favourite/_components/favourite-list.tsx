@@ -111,14 +111,14 @@ export function FavouriteList() {
       <div className='block w-full' key={activeTab}>
         <Activity visible={activeTab === FAVOURITE_TYPE_MOVIE}>
           <MovieList
-            isLoading={isLoading}
+            isLoading={!isAuthenticated || isLoading}
             movieList={movieList}
             handleDeleteFavourite={handleDeleteFavourite}
           />
         </Activity>
         <Activity visible={activeTab === FAVOURITE_TYPE_PERSON}>
           <PersonList
-            isLoading={isLoading}
+            isLoading={!isAuthenticated || isLoading}
             personList={personList}
             handleDeleteFavourite={handleDeleteFavourite}
           />
