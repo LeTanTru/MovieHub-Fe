@@ -29,6 +29,15 @@ import { getData, notify } from '@/utils';
 import { useMemo, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
+const defaultValues: RoomBodyType = {
+  accountIds: [],
+  isStartNow: true,
+  kind: ROOM_KIND_PUBLIC,
+  movieItemId: '',
+  name: '',
+  startTime: ''
+};
+
 export default function NewRoomForm() {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
@@ -44,19 +53,10 @@ export default function NewRoomForm() {
     enabled: !!movieItemId
   });
 
-  const defaultValues: RoomBodyType = {
-    accountIds: [],
-    isStartNow: false,
-    kind: ROOM_KIND_PUBLIC,
-    movieItemId,
-    name: '',
-    startTime: ''
-  };
-
   const initialValues: RoomBodyType = useMemo(() => {
     return {
-      accountIds: [],
-      isStartNow: false,
+      accountIds: defaultValues.accountIds,
+      isStartNow: defaultValues.isStartNow,
       kind: ROOM_KIND_PUBLIC,
       movieItemId,
       name: `Cùng xem ${movieItem?.movie?.title || ''}`,
@@ -84,6 +84,7 @@ export default function NewRoomForm() {
   const handleCancel = (form: UseFormReturn<RoomBodyType>) => {
     form.clearErrors();
     form.reset(defaultValues);
+    navigate.back();
   };
 
   if (!isMounted) return <NewRoomForm.Skeleton />;
@@ -175,7 +176,7 @@ export default function NewRoomForm() {
                   type='submit'
                   variant='primary'
                   className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
-                  disabled={!form.formState.isDirty || isPending}
+                  disabled={isPending}
                   loading={isPending}
                 >
                   Tạo phòng
@@ -192,7 +193,7 @@ export default function NewRoomForm() {
                       handleCancel(form);
                     }
                   }}
-                  disabled={!form.formState.isDirty || isPending}
+                  disabled={isPending}
                   className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                 >
                   Hủy

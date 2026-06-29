@@ -1,12 +1,17 @@
 'use client';
 
 import { Button } from '@/components/form';
-import { MOVIE_TYPE_SINGLE, ROOM_STATE_PENDING } from '@/constants';
+import { ButtonStart } from './button-start';
+import { ChevronLeft } from 'lucide-react';
+import {
+  MOVIE_TYPE_SINGLE,
+  ROOM_STATE_PENDING,
+  ROOM_STATE_RUNNING
+} from '@/constants';
+import { ButtonEnd } from './button-end';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useNavigate } from '@/hooks';
 import { useRoomStore } from '@/store';
-import { Skeleton } from '@/components/ui/skeleton';
-import { ChevronLeft } from 'lucide-react';
-import { FaPlay } from 'react-icons/fa6';
 
 export function PlayerHeader() {
   const navigate = useNavigate();
@@ -14,6 +19,7 @@ export function PlayerHeader() {
 
   if (!room) return <PlayerHeader.Skeleton />;
 
+  const isRunning = room.state === ROOM_STATE_RUNNING;
   const isPending = room.state === ROOM_STATE_PENDING;
 
   const movieItem = room.movieItem;
@@ -49,12 +55,8 @@ export function PlayerHeader() {
           <div className=''>{movieItem?.title}</div>
         </div>
       </div>
-      {isPending && (
-        <Button className='rounded-full' size='sm'>
-          <FaPlay />
-          Bắt đầu
-        </Button>
-      )}
+      {isPending && <ButtonStart />}
+      {isRunning && <ButtonEnd />}
     </div>
   );
 }
