@@ -27,9 +27,11 @@ export function MovieInfo() {
   const { isAuthenticated } = useAuth();
   const room = useRoomStore((state) => state.room);
 
-  const { data: movie, isLoading: isMovieLoading } = useMovieQuery(
+  const { data: movieData, isLoading: isMovieLoading } = useMovieQuery(
     room?.movieItem?.movie?.id || ''
   );
+
+  const movie = movieData?.data;
 
   const { data: movieItem, isLoading: isMovieItemLoading } = useMovieItemQuery({
     id: room?.movieItem?.id || '',

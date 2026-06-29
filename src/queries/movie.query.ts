@@ -20,8 +20,7 @@ export const useMovieQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.MOVIE, id],
     queryFn: ({ signal }) => movieApiRequest.getById(id, signal),
-    enabled: !!id,
-    select: (data) => data.data
+    enabled: !!id
   });
 };
 

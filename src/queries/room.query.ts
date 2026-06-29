@@ -56,8 +56,7 @@ export const useRoomQuery = ({
   return useQuery({
     queryKey: [queryKeys.ROOM, id],
     queryFn: ({ signal }) => roomApiRequest.getById(id, signal),
-    enabled: enabled !== undefined ? enabled : !!id,
-    select: (data) => data.data
+    enabled: enabled !== undefined ? enabled : !!id
   });
 };
 

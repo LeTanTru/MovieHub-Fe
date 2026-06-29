@@ -39,6 +39,7 @@ import {
 } from '@/utils';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata, ResolvingMetadata } from 'next';
+import { Container } from '@/components/layout';
 
 export const revalidate = 60;
 
@@ -289,7 +290,11 @@ export default async function MoviePage({ params }: MoviePageProps) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       {jsonLd && <JsonLd data={jsonLd} />}
       {breadcrumbLd && <BreadcrumbListJsonLd items={breadcrumbLd.items} />}
-      <Movie id={id} />
+      <Container className='max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 min-h-page-height relative py-40'>
+        <div className='max-640:gap-8 flex flex-col gap-12.5'>
+          <Movie id={id} />
+        </div>
+      </Container>
     </HydrationBoundary>
   );
 }

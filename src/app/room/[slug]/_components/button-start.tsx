@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/form';
 import { ConfirmModal } from '@/components/modal';
-import { queryKeys } from '@/constants';
+import { ErrorCode, queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useStartRoomMutation } from '@/queries';
 import { getIdFromSlug, invalidateQueries, notify } from '@/utils';
@@ -20,9 +20,20 @@ export function ButtonStart() {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Bắt đầu phòng thành công');
-          invalidateQueries([queryKeys.ROOM, id]);
+          invalidateQueries(
+            [queryKeys.ROOM, id],
+            [queryKeys.ROOM_LIST],
+            [queryKeys.MY_ROOM_LIST]
+          );
         } else {
-          notify.error('Bắt đầu phòng thất bại');
+          const errorCode = res.code;
+          if (errorCode === ErrorCode.ROOM_ERROR_INVALID_ROOM) {
+            notify.error(
+              'Bạn đã có một phòng đang diễn ra, vui lòng kết thúc phòng trước khi bắt đầu phòng mới'
+            );
+          } else {
+            notify.error('Bắt đầu phòng thất bại');
+          }
         }
       },
       onError: (error) => {

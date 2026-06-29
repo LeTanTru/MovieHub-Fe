@@ -22,7 +22,6 @@ export const usePersonQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.PERSON, id],
     queryFn: ({ signal }) => personApiRequest.getById(id, signal),
-    enabled: !!id,
-    select: (data) => data.data
+    enabled: !!id
   });
 };

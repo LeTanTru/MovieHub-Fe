@@ -22,7 +22,6 @@ export const useCollectionQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.COLLECTION, id],
     queryFn: ({ signal }) => collectionApiRequest.getById(id, signal),
-    enabled: !!id,
-    select: (data) => data.data
+    enabled: !!id
   });
 };

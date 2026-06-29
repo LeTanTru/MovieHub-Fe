@@ -24,5 +24,6 @@ export const getMqttClient = () => {
     client.on('offline', () => logger.warn('[MQTT] Offline'));
     client.on('close', () => logger.info('[MQTT] Disconnected'));
   }
+
   return client;
 };
