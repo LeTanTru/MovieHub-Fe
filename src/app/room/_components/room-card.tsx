@@ -37,7 +37,7 @@ export function RoomCard({
   isOwner,
   isDeleting,
   onJoin,
-  onDelete1
+  onDelete
 }: RoomCardProps) {
   const isPending = room.state === ROOM_STATE_PENDING;
   const isLive = room.state === ROOM_STATE_RUNNING;
