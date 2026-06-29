@@ -23,7 +23,7 @@ export function SuggestionList({ movieList }: SuggestionListProps) {
   );
 }
 
-SuggestionList.Skeleton = function () {
+SuggestionList.Skeleton = function SuggestionListSkeleton() {
   return (
     <div className='max-640:py-2 border-t border-solid border-white/10 py-4'>
       <Skeleton className='skeleton mb-4 h-7 w-40' />

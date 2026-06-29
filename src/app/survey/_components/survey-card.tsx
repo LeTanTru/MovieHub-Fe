@@ -68,7 +68,7 @@ export function SurveyCard({
   );
 }
 
-SurveyCard.Skeleton = function () {
+SurveyCard.Skeleton = function SurveyCardSkeleton() {
   return (
     <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md! pb-[150%]' />
   );

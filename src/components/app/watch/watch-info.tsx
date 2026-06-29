@@ -181,7 +181,7 @@ export function WatchInfo() {
   );
 }
 
-WatchInfo.Skeleton = function () {
+WatchInfo.Skeleton = function WatchInfoSkeleton() {
   return (
     <div className='max-1280:hidden flex gap-6 border-b border-solid border-white/10 pb-4'>
       <div className='w-25 shrink-0'>

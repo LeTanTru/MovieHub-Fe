@@ -92,7 +92,7 @@ export function Movie({ id }: MovieProps) {
   );
 }
 
-Movie.Skeleton = function () {
+Movie.Skeleton = function MovieSkeleton() {
   return (
     <>
       <div className='movie-detail'>

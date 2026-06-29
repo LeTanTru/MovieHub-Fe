@@ -1,5 +1,6 @@
 export { useAuthStore } from './auth.store';
 export { useCategoryStore } from './category.store';
+export { useChatStore } from './chat.store';
 export { useCommentStore } from './comment.store';
 export { useMovieStore } from './movie.store';
 export { usePlaylistStore } from './playlist.store';

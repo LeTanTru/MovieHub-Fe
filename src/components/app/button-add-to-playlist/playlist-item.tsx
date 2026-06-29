@@ -52,7 +52,7 @@ export function PlaylistItem({
   );
 }
 
-PlaylistItem.Skeleton = function () {
+PlaylistItem.Skeleton = function PlaylistItemSkeleton() {
   return (
     <div className='flex items-center gap-2'>
       <Skeleton className='skeleton size-4 rounded-sm!' />

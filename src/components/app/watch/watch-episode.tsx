@@ -20,7 +20,7 @@ export function WatchEpisode() {
   return <div className='max-640:mb-2 my-4'>{Tab ? <Tab /> : null}</div>;
 }
 
-WatchEpisode.Skeleton = function () {
+WatchEpisode.Skeleton = function WatchEpisodeSkeleton() {
   return (
     <div className='max-640:mb-2 my-4'>
       <Skeleton className='skeleton mb-4 h-6 w-40' />

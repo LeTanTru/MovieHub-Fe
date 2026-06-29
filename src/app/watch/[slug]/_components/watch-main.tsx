@@ -18,7 +18,7 @@ export function WatchMain() {
   );
 }
 
-WatchMain.Skeleton = function () {
+WatchMain.Skeleton = function WatchMainSkeleton() {
   return (
     <div className='max-640:p-2 w-full p-4'>
       <WatchInfo.Skeleton />

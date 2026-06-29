@@ -33,7 +33,7 @@ export function TopViewList() {
   );
 }
 
-TopViewList.Skeleton = function () {
+TopViewList.Skeleton = function TopViewListSkeleton() {
   return (
     <div className='max-1120:hidden border-t border-solid border-white/10 pt-4'>
       <div className='mb-4 flex h-7 items-center gap-4'>

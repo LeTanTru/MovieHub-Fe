@@ -67,7 +67,7 @@ export function Watch({ id }: WatchProps) {
   );
 }
 
-Watch.Skeleton = function () {
+Watch.Skeleton = function WatchSkeleton() {
   return (
     <>
       <WatchPlayer.Skeleton />

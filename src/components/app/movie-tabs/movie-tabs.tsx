@@ -142,7 +142,7 @@ export function MovieTabs() {
   );
 }
 
-MovieTabs.Skeleton = function () {
+MovieTabs.Skeleton = function MovieTabsSkeleton() {
   return (
     <div className='max-1120:px-5 max-800:px-0 flex flex-col px-10'>
       <div className='max-800:justify-center max-480:justify-evenly max-420:justify-center max-640:gap-4 max-520:-mx-4 relative flex flex-nowrap gap-6 border-b border-solid pb-1'>

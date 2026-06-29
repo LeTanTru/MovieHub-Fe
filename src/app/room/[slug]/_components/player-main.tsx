@@ -33,7 +33,7 @@ export function PlayerMain() {
   );
 }
 
-PlayerMain.Skeleton = function () {
+PlayerMain.Skeleton = function PlayerMainSkeleton() {
   return (
     <div className='relative flex grow items-center bg-transparent'>
       <div className='relative size-full grow'>

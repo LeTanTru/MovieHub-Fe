@@ -32,7 +32,7 @@ type MovieGridSkeletonProps = {
   skeletonCount?: number;
 };
 
-MovieGrid.Skeleton = function ({
+MovieGrid.Skeleton = function MovieGridSkeleton({
   className,
   skeletonCount = 16
 }: MovieGridSkeletonProps) {

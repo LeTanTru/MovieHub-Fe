@@ -53,7 +53,7 @@ export function ScheduleItem({ schedule }: ScheduleItemProps) {
   );
 }
 
-ScheduleItem.Skeleton = function () {
+ScheduleItem.Skeleton = function ScheduleItemSkeleton() {
   return (
     <div className='border-transparent-white-20 bg-outer-space relative flex items-center justify-between gap-4 rounded-[12px] border border-solid p-2.5'>
       <div className='w-12.5 shrink-0'>

@@ -175,7 +175,7 @@ export function MovieSide() {
   );
 }
 
-MovieSide.Skeleton = function () {
+MovieSide.Skeleton = function MovieSideSkeleton() {
   return (
     <div className='bg-main-background/60 max-1360:p-7.5 max-1360:w-95 max-1280:bg-transparent max-1280:backdrop-blur-none max-1280:p-0 max-1280:w-85 max-1120:w-full max-1120:mb-0 max-1120:text-center flex w-110 shrink-0 flex-col rounded-tl-[20px] rounded-tr-[48px] rounded-br-[20px] rounded-bl-[20px] p-10 backdrop-blur-[20px]'>
       <div className='max-1120:mx-auto mb-4 w-30'>

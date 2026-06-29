@@ -138,7 +138,7 @@ export function MovieInfo() {
   );
 }
 
-MovieInfo.Skeleton = function () {
+MovieInfo.Skeleton = function MovieInfoSkeleton() {
   return (
     <div className='border-light-gray relative border-t border-white/13 px-2 py-4'>
       <div className='mx-auto flex w-full max-w-375 items-stretch justify-between gap-8 p-6'>

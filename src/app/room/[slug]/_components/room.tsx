@@ -21,7 +21,7 @@ import { Watch } from './watch';
 export function Room() {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
-  const { data: roomData } = useRoomQuery({ id, enabled: !!id });
+  const { data: roomData, isLoading } = useRoomQuery({ id, enabled: !!id });
   const setRoom = useRoomStore((state) => state.setRoom);
   const client = getMqttClient();
 
@@ -73,6 +73,8 @@ export function Room() {
     return () => clearInterval(interval);
   }, [client, room]);
 
+  if (isLoading) return <Room.Skeleton />;
+
   if (errorCode === ErrorCode.ROOM_ERROR_NOT_FOUND || !room) {
     return <NotFound />;
   }
@@ -84,3 +86,12 @@ export function Room() {
     </div>
   );
 }
+
+Room.Skeleton = function RoomSkeleton() {
+  return (
+    <div className='relative flex w-full items-start justify-between overflow-auto bg-black'>
+      <Watch.Skeleton />
+      <Chat.Skeleton />
+    </div>
+  );
+};
