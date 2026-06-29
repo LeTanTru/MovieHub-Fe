@@ -18,10 +18,11 @@ type MovieProps = {
 };
 
 export function Movie({ id }: MovieProps) {
-  const { setMovie, setMoviePerson } = useMovieStore(
+  const { setMovie, setMoviePerson, reset } = useMovieStore(
     useShallow((s) => ({
       setMovie: s.setMovie,
-      setMoviePerson: s.setMoviePerson
+      setMoviePerson: s.setMoviePerson,
+      reset: s.reset
     }))
   );
 
@@ -37,10 +38,18 @@ export function Movie({ id }: MovieProps) {
 
   useIsomorphicLayoutEffect(() => {
     if (movie) setMovie(movie);
-  }, [movie, setMovie]);
+
+    return () => {
+      reset();
+    };
+  }, [movie, setMovie, reset]);
 
   useIsomorphicLayoutEffect(() => {
     setMoviePerson(moviePerson);
+
+    return () => {
+      setMoviePerson([]);
+    };
   }, [moviePerson, setMoviePerson]);
 
   if (isLoading) return <Movie.Skeleton />;

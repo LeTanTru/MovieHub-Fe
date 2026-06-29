@@ -46,7 +46,7 @@ export const useRoomByCodeQuery = ({
   });
 };
 
-export const useRoomByIdQuery = ({
+export const useRoomQuery = ({
   id,
   enabled
 }: {
@@ -65,15 +65,6 @@ export const useJoinRoomMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.ROOM_JOIN],
     mutationFn: (id: string) => roomApiRequest.join(id)
-  });
-};
-
-export const useMyRoomsQuery = ({ enabled }: { enabled?: boolean } = {}) => {
-  return useQuery({
-    queryKey: [queryKeys.ROOM_MY_ROOMS],
-    queryFn: ({ signal }) => roomApiRequest.getMyRooms(signal),
-    enabled,
-    select: (data) => data.data
   });
 };
 

@@ -4,6 +4,7 @@ export { FallingStarIcon } from './falling-star';
 export { HeartIcon } from './heart';
 export { InfoIcon } from './info';
 export { LikeIcon } from './like';
+export { MessageEmptyIcon } from './message-empty-icon';
 export { MessageIcon } from './message';
 export { PlayIcon } from './play';
 export { PlaylistIcon } from './playlist';

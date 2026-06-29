@@ -19,23 +19,30 @@ import {
   roomKinds,
   storageKeys
 } from '@/constants';
-import { useIsMounted } from '@/hooks';
+import { useIsMounted, useNavigate } from '@/hooks';
 import { logger } from '@/logger';
-import { useCreateRoomMutation } from '@/queries';
+import { useCreateRoomMutation, useMovieItemQuery } from '@/queries';
+import { route } from '@/routes';
 import { roomSchema } from '@/schemaValidations';
 import { RoomBodyType, UserAutoCompleteResType } from '@/types';
-import { getData, notify, removeData } from '@/utils';
-import { useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { getData, notify } from '@/utils';
+import { useMemo, useState } from 'react';
+import type { UseFormReturn } from 'react-hook-form';
 
 export default function NewRoomForm() {
   const isMounted = useIsMounted();
+  const navigate = useNavigate();
   const [showConfirmCancel, setShowConfirmCancel] = useState<boolean>(false);
   const { mutate: createRoom, isPending } = useCreateRoomMutation();
 
   const [movieItemId] = useState(
     () => getData(storageKeys.ROOM_MOVIE_ITEM_ID) || ''
   );
+
+  const { data: movieItem } = useMovieItemQuery({
+    id: movieItemId,
+    enabled: !!movieItemId
+  });
 
   const defaultValues: RoomBodyType = {
     accountIds: [],
@@ -46,12 +53,23 @@ export default function NewRoomForm() {
     startTime: ''
   };
 
+  const initialValues: RoomBodyType = useMemo(() => {
+    return {
+      accountIds: [],
+      isStartNow: false,
+      kind: ROOM_KIND_PUBLIC,
+      movieItemId,
+      name: `Cùng xem ${movieItem?.movie?.title || ''}`,
+      startTime: ''
+    };
+  }, [movieItem?.movie?.title, movieItemId]);
+
   const onSubmit = (values: RoomBodyType) => {
     createRoom(values, {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Tạo phòng thành công');
-          removeData(storageKeys.ROOM_MOVIE_ITEM_ID);
+          navigate.push(route.room.manage.path);
         } else {
           notify.error('Tạo phòng thất bại');
         }
@@ -74,6 +92,7 @@ export default function NewRoomForm() {
     <BaseForm
       className='w-full bg-transparent p-0'
       defaultValues={defaultValues}
+      initialValues={initialValues}
       onSubmit={onSubmit}
       schema={roomSchema}
     >

@@ -138,9 +138,6 @@ export const IS_DEV_MODE = 'is_dev_mode';
 export const ENV_PRODUCTION = 'production';
 export const ENV_DEVELOPMENT = 'development';
 
-export const ROOM_TAB_LATEST = 'latest';
-export const ROOM_TAB_POPULAR = 'popular';
-
 export const ROOM_STATE_ALL = -1;
 export const ROOM_STATE_PENDING = 0;
 export const ROOM_STATE_RUNNING = 1;

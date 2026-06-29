@@ -55,3 +55,13 @@ export type RoomResType = {
 export type RoomSearchType = z.infer<typeof roomSearchSchema> & BaseSearchType;
 
 export type RoomBodyType = z.infer<typeof roomSchema>;
+
+export type RoomState = {
+  room: RoomResType | null;
+};
+
+export type RoomActions = {
+  setRoom: (room: RoomResType | null) => void;
+};
+
+export type RoomStoreType = RoomState & RoomActions;

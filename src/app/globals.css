@@ -55,7 +55,7 @@ html.modal-open [data-modal-portal] {
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  --spacing-header: 90px;
+  --spacing-header: 80px;
   --spacing-fixed-header: 70px;
   --spacing-search-form: 44.8px;
   --spacing-page-height: calc(100vh - var(--spacing-header));
@@ -64,6 +64,7 @@ html.modal-open [data-modal-portal] {
   --color-black-alpha-10: rgba(0, 0, 0, 0.1);
   --color-black-denim: #191b24;
   --color-bunker: #0d1117;
+  --color-eerie-black: #111111;
   --color-charade: #282b3a;
   --color-cloud-burst: #212a56;
   --color-covert-black: #15151a;

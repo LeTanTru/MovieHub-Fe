@@ -13,9 +13,11 @@ export function RecommendationRecentWatched() {
       enabled: isAuthenticated
     });
 
-  if (!isAuthenticated || !recentWatchedRecommendations) return null;
+  if (!isAuthenticated) return null;
 
   if (isLoading) return <VerticalBarLoading />;
+
+  if (!recentWatchedRecommendations) return null;
 
   return (
     <div className='max-640:gap-8 flex flex-col gap-12.5'>

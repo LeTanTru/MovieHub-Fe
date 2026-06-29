@@ -26,6 +26,8 @@ export function WatchContinue() {
 
   const { handleDeleteWatchHistory } = useWatchHistoryDelete();
 
+  if (!isAuthenticated) return null;
+
   if (isLoading) return <VerticalBarLoading className='py-20' />;
 
   if (movieHistories.length === 0) return null;

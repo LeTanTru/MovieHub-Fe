@@ -35,7 +35,7 @@ export function NoData({
         alt='No data'
         className={imageClassName}
       />
-      <p className='text-center'>{content}</p>
+      <div className='text-center'>{content}</div>
     </div>
   );
 }

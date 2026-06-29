@@ -4,16 +4,9 @@ import {
   ROOM_STATE_ALL,
   ROOM_STATE_ENDING,
   ROOM_STATE_PENDING,
-  ROOM_STATE_RUNNING,
-  ROOM_TAB_LATEST,
-  ROOM_TAB_POPULAR
+  ROOM_STATE_RUNNING
 } from '@/constants/constant';
 import { OptionType } from '@/types';
-
-export const roomActions: { key: string; label: string }[] = [
-  { key: ROOM_TAB_LATEST, label: 'Mới nhất' },
-  { key: ROOM_TAB_POPULAR, label: 'Phổ biến' }
-];
 
 export const roomStates: OptionType[] = [
   {

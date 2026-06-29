@@ -5,6 +5,7 @@ import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
 import { countries, MAX_PAGE_SIZE } from '@/constants';
 import { generateSlug } from '@/utils';
+import { useAuth, useIsMounted } from '@/hooks';
 import { NavigationMobile } from './navigation-mobile';
 import { NavigationDesktop } from './navigation-desktop';
 
@@ -13,6 +14,9 @@ type NavigationMenuProps = {
 };
 
 export function NavigationMenu({ mode }: NavigationMenuProps) {
+  const { isAuthenticated } = useAuth();
+  const isMounted = useIsMounted();
+
   const { data: categoryListData } = useCategoryListQuery({
     params: {
       size: MAX_PAGE_SIZE
@@ -52,12 +56,16 @@ export function NavigationMenu({ mode }: NavigationMenuProps) {
       href: route.movieType.series.path,
       key: 'series'
     },
-    {
-      label: 'Xem chung',
-      href: route.room.path,
-      isNew: true,
-      key: 'room'
-    },
+    ...(isMounted && isAuthenticated
+      ? [
+          {
+            label: 'Xem chung',
+            href: route.room.path,
+            isNew: true,
+            key: 'room'
+          }
+        ]
+      : []),
     {
       label: 'Quốc gia',
       submenu: true,

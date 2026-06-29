@@ -1,26 +1,25 @@
 'use client';
 
-import { invalidateQueries, notify } from '@/utils';
-import { Button } from '@/components/form';
-import { queryKeys, ROOM_STATE_ALL } from '@/constants';
 import { roomApiRequest } from '@/api-requests';
-import { RoomCard } from './room-card';
-import { RoomListHeader } from './room-list-header';
-import { RoomResType, RoomSearchType } from '@/types';
-import { useAuth, useLoadMore } from '@/hooks';
-import { useState } from 'react';
-import { useDeleteRoomMutation, useJoinRoomMutation } from '@/queries';
+import { RoomCard, RoomCreateButton } from '@/app/room/_components';
+import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
-import { logger } from '@/logger';
 import { NoData } from '@/components/no-data';
-import { PlusCircle } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { queryKeys } from '@/constants';
+import { useAuth, useLoadMore, useNavigate } from '@/hooks';
+import { cn } from '@/lib';
+import { logger } from '@/logger';
+import { useDeleteRoomMutation, useJoinRoomMutation } from '@/queries';
+import { RoomResType, RoomSearchType } from '@/types';
+import { invalidateQueries, notify } from '@/utils';
+import { ChevronLeft, PlusCircle } from 'lucide-react';
 
 const ROOM_SKELETON_COUNT = 20;
 
 export function RoomList() {
-  const [roomState, setRoomState] = useState<number>(ROOM_STATE_ALL);
-
-  const { isAuthenticated, profile } = useAuth();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const {
     data: roomList = [],
@@ -32,9 +31,9 @@ export function RoomList() {
     remainingElements
   } = useLoadMore<HTMLDivElement, RoomSearchType, RoomResType>({
     enabled: isAuthenticated,
-    params: { state: roomState !== ROOM_STATE_ALL ? roomState : undefined },
-    queryFn: roomApiRequest.getList,
-    queryKey: queryKeys.ROOM_LIST
+    params: {},
+    queryFn: roomApiRequest.getMyRooms,
+    queryKey: queryKeys.MY_ROOM_LIST
   });
 
   const { mutate: joinRoom } = useJoinRoomMutation();
@@ -60,12 +59,24 @@ export function RoomList() {
 
   return (
     <div className='relative mx-auto w-full max-w-475 px-12.5'>
-      <RoomListHeader
-        loading={isLoading}
-        roomState={roomState}
-        totalRoom={totalElements}
-        setRoomState={setRoomState}
-      />
+      <div className='relative mb-4 flex min-h-11 items-center justify-start gap-4'>
+        <Button
+          variant='ghost'
+          className='size-9 rounded-full border border-solid border-white hover:bg-transparent hover:opacity-80'
+          onClick={() => navigate.back()}
+        >
+          <ChevronLeft className='size-6' />
+        </Button>
+        <h3 className='flex items-center text-2xl leading-[1.4] font-bold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'>
+          Quản lý xem chung&nbsp;
+          {!isAuthenticated || isLoading ? (
+            <Skeleton className='skeleton h-6 w-10' />
+          ) : (
+            `(${totalElements})`
+          )}
+        </h3>
+        <RoomCreateButton className='h-8 bg-white px-3! text-black hover:text-black hover:opacity-80' />
+      </div>
       {!isAuthenticated || isLoading ? (
         <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
           {Array.from({ length: ROOM_SKELETON_COUNT }).map((_, index) => (
@@ -82,7 +93,10 @@ export function RoomList() {
               <div className='flex items-center justify-center'>
                 Hãy nhấn vào nút&nbsp;
                 <Button
-                  className='group flex items-center justify-center gap-2 rounded-4xl border border-white font-medium text-white backdrop-blur-[10px] hover:border-white/80 hover:text-white/80'
+                  className={cn(
+                    'group flex items-center justify-center gap-2 rounded-4xl border border-white font-medium text-white backdrop-blur-[10px] hover:border-white/80 hover:text-white/80',
+                    'h-8 bg-white px-3! text-black hover:text-black hover:opacity-80'
+                  )}
                   variant='outline'
                 >
                   <PlusCircle className='max-640:size-4 size-4.5 fill-white text-black group-hover:opacity-80' />
@@ -100,12 +114,13 @@ export function RoomList() {
               key={room.id}
               room={room}
               onJoin={joinRoom}
-              isOwner={room.host.id == profile?.id}
+              isOwner
               onDelete={() => handleDeleteRoom(room.id)}
             />
           ))}
         </div>
       )}
+
       {hasMore && (
         <div className='flex justify-center pt-10'>
           {isLoadingMore ? (

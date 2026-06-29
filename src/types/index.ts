@@ -4,6 +4,7 @@ export * from './api.type';
 export * from './app-version.type';
 export * from './auth.type';
 export * from './category.type';
+export * from './chat.type';
 export * from './collection-item.type';
 export * from './collection.type';
 export * from './comment.type';

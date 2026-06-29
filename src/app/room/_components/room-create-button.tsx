@@ -3,9 +3,14 @@
 import { Button } from '@/components/form';
 import { Modal } from '@/components/modal';
 import { useDisclosure } from '@/hooks';
+import { cn } from '@/lib';
 import { PlusCircle, Podcast } from 'lucide-react';
 
-export function RoomCreateButton() {
+type RoomCreateButtonProps = {
+  className?: string;
+};
+
+export function RoomCreateButton({ className }: RoomCreateButtonProps) {
   const { opened, toggle } = useDisclosure();
 
   const handleToggle = () => {
@@ -15,7 +20,10 @@ export function RoomCreateButton() {
   return (
     <>
       <Button
-        className='group flex items-center justify-center gap-2 rounded-4xl border border-white font-medium text-white backdrop-blur-[10px] hover:border-white/80 hover:text-white/80'
+        className={cn(
+          'group flex items-center justify-center gap-2 rounded-4xl border border-white font-medium text-white backdrop-blur-[10px] hover:border-white/80 hover:text-white/80',
+          className
+        )}
         variant='outline'
         onClick={handleToggle}
       >

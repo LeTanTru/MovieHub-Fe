@@ -12,9 +12,11 @@ export function Recommendation() {
     enabled: isAuthenticated
   });
 
-  if (movieList.length === 0 || !isAuthenticated) return null;
+  if (!isAuthenticated) return null;
 
   if (isLoading) return <VerticalBarLoading />;
+
+  if (movieList.length === 0) return null;
 
   return <MovieList movieList={movieList} />;
 }

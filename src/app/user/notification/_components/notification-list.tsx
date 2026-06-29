@@ -173,7 +173,7 @@ export function NotificationList() {
           )}
         </div>
       </div>
-      {isLoading ? (
+      {!canListNotification || isLoading ? (
         <List className='w-full'>
           {Array.from({ length: NOTIFICATION_SKELETON_COUNT }).map(
             (_, index) =>

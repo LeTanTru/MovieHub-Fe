@@ -123,12 +123,12 @@ export const reviewQueryKeys = {
 
 export const roomQueryKeys = {
   CHECK_ROOM: 'check-room',
+  MY_ROOM_LIST: 'my-room-list',
   ROOM_CREATE: 'room-create',
   ROOM_DELETE: 'room-delete',
   ROOM_END: 'room-end',
   ROOM_JOIN: 'room-join',
   ROOM_LIST: 'room-list',
-  ROOM_MY_ROOMS: 'room-my-rooms',
   ROOM_START: 'room-start',
   ROOM: 'room'
 };

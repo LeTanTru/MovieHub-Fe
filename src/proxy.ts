@@ -10,7 +10,7 @@ const authPaths = [
   '/verify-otp'
 ];
 
-const privatePaths = ['/account', '/survey', '/user'];
+const privatePaths = ['/account', '/survey', '/user', '/room'];
 
 export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
@@ -61,6 +61,8 @@ export const config = {
     '/account',
     '/account/:path*',
     '/survey',
-    '/survey/:path*'
+    '/survey/:path*',
+    '/room',
+    '/room/:path*'
   ]
 };

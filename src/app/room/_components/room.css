@@ -67,6 +67,10 @@
   animation: live-avatar 2s linear infinite;
 }
 
+.live-pending {
+  animation: live-pending 1s linear infinite;
+}
+
 @keyframes light-blur {
   0% {
     background-color: #fffa;
@@ -106,5 +110,17 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes live-pending {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(180deg);
   }
 }
