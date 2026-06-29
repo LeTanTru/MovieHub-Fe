@@ -96,7 +96,10 @@ html.modal-open [data-modal-portal] {
   --color-top-slider: #202331;
   --color-transparent-black-1: #0001;
   --color-transparent-black-2: #0002;
+  --color-transparent-black-3: #0003;
+  --color-transparent-black-8: #0008;
   --color-transparent-black-9: #0009;
+  --color-transparent-black-b0: #000000b0;
   --color-transparent-white-1: #fff1;
   --color-transparent-white-20: #ffffff20;
   --color-transparent-white: #ffffff10;
@@ -381,5 +384,76 @@ html.modal-open [data-modal-portal] {
   .comment-input-emoji-picker {
     right: 120px !important;
     top: 0px !important;
+  }
+}
+
+.live-flash {
+  animation: live-flash 1s linear infinite;
+}
+
+.room-mask {
+  -webkit-mask-image: linear-gradient(0deg, transparent, black 30%);
+  mask-image: linear-gradient(0deg, transparent, black 30%);
+}
+
+.live-avatar {
+  animation: live-avatar 2s linear infinite;
+}
+
+.live-pending {
+  animation: live-pending 1s linear infinite;
+}
+
+@keyframes light-blur {
+  0% {
+    background-color: #fffa;
+  }
+
+  33% {
+    background-color: #db586e;
+  }
+
+  66% {
+    background-color: #6477c2;
+  }
+
+  to {
+    background-color: #fffa;
+  }
+}
+
+@keyframes live-flash {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes live-avatar {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes live-pending {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(180deg);
   }
 }

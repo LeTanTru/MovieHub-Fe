@@ -15,7 +15,7 @@ import { logger } from '@/logger';
 import { NoData } from '@/components/no-data';
 import { PlusCircle } from 'lucide-react';
 
-const ROOM_SKELETON_COUNT = 20;
+const ROOM_SKELETON_COUNT = 10;
 
 export function RoomList() {
   const [roomState, setRoomState] = useState<number>(ROOM_STATE_ALL);
