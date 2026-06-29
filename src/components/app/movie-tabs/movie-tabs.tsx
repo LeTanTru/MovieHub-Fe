@@ -121,7 +121,7 @@ export function MovieTabs() {
         })}
 
         <div
-          className='bg-golden-glow absolute -bottom-px h-0.5 rounded transition-all duration-300 ease-in-out'
+          className='bg-golden-glow absolute -bottom-px h-0.5 rounded transition-all duration-200 ease-linear'
           style={{
             left: `${indicatorStyle.left}px`,
             width: `${indicatorStyle.width}px`,

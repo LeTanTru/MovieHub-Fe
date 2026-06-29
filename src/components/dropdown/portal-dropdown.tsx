@@ -68,7 +68,7 @@ export function PortalDropdown({
     return () => document.removeEventListener('mousedown', handleMouseDown);
   }, [opened, close]);
 
-  // Position tracking: update on open, scroll, and resize
+  // Position tracking: update on open, scroll, resize, and layout shifts
   useEffect(() => {
     if (!opened) return;
 
@@ -80,13 +80,26 @@ export function PortalDropdown({
         (align === 'right'
           ? rect.right + window.scrollX
           : rect.left + window.scrollX) + offsetX;
-      setPos({ top, left });
+
+      setPos((prev) => {
+        if (prev.top === top && prev.left === left) return prev;
+        return { top, left };
+      });
     };
 
     updatePos();
+
+    let rafId: number;
+    const loop = () => {
+      updatePos();
+      rafId = requestAnimationFrame(loop);
+    };
+    rafId = requestAnimationFrame(loop);
+
     window.addEventListener('scroll', updatePos, { passive: true });
     window.addEventListener('resize', updatePos, { passive: true });
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', updatePos);
       window.removeEventListener('resize', updatePos);
     };

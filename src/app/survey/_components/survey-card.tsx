@@ -46,7 +46,7 @@ export function SurveyCard({
           )}
           <IoMdCheckmarkCircleOutline
             className={cn(
-              'max-990:size-14 max-480:size-10 size-18 text-white transition-all duration-200 ease-in-out',
+              'max-990:size-14 max-480:size-10 size-18 text-white transition-all duration-200 ease-linear',
               {
                 'opacity-100': isSelected,
                 'opacity-0': !isSelected

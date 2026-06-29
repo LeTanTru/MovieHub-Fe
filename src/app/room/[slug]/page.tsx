@@ -1,10 +1,9 @@
-import { Room } from '@/app/room/[slug]/_components';
-import { Container } from '@/components/layout';
-import { getQueryClient } from '@/components/providers/query-provider';
 import { BreadcrumbListJsonLd } from '@/components/seo';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { envConfig } from '@/config';
 import { getIdFromSlug } from '@/utils';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { getQueryClient } from '@/components/providers/query-provider';
+import { Room } from '@/app/room/[slug]/_components';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -55,9 +54,7 @@ export default async function RoomPage({ params }: RoomPageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <BreadcrumbListJsonLd items={breadcrumbItems} />
-      <Container className='min-h-page-height pt-header'>
-        <Room />
-      </Container>
+      <Room />
     </HydrationBoundary>
   );
 }
