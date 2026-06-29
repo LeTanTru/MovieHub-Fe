@@ -1,13 +1,58 @@
+import { Room } from '@/app/room/[id]/_components';
 import { Container } from '@/components/layout';
 import { getQueryClient } from '@/components/providers/query-provider';
+import { BreadcrumbListJsonLd } from '@/components/seo';
+import { envConfig } from '@/config';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import type { Metadata } from 'next';
 
-export default async function WatchPage() {
+export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Phòng xem phim',
+  description:
+    'Tham gia phòng xem phim trực tuyến cùng bạn bè trên MovieHub. Cùng thưởng thức phim yêu thích và trò chuyện theo thời gian thực.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: [
+    'phòng xem phim',
+    'watch party',
+    'xem phim cùng bạn bè',
+    'moviehub'
+  ],
+  openGraph: {
+    title: 'Phòng xem phim — MovieHub',
+    description:
+      'Tham gia phòng xem phim trực tuyến cùng bạn bè trên MovieHub.',
+    url: '/room'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Phòng xem phim — MovieHub',
+    description: 'Tham gia phòng xem phim trực tuyến cùng bạn bè trên MovieHub.'
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
+};
+
+type RoomPageProps = { params: Promise<{ id: string }> };
+
+export default async function RoomPage({ params }: RoomPageProps) {
+  const { id } = await params;
   const queryClient = getQueryClient();
+
+  const breadcrumbItems = [
+    { name: 'Trang chủ', item: envConfig.NEXT_PUBLIC_URL },
+    { name: 'Phòng xem phim', item: `${envConfig.NEXT_PUBLIC_URL}/room/${id}` }
+  ];
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container className='bg-vulcan max-1600:py-28 max-1360:pt-25 max-990:pb-24 max-640:pb-20 room min-h-page-height relative flex flex-col gap-16 py-40'></Container>
+      <BreadcrumbListJsonLd items={breadcrumbItems} />
+      <Container className='bg-vulcan min-h-page-height pt-header relative flex flex-col gap-16'>
+        <Room />
+      </Container>
     </HydrationBoundary>
   );
 }

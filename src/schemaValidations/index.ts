@@ -1,6 +1,7 @@
 export * from './account.schema';
 export * from './auth.schema';
 export * from './category.schema';
+export * from './chat.schema';
 export * from './collection-item.schema';
 export * from './collection.schema';
 export * from './comment.schema';

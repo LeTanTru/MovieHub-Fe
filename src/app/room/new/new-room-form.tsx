@@ -19,17 +19,19 @@ import {
   roomKinds,
   storageKeys
 } from '@/constants';
-import { useIsMounted } from '@/hooks';
+import { useIsMounted, useNavigate } from '@/hooks';
 import { logger } from '@/logger';
 import { useCreateRoomMutation, useMovieItemQuery } from '@/queries';
+import { route } from '@/routes';
 import { roomSchema } from '@/schemaValidations';
 import { RoomBodyType, UserAutoCompleteResType } from '@/types';
-import { getData, notify, removeData } from '@/utils';
+import { getData, notify } from '@/utils';
 import { useMemo, useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 
 export default function NewRoomForm() {
   const isMounted = useIsMounted();
+  const navigate = useNavigate();
   const [showConfirmCancel, setShowConfirmCancel] = useState<boolean>(false);
   const { mutate: createRoom, isPending } = useCreateRoomMutation();
 
@@ -67,7 +69,7 @@ export default function NewRoomForm() {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Tạo phòng thành công');
-          removeData(storageKeys.ROOM_MOVIE_ITEM_ID);
+          navigate.push(route.room.manage.path);
         } else {
           notify.error('Tạo phòng thất bại');
         }

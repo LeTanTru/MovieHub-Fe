@@ -47,6 +47,18 @@ export function MovieModal({ movie, pos }: MovieModalProps) {
     (age) => age.value === movie.ageRating
   )?.label;
 
+  const watchHref = (() => {
+    const base = `${route.watch.path}/${movie.slug}.${movie.id}`;
+    if (movie.type === MOVIE_TYPE_SERIES) {
+      const params = new URLSearchParams();
+      if (latestSeason?.label) params.set('season', latestSeason.label);
+      if (latestEpisode?.label) params.set('episode', latestEpisode.label);
+      const qs = params.toString();
+      return qs ? `${base}?${qs}` : base;
+    }
+    return base;
+  })();
+
   return (
     <AnimatePresence>
       {pos && (
@@ -88,10 +100,7 @@ export function MovieModal({ movie, pos }: MovieModalProps) {
                 </h3>
               </div>
               <div className='mb-5 flex items-stretch justify-between gap-2.5'>
-                <ButtonWatchNow
-                  href={`${route.watch.path}/${movie.slug}.${movie.id}`}
-                  variant='popup'
-                />
+                <ButtonWatchNow href={watchHref} variant='popup' />
                 <ButtonLike
                   targetId={movie.id}
                   refetch={!!pos}

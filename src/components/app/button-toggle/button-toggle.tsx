@@ -3,19 +3,21 @@
 import { cn } from '@/lib';
 
 type ButtonToggleProps = {
+  align?: 'left' | 'right';
+  className?: string;
+  disabled?: boolean;
+  text: string;
   toggle: boolean;
   onToggle: () => void;
-  text: string;
-  disabled?: boolean;
-  className?: string;
 };
 
 export function ButtonToggle({
-  toggle,
-  onToggle,
-  text,
+  align = 'right',
+  className,
   disabled,
-  className
+  text,
+  toggle,
+  onToggle
 }: ButtonToggleProps) {
   return (
     <div
@@ -25,7 +27,8 @@ export function ButtonToggle({
         'flex items-center gap-x-2',
         {
           'pointer-events-none relative cursor-not-allowed opacity-50 select-none':
-            disabled
+            disabled,
+          'flex-row-reverse': align === 'left'
         },
         className
       )}

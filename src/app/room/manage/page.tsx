@@ -2,6 +2,35 @@ import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { RoomList } from '@/app/room/manage/_components';
+import { envConfig } from '@/config';
+import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Quản lý phòng xem phim',
+  description:
+    'Quản lý các phòng xem phim của bạn trên MovieHub — tạo, chỉnh sửa và theo dõi phòng xem phim cùng bạn bè.',
+  metadataBase: new URL(envConfig.NEXT_PUBLIC_URL),
+  keywords: ['quản lý phòng', 'phòng xem phim', 'watch party', 'moviehub'],
+  openGraph: {
+    title: 'Quản lý phòng xem phim — MovieHub',
+    description: 'Quản lý các phòng xem phim của bạn trên MovieHub.',
+    url: '/room/manage'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Quản lý phòng xem phim — MovieHub',
+    description: 'Quản lý các phòng xem phim của bạn trên MovieHub.'
+  },
+  alternates: {
+    canonical: '/room/manage'
+  },
+  robots: {
+    index: false,
+    follow: false
+  }
+};
 
 export default function RoomManagePage() {
   const queryClient = getQueryClient();
