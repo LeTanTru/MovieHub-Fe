@@ -33,10 +33,15 @@ export const useMqtt = <T>({ topic, cmd, callback }: UseMqttType<T>) => {
       }
     };
 
+    client.subscribe(topic, (err) => {
+      if (err) logger.error(`[MQTT_SUB_ERROR] ${topic}: ${err}`);
+    });
+
     client.on('message', handleMessage);
 
     return () => {
       client.off('message', handleMessage);
+      client.unsubscribe(topic);
     };
   }, [topic, cmd, client]);
 };

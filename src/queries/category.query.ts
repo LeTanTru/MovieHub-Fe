@@ -22,7 +22,6 @@ export const useCategoryQuery = (id: string) => {
   return useQuery({
     queryKey: [queryKeys.CATEGORY, id],
     queryFn: ({ signal }) => categoryApiRequest.getById(id, signal),
-    enabled: !!id,
-    select: (data) => data.data
+    enabled: !!id
   });
 };

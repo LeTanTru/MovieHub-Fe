@@ -1,6 +1,6 @@
 'use client';
 
-import { DEFAULT_PAGE_SIZE } from '@/constants';
+import { DEFAULT_PAGE_SIZE, ErrorCode } from '@/constants';
 import { ListHeading } from '@/components/app/heading';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
@@ -19,7 +19,11 @@ export function MovieList({ id }: MovieListProps) {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();
 
-  const { data: category, isLoading: categoryLoading } = useCategoryQuery(id);
+  const { data: categoryData, isLoading: categoryLoading } =
+    useCategoryQuery(id);
+
+  const category = categoryData?.data;
+  const errorCode = categoryData?.code;
 
   const { data: movieListData, isLoading: movieListLoading } =
     useMovieListQuery({
@@ -34,7 +38,9 @@ export function MovieList({ id }: MovieListProps) {
   const movieList = movieListData?.content || [];
   const totalPages = movieListData?.totalPages || 0;
 
-  if (!category) return <NotFound />;
+  if (errorCode === ErrorCode.CATEGORY_ERROR_NOT_FOUND || !category) {
+    return <NotFound />;
+  }
 
   return (
     <div className='max-1600:px-5 max-640:px-4 mx-auto w-full max-w-475 px-12.5'>

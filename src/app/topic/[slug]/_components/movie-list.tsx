@@ -1,7 +1,7 @@
 'use client';
 
 import './topic-detail.css';
-import { DEFAULT_PAGE_SIZE } from '@/constants';
+import { DEFAULT_PAGE_SIZE, ErrorCode } from '@/constants';
 import { getColorList } from '@/utils';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { MovieResType } from '@/types';
@@ -21,8 +21,11 @@ export function MovieList({ collectionId }: MovieListProps) {
     searchParams: { page }
   } = useQueryParams<{ page: string }>();
 
-  const { data: collection, isLoading: collectionLoading } =
+  const { data: collectionData, isLoading: collectionLoading } =
     useCollectionQuery(collectionId);
+
+  const collection = collectionData?.data;
+  const errorCode = collectionData?.code;
 
   const { data: collectionItemListData, isLoading: collectionItemListLoading } =
     useCollectionItemListQuery({
@@ -40,7 +43,7 @@ export function MovieList({ collectionId }: MovieListProps) {
   const getGradientStyle = (dir: string = 'to bottom') =>
     `linear-gradient(${dir}, ${colors.join(', ')})`;
 
-  if (!collection) {
+  if (errorCode === ErrorCode.COLLECTION_ERROR_NOT_FOUND || !collection) {
     return <NotFound />;
   }
 

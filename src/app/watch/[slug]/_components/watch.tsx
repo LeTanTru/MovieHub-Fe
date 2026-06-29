@@ -7,7 +7,7 @@ import { useShallow } from 'zustand/shallow';
 import { NotFound } from './not-found';
 import { WatchContainer } from './watch-container';
 import { WatchPlayer } from './watch-player';
-import { MAX_PAGE_SIZE } from '@/constants';
+import { ErrorCode, MAX_PAGE_SIZE } from '@/constants';
 
 type WatchProps = {
   id: string;
@@ -21,7 +21,10 @@ export function Watch({ id }: WatchProps) {
       reset: s.reset
     }))
   );
-  const { data: movie, isLoading } = useMovieQuery(id);
+  const { data: movieData, isLoading } = useMovieQuery(id);
+
+  const movie = movieData?.data;
+  const errorCode = movieData?.code;
 
   const { data: moviePerson = [] } = useMoviePersonListQuery({
     params: {
@@ -49,7 +52,9 @@ export function Watch({ id }: WatchProps) {
 
   if (isLoading) return <Watch.Skeleton />;
 
-  if (!movie) return <NotFound />;
+  if (errorCode === ErrorCode.MOVIE_ERROR_NOT_FOUND || !movie) {
+    return <NotFound />;
+  }
 
   return (
     <>

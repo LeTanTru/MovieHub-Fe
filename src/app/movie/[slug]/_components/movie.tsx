@@ -2,7 +2,7 @@
 
 import './movie.css';
 import { Container } from '@/components/layout';
-import { MAX_PAGE_SIZE } from '@/constants';
+import { ErrorCode, MAX_PAGE_SIZE } from '@/constants';
 import { MovieMain } from '@/components/app/movie-main';
 import { MovieSide } from '@/components/app/movie-side';
 import { NotFound } from './not-found';
@@ -26,7 +26,10 @@ export function Movie({ id }: MovieProps) {
     }))
   );
 
-  const { data: movie, isLoading } = useMovieQuery(id);
+  const { data: movieData, isLoading } = useMovieQuery(id);
+
+  const movie = movieData?.data;
+  const errorCode = movieData?.code;
 
   const { data: moviePerson = [] } = useMoviePersonListQuery({
     params: {
@@ -54,7 +57,9 @@ export function Movie({ id }: MovieProps) {
 
   if (isLoading) return <Movie.Skeleton />;
 
-  if (!movie) return <NotFound />;
+  if (errorCode === ErrorCode.MOVIE_ERROR_NOT_FOUND || !movie) {
+    return <NotFound />;
+  }
 
   return (
     <>

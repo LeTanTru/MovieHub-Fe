@@ -43,12 +43,14 @@ export function RoomCard({
   const isLive = room.state === ROOM_STATE_RUNNING;
   const isEnd = room.state === ROOM_STATE_ENDING;
 
+  const movieItem = room.movieItem;
+
   const renderMovieTitle = () => {
-    const isSingle = room.movieItem.movie.type === MOVIE_TYPE_SINGLE;
+    const isSingle = movieItem.movie.type === MOVIE_TYPE_SINGLE;
     if (isSingle) {
-      return `P.${room.movieItem.label} - T.${room.movieItem.label} - ${room.movieItem.movie.title}`;
+      return `P.${movieItem.label} - T.${movieItem.label} - ${movieItem.movie.title}`;
     }
-    return `P.${room.movieItem.season.label} - T.${room.movieItem.label} - ${room.movieItem.movie.title}`;
+    return `P.${movieItem.season.label} - T.${movieItem.label} - ${movieItem.movie.title}`;
   };
 
   const handleJoinRoom = () => {
@@ -90,15 +92,15 @@ export function RoomCard({
           className='absolute inset-0 z-3'
         ></Link>
         <Image
-          src={renderImageUrl(room.movieItem.thumbnailUrl)}
-          alt={room.movieItem.title}
+          src={renderImageUrl(movieItem.thumbnailUrl)}
+          alt={movieItem.title}
           fill
           className='absolute inset-0 size-full origin-[center_center] scale-120 object-cover opacity-60 blur-[20px]'
         />
         <div
-          className='room-mask absolute top-0 left-1/2 z-2 h-full w-[39%] -translate-x-1/2 bg-cover bg-top shadow-[0_10px_10px_0_var(--color-transparent-black-2)]'
+          className='room-mask absolute top-0 left-1/2 z-2 h-full w-full -translate-x-1/2 bg-cover bg-top shadow-[0_10px_10px_0_var(--color-transparent-black-2)]'
           style={{
-            backgroundImage: `url("${renderImageUrl(room.movieItem.movie.posterUrl)}")`
+            backgroundImage: `url("${renderImageUrl(movieItem.thumbnailUrl)}")`
           }}
         ></div>
       </div>

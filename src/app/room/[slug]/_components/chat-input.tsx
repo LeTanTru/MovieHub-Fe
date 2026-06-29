@@ -45,7 +45,7 @@ export default function ChatInput() {
             control={form.control}
             name='content'
             formItemClassName='w-full rounded-md bg-white'
-            className='min-h-9 rounded-md py-2 pl-8 text-black focus-visible:ring-transparent!'
+            className='min-h-9 rounded-md bg-gray-100 py-2 pl-8 text-black placeholder:text-gray-400 focus-visible:ring-transparent!'
             placeholder='Chat gì đó...'
             rows={1}
             maxRows={4}

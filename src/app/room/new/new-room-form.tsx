@@ -15,6 +15,8 @@ import { ConfirmModal } from '@/components/modal';
 import { FormLabel } from '@/components/ui/form';
 import {
   apiConfig,
+  queryKeys,
+  ROOM_KIND_PRIVATE,
   ROOM_KIND_PUBLIC,
   roomKinds,
   storageKeys
@@ -25,9 +27,18 @@ import { useCreateRoomMutation, useMovieItemQuery } from '@/queries';
 import { route } from '@/routes';
 import { roomSchema } from '@/schemaValidations';
 import { RoomBodyType, UserAutoCompleteResType } from '@/types';
-import { getData, notify } from '@/utils';
+import { getData, invalidateQueries, notify } from '@/utils';
 import { useMemo, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
+
+const defaultValues: RoomBodyType = {
+  accountIds: [],
+  isStartNow: true,
+  kind: ROOM_KIND_PUBLIC,
+  movieItemId: '',
+  name: '',
+  startTime: ''
+};
 
 export default function NewRoomForm() {
   const isMounted = useIsMounted();
@@ -44,19 +55,10 @@ export default function NewRoomForm() {
     enabled: !!movieItemId
   });
 
-  const defaultValues: RoomBodyType = {
-    accountIds: [],
-    isStartNow: false,
-    kind: ROOM_KIND_PUBLIC,
-    movieItemId,
-    name: '',
-    startTime: ''
-  };
-
   const initialValues: RoomBodyType = useMemo(() => {
     return {
-      accountIds: [],
-      isStartNow: false,
+      accountIds: defaultValues.accountIds,
+      isStartNow: defaultValues.isStartNow,
       kind: ROOM_KIND_PUBLIC,
       movieItemId,
       name: `Cùng xem ${movieItem?.movie?.title || ''}`,
@@ -70,6 +72,7 @@ export default function NewRoomForm() {
         if (res.result) {
           notify.success('Tạo phòng thành công');
           navigate.push(route.room.manage.path);
+          invalidateQueries([queryKeys.ROOM_LIST], [queryKeys.MY_ROOM_LIST]);
         } else {
           notify.error('Tạo phòng thất bại');
         }
@@ -84,6 +87,7 @@ export default function NewRoomForm() {
   const handleCancel = (form: UseFormReturn<RoomBodyType>) => {
     form.clearErrors();
     form.reset(defaultValues);
+    navigate.back();
   };
 
   if (!isMounted) return <NewRoomForm.Skeleton />;
@@ -98,6 +102,7 @@ export default function NewRoomForm() {
     >
       {(form) => {
         const isStartNow = form.watch('isStartNow');
+        const roomKind = form.watch('kind');
 
         return (
           <>
@@ -125,26 +130,8 @@ export default function NewRoomForm() {
             </Row>
             <Row className='bg-charade grid-row-no-gutters mb-3 gap-4 rounded-2xl px-4 py-8'>
               <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
-                <AutoCompleteField<RoomBodyType, UserAutoCompleteResType>
-                  control={form.control}
-                  name='accountIds'
-                  apiConfig={apiConfig.user.autoComplete}
-                  mappingData={(option) => ({
-                    value: option.id,
-                    label: option.fullName
-                  })}
-                  searchParams={['fullName']}
-                  label='3. Mời mọi người tham gia'
-                  isMulti
-                  isMultiLine
-                  placeholder='Mời mọi người tham gia'
-                />
-              </Col>
-            </Row>
-            <Row className='bg-charade grid-row-no-gutters mb-3 gap-4 rounded-2xl px-4 py-8'>
-              <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
                 <FormLabel className='mb-4'>
-                  4. Cài đặt thời gian
+                  3. Cài đặt thời gian
                   <span className='text-destructive'>*</span>
                 </FormLabel>
                 <BooleanField
@@ -169,13 +156,33 @@ export default function NewRoomForm() {
                 </Col>
               )}
             </Row>
+            {roomKind === ROOM_KIND_PRIVATE && (
+              <Row className='bg-charade grid-row-no-gutters mb-3 gap-4 rounded-2xl px-4 py-8'>
+                <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
+                  <AutoCompleteField<RoomBodyType, UserAutoCompleteResType>
+                    control={form.control}
+                    name='accountIds'
+                    apiConfig={apiConfig.user.autoComplete}
+                    mappingData={(option) => ({
+                      value: option.id,
+                      label: option.fullName
+                    })}
+                    searchParams={['fullName']}
+                    label='4. Mời mọi người tham gia'
+                    isMulti
+                    isMultiLine
+                    placeholder='Mời mọi người tham gia'
+                  />
+                </Col>
+              </Row>
+            )}
             <Row className='mb-0 gap-4'>
               <Col className='grid-c-12 max-640:grid-c-6 max-480:grid-c-12'>
                 <Button
                   type='submit'
                   variant='primary'
                   className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
-                  disabled={!form.formState.isDirty || isPending}
+                  disabled={isPending}
                   loading={isPending}
                 >
                   Tạo phòng
@@ -192,7 +199,7 @@ export default function NewRoomForm() {
                       handleCancel(form);
                     }
                   }}
-                  disabled={!form.formState.isDirty || isPending}
+                  disabled={isPending}
                   className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                 >
                   Hủy

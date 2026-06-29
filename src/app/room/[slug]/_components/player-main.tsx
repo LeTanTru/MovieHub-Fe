@@ -33,6 +33,16 @@ export function PlayerMain() {
   );
 }
 
+PlayerMain.Skeleton = function () {
+  return (
+    <div className='relative flex grow items-center bg-transparent'>
+      <div className='relative size-full grow'>
+        <Skeleton className='skeleton bg-gunmetal-blue absolute inset-0 size-full opacity-50' />
+      </div>
+    </div>
+  );
+};
+
 function PopupPending({ room }: { room: RoomResType }) {
   return (
     <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
@@ -51,16 +61,6 @@ function PopupPending({ room }: { room: RoomResType }) {
     </div>
   );
 }
-
-PlayerMain.Skeleton = function () {
-  return (
-    <div className='relative flex grow items-center bg-transparent'>
-      <div className='relative size-full grow'>
-        <Skeleton className='skeleton bg-gunmetal-blue absolute inset-0 size-full opacity-50' />
-      </div>
-    </div>
-  );
-};
 
 function PopupEnded({ room }: { room: RoomResType }) {
   return (

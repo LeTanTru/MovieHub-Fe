@@ -1,18 +1,32 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import { Chat } from './chat';
-import { Watch } from './watch';
-import { getIdFromSlug } from '@/utils';
+import { generateMqttTopic, getIdFromSlug, publishMqttMessage } from '@/utils';
+import { getMqttClient } from '@/lib/mqtt';
+import {
+  ErrorCode,
+  mqttCMDs,
+  mqttTopics,
+  ROOM_STATE_RUNNING
+} from '@/constants';
+import { logger } from '@/logger';
+import { NotFound } from './not-found';
+import { useEffect } from 'react';
+import { useIsomorphicLayoutEffect } from '@/hooks';
+import { useParams } from 'next/navigation';
 import { useRoomQuery } from '@/queries';
 import { useRoomStore } from '@/store';
-import { useIsomorphicLayoutEffect } from '@/hooks';
+import { Watch } from './watch';
 
 export function Room() {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
-  const { data: room } = useRoomQuery({ id, enabled: !!id });
+  const { data: roomData } = useRoomQuery({ id, enabled: !!id });
   const setRoom = useRoomStore((state) => state.setRoom);
+  const client = getMqttClient();
+
+  const room = roomData?.data;
+  const errorCode = roomData?.code;
 
   useIsomorphicLayoutEffect(() => {
     if (room) {
@@ -33,6 +47,35 @@ export function Room() {
       document.title = 'Xem chung phim | MovieHub';
     };
   }, [room]);
+
+  useEffect(() => {
+    if (!room || room.state !== ROOM_STATE_RUNNING) return;
+
+    const sendPing = async () => {
+      try {
+        await publishMqttMessage(
+          client,
+          generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
+          {
+            cmd: mqttCMDs.CLIENT_PING,
+            data: { accountId: room.host.id }
+          }
+        );
+        logger.info('[MQTT] Ping room sent');
+      } catch (err) {
+        logger.error('[MQTT] Ping room failed', err);
+      }
+    };
+
+    sendPing();
+    const interval = setInterval(sendPing, 10_000);
+
+    return () => clearInterval(interval);
+  }, [client, room]);
+
+  if (errorCode === ErrorCode.ROOM_ERROR_NOT_FOUND || !room) {
+    return <NotFound />;
+  }
 
   return (
     <div className='relative flex w-full items-start justify-between overflow-auto bg-black'>

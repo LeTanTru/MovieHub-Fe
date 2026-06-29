@@ -24,5 +24,29 @@ export const ErrorCode = {
   // === Participant error code ===
   PARTICIPANT_ERROR_NOT_FOUND: 'ERROR-PARTICIPANT-0000',
   ROOM_ERROR_ALREADY_JOINED: 'ERROR-PARTICIPANT-0001',
-  ROOM_ERROR_HOST_NOT_JOINED: 'ERROR-PARTICIPANT-0002'
+  ROOM_ERROR_HOST_NOT_JOINED: 'ERROR-PARTICIPANT-0002',
+
+  // === Collection error code ===
+  COLLECTION_ERROR_NOT_FOUND: 'ERROR-COLLECTION-0000',
+
+  // === Movie error code ===
+  MOVIE_ERROR_NOT_FOUND: 'ERROR-MOVIE-ERROR-0000',
+
+  // === Movie item error code ===
+  MOVIE_ITEM_ERROR_NOT_FOUND: 'ERROR-MOVIE-ITEM-ERROR-0000',
+
+  // === Person error code ===
+  PERSON_ERROR_NOT_FOUND: 'ERROR-PERSON-ERROR-0000',
+
+  // === Movie person error code ===
+  MOVIE_PERSON_ERROR_NOT_FOUND: 'ERROR-MOVIE-PERSON-ERROR-0000',
+
+  // === Favorite error code ===
+  FAVOURITE_ERROR_NOT_FOUND: 'ERROR-FAVOURITE-ERROR-0000',
+
+  // === Playlist error code ===
+  PLAYLIST_ERROR_NOT_FOUND: 'ERROR-PLAYLIST-ERROR-0000',
+
+  // === Category error code ===
+  CATEGORY_ERROR_NOT_FOUND: 'ERROR-CATEGORY-ERROR-0000'
 } as const;
