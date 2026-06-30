@@ -141,7 +141,7 @@ export const ENV_DEVELOPMENT = 'development';
 export const ROOM_STATE_ALL = -1;
 export const ROOM_STATE_PENDING = 0;
 export const ROOM_STATE_RUNNING = 1;
-export const ROOM_STATE_ENDING = 2;
+export const ROOM_STATE_ENDED = 2;
 
 export const ROOM_KIND_PRIVATE = 0;
 export const ROOM_KIND_PUBLIC = 1;

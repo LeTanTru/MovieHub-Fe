@@ -1,10 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import {
-  DATE_TIME_FORMAT,
-  GENDER_FEMALE,
-  GENDER_MALE,
-  GENDER_OTHER
-} from '@/constants';
+import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants';
 import { cn } from '@/lib';
 import { CommentResType, ProfileResType } from '@/types';
 import { convertUTCToLocal, timeAgo } from '@/utils';
@@ -69,7 +64,7 @@ export function CommentHeader({
         />
       </div>
       <span
-        title={convertUTCToLocal(comment.createdDate, DATE_TIME_FORMAT)}
+        title={convertUTCToLocal(comment.createdDate)}
         className='max-640:hidden whitespace-nowrap text-gray-400'
       >
         {timeAgo(comment.createdDate)}
@@ -85,7 +80,7 @@ export function CommentHeader({
       )}
       {comment.createdDate !== comment.modifiedDate && (
         <span
-          title={convertUTCToLocal(comment.modifiedDate, DATE_TIME_FORMAT)}
+          title={convertUTCToLocal(comment.modifiedDate)}
           className='max-640:text-[13px] max-520:text-xs whitespace-nowrap text-gray-400'
         >
           (đã cập nhật)

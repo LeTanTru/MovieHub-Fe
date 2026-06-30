@@ -12,7 +12,7 @@ export { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
 export { useLoadMore } from './use-load-more';
 export { useMovie } from './use-movie';
 export { useMovieInfo } from './use-movie-info';
-export { useMqtt } from './use-mqtt';
+export { useMqtt, useMqttSubscribe } from './use-mqtt';
 export { useNavigate } from './use-navigate';
 export { useNotificationActions } from './use-notification-actions';
 export { useNotificationCommentActions } from './use-notification-comment-actions';

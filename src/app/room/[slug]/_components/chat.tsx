@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/form';
-import { ChatBody } from './chat-list';
+import { ChatBody } from './chat-body';
 import { ChatFooter } from './chat-footer';
 import { ChatHeader } from './chat-header';
 import { cn } from '@/lib';
@@ -57,9 +57,8 @@ export function Chat() {
         )}
       >
         <div
-          className={cn('z-9 flex h-full flex-col justify-between', {
-            'bg-eerie-black border-transparent-black-2 rounded-2xl border border-solid':
-              !toggleChatLayout,
+          className={cn('z-9 flex h-full flex-col', {
+            'bg-eerie-black rounded-2xl': !toggleChatLayout,
             'bg-transparent-black-8': toggleChatLayout
           })}
         >
@@ -75,7 +74,7 @@ export function Chat() {
 Chat.Skeleton = function ChatSkeleton() {
   return (
     <div className='h-full w-100 shrink-0 py-2 pr-2'>
-      <div className='bg-eerie-black border-transparent-black-2 z-9 flex h-full flex-col justify-between rounded-2xl border border-solid'>
+      <div className='bg-eerie-black z-9 flex h-full flex-col justify-between rounded-2xl'>
         <ChatHeader.Skeleton />
         <ChatBody.Skeleton />
         <ChatFooter.Skeleton />

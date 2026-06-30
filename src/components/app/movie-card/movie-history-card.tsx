@@ -150,7 +150,9 @@ export function MovieHistoryCard({
 
       {onDelete && (
         <ConfirmModal
-          message={deleteMessage || 'Bạn có chắc chắn muốn xóa phim này không?'}
+          message={
+            deleteMessage || 'Bạn có chắc chắn muốn xóa phim này không ?'
+          }
           onConfirm={() => onDelete(movie.id)}
           trigger={
             <button

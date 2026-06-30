@@ -106,7 +106,7 @@ export function MovieList() {
                 key={movie.id}
                 movie={movie}
                 onDelete={handleDeleteMovieFromPlaylist}
-                deleteMessage='Bạn có chắc chắn muốn xóa phim này khỏi danh dánh sách phát này không?'
+                deleteMessage='Bạn có chắc chắn muốn xóa phim này khỏi danh dánh sách phát này không ?'
                 dir='down'
               />
             ))}

@@ -152,7 +152,7 @@ export function NotificationList() {
 
           {canDeleteNotification && totalElements > 0 && (
             <ConfirmModal
-              message='Bạn có chắc chắn muốn xóa tất cả không báo không?'
+              message='Bạn có chắc chắn muốn xóa tất cả không báo không ?'
               onConfirm={handleDeleteAll}
               trigger={
                 <Button

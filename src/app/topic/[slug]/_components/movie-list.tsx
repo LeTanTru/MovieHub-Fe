@@ -43,12 +43,12 @@ export function MovieList({ collectionId }: MovieListProps) {
   const getGradientStyle = (dir: string = 'to bottom') =>
     `linear-gradient(${dir}, ${colors.join(', ')})`;
 
-  if (collectionLoading || collectionItemListLoading) {
-    return <MovieList.Skeleton />;
+  if (errorCode === ErrorCode.COLLECTION_ERROR_NOT_FOUND) {
+    return <NotFound />;
   }
 
-  if (errorCode === ErrorCode.COLLECTION_ERROR_NOT_FOUND || !collection) {
-    return <NotFound />;
+  if (collectionLoading || collectionItemListLoading || !collection) {
+    return <MovieList.Skeleton />;
   }
 
   return (

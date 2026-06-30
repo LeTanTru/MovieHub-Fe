@@ -168,7 +168,7 @@ export function MovieCard({
         {onDelete && (
           <ConfirmModal
             message={
-              deleteMessage || 'Bạn có chắc chắn muốn xóa phim này không?'
+              deleteMessage || 'Bạn có chắc chắn muốn xóa phim này không ?'
             }
             onConfirm={() => onDelete(movie.id)}
             trigger={

@@ -1,9 +1,5 @@
 import { DislikeIcon, LikeIcon } from '@/assets';
-import {
-  DATE_TIME_FORMAT,
-  REACTION_TYPE_DISLIKE,
-  REACTION_TYPE_LIKE
-} from '@/constants';
+import { REACTION_TYPE_DISLIKE, REACTION_TYPE_LIKE } from '@/constants';
 import { cn } from '@/lib';
 import { CommentResType } from '@/types';
 import { convertUTCToLocal, timeAgo } from '@/utils';
@@ -70,7 +66,7 @@ export function CommentAction({
     <div className='max-640:gap-3 max-480:gap-2.5 relative mt-3 flex items-center gap-4'>
       <div className='flex items-center gap-2'>
         <span
-          title={convertUTCToLocal(comment.createdDate, DATE_TIME_FORMAT)}
+          title={convertUTCToLocal(comment.createdDate)}
           className='max-640:block max-640:min-w-6 max-640:text-[13px] max-520:text-xs hidden text-gray-400'
         >
           {timeAgo(comment.createdDate, true)}
@@ -211,7 +207,7 @@ export function CommentAction({
               )}
               {canDelete && (
                 <ConfirmModal
-                  message='Bạn có chắc chắn muốn xóa bình luận này không?'
+                  message='Bạn có chắc chắn muốn xóa bình luận này không ?'
                   onConfirm={onDelete}
                   trigger={
                     <button

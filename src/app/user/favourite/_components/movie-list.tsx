@@ -45,7 +45,7 @@ export function MovieList({
               key={movie.id}
               movie={movie}
               onDelete={handleDeleteFavourite}
-              deleteMessage='Bạn có chắc chắn muốn xóa phim này khỏi danh sách yêu thích này không?'
+              deleteMessage='Bạn có chắc chắn muốn xóa phim này khỏi danh sách yêu thích này không ?'
               dir='down'
             />
           ))}

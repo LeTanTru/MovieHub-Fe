@@ -38,12 +38,12 @@ export function MovieList({ id }: MovieListProps) {
   const movieList = movieListData?.content || [];
   const totalPages = movieListData?.totalPages || 0;
 
-  if (categoryLoading || movieListLoading) {
-    return <MovieList.Skeleton />;
+  if (errorCode === ErrorCode.CATEGORY_ERROR_NOT_FOUND) {
+    return <NotFound />;
   }
 
-  if (errorCode === ErrorCode.CATEGORY_ERROR_NOT_FOUND || !category) {
-    return <NotFound />;
+  if (categoryLoading || movieListLoading || !category) {
+    return <MovieList.Skeleton />;
   }
 
   return (

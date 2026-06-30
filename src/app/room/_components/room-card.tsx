@@ -3,7 +3,7 @@
 import { AvatarField } from '@/components/form';
 import {
   MOVIE_TYPE_SINGLE,
-  ROOM_STATE_ENDING,
+  ROOM_STATE_ENDED,
   ROOM_STATE_PENDING,
   ROOM_STATE_RUNNING
 } from '@/constants';
@@ -29,7 +29,6 @@ type RoomCardProps = {
   room: RoomResType;
   isOwner?: boolean;
   isDeleting?: boolean;
-  onJoin: (id: string) => void;
   onDelete: () => void;
 };
 
@@ -37,12 +36,11 @@ export function RoomCard({
   room,
   isOwner,
   isDeleting,
-  onJoin,
   onDelete
 }: RoomCardProps) {
   const isPending = room.state === ROOM_STATE_PENDING;
   const isLive = room.state === ROOM_STATE_RUNNING;
-  const isEnd = room.state === ROOM_STATE_ENDING;
+  const isEnd = room.state === ROOM_STATE_ENDED;
 
   const movieItem = room.movieItem;
 
@@ -54,14 +52,9 @@ export function RoomCard({
     return `P.${movieItem.season.label} - T.${movieItem.label} - ${movieItem.movie.title}`;
   };
 
-  const handleJoinRoom = () => {
-    onJoin(room.id);
-  };
-
   return (
     <m.div
       className='relative flex cursor-pointer flex-col gap-3'
-      onClick={handleJoinRoom}
       whileHover={{ y: -10 }}
       whileTap={{
         scale: 0.95
@@ -159,12 +152,12 @@ export function RoomCard({
                 type='button'
                 className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
               >
-                <FaEllipsisVertical className='size-4' />
+                <FaEllipsisVertical className='size-5' />
               </button>
             }
           >
             <ConfirmModal
-              message='Bạn có chắc chắn muốn xóa phòng này không?'
+              message='Bạn có chắc chắn muốn xóa phòng này không ?'
               onConfirm={onDelete}
               trigger={
                 <button

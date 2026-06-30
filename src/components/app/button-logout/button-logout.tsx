@@ -35,7 +35,7 @@ export function ButtonLogout({ className, ...props }: ButtonLogoutProps) {
   };
   return (
     <ConfirmModal
-      message='Bạn có chắc chắn muốn đăng xuất không?'
+      message='Bạn có chắc chắn muốn đăng xuất không ?'
       onConfirm={handleLogout}
       trigger={
         <Button
