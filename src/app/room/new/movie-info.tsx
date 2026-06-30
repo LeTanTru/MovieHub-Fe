@@ -101,12 +101,14 @@ export function MovieInfo() {
   return (
     <div className='bg-cloud-burst relative flex w-107.5 shrink-0 flex-col justify-end gap-5 overflow-hidden rounded-lg p-8'>
       <div className='new-room-mask absolute top-0 right-0 left-0 w-full shrink-0'>
-        <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%] select-none'>
+        <div className='bg-gunmetal-blue relative block aspect-[2/3] w-full overflow-hidden rounded-md'>
           <Image
             src={renderImageUrl(movieItem?.movie.posterUrl)}
             fill
             alt='Image'
-            className='absolute inset-0 h-full w-full object-cover align-middle'
+            sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
+            unoptimized
+            className='absolute inset-0 h-full w-full object-cover'
           />
         </div>
       </div>
@@ -176,7 +178,7 @@ MovieInfo.Skeleton = function MovieInfoSkeleton() {
     <div className='bg-cloud-burst relative flex w-107.5 shrink-0 flex-col justify-end gap-5 overflow-hidden rounded-lg p-8'>
       {/* Skeleton poster */}
       <div className='new-room-mask absolute top-0 right-0 left-0 w-full shrink-0'>
-        <div className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'>
+        <div className='bg-gunmetal-blue relative block aspect-[2/3] w-full overflow-hidden rounded-md'>
           <div className='absolute inset-0 animate-pulse bg-white/5' />
         </div>
       </div>

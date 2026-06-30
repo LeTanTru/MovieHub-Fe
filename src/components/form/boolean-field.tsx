@@ -70,7 +70,7 @@ export function BooleanField<T extends FieldValues>({
                   checked={field.value}
                   onCheckedChange={field.onChange}
                   className={cn(
-                    'peer data-[state=checked]:bg-light-gray focus-visible:ring-light-gray absolute inset-0 h-[inherit] w-auto cursor-pointer focus-visible:border-transparent focus-visible:ring-0 focus-visible:ring-2 data-[state=unchecked]:bg-gray-300 [&_span]:z-10 [&_span]:size-5.5 [&_span]:transition-transform [&_span]:duration-300 [&_span]:ease-[cubic-bezier(0.16,1,0.3,1)] [&_span]:data-[state=checked]:translate-x-[calc(100%+7px)] [&_span]:data-[state=checked]:rtl:-translate-x-full',
+                    'peer data-[state=checked]:bg-light-gray absolute inset-0 h-[inherit] w-auto cursor-pointer focus-visible:border-transparent focus-visible:ring-0 focus-visible:ring-2 data-[state=unchecked]:bg-gray-300 [&_span]:z-10 [&_span]:size-5.5 [&_span]:transition-transform [&_span]:duration-300 [&_span]:ease-[cubic-bezier(0.16,1,0.3,1)] [&_span]:data-[state=checked]:translate-x-[calc(100%+7px)] [&_span]:data-[state=checked]:rtl:-translate-x-full',
                     className
                   )}
                   thumbClassName={thumbClassName}
@@ -98,7 +98,7 @@ export function BooleanField<T extends FieldValues>({
                   className={cn(
                     'cursor-pointer',
                     {
-                      'cursor-not-allowed': disabled
+                      'cursor-not-allowed opacity-50 select-none': disabled
                     },
                     labelClassName
                   )}

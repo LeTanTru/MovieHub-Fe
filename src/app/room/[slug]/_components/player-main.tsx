@@ -23,9 +23,16 @@ import type { TrackProps } from '@vidstack/react';
 import { useAnonymousToken, useAuth } from '@/hooks';
 import { ConfirmModal } from '@/components/modal';
 import { logger } from '@/logger';
+import { useShallow } from 'zustand/shallow';
 
 export function PlayerMain() {
-  const room = useRoomStore((state) => state.room);
+  const { room, isJoined, setIsJoined } = useRoomStore(
+    useShallow((state) => ({
+      room: state.room,
+      isJoined: state.isJoined,
+      setIsJoined: state.setIsJoined
+    }))
+  );
   const { token, isLoadingToken } = useAnonymousToken();
   const { profile } = useAuth();
 
@@ -72,8 +79,14 @@ export function PlayerMain() {
     <div className='relative aspect-video w-full overflow-hidden bg-transparent'>
       {isPending && <PopupPending room={room} />}
       {isEnded && <PopupEnded room={room} />}
-      {isRunning && !isHost && <PopupRunning room={room} isHost={isHost} />}
-      {isRunning && isHost && video ? (
+      {isRunning && !isHost && !isJoined && (
+        <PopupRunning
+          room={room}
+          isHost={isHost}
+          onJoinSuccess={() => setIsJoined(true)}
+        />
+      )}
+      {isRunning && (isHost || isJoined) && video ? (
         isLoadingToken ? (
           <div className='flex size-full items-center justify-center bg-black'>
             <div className='size-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
@@ -108,7 +121,7 @@ export function PlayerMain() {
           <div
             className='absolute inset-0 size-full bg-cover object-contain opacity-50'
             style={{
-              backgroundImage: `url(${renderImageUrl(room.movieItem.thumbnailUrl)})`
+              backgroundImage: `url(${renderImageUrl(room?.movieItem?.thumbnailUrl || '')})`
             }}
           ></div>
         </div>
@@ -129,10 +142,12 @@ PlayerMain.Skeleton = function PlayerMainSkeleton() {
 
 function PopupRunning({
   room,
-  isHost
+  isHost,
+  onJoinSuccess
 }: {
   room: RoomResType;
   isHost: boolean;
+  onJoinSuccess: () => void;
 }) {
   const { mutate: joinRoom } = useJoinRoomMutation();
 
@@ -143,6 +158,7 @@ function PopupRunning({
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Tham gia phòng thành công');
+          onJoinSuccess();
         } else {
           notify.error('Tham gia phòng thất bại');
         }

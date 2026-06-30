@@ -21,7 +21,22 @@ export function NewRoom() {
     () => getData(storageKeys.ROOM_MOVIE_ITEM_ID) || ''
   );
 
-  if (!isMounted || !seasonId || !movieItemId) {
+  if (!isMounted) {
+    return (
+      <div className='relative mx-auto w-full max-w-300 px-12.5'>
+        <div className='relative mb-4 flex min-h-11 items-center justify-start gap-4'>
+          <div className='size-9 animate-pulse rounded-full border border-solid border-white/20' />
+          <div className='h-7 w-48 animate-pulse rounded bg-white/10' />
+        </div>
+        <div className='flex items-stretch gap-6'>
+          <MovieInfo.Skeleton />
+          <NewRoomForm.Skeleton />
+        </div>
+      </div>
+    );
+  }
+
+  if (!seasonId || !movieItemId) {
     return (
       <div className='relative mx-auto w-full max-w-300 px-12.5'>
         <div className='relative mb-4 flex min-h-11 items-center justify-center gap-4'>

@@ -11,7 +11,6 @@ import {
 } from '@/utils';
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
-import { envConfig } from '@/config';
 import { EpisodeList } from './episode-list';
 import { PlaylistIcon } from '@/assets';
 import { useDisclosure } from '@/hooks';
@@ -148,11 +147,9 @@ export function WatchPlayerVideoArea() {
                 ) : null
             }}
             volume={
-              envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
-                ? 0
-                : isMobileDevice() || isTabletDevice()
-                  ? playerSettings.audio / 100 || 1
-                  : playerSettings.audio / 100 || 0.5
+              isMobileDevice() || isTabletDevice()
+                ? playerSettings.audio / 100 || 1
+                : playerSettings.audio / 100 || 0.5
             }
             playbackRate={playerSettings.playbackSpeed || 1}
             defaultQuality={playerSettings.resolution}

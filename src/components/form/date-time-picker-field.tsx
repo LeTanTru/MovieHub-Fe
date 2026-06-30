@@ -152,7 +152,7 @@ export function DateTimePickerField<T extends FieldValues>({
             {label && (
               <FormLabel
                 className={cn('ml-2', labelClassName, {
-                  'opacity-50 select-none': disabled
+                  'cursor-not-allowed opacity-50 select-none': disabled
                 })}
               >
                 {label}
@@ -171,7 +171,7 @@ export function DateTimePickerField<T extends FieldValues>({
                       aria-expanded={open}
                       aria-label='Select date and time'
                       className={cn(
-                        'hover:border-input focus-visible:border-input focus-visible:ring-light-gray bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
+                        'border-input hover:border-input bg-input/30 disabled:hover:bg-input/30 disabled:border-input disabled:hover:border-input hover:bg-input/30 w-full justify-between border px-3! py-0 text-white hover:text-white focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                         {
                           'ring-light-gray border-transparent! ring-2': open,
                           'border-rose-500 ring-rose-500': !!fieldState.error
@@ -179,13 +179,7 @@ export function DateTimePickerField<T extends FieldValues>({
                         className
                       )}
                     >
-                      <span
-                        suppressHydrationWarning
-                        className={cn({
-                          'text-gray-300': !hasValue && !disabled,
-                          'opacity-50': disabled
-                        })}
-                      >
+                      <span suppressHydrationWarning>
                         {(() => {
                           const parsed = parseDate(field.value);
                           return parsed && !isNaN(parsed.getTime())
@@ -195,8 +189,7 @@ export function DateTimePickerField<T extends FieldValues>({
                       </span>
                       <span
                         className={cn('flex items-center gap-1', {
-                          'text-gray-300': !hasValue && !disabled,
-                          'opacity-50': disabled
+                          'text-gray-300': !hasValue && !disabled
                         })}
                       >
                         {allowClear && hasValue && !disabled ? (

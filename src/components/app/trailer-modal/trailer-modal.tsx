@@ -3,7 +3,6 @@
 import './trailer-modal.css';
 import { Modal } from '@/components/modal';
 import { VideoPlayer } from '@/components/video-player';
-import { envConfig } from '@/config';
 import { VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
 import { VideoResType } from '@/types';
 import {
@@ -48,13 +47,7 @@ export function TrailerModal({
           outroStart={video.outroStart}
           className='rounded-md!'
           token={token}
-          volume={
-            envConfig.NEXT_PUBLIC_NODE_ENV === 'development'
-              ? 0
-              : isMobileDevice() || isTabletDevice()
-                ? 1
-                : 0.5
-          }
+          volume={isMobileDevice() || isTabletDevice() ? 1 : 0.5}
         />
       </Modal.Body>
       <Modal.Confirm message='Bạn có chắc chắn muốn đóng không ?' />

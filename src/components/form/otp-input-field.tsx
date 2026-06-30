@@ -64,7 +64,7 @@ export function OtpInputField<T extends FieldValues>({
             <FormLabel
               className={cn(
                 'mb-2',
-                { 'pointer-events-none opacity-50 select-none': disabled },
+                { 'cursor-not-allowed opacity-50 select-none': disabled },
                 labelClassName
               )}
             >
@@ -91,7 +91,7 @@ export function OtpInputField<T extends FieldValues>({
                   {Array.from({ length: length }).map((_, i) => (
                     <InputOTPSlot
                       className={cn(
-                        'data-[active=true]:ring-emerald-primary max-420:size-10 size-12 shrink-0 rounded-md border-l text-base duration-200 ease-linear disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none data-[active=true]:border-none data-[active=true]:ring-2 max-[360px]:size-9',
+                        'max-420:size-10 size-12 shrink-0 rounded-md border-l text-base duration-200 ease-linear disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none data-[active=true]:border-none data-[active=true]:ring-2 data-[active=true]:ring-white max-[360px]:size-9',
                         {
                           'border-rose-500 data-[active=true]:ring-rose-500':
                             !!fieldState.error

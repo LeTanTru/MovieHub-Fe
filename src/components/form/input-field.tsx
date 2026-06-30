@@ -111,7 +111,7 @@ export function InputField<T extends FieldValues>({
             <FormLabel
               className={cn(
                 'ml-2',
-                { 'cursor-not-allowed opacity-50': disabled },
+                { 'cursor-not-allowed opacity-50 select-none': disabled },
                 labelClassName
               )}
             >
@@ -137,13 +137,12 @@ export function InputField<T extends FieldValues>({
                 ref={ref}
                 className={cn(
                   className,
-                  'text-sm font-normal shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
+                  'text-sm font-normal shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-white disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                   {
                     'pl-10': prefixIcon,
                     'pr-10': suffixIcon,
                     'border-rose-500 focus-visible:ring-rose-500':
-                      !!fieldState.error,
-                    'focus-visible:ring-light-gray': !fieldState.error
+                      !!fieldState.error
                   }
                 )}
                 onChange={(e) => {

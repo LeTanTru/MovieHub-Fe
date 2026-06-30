@@ -221,7 +221,6 @@ export function ProfileForm() {
                       }
                     }}
                     disabled={!form.formState.isDirty || updateProfileLoading}
-                    className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                   >
                     Hủy
                   </Button>
