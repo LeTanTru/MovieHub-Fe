@@ -14,11 +14,10 @@ type WatchProps = {
 };
 
 export function Watch({ id }: WatchProps) {
-  const { setMovie, setMoviePerson, reset } = useMovieStore(
+  const { setMovie, setMoviePerson } = useMovieStore(
     useShallow((s) => ({
       setMovie: s.setMovie,
-      setMoviePerson: s.setMoviePerson,
-      reset: s.reset
+      setMoviePerson: s.setMoviePerson
     }))
   );
   const { data: movieData, isLoading } = useMovieQuery(id);
@@ -36,11 +35,7 @@ export function Watch({ id }: WatchProps) {
 
   useIsomorphicLayoutEffect(() => {
     if (movie) setMovie(movie);
-
-    return () => {
-      reset();
-    };
-  }, [movie, setMovie, reset]);
+  }, [movie, setMovie]);
 
   useIsomorphicLayoutEffect(() => {
     setMoviePerson(moviePerson);

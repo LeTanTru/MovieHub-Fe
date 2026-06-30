@@ -10,6 +10,7 @@ import { cn } from '@/lib';
 import { useSelectedPlaylist } from '@/hooks';
 import { PlaylistResType } from '@/types';
 import { FaRegCirclePlay } from 'react-icons/fa6';
+import { m } from 'framer-motion';
 
 type PlaylistCardProps = {
   playlist: PlaylistResType;
@@ -23,7 +24,7 @@ export function PlaylistCard({ playlist }: PlaylistCardProps) {
   };
 
   return (
-    <div
+    <m.div
       role='button'
       tabIndex={0}
       className={cn(
@@ -39,6 +40,12 @@ export function PlaylistCard({ playlist }: PlaylistCardProps) {
           handleSelectPlaylist();
         }
       }}
+      whileTap={{
+        scale: 0.95
+      }}
+      whileHover={{
+        y: -10
+      }}
     >
       <h3 className='max-520:mb-2 mb-4 font-semibold'>{playlist.name}</h3>
       <div className='flex items-center justify-between'>
@@ -52,7 +59,7 @@ export function PlaylistCard({ playlist }: PlaylistCardProps) {
           <ButtonDeletePlaylist id={playlist.id} />
         </div>
       </div>
-    </div>
+    </m.div>
   );
 }
 

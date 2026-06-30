@@ -123,6 +123,9 @@ export function TopMovieCard({ movie, dir = 'up', index }: TopMovieCardProps) {
         whileTap={{
           scale: 0.95
         }}
+        whileHover={{
+          y: -10
+        }}
       >
         <Link
           className='top-movie-card relative block h-0 w-full overflow-hidden rounded-md pb-[150%] transition-all duration-200 ease-linear'

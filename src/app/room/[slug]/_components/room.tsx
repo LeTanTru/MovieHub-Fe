@@ -34,10 +34,6 @@ export function Room() {
     if (room) {
       setRoom(room);
     }
-
-    return () => {
-      setRoom(null);
-    };
   }, [room, setRoom]);
 
   useIsomorphicLayoutEffect(() => {

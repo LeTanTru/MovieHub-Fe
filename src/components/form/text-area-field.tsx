@@ -23,6 +23,7 @@ import {
 import { cn } from '@/lib/utils';
 
 const TEXTAREA_DEFAULT_ROWS = 8;
+const TEXTAREA_DEFAULT_MAX_ROWS = 20;
 
 type TextAreaFieldProps<T extends FieldValues> = {
   control: Control<T>;
@@ -39,6 +40,8 @@ type TextAreaFieldProps<T extends FieldValues> = {
   maxRows?: number;
   ref?: Ref<HTMLTextAreaElement>;
   formItemClassName?: string;
+  autoSize?: boolean;
+  maxLengthClassName?: string;
 } & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export function TextAreaField<T extends FieldValues>({
@@ -53,9 +56,11 @@ export function TextAreaField<T extends FieldValues>({
   readOnly = false,
   maxLength,
   rows = TEXTAREA_DEFAULT_ROWS,
-  maxRows,
   ref,
   formItemClassName,
+  maxRows = TEXTAREA_DEFAULT_MAX_ROWS,
+  autoSize,
+  maxLengthClassName,
   ...rest
 }: TextAreaFieldProps<T>) {
   const id = useId();
@@ -96,16 +101,18 @@ export function TextAreaField<T extends FieldValues>({
                 maxLength={maxLength}
                 rows={rows}
                 style={{
-                  ...(maxRows
-                    ? { maxHeight: `calc(${maxRows} * 1.5rem + 2rem)` }
-                    : {}),
-                  ...rest.style
+                  maxHeight:
+                    maxRows && autoSize
+                      ? `calc(${maxRows} * 1.5rem + 2rem)`
+                      : undefined
                 }}
                 className={cn(
-                  'focus-visible:ring-light-gray scrollbar-none field-sizing-content w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-transparent',
+                  'focus-visible:ring-light-gray scrollbar-none w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-sm placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-transparent',
                   {
                     'border-rose-500 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-rose-500':
-                      !!fieldState.error
+                      !!fieldState.error,
+                    'field-sizing-fixed': !autoSize,
+                    'field-sizing-content': maxRows && autoSize
                   },
                   className
                 )}
@@ -117,15 +124,14 @@ export function TextAreaField<T extends FieldValues>({
                   rest.onChange?.(e);
                 }}
               />
-              {!!maxLength && (
+              {!!maxLength && !fieldState.error && (
                 <div
                   className={cn(
-                    'pointer-events-none absolute top-1 right-1.5 text-xs leading-none select-none',
+                    'pointer-events-none absolute text-xs leading-none select-none',
                     {
-                      'text-muted-foreground': !fieldState.error,
-                      'text-rose-500': !!fieldState.error,
-                      'opacity-50': disabled
-                    }
+                      'top-1 right-1.5': !maxLengthClassName
+                    },
+                    maxLengthClassName
                   )}
                 >
                   {charCount}/{maxLength}

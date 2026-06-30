@@ -121,6 +121,9 @@ export function CinemaMovieCard({ movie, dir = 'up' }: CinemaMovieCardProps) {
         whileTap={{
           scale: 0.95
         }}
+        whileHover={{
+          y: -10
+        }}
       >
         <Link
           href={`${route.movie.path}/${movie.slug}.${movie.id}`}

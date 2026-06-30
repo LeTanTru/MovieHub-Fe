@@ -4,7 +4,7 @@ import { PlayerMain } from './player-main';
 
 export function Player() {
   return (
-    <div className='h-page-height flex shrink-0 flex-col justify-between'>
+    <div className='flex shrink-0 flex-col'>
       <PlayerHeader />
       <PlayerMain />
       <PlayerFooter />
@@ -14,7 +14,7 @@ export function Player() {
 
 Player.Skeleton = function PlayerSkeleton() {
   return (
-    <div className='h-page-height flex shrink-0 flex-col justify-between'>
+    <div className='flex shrink-0 flex-col'>
       <PlayerHeader.Skeleton />
       <PlayerMain.Skeleton />
       <PlayerFooter.Skeleton />

@@ -76,6 +76,9 @@ export function MovieHistoryCard({
       whileTap={{
         scale: 0.95
       }}
+      whileHover={{
+        y: -10
+      }}
     >
       <Link
         className='bg-gunmetal-blue relative block h-0 w-full overflow-hidden rounded-md pb-[150%]'

@@ -135,7 +135,7 @@ export default function CommentReportModal({
                       control={form.control}
                       name='content'
                       rows={4}
-                      maxLength={1000}
+                      maxLength={500}
                       label='Lý do khác'
                       placeholder='Nhập lý do báo cáo...'
                       className='scrollbar-none min-h-25 resize-none bg-transparent'
@@ -145,17 +145,13 @@ export default function CommentReportModal({
               )}
               <Row className='bg-charade sticky bottom-0 z-10 -mx-4 mt-4 -mb-4 flex items-center justify-center border-t px-4 py-4'>
                 <Col className='grid-c-6'>
-                  <Button
-                    type='button'
-                    className='max-640:text-[13px]'
-                    onClick={handleClose}
-                  >
+                  <Button type='button' onClick={handleClose}>
                     Đóng
                   </Button>
                 </Col>
                 <Col className='grid-c-6'>
                   <Button
-                    className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 max-640:text-[13px]'
+                    className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80'
                     variant='primary'
                     loading={isPending}
                     disabled={

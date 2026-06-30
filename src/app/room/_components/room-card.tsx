@@ -16,13 +16,14 @@ import {
   renderImageUrl,
   timeAgo
 } from '@/utils';
-import { Skeleton } from '@/components/ui/skeleton';
+import { ConfirmModal } from '@/components/modal';
 import { EyeIcon, Trash, VideoOff } from 'lucide-react';
+import { FaEllipsisVertical, FaHourglassHalf } from 'react-icons/fa6';
+import { m } from 'framer-motion';
+import { PortalDropdown } from '@/components/dropdown';
+import { Skeleton } from '@/components/ui/skeleton';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaEllipsisVertical, FaHourglassHalf } from 'react-icons/fa6';
-import { ConfirmModal } from '@/components/modal';
-import { PortalDropdown } from '@/components/dropdown';
 
 type RoomCardProps = {
   room: RoomResType;
@@ -58,9 +59,13 @@ export function RoomCard({
   };
 
   return (
-    <div
+    <m.div
       className='relative flex cursor-pointer flex-col gap-3'
       onClick={handleJoinRoom}
+      whileHover={{ y: -10 }}
+      whileTap={{
+        scale: 0.95
+      }}
     >
       <div className='relative block h-0 w-full overflow-hidden rounded-md bg-transparent pb-[56.25%] select-none'>
         <div className='before:absolute before:inset-0 before:z-2 before:bg-[/dotted.webp] before:opacity-30 before:content-[""]'></div>
@@ -95,6 +100,7 @@ export function RoomCard({
           src={renderImageUrl(movieItem.thumbnailUrl)}
           alt={movieItem.title}
           fill
+          sizes='(max-width: 480px) 50vw, (max-width: 640px) 33vw, (max-width: 1024px) 25vw, (max-width: 1600px) 16vw, 12.5vw'
           className='absolute inset-0 size-full origin-[center_center] scale-120 object-cover opacity-60 blur-[20px]'
         />
         <div
@@ -173,7 +179,7 @@ export function RoomCard({
           </PortalDropdown>
         )}
       </div>
-    </div>
+    </m.div>
   );
 }
 
