@@ -45,7 +45,7 @@ export function ButtonDeletePlaylist({ id }: ButtonDeletePlaylistProps) {
 
   return (
     <ConfirmModal
-      message='Bạn có chắc chắn muốn xóa danh sách phát này không?'
+      message='Bạn có chắc chắn muốn xóa danh sách phát này không ?'
       onConfirm={handleDelete}
       loading={isPending}
       trigger={

@@ -132,7 +132,7 @@ export function ReviewAction({
               )}
               {canDelete && (
                 <ConfirmModal
-                  message='Bạn có chắc chắn muốn xóa đánh giá này không?'
+                  message='Bạn có chắc chắn muốn xóa đánh giá này không ?'
                   onConfirm={onDelete}
                   trigger={
                     <button

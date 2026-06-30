@@ -10,7 +10,7 @@ import { queryKeys } from '@/constants';
 import { useAuth, useLoadMore, useNavigate } from '@/hooks';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
-import { useDeleteRoomMutation, useJoinRoomMutation } from '@/queries';
+import { useDeleteRoomMutation } from '@/queries';
 import { RoomResType, RoomSearchType } from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { ChevronLeft, PlusCircle } from 'lucide-react';
@@ -35,8 +35,6 @@ export function RoomList() {
     queryFn: roomApiRequest.getMyRooms,
     queryKey: queryKeys.MY_ROOM_LIST
   });
-
-  const { mutate: joinRoom } = useJoinRoomMutation();
 
   const { mutate: deleteRoom } = useDeleteRoomMutation();
 
@@ -113,7 +111,6 @@ export function RoomList() {
             <RoomCard
               key={room.id}
               room={room}
-              onJoin={joinRoom}
               isOwner
               onDelete={() => handleDeleteRoom(room.id)}
             />

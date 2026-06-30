@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  ROOM_STATE_ENDING,
+  ROOM_STATE_ENDED,
   ROOM_STATE_PENDING,
   ROOM_STATE_RUNNING,
   VIDEO_SOURCE_TYPE_INTERNAL
@@ -10,17 +10,24 @@ import { route } from '@/routes';
 import { useRoomStore } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
 import { RoomResType, VideoLibrarySubtitleResType } from '@/types';
-import { renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
+import { notify, renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
 import Link from 'next/link';
 import { FaHourglassHalf, FaPlay, FaPodcast } from 'react-icons/fa6';
-import { useMovieItemQuery, useVideoLibrarySubtitleListQuery } from '@/queries';
+import {
+  useJoinRoomMutation,
+  useMovieItemQuery,
+  useVideoLibrarySubtitleListQuery
+} from '@/queries';
 import { VideoPlayer } from '@/components/video-player';
 import type { TrackProps } from '@vidstack/react';
-import { useAnonymousToken } from '@/hooks';
+import { useAnonymousToken, useAuth } from '@/hooks';
+import { ConfirmModal } from '@/components/modal';
+import { logger } from '@/logger';
 
 export function PlayerMain() {
   const room = useRoomStore((state) => state.room);
   const { token, isLoadingToken } = useAnonymousToken();
+  const { profile } = useAuth();
 
   const { data: movieItemData } = useMovieItemQuery({
     id: room?.movieItem?.id || '',
@@ -39,8 +46,9 @@ export function PlayerMain() {
 
   if (!room) return <PlayerMain.Skeleton />;
 
+  const isHost = profile?.id === room.host.id;
   const isPending = room.state === ROOM_STATE_PENDING;
-  const isEnded = room.state === ROOM_STATE_ENDING;
+  const isEnded = room.state === ROOM_STATE_ENDED;
   const isRunning = room.state === ROOM_STATE_RUNNING;
 
   const videoLibrarySubtitles = videoLibrarySubtitleListData?.content || [];
@@ -64,7 +72,8 @@ export function PlayerMain() {
     <div className='relative aspect-video w-full overflow-hidden bg-transparent'>
       {isPending && <PopupPending room={room} />}
       {isEnded && <PopupEnded room={room} />}
-      {isRunning && video ? (
+      {isRunning && !isHost && <PopupRunning room={room} isHost={isHost} />}
+      {isRunning && isHost && video ? (
         isLoadingToken ? (
           <div className='flex size-full items-center justify-center bg-black'>
             <div className='size-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
@@ -117,6 +126,55 @@ PlayerMain.Skeleton = function PlayerMainSkeleton() {
     </div>
   );
 };
+
+function PopupRunning({
+  room,
+  isHost
+}: {
+  room: RoomResType;
+  isHost: boolean;
+}) {
+  const { mutate: joinRoom } = useJoinRoomMutation();
+
+  if (isHost) return null;
+
+  const handleJoinRoom = () => {
+    joinRoom(room.id, {
+      onSuccess: (res) => {
+        if (res.result) {
+          notify.success('Tham gia phòng thành công');
+        } else {
+          notify.error('Tham gia phòng thất bại');
+        }
+      },
+      onError: (error) => {
+        logger.error('[JOIN_ROOM_ERROR]', error);
+        notify.error('Tham gia phòng thất bại');
+      }
+    });
+  };
+
+  return (
+    <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
+      <div className='text-base'>Buổi xem chung</div>
+      <div className='text-xl'>
+        <span className='text-golden-glow font-semibold'>
+          {room.movieItem.movie.title}
+        </span>
+      </div>
+      <ConfirmModal
+        message={`Bạn có chắc chắn muốn tham gia phòng "${room.name}" không ?`}
+        onConfirm={handleJoinRoom}
+        trigger={
+          <button className='mx-auto flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-white/80'>
+            <FaPlay />
+            <span>Tham gia</span>
+          </button>
+        }
+      />
+    </div>
+  );
+}
 
 function PopupPending({ room }: { room: RoomResType }) {
   return (

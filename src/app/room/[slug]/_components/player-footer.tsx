@@ -7,6 +7,7 @@ import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useRoomStore } from '@/store';
 import {
+  convertUTCToLocal,
   copyTextToClipboard,
   generateSlug,
   notify,
@@ -52,7 +53,10 @@ export function PlayerFooter() {
           </div>
           <div className='flex flex-col gap-1'>
             <span>{room.host.username || room.host.fullName}</span>
-            <span className='text-dark-gray text-xs'>
+            <span
+              className='text-dark-gray text-xs'
+              title={convertUTCToLocal(room.createdDate)}
+            >
               {timeAgo(room.createdDate)}
             </span>
           </div>

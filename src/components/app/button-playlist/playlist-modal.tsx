@@ -151,7 +151,7 @@ export function PlaylistModal({
           )}
         </BaseForm>
       </Modal.Body>
-      <Modal.Confirm message='Bạn có chắc chắn muốn hủy không?' />
+      <Modal.Confirm message='Bạn có chắc chắn muốn hủy không ?' />
     </Modal>
   );
 }

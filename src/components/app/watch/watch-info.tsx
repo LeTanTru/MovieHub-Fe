@@ -44,7 +44,7 @@ export function WatchInfo() {
     sanitizedDescription
   } = useMovieInfo();
 
-  if (!movie) return null;
+  if (!movie) return <WatchInfo.Skeleton />;
 
   return (
     <div className='max-1280:hidden flex gap-6 border-b border-solid border-white/10 pb-4'>

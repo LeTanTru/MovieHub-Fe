@@ -125,7 +125,7 @@ export function Discussion({
 
   const isActiveLoading = isCommentTab ? commentListLoading : reviewListLoading;
 
-  if (!movie) return null;
+  if (!movie) return <Discussion.Skeleton className={className} />;
 
   return (
     <Element name={toId} id={toId}>

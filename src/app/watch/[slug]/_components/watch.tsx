@@ -45,11 +45,11 @@ export function Watch({ id }: WatchProps) {
     };
   }, [moviePerson, setMoviePerson]);
 
-  if (isLoading) return <Watch.Skeleton />;
-
-  if (errorCode === ErrorCode.MOVIE_ERROR_NOT_FOUND || !movie) {
+  if (errorCode === ErrorCode.MOVIE_ERROR_NOT_FOUND) {
     return <NotFound />;
   }
+
+  if (isLoading || !movie) return <Watch.Skeleton />;
 
   return (
     <>

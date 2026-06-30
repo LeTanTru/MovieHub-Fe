@@ -57,7 +57,7 @@ export function TrailerModal({
           }
         />
       </Modal.Body>
-      <Modal.Confirm message='Bạn có chắc chắn muốn đóng không?' />
+      <Modal.Confirm message='Bạn có chắc chắn muốn đóng không ?' />
     </Modal>
   );
 }

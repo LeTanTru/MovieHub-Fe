@@ -4,7 +4,7 @@ import { SurveyCard } from './survey-card';
 import { useAuth, useNavigate } from '@/hooks';
 import { useMakeSurveyMutation, useSurveyListQuery } from '@/queries';
 import { SurveyResType } from '@/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/form';
 import { notify } from '@/utils';
 import { logger } from '@/logger';
@@ -12,6 +12,8 @@ import { cn } from '@/lib';
 
 export function SurveyList() {
   const navigate = useNavigate();
+  const navigateRef = useRef(navigate);
+
   const { isAuthenticated, profile } = useAuth();
   const { data: movieList = [], isLoading } =
     useSurveyListQuery(!!isAuthenticated);
@@ -54,11 +56,11 @@ export function SurveyList() {
     if (profile?.isMakeSurvey) {
       notify.info('Bạn đã hoàn thành khảo sát rồi');
       const timeoutId = setTimeout(() => {
-        navigate.back();
+        navigateRef.current.back();
       }, 1000);
       return () => clearTimeout(timeoutId);
     }
-  }, [navigate, profile?.isMakeSurvey]);
+  }, [profile?.isMakeSurvey]);
 
   return (
     <>

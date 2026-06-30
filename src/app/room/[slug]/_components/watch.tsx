@@ -1,11 +1,14 @@
 import { MovieInfo } from './movie-info';
 import { Player } from './player';
 
-import { useChatStore } from '@/store';
+import { useChatStore, useRoomStore } from '@/store';
 import { cn } from '@/lib';
 
 export function Watch() {
+  const room = useRoomStore((state) => state.room);
   const toggleChat = useChatStore((state) => state.toggleChat);
+
+  if (!room) return <Watch.Skeleton />;
 
   return (
     <div

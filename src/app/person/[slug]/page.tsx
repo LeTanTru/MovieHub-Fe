@@ -1,11 +1,11 @@
+import { ApiResponse, MoviePersonSearchType, PersonResType } from '@/types';
 import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { getIdFromSlug, sanitizeText, stripHtml, truncate } from '@/utils';
 import { getQueryClient } from '@/components/providers/query-provider';
-import { Person } from '@/app/person/[id]/_components';
-import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
-import { ApiResponse, MoviePersonSearchType, PersonResType } from '@/types';
 import { JsonLd, BreadcrumbListJsonLd } from '@/components/seo';
-import { sanitizeText, stripHtml, truncate } from '@/utils';
+import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
+import { Person } from '@/app/person/[slug]/_components';
 import {
   AppConstants,
   DEFAULT_PAGE_SIZE,
@@ -28,10 +28,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
+  const id = getIdFromSlug(slug);
 
   const res = await personApiRequest.getById(id);
   const title = res.data
@@ -82,7 +83,7 @@ export async function generateMetadata(
 }
 
 type PersonDetailPageProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{ kind?: MoviePersonSearchType['kind'] }>;
 };
 
@@ -90,7 +91,8 @@ export default async function PersonDetailPage({
   params,
   searchParams
 }: PersonDetailPageProps) {
-  const { id } = await params;
+  const { slug } = await params;
+  const id = getIdFromSlug(slug);
   const { kind } = await searchParams;
   const queryClient = getQueryClient();
   const moviePersonFilters: MoviePersonSearchType = {

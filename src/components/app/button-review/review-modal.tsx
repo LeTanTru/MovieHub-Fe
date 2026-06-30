@@ -189,7 +189,7 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
           </>
         )}
       </BaseForm>
-      <Modal.Confirm message='Bạn có chắc chắn muốn hủy không?' />
+      <Modal.Confirm message='Bạn có chắc chắn muốn hủy không ?' />
     </Modal>
   );
 }

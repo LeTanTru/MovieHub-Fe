@@ -13,7 +13,7 @@ export const check = (signal?: AbortSignal) =>
   http.get<ApiResponse<RoomResType>>(apiConfig.room.check, { signal });
 
 export const create = (body: RoomBodyType) =>
-  http.post<ApiResponseNoData>(apiConfig.room.create, { body });
+  http.post<ApiResponse<RoomResType>>(apiConfig.room.create, { body });
 
 export const deleteById = (id: string) =>
   http.delete<ApiResponseNoData>(apiConfig.room.delete, { pathParams: { id } });

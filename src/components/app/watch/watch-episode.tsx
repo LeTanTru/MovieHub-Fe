@@ -15,7 +15,7 @@ export function WatchEpisode() {
       : WatchSeries
     : null;
 
-  if (!movie) return null;
+  if (!movie) return <WatchEpisode.Skeleton />;
 
   return (
     <div className='max-640:mb-2 max-1280:mt-0 my-4'>

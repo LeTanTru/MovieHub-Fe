@@ -4,7 +4,7 @@ import './person-card.css';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { PersonResType, PersonSearchType } from '@/types';
-import { renderImageUrl } from '@/utils';
+import { generateSlug, renderImageUrl } from '@/utils';
 import { User, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -55,7 +55,7 @@ export function PersonCard({
 }: PersonCardProps) {
   const itemVariants = makeItemVariants(dir);
   const { serializeParams } = useQueryParams();
-  let link = `${route.person.path}/${person.id}`;
+  let link = `${route.person.path}/${generateSlug(person.name)}.${person.id}`;
 
   if (Object.keys(params).length > 0) {
     link = `${link}?${serializeParams(params)}`;
@@ -135,7 +135,7 @@ export function PersonCard({
       {onDelete && (
         <ConfirmModal
           message={
-            deleteMessage || 'Bạn có chắc chắn muốn xóa diễn viên này không?'
+            deleteMessage || 'Bạn có chắc chắn muốn xóa diễn viên này không ?'
           }
           onConfirm={() => onDelete(person.id)}
           trigger={

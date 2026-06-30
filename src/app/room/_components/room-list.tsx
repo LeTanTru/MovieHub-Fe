@@ -9,7 +9,7 @@ import { RoomListHeader } from './room-list-header';
 import { RoomResType, RoomSearchType } from '@/types';
 import { useAuth, useLoadMore } from '@/hooks';
 import { useState } from 'react';
-import { useDeleteRoomMutation, useJoinRoomMutation } from '@/queries';
+import { useDeleteRoomMutation } from '@/queries';
 import { VerticalBarLoading } from '@/components/loading';
 import { logger } from '@/logger';
 import { NoData } from '@/components/no-data';
@@ -36,8 +36,6 @@ export function RoomList() {
     queryFn: roomApiRequest.getList,
     queryKey: queryKeys.ROOM_LIST
   });
-
-  const { mutate: joinRoom } = useJoinRoomMutation();
 
   const { mutate: deleteRoom } = useDeleteRoomMutation();
 
@@ -99,7 +97,6 @@ export function RoomList() {
             <RoomCard
               key={room.id}
               room={room}
-              onJoin={joinRoom}
               isOwner={room.host.id == profile?.id}
               onDelete={() => handleDeleteRoom(room.id)}
             />

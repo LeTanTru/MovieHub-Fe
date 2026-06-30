@@ -228,7 +228,7 @@ export function ProfileForm() {
                   <ConfirmModal
                     open={showConfirmCancel}
                     onOpenChange={setShowConfirmCancel}
-                    message='Bạn có chắc chắn muốn hủy không?'
+                    message='Bạn có chắc chắn muốn hủy không ?'
                     onConfirm={() => handleCancel(form)}
                   />
                 </Col>

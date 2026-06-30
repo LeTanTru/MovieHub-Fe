@@ -23,11 +23,15 @@ import {
 } from '@/constants';
 import { useIsMounted, useNavigate } from '@/hooks';
 import { logger } from '@/logger';
-import { useCreateRoomMutation, useMovieItemQuery } from '@/queries';
+import {
+  useCreateRoomMutation,
+  useMovieItemQuery,
+  useStartRoomMutation
+} from '@/queries';
 import { route } from '@/routes';
 import { roomSchema } from '@/schemaValidations';
 import { RoomBodyType, UserAutoCompleteResType } from '@/types';
-import { getData, invalidateQueries, notify } from '@/utils';
+import { generateSlug, getData, invalidateQueries, notify } from '@/utils';
 import { useMemo, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
@@ -45,6 +49,7 @@ export default function NewRoomForm() {
   const navigate = useNavigate();
   const [showConfirmCancel, setShowConfirmCancel] = useState<boolean>(false);
   const { mutate: createRoom, isPending } = useCreateRoomMutation();
+  const { mutate: startRoom } = useStartRoomMutation();
 
   const [movieItemId] = useState(
     () => getData(storageKeys.ROOM_MOVIE_ITEM_ID) || ''
@@ -69,13 +74,30 @@ export default function NewRoomForm() {
   const onSubmit = (values: RoomBodyType) => {
     createRoom(values, {
       onSuccess: (res) => {
-        if (res.result) {
-          notify.success('Tạo phòng thành công');
-          navigate.push(route.room.manage.path);
-          invalidateQueries([queryKeys.ROOM_LIST], [queryKeys.MY_ROOM_LIST]);
-        } else {
+        if (!res.result || !res.data) {
           notify.error('Tạo phòng thất bại');
+          return;
         }
+
+        const roomId = res.data.id;
+        notify.success('Tạo phòng thành công');
+
+        if (values.isStartNow) {
+          startRoom(roomId, {
+            onSuccess: () => {
+              navigate.push(
+                `${route.room.path}/${generateSlug(values.name)}.${roomId}`
+              );
+            },
+            onError: () => {
+              navigate.push(route.room.manage.path);
+            }
+          });
+        } else {
+          navigate.push(route.room.manage.path);
+        }
+
+        invalidateQueries([queryKeys.ROOM_LIST], [queryKeys.MY_ROOM_LIST]);
       },
       onError: (error) => {
         logger.error('[CREATE_NEW_ROOM_ERROR]', error);
@@ -207,7 +229,7 @@ export default function NewRoomForm() {
                 <ConfirmModal
                   open={showConfirmCancel}
                   onOpenChange={setShowConfirmCancel}
-                  message='Bạn có chắc chắn muốn hủy không?'
+                  message='Bạn có chắc chắn muốn hủy không ?'
                   onConfirm={() => handleCancel(form)}
                 />
               </Col>

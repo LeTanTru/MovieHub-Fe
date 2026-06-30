@@ -14,13 +14,22 @@ export function Person() {
   const person = personData?.data;
   const errorCode = personData?.code;
 
-  if (errorCode === ErrorCode.PERSON_ERROR_NOT_FOUND || !person) {
+  if (errorCode === ErrorCode.PERSON_ERROR_NOT_FOUND) {
     return <NotFound />;
+  }
+
+  if (isLoading || !person) {
+    return (
+      <>
+        <PersonSidebar.Skeleton />
+        <MovieList personId={personId} />
+      </>
+    );
   }
 
   return (
     <>
-      <PersonSidebar person={person} loading={isLoading} />
+      <PersonSidebar person={person} />
       <MovieList personId={personId} />
     </>
   );
