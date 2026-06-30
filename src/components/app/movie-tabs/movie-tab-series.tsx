@@ -101,7 +101,7 @@ export function MovieTabSeries({ movie }: MovieTabSeriesProps) {
           {currentSeason ? (
             <button
               type='button'
-              className='max-640:border-none max-640:text-sm max-480:text-xs flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-lg font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
+              className='max-640:border-none max-640:text-sm flex cursor-pointer items-center gap-2.5 border-r border-solid border-r-gray-400 pr-6 text-lg font-semibold text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
               onClick={handleDropdownToggle}
             >
               <FaBarsStaggered className='text-golden-glow' />
