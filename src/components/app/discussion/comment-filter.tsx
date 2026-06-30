@@ -69,7 +69,7 @@ export function CommentFilter({
           }
         }}
         className='rounded-md px-2! text-white'
-        formItemClassName='max-640:w-1/2 max-768:w-1/3 h-8 w-50'
+        formItemClassName='max-640:flex-1 max-768:w-1/3 h-8 w-50'
         renderOption={(option) => (
           <span title={option.label}>{option.label}</span>
         )}

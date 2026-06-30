@@ -12,7 +12,7 @@ import {
 import { logger } from '@/logger';
 import { NotFound } from './not-found';
 import { useEffect } from 'react';
-import { useIsomorphicLayoutEffect } from '@/hooks';
+import { useAuth, useIsomorphicLayoutEffect } from '@/hooks';
 import { useParams } from 'next/navigation';
 import { useRoomQuery } from '@/queries';
 import { useRoomStore, useChatStore } from '@/store';
@@ -23,7 +23,13 @@ import { cn } from '@/lib';
 export function Room() {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
-  const { data: roomData, isLoading } = useRoomQuery({ id, enabled: !!id });
+  const { isAuthenticated } = useAuth();
+
+  const { data: roomData, isLoading } = useRoomQuery({
+    id,
+    enabled: !!id && isAuthenticated
+  });
+
   const setRoom = useRoomStore((state) => state.setRoom);
   const client = getMqttClient();
 

@@ -136,7 +136,7 @@ export function MqttProvider() {
     };
   }, [profile?.id, client]);
 
-  // Receive message from CMS
+  // Log all incoming MQTT messages for debugging
   useEffect(() => {
     const onMessage = (topic: string, message: Buffer) => {
       logger.info(

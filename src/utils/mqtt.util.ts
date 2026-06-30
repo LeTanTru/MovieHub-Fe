@@ -9,13 +9,13 @@ export const generateMqttTopic = (
   }, topic);
 };
 
-export const publishMqttMessage = <T>(
+export const publishMqttMessage = (
   client: MqttClient,
   topic: string,
-  message: T
+  payload: Record<string, unknown>
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
-    client.publish(topic, JSON.stringify(message), (err) => {
+    client.publish(topic, JSON.stringify(payload), (err) => {
       if (err) reject(err);
       else resolve();
     });
