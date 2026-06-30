@@ -25,7 +25,7 @@ ChatBody.Skeleton = function ChatBodySkeleton() {
       {Array.from({ length: CHAT_SKELETON_COUNT }).map((_, index) => (
         <div key={index} className='flex w-full items-end gap-2'>
           <Skeleton className='bg-transparent-black-8 skeleton size-8 shrink-0 rounded-full!' />
-          <Skeleton className='bg-transparent-black-8 skeleton h-10 w-full rounded-2xl rounded-bl-sm!' />
+          <Skeleton className='bg-transparent-black-8 skeleton h-10 w-full rounded-2xl! rounded-bl-sm!' />
         </div>
       ))}
     </div>

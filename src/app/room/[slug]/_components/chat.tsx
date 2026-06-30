@@ -6,10 +6,11 @@ import { ChatFooter } from './chat-footer';
 import { ChatHeader } from './chat-header';
 import { cn } from '@/lib';
 import { MessageSquare } from 'lucide-react';
-import { useChatStore } from '@/store';
+import { useChatStore, useRoomStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 
 export function Chat() {
+  const room = useRoomStore((state) => state.room);
   const { toggleChat, toggleChatLayout, setToggleChat } = useChatStore(
     useShallow((state) => ({
       toggleChat: state.toggleChat,
@@ -17,6 +18,8 @@ export function Chat() {
       setToggleChat: state.setToggleChat
     }))
   );
+
+  if (!room) return <Chat.Skeleton />;
 
   const handleToggleChat = () => {
     setToggleChat(!toggleChat);

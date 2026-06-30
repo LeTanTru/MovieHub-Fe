@@ -13,10 +13,31 @@ import { Calendar, Video } from 'lucide-react';
 import { cn } from '@/lib';
 import Link from 'next/link';
 
+function TrailerButton({ trailerLink }: { trailerLink: string | null }) {
+  const cls =
+    'flex items-center justify-center gap-2 px-5 py-2.5 font-semibold tracking-wide';
+
+  if (trailerLink) {
+    return (
+      <Link href={trailerLink} className={cls}>
+        <Video size={20} className='fill-black/80' />
+        <span className='text-sm'>Xem Trailer</span>
+      </Link>
+    );
+  }
+
+  return (
+    <div className={cls}>
+      <Video size={20} className='fill-black/80' />
+      <span className='text-sm'>Xem Trailer</span>
+    </div>
+  );
+}
+
 export function MovieActionBar() {
   const { movie, hasTrailer, watchLink, trailerLink } = useMovieInfo();
 
-  if (!movie) return null;
+  if (!movie) return <MovieActionBar.Skeleton />;
 
   return (
     <div className='max-1120:py-5 max-1120:px-4 max-800:px-0 max-520:pb-2.5 max-860:px-2.5 relative z-3 p-7.5'>
@@ -88,27 +109,6 @@ export function MovieActionBar() {
           />
         </div>
       </div>
-    </div>
-  );
-}
-
-function TrailerButton({ trailerLink }: { trailerLink: string | null }) {
-  const cls =
-    'flex items-center justify-center gap-2 px-5 py-2.5 font-semibold tracking-wide';
-
-  if (trailerLink) {
-    return (
-      <Link href={trailerLink} className={cls}>
-        <Video size={20} className='fill-black/80' />
-        <span className='text-sm'>Xem Trailer</span>
-      </Link>
-    );
-  }
-
-  return (
-    <div className={cls}>
-      <Video size={20} className='fill-black/80' />
-      <span className='text-sm'>Xem Trailer</span>
     </div>
   );
 }

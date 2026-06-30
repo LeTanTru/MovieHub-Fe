@@ -86,14 +86,14 @@ NotificationItem.Skeleton = function NotificationItemSkeleton() {
     <ListItem className='max-640:py-1.5 flex items-center justify-between py-2'>
       <div className='max-480:flex-col max-480:items-start max-480:gap-2 flex flex-1 items-center justify-between gap-2 pl-1'>
         <div className='flex flex-1 items-center gap-2'>
-          <Skeleton className='skeleton max-640:size-8 max-520:size-7 size-10 shrink-0 rounded-full' />
+          <Skeleton className='skeleton max-640:size-8 max-520:size-7 size-10 shrink-0 rounded-full!' />
           <div className='flex flex-1 flex-col justify-between gap-2'>
             <Skeleton className='skeleton h-4 w-11/12 rounded' />
             <Skeleton className='skeleton h-4 w-2/3 rounded' />
             <Skeleton className='skeleton h-3 w-24 rounded' />
           </div>
         </div>
-        <Skeleton className='skeleton max-480:hidden aspect-video w-20 shrink-0 rounded-sm' />
+        <Skeleton className='skeleton max-480:hidden aspect-video w-20 shrink-0 rounded-sm!' />
       </div>
       <Skeleton className='skeleton mx-2 size-8 shrink-0 rounded' />
     </ListItem>
@@ -105,7 +105,7 @@ NotificationItem.MovieSkeleton = function () {
     <ListItem className='max-640:py-1.5 flex items-center justify-between py-2'>
       <div className='max-480:flex-col max-480:items-start max-480:gap-2 flex flex-1 items-center justify-between gap-2 pl-1'>
         <div className='max-480:hidden relative aspect-video h-11.25 w-20 shrink-0'>
-          <Skeleton className='skeleton h-full w-full rounded-sm' />
+          <Skeleton className='skeleton h-full w-full rounded-sm!' />
         </div>
         <div className='flex flex-1 flex-col justify-between gap-2'>
           <Skeleton className='skeleton h-4 w-11/12 rounded' />
@@ -129,7 +129,7 @@ NotificationItem.CommunitySkeleton = function () {
             <Skeleton className='skeleton h-3 w-24 rounded' />
           </div>
         </div>
-        <Skeleton className='skeleton max-480:hidden aspect-video h-11.25 w-20 shrink-0 rounded-sm' />
+        <Skeleton className='skeleton max-480:hidden aspect-video h-11.25 w-20 shrink-0 rounded-sm!' />
       </div>
       <Skeleton className='skeleton mx-2 h-9 w-8 shrink-0 rounded' />
     </ListItem>

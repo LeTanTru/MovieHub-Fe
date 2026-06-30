@@ -144,19 +144,19 @@ MovieInfo.Skeleton = function MovieInfoSkeleton() {
       <div className='mx-auto flex w-full max-w-375 items-stretch justify-between gap-8 p-6'>
         <div className='flex w-130 items-start gap-4'>
           <div className='w-30 shrink-0'>
-            <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md pb-[150%]' />
+            <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md! pb-[150%]' />
           </div>
           <div className='flex grow flex-col gap-3'>
             <Skeleton className='bg-gunmetal-blue skeleton h-6 w-3/4 rounded' />
             <Skeleton className='bg-gunmetal-blue skeleton h-4 w-1/2 rounded' />
             <div className='flex gap-2'>
-              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-16 rounded-full' />
-              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-16 rounded-full' />
-              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-20 rounded-full' />
+              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-16 rounded-full!' />
+              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-16 rounded-full!' />
+              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-20 rounded-full!' />
             </div>
             <div className='flex gap-2'>
-              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-24 rounded-full' />
-              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-24 rounded-full' />
+              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-24 rounded-full!' />
+              <Skeleton className='bg-gunmetal-blue skeleton h-6 w-24 rounded-full!' />
             </div>
           </div>
         </div>

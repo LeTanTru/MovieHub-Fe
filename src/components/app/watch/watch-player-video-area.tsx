@@ -1,5 +1,7 @@
 'use client';
 
+import { Skeleton } from '@/components/ui/skeleton';
+
 import {
   renderImageUrl,
   renderVideoUrl,
@@ -65,6 +67,10 @@ export function WatchPlayerVideoArea() {
     });
 
   const videoLibrarySubtitles = videoLibrarySubtitleListData?.content || [];
+
+  if (!movie) {
+    return <WatchPlayerVideoArea.Skeleton />;
+  }
 
   if (!video) {
     return (
@@ -180,3 +186,11 @@ export function WatchPlayerVideoArea() {
     </div>
   );
 }
+
+WatchPlayerVideoArea.Skeleton = function WatchPlayerVideoAreaSkeleton() {
+  return (
+    <div className='max-800:rounded-none relative aspect-video w-full overflow-hidden rounded-tl-[6px] rounded-tr-[6px] bg-black'>
+      <Skeleton className='skeleton absolute inset-0 h-full w-full rounded-none!' />
+    </div>
+  );
+};

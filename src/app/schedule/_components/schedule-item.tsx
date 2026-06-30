@@ -57,7 +57,7 @@ ScheduleItem.Skeleton = function ScheduleItemSkeleton() {
   return (
     <div className='border-transparent-white-20 bg-outer-space relative flex items-center justify-between gap-4 rounded-[12px] border border-solid p-2.5'>
       <div className='w-12.5 shrink-0'>
-        <Skeleton className='h-0 w-full rounded-sm pb-[150%]' />
+        <Skeleton className='h-0 w-full rounded-sm! pb-[150%]' />
       </div>
       <div className='grow'>
         <Skeleton className='mb-2 h-4 w-3/4 rounded' />

@@ -16,7 +16,7 @@ export function WatchSide() {
   const { data: suggestionMovieList = [] } =
     useSuggestionMovieListQuery(movieId);
 
-  if (!movie) return null;
+  if (!movie) return <WatchSide.Skeleton />;
 
   return (
     <div className='max-1360:w-95 max-1120:border-none max-1120:w-full max-640:p-2 flex w-110 shrink-0 flex-col border-l border-solid border-white/10 p-4'>

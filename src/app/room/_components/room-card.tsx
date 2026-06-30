@@ -186,9 +186,9 @@ export function RoomCard({
 RoomCard.Skeleton = function RoomCardSkeleton() {
   return (
     <div className='flex flex-col gap-3'>
-      <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md pb-[56.25%]' />
+      <Skeleton className='bg-gunmetal-blue skeleton relative block h-0 w-full overflow-hidden rounded-md! pb-[56.25%]' />
       <div className='flex items-start gap-3'>
-        <Skeleton className='bg-gunmetal-blue skeleton size-10 shrink-0 rounded-full' />
+        <Skeleton className='bg-gunmetal-blue skeleton size-10 shrink-0 rounded-full!' />
         <div className='flex grow flex-col gap-2'>
           <Skeleton className='bg-gunmetal-blue skeleton h-4 w-3/4 rounded' />
           <Skeleton className='bg-gunmetal-blue skeleton h-3 w-1/2 rounded' />
