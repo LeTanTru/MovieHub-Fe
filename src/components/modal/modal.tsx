@@ -232,6 +232,7 @@ function Header({ children, className }: HeaderProps) {
         className='h-fit! p-0! text-gray-500 transition hover:bg-transparent hover:text-rose-500'
         onClick={onClose}
         variant='ghost'
+        type='button'
       >
         <X className='size-5' />
       </Button>

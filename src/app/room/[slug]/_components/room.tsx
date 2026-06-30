@@ -15,8 +15,10 @@ import { useEffect } from 'react';
 import { useIsomorphicLayoutEffect } from '@/hooks';
 import { useParams } from 'next/navigation';
 import { useRoomQuery } from '@/queries';
-import { useRoomStore } from '@/store';
+import { useRoomStore, useChatStore } from '@/store';
 import { Watch } from './watch';
+import { Container } from '@/components/layout';
+import { cn } from '@/lib';
 
 export function Room() {
   const { slug } = useParams<{ slug: string }>();
@@ -32,10 +34,6 @@ export function Room() {
     if (room) {
       setRoom(room);
     }
-
-    return () => {
-      setRoom(null);
-    };
   }, [room, setRoom]);
 
   useIsomorphicLayoutEffect(() => {
@@ -73,6 +71,8 @@ export function Room() {
     return () => clearInterval(interval);
   }, [client, room]);
 
+  const toggleHeader = useChatStore((state) => state.toggleHeader);
+
   if (isLoading) return <Room.Skeleton />;
 
   if (errorCode === ErrorCode.ROOM_ERROR_NOT_FOUND || !room) {
@@ -80,18 +80,44 @@ export function Room() {
   }
 
   return (
-    <div className='relative flex w-full items-start justify-between overflow-auto bg-black'>
-      <Watch />
-      <Chat />
-    </div>
+    <Container
+      className={cn(
+        'transition-all duration-200 ease-linear',
+        toggleHeader ? 'min-h-screen pt-0' : 'min-h-page-height pt-header'
+      )}
+    >
+      <div
+        className={cn(
+          'scrollbar-none relative flex w-full items-start justify-between overflow-hidden bg-black transition-all duration-200 ease-linear',
+          toggleHeader ? 'h-screen' : 'h-page-height'
+        )}
+      >
+        <Watch />
+        <Chat />
+      </div>
+    </Container>
   );
 }
 
 Room.Skeleton = function RoomSkeleton() {
+  const toggleHeader = useChatStore((state) => state.toggleHeader);
+
   return (
-    <div className='relative flex w-full items-start justify-between overflow-auto bg-black'>
-      <Watch.Skeleton />
-      <Chat.Skeleton />
-    </div>
+    <Container
+      className={cn(
+        'transition-all duration-200 ease-linear',
+        toggleHeader ? 'min-h-screen pt-0' : 'min-h-page-height pt-header'
+      )}
+    >
+      <div
+        className={cn(
+          'scrollbar-none relative flex w-full items-start justify-between overflow-hidden bg-black transition-all duration-200 ease-linear',
+          toggleHeader ? 'h-screen' : 'h-page-height'
+        )}
+      >
+        <Watch.Skeleton />
+        <Chat.Skeleton />
+      </div>
+    </Container>
   );
 };

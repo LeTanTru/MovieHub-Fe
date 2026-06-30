@@ -24,7 +24,10 @@ export function ChatFooter() {
 ChatFooter.Skeleton = function ChatFooterSkeleton() {
   return (
     <div className='relative z-3 flex shrink-0 flex-col gap-3 p-4'>
-      <Skeleton className='bg-transparent-black-8 skeleton h-11 w-full rounded-full!' />
+      <div className='flex items-center gap-2'>
+        <Skeleton className='bg-transparent-black-8 skeleton h-9 w-full rounded-full!' />
+        <Skeleton className='bg-transparent-black-8 skeleton h-9 w-11 rounded-md!' />
+      </div>
       <div className='relative flex items-center gap-2'>
         <Skeleton className='bg-transparent-black-8 skeleton size-4 rounded-full!' />
         <Skeleton className='bg-transparent-black-8 skeleton h-4 w-24 rounded!' />

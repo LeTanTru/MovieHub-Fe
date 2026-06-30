@@ -17,7 +17,11 @@ export function WatchEpisode() {
 
   if (!movie) return null;
 
-  return <div className='max-640:mb-2 my-4'>{Tab ? <Tab /> : null}</div>;
+  return (
+    <div className='max-640:mb-2 max-1280:mt-0 my-4'>
+      {Tab ? <Tab /> : null}
+    </div>
+  );
 }
 
 WatchEpisode.Skeleton = function WatchEpisodeSkeleton() {

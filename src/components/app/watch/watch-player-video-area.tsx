@@ -69,8 +69,8 @@ export function WatchPlayerVideoArea() {
   if (!video) {
     return (
       <div className='aspect-video rounded-tl rounded-tr bg-black'>
-        <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-base text-gray-300'>
-          Video cho phim này đang được cập nhật. Vui lòng quay lại sau.
+        <p className='max-640:text-sm absolute top-1/2 left-1/2 w-full -translate-x-1/2 -translate-y-1/2 text-center text-base text-gray-300'>
+          Video cho phim này đang được cập nhật.
         </p>
       </div>
     );

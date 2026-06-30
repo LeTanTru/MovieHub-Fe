@@ -11,22 +11,18 @@ export function ChatHeader() {
   const {
     toggleChat,
     toggleHeader,
-    toggleChatLeft,
     toggleChatLayout,
     setToggleChat,
     setToggleHeader,
-    setToggleChatLeft,
     setToggleChatLayout
   } = useChatStore(
     useShallow((state) => ({
       toggleChat: state.toggleChat,
       toggleHeader: state.toggleHeader,
-      toggleChatLeft: state.toggleChatLeft,
       toggleChatLayout: state.toggleChatLayout,
 
       setToggleChat: state.setToggleChat,
       setToggleHeader: state.setToggleHeader,
-      setToggleChatLeft: state.setToggleChatLeft,
       setToggleChatLayout: state.setToggleChatLayout
     }))
   );
@@ -37,10 +33,6 @@ export function ChatHeader() {
 
   const handleToggleHeader = () => {
     setToggleHeader(!toggleHeader);
-  };
-
-  const handleToggleChatLeft = () => {
-    setToggleChatLeft(!toggleChatLeft);
   };
 
   const handleToggleChatLayout = () => {
@@ -73,15 +65,6 @@ export function ChatHeader() {
           </div>
           <div className='px-4 py-2'>
             <ButtonToggle
-              text='Khung chat trái'
-              toggle={toggleChatLeft}
-              onToggle={handleToggleChatLeft}
-              align='left'
-              className='justify-between'
-            />
-          </div>
-          <div className='px-4 py-2'>
-            <ButtonToggle
               text='Thu gọn'
               toggle={toggleChatLayout}
               onToggle={handleToggleChatLayout}
@@ -92,7 +75,6 @@ export function ChatHeader() {
         </PortalDropdown>
       </div>
       <div className='grow'></div>
-      {/* Hide chat button */}
       <div className='relative inline-flex items-center gap-2 select-none'>
         <ButtonToggle
           text='Ẩn chat'

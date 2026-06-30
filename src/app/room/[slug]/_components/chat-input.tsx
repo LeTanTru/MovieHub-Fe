@@ -45,10 +45,12 @@ export default function ChatInput() {
             control={form.control}
             name='content'
             formItemClassName='w-full rounded-md bg-white'
-            className='min-h-9 rounded-md bg-gray-100 py-2 pl-8 text-black placeholder:text-gray-400 focus-visible:ring-transparent!'
+            className='min-h-9 resize-none rounded-md bg-gray-100 py-2 pl-8 text-black placeholder:text-gray-400 focus-visible:ring-transparent!'
+            maxLengthClassName='right-1.5 -bottom-4'
             placeholder='Chat gì đó...'
-            rows={1}
             maxRows={4}
+            maxLength={200}
+            autoSize
           />
           <Button
             className='bg-golden-glow hover:bg-golden-glow/80 px-3 text-black'

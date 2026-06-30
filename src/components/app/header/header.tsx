@@ -18,6 +18,7 @@ import {
   useNavigate,
   useIsomorphicLayoutEffect
 } from '@/hooks';
+import { useChatStore } from '@/store';
 import { DropdownAvatar } from './dropdown-avatar';
 import { DropdownNotification } from './dropdown-notification';
 import Image from 'next/image';
@@ -49,12 +50,19 @@ export function Header() {
     navigate.push(buildLoginRedirectPath());
   };
 
+  const toggleHeader = useChatStore((state) => state.toggleHeader);
+
   return (
     <header
-      className={cn('header fixed top-0 right-0 left-0 z-50 block', {
-        'bg-fixed-header': isFixed,
-        'bg-transparent': !isFixed
-      })}
+      className={cn(
+        'header fixed top-0 right-0 left-0 z-50 block transition-transform duration-200 ease-linear',
+        {
+          'bg-fixed-header': isFixed,
+          'bg-transparent': !isFixed,
+          '-translate-y-full': toggleHeader,
+          'translate-y-0': !toggleHeader
+        }
+      )}
     >
       <div
         className={cn(

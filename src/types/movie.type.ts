@@ -178,8 +178,6 @@ type MovieActions = {
   setSelectedSeason: (season: string) => void;
 
   setDiscussionTab: (tab: string) => void;
-
-  reset: () => void;
 };
 
 export type MovieStoreType = MovieState & MovieActions;

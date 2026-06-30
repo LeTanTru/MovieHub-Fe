@@ -154,12 +154,12 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
               <div className='max-640:mt-3 max-480:mt-2 relative mt-4'>
                 <TextAreaField
                   control={form.control}
-                  className='scrollbar-none max-640:text-[13px] block h-auto min-h-8.75 min-h-25 w-full resize-none rounded-md border border-solid bg-transparent px-5 py-4 text-sm leading-normal font-normal text-white transition-all duration-200 ease-linear focus:border-white'
-                  rows={4}
-                  cols={3}
+                  className='max-640:text-[13px] block h-full min-h-25 w-full resize-none rounded-md border border-solid bg-transparent px-5 py-4 text-sm leading-normal font-normal text-white transition-all duration-200 ease-linear focus:border-white'
                   placeholder='Viết đánh giá của bạn... (Tùy chọn)'
-                  maxLength={1000}
+                  maxLength={500}
+                  rows={6}
                   name='content'
+                  maxLengthClassName='-bottom-4 right-1.5'
                 />
               </div>
             </div>
