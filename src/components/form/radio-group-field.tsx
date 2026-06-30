@@ -65,7 +65,7 @@ export function RadioGroupField<T extends FieldValues>({
           {label && (
             <FormLabel
               className={cn('ml-2', labelClassName, {
-                'pointer-events-none opacity-50 select-none': disabled
+                'cursor-not-allowed opacity-50 select-none': disabled
               })}
             >
               {label}
@@ -103,7 +103,7 @@ export function RadioGroupField<T extends FieldValues>({
                         className={cn(
                           'data-[state=checked]:border-golden-glow data-[state=checked]:[&_svg]:fill-golden-glow data-[state=checked]:[&_svg]:stroke-golden-glow size-4.5 border-slate-400 bg-transparent text-white transition-all duration-200 ease-linear data-[state=checked]:bg-transparent data-[state=checked]:[&_svg]:size-3 data-[state=checked]:[&_svg]:rounded-full',
                           {
-                            'pointer-events-none cursor-not-allowed opacity-50 select-none':
+                            'cursor-not-allowed opacity-50 select-none':
                               disabled
                           },
                           itemClassName

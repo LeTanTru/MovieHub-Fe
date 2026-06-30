@@ -12,7 +12,7 @@ import {
 } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { ConfirmModal } from '@/components/modal';
-import { FormLabel } from '@/components/ui/form';
+import { FormDescription, FormLabel } from '@/components/ui/form';
 import {
   apiConfig,
   queryKeys,
@@ -25,6 +25,7 @@ import { useIsMounted, useNavigate } from '@/hooks';
 import { logger } from '@/logger';
 import {
   useCreateRoomMutation,
+  useJoinRoomMutation,
   useMovieItemQuery,
   useStartRoomMutation
 } from '@/queries';
@@ -48,8 +49,10 @@ export default function NewRoomForm() {
   const isMounted = useIsMounted();
   const navigate = useNavigate();
   const [showConfirmCancel, setShowConfirmCancel] = useState<boolean>(false);
+
   const { mutate: createRoom, isPending } = useCreateRoomMutation();
   const { mutate: startRoom } = useStartRoomMutation();
+  const { mutate: joinRoom } = useJoinRoomMutation();
 
   const [movieItemId] = useState(
     () => getData(storageKeys.ROOM_MOVIE_ITEM_ID) || ''
@@ -85,9 +88,13 @@ export default function NewRoomForm() {
         if (values.isStartNow) {
           startRoom(roomId, {
             onSuccess: () => {
-              navigate.push(
-                `${route.room.path}/${generateSlug(values.name)}.${roomId}`
-              );
+              joinRoom(roomId, {
+                onSuccess: () => {
+                  navigate.push(
+                    `${route.room.path}/${generateSlug(values.name)}.${roomId}`
+                  );
+                }
+              });
             },
             onError: () => {
               navigate.push(route.room.manage.path);
@@ -128,7 +135,7 @@ export default function NewRoomForm() {
 
         return (
           <>
-            <Row className='bg-charade grid-row-no-gutters mb-3 rounded-2xl px-4 py-8'>
+            <Row className='bg-charade grid-row-no-gutters rounded-2xl px-4 py-8'>
               <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
                 <InputField
                   control={form.control}
@@ -139,7 +146,7 @@ export default function NewRoomForm() {
                 />
               </Col>
             </Row>
-            <Row className='bg-charade grid-row-no-gutters mb-3 rounded-2xl px-4 py-8'>
+            <Row className='bg-charade grid-row-no-gutters rounded-2xl px-4 py-8'>
               <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
                 <SelectField
                   control={form.control}
@@ -150,12 +157,15 @@ export default function NewRoomForm() {
                 />
               </Col>
             </Row>
-            <Row className='bg-charade grid-row-no-gutters mb-3 gap-4 rounded-2xl px-4 py-8'>
-              <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
-                <FormLabel className='mb-4'>
+            <Row className='bg-charade grid-row-no-gutters mb-6 gap-4 rounded-2xl px-4 py-8'>
+              <Col className='grid-c-12 grid-col-no-gutters gap-4 text-base font-medium text-white'>
+                <FormLabel>
                   3. Cài đặt thời gian
                   <span className='text-destructive'>*</span>
                 </FormLabel>
+                <FormDescription className='text-gray-400'>
+                  Có thể bắt đầu thủ công hoặc tự động theo thời gian cài đặt.
+                </FormDescription>
                 <BooleanField
                   formItemClassName='flex-col flex'
                   control={form.control}
@@ -166,39 +176,37 @@ export default function NewRoomForm() {
                   thumbClassName='dark:data-[state=checked]:bg-golden-glow'
                 />
               </Col>
-              {!isStartNow && (
-                <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
-                  <DateTimePickerField
-                    control={form.control}
-                    name='startTime'
-                    label='Thời gian'
-                    placeholder='Thời gian bắt đầu'
-                    required
-                  />
-                </Col>
-              )}
+              <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
+                <DateTimePickerField
+                  control={form.control}
+                  disabled={isStartNow}
+                  label='Thời gian'
+                  name='startTime'
+                  placeholder='Thời gian bắt đầu'
+                  required
+                />
+              </Col>
             </Row>
-            {roomKind === ROOM_KIND_PRIVATE && (
-              <Row className='bg-charade grid-row-no-gutters mb-3 gap-4 rounded-2xl px-4 py-8'>
-                <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
-                  <AutoCompleteField<RoomBodyType, UserAutoCompleteResType>
-                    control={form.control}
-                    name='accountIds'
-                    apiConfig={apiConfig.user.autoComplete}
-                    mappingData={(option) => ({
-                      value: option.id,
-                      label: option.fullName
-                    })}
-                    searchParams={['fullName']}
-                    label='4. Mời mọi người tham gia'
-                    isMulti
-                    isMultiLine
-                    placeholder='Mời mọi người tham gia'
-                  />
-                </Col>
-              </Row>
-            )}
-            <Row className='mb-0 gap-4'>
+            <Row className='bg-charade grid-row-no-gutters mb-6 gap-4 rounded-2xl px-4 py-8'>
+              <Col className='grid-c-12 grid-col-no-gutters text-base font-medium text-white'>
+                <AutoCompleteField<RoomBodyType, UserAutoCompleteResType>
+                  control={form.control}
+                  name='accountIds'
+                  apiConfig={apiConfig.user.autoComplete}
+                  mappingData={(option) => ({
+                    value: option.id,
+                    label: option.fullName
+                  })}
+                  searchParams={['fullName']}
+                  label='4. Mời mọi người tham gia'
+                  isMulti
+                  isMultiLine
+                  placeholder='Mời mọi người tham gia'
+                  disabled={roomKind !== ROOM_KIND_PRIVATE}
+                />
+              </Col>
+            </Row>
+            <Row className='mb-0 gap-6'>
               <Col className='grid-c-12 max-640:grid-c-6 max-480:grid-c-12'>
                 <Button
                   type='submit'
@@ -222,7 +230,6 @@ export default function NewRoomForm() {
                     }
                   }}
                   disabled={isPending}
-                  className='border-gray-200 text-white hover:border-gray-200/80 hover:text-white/80 disabled:border-gray-200/80 disabled:text-white/80 disabled:hover:border-gray-200/80 disabled:hover:text-white/80'
                 >
                   Hủy
                 </Button>

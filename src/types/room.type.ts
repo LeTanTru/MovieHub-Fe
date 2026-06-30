@@ -59,10 +59,24 @@ export type RoomBodyType = z.infer<typeof roomSchema>;
 
 export type RoomState = {
   room: RoomResType | null;
+  isJoined: boolean;
+  participantCount: number;
 };
 
 export type RoomActions = {
   setRoom: (room: RoomResType | null) => void;
+  setIsJoined: (isJoined: boolean) => void;
+  setParticipantCount: (count: number) => void;
 };
 
 export type RoomStoreType = RoomState & RoomActions;
+
+export type RoomEndType = {
+  reason: string;
+  roomId: string;
+};
+
+export type RoomUpdateParticipantCountType = {
+  currentViewers: number;
+  roomId: string;
+};

@@ -107,7 +107,7 @@ export function TextAreaField<T extends FieldValues>({
                       : undefined
                 }}
                 className={cn(
-                  'focus-visible:ring-light-gray scrollbar-none w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-sm placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:ring-transparent',
+                  'scrollbar-none w-full pt-4 break-all shadow-none transition-all duration-200 ease-linear placeholder:text-sm placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-white disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none aria-invalid:ring-transparent',
                   {
                     'border-rose-500 focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-rose-500':
                       !!fieldState.error,

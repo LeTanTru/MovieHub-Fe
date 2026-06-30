@@ -56,7 +56,7 @@ export function CheckboxField<T extends FieldValues>({
                   className={cn(
                     'cursor-pointer transition-colors duration-200 ease-linear focus-visible:ring-0',
                     'data-[state=checked]:bg-light-gray data-[state=checked]:border-light-gray',
-                    'data-[state=unchecked]:bg-muted focus-visible:ring-light-gray focus-visible:border-transparent focus-visible:ring-2',
+                    'data-[state=unchecked]:bg-muted focus-visible:border-transparent focus-visible:ring-2',
                     disabled && 'cursor-not-allowed opacity-50 select-none',
                     className
                   )}
@@ -69,7 +69,7 @@ export function CheckboxField<T extends FieldValues>({
                   className={cn(
                     'cursor-pointer',
                     {
-                      'pointer-events-none opacity-50 select-none': disabled
+                      'cursor-not-allowed opacity-50 select-none': disabled
                     },
                     labelClassName
                   )}

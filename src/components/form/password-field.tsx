@@ -109,7 +109,7 @@ export function PasswordField<T extends FieldValues>({
             {label && (
               <FormLabel
                 className={cn('ml-2', labelClassName, {
-                  'pointer-events-none opacity-50 select-none': disabled
+                  'cursor-not-allowed opacity-50 select-none': disabled
                 })}
               >
                 {label}
@@ -127,11 +127,11 @@ export function PasswordField<T extends FieldValues>({
                   {...field}
                   value={value}
                   className={cn(
-                    'text-sm shadow-none placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
+                    'text-sm font-normal shadow-none transition-all duration-200 ease-linear placeholder:text-gray-300 focus-visible:border-transparent focus-visible:ring-2 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none',
                     {
                       'border-rose-500 focus-visible:ring-rose-500':
                         !!fieldState.error,
-                      'focus-visible:ring-light-gray': !fieldState.error,
+                      'focus-visible:ring-white': !fieldState.error,
                       'pb-0.5': !isVisible && !!field.value, // not show and have value
                       'pb-1': (!isVisible && !field.value) || isVisible, // not show and no value
                       'pb-1.25': isVisible && !!field.value
@@ -141,7 +141,7 @@ export function PasswordField<T extends FieldValues>({
                 />
                 <Button
                   variant='ghost'
-                  className='text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 mr-0.75 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none hover:bg-transparent! focus:z-10 focus-visible:ring-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50'
+                  className='text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 mr-0.75 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none hover:bg-transparent! focus:z-10 focus-visible:ring-0 disabled:pointer-events-auto disabled:cursor-not-allowed disabled:opacity-50 disabled:select-none'
                   type='button'
                   onClick={toggleVisibility}
                   aria-label={isVisible ? 'Hide password' : 'Show password'}

@@ -10,17 +10,19 @@ import {
 } from '@/constants';
 import { ButtonEnd } from './button-end';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useNavigate } from '@/hooks';
+import { useAuth, useNavigate } from '@/hooks';
 import { useRoomStore } from '@/store';
 
 export function PlayerHeader() {
+  const { profile } = useAuth();
   const navigate = useNavigate();
   const room = useRoomStore((state) => state.room);
 
-  if (!room) return <PlayerHeader.Skeleton />;
+  if (!room || !profile) return <PlayerHeader.Skeleton />;
 
   const isRunning = room.state === ROOM_STATE_RUNNING;
   const isPending = room.state === ROOM_STATE_PENDING;
+  const isOwner = room.host.id === profile.id;
 
   const movieItem = room.movieItem;
 
@@ -55,8 +57,8 @@ export function PlayerHeader() {
           <div className=''>{movieItem?.title}</div>
         </div>
       </div>
-      {isPending && <ButtonStart />}
-      {isRunning && <ButtonEnd />}
+      {isPending && isOwner && <ButtonStart />}
+      {isRunning && isOwner && <ButtonEnd />}
     </div>
   );
 }
