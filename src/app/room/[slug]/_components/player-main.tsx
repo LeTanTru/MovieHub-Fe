@@ -405,7 +405,9 @@ function PopupPending({ room }: { room: RoomResType }) {
 }
 
 function PopupEnded({ room }: { room: RoomResType }) {
+  const { profile } = useAuth();
   const endReason = useRoomStore((state) => state.endReason);
+  const isHost = profile?.id === room.host.id;
 
   return (
     <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
@@ -414,7 +416,9 @@ function PopupEnded({ room }: { room: RoomResType }) {
         <span className='text-golden-glow text-xl font-semibold'>
           {room.movieItem.movie.title}
         </span>
-        {endReason && <span className='text-dark-gray'>{endReason}</span>}
+        {endReason && !isHost && (
+          <span className='text-dark-gray'>{endReason}</span>
+        )}
       </div>
 
       <div className='inline-flex items-center gap-4'>

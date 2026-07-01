@@ -201,7 +201,41 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     cmd: mqttCMDs.ROOM_STATE,
     callback: (data) => {
       if (isHost) return;
-      useRoomStore.getState().setPlayerState(data);
+
+      const currentPlayerState = useRoomStore.getState().playerState;
+
+      switch (data.subCmd) {
+        case mqttCMDs.ROOM_PLAY:
+          useRoomStore.getState().setPlayerState({
+            ...currentPlayerState,
+            isPlay: true,
+            subCmd: data.subCmd
+          });
+          return;
+        case mqttCMDs.ROOM_PAUSE:
+          useRoomStore.getState().setPlayerState({
+            ...currentPlayerState,
+            isPlay: false,
+            subCmd: data.subCmd
+          });
+          return;
+        case mqttCMDs.ROOM_SEEK:
+          useRoomStore.getState().setPlayerState({
+            ...currentPlayerState,
+            currentPositionMovie: data.currentPositionMovie,
+            subCmd: data.subCmd
+          });
+          return;
+        case mqttCMDs.ROOM_PLAY_SPEED:
+          useRoomStore.getState().setPlayerState({
+            ...currentPlayerState,
+            playSpeed: data.playSpeed,
+            subCmd: data.subCmd
+          });
+          return;
+        default:
+          useRoomStore.getState().setPlayerState(data);
+      }
     }
   });
   // Handle room state event

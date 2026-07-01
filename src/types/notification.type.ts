@@ -150,4 +150,25 @@ export type ToxicReviewLockedNotificationType = {
 
 export type CommentUnlockedNotificationType =
   ToxicCommentLockedNotificationType;
+
 export type ReviewUnlockedNotificationType = ToxicReviewLockedNotificationType;
+
+export type NotificationRoomInviteType = {
+  id: string;
+  code: string;
+  name: string;
+  kind: number;
+  movieItemId: string;
+  movieId: string;
+  movieTitle: string;
+  movieThumbnail: string;
+  startTime: string;
+  endTime: string;
+  host: {
+    id: string;
+    username: string;
+    email: string;
+    fullName: string;
+    avatarPath: string;
+  };
+};

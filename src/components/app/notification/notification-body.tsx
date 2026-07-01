@@ -3,6 +3,7 @@ import { MovieItemBody } from './movie-item-body';
 import { mqttCMDs } from '@/constants';
 import { NotificationResType } from '@/types';
 import { ReplyCommentBody } from './reply-comment-body';
+import { RoomInviteBody } from './room-invite-body';
 import { ToxicCommentLockedBody } from './toxic-comment-locked-body';
 import { ToxicReviewLockedBody } from './toxic-review-locked-body';
 import { VoteCommentBody } from './vote-comment-body';
@@ -29,6 +30,10 @@ export function NotificationBody({
 
     case mqttCMDs.REPLY_COMMENT: {
       return <ReplyCommentBody notification={notification} />;
+    }
+
+    case mqttCMDs.ROOM_INVITE: {
+      return <RoomInviteBody notification={notification} />;
     }
 
     case mqttCMDs.REVIEW_UNLOCKED:

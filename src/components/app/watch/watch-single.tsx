@@ -14,7 +14,7 @@ export function WatchSingle() {
   const { searchParams } = useQueryParams<{ season: string }>();
   const { movie } = useMovie();
 
-  const seasons = movie?.seasons || [];
+  const seasons = movie?.seasons?.filter((item) => !!item.video) || [];
 
   const handleSeasonClick = (season: SeasonResType) => {
     if (season.label === searchParams.season) {

@@ -21,7 +21,7 @@ import {
   roomKinds,
   storageKeys
 } from '@/constants';
-import { useIsMounted, useNavigate } from '@/hooks';
+import { useAuth, useIsMounted, useNavigate } from '@/hooks';
 import { logger } from '@/logger';
 import {
   useCreateRoomMutation,
@@ -47,6 +47,7 @@ const defaultValues: RoomBodyType = {
 };
 
 export default function NewRoomForm() {
+  const { profile } = useAuth();
   const isMounted = useIsMounted();
   const navigate = useNavigate();
   const [showConfirmCancel, setShowConfirmCancel] = useState<boolean>(false);
@@ -208,6 +209,7 @@ export default function NewRoomForm() {
                     );
                   }}
                   searchParams={['fullName']}
+                  initialParams={{ ignoreUserId: profile?.id }}
                   label='4. Mời mọi người tham gia'
                   isMulti
                   isMultiLine

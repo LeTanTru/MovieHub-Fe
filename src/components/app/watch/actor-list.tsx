@@ -15,7 +15,7 @@ export function ActorList({ actors }: ActorListProps) {
       className={cn(
         'max-640:py-2 flex-wrap items-end gap-2 border-t border-solid border-white/10 py-4',
         {
-          flex: actors.length === 0
+          'flex items-center': actors.length === 0
         }
       )}
     >
