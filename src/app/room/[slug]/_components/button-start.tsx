@@ -5,6 +5,7 @@ import { ConfirmModal } from '@/components/modal';
 import { ErrorCode, queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useStartRoomMutation } from '@/queries';
+import { useRoomStore } from '@/store';
 import { getIdFromSlug, invalidateQueries, notify } from '@/utils';
 import { useParams } from 'next/navigation';
 import { FaPlay } from 'react-icons/fa6';
@@ -13,18 +14,20 @@ export function ButtonStart() {
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
+  const setIsJoined = useRoomStore((state) => state.setIsJoined);
   const { mutate: startRoom, isPending } = useStartRoomMutation();
 
   const handleStartRoom = () => {
     startRoom(id, {
       onSuccess: (res) => {
         if (res.result) {
-          notify.success('Bắt đầu phòng thành công');
+          setIsJoined(true);
           invalidateQueries(
             [queryKeys.ROOM, id],
             [queryKeys.ROOM_LIST],
             [queryKeys.MY_ROOM_LIST]
           );
+          notify.success('Bắt đầu phòng thành công');
         } else {
           const errorCode = res.code;
           if (errorCode === ErrorCode.ROOM_ERROR_INVALID_ROOM) {

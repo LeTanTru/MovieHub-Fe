@@ -1,5 +1,5 @@
 import { logger } from '@/logger';
-import { MqttClient } from 'mqtt';
+import { getMqttClient } from '@/lib/mqtt';
 
 export const generateMqttTopic = (
   topic: string,
@@ -11,10 +11,11 @@ export const generateMqttTopic = (
 };
 
 export const publishMqttMessage = (
-  client: MqttClient,
   topic: string,
   payload: Record<string, unknown>
 ): Promise<void> => {
+  const client = getMqttClient();
+
   if (Object.keys(payload).length > 0)
     logger.info(
       `[PUBLISH_MQTT_MESSAGE]`,

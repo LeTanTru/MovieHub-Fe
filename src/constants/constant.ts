@@ -145,3 +145,9 @@ export const ROOM_STATE_ENDED = 2;
 
 export const ROOM_KIND_PRIVATE = 0;
 export const ROOM_KIND_PUBLIC = 1;
+
+export const MILLISECOND = 1_000;
+
+export const ROOM_REASON_TIMEOUT = 'ROOM_TIMEOUT';
+export const ROOM_REASON_END = 'ROOM_END';
+export const ROOM_REASON_HOST_LEFT = 'HOST_LEFT';

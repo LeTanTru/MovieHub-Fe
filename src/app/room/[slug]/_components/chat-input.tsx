@@ -5,7 +5,6 @@ import { Button, TextAreaField } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
 import { mqttCMDs, mqttTopics } from '@/constants';
 import { useAuth, useClickAnimation, useClickOutside } from '@/hooks';
-import { getMqttClient } from '@/lib/mqtt';
 import { logger } from '@/logger';
 import { chatSchema } from '@/schemaValidations';
 import { useRoomStore } from '@/store';
@@ -28,7 +27,6 @@ import { FaRegFaceGrinBeam } from 'react-icons/fa6';
 export default function ChatInput() {
   const { profile } = useAuth();
   const room = useRoomStore((state) => state.room);
-  const client = getMqttClient();
 
   const { iconRef, startAnimation } = useClickAnimation();
 
@@ -68,7 +66,6 @@ export default function ChatInput() {
 
     try {
       await publishMqttMessage(
-        client,
         generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
         {
           cmd: mqttCMDs.CREATE_CHAT,

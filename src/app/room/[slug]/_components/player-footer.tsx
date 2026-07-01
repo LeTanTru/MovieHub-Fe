@@ -17,9 +17,15 @@ import {
 import Link from 'next/link';
 import { FaPlayCircle } from 'react-icons/fa';
 import { FaEye, FaLink } from 'react-icons/fa6';
+import { useShallow } from 'zustand/shallow';
 
 export function PlayerFooter() {
-  const room = useRoomStore((state) => state.room);
+  const { room, participantCount } = useRoomStore(
+    useShallow((state) => ({
+      room: state.room,
+      participantCount: state.participantCount
+    }))
+  );
 
   if (!room) return <PlayerFooter.Skeleton />;
 
@@ -63,7 +69,7 @@ export function PlayerFooter() {
         </div>
         <div className='inline-flex items-center gap-2'>
           <FaEye />
-          <span>{room.participantCount}</span>
+          <span>{participantCount}</span>
         </div>
         <div
           onClick={handleCopyText}

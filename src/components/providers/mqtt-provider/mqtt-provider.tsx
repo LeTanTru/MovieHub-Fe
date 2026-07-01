@@ -103,7 +103,7 @@ export function MqttProvider() {
     const onMessage = (topic: string, message: Buffer) => {
       logger.info(
         `[MQTT] Received MQTT message on topic: ${topic}`,
-        parseJSON(message.toString())
+        message.toString()
       );
     };
 
