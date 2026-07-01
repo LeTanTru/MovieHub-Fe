@@ -9,8 +9,7 @@ import {
   STYLE_CINEMA,
   STYLE_COMING_SOON,
   STYLE_LATEST_BY_COUNTRY,
-  STYLE_TOP_RANKING,
-  SUGGEST_BY_WATCHED_PAGE_1
+  STYLE_TOP_RANKING
 } from '@/constants';
 import { collectionApiRequest } from '@/api-requests';
 import {
@@ -25,7 +24,6 @@ import { LastestCountryMovieList } from './latest-country-movie-list';
 import { AnimeMovieList } from './anime-movie-list';
 import { ComingSoonList } from './coming-soon-list';
 import { cn } from '@/lib';
-import { SuggestByWatched } from '@/app/(home)/_components/suggest-by-watched';
 
 type ProcessedItem = CollectionResType | CollectionCountryGroupType;
 
@@ -124,7 +122,6 @@ export function Collection() {
                 className='max-640:gap-8 flex flex-col gap-12.5'
               >
                 <TopMovieList collection={collection} />
-                <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_1} />
               </div>
             );
           }

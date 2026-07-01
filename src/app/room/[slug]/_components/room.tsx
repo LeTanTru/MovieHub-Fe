@@ -25,10 +25,12 @@ export function Room() {
     enabled: !!id && isAuthenticated
   });
 
-  const setRoom = useRoomStore((state) => state.setRoom);
+  // const { data: chatListData, isLoading: chatListLoading} =
 
   const room = roomData?.data;
   const errorCode = roomData?.code;
+
+  const setRoom = useRoomStore((state) => state.setRoom);
 
   useIsomorphicLayoutEffect(() => {
     if (room) {

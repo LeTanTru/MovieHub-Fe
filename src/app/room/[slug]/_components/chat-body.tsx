@@ -4,11 +4,14 @@ import { MessageEmptyIcon } from '@/assets';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ROOM_STATE_ENDED, ROOM_STATE_RUNNING } from '@/constants';
 import { useRoomStore } from '@/store';
+import { useShallow } from 'zustand/shallow';
 
 const CHAT_SKELETON_COUNT = 10;
 
 export function ChatBody() {
-  const room = useRoomStore((state) => state.room);
+  const { room, isJoined } = useRoomStore(
+    useShallow((state) => ({ room: state.room, isJoined: state.isJoined }))
+  );
 
   if (!room) return <ChatBody.Skeleton />;
 
@@ -21,14 +24,21 @@ export function ChatBody() {
       <p className='text-center text-gray-300'>
         {isRunning ? (
           <>
-            Chưa có tin nhắn nào trong phòng này. <br /> Hãy gửi tin nhắn đầu
-            tiên để bắt đầu cuộc trò chuyện nhé !
+            {isJoined ? (
+              <>
+                Chưa có tin nhắn nào trong phòng này. <br /> Hãy gửi tin nhắn
+                đầu tiên để bắt đầu cuộc trò chuyện nhé !
+              </>
+            ) : (
+              <>Tham gia phòng để bắt đầu gửi tin nhắn</>
+            )}
           </>
         ) : isEnd ? (
           <>Phòng này đã kết thúc.</>
         ) : (
           <>
-            Phòng chat đang chờ. <br /> Vui lòng mở phòng chat để gửi tin nhắn.
+            Phòng đang chờ để bắt đầu. <br /> Vui lòng đợi phòng bắt đầu để gửi
+            tin nhắn.
           </>
         )}
       </p>

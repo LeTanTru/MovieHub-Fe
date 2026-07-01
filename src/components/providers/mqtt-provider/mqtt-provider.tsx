@@ -6,6 +6,7 @@ import { getMqttClient } from '@/lib/mqtt';
 import { logger } from '@/logger';
 import type {
   NotificationResType,
+  NotificationRoomInviteType,
   ReplyCommentNotificationType,
   ToxicCommentLockedNotificationType,
   ToxicReviewLockedNotificationType,
@@ -170,6 +171,15 @@ export function MqttProvider() {
           invalidateReviewQueries({
             movieId: body.movieId
           });
+          break;
+        }
+        case mqttCMDs.ROOM_INVITE: {
+          const body = parseJSON<NotificationRoomInviteType>(data.body);
+          invalidateQueries(
+            [queryKeys.ROOM, body.id],
+            [queryKeys.ROOM_LIST],
+            [queryKeys.MY_ROOM_LIST]
+          );
           break;
         }
         case mqttCMDs.VOTE_COMMENT: {

@@ -15,7 +15,8 @@ import {
   queryKeys,
   SUGGEST_BY_WATCHED_PAGE_0,
   OG_IMAGE_WIDTH,
-  OG_IMAGE_HEIGHT
+  OG_IMAGE_HEIGHT,
+  SUGGEST_BY_WATCHED_PAGE_1
 } from '@/constants';
 import { Collection } from '@/app/(home)/_components/collection';
 import { envConfig } from '@/config';
@@ -135,6 +136,7 @@ export default async function HomePage() {
           <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_0} />
           <Recommendation />
           <RecommendationRecentWatched />
+          <SuggestByWatched page={SUGGEST_BY_WATCHED_PAGE_1} />
           <RecommendationKNN />
           <Collection />
         </div>
