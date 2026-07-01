@@ -435,7 +435,7 @@ export function AutoCompleteField<
                           'ring-dark-gray border-transparent! ring-2': open,
                           'border-rose-500 ring-rose-500': !!fieldState.error,
                           'pl-1!': isMulti,
-                          'h-auto! min-h-10! py-1!':
+                          'h-auto! min-h-9! py-0!':
                             isMulti && isMultiLine && selectedValues.length > 0
                         },
                         className

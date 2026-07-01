@@ -196,8 +196,17 @@ export default function NewRoomForm() {
                   apiConfig={apiConfig.user.autoComplete}
                   mappingData={(option) => ({
                     value: option.id,
-                    label: option.fullName
+                    label: option.fullName,
+                    email: option.email
                   })}
+                  renderOption={(option) => {
+                    const user = option.extra;
+                    return (
+                      <span>
+                        {user?.fullName} ({user?.email})
+                      </span>
+                    );
+                  }}
                   searchParams={['fullName']}
                   label='4. Mời mọi người tham gia'
                   isMulti

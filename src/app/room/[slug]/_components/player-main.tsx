@@ -14,7 +14,8 @@ import {
 import { route } from '@/routes';
 import { useRoomStore } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
-import {
+import type {
+  ApiResponseNoData,
   RoomPlayerStateType,
   RoomResType,
   VideoLibrarySubtitleResType
@@ -22,6 +23,7 @@ import {
 import {
   generateMqttTopic,
   invalidateQueries,
+  isAxiosError,
   notify,
   publishMqttMessage,
   renderImageUrl,
@@ -29,7 +31,7 @@ import {
   renderVttUrl
 } from '@/utils';
 import Link from 'next/link';
-import { FaHourglassHalf, FaPlay, FaPodcast } from 'react-icons/fa6';
+import { FaHourglassHalf, FaLock, FaPlay, FaPodcast } from 'react-icons/fa6';
 import {
   useJoinRoomMutation,
   useMovieItemQuery,
@@ -40,7 +42,7 @@ import type { MediaPlayerInstance, TrackProps } from '@vidstack/react';
 import { useAnonymousToken, useAuth } from '@/hooks';
 import { logger } from '@/logger';
 import { useShallow } from 'zustand/shallow';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function PlayerMain() {
   const { token, isLoadingToken } = useAnonymousToken();
@@ -83,6 +85,7 @@ export function PlayerMain() {
   // Handle seek
   useEffect(() => {
     if (!playerRef.current || isHost) return;
+
     playerRef.current.currentTime =
       playerState.currentPositionMovie / MILLISECOND;
   }, [playerState.currentPositionMovie, isHost]);
@@ -173,6 +176,7 @@ export function PlayerMain() {
   const handleRateChange = async (rate: number) => {
     const newState = { ...playerState, playSpeed: rate };
     useRoomStore.getState().setPlayerState(newState);
+
     await publishRoomState(newState, mqttCMDs.ROOM_PLAY_SPEED);
   };
 
@@ -182,6 +186,7 @@ export function PlayerMain() {
       currentPositionMovie: currentTime * MILLISECOND
     };
     useRoomStore.getState().setPlayerState(newState);
+
     await publishRoomState(newState, mqttCMDs.ROOM_SEEK);
   };
 
@@ -194,6 +199,7 @@ export function PlayerMain() {
       currentPositionMovie: (playerRef.current?.currentTime ?? 0) * MILLISECOND
     };
     useRoomStore.getState().setPlayerState(newState);
+
     await publishRoomState(newState, mqttCMDs.ROOM_PAUSE);
   };
 
@@ -206,6 +212,7 @@ export function PlayerMain() {
       currentPositionMovie: (playerRef.current?.currentTime ?? 0) * MILLISECOND
     };
     useRoomStore.getState().setPlayerState(newState);
+
     await publishRoomState(newState, mqttCMDs.ROOM_PLAY);
   };
 
@@ -280,6 +287,7 @@ function PopupRunning({ room }: { room: RoomResType }) {
   const { profile } = useAuth();
   const { mutate: joinRoom } = useJoinRoomMutation();
   const setIsJoined = useRoomStore((state) => state.setIsJoined);
+  const [isUnauthorized, setIsUnauthorized] = useState(false);
 
   const isHost = profile?.id === room.host.id;
 
@@ -305,17 +313,58 @@ function PopupRunning({ room }: { room: RoomResType }) {
           const errorCode = res.code;
           if (errorCode === ErrorCode.ROOM_ERROR_INVALID_STATE) {
             invalidateQueries([queryKeys.ROOM, room.id]);
+          } else if (errorCode === ErrorCode.ROOM_ERROR_UNAUTHORIZED) {
+            setIsUnauthorized(true);
           } else {
             notify.error('Tham gia phòng thất bại');
           }
         }
       },
       onError: (error) => {
+        if (isAxiosError(error)) {
+          const response = error.response?.data as
+            | ApiResponseNoData
+            | undefined;
+          if (response?.code === ErrorCode.ROOM_ERROR_UNAUTHORIZED) {
+            setIsUnauthorized(true);
+            return;
+          }
+        }
+
         logger.error('[JOIN_ROOM_ERROR]', error);
         notify.error('Tham gia phòng thất bại');
       }
     });
   };
+
+  if (isUnauthorized) {
+    return (
+      <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
+        <div className='text-base'>Phòng riêng tư</div>
+        <div className='text-xl'>
+          <span className='text-golden-glow font-semibold'>
+            {room.movieItem.movie.title}
+          </span>
+        </div>
+        <div className='flex flex-col items-center gap-2'>
+          <div className='flex items-center gap-2 rounded-md bg-white px-4 py-2 text-black'>
+            <FaLock />
+            <span>Bạn chưa được mời</span>
+          </div>
+          <span className='text-dark-gray'>
+            Chủ phòng chưa mời bạn tham gia buổi xem chung này
+          </span>
+        </div>
+        <Link
+          href={route.room.path}
+          className='mx-auto flex items-center gap-2 rounded-md border border-solid border-white bg-transparent px-4 py-2 text-white transition-all duration-200 ease-linear hover:bg-white/10'
+        >
+          <FaPodcast />
+          <span>Phòng khác</span>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
