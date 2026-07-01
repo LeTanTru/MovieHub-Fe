@@ -2,30 +2,41 @@
 
 import { AvatarField } from '@/components/form';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ROOM_STATE_RUNNING } from '@/constants';
+import { mqttCMDs, mqttTopics, ROOM_STATE_RUNNING } from '@/constants';
+import { useAuth } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
 import { useRoomStore } from '@/store';
 import {
   convertUTCToLocal,
   copyTextToClipboard,
+  generateMqttTopic,
   generateSlug,
   notify,
+  publishMqttMessage,
   renderImageUrl,
   timeAgo
 } from '@/utils';
 import Link from 'next/link';
-import { FaPlayCircle } from 'react-icons/fa';
+import { FaPlayCircle, FaSyncAlt } from 'react-icons/fa';
 import { FaEye, FaLink } from 'react-icons/fa6';
+import { useShallow } from 'zustand/shallow';
 
 export function PlayerFooter() {
-  const room = useRoomStore((state) => state.room);
+  const { profile } = useAuth();
+  const { room, participantCount } = useRoomStore(
+    useShallow((state) => ({
+      room: state.room,
+      participantCount: state.participantCount
+    }))
+  );
 
   if (!room) return <PlayerFooter.Skeleton />;
 
   const movieItem = room.movieItem;
 
   const isLive = room.state === ROOM_STATE_RUNNING;
+  const isParticipant = room.host.id !== profile?.id;
 
   const handleCopyText = async () => {
     const text = `${window.location.origin}${route.room.path}/${generateSlug(room.name)}.${room.id}`;
@@ -33,6 +44,18 @@ export function PlayerFooter() {
     const ok = await copyTextToClipboard(text);
     if (ok) notify.success('Đã sao chép link phòng');
     else notify.error('Không thể sao chép link phòng');
+  };
+
+  const handleSyncTime = async () => {
+    if (!profile?.id) return;
+
+    await publishMqttMessage(
+      generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
+      {
+        cmd: mqttCMDs.ROOM_SYNC,
+        data: { id: profile.id }
+      }
+    );
   };
 
   return (
@@ -63,7 +86,7 @@ export function PlayerFooter() {
         </div>
         <div className='inline-flex items-center gap-2'>
           <FaEye />
-          <span>{room.participantCount}</span>
+          <span>{participantCount}</span>
         </div>
         <div
           onClick={handleCopyText}
@@ -79,6 +102,15 @@ export function PlayerFooter() {
           <FaPlayCircle />
           <span>Xem riêng</span>
         </Link>
+        {isParticipant && (
+          <div
+            onClick={handleSyncTime}
+            className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
+          >
+            <FaSyncAlt />
+            <span>Đồng bộ</span>
+          </div>
+        )}
       </div>
     </div>
   );

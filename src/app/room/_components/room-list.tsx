@@ -97,7 +97,7 @@ export function RoomList() {
             <RoomCard
               key={room.id}
               room={room}
-              isOwner={room.host.id == profile?.id}
+              isHost={room.host.id == profile?.id}
               onDelete={() => handleDeleteRoom(room.id)}
             />
           ))}

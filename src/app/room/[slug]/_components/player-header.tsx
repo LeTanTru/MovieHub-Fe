@@ -1,28 +1,33 @@
 'use client';
 
-import { Button } from '@/components/form';
-import { ButtonStart } from './button-start';
-import { ChevronLeft } from 'lucide-react';
 import {
   MOVIE_TYPE_SINGLE,
   ROOM_STATE_PENDING,
   ROOM_STATE_RUNNING
 } from '@/constants';
+import { Button } from '@/components/form';
 import { ButtonEnd } from './button-end';
+import { ButtonLeave } from './button-leave';
+import { ButtonStart } from './button-start';
+import { ChevronLeft } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth, useNavigate } from '@/hooks';
 import { useRoomStore } from '@/store';
+import { useShallow } from 'zustand/shallow';
 
 export function PlayerHeader() {
   const { profile } = useAuth();
   const navigate = useNavigate();
-  const room = useRoomStore((state) => state.room);
+
+  const { room, isJoined } = useRoomStore(
+    useShallow((state) => ({ room: state.room, isJoined: state.isJoined }))
+  );
 
   if (!room || !profile) return <PlayerHeader.Skeleton />;
 
   const isRunning = room.state === ROOM_STATE_RUNNING;
   const isPending = room.state === ROOM_STATE_PENDING;
-  const isOwner = room.host.id === profile.id;
+  const isHost = room.host.id === profile.id;
 
   const movieItem = room.movieItem;
 
@@ -57,8 +62,9 @@ export function PlayerHeader() {
           <div className=''>{movieItem?.title}</div>
         </div>
       </div>
-      {isPending && isOwner && <ButtonStart />}
-      {isRunning && isOwner && <ButtonEnd />}
+      {isPending && isHost && <ButtonStart />}
+      {isRunning && isHost && <ButtonEnd />}
+      {isRunning && isJoined && <ButtonLeave />}
     </div>
   );
 }

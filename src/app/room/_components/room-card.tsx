@@ -27,14 +27,14 @@ import Link from 'next/link';
 
 type RoomCardProps = {
   room: RoomResType;
-  isOwner?: boolean;
+  isHost?: boolean;
   isDeleting?: boolean;
   onDelete: () => void;
 };
 
 export function RoomCard({
   room,
-  isOwner,
+  isHost,
   isDeleting,
   onDelete
 }: RoomCardProps) {
@@ -128,7 +128,7 @@ export function RoomCard({
           <div className='flex items-center gap-2'>
             <div
               className={cn('text-dark-gray text-xs whitespace-nowrap', {
-                'text-golden-glow': isOwner
+                'text-golden-glow': isHost
               })}
             >
               <span>{room.host.fullName}</span>
@@ -142,7 +142,7 @@ export function RoomCard({
           </div>
         </div>
 
-        {isOwner && (
+        {isHost && (
           <PortalDropdown
             align='left'
             offsetX={-20}

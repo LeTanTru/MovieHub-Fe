@@ -1,6 +1,11 @@
 'use client';
 
 import {
+  ErrorCode,
+  MILLISECOND,
+  mqttCMDs,
+  mqttTopics,
+  queryKeys,
   ROOM_STATE_ENDED,
   ROOM_STATE_PENDING,
   ROOM_STATE_RUNNING,
@@ -9,8 +14,20 @@ import {
 import { route } from '@/routes';
 import { useRoomStore } from '@/store';
 import { Skeleton } from '@/components/ui/skeleton';
-import { RoomResType, VideoLibrarySubtitleResType } from '@/types';
-import { notify, renderImageUrl, renderVideoUrl, renderVttUrl } from '@/utils';
+import {
+  RoomPlayerStateType,
+  RoomResType,
+  VideoLibrarySubtitleResType
+} from '@/types';
+import {
+  generateMqttTopic,
+  invalidateQueries,
+  notify,
+  publishMqttMessage,
+  renderImageUrl,
+  renderVideoUrl,
+  renderVttUrl
+} from '@/utils';
 import Link from 'next/link';
 import { FaHourglassHalf, FaPlay, FaPodcast } from 'react-icons/fa6';
 import {
@@ -19,22 +36,24 @@ import {
   useVideoLibrarySubtitleListQuery
 } from '@/queries';
 import { VideoPlayer } from '@/components/video-player';
-import type { TrackProps } from '@vidstack/react';
+import type { MediaPlayerInstance, TrackProps } from '@vidstack/react';
 import { useAnonymousToken, useAuth } from '@/hooks';
-import { ConfirmModal } from '@/components/modal';
 import { logger } from '@/logger';
 import { useShallow } from 'zustand/shallow';
+import { useEffect, useRef } from 'react';
 
 export function PlayerMain() {
-  const { room, isJoined, setIsJoined } = useRoomStore(
+  const { token, isLoadingToken } = useAnonymousToken();
+  const { profile } = useAuth();
+  const playerRef = useRef<MediaPlayerInstance>(null);
+
+  const { room, isJoined, playerState } = useRoomStore(
     useShallow((state) => ({
       room: state.room,
       isJoined: state.isJoined,
-      setIsJoined: state.setIsJoined
+      playerState: state.playerState
     }))
   );
-  const { token, isLoadingToken } = useAnonymousToken();
-  const { profile } = useAuth();
 
   const { data: movieItemData } = useMovieItemQuery({
     id: room?.movieItem?.id || '',
@@ -51,9 +70,44 @@ export function PlayerMain() {
       enabled: !!video && room?.state === ROOM_STATE_RUNNING
     });
 
+  const isHost = !!room && profile?.id === room.host.id;
+
+  useEffect(() => {
+    useRoomStore
+      .getState()
+      .setGetPlayerCurrentTime(
+        () => (playerRef.current?.currentTime ?? 0) * MILLISECOND
+      );
+  }, []);
+
+  // Handle seek
+  useEffect(() => {
+    if (!playerRef.current || isHost) return;
+    playerRef.current.currentTime =
+      playerState.currentPositionMovie / MILLISECOND;
+  }, [playerState.currentPositionMovie, isHost]);
+
+  // Handle change play speed
+  useEffect(() => {
+    if (!playerRef.current || isHost) return;
+
+    if (playerRef.current.playbackRate !== playerState.playSpeed) {
+      playerRef.current.playbackRate = playerState.playSpeed;
+    }
+  }, [playerState.playSpeed, isHost]);
+
+  useEffect(() => {
+    if (!playerRef.current || isHost) return;
+
+    if (playerState.isPlay) {
+      playerRef.current.play();
+    } else {
+      playerRef.current.pause();
+    }
+  }, [playerState.isPlay, isHost]);
+
   if (!room) return <PlayerMain.Skeleton />;
 
-  const isHost = profile?.id === room.host.id;
   const isPending = room.state === ROOM_STATE_PENDING;
   const isEnded = room.state === ROOM_STATE_ENDED;
   const isRunning = room.state === ROOM_STATE_RUNNING;
@@ -75,24 +129,99 @@ export function PlayerMain() {
     })
   );
 
+  const handleCanPlay = () => {
+    if (!playerRef.current) return;
+
+    if (!isHost) {
+      playerRef.current.currentTime =
+        playerState.currentPositionMovie / MILLISECOND;
+      playerRef.current.playbackRate = playerState.playSpeed;
+      if (playerState.isPlay) {
+        playerRef.current.play();
+      } else {
+        playerRef.current.pause();
+      }
+      return;
+    }
+
+    const newState = {
+      ...playerState,
+      currentPositionMovie: playerRef.current.currentTime * MILLISECOND,
+      playSpeed: playerRef.current.playbackRate
+    };
+    useRoomStore.getState().setPlayerState(newState);
+  };
+
+  const publishRoomState = async (
+    newState: RoomPlayerStateType,
+    subCmd: string
+  ) => {
+    if (!isHost) return;
+
+    await publishMqttMessage(
+      generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
+      {
+        cmd: mqttCMDs.ROOM_STATE,
+        data: {
+          ...newState,
+          subCmd
+        }
+      }
+    );
+  };
+
+  const handleRateChange = async (rate: number) => {
+    const newState = { ...playerState, playSpeed: rate };
+    useRoomStore.getState().setPlayerState(newState);
+    await publishRoomState(newState, mqttCMDs.ROOM_PLAY_SPEED);
+  };
+
+  const handleSeek = async (currentTime: number) => {
+    const newState = {
+      ...playerState,
+      currentPositionMovie: currentTime * MILLISECOND
+    };
+    useRoomStore.getState().setPlayerState(newState);
+    await publishRoomState(newState, mqttCMDs.ROOM_SEEK);
+  };
+
+  const handlePause = async () => {
+    if (!isHost) return;
+
+    const newState = {
+      ...playerState,
+      isPlay: false,
+      currentPositionMovie: (playerRef.current?.currentTime ?? 0) * MILLISECOND
+    };
+    useRoomStore.getState().setPlayerState(newState);
+    await publishRoomState(newState, mqttCMDs.ROOM_PAUSE);
+  };
+
+  const handlePlay = async () => {
+    if (!isHost) return;
+
+    const newState = {
+      ...playerState,
+      isPlay: true,
+      currentPositionMovie: (playerRef.current?.currentTime ?? 0) * MILLISECOND
+    };
+    useRoomStore.getState().setPlayerState(newState);
+    await publishRoomState(newState, mqttCMDs.ROOM_PLAY);
+  };
+
   return (
     <div className='relative aspect-video w-full overflow-hidden bg-transparent'>
       {isPending && <PopupPending room={room} />}
       {isEnded && <PopupEnded room={room} />}
-      {isRunning && !isHost && !isJoined && (
-        <PopupRunning
-          room={room}
-          isHost={isHost}
-          onJoinSuccess={() => setIsJoined(true)}
-        />
-      )}
-      {isRunning && (isHost || isJoined) && video ? (
+      {isRunning && !isJoined && <PopupRunning room={room} />}
+      {isRunning && isJoined && video ? (
         isLoadingToken ? (
           <div className='flex size-full items-center justify-center bg-black'>
             <div className='size-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
           </div>
         ) : (
           <VideoPlayer
+            ref={playerRef}
             auth={video.sourceType === VIDEO_SOURCE_TYPE_INTERNAL}
             token={token}
             duration={video.duration}
@@ -112,8 +241,15 @@ export function PlayerMain() {
             outroStart={video.outroStart}
             title={room.movieItem.movie.title}
             className='w-full'
-            autoPlay={true}
+            autoPlay={isHost ? true : playerState.isPlay}
+            hideControls={!isHost}
+            hidePoster={playerState.currentPositionMovie > 0}
             textTracks={textTracks}
+            onCanPlay={handleCanPlay}
+            onRateChange={handleRateChange}
+            onSeeked={handleSeek}
+            onPause={handlePause}
+            onPlay={handlePlay}
           />
         )
       ) : (
@@ -140,27 +276,38 @@ PlayerMain.Skeleton = function PlayerMainSkeleton() {
   );
 };
 
-function PopupRunning({
-  room,
-  isHost,
-  onJoinSuccess
-}: {
-  room: RoomResType;
-  isHost: boolean;
-  onJoinSuccess: () => void;
-}) {
+function PopupRunning({ room }: { room: RoomResType }) {
+  const { profile } = useAuth();
   const { mutate: joinRoom } = useJoinRoomMutation();
+  const setIsJoined = useRoomStore((state) => state.setIsJoined);
 
-  if (isHost) return null;
+  const isHost = profile?.id === room.host.id;
 
   const handleJoinRoom = () => {
+    if (isHost) {
+      setIsJoined(true);
+      return;
+    }
+
     joinRoom(room.id, {
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         if (res.result) {
           notify.success('Tham gia phòng thành công');
-          onJoinSuccess();
+          await publishMqttMessage(
+            generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
+            {
+              cmd: mqttCMDs.PARTICIPANT_JOIN,
+              data: { id: profile?.id || '' }
+            }
+          );
+          setIsJoined(true);
         } else {
-          notify.error('Tham gia phòng thất bại');
+          const errorCode = res.code;
+          if (errorCode === ErrorCode.ROOM_ERROR_INVALID_STATE) {
+            invalidateQueries([queryKeys.ROOM, room.id]);
+          } else {
+            notify.error('Tham gia phòng thất bại');
+          }
         }
       },
       onError: (error) => {
@@ -178,16 +325,13 @@ function PopupRunning({
           {room.movieItem.movie.title}
         </span>
       </div>
-      <ConfirmModal
-        message={`Bạn có chắc chắn muốn tham gia phòng "${room.name}" không ?`}
-        onConfirm={handleJoinRoom}
-        trigger={
-          <button className='mx-auto flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-white/80'>
-            <FaPlay />
-            <span>Tham gia</span>
-          </button>
-        }
-      />
+      <button
+        onClick={handleJoinRoom}
+        className='mx-auto flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-white/80'
+      >
+        <FaPlay />
+        <span>{isHost ? 'Tiếp tục' : 'Tham gia'}</span>
+      </button>
     </div>
   );
 }
@@ -212,14 +356,18 @@ function PopupPending({ room }: { room: RoomResType }) {
 }
 
 function PopupEnded({ room }: { room: RoomResType }) {
+  const endReason = useRoomStore((state) => state.endReason);
+
   return (
     <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
       <div className='text-base'>Đã kết thúc</div>
-      <div className='text-xl'>
-        <span className='text-golden-glow font-semibold'>
+      <div className='flex flex-col gap-2'>
+        <span className='text-golden-glow text-xl font-semibold'>
           {room.movieItem.movie.title}
         </span>
+        {endReason && <span className='text-dark-gray'>{endReason}</span>}
       </div>
+
       <div className='inline-flex items-center gap-4'>
         <Link
           href={`${route.movie.path}/${room.movieItem.movie.slug}.${room.movieItem.movie.id}`}

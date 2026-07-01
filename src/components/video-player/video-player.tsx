@@ -63,6 +63,8 @@ type VideoPlayerProps = Omit<
   auth: boolean;
   defaultQuality?: number;
   duration: number;
+  hideControls?: boolean;
+  hidePoster?: boolean;
   hideVolumeIndicator?: boolean;
   introEnd: number;
   introStart: number;
@@ -88,6 +90,8 @@ export function VideoPlayer({
   className,
   defaultQuality = 0,
   duration,
+  hideControls = false,
+  hidePoster = false,
   hideVolumeIndicator = false,
   introEnd,
   introStart,
@@ -179,78 +183,84 @@ export function VideoPlayer({
         {...mediaPlayerProps}
       >
         <MediaProvider slot='media' className='cursor-pointer'>
-          <Poster className='vds-poster' src={thumbnailUrl} />
+          {!hidePoster && <Poster className='vds-poster' src={thumbnailUrl} />}
         </MediaProvider>
-        <Gesture
-          className='pointer-events-auto absolute inset-0 z-0 block h-full w-full'
-          event='pointerup'
-          action='toggle:paused'
-        />
+        {!hideControls && (
+          <Gesture
+            className='pointer-events-auto absolute inset-0 z-0 block h-full w-full'
+            event='pointerup'
+            action='toggle:paused'
+          />
+        )}
         <TextTrackSync textTracks={textTracks} playerRef={playerRef} />
         <DefaultQuality defaultQuality={defaultQuality} />
-        <DefaultVideoLayout
-          noGestures={true}
-          smallLayoutWhen={false}
-          thumbnails={vttUrl}
-          icons={defaultLayoutIcons}
-          slots={{
-            playButton: <PlayToggleButton />,
-            muteButton: <VolumeToggleButton />,
-            fullscreenButton: <FullscreenToggleButton />,
-            pipButton: <PiPToggleButton />,
-            settingsMenu: (
-              <SettingMenu placement='top end' tooltipPlacement='top' />
-            ),
-            captionButton: <CaptionButton />,
-            beforeSettingsMenu: (
-              <>
-                <div className='max-640:hidden contents'>
-                  {prev && onPrevClick && (
-                    <PreviousButton onClick={onPrevClick} />
-                  )}
-                  {next && onNextClick && <NextButton onClick={onNextClick} />}
-                  <SeekBackwardButton />
-                  <SeekForwardButton />
-                </div>
-              </>
-            ),
-            googleCastButton: null,
-            afterTimeSlider:
-              showSkipIntro || showSkipOutro ? (
+        {!hideControls && (
+          <DefaultVideoLayout
+            noGestures={true}
+            smallLayoutWhen={false}
+            thumbnails={vttUrl}
+            icons={defaultLayoutIcons}
+            slots={{
+              playButton: <PlayToggleButton />,
+              muteButton: <VolumeToggleButton />,
+              fullscreenButton: <FullscreenToggleButton />,
+              pipButton: <PiPToggleButton />,
+              settingsMenu: (
+                <SettingMenu placement='top end' tooltipPlacement='top' />
+              ),
+              captionButton: <CaptionButton />,
+              beforeSettingsMenu: (
                 <>
-                  {showSkipIntro && (
-                    <SkipIntroButton
-                      onClick={() => {
-                        if (playerRef.current && introEnd) {
-                          playerRef.current.currentTime = introEnd;
-                        }
-                      }}
-                    />
-                  )}
-                  {showSkipOutro && <SkipOutroButton onClick={onNextClick} />}
+                  <div className='max-640:hidden contents'>
+                    {prev && onPrevClick && (
+                      <PreviousButton onClick={onPrevClick} />
+                    )}
+                    {next && onNextClick && (
+                      <NextButton onClick={onNextClick} />
+                    )}
+                    <SeekBackwardButton />
+                    <SeekForwardButton />
+                  </div>
                 </>
-              ) : null,
-            timeSlider: (
-              <TimeSlider
-                introStart={introStart}
-                introEnd={introEnd}
-                duration={duration}
-                outroStart={outroStart}
-                vttUrl={vttUrl}
-                markers={markers}
-                activeMarkerId={activeMarkerId}
-              />
-            ),
-            bufferingIndicator: (
-              <>
-                <PlayPauseIndicator />
-                <BufferingIndicator />
-                {!hideVolumeIndicator && <VolumeIndicator />}
-              </>
-            ),
-            ...slots
-          }}
-        />
+              ),
+              googleCastButton: null,
+              afterTimeSlider:
+                showSkipIntro || showSkipOutro ? (
+                  <>
+                    {showSkipIntro && (
+                      <SkipIntroButton
+                        onClick={() => {
+                          if (playerRef.current && introEnd) {
+                            playerRef.current.currentTime = introEnd;
+                          }
+                        }}
+                      />
+                    )}
+                    {showSkipOutro && <SkipOutroButton onClick={onNextClick} />}
+                  </>
+                ) : null,
+              timeSlider: (
+                <TimeSlider
+                  introStart={introStart}
+                  introEnd={introEnd}
+                  duration={duration}
+                  outroStart={outroStart}
+                  vttUrl={vttUrl}
+                  markers={markers}
+                  activeMarkerId={activeMarkerId}
+                />
+              ),
+              bufferingIndicator: (
+                <>
+                  <PlayPauseIndicator />
+                  <BufferingIndicator />
+                  {!hideVolumeIndicator && <VolumeIndicator />}
+                </>
+              ),
+              ...slots
+            }}
+          />
+        )}
       </MediaPlayer>
     </IndicatorContext.Provider>
   );

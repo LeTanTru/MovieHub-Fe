@@ -38,7 +38,7 @@ export function CommentSort({ selectedSort, onSortChange }: CommentSortProps) {
             onSortChange(val as CommentSortType);
           }
         }}
-        className='rounded-md px-2! text-white'
+        className='rounded-md text-white'
         formItemClassName='max-640:flex-1 max-768:w-1/3 h-8 w-50'
         renderOption={(option) => (
           <span title={option.label}>{option.label}</span>

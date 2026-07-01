@@ -6,21 +6,24 @@ import {
   notify,
   publishMqttMessage
 } from '@/utils';
-import { getMqttClient } from '@/lib/mqtt';
 import { logger } from '@/logger';
 import {
   mqttCMDs,
   mqttTopics,
   queryKeys,
-  ROOM_STATE_RUNNING
+  ROOM_STATE_RUNNING,
+  roomEndReasons
 } from '@/constants';
-import {
+import type {
   RoomEndType,
+  RoomParticipantJoinType,
+  RoomPlayerStateType,
   RoomResType,
+  RoomSyncType,
   RoomUpdateParticipantCountType
 } from '@/types';
 import { useEffect } from 'react';
-import { useMqtt, useMqttSubscribe } from '@/hooks';
+import { useAuth, useMqtt, useMqttSubscribe } from '@/hooks';
 import { useRoomStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 
@@ -31,22 +34,24 @@ type RoomMqttProps = {
 };
 
 export function RoomMqtt({ room }: RoomMqttProps) {
-  const client = getMqttClient();
-  const isRunning = room.state === ROOM_STATE_RUNNING;
-  const { setParticipantCount } = useRoomStore(
+  const { profile } = useAuth();
+  const { isJoined } = useRoomStore(
     useShallow((state) => ({
-      setParticipantCount: state.setParticipantCount
+      isJoined: state.isJoined
     }))
   );
 
+  const isRunning = room.state === ROOM_STATE_RUNNING;
+  const isHost = profile?.id === room.host.id;
+
+  // CMD_CLIENT_PING
   // Send ping to the room every 10 seconds to keep the connection alive
   useEffect(() => {
-    if (!isRunning) return;
+    if (!isRunning || !isHost || !isJoined) return;
 
     const sendPing = async () => {
       try {
         await publishMqttMessage(
-          client,
           generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
           {
             cmd: mqttCMDs.CLIENT_PING,
@@ -63,9 +68,10 @@ export function RoomMqtt({ room }: RoomMqttProps) {
 
     const interval = setInterval(sendPing, PING_INTERVAL);
     return () => clearInterval(interval);
-  }, [client, isRunning, room.host.id, room.id]);
+  }, [isHost, isRunning, isJoined, room.host.id, room.id]);
   // Send ping to the room every 10 seconds to keep the connection alive
 
+  // Topic: room/:roomId
   // Subscribe to room topic when the room is running
   useMqttSubscribe(
     generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
@@ -73,6 +79,7 @@ export function RoomMqtt({ room }: RoomMqttProps) {
   );
   // Subscribe to room topic when the room is running
 
+  // room/:roomId/:userId
   // Subscribe to room-user topic for the host when the room is running
   useMqttSubscribe(
     generateMqttTopic(mqttTopics.ROOM_USER, {
@@ -81,33 +88,139 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     }),
     isRunning
   );
+
+  useMqttSubscribe(
+    generateMqttTopic(mqttTopics.ROOM_USER, {
+      roomId: room.id,
+      userId: profile?.id || ''
+    }),
+    isRunning
+  );
   // Subscribe to room-user topic for the host when the room is running
 
+  // CMD_END_ROOM
   // Handle room end event
   useMqtt<RoomEndType>({
     topic: generateMqttTopic(mqttTopics.ROOM, { roomId: room?.id || '' }),
     cmd: mqttCMDs.END_ROOM,
-    callback: (payload) => {
-      notify.info('Chủ phòng đã kết thúc buổi xem chung');
-      invalidateQueries([queryKeys.ROOM, payload.roomId]);
+    callback: (data) => {
+      const reason = roomEndReasons.find(
+        (r) => String(r.value) === String(data?.reason)
+      )?.label;
+
+      const message = reason || 'Chủ phòng đã kết thúc buổi xem chung';
+
+      useRoomStore.getState().setEndReason(message);
+
+      invalidateQueries([queryKeys.ROOM, data.roomId]);
+
+      if (isHost) return;
+
+      notify.info(message);
     }
   });
   // Handle room end event
 
-  // Handle room update participant count event
+  // Set participant count when room.participantCount changes
   useEffect(() => {
-    setParticipantCount(room.participantCount);
-  }, [room.participantCount, setParticipantCount]);
+    useRoomStore.getState().setParticipantCount(room.participantCount);
+  }, [room.participantCount]);
+  // Set participant count when room.participantCount changes
 
+  // CMD_UPDATE_PARTICIPANT_COUNT
+  // Handle room update participant count event
   useMqtt<RoomUpdateParticipantCountType>({
     topic: generateMqttTopic(mqttTopics.ROOM, { roomId: room?.id || '' }),
     cmd: mqttCMDs.UPDATE_PARTICIPANT_COUNT,
-    callback: (payload) => {
-      setParticipantCount(payload.currentViewers);
-      invalidateQueries([queryKeys.ROOM, payload.roomId]);
+    callback: (data) => {
+      useRoomStore.getState().setParticipantCount(data.currentViewers);
     }
   });
   // Handle room update participant count event
+
+  // CMD_PARTICIPANT_JOIN
+  // Host responds with accurate live position from playerRef via store getter
+  useMqtt<RoomParticipantJoinType>({
+    topic: generateMqttTopic(mqttTopics.ROOM, { roomId: room?.id || '' }),
+    cmd: mqttCMDs.PARTICIPANT_JOIN,
+    callback: (data) => {
+      if (!isHost) return;
+
+      publishMqttMessage(
+        generateMqttTopic(mqttTopics.ROOM_USER, {
+          roomId: room.id,
+          userId: data.id
+        }),
+        {
+          cmd: mqttCMDs.ROOM_STATE,
+          data: {
+            ...useRoomStore.getState().playerState,
+            currentPositionMovie: Math.floor(
+              useRoomStore.getState().getPlayerCurrentTime()
+            ),
+            subCmd: mqttCMDs.ROOM_ALL_STATE
+          }
+        }
+      );
+    }
+  });
+  // Handle participant join event
+
+  // CMD_ROOM_SYNC
+  // Host responds with accurate live position from playerRef via store getter to the requesting participant
+  useMqtt<RoomSyncType>({
+    topic: generateMqttTopic(mqttTopics.ROOM, { roomId: room?.id || '' }),
+    cmd: mqttCMDs.ROOM_SYNC,
+    callback: (data) => {
+      if (!isHost) return;
+
+      publishMqttMessage(
+        generateMqttTopic(mqttTopics.ROOM_USER, {
+          roomId: room.id,
+          userId: data.id
+        }),
+        {
+          cmd: mqttCMDs.ROOM_STATE,
+          data: {
+            ...useRoomStore.getState().playerState,
+            currentPositionMovie: Math.floor(
+              useRoomStore.getState().getPlayerCurrentTime()
+            ),
+            subCmd: mqttCMDs.ROOM_ALL_STATE
+          }
+        }
+      );
+    }
+  });
+  // Handle room sync request event
+
+  // CMD_ROOM_STATE: PLAY, PAUSE, SEEK, PLAY_SPEED
+  // Handle room state event
+  useMqtt<RoomPlayerStateType>({
+    topic: generateMqttTopic(mqttTopics.ROOM, { roomId: room?.id || '' }),
+    cmd: mqttCMDs.ROOM_STATE,
+    callback: (data) => {
+      if (isHost) return;
+      useRoomStore.getState().setPlayerState(data);
+    }
+  });
+  // Handle room state event
+
+  // CMD_ROOM_STATE: ALL_STATE,
+  // Handle all room state event (sent by the host to a new participant)
+  useMqtt<RoomPlayerStateType>({
+    topic: generateMqttTopic(mqttTopics.ROOM_USER, {
+      roomId: room?.id || '',
+      userId: profile?.id || ''
+    }),
+    cmd: mqttCMDs.ROOM_STATE,
+    callback: (data) => {
+      if (isHost) return;
+
+      useRoomStore.getState().setPlayerState(data);
+    }
+  });
+  // Handle all room state event (sent by the host to a new participant)
 
   return null;
 }

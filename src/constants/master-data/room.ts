@@ -1,6 +1,9 @@
 import {
   ROOM_KIND_PRIVATE,
   ROOM_KIND_PUBLIC,
+  ROOM_REASON_END,
+  ROOM_REASON_HOST_LEFT,
+  ROOM_REASON_TIMEOUT,
   ROOM_STATE_ALL,
   ROOM_STATE_ENDED,
   ROOM_STATE_PENDING,
@@ -35,5 +38,20 @@ export const roomKinds: OptionType[] = [
   {
     label: 'Riêng tư',
     value: ROOM_KIND_PRIVATE
+  }
+];
+
+export const roomEndReasons: OptionType[] = [
+  {
+    label: 'Chủ phòng đã kết thúc buổi xem chung',
+    value: ROOM_REASON_END
+  },
+  {
+    label: 'Chủ phòng đã mất kết nối, phòng tự động kết thúc',
+    value: ROOM_REASON_TIMEOUT
+  },
+  {
+    label: 'Chủ phòng đã rời đi, phòng tự động kết thúc',
+    value: ROOM_REASON_HOST_LEFT
   }
 ];

@@ -33,6 +33,7 @@ import { route } from '@/routes';
 import { roomSchema } from '@/schemaValidations';
 import { RoomBodyType, UserAutoCompleteResType } from '@/types';
 import { generateSlug, getData, invalidateQueries, notify } from '@/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useMemo, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
@@ -250,50 +251,49 @@ export default function NewRoomForm() {
 
 NewRoomForm.Skeleton = function NewRoomFormSkeleton() {
   return (
-    <div className='w-full'>
-      {/* Room name */}
-      <div className='bg-charade mb-3 rounded-2xl px-4 py-8'>
+    <div className='flex w-full flex-col gap-6'>
+      {/* 1. Room name */}
+      <div className='bg-charade rounded-2xl px-4 py-8'>
         <div className='space-y-2'>
-          <div className='h-3.5 w-28 animate-pulse rounded bg-white/10' />
-          <div className='h-9 w-full animate-pulse rounded-md bg-white/8' />
+          <Skeleton className='h-3.5 w-28 bg-white/10' />
+          <Skeleton className='h-9 w-full bg-white/8' />
         </div>
       </div>
 
-      {/* Room kind */}
-      <div className='bg-charade mb-3 rounded-2xl px-4 py-8'>
+      {/* 2. Room kind */}
+      <div className='bg-charade rounded-2xl px-4 py-8'>
         <div className='space-y-2'>
-          <div className='h-3.5 w-24 animate-pulse rounded bg-white/10' />
-          <div className='h-9 w-full animate-pulse rounded-md bg-white/8' />
+          <Skeleton className='h-3.5 w-24 bg-white/10' />
+          <Skeleton className='h-9 w-full bg-white/8' />
         </div>
       </div>
 
-      {/* Invite */}
-      <div className='bg-charade mb-3 rounded-2xl px-4 py-8'>
-        <div className='space-y-2'>
-          <div className='h-3.5 w-44 animate-pulse rounded bg-white/10' />
-          <div className='h-9 w-full animate-pulse rounded-md bg-white/8' />
-        </div>
-      </div>
-
-      {/* Schedule */}
-      <div className='bg-charade mb-3 rounded-2xl px-4 py-8'>
+      {/* 3. Settings */}
+      <div className='bg-charade rounded-2xl px-4 py-8'>
         <div className='space-y-4'>
-          <div className='h-3.5 w-40 animate-pulse rounded bg-white/10' />
+          <Skeleton className='h-3.5 w-40 bg-white/10' />
+          <Skeleton className='h-4 w-72 bg-white/6' />
           <div className='flex items-center gap-3'>
-            <div className='h-6 w-11 animate-pulse rounded-full bg-white/10' />
-            <div className='h-3.5 w-52 animate-pulse rounded bg-white/8' />
+            <Skeleton className='h-6 w-11 rounded-full bg-white/10' />
+            <Skeleton className='h-3.5 w-52 bg-white/8' />
           </div>
-          <div className='space-y-2'>
-            <div className='h-3.5 w-20 animate-pulse rounded bg-white/10' />
-            <div className='h-9 w-full animate-pulse rounded-md bg-white/8' />
-          </div>
+          <Skeleton className='mb-3 h-3.5 w-20 bg-white/10' />
+          <Skeleton className='h-9 w-full bg-white/8' />
         </div>
       </div>
 
-      {/* Actions */}
-      <div className='flex flex-col gap-4'>
-        <div className='bg-golden-glow/30 h-9 w-full animate-pulse rounded-md' />
-        <div className='h-9 w-full animate-pulse rounded-md bg-white/10' />
+      {/* 4. Invite */}
+      <div className='bg-charade rounded-2xl px-4 py-8'>
+        <div className='space-y-2'>
+          <Skeleton className='h-3.5 w-44 bg-white/10' />
+          <Skeleton className='h-9 w-full bg-white/8' />
+        </div>
+      </div>
+
+      {/* 5. Actions */}
+      <div className='flex flex-col gap-6'>
+        <Skeleton className='bg-golden-glow/30 h-9 w-full' />
+        <Skeleton className='h-9 w-full bg-white/10' />
       </div>
     </div>
   );

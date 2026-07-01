@@ -111,7 +111,7 @@ export function RoomList() {
             <RoomCard
               key={room.id}
               room={room}
-              isOwner
+              isHost
               onDelete={() => handleDeleteRoom(room.id)}
             />
           ))}
