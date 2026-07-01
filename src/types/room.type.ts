@@ -102,3 +102,7 @@ export type RoomUpdateParticipantCountType = {
 export type RoomParticipantJoinType = {
   id: string;
 };
+
+export type RoomSyncType = {
+  id: string;
+};

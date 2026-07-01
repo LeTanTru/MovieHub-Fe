@@ -19,6 +19,7 @@ import type {
   RoomParticipantJoinType,
   RoomPlayerStateType,
   RoomResType,
+  RoomSyncType,
   RoomUpdateParticipantCountType
 } from '@/types';
 import { useEffect } from 'react';
@@ -164,6 +165,34 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     }
   });
   // Handle participant join event
+
+  // CMD_ROOM_SYNC
+  // Host responds with accurate live position from playerRef via store getter to the requesting participant
+  useMqtt<RoomSyncType>({
+    topic: generateMqttTopic(mqttTopics.ROOM, { roomId: room?.id || '' }),
+    cmd: mqttCMDs.ROOM_SYNC,
+    callback: (data) => {
+      if (!isHost) return;
+
+      publishMqttMessage(
+        generateMqttTopic(mqttTopics.ROOM_USER, {
+          roomId: room.id,
+          userId: data.id
+        }),
+        {
+          cmd: mqttCMDs.ROOM_STATE,
+          data: {
+            ...useRoomStore.getState().playerState,
+            currentPositionMovie: Math.floor(
+              useRoomStore.getState().getPlayerCurrentTime()
+            ),
+            subCmd: mqttCMDs.ROOM_ALL_STATE
+          }
+        }
+      );
+    }
+  });
+  // Handle room sync request event
 
   // CMD_ROOM_STATE: PLAY, PAUSE, SEEK, PLAY_SPEED
   // Handle room state event
