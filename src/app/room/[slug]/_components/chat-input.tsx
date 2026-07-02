@@ -84,6 +84,7 @@ export default function ChatInput() {
         }
       );
       form.reset(defaultValues);
+      setShowPicker(false);
     } catch (error) {
       logger.error('[CREATE_CHAT_ERROR]', error);
       notify.error('Gửi tin nhắn thất bại');

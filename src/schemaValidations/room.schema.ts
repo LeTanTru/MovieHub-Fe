@@ -27,3 +27,8 @@ export const roomSchema = z
       });
     }
   });
+
+export const roomAddParticipantSchema = z.object({
+  roomId: z.string().nonempty('Bắt buộc'),
+  accountIds: z.array(z.string()).nonempty('Bắt buộc')
+});

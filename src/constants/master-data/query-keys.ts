@@ -128,6 +128,7 @@ export const reviewQueryKeys = {
 export const roomQueryKeys = {
   CHECK_ROOM: 'check-room',
   MY_ROOM_LIST: 'my-room-list',
+  ROOM_ADD_PARTICIPANTS: 'room-add-participants',
   ROOM_CODE: 'room-code',
   ROOM_CREATE: 'room-create',
   ROOM_DELETE: 'room-delete',

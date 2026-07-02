@@ -1,4 +1,8 @@
-import { roomSchema, roomSearchSchema } from '@/schemaValidations';
+import {
+  roomAddParticipantSchema,
+  roomSchema,
+  roomSearchSchema
+} from '@/schemaValidations';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
@@ -106,3 +110,7 @@ export type RoomParticipantJoinType = {
 export type RoomSyncType = {
   id: string;
 };
+
+export type RoomAddParticipantBodyType = z.infer<
+  typeof roomAddParticipantSchema
+>;

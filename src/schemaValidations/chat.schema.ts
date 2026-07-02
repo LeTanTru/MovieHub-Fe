@@ -9,7 +9,8 @@ export const chatSchema = z.object({
     avatarPath: z.string().optional().nullable(),
     username: z.string().optional().nullable()
   }),
-  createdDate: z.string().optional().nullable()
+  createdDate: z.string().optional().nullable(),
+  isRead: z.boolean().optional().nullable()
 });
 
 export const chatSearchSchema = z.object({

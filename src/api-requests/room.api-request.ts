@@ -3,6 +3,7 @@ import {
   ApiResponse,
   ApiResponseList,
   ApiResponseNoData,
+  RoomAddParticipantBodyType,
   RoomBodyType,
   RoomResType,
   RoomSearchType
@@ -50,3 +51,8 @@ export const getMyRooms = (params?: RoomSearchType, signal?: AbortSignal) =>
 
 export const start = (id: string) =>
   http.post<ApiResponseNoData>(apiConfig.room.start, { pathParams: { id } });
+
+export const addParticipants = (body: RoomAddParticipantBodyType) =>
+  http.post<ApiResponseNoData>(apiConfig.room.addParticipant, {
+    body
+  });

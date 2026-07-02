@@ -1,6 +1,6 @@
 import { roomApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { RoomBodyType } from '@/types';
+import { RoomAddParticipantBodyType, RoomBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useCheckRoomMutation = () => {
@@ -71,5 +71,13 @@ export const useStartRoomMutation = () => {
   return useMutation({
     mutationKey: [queryKeys.ROOM_START],
     mutationFn: (id: string) => roomApiRequest.start(id)
+  });
+};
+
+export const useAddParticipantsMutation = () => {
+  return useMutation({
+    mutationKey: [queryKeys.ROOM_ADD_PARTICIPANTS],
+    mutationFn: (body: RoomAddParticipantBodyType) =>
+      roomApiRequest.addParticipants(body)
   });
 };
