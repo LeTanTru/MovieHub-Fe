@@ -58,10 +58,10 @@ export function PersonSidebar({ person }: PersonSidebarProps) {
     };
   }, [opened]);
 
-  const sanitizedBio = sanitizeText(person?.bio || 'Đang cập nhật');
+  const sanitizedBio = sanitizeText(person.bio || 'Đang cập nhật');
 
   const role =
-    person?.kinds
+    person.kinds
       ?.map((kind) => movieTabPersonTitles[kind])
       ?.toSorted((a, b) => a.localeCompare(b))
       .join(', ') || '';
@@ -70,8 +70,8 @@ export function PersonSidebar({ person }: PersonSidebarProps) {
     <div className='border-r-transparent-white max-1600:w-85 max-1120:border-none max-1120:pr-0 max-1120:pb-5 max-1120:w-full max-1120:items-center w-110 shrink-0 border-r pr-10'>
       <AvatarField
         size={120}
-        src={renderImageUrl(person?.avatarPath)}
-        alt={person?.otherName}
+        src={renderImageUrl(person.avatarPath)}
+        alt={person.otherName}
         className='mx-auto'
         breakpoints={[
           {
@@ -81,13 +81,13 @@ export function PersonSidebar({ person }: PersonSidebarProps) {
         ]}
       />
       <h2 className='max-800:text-xl max-640:text-lg max-640:mb-0 max-640:mt-2 mt-4 mb-2 text-center text-2xl font-semibold text-white'>
-        {person?.otherName}
+        {person.otherName}
       </h2>
-      <p className='text-foreground/80 mb-2 text-center'>{person?.name}</p>
+      <p className='text-foreground/80 mb-2 text-center'>{person.name}</p>
 
       <div className='max-640:gap-2 mb-4 flex justify-center gap-4'>
         {kind === PERSON_KIND_ACTOR ||
-        person?.kinds.includes(PERSON_KIND_ACTOR) ? (
+        person.kinds.includes(PERSON_KIND_ACTOR) ? (
           <ButtonLike
             className='max-640:text-[13px] max-480:text-xs'
             targetId={person.id}
@@ -101,14 +101,14 @@ export function PersonSidebar({ person }: PersonSidebarProps) {
         <div className='mb-2 flex'>
           Giới tính:&nbsp;
           <p className='text-foreground/80'>
-            {genderOptions.find((item) => item.value === person?.gender)
+            {genderOptions.find((item) => item.value === person.gender)
               ?.label ?? 'Đang cập nhật'}
           </p>
         </div>
         <div className='mb-2 flex'>
           Ngày sinh:&nbsp;
           <p className='text-foreground/80'>
-            {formatDate(person?.dateOfBirth, DATE_FORMAT) ?? 'Đang cập nhật'}
+            {formatDate(person.dateOfBirth, DATE_FORMAT) ?? 'Đang cập nhật'}
           </p>
         </div>
         <div className='mb-2 flex'>
@@ -126,7 +126,7 @@ export function PersonSidebar({ person }: PersonSidebarProps) {
               dangerouslySetInnerHTML={{ __html: sanitizedBio }}
             />
           </div>
-          {person?.bio && (
+          {person.bio && (
             <Button
               onClick={handleOpenModal}
               className='hover:bg-main-background mt-2 ml-auto block bg-white/5 text-white'
@@ -162,9 +162,7 @@ export function PersonSidebar({ person }: PersonSidebarProps) {
               >
                 <X className='size-5' />
               </Button>
-              <h2 className='mb-4 text-xl font-semibold'>
-                {person?.otherName}
-              </h2>
+              <h2 className='mb-4 text-xl font-semibold'>{person.otherName}</h2>
               <div
                 className='text-foreground/80 text-justify'
                 dangerouslySetInnerHTML={{ __html: sanitizedBio }}

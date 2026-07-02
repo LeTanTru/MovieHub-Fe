@@ -1,7 +1,13 @@
 import { ApiResponse, MoviePersonSearchType, PersonResType } from '@/types';
 import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getIdFromSlug, sanitizeText, stripHtml, truncate } from '@/utils';
+import {
+  generateSlug,
+  getIdFromSlug,
+  sanitizeText,
+  stripHtml,
+  truncate
+} from '@/utils';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { JsonLd, BreadcrumbListJsonLd } from '@/components/seo';
 import { moviePersonApiRequest, personApiRequest } from '@/api-requests';
@@ -23,7 +29,7 @@ export async function generateStaticParams() {
     size: DEFAULT_PAGE_SIZE
   });
   return persons.data.content.map((person) => ({
-    id: `${person?.id}`
+    slug: `${generateSlug(person.name)}.${person?.id}`
   }));
 }
 
