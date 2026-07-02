@@ -251,6 +251,31 @@
                   gap: 6px;
                 }
 
+                & .tag-imdb {
+                  background-color: transparent;
+                  border: 1px solid #f0d25c;
+                  border-radius: 0.33rem;
+                  color: #fff;
+                  font-weight: 500;
+                  cursor: default;
+                  line-height: 24px;
+                  font-size: 12px;
+                  padding: 0 0.4rem;
+                  flex-shrink: 0;
+                  display: inline-flex;
+                  align-items: center;
+
+                  &::before {
+                    content: 'IMDb';
+                    color: #f0d25c;
+                    position: relative;
+                    font-weight: 500;
+                    padding-right: 4px;
+                    font-size: 10px;
+                    line-height: 1;
+                  }
+                }
+
                 & .tag-model {
                   border-radius: 4px;
                   align-items: center;
