@@ -2,6 +2,7 @@ export * from './account.query';
 export * from './app-version.query';
 export * from './auth.query';
 export * from './category.query';
+export * from './chat.query';
 export * from './collection-item.query';
 export * from './collection.query';
 export * from './comment.query';

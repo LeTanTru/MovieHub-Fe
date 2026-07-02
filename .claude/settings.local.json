@@ -4,7 +4,9 @@
       "Bash(yarn lint *)",
       "Bash(yarn build *)",
       "Bash(npx tsc *)",
-      "Skill(code-review)"
+      "Skill(code-review)",
+      "Bash(git status *)",
+      "Bash(yarn prettier *)"
     ]
   }
 }

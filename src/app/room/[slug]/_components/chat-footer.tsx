@@ -6,10 +6,13 @@ import ChatInput from './chat-input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRoomStore } from '@/store';
 import { ROOM_STATE_RUNNING } from '@/constants';
+import { useShallow } from 'zustand/shallow';
 
 export function ChatFooter() {
   const { profile } = useAuth();
-  const room = useRoomStore((state) => state.room);
+  const { room, isJoined } = useRoomStore(
+    useShallow((state) => ({ room: state.room, isJoined: state.isJoined }))
+  );
 
   if (!room) return <ChatFooter.Skeleton />;
 
@@ -17,7 +20,7 @@ export function ChatFooter() {
 
   return (
     <div className='relative z-3 flex shrink-0 flex-col gap-3 p-4'>
-      {isRunning && <ChatInput />}
+      {isRunning && isJoined && <ChatInput />}
       <div className='relative flex items-center gap-2'>
         <div className='inline-flex items-center gap-2'>
           <FaUser className='text-golden-glow' />

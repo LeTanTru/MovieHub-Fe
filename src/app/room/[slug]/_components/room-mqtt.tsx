@@ -1,6 +1,8 @@
 'use client';
 
 import {
+  convertUTCToLocal,
+  formatNow,
   generateMqttTopic,
   invalidateQueries,
   notify,
@@ -8,6 +10,7 @@ import {
 } from '@/utils';
 import { logger } from '@/logger';
 import {
+  DATE_TIME_FORMAT,
   mqttCMDs,
   mqttTopics,
   queryKeys,
@@ -15,6 +18,8 @@ import {
   roomEndReasons
 } from '@/constants';
 import type {
+  ChatBodyType,
+  ChatResType,
   RoomEndType,
   RoomParticipantJoinType,
   RoomPlayerStateType,
@@ -24,7 +29,8 @@ import type {
 } from '@/types';
 import { useEffect } from 'react';
 import { useAuth, useMqtt, useMqttSubscribe } from '@/hooks';
-import { useRoomStore } from '@/store';
+import { useChatListQuery } from '@/queries';
+import { useChatStore, useRoomStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 
 const PING_INTERVAL = 10_000; // 10 seconds
@@ -255,6 +261,54 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     }
   });
   // Handle all room state event (sent by the host to a new participant)
+
+  // Fetch chat history on first join
+  const { data: chatHistory } = useChatListQuery({
+    params: { roomId: room.id },
+    enabled: isJoined && isRunning
+  });
+
+  useEffect(() => {
+    if (chatHistory && !useChatStore.getState().messagesLoaded) {
+      useChatStore.getState().setMessages(chatHistory);
+    }
+  }, [chatHistory]);
+  // Fetch chat history on first join
+
+  // CMD_CREATE_CHAT
+  // Handle incoming chat message
+  useMqtt<ChatBodyType>({
+    topic: generateMqttTopic(mqttTopics.ROOM, { roomId: room?.id || '' }),
+    cmd: mqttCMDs.CREATE_CHAT,
+    callback: (data) => {
+      const msg: ChatResType = {
+        id: crypto.randomUUID(),
+        createdDate: convertUTCToLocal(
+          data.createdDate || formatNow(DATE_TIME_FORMAT)
+        ),
+        user: {
+          id: data.user.id,
+          username: data.user.username || '',
+          email: '',
+          fullName: data.user.fullName,
+          avatarPath: data.user.avatarPath || '',
+          kind: 0,
+          gender: 0
+        },
+        content: data.content || ''
+      };
+      useChatStore.getState().addMessage(msg);
+    }
+  });
+  // Handle incoming chat message
+
+  // Clear chat messages on unmount
+  useEffect(() => {
+    return () => {
+      useChatStore.getState().clearMessages();
+    };
+  }, []);
+  // Clear chat messages on unmount
 
   return null;
 }

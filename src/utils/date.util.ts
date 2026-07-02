@@ -1,4 +1,4 @@
-import { DATE_TIME_FORMAT } from '@/constants';
+import { DATE_TIME_FORMAT, TIME_FORMAT } from '@/constants';
 import { logger } from '@/logger';
 import { format as formatFn, isValid, parse } from 'date-fns';
 
@@ -139,5 +139,26 @@ export const getYearFromDate = (dateStr?: string) => {
     return year || 'N/A';
   } catch {
     return 'N/A';
+  }
+};
+
+export const formatNow = (outputFormat: string = DATE_TIME_FORMAT) => {
+  return formatFn(new Date(), outputFormat);
+};
+
+export const formatTime = (
+  date: string | null,
+  outputFormat: string = TIME_FORMAT
+) => {
+  if (!date) return '';
+
+  try {
+    const parsedDate = new Date(date);
+    if (!isValid(parsedDate)) return '';
+
+    return formatFn(parsedDate, outputFormat);
+  } catch (error) {
+    logger.error('[FORMAT_TIME_ERROR]', error);
+    return '';
   }
 };

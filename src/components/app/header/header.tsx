@@ -143,16 +143,27 @@ export function Header() {
           </m.div>
           <AnimatePresence mode='wait' initial={false}>
             {loading || !isMounted ? (
-              <m.div
-                key='loading'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className='mr-6'
-              >
-                <Skeleton className='skeleton size-10 rounded-full!' />
-              </m.div>
+              <>
+                <m.div
+                  key='notification-loading'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Skeleton className='skeleton size-11 rounded-full!' />
+                </m.div>
+                <m.div
+                  key='avatar-loading'
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className='mr-6'
+                >
+                  <Skeleton className='skeleton size-11 rounded-full!' />
+                </m.div>
+              </>
             ) : !profile ? (
               <m.div
                 key='auth'

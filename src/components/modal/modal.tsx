@@ -89,6 +89,7 @@ type BodyProps = {
   className?: string;
   scrollable?: boolean;
   ref?: React.RefObject<HTMLDivElement | null>;
+  showScrollArrow?: boolean;
 };
 
 type ConfirmProps = {
@@ -240,9 +241,16 @@ function Header({ children, className }: HeaderProps) {
   );
 }
 
-function Body({ children, className, ref, scrollable }: BodyProps) {
+function Body({
+  children,
+  className,
+  ref,
+  scrollable,
+  showScrollArrow = false
+}: BodyProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [showScrollArrow, setShowScrollArrow] = useState(false);
+  const [internalShowScrollArrow, setInternalShowScrollArrow] =
+    useState<boolean>(false);
 
   useIsomorphicLayoutEffect(() => {
     if (!scrollable) return;
@@ -253,7 +261,7 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
         const hasOverflow = scrollHeight > clientHeight;
         const isAtBottom =
           scrollHeight - scrollTop <= clientHeight + SCROLL_BOTTOM_THRESHOLD_PX;
-        setShowScrollArrow(hasOverflow && !isAtBottom);
+        setInternalShowScrollArrow(hasOverflow && !isAtBottom);
       }
     };
 
@@ -289,7 +297,7 @@ function Body({ children, className, ref, scrollable }: BodyProps) {
       </div>
 
       <AnimatePresence>
-        {scrollable && showScrollArrow && (
+        {scrollable && internalShowScrollArrow && showScrollArrow && (
           <m.button
             initial={{ opacity: 0, y: -SCROLL_ARROW_ANIMATION_OFFSET_PX }}
             animate={{ opacity: 1, y: 0 }}
