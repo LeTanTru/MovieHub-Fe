@@ -33,7 +33,7 @@ export function RoomCreateButton({ className }: RoomCreateButtonProps) {
       <Modal
         open={opened}
         onClose={handleToggle}
-        className='top-1/2 left-1/2 m-0 max-w-137.5'
+        className='max-640:max-w-[95%] top-1/2 left-1/2 m-0 max-w-137.5'
         variants={{
           initial: { opacity: 0, x: '-50%', y: '-100%' },
           animate: { opacity: 1, x: '-50%', y: '-50%' },

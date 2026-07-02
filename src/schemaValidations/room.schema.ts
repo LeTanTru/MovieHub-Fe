@@ -9,6 +9,10 @@ export const roomSearchSchema = z.object({
   state: z.number().optional().nullable()
 });
 
+export const roomCodeSearchSchema = z.object({
+  code: z.string().optional().nullable()
+});
+
 export const roomSchema = z
   .object({
     accountIds: z.array(z.string()).optional().nullable(),

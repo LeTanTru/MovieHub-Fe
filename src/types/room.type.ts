@@ -1,5 +1,6 @@
 import {
   roomAddParticipantSchema,
+  roomCodeSearchSchema,
   roomSchema,
   roomSearchSchema
 } from '@/schemaValidations';
@@ -58,6 +59,8 @@ export type RoomResType = {
 };
 
 export type RoomSearchType = z.infer<typeof roomSearchSchema> & BaseSearchType;
+
+export type RoomCodeSearchType = z.infer<typeof roomCodeSearchSchema>;
 
 export type RoomBodyType = z.infer<typeof roomSchema>;
 

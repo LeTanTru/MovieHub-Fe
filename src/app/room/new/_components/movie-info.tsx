@@ -99,9 +99,9 @@ export function MovieInfo() {
     episodes.length > 0 && currentSeason?.totalEpisode === episodes.length;
 
   return (
-    <div className='bg-cloud-burst relative flex w-107.5 shrink-0 flex-col justify-end gap-5 overflow-hidden rounded-lg p-8'>
-      <div className='new-room-mask absolute top-0 right-0 left-0 w-full shrink-0'>
-        <div className='bg-gunmetal-blue relative block aspect-[2/3] w-full overflow-hidden rounded-md'>
+    <div className='bg-cloud-burst max-1280:flex-row max-1280:w-full max-640:p-5 max-640:rounded-md max-640:gap-4 max-520:flex-col max-520:items-center relative flex w-107.5 shrink-0 flex-col justify-end gap-5 overflow-hidden rounded-lg p-8'>
+      <div className='new-room-mask max-1280:relative max-1280:top-0 max-1280:left-0 max-1280:right-0 max-1280:w-35 absolute top-0 right-0 left-0 w-full shrink-0 mask-none'>
+        <div className='bg-gunmetal-blue relative block aspect-2/3 w-full overflow-hidden rounded-md'>
           <Image
             src={renderImageUrl(movieItem?.movie.posterUrl)}
             fill
@@ -157,13 +157,13 @@ export function MovieInfo() {
           }}
         />
         {isSingle && (
-          <div className='mt-4 inline-flex items-center gap-2 rounded-md border border-solid border-white p-2 font-semibold'>
+          <div className='max-520:w-full max-520:flex max-520:justify-center mt-4 inline-flex items-center gap-2 rounded-md border border-solid border-white p-2 font-semibold'>
             <PlayIcon className='size-4 fill-white' />
             Phần {season} - Tập full
           </div>
         )}
         {isSeries && (
-          <div className='mt-4 inline-flex items-center gap-2 rounded-md border border-solid border-white p-2 font-semibold'>
+          <div className='max-520:w-full max-520:flex max-520:justify-center mt-4 inline-flex items-center gap-2 rounded-md border border-solid border-white p-2 font-semibold'>
             <PlayIcon className='size-4 fill-white' />
             Phần {season} - Tập {episode}
           </div>
@@ -175,10 +175,10 @@ export function MovieInfo() {
 
 MovieInfo.Skeleton = function MovieInfoSkeleton() {
   return (
-    <div className='bg-cloud-burst relative flex w-107.5 shrink-0 flex-col justify-end gap-5 overflow-hidden rounded-lg p-8'>
+    <div className='bg-cloud-burst max-1280:flex-row max-1280:w-full max-640:p-5 max-640:rounded-md max-640:gap-4 max-520:flex-col max-520:items-center relative flex w-107.5 shrink-0 flex-col justify-end gap-5 overflow-hidden rounded-lg p-8'>
       {/* Skeleton poster */}
-      <div className='new-room-mask absolute top-0 right-0 left-0 w-full shrink-0'>
-        <div className='bg-gunmetal-blue relative block aspect-[2/3] w-full overflow-hidden rounded-md'>
+      <div className='new-room-mask max-1280:relative max-1280:top-0 max-1280:left-0 max-1280:right-0 max-1280:w-35 absolute top-0 right-0 left-0 w-full shrink-0 mask-none'>
+        <div className='bg-gunmetal-blue relative block aspect-2/3 w-full overflow-hidden rounded-md'>
           <div className='absolute inset-0 animate-pulse bg-white/5' />
         </div>
       </div>

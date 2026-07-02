@@ -23,12 +23,12 @@ export function NewRoom() {
 
   if (!isMounted) {
     return (
-      <div className='relative mx-auto w-full max-w-300 px-12.5'>
+      <div className='max-1600:px-5 max-640:px-4 relative mx-auto w-full max-w-300 px-12.5'>
         <div className='relative mb-4 flex min-h-11 items-center justify-start gap-4'>
           <div className='size-9 animate-pulse rounded-full border border-solid border-white/20' />
           <div className='h-7 w-48 animate-pulse rounded bg-white/10' />
         </div>
-        <div className='flex items-stretch gap-6'>
+        <div className='max-1280:flex-col flex items-stretch gap-6'>
           <MovieInfo.Skeleton />
           <NewRoomForm.Skeleton />
         </div>
@@ -69,7 +69,7 @@ export function NewRoom() {
   }
 
   return (
-    <div className='relative mx-auto w-full max-w-300 px-12.5'>
+    <div className='max-1600:px-5 max-640:px-4 relative mx-auto w-full max-w-300 px-12.5'>
       <div className='relative mb-4 flex min-h-11 items-center justify-start gap-4'>
         <Button
           variant='ghost'
@@ -82,7 +82,7 @@ export function NewRoom() {
           Tạo phòng xem chung
         </h3>
       </div>
-      <div className='flex items-stretch gap-6'>
+      <div className='max-1280:flex-col flex items-stretch gap-6'>
         {/* Left */}
         <MovieInfo />
         {/* Right */}

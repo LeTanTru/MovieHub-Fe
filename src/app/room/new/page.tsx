@@ -1,10 +1,10 @@
 import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getQueryClient } from '@/components/providers/query-provider';
-import { NewRoom } from '@/app/room/new/new-room';
-import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import { envConfig } from '@/config';
+import { getQueryClient } from '@/components/providers/query-provider';
+import { OG_IMAGE_WIDTH, OG_IMAGE_HEIGHT } from '@/constants';
 import type { Metadata } from 'next';
+import { NewRoom } from '@/app/room/new/_components';
 
 export const metadata: Metadata = {
   title: 'Tạo phòng mới',

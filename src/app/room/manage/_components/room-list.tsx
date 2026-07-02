@@ -56,19 +56,19 @@ export function RoomList() {
   };
 
   return (
-    <div className='relative mx-auto w-full max-w-475 px-12.5'>
-      <div className='relative mb-4 flex min-h-11 items-center justify-start gap-4'>
+    <div className='max-1600:px-5 max-640:px-4 relative mx-auto w-full max-w-475 px-12.5'>
+      <div className='max-640:gap-2 relative mb-4 flex items-center justify-start gap-4'>
         <Button
           variant='ghost'
-          className='size-9 rounded-full border border-solid border-white hover:bg-transparent hover:opacity-80'
+          className='max-640:size-8! max-640:px-0! max-480:size-6! size-9 rounded-full border border-solid border-white hover:bg-transparent hover:opacity-80'
           onClick={() => navigate.back()}
         >
-          <ChevronLeft className='size-6' />
+          <ChevronLeft className='max-640:size-5 max-480:size-4 size-6' />
         </Button>
-        <h3 className='flex items-center text-2xl leading-[1.4] font-bold text-white text-shadow-[0_2px_1px_rgba(0,0,0,.3)]'>
+        <h3 className='max-1600:text-2xl max-640:text-xl max-480:text-base text-[28px] leading-[1.4] font-semibold text-white text-shadow-[0_2px_1px_rgba(0,0,0,0.3)]'>
           Quản lý xem chung&nbsp;
           {!isAuthenticated || isLoading ? (
-            <Skeleton className='skeleton h-6 w-10' />
+            <Skeleton className='max-1600:h-5 max-1600:w-9 max-640:h-4 max-640:w-8 max-480:h-3.5 max-480:w-7 skeleton h-6 w-10' />
           ) : (
             `(${totalElements})`
           )}
@@ -76,7 +76,7 @@ export function RoomList() {
         <RoomCreateButton className='h-8 bg-white px-3! text-black hover:text-black hover:opacity-80' />
       </div>
       {!isAuthenticated || isLoading ? (
-        <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
+        <div className='max-1536:grid-cols-4 max-1120:grid-cols-3 max-768:grid-cols-2 max-480:grid-cols-1 max-640:gap-x-2 max-640:gap-y-4 max-1120:gap-x-4 max-1120:gap-y-6 grid grid-cols-5 gap-x-5 gap-y-8'>
           {Array.from({ length: ROOM_SKELETON_COUNT }).map((_, index) => (
             <RoomCard.Skeleton key={index} />
           ))}
@@ -106,7 +106,7 @@ export function RoomList() {
           }
         />
       ) : (
-        <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
+        <div className='max-1536:grid-cols-4 max-1120:grid-cols-3 max-768:grid-cols-2 max-480:grid-cols-1 max-640:gap-x-2 max-640:gap-y-4 max-1120:gap-x-4 max-1120:gap-y-6 grid grid-cols-5 gap-x-5 gap-y-8'>
           {roomList.map((room) => (
             <RoomCard
               key={room.id}
