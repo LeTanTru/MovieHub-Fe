@@ -130,6 +130,11 @@ export function SliderItem({
               </Link>
             </h3>
             <div className='hl-tags'>
+              {slider.movie.imdbRating && (
+                <div className='tag-imdb'>
+                  <span>{slider.movie.imdbRating}</span>
+                </div>
+              )}
               <div className='tag-model'>
                 <span className='last'>
                   <strong>
