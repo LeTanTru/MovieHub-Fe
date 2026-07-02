@@ -18,8 +18,8 @@ type Align = 'left' | 'right';
 type PortalDropdownProps = {
   /** The button/element that triggers the dropdown. Must accept a ref and onClick. */
   trigger: ReactElement;
-  /** Menu content rendered inside the dropdown panel. */
-  children: ReactNode;
+  /** Menu content rendered inside the dropdown panel. Can be a function that receives the `close` method. */
+  children: ReactNode | ((close: () => void) => ReactNode);
   /** Alignment of the dropdown relative to the trigger. Default: 'right' */
   align?: Align;
   /** Vertical offset (px) from the trigger's bottom edge. Default: 4 */
@@ -153,7 +153,7 @@ export function PortalDropdown({
                 }}
                 className={className}
               >
-                {children}
+                {typeof children === 'function' ? children(close) : children}
               </m.div>
             )}
           </AnimatePresence>,

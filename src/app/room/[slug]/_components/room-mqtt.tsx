@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  convertUTCToLocal,
   formatNow,
   generateMqttTopic,
   invalidateQueries,
@@ -283,9 +282,7 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     callback: (data) => {
       const msg: ChatResType = {
         id: crypto.randomUUID(),
-        createdDate: convertUTCToLocal(
-          data.createdDate || formatNow(DATE_TIME_FORMAT)
-        ),
+        createdDate: data.createdDate || formatNow(DATE_TIME_FORMAT),
         user: {
           id: data.user.id,
           username: data.user.username || '',

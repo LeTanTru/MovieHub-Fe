@@ -607,6 +607,12 @@ export const apiConfig = defineApiConfig({
     }
   },
   room: {
+    addParticipant: {
+      baseUrl: `${AppConstants.apiUrl}/v1/room/add-participants`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
     check: {
       baseUrl: `${AppConstants.apiUrl}/v1/room/check`,
       method: 'GET',

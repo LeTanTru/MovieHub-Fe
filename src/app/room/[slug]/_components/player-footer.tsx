@@ -1,25 +1,17 @@
 'use client';
 
 import { AvatarField } from '@/components/form';
-import { Skeleton } from '@/components/ui/skeleton';
-import { mqttCMDs, mqttTopics, ROOM_STATE_RUNNING } from '@/constants';
-import { useAuth } from '@/hooks';
+import { ButtonAddParticipantModal } from './button-add-participant-modal';
+import { ButtonShare } from './button-share';
+import { ButtonSync } from './button-sync';
+import { ButtonWatchAlone } from './button-watch-alone';
 import { cn } from '@/lib';
-import { route } from '@/routes';
+import { ROOM_STATE_RUNNING } from '@/constants';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAuth } from '@/hooks';
 import { useRoomStore } from '@/store';
-import {
-  convertUTCToLocal,
-  copyTextToClipboard,
-  generateMqttTopic,
-  generateSlug,
-  notify,
-  publishMqttMessage,
-  renderImageUrl,
-  timeAgo
-} from '@/utils';
-import Link from 'next/link';
-import { FaPlayCircle, FaSyncAlt } from 'react-icons/fa';
-import { FaEye, FaLink } from 'react-icons/fa6';
+import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
+import { FaEye } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
 export function PlayerFooter() {
@@ -33,30 +25,9 @@ export function PlayerFooter() {
 
   if (!room) return <PlayerFooter.Skeleton />;
 
-  const movieItem = room.movieItem;
-
   const isLive = room.state === ROOM_STATE_RUNNING;
   const isParticipant = room.host.id !== profile?.id;
-
-  const handleCopyText = async () => {
-    const text = `${window.location.origin}${route.room.path}/${generateSlug(room.name)}.${room.id}`;
-
-    const ok = await copyTextToClipboard(text);
-    if (ok) notify.success('Đã sao chép link phòng');
-    else notify.error('Không thể sao chép link phòng');
-  };
-
-  const handleSyncTime = async () => {
-    if (!profile?.id) return;
-
-    await publishMqttMessage(
-      generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
-      {
-        cmd: mqttCMDs.ROOM_SYNC,
-        data: { id: profile.id }
-      }
-    );
-  };
+  const isHost = room.host.id === profile?.id;
 
   return (
     <div className='bg-transparent-black-b0 relative flex h-20 shrink-0 items-center justify-between gap-2 px-6'>
@@ -88,29 +59,10 @@ export function PlayerFooter() {
           <FaEye />
           <span>{participantCount}</span>
         </div>
-        <div
-          onClick={handleCopyText}
-          className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
-        >
-          <FaLink />
-          <span>Chia sẻ</span>
-        </div>
-        <Link
-          href={`${route.movie.path}/${movieItem.movie.slug}.${movieItem.movie.id}`}
-          className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
-        >
-          <FaPlayCircle />
-          <span>Xem riêng</span>
-        </Link>
-        {isParticipant && (
-          <div
-            onClick={handleSyncTime}
-            className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
-          >
-            <FaSyncAlt />
-            <span>Đồng bộ</span>
-          </div>
-        )}
+        <ButtonShare />
+        <ButtonWatchAlone />
+        {isParticipant && <ButtonSync />}
+        {isHost && isLive && <ButtonAddParticipantModal />}
       </div>
     </div>
   );
