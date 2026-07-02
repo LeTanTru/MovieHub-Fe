@@ -1,13 +1,15 @@
 'use client';
 
-import { TelegramIcon } from '@/assets';
 import { Button } from '@/components/form';
-import { useClickAnimation } from '@/hooks';
 import { cn } from '@/lib';
-import { notify } from '@/utils';
 import { cva, VariantProps } from 'class-variance-authority';
-import { usePathname } from 'next/navigation';
+import { notify } from '@/utils';
+import { ROOM_STATE_ENDED } from '@/constants';
+import { TelegramIcon } from '@/assets';
+import { useClickAnimation } from '@/hooks';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { useRoomStore } from '@/store';
 
 const variants = cva('', {
   variants: {
@@ -32,6 +34,7 @@ export function ButtonShareMovie({
   variant
 }: ButtonShareMovieProps) {
   const pathname = usePathname();
+  const room = useRoomStore((state) => state.room);
   const [link, setLink] = useState('');
   const { iconRef, startAnimation } = useClickAnimation();
 
@@ -44,6 +47,8 @@ export function ButtonShareMovie({
     await navigator.clipboard.writeText(link);
     notify.success('Đã sao chép liên kết phim');
   };
+
+  if (!room || room.state === ROOM_STATE_ENDED) return null;
 
   return (
     <Button
