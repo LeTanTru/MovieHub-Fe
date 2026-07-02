@@ -104,9 +104,11 @@ export function DropdownNotification() {
       >
         <div className='relative transition-all duration-200 ease-linear hover:opacity-80'>
           <Bell className='size-8' />
-          <div className='absolute -top-1 right-0 flex size-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-medium text-white select-none'>
-            {totalUnread > 9 ? '9+' : totalUnread}
-          </div>
+          {totalUnread ? (
+            <div className='absolute -top-1 right-0 flex size-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-medium text-white select-none'>
+              {totalUnread > 9 ? '9+' : totalUnread}
+            </div>
+          ) : null}
         </div>
       </Button>
       <AnimatePresence>

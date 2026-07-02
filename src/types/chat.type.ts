@@ -25,12 +25,17 @@ export type ChatState = {
   toggleChat: boolean;
   toggleHeader: boolean;
   toggleChatLayout: boolean;
+  messages: ChatResType[];
+  messagesLoaded: boolean;
 };
 
 export type ChatActions = {
   setToggleChat: (value: boolean) => void;
   setToggleHeader: (value: boolean) => void;
   setToggleChatLayout: (value: boolean) => void;
+  addMessage: (msg: ChatResType) => void;
+  setMessages: (msgs: ChatResType[]) => void;
+  clearMessages: () => void;
 };
 
 export type ChatStore = ChatState & ChatActions;

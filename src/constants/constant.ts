@@ -25,11 +25,14 @@ export const MOVIE_ITEM_KIND_SEASON = 1;
 export const MOVIE_ITEM_KIND_EPISODE = 2;
 export const MOVIE_ITEM_KIND_TRAILER = 3;
 
-export const DATE_FORMAT = 'dd/MM/yyyy';
-export const TIME_DATE_FORMAT = 'HH:mm:ss dd/MM/yyyy';
-export const DATE_TIME_FORMAT = 'dd/MM/yyyy HH:mm:ss';
 export const DATE_DAY_TIME_FORMAT = 'EEEE HH:mm:ss dd/MM/yyyy';
+export const DATE_FORMAT = 'dd/MM/yyyy';
 export const DATE_SHORT = 'dd/MM';
+export const DATE_TIME_FORMAT = 'dd/MM/yyyy HH:mm:ss';
+
+export const TIME_DATE_FORMAT = 'HH:mm:ss dd/MM/yyyy';
+export const TIME_FORMAT = 'HH:mm:ss';
+export const TIME_SHORT = 'HH:mm';
 
 export const DEFAULT_TABLE_PAGE_START = 0;
 export const MAX_PAGE_SIZE = 1_000_000;

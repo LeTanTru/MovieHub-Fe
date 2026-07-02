@@ -197,10 +197,13 @@ export function AvatarField({
         style={{ width: resolvedWidth, height: resolvedHeight }}
       >
         <Avatar
-          className={cn('bg-image-fill shadow-sm', {
-            'transition-all duration-200 ease-linear hover:scale-105 hover:opacity-90':
-              !shouldDisablePreview
-          })}
+          className={cn(
+            'bg-image-fill shadow-[0px_0px_2px_2px_rgba(0,0,0,0.2)]',
+            {
+              'transition-all duration-200 ease-linear hover:scale-105 hover:opacity-90':
+                !shouldDisablePreview
+            }
+          )}
           style={{ width: resolvedWidth, height: resolvedHeight }}
         >
           {/* AvatarImage handles showing/hiding automatically based on src */}

@@ -3,14 +3,21 @@
 import { TelegramIcon } from '@/assets';
 import { Button, TextAreaField } from '@/components/form';
 import { BaseForm } from '@/components/form/base-form';
-import { mqttCMDs, mqttTopics } from '@/constants';
+import { DATE_TIME_FORMAT, mqttCMDs, mqttTopics } from '@/constants';
 import { useAuth, useClickAnimation, useClickOutside } from '@/hooks';
+import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { chatSchema } from '@/schemaValidations';
 import { useRoomStore } from '@/store';
 import { ChatBodyType } from '@/types';
 import type { UseFormReturn } from 'react-hook-form';
-import { generateMqttTopic, notify, publishMqttMessage } from '@/utils';
+import {
+  convertLocalToUTC,
+  formatNow,
+  generateMqttTopic,
+  notify,
+  publishMqttMessage
+} from '@/utils';
 import { useEffect, useRef, useState } from 'react';
 
 type EmojiClickEvent = Event & {
@@ -50,7 +57,7 @@ export default function ChatInput() {
       avatarPath: profile?.avatarPath || null,
       username: profile?.username || null
     },
-    createDate: new Date().toISOString()
+    createdDate: ''
   };
 
   const onSubmit = async (
@@ -61,7 +68,11 @@ export default function ChatInput() {
 
     const payload = {
       ...values,
-      createDate: new Date().toISOString()
+      createdDate: convertLocalToUTC(
+        formatNow(DATE_TIME_FORMAT),
+        DATE_TIME_FORMAT,
+        DATE_TIME_FORMAT
+      )
     };
 
     try {
@@ -152,7 +163,9 @@ export default function ChatInput() {
           <div className='relative' ref={wrapperRef}>
             <div
               ref={pickerContainerRef}
-              className='absolute bottom-full left-0 mb-2'
+              className={cn('absolute bottom-full left-0 mb-2', {
+                'pointer-events-none': !showPicker
+              })}
             />
             <div className='flex gap-2'>
               <div className='relative flex-1'>
@@ -168,11 +181,17 @@ export default function ChatInput() {
                   name='content'
                   formItemClassName='w-full'
                   className='focus-visible:ring-outer-space min-h-9 resize-none rounded-md border-none bg-gray-100 py-2 pl-8 text-white focus-visible:ring-2'
-                  maxLengthClassName='right-1.5 -bottom-4'
+                  maxLengthClassName='right-1.5 -bottom-5'
                   placeholder='Chat gì đó...'
                   maxRows={4}
                   maxLength={200}
                   autoSize
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      e.currentTarget.form?.requestSubmit();
+                    }
+                  }}
                 />
               </div>
               <Button
