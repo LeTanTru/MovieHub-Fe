@@ -95,7 +95,11 @@ export function PlayerHeader() {
       {isRunning && isHost && <ButtonEnd />}
       {isRunning && isJoined && <ButtonLeave />}
       {showChatToggle && (
-        <Button className='rounded-full' size='sm' onClick={handleToggleChat}>
+        <Button
+          className='max-800:hidden rounded-full'
+          size='sm'
+          onClick={handleToggleChat}
+        >
           <MessageSquareText className='size-4' />
           Hiện chat
         </Button>
@@ -112,7 +116,7 @@ PlayerHeader.Skeleton = function PlayerHeaderSkeleton() {
         <Skeleton className='bg-transparent-black-8 skeleton h-4 w-48 rounded!' />
         <Skeleton className='bg-transparent-black-8 skeleton h-3 w-64 rounded!' />
       </div>
-      <Skeleton className='bg-transparent-black-8 skeleton h-8 w-28 rounded-full!' />
+      <Skeleton className='bg-transparent-black-8 skeleton max-800:hidden h-8 w-28 rounded-full!' />
     </div>
   );
 };

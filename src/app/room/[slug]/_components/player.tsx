@@ -9,7 +9,7 @@ export function Player() {
   if (!room) return <Player.Skeleton />;
 
   return (
-    <div className='flex shrink-0 flex-col'>
+    <div className='max-800:h-auto flex shrink-0 flex-col'>
       <PlayerHeader />
       <PlayerMain />
       <PlayerFooter />
@@ -19,7 +19,7 @@ export function Player() {
 
 Player.Skeleton = function PlayerSkeleton() {
   return (
-    <div className='flex shrink-0 flex-col'>
+    <div className='max-800:h-auto flex shrink-0 flex-col'>
       <PlayerHeader.Skeleton />
       <PlayerMain.Skeleton />
       <PlayerFooter.Skeleton />

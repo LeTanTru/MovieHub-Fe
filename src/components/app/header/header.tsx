@@ -11,6 +11,7 @@ import { route } from '@/routes';
 import { buildLoginRedirectPath } from '@/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Suspense, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { useAppContext } from '@/components/providers/app-provider';
 import {
   useAuth,
@@ -34,6 +35,12 @@ export function Header() {
   const { loading } = useAppContext();
   const isMounted = useIsMounted();
   const navigate = useNavigate();
+  const pathname = usePathname();
+
+  const isRoomDetailPage =
+    pathname.startsWith(`${route.room.path}/`) &&
+    !pathname.startsWith(route.room.manage.path) &&
+    !pathname.startsWith(route.room.new.path);
 
   useIsomorphicLayoutEffect(() => {
     const handleOnScroll = () => {
@@ -60,7 +67,8 @@ export function Header() {
           'bg-fixed-header': isFixed,
           'bg-transparent': !isFixed,
           '-translate-y-full': toggleHeader,
-          'translate-y-0': !toggleHeader
+          'translate-y-0': !toggleHeader,
+          'max-[1680px]:-translate-y-full': isRoomDetailPage
         }
       )}
     >

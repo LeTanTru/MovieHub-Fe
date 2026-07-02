@@ -339,15 +339,15 @@ function PopupRunning({ room }: { room: RoomResType }) {
 
   if (isUnauthorized) {
     return (
-      <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
-        <div className='text-base'>Phòng riêng tư</div>
-        <div className='text-xl'>
+      <div className='bg-transparent-black-2 border-black-alpha-8 max-640:gap-2 max-640:rounded-xl max-640:p-4 max-480:w-[75%] max-420:w-[85%] max-480:p-3 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
+        <div className='max-640:text-sm text-base'>Phòng riêng tư</div>
+        <div className='max-640:text-base text-xl'>
           <span className='text-golden-glow font-semibold'>
             {room.movieItem.movie.title}
           </span>
         </div>
         <div className='flex flex-col items-center gap-2'>
-          <div className='flex items-center gap-2 rounded-md bg-white px-4 py-2 text-black'>
+          <div className='max-640:gap-1.5 max-640:px-3 max-640:py-1.5 max-640:text-sm flex items-center gap-2 rounded-md bg-white px-4 py-2 text-black'>
             <FaLock />
             <span>Bạn chưa được mời</span>
           </div>
@@ -357,7 +357,7 @@ function PopupRunning({ room }: { room: RoomResType }) {
         </div>
         <Link
           href={route.room.path}
-          className='mx-auto flex items-center gap-2 rounded-md border border-solid border-white bg-transparent px-4 py-2 text-white transition-all duration-200 ease-linear hover:bg-white/10'
+          className='max-640:px-3 max-640:py-1.5 max-640:text-sm mx-auto flex items-center gap-2 rounded-md border border-solid border-white bg-transparent px-4 py-2 text-white transition-all duration-200 ease-linear hover:bg-white/10'
         >
           <FaPodcast />
           <span>Phòng khác</span>
@@ -367,16 +367,16 @@ function PopupRunning({ room }: { room: RoomResType }) {
   }
 
   return (
-    <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
-      <div className='text-base'>Buổi xem chung</div>
-      <div className='text-xl'>
+    <div className='bg-transparent-black-2 border-black-alpha-8 max-640:gap-2 max-640:rounded-xl max-640:p-4 max-480:w-[75%] max-420:w-[85%] max-480:p-3 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
+      <div className='max-640:text-sm text-base'>Buổi xem chung</div>
+      <div className='max-640:text-base text-xl'>
         <span className='text-golden-glow font-semibold'>
           {room.movieItem.movie.title}
         </span>
       </div>
       <button
         onClick={handleJoinRoom}
-        className='mx-auto flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-white/80'
+        className='max-640:px-3 max-640:py-1.5 max-640:text-sm mx-auto flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-white/80'
       >
         <FaPlay />
         <span>{isHost ? 'Tiếp tục' : 'Tham gia'}</span>
@@ -387,15 +387,15 @@ function PopupRunning({ room }: { room: RoomResType }) {
 
 function PopupPending({ room }: { room: RoomResType }) {
   return (
-    <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
-      <div className='text-base'>Buổi xem chung</div>
-      <div className='text-xl'>
+    <div className='bg-transparent-black-2 border-black-alpha-8 max-640:gap-2 max-640:rounded-xl max-640:p-4 max-480:w-[75%] max-420:w-[85%] max-480:p-3 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
+      <div className='max-640:text-sm text-base'>Buổi xem chung</div>
+      <div className='max-640:text-base text-xl'>
         <span className='text-golden-glow font-semibold'>
           {room.movieItem.movie.title}
         </span>
       </div>
-      <div className='inline-flex items-center gap-4'>
-        <div className='flex items-center gap-2 rounded-md bg-white px-4 py-2 text-black'>
+      <div className='max-640:gap-2 inline-flex flex-wrap items-center justify-center gap-4'>
+        <div className='max-640:gap-1.5 max-640:px-3 max-640:py-1.5 max-640:text-sm flex items-center gap-2 rounded-md bg-white px-4 py-2 text-black'>
           <FaHourglassHalf className='live-pending' />
           <span>Đang chờ</span>
         </div>
@@ -410,10 +410,10 @@ function PopupEnded({ room }: { room: RoomResType }) {
   const isHost = profile?.id === room.host.id;
 
   return (
-    <div className='bg-transparent-black-2 border-black-alpha-8 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
-      <div className='text-base'>Đã kết thúc</div>
+    <div className='bg-transparent-black-2 border-black-alpha-8 max-640:gap-2 max-640:rounded-xl max-640:p-4 max-480:w-[75%] max-420:w-[85%] max-480:p-3 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
+      <div className='max-640:text-sm text-base'>Đã kết thúc</div>
       <div className='flex flex-col gap-2'>
-        <span className='text-golden-glow text-xl font-semibold'>
+        <span className='max-640:text-base text-golden-glow text-xl font-semibold'>
           {room.movieItem.movie.title}
         </span>
         {endReason && !isHost && (
@@ -421,17 +421,17 @@ function PopupEnded({ room }: { room: RoomResType }) {
         )}
       </div>
 
-      <div className='inline-flex items-center gap-4'>
+      <div className='max-640:gap-2 inline-flex flex-wrap items-center justify-center gap-4'>
         <Link
           href={`${route.movie.path}/${room.movieItem.movie.slug}.${room.movieItem.movie.id}`}
-          className='flex items-center gap-2 rounded-md bg-white px-4 py-2 text-black'
+          className='max-640:gap-1.5 max-640:px-3 max-640:py-1.5 max-640:text-sm flex items-center gap-2 rounded-md bg-white px-4 py-2 text-black'
         >
           <FaPlay />
           <span>Xem riêng</span>
         </Link>
         <Link
           href={route.room.path}
-          className='flex items-center gap-2 rounded-md border border-solid border-white bg-transparent px-4 py-2 text-white'
+          className='max-640:px-3 max-640:py-1.5 max-640:text-sm flex items-center gap-2 rounded-md border border-solid border-white bg-transparent px-4 py-2 text-white'
         >
           <FaPodcast />
           <span>Phòng khác</span>

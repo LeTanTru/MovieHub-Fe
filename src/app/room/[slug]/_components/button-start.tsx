@@ -59,7 +59,7 @@ export function ButtonStart() {
           size='sm'
         >
           <FaPlay />
-          Bắt đầu
+          <span className='max-800:hidden'>Bắt đầu</span>
         </Button>
       }
     />

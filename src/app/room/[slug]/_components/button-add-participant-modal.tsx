@@ -60,7 +60,7 @@ export function ButtonAddParticipantModal() {
         className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
       >
         <UserPlus className='size-4' />
-        <span>Mời mọi người</span>
+        <span className='max-800:hidden'>Mời mọi người</span>
       </button>
 
       <Modal

@@ -6,7 +6,12 @@
       "Bash(npx tsc *)",
       "Skill(code-review)",
       "Bash(git status *)",
-      "Bash(yarn prettier *)"
+      "Bash(yarn prettier *)",
+      "Bash(npx prettier *)",
+      "Bash(grep -v \"^--$\")",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(echo \"EXIT:$?\")"
     ]
   }
 }

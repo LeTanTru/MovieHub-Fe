@@ -24,13 +24,14 @@ export function Chat() {
         'h-full shrink-0 overflow-hidden transition-all duration-100 ease-in-out',
         {
           'w-0 translate-x-full opacity-0': toggleChat,
-          'w-100 translate-x-0 opacity-100': !toggleChat,
-          'py-2 pr-2': !toggleChatLayout
+          'max-1200:p-0 max-1200:w-80 max-1680:w-95 max-800:p-0 max-800:w-full border-transparent-white-2 max-800:h-auto max-800:relative max-800:grow relative w-110 grow translate-x-0 border-t border-solid opacity-100':
+            !toggleChat,
+          'p-1': !toggleChatLayout
         }
       )}
     >
       <div
-        className={cn('z-9 flex h-full flex-col', {
+        className={cn('max-1200:rounded-none z-9 flex h-full flex-col', {
           'bg-eerie-black rounded-2xl': !toggleChatLayout,
           'bg-transparent-black-8': toggleChatLayout
         })}
@@ -45,8 +46,8 @@ export function Chat() {
 
 Chat.Skeleton = function ChatSkeleton() {
   return (
-    <div className='h-full w-100 shrink-0 py-2 pr-2'>
-      <div className='bg-eerie-black z-9 flex h-full flex-col justify-between rounded-2xl'>
+    <div className='max-1200:p-0 max-1200:w-80 max-1680:w-95 max-800:p-0 max-800:w-full max-800:h-auto max-800:relative max-800:grow border-transparent-white-2 relative h-full w-110 shrink-0 grow border-t border-solid p-1'>
+      <div className='max-1200:rounded-none bg-eerie-black z-9 flex h-full flex-col justify-between rounded-2xl'>
         <ChatHeader.Skeleton />
         <ChatBody.Skeleton />
         <ChatFooter.Skeleton />

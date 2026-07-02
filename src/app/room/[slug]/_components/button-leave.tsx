@@ -98,7 +98,7 @@ export function ButtonLeave() {
           loading={isLoading}
         >
           <FaArrowRightFromBracket className='rotate-180' />
-          Rời phòng
+          <span className='max-800:hidden'>Rời phòng</span>
         </Button>
       }
     />
