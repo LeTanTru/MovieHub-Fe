@@ -1,6 +1,7 @@
 'use client';
 
 import { PortalDropdown } from '@/components/dropdown/portal-dropdown';
+import { ROOM_KIND_PRIVATE, ROOM_STATE_ENDED } from '@/constants';
 import { route } from '@/routes';
 import { useRoomStore } from '@/store';
 import { copyTextToClipboard, generateSlug, notify } from '@/utils';
@@ -8,6 +9,8 @@ import { FaCopy, FaLink } from 'react-icons/fa6';
 
 export function ButtonShare() {
   const room = useRoomStore((state) => state.room);
+  const isEnded = room?.state === ROOM_STATE_ENDED;
+  const isPrivate = room?.kind === ROOM_KIND_PRIVATE;
 
   const handleCopyLink = async () => {
     if (!room) return;
@@ -27,6 +30,8 @@ export function ButtonShare() {
     else notify.error('Không thể sao chép mã phòng');
   };
 
+  if (isEnded || isPrivate) return null;
+
   return (
     <PortalDropdown
       align='left'
@@ -35,7 +40,7 @@ export function ButtonShare() {
       trigger={
         <button className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'>
           <FaLink />
-          <span>Chia sẻ</span>
+          <span className='max-800:hidden'>Chia sẻ</span>
         </button>
       }
     >

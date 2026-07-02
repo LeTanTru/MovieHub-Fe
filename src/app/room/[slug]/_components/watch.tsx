@@ -16,7 +16,8 @@ export function Watch() {
         'scrollbar-none flex h-full shrink-0 flex-col overflow-auto transition-all duration-200 ease-linear',
         {
           'w-full': toggleChat,
-          'w-[calc(100%-400px)]': !toggleChat
+          'max-1680:w-[calc(100%-380px)] max-1200:w-[calc(100%-320px)] max-800:relative max-800:shrink-0 max-800:w-full max-800:h-auto w-[calc(100%-440px)]':
+            !toggleChat
         }
       )}
     >
@@ -28,7 +29,7 @@ export function Watch() {
 
 Watch.Skeleton = function WatchSkeleton() {
   return (
-    <div className='scrollbar-none flex h-full w-[calc(100%-400px)] shrink-0 flex-col overflow-auto'>
+    <div className='scrollbar-none max-1680:w-[calc(100%-380px)] max-1200:w-[calc(100%-320px)] max-800:relative max-800:shrink-0 max-800:w-full max-800:h-auto flex h-full w-[calc(100%-440px)] shrink-0 flex-col overflow-auto'>
       <Player.Skeleton />
       <MovieInfo.Skeleton />
     </div>

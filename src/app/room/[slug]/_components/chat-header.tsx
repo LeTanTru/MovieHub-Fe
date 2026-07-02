@@ -42,7 +42,7 @@ export function ChatHeader() {
   return (
     <div className='flex shrink-0 items-center gap-4 p-4'>
       {/* Menu button */}
-      <div className='relative cursor-pointer'>
+      <div className='max-1200:hidden relative cursor-pointer'>
         <PortalDropdown
           align='left'
           offsetX={-10}
@@ -75,7 +75,7 @@ export function ChatHeader() {
         </PortalDropdown>
       </div>
       <div className='grow'></div>
-      <div className='relative inline-flex items-center gap-2 select-none'>
+      <div className='max-800:hidden relative inline-flex items-center gap-2 select-none'>
         <ButtonToggle
           text='Ẩn chat'
           toggle={toggleChat}
@@ -90,12 +90,12 @@ export function ChatHeader() {
 ChatHeader.Skeleton = function ChatHeaderSkeleton() {
   return (
     <div className='flex shrink-0 items-center gap-4 p-4'>
-      <div className='inline-flex items-center gap-2'>
+      <div className='max-1200:hidden inline-flex items-center gap-2'>
         <Skeleton className='bg-transparent-black-8 skeleton size-4 rounded!' />
         <Skeleton className='bg-transparent-black-8 skeleton h-4 w-16 rounded!' />
       </div>
       <div className='grow'></div>
-      <div className='inline-flex items-center gap-2'>
+      <div className='max-800:hidden inline-flex items-center gap-2'>
         <Skeleton className='bg-transparent-black-8 skeleton h-4 w-12 rounded!' />
         <Skeleton className='bg-transparent-black-8 skeleton h-5 w-9 rounded-full!' />
       </div>

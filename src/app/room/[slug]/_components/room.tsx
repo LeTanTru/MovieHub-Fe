@@ -56,15 +56,19 @@ export function Room() {
 
   return (
     <Container
-      className={cn(
-        'transition-all duration-200 ease-linear',
-        toggleHeader ? 'min-h-screen pt-0' : 'min-h-page-height pt-header'
-      )}
+      className={cn('transition-all duration-100 ease-linear', {
+        'min-h-screen pt-0': toggleHeader,
+        'min-h-page-height pt-header max-1680:min-h-screen max-1680:pt-0':
+          !toggleHeader
+      })}
     >
       <div
         className={cn(
-          'scrollbar-none relative flex w-full items-start justify-between overflow-hidden bg-black transition-all duration-200 ease-linear',
-          toggleHeader ? 'h-screen' : 'h-page-height'
+          'scrollbar-none max-800:flex-col max-800:h-dvh max-800:justify-between relative flex w-full items-start justify-between overflow-auto bg-black transition-all duration-100 ease-linear',
+          {
+            'h-screen': toggleHeader,
+            'h-page-height max-1680:h-screen': !toggleHeader
+          }
         )}
       >
         <Watch />
@@ -80,15 +84,19 @@ Room.Skeleton = function RoomSkeleton() {
 
   return (
     <Container
-      className={cn(
-        'transition-all duration-200 ease-linear',
-        toggleHeader ? 'min-h-screen pt-0' : 'min-h-page-height pt-header'
-      )}
+      className={cn('transition-all duration-100 ease-linear', {
+        'min-h-screen pt-0': toggleHeader,
+        'min-h-page-height pt-header max-1680:min-h-screen max-1680:pt-0':
+          !toggleHeader
+      })}
     >
       <div
         className={cn(
-          'scrollbar-none relative flex w-full items-start justify-between overflow-hidden bg-black transition-all duration-200 ease-linear',
-          toggleHeader ? 'h-screen' : 'h-page-height'
+          'scrollbar-none max-800:flex-col max-800:h-dvh max-800:justify-between relative flex w-full items-start justify-between overflow-auto bg-black transition-all duration-100 ease-linear',
+          {
+            'h-screen': toggleHeader,
+            'h-page-height max-1680:h-screen': !toggleHeader
+          }
         )}
       >
         <Watch.Skeleton />

@@ -49,7 +49,7 @@ export function ButtonEnd() {
           size='sm'
         >
           <FaVideoSlash className='text-rose-500' />
-          Kết thúc
+          <span className='max-800:hidden'>Kết thúc</span>
         </Button>
       }
     />

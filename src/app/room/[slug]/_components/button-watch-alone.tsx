@@ -18,7 +18,7 @@ export function ButtonWatchAlone() {
       className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
     >
       <FaPlayCircle />
-      <span>Xem riêng</span>
+      <span className='max-800:hidden'>Xem riêng</span>
     </Link>
   );
 }

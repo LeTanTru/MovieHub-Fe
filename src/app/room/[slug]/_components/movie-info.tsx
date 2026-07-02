@@ -74,7 +74,7 @@ export function MovieInfo() {
     episodes.length > 0 && currentSeason?.totalEpisode === episodes.length;
 
   return (
-    <div className='border-light-gray relative border-t border-white/13 px-2 py-4'>
+    <div className='border-light-gray max-800:hidden relative border-t border-white/13 px-2 py-4'>
       <div className='mx-auto flex w-full max-w-375 items-stretch justify-between gap-8 p-6'>
         <div className='flex w-130 items-start gap-4'>
           <div className='w-30 shrink-0'>
@@ -140,7 +140,7 @@ export function MovieInfo() {
 
 MovieInfo.Skeleton = function MovieInfoSkeleton() {
   return (
-    <div className='border-light-gray relative border-t border-white/13 px-2 py-4'>
+    <div className='border-light-gray max-800:hidden relative border-t border-white/13 px-2 py-4'>
       <div className='mx-auto flex w-full max-w-375 items-stretch justify-between gap-8 p-6'>
         <div className='flex w-130 items-start gap-4'>
           <div className='w-30 shrink-0'>

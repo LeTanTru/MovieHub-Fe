@@ -28,7 +28,7 @@ export function ButtonSync() {
       className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
     >
       <FaSyncAlt />
-      <span>Đồng bộ</span>
+      <span className='max-800:hidden'>Đồng bộ</span>
     </button>
   );
 }
