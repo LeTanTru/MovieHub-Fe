@@ -159,6 +159,16 @@ Do not read `.env`, `.env.local`, `supersecrets.txt`, or `credentials.json`.
 | Store types    | `*StoreType`                           | `AuthStoreType`        |
 | Private dirs   | `_components/`, `_hooks/`, `_context/` | `_components/slider/`  |
 
+### Export Style
+
+Full rules in `docs/export-style.md`. Summary:
+
+- Pages, layouts, `loading`/`error`/`not-found`/`template`: `export default function`.
+- Route handlers and server actions: `export async function` (never default).
+- Hooks (`use-*.ts`), utils (`*.util.ts`), constants, Zustand stores, Zod schemas: `export const`.
+- Non-page React components: `export function`.
+- Types/interfaces: `export type` / `export interface`.
+
 ## Documentation
 
 Start with `docs/README.md`. When architecture, routes, env vars, or conventions change, keep these files aligned:
@@ -166,6 +176,7 @@ Start with `docs/README.md`. When architecture, routes, env vars, or conventions
 - `docs/project-overview.md`
 - `docs/architecture.md`
 - `docs/development-guide.md`
+- `docs/export-style.md`
 - `AGENTS.md`
 - `CLAUDE.md`
 - `GEMINI.md`
