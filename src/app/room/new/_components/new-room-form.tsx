@@ -219,7 +219,7 @@ export default function NewRoomForm() {
               </Col>
             </Row>
             <Row className='mb-0 gap-6'>
-              <Col className='grid-c-12 max-640:grid-c-6 max-480:grid-c-12'>
+              <Col className='grid-c-12'>
                 <Button
                   type='submit'
                   variant='primary'
@@ -230,7 +230,7 @@ export default function NewRoomForm() {
                   Tạo phòng
                 </Button>
               </Col>
-              <Col className='grid-c-12 max-640:grid-c-6 max-480:grid-c-12'>
+              <Col className='grid-c-12'>
                 <Button
                   type='button'
                   variant='outline'

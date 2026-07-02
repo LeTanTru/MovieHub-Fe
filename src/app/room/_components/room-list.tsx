@@ -57,7 +57,7 @@ export function RoomList() {
   };
 
   return (
-    <div className='relative mx-auto w-full max-w-475 px-12.5'>
+    <div className='max-1600:px-5 max-640:px-4 relative mx-auto w-full max-w-475 px-12.5'>
       <RoomListHeader
         loading={isLoading}
         roomState={roomState}
@@ -65,7 +65,7 @@ export function RoomList() {
         setRoomState={setRoomState}
       />
       {!isAuthenticated || isLoading ? (
-        <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
+        <div className='max-1536:grid-cols-4 max-1120:grid-cols-3 max-768:grid-cols-2 max-480:grid-cols-1 max-640:gap-x-2 max-640:gap-y-4 max-1120:gap-x-4 max-1120:gap-y-6 grid grid-cols-5 gap-x-5 gap-y-8'>
           {Array.from({ length: ROOM_SKELETON_COUNT }).map((_, index) => (
             <RoomCard.Skeleton key={index} />
           ))}
@@ -76,7 +76,7 @@ export function RoomList() {
           imageClassName='max-640:size-40 max-480:size-30'
           content={
             <>
-              Bạn chưa tạo phòng nào.
+              Hiện tại chưa có phòng nào.
               <div className='flex items-center justify-center'>
                 Hãy nhấn vào nút&nbsp;
                 <Button
@@ -92,7 +92,7 @@ export function RoomList() {
           }
         />
       ) : (
-        <div className='grid grid-cols-5 gap-x-5 gap-y-8'>
+        <div className='max-1536:grid-cols-4 max-1120:grid-cols-3 max-768:grid-cols-2 max-480:grid-cols-1 max-640:gap-x-2 max-640:gap-y-4 max-1120:gap-x-4 max-1120:gap-y-6 grid grid-cols-5 gap-x-5 gap-y-8'>
           {roomList.map((room) => (
             <RoomCard
               key={room.id}

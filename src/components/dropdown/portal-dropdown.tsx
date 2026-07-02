@@ -32,6 +32,9 @@ type PortalDropdownProps = {
 
 type DropdownPos = { top: number; left: number };
 
+// Minimum gap (px) kept between the panel and the viewport edge.
+const VIEWPORT_EDGE_MARGIN = 8;
+
 /**
  * A portal-based dropdown that renders its panel into document.body,
  * escaping all stacking contexts. Handles:
@@ -52,6 +55,9 @@ export function PortalDropdown({
   const triggerRef = useRef<HTMLElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<DropdownPos>({ top: 0, left: 0 });
+  // Extra horizontal px applied on top of offsetX to dodge the viewport edge.
+  // Folded into transformOrigin so the scale animation still originates from the trigger.
+  const [edgeOffset, setEdgeOffset] = useState<number>(0);
 
   // Click-outside: close only when clicking outside both trigger and panel
   useEffect(() => {
@@ -75,12 +81,32 @@ export function PortalDropdown({
     const updatePos = () => {
       if (!triggerRef.current) return;
       const rect = triggerRef.current.getBoundingClientRect();
+      const panelWidth = panelRef.current?.offsetWidth ?? 0;
+
       const top = rect.bottom + window.scrollY + offsetY;
-      const left =
+      const baseLeft =
         (align === 'right'
           ? rect.right + window.scrollX
           : rect.left + window.scrollX) + offsetX;
 
+      // Nudge the panel inward just enough to clear the viewport edge,
+      // without flipping which side it's anchored to.
+      let nudge = 0;
+      if (panelWidth > 0) {
+        const screenLeft =
+          baseLeft - window.scrollX - (align === 'right' ? panelWidth : 0);
+        const screenRight = screenLeft + panelWidth;
+
+        if (screenLeft < VIEWPORT_EDGE_MARGIN) {
+          nudge = VIEWPORT_EDGE_MARGIN - screenLeft;
+        } else if (screenRight > window.innerWidth - VIEWPORT_EDGE_MARGIN) {
+          nudge = -(screenRight - (window.innerWidth - VIEWPORT_EDGE_MARGIN));
+        }
+      }
+
+      const left = baseLeft + nudge;
+
+      setEdgeOffset((prev) => (prev === nudge ? prev : nudge));
       setPos((prev) => {
         if (prev.top === top && prev.left === left) return prev;
         return { top, left };
@@ -145,10 +171,12 @@ export function PortalDropdown({
                   left: pos.left,
                   zIndex: 49,
                   // X: distance from panel's left edge to where the trigger sits.
-                  //   align='right' → panel right = trigger right → 100% - offsetX
-                  //   align='left'  → panel left  = trigger left  → 0% - offsetX
+                  //   align='right' → panel right = trigger right → 100% - (offsetX + edgeOffset)
+                  //   align='left'  → panel left  = trigger left  → 0% - (offsetX + edgeOffset)
+                  // edgeOffset is the extra shift applied to dodge the viewport edge,
+                  // folded in so the origin still tracks the trigger, not the panel box.
                   // Y: trigger bottom is -offsetY above the panel top → ${-offsetY}px
-                  transformOrigin: `${align === 'right' ? `calc(100% - ${offsetX}px)` : `${-offsetX}px`} ${-offsetY}px`,
+                  transformOrigin: `${align === 'right' ? `calc(100% - ${offsetX + edgeOffset}px)` : `${-(offsetX + edgeOffset)}px`} ${-offsetY}px`,
                   translate: align === 'right' ? '-100% 0' : '0 0'
                 }}
                 className={className}

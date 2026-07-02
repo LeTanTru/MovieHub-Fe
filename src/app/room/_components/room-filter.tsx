@@ -31,9 +31,9 @@ export function RoomFilter({ roomState, setRoomState }: RoomFilterProps) {
     <div className='relative' ref={dropdownRef}>
       <div
         onClick={handleToggleDropdown}
-        className='flex size-7.5 cursor-pointer items-center justify-center rounded-full border border-white bg-transparent transition-all duration-200 ease-linear hover:opacity-80'
+        className='max-640:size-6 flex size-7.5 cursor-pointer items-center justify-center rounded-full border border-white bg-transparent transition-all duration-200 ease-linear hover:opacity-80'
       >
-        <EllipsisVertical size={16} />
+        <EllipsisVertical className='max-640:size-3.5 size-4' />
       </div>
       <AnimatePresence>
         {showDropdown && (

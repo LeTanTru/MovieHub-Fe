@@ -119,7 +119,7 @@ export function RoomCard({
         </div>
 
         <div className='flex grow flex-col gap-1'>
-          <h4 className='line-clamp-2 leading-normal font-medium'>
+          <h4 className='max-990:line-clamp-1 line-clamp-2 leading-normal font-medium'>
             {room.name}
           </h4>
           <h5 className='text-dark-gray line-clamp-1 text-xs'>
