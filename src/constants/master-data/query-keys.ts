@@ -37,6 +37,10 @@ export const collectionQueryKeys = {
   COLLECTION: 'collection'
 };
 
+export const chatQueryKeys = {
+  CHAT_LIST: 'chat-list'
+};
+
 export const commentQueryKeys = {
   COMMENT_LIST: 'comment-list',
   COMMENT_REPLIES_LIST: 'comment-replies-list',
@@ -167,6 +171,7 @@ export const queryKeys = {
   ...appVersionQueryKeys,
   ...authQueryKeys,
   ...categoryQueryKeys,
+  ...chatQueryKeys,
   ...collectionItemQueryKeys,
   ...collectionQueryKeys,
   ...commentQueryKeys,

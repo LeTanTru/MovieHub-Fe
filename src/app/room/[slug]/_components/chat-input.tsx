@@ -44,7 +44,7 @@ export default function ChatInput() {
   const defaultValues: ChatBodyType = {
     accountId: profile?.id || '',
     content: '',
-    author: {
+    user: {
       fullName: profile?.fullName || '',
       id: profile?.id || '',
       avatarPath: profile?.avatarPath || null,
