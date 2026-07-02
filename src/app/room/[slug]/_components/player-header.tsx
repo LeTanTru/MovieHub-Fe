@@ -9,11 +9,14 @@ import { Button } from '@/components/form';
 import { ButtonEnd } from './button-end';
 import { ButtonLeave } from './button-leave';
 import { ButtonStart } from './button-start';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, MessageSquareText } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth, useNavigate } from '@/hooks';
-import { useRoomStore } from '@/store';
+import { useChatStore, useRoomStore } from '@/store';
+import { useEffect, useState } from 'react';
 import { useShallow } from 'zustand/shallow';
+
+const CHAT_COLLAPSE_TRANSITION_MS = 100;
 
 export function PlayerHeader() {
   const { profile } = useAuth();
@@ -22,6 +25,28 @@ export function PlayerHeader() {
   const { room, isJoined } = useRoomStore(
     useShallow((state) => ({ room: state.room, isJoined: state.isJoined }))
   );
+  const { toggleChat, setToggleChat } = useChatStore(
+    useShallow((state) => ({
+      toggleChat: state.toggleChat,
+      setToggleChat: state.setToggleChat
+    }))
+  );
+
+  const [showChatToggle, setShowChatToggle] = useState(false);
+
+  useEffect(() => {
+    if (!toggleChat) {
+      setShowChatToggle(false);
+      return;
+    }
+
+    const timeout = setTimeout(
+      () => setShowChatToggle(true),
+      CHAT_COLLAPSE_TRANSITION_MS
+    );
+
+    return () => clearTimeout(timeout);
+  }, [toggleChat]);
 
   if (!room || !profile) return <PlayerHeader.Skeleton />;
 
@@ -30,6 +55,10 @@ export function PlayerHeader() {
   const isHost = room.host.id === profile.id;
 
   const movieItem = room.movieItem;
+
+  const handleToggleChat = () => {
+    setToggleChat(!toggleChat);
+  };
 
   const renderMovieTitle = () => {
     const movie = movieItem?.movie;
@@ -65,6 +94,12 @@ export function PlayerHeader() {
       {isPending && isHost && <ButtonStart />}
       {isRunning && isHost && <ButtonEnd />}
       {isRunning && isJoined && <ButtonLeave />}
+      {showChatToggle && (
+        <Button className='rounded-full' size='sm' onClick={handleToggleChat}>
+          <MessageSquareText className='size-4' />
+          Hiện chat
+        </Button>
+      )}
     </div>
   );
 }
