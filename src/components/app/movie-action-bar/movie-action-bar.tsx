@@ -44,7 +44,7 @@ export function MovieActionBar() {
       <div className='max-1120:gap-6 max-990:gap-2 max-800:flex-col max-800:gap-4 flex items-center justify-between gap-8'>
         {watchLink ? (
           <ButtonWatchNow
-            className='max-640:h-12.5 max-640:min-h-auto max-640:p-2 max-800:min-w-55 max-640:min-w-44'
+            className='max-640:h-10 max-640:min-h-auto max-640:p-2 max-800:min-w-55 max-640:min-w-36 max-640:text-sm'
             href={watchLink}
             variant='detail'
           />

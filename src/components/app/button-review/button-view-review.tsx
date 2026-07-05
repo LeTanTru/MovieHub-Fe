@@ -39,11 +39,10 @@ export function ButtonViewReview({
     startAnimation();
     setDiscussionTab(tab);
     scroller.scrollTo(to, {
-      duration: 0,
-      delay: 0,
+      duration: 300,
+      delay: 50,
       smooth: true,
-      offset: -100,
-      isDynamic: true
+      offset: -100
     });
   };
 

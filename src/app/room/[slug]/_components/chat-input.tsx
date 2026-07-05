@@ -31,6 +31,8 @@ type EmojiPickerElement = HTMLElement & {
 };
 import { FaRegFaceGrinBeam } from 'react-icons/fa6';
 
+const SEND_COOLDOWN_SECONDS = 5;
+
 export default function ChatInput() {
   const { profile } = useAuth();
   const room = useRoomStore((state) => state.room);
@@ -43,6 +45,35 @@ export default function ChatInput() {
     setShowPicker(false)
   );
   const pickerContainerRef = useRef<HTMLDivElement>(null);
+
+  const [cooldown, setCooldown] = useState(0);
+  const cooldownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
+    null
+  );
+
+  useEffect(() => {
+    return () => {
+      if (cooldownIntervalRef.current) {
+        clearInterval(cooldownIntervalRef.current);
+      }
+    };
+  }, []);
+
+  const startCooldown = () => {
+    setCooldown(SEND_COOLDOWN_SECONDS);
+    if (cooldownIntervalRef.current) clearInterval(cooldownIntervalRef.current);
+    cooldownIntervalRef.current = setInterval(() => {
+      setCooldown((prev) => {
+        if (prev <= 1) {
+          if (cooldownIntervalRef.current) {
+            clearInterval(cooldownIntervalRef.current);
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const handleSendMessage = () => {
     startAnimation();
@@ -85,6 +116,7 @@ export default function ChatInput() {
       );
       form.reset(defaultValues);
       setShowPicker(false);
+      startCooldown();
     } catch (error) {
       logger.error('[CREATE_CHAT_ERROR]', error);
       notify.error('Gửi tin nhắn thất bại');
@@ -190,6 +222,7 @@ export default function ChatInput() {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
+                      if (cooldown > 0) return;
                       e.currentTarget.form?.requestSubmit();
                     }
                   }}
@@ -199,12 +232,20 @@ export default function ChatInput() {
                 className='bg-golden-glow hover:bg-golden-glow/80 disabled:bg-golden-glow/80 disabled:hover:bg-golden-glow/80 shrink-0 px-3! text-black'
                 onClick={handleSendMessage}
                 disabled={
-                  !form.formState.isDirty || form.formState.isSubmitting
+                  !form.formState.isDirty ||
+                  form.formState.isSubmitting ||
+                  cooldown > 0
                 }
                 loading={form.formState.isSubmitting}
                 iconClassName='size-4'
               >
-                <TelegramIcon ref={iconRef} />
+                {cooldown > 0 ? (
+                  <span className='size-4 font-medium tabular-nums'>
+                    {cooldown}
+                  </span>
+                ) : (
+                  <TelegramIcon ref={iconRef} />
+                )}
               </Button>
             </div>
           </div>

@@ -26,6 +26,7 @@
 - **Profile Management**: Avatar upload, profile editing, password changes, account settings
 - **Personalization**: Favorites (movies & people), custom playlists with drag-and-drop ordering, watch history
 - **Social Features**: Nested comments with voting, reviews with 5-star ratings, discussion threads
+- **Watch-Together Rooms**: Create/join/search rooms by code, synced playback via MQTT (protected)
 - **Notifications**: Toast notifications via React Toastify
 
 ### Responsive Design
@@ -45,9 +46,7 @@
 | **Forms & Validation** | React Hook Form, Zod                      |
 | **Styling**            | Tailwind CSS v4, shadcn/ui, Framer Motion |
 | **Video Player**       | Vidstack, HLS.js                          |
-| **Rich Text**          | TinyMCE                                   |
-| **Drag & Drop**        | dnd-kit                                   |
-| **Charts**             | Recharts                                  |
+| **Realtime**           | MQTT                                      |
 | **Carousel**           | Swiper                                    |
 | **Notifications**      | React Toastify                            |
 | **CI/CD**              | GitHub Actions + Docker                   |
@@ -84,8 +83,8 @@ Centralized Axios instance (`src/utils/http.util.ts`) with:
 
 Guarded by `src/proxy.ts` (Next.js middleware):
 
-- **Protected**: `/user/*`, `/account/*`, `/survey`
-- **Public Auth**: `/login`, `/register`, `/forgot-password`, `/verify-otp`
+- **Protected**: `/user/*`, `/account/*`, `/survey`, `/room/*`
+- **Public Auth**: `/login`, `/register`, `/forgot-password`, `/verify-otp`, `/intro`
 
 ## Documentation
 
@@ -98,7 +97,6 @@ Core references:
 - [Development guide](./docs/development-guide.md)
 - [Export style conventions](./docs/export-style.md)
 - [Security best practices report](./docs/security-best-practices-report.md)
-- [Component split analysis](./docs/component-split-analysis-app.md)
 
 ## Project Structure
 
@@ -117,7 +115,7 @@ src/
 │   ├── person/            # People directory
 │   ├── topic/             # Topic listings
 │   ├── schedule/          # Movie schedule
-│   ├── room/              # Watch-together room lobby
+│   ├── room/              # Protected watch-together rooms (create, join, manage)
 │   ├── survey/            # Protected onboarding survey
 │   ├── user/              # Protected user pages (favorites, playlists, etc.)
 │   ├── account/           # Protected account pages (profile, settings)
@@ -133,7 +131,14 @@ src/
 │   ├── app/               # App-level components (movie cards, header, footer, etc.)
 │   ├── layout/            # Layout wrappers
 │   ├── providers/         # React context providers
-│   └── modal/             # Modal components
+│   ├── modal/             # Modal components
+│   ├── activity/          # Activity/notification feed components
+│   ├── dropdown/          # Dropdown menu components
+│   ├── list/              # List/grid rendering components
+│   ├── loading/           # Loading and skeleton states
+│   ├── no-data/           # Empty-state components
+│   ├── pagination/        # Pagination controls
+│   └── seo/               # SEO/structured data components
 ├── constants/             # API endpoints, query keys, master data
 ├── hooks/                 # Custom React hooks
 ├── queries/               # React Query hooks
