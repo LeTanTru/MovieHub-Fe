@@ -42,7 +42,7 @@ export function ButtonWatchNow({
         className={cn(variants({ variant }), className)}
         onClick={handleClick}
       >
-        <PlayIcon iconClassName='size-5' ref={iconRef} />
+        <PlayIcon iconClassName='size-5 max-640:size-4' ref={iconRef} />
         Xem ngay
       </Button>
     </Link>
