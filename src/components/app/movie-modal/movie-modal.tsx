@@ -47,7 +47,7 @@ export function MovieModal({ movie, pos }: MovieModalProps) {
     (age) => age.value === movie.ageRating
   )?.label;
 
-  const watchHref = (() => {
+  const watchLink = (() => {
     const base = `${route.watch.path}/${movie.slug}.${movie.id}`;
     if (movie.type === MOVIE_TYPE_SERIES) {
       const params = new URLSearchParams();
@@ -100,7 +100,10 @@ export function MovieModal({ movie, pos }: MovieModalProps) {
                 </h3>
               </div>
               <div className='mb-5 flex items-stretch justify-between gap-2.5'>
-                <ButtonWatchNow href={watchHref} variant='popup' />
+                <ButtonWatchNow
+                  href={latestSeason || latestEpisode ? watchLink : undefined}
+                  variant='popup'
+                />
                 <ButtonLike
                   targetId={movie.id}
                   refetch={!!pos}

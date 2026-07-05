@@ -5,9 +5,10 @@ import { Button } from '@/components/form';
 import { useClickAnimation } from '@/hooks';
 import { cn } from '@/lib';
 import { cva, VariantProps } from 'class-variance-authority';
+import { Calendar } from 'lucide-react';
 import Link from 'next/link';
 
-const variants = cva('', {
+const variants = cva('w-fit', {
   variants: {
     variant: {
       detail:
@@ -21,7 +22,7 @@ const variants = cva('', {
 });
 
 type ButtonWatchNowProps = {
-  href: string;
+  href?: string;
   className?: string;
 } & VariantProps<typeof variants>;
 
@@ -36,7 +37,7 @@ export function ButtonWatchNow({
     startAnimation();
   };
 
-  return (
+  return href ? (
     <Link href={href}>
       <Button
         className={cn(variants({ variant }), className)}
@@ -46,5 +47,13 @@ export function ButtonWatchNow({
         Xem ngay
       </Button>
     </Link>
+  ) : (
+    <Button
+      className={cn(variants({ variant }), className)}
+      onClick={handleClick}
+    >
+      <Calendar className='size-4' />
+      Sắp chiếu
+    </Button>
   );
 }

@@ -42,9 +42,9 @@ export function WatchPlayerControls() {
         >
           <div className='pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full' />
           {!hasTrailer && (
-            <Calendar className='max-640:size-4 relative size-5 animate-bounce' />
+            <Calendar className='max-640:size-4 relative size-5 animate-bounce font-semibold' />
           )}
-          <span className='max-640:text-xs relative uppercase transition-transform duration-200 group-hover:scale-105'>
+          <span className='max-640:text-xs relative font-semibold uppercase transition-transform duration-200 group-hover:scale-105'>
             {!hasTrailer ? 'Sắp ra mắt' : 'Phim sắp ra mắt'}
           </span>
         </div>
