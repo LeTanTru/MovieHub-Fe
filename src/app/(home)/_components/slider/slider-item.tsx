@@ -58,6 +58,12 @@ export function SliderItem({
     onVote(slider.movie.id, isLiked);
   };
 
+  let watchLink = `${route.watch.path}/${slider.movie.slug}.${slider.movie.id}`;
+
+  if (latestSeason) watchLink += `?season=${latestSeason.label}`;
+
+  if (latestEpisode) watchLink += `&episode=${latestEpisode.label}`;
+
   return (
     <div className='slide-elements'>
       <Link
@@ -189,7 +195,7 @@ export function SliderItem({
             />
             <div className='touch'>
               <ButtonPlay
-                href={`${route.watch.path}/${slider.movie.slug}.${slider.movie.id}`}
+                href={watchLink}
                 title={`Xem phim ${slider.movie.title} - ${slider.movie.originalTitle}`}
               />
 
