@@ -182,6 +182,8 @@ export function PlayerMain() {
   };
 
   const handleRateChange = async (rate: number) => {
+    if (!isHost) return;
+
     const newState = { ...playerState, playSpeed: rate };
     useRoomStore.getState().setPlayerState(newState);
 
@@ -189,6 +191,8 @@ export function PlayerMain() {
   };
 
   const handleSeek = async (currentTime: number) => {
+    if (!isHost) return;
+
     const newState = {
       ...playerState,
       currentPositionMovie: currentTime * MILLISECOND
@@ -258,7 +262,10 @@ export function PlayerMain() {
             title={room.movieItem.movie.title}
             className='w-full'
             autoPlay={isHost ? true : playerState.isPlay}
-            hideControls={!isHost}
+            disablePlayPause={!isHost}
+            disableSeek={!isHost}
+            disableSpeed={!isHost}
+            keyDisabled={!isHost}
             hidePoster={playerState.currentPositionMovie > 0}
             textTracks={textTracks}
             onCanPlay={handleCanPlay}

@@ -3,11 +3,11 @@
 import { SeekButton, Tooltip } from '@vidstack/react';
 import { SeekBackward10Icon } from '@vidstack/react/icons';
 
-export function SeekBackwardButton() {
+export function SeekBackwardButton({ disabled }: { disabled?: boolean }) {
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <SeekButton className='vds-button' seconds={-10}>
+        <SeekButton className='vds-button' seconds={-10} disabled={disabled}>
           <SeekBackward10Icon className='vds-icon' />
         </SeekButton>
       </Tooltip.Trigger>

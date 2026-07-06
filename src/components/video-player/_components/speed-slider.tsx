@@ -2,10 +2,11 @@
 
 import { SpeedSlider as BaseSpeedSlider } from '@vidstack/react';
 
-export function SpeedSlider() {
+export function SpeedSlider({ disabled }: { disabled?: boolean }) {
   return (
     <BaseSpeedSlider.Root
-      className='group vds-slider relative inline-flex cursor-pointer touch-none items-center py-2.5 outline-none select-none aria-hidden:hidden'
+      disabled={disabled}
+      className='group vds-slider relative inline-flex cursor-pointer touch-none items-center py-2.5 outline-none select-none aria-hidden:hidden data-[disabled]:cursor-not-allowed'
       min={0.25}
       max={2}
       step={0.05}

@@ -62,6 +62,9 @@ type VideoPlayerProps = Omit<
   activeMarkerId?: string | null;
   auth: boolean;
   defaultQuality?: number;
+  disablePlayPause?: boolean;
+  disableSeek?: boolean;
+  disableSpeed?: boolean;
   duration: number;
   hideControls?: boolean;
   hidePoster?: boolean;
@@ -89,6 +92,9 @@ export function VideoPlayer({
   autoPlay = true,
   className,
   defaultQuality = 0,
+  disablePlayPause = false,
+  disableSeek = false,
+  disableSpeed = false,
   duration,
   hideControls = false,
   hidePoster = false,
@@ -185,7 +191,7 @@ export function VideoPlayer({
         <MediaProvider slot='media' className='cursor-pointer'>
           {!hidePoster && <Poster className='vds-poster' src={thumbnailUrl} />}
         </MediaProvider>
-        {!hideControls && (
+        {!hideControls && !disablePlayPause && (
           <Gesture
             className='pointer-events-auto absolute inset-0 z-0 block h-full w-full'
             event='pointerup'
@@ -201,12 +207,16 @@ export function VideoPlayer({
             thumbnails={vttUrl}
             icons={defaultLayoutIcons}
             slots={{
-              playButton: <PlayToggleButton />,
+              playButton: <PlayToggleButton disabled={disablePlayPause} />,
               muteButton: <VolumeToggleButton />,
               fullscreenButton: <FullscreenToggleButton />,
               pipButton: <PiPToggleButton />,
               settingsMenu: (
-                <SettingMenu placement='top end' tooltipPlacement='top' />
+                <SettingMenu
+                  placement='top end'
+                  tooltipPlacement='top'
+                  disableSpeed={disableSpeed}
+                />
               ),
               captionButton: <CaptionButton />,
               beforeSettingsMenu: (
@@ -218,8 +228,8 @@ export function VideoPlayer({
                     {next && onNextClick && (
                       <NextButton onClick={onNextClick} />
                     )}
-                    <SeekBackwardButton />
-                    <SeekForwardButton />
+                    <SeekBackwardButton disabled={disableSeek} />
+                    <SeekForwardButton disabled={disableSeek} />
                   </div>
                 </>
               ),
@@ -248,6 +258,7 @@ export function VideoPlayer({
                   vttUrl={vttUrl}
                   markers={markers}
                   activeMarkerId={activeMarkerId}
+                  disabled={disableSeek}
                 />
               ),
               bufferingIndicator: (

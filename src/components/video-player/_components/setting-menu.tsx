@@ -16,9 +16,14 @@ import { VolumeSubmenu } from './volume-submenu';
 type SettingsProps = {
   placement: MenuPlacement;
   tooltipPlacement: TooltipPlacement;
+  disableSpeed?: boolean;
 };
 
-export function SettingMenu({ placement, tooltipPlacement }: SettingsProps) {
+export function SettingMenu({
+  placement,
+  tooltipPlacement,
+  disableSpeed
+}: SettingsProps) {
   return (
     <Menu.Root className='parent'>
       <Tooltip.Root>
@@ -33,7 +38,7 @@ export function SettingMenu({ placement, tooltipPlacement }: SettingsProps) {
       </Tooltip.Root>
       <Menu.Content className={menuClass} placement={placement}>
         <CaptionSubmenu />
-        <SpeedSubmenu />
+        <SpeedSubmenu disabled={disableSpeed} />
         <VolumeSubmenu />
         <QualitySubmenu />
       </Menu.Content>

@@ -6,7 +6,7 @@ import { submenuClass } from './styles';
 import { SubmenuButton } from './submenu-button';
 import { SpeedSlider } from './speed-slider';
 
-export function SpeedSubmenu() {
+export function SpeedSubmenu({ disabled }: { disabled?: boolean }) {
   const options = usePlaybackRateOptions({
     rates: [
       0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85,
@@ -24,7 +24,7 @@ export function SpeedSubmenu() {
       <Menu.Content className={submenuClass}>
         <div className='p-2'>
           <div className='flex items-center gap-2 rounded-sm bg-white/10 px-3'>
-            <SpeedSlider />
+            <SpeedSlider disabled={disabled} />
           </div>
         </div>
       </Menu.Content>
