@@ -9,7 +9,7 @@ import {
 } from '@/utils';
 import { route } from '@/routes';
 import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
-import { MetadataType, SidebarResType } from '@/types';
+import type { MetadataType, SidebarResType } from '@/types';
 import Link from 'next/link';
 import { ButtonPlay } from '@/components/app/button-play';
 import { ButtonInfo } from '@/components/app/button-info';

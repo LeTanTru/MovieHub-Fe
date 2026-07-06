@@ -1,7 +1,7 @@
 import { useMemo, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { MOVIE_TYPE_SERIES } from '@/constants';
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 import { SelectField } from '@/components/form';
 import { Form } from '@/components/ui/form';
 

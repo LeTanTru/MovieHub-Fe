@@ -7,7 +7,7 @@ import { generateSlug, renderImageUrl } from '@/utils';
 import Image from 'next/image';
 import { route } from '@/routes';
 import { roomCodeSearchSchema } from '@/schemaValidations';
-import { RoomCodeSearchType } from '@/types';
+import type { RoomCodeSearchType } from '@/types';
 import { Search } from 'lucide-react';
 import { useClickOutside, useDisclosure, useNavigate } from '@/hooks';
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';

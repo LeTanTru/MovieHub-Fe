@@ -1,6 +1,6 @@
 'use client';
 
-import { EpisodeResType } from '@/types';
+import type { EpisodeResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import { m } from 'framer-motion';
 import Image from 'next/image';

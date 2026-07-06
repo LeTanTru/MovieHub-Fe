@@ -7,7 +7,7 @@ import {
   genderIconMaps
 } from '@/constants';
 import { cn } from '@/lib';
-import { ProfileResType } from '@/types';
+import type { ProfileResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 
 type ProfileSectionProps = {

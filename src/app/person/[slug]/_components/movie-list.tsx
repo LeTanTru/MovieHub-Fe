@@ -9,7 +9,7 @@ import {
   movieListTabs,
   PERSON_KIND_ACTOR
 } from '@/constants';
-import { PersonSearchType } from '@/types';
+import type { PersonSearchType } from '@/types';
 import { MovieGrid, MovieGridByYear } from '@/components/app/movie-grid';
 import { ButtonAction } from '@/components/app/button-action';
 import { NoData } from '@/components/no-data';

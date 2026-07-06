@@ -1,5 +1,5 @@
 import { collectionApiRequest, collectionItemApiRequest } from '@/api-requests';
-import {
+import type {
   CollectionItemSearchType,
   ApiResponseList,
   CollectionItemResType

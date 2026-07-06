@@ -1,7 +1,7 @@
 import { MovieBody } from './movie-body';
 import { MovieItemBody } from './movie-item-body';
 import { mqttCMDs } from '@/constants';
-import { NotificationResType } from '@/types';
+import type { NotificationResType } from '@/types';
 import { ReplyCommentBody } from './reply-comment-body';
 import { RoomInviteBody } from './room-invite-body';
 import { ToxicCommentLockedBody } from './toxic-comment-locked-body';

@@ -15,7 +15,7 @@ import {
   MAX_PAGE_SIZE,
   queryKeys
 } from '@/constants';
-import {
+import type {
   ApiResponse,
   ApiResponseList,
   CommentResType,

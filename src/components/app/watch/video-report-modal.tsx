@@ -10,10 +10,10 @@ import {
 import { BaseForm } from '@/components/form/base-form';
 import { Modal } from '@/components/modal';
 import {
-  reportReasons,
   USER_REPORT_REASON_OTHER,
-  USER_REPORT_TYPE_COMMENT,
-  userReportCommentErrorMaps
+  USER_REPORT_TYPE_VIDEO,
+  userReportVideoErrorMaps,
+  videoReportReasons
 } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateUserReportMutation } from '@/queries';
@@ -23,24 +23,24 @@ import { notify } from '@/utils';
 import { useMemo, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
-type CommentReportModalProps = {
+type VideoReportModalProps = {
   open: boolean;
-  commentId: string;
+  videoId: string;
   onClose: () => void;
 };
 
-export default function CommentReportModal({
+export default function VideoReportModal({
   open,
-  commentId,
+  videoId,
   onClose
-}: CommentReportModalProps) {
+}: VideoReportModalProps) {
   const [selectedReason, setSelectedReason] = useState('');
 
-  const { mutate: createUserReport, isPending } = useCreateUserReportMutation();
+  const { mutate, isPending } = useCreateUserReportMutation();
 
   const defaultValues: UserReportBodyType = useMemo(() => {
-    return { content: '', objectId: commentId, type: USER_REPORT_TYPE_COMMENT };
-  }, [commentId]);
+    return { content: '', objectId: videoId, type: USER_REPORT_TYPE_VIDEO };
+  }, [videoId]);
 
   const handleReasonChange = (
     value: string,
@@ -69,7 +69,7 @@ export default function CommentReportModal({
       return;
     }
 
-    createUserReport(
+    mutate(
       {
         ...values,
         content
@@ -77,23 +77,23 @@ export default function CommentReportModal({
       {
         onSuccess: (res) => {
           if (res.result) {
-            notify.success('Báo cáo bình luận thành công');
+            notify.success('Báo cáo lỗi video thành công');
             handleClose();
           } else {
             const errorCode = res.code;
             if (errorCode) {
-              const message = userReportCommentErrorMaps[errorCode];
+              const message = userReportVideoErrorMaps[errorCode];
               if (message) {
                 notify.info(message[0][1].message);
               }
             } else {
-              notify.error('Báo cáo bình luận thất bại');
+              notify.error('Báo cáo lỗi video thất bại');
             }
           }
         },
         onError: (error) => {
-          logger.error('USER_REPORT_COMMENT_ERROR', error);
-          notify.error('Báo cáo bình luận thất bại');
+          logger.error('USER_REPORT_VIDEO_ERROR', error);
+          notify.error('Báo cáo lỗi video thất bại');
         }
       }
     );
@@ -105,7 +105,7 @@ export default function CommentReportModal({
       onClose={handleClose}
       className='max-520:w-[95vw] top-1/2 w-100 -translate-y-1/2'
     >
-      <Modal.Header className='border-b'>Báo cáo bình luận </Modal.Header>
+      <Modal.Header className='border-b'>Báo lỗi video</Modal.Header>
       <Modal.Body scrollable className='max-h-[min(32.5rem,75vh)]'>
         <BaseForm
           onSubmit={onSubmit}
@@ -122,7 +122,7 @@ export default function CommentReportModal({
                     control={form.control}
                     name='content'
                     value={selectedReason}
-                    options={reportReasons}
+                    options={videoReportReasons}
                     onValueChange={(value) => handleReasonChange(value, form)}
                   />
                 </Col>

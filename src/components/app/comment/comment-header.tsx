@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { GENDER_FEMALE, GENDER_MALE, GENDER_OTHER } from '@/constants';
 import { cn } from '@/lib';
-import { CommentResType, ProfileResType } from '@/types';
+import type { CommentResType, ProfileResType } from '@/types';
 import { convertUTCToLocal, timeAgo } from '@/utils';
 import { Pin } from 'lucide-react';
 import { ComponentType } from 'react';

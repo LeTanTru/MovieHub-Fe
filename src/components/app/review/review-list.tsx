@@ -2,7 +2,7 @@
 
 import { NoData } from '@/components/no-data';
 import { ReviewItem } from './review-item';
-import { MovieResType, ReviewResType } from '@/types';
+import type { MovieResType, ReviewResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { StaticImageData } from 'next/image';
 import {

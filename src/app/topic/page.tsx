@@ -8,7 +8,7 @@ import {
   OG_IMAGE_WIDTH,
   OG_IMAGE_HEIGHT
 } from '@/constants';
-import { CollectionSearchType } from '@/types';
+import type { CollectionSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { envConfig } from '@/config';

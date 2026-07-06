@@ -10,7 +10,7 @@ import {
   USER_KIND_MAX_AGE
 } from '@/constants';
 import { logger } from '@/logger';
-import { LoginResType } from '@/types';
+import type { LoginResType } from '@/types';
 import { http, isAxiosError, setCookie } from '@/utils';
 import { HttpStatusCode } from 'axios';
 import { NextRequest, NextResponse } from 'next/server';

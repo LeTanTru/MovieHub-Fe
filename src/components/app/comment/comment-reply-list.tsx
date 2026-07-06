@@ -1,6 +1,6 @@
 import { Button } from '@/components/form';
 import { VerticalBarLoading } from '@/components/loading';
-import { CommentResType } from '@/types';
+import type { CommentResType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
 import { ReactNode } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';

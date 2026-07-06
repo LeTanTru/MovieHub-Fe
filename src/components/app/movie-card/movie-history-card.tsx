@@ -1,7 +1,7 @@
 'use client';
 
 import { MOVIE_TYPE_SINGLE } from '@/constants';
-import { MovieHistoryResType } from '@/types';
+import type { MovieHistoryResType } from '@/types';
 import { m, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';

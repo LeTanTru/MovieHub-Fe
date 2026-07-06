@@ -2,7 +2,7 @@ import { MovieCard } from '@/components/app/movie-card';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { NoData } from '@/components/no-data';
 import { FAVOURITE_TYPE_MOVIE } from '@/constants';
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 
 type MovieListProps = {
   isLoading: boolean;

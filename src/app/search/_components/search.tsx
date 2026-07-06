@@ -6,7 +6,7 @@ import { DEFAULT_PAGE_SIZE, SEARCH_MOVIE_LIST_ID } from '@/constants';
 import { useQueryParams } from '@/hooks';
 import { useMovieListQuery } from '@/queries';
 import { useSearchStore } from '@/store';
-import { SearchKeys, SearchParamsType } from '@/types';
+import type { SearchKeys, SearchParamsType } from '@/types';
 import { TextSearch } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { animateScroll, scroller } from 'react-scroll';

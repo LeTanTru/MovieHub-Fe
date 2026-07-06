@@ -2,7 +2,7 @@ import { PersonCard } from '@/components/app/person-card';
 import { NoData } from '@/components/no-data';
 import { FAVOURITE_TYPE_PERSON } from '@/constants';
 import { cn } from '@/lib';
-import { PersonResType } from '@/types';
+import type { PersonResType } from '@/types';
 
 type PersonListProps = {
   isLoading: boolean;

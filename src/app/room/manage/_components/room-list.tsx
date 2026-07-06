@@ -11,7 +11,7 @@ import { useAuth, useLoadMore, useNavigate } from '@/hooks';
 import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useDeleteRoomMutation } from '@/queries';
-import { RoomResType, RoomSearchType } from '@/types';
+import type { RoomResType, RoomSearchType } from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { ChevronLeft, PlusCircle } from 'lucide-react';
 

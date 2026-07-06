@@ -24,7 +24,7 @@ import {
 } from '@/queries';
 import { updateProfileSchema } from '@/schemaValidations';
 import { useAuthStore } from '@/store';
-import { UpdateProfileBodyType } from '@/types';
+import type { UpdateProfileBodyType } from '@/types';
 import { applyFormErrors, notify, renderImageUrl } from '@/utils';
 import type { UseFormReturn } from 'react-hook-form';
 import { useShallow } from 'zustand/shallow';

@@ -1,6 +1,6 @@
 import { ImageField } from '@/components/form';
 import { route } from '@/routes';
-import { NotificationResType, MovieNotificationType } from '@/types';
+import type { NotificationResType, MovieNotificationType } from '@/types';
 import { convertUTCToLocal, parseJSON, renderImageUrl, timeAgo } from '@/utils';
 import Link from 'next/link';
 import { useMemo } from 'react';

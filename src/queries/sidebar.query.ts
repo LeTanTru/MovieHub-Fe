@@ -1,6 +1,6 @@
 import { sidebarApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { SidebarSearchType } from '@/types';
+import type { SidebarSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useSidebarListQuery = ({

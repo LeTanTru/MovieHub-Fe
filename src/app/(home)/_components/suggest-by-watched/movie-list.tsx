@@ -2,7 +2,7 @@
 
 import { CollectionListHeading } from '@/components/app/heading';
 import { MovieCard } from '@/components/app/movie-card';
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 import { useRef } from 'react';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { Navigation } from 'swiper/modules';

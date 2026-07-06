@@ -24,7 +24,7 @@ import { cn } from '@/lib';
 import { cva, VariantProps } from 'class-variance-authority';
 import { logger } from '@/logger';
 import { buildLoginRedirectPath, invalidateQueries, notify } from '@/utils';
-import { PlaylistItemBodyType } from '@/types';
+import type { PlaylistItemBodyType } from '@/types';
 import { PlusIcon } from '@/assets';
 import { useMemo, useState } from 'react';
 import debounce from 'lodash/debounce';

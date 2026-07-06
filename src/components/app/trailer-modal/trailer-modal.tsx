@@ -4,7 +4,7 @@ import './trailer-modal.css';
 import { Modal } from '@/components/modal';
 import { VideoPlayer } from '@/components/video-player';
 import { VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
-import { VideoResType } from '@/types';
+import type { VideoResType } from '@/types';
 import {
   isMobileDevice,
   isTabletDevice,

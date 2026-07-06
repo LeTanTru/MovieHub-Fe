@@ -9,7 +9,7 @@ import {
 } from '@/constants';
 import { useClickOutside } from '@/hooks';
 import { cn } from '@/lib';
-import { ReviewResType, ToxicSpan } from '@/types';
+import type { ReviewResType, ToxicSpan } from '@/types';
 import { parseJSON, renderImageUrl } from '@/utils';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Element, scroller } from 'react-scroll';

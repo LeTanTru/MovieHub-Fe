@@ -2,7 +2,7 @@
 
 import { useImperativeHandle } from 'react';
 import { m, useAnimate } from 'framer-motion';
-import { AnimatedIconHandle, AnimatedIconProps } from '@/types';
+import type { AnimatedIconHandle, AnimatedIconProps } from '@/types';
 import { RiTelegram2Fill } from 'react-icons/ri';
 
 export function TelegramIcon({

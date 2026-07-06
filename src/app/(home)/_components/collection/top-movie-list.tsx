@@ -3,7 +3,7 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { CollectionResType } from '@/types';
+import type { CollectionResType } from '@/types';
 import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';
 import { TopMovieCard } from '@/components/app/collection';

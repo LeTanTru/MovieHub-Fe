@@ -1,5 +1,9 @@
 import { apiConfig } from '@/constants';
-import { ApiResponseList, SidebarResType, SidebarSearchType } from '@/types';
+import type {
+  ApiResponseList,
+  SidebarResType,
+  SidebarSearchType
+} from '@/types';
 import { http } from '@/utils';
 
 export const getList = (params?: SidebarSearchType, signal?: AbortSignal) =>

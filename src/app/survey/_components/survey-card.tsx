@@ -6,7 +6,7 @@ import { m } from 'framer-motion';
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 import { cn } from '@/lib';
 import Tilt from 'react-parallax-tilt';
-import { SurveyResType } from '@/types';
+import type { SurveyResType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type SurveyCardProps = {

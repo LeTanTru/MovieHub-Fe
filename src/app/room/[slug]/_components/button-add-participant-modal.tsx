@@ -9,7 +9,10 @@ import { logger } from '@/logger';
 import { useAddParticipantsMutation } from '@/queries';
 import { roomAddParticipantSchema } from '@/schemaValidations';
 import { useRoomStore } from '@/store';
-import { RoomAddParticipantBodyType, UserAutoCompleteResType } from '@/types';
+import type {
+  RoomAddParticipantBodyType,
+  UserAutoCompleteResType
+} from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { UserPlus } from 'lucide-react';
 import { useMemo } from 'react';

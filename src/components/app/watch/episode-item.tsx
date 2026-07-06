@@ -1,5 +1,5 @@
 import { cn } from '@/lib';
-import { EpisodeResType } from '@/types';
+import type { EpisodeResType } from '@/types';
 import Image from 'next/image';
 import { renderImageUrl } from '@/utils';
 import Link from 'next/link';

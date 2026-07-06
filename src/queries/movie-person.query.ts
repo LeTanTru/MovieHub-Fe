@@ -1,6 +1,6 @@
 import { moviePersonApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { MoviePersonSearchType } from '@/types';
+import type { MoviePersonSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useMoviePersonListQuery = ({

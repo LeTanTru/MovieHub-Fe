@@ -1,6 +1,6 @@
 import { chatApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { ChatSearchType } from '@/types';
+import type { ChatSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useChatListQuery = ({

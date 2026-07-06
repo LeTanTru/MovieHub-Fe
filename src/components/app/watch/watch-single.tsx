@@ -5,7 +5,7 @@ import { MovieTabHeading } from '@/components/app/heading';
 import { useNavigate, useQueryParams, useMovie } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
-import { SeasonResType } from '@/types';
+import type { SeasonResType } from '@/types';
 import { notify, renderImageUrl } from '@/utils';
 import Image from 'next/image';
 

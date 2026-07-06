@@ -5,7 +5,7 @@ import { apiConfig, MOVIE_TYPE_SINGLE, queryKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useCreateCommentMutation } from '@/queries';
 import { commentSchema } from '@/schemaValidations';
-import { CommentBodyType, MovieResType } from '@/types';
+import type { CommentBodyType, MovieResType } from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { FaTelegramPlane } from 'react-icons/fa';
 import {

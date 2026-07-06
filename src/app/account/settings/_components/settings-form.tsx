@@ -20,7 +20,7 @@ import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
 import { useUpdateSettingsMutation } from '@/queries';
 import { settingsSchema } from '@/schemaValidations';
-import { OptionType, SettingBodyType } from '@/types';
+import type { OptionType, SettingBodyType } from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { useMemo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';

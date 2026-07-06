@@ -52,7 +52,7 @@ import {
 import { cn } from '@/lib';
 
 import './video-player.css';
-import { TimeSliderMarkerType } from '@/types';
+import type { TimeSliderMarkerType } from '@/types';
 import { IndicatorAction, IndicatorContext } from './indicator-context';
 
 type VideoPlayerProps = Omit<

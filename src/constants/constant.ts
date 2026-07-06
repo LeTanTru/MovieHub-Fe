@@ -136,6 +136,7 @@ export const SUBTITLE_BACKGROUND_COLOR_BLACK = 2;
 
 export const USER_REPORT_TYPE_COMMENT = 1;
 export const USER_REPORT_TYPE_REVIEW = 2;
+export const USER_REPORT_TYPE_VIDEO = 3;
 
 export const IS_DEV_MODE = 'is_dev_mode';
 export const ENV_PRODUCTION = 'production';

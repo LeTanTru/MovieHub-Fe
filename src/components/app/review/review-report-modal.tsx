@@ -18,7 +18,7 @@ import {
 import { logger } from '@/logger';
 import { useCreateUserReportMutation } from '@/queries';
 import { userReportSchema } from '@/schemaValidations';
-import { UserReportBodyType } from '@/types';
+import type { UserReportBodyType } from '@/types';
 import { notify } from '@/utils';
 import { useMemo, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
@@ -111,7 +111,6 @@ export default function ReviewReportModal({
           onSubmit={onSubmit}
           schema={userReportSchema}
           defaultValues={defaultValues}
-          initialValues={defaultValues}
           className='bg-transparent'
         >
           {(form) => (

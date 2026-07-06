@@ -1,5 +1,5 @@
 import { DEFAULT_PAGE_START } from '@/constants';
-import { ApiResponseList, BaseSearchType } from '@/types';
+import type { ApiResponseList, BaseSearchType } from '@/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
 

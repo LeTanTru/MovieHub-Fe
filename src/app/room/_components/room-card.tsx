@@ -9,7 +9,7 @@ import {
 } from '@/constants';
 import { cn } from '@/lib';
 import { route } from '@/routes';
-import { RoomResType } from '@/types';
+import type { RoomResType } from '@/types';
 import {
   convertUTCToLocal,
   generateSlug,

@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { useVideoLibrarySubtitleListQuery } from '@/queries';
 import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 import { languages, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
-import { VideoLibrarySubtitleResType } from '@/types';
+import type { VideoLibrarySubtitleResType } from '@/types';
 import { VideoPlayer } from '@/components/video-player';
 import { WatchAskContinueModal } from './watch-ask-continue-modal';
 import type { TrackProps } from '@vidstack/react';

@@ -25,7 +25,7 @@ import {
 } from '@/hooks';
 import { useCountUnreadNotificationQuery } from '@/queries';
 import { route } from '@/routes';
-import { NotificationResType, NotificationSearchType } from '@/types';
+import type { NotificationResType, NotificationSearchType } from '@/types';
 import { AnimatePresence, domMax, LazyMotion, m } from 'framer-motion';
 import { Bell, CheckCheck, Trash } from 'lucide-react';
 import Link from 'next/link';

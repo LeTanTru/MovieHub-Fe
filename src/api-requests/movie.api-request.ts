@@ -1,5 +1,5 @@
 import { apiConfig } from '@/constants';
-import {
+import type {
   ApiResponse,
   ApiResponseList,
   MovieHistoryResType,

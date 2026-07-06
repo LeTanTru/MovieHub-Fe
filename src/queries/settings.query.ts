@@ -1,6 +1,6 @@
 import { settingsApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { SettingBodyType } from '@/types';
+import type { SettingBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useUpdateSettingsMutation = () => {

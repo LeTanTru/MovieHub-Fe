@@ -2,7 +2,7 @@
 
 import type { UseFormReturn } from 'react-hook-form';
 import { Button, Col, InputField, Row } from '@/components/form';
-import { ForgotPasswordBodyType } from '@/types';
+import type { ForgotPasswordBodyType } from '@/types';
 
 type StepOneFormSectionProps = {
   form: UseFormReturn<ForgotPasswordBodyType>;

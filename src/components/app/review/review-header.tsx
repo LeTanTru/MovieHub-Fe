@@ -6,7 +6,7 @@ import {
   GENDER_OTHER
 } from '@/constants';
 import { cn } from '@/lib';
-import { ProfileResType, ReviewResType } from '@/types';
+import type { ProfileResType, ReviewResType } from '@/types';
 import { convertUTCToLocal, timeAgo } from '@/utils';
 import Image, { StaticImageData } from 'next/image';
 import { ComponentType } from 'react';

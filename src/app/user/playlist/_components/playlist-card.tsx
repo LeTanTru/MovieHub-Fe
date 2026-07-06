@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib';
 import { useSelectedPlaylist } from '@/hooks';
-import { PlaylistResType } from '@/types';
+import type { PlaylistResType } from '@/types';
 import { FaRegCirclePlay } from 'react-icons/fa6';
 import { m } from 'framer-motion';
 

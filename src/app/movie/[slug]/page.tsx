@@ -16,7 +16,7 @@ import {
   PERSON_KIND_DIRECTOR,
   queryKeys
 } from '@/constants';
-import {
+import type {
   ApiResponse,
   ApiResponseList,
   CommentResType,

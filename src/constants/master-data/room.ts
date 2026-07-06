@@ -9,7 +9,7 @@ import {
   ROOM_STATE_PENDING,
   ROOM_STATE_RUNNING
 } from '@/constants/constant';
-import { OptionType } from '@/types';
+import type { OptionType } from '@/types';
 
 export const roomStates: OptionType[] = [
   {

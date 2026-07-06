@@ -3,7 +3,7 @@ import { DISCUSSION_TAB_REVIEW } from '@/constants';
 import { route } from '@/routes';
 import { useDiscussionTab } from '@/hooks';
 import { useReviewStore } from '@/store';
-import { NotificationResType, VoteReviewNotificationType } from '@/types';
+import type { NotificationResType, VoteReviewNotificationType } from '@/types';
 import {
   convertUTCToLocal,
   generateSlug,

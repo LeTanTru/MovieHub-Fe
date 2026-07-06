@@ -4,7 +4,7 @@ import { caption } from '@/assets';
 import { MovieTabHeading } from '@/components/app/heading';
 import { useMovieInfo, useNavigate } from '@/hooks';
 import { route } from '@/routes';
-import { MovieResType, SeasonResType } from '@/types';
+import type { MovieResType, SeasonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import Image from 'next/image';
 

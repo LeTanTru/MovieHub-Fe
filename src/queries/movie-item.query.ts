@@ -1,6 +1,6 @@
 import { movieItemApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { MovieItemSearchType } from '@/types';
+import type { MovieItemSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useMovieItemQuery = ({

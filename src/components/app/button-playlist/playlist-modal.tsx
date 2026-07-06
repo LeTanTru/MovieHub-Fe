@@ -10,7 +10,7 @@ import {
   useUpdatePlaylistMutation
 } from '@/queries';
 import { playlistSchema } from '@/schemaValidations';
-import { PlaylistBodyType, PlaylistResType } from '@/types';
+import type { PlaylistBodyType, PlaylistResType } from '@/types';
 import { notify, invalidateQueries } from '@/utils';
 import { useMemo, useState } from 'react';
 import { useAuth } from '@/hooks';

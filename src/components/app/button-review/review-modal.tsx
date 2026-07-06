@@ -8,7 +8,7 @@ import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { useCreateReviewMutation } from '@/queries';
 import { reviewSchema } from '@/schemaValidations';
-import { MovieResType, ReviewBodyType } from '@/types';
+import type { MovieResType, ReviewBodyType } from '@/types';
 import { formatRating, notify, invalidateQueries } from '@/utils';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';

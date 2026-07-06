@@ -1,4 +1,4 @@
-import { RoomStoreType } from '@/types';
+import type { RoomStoreType } from '@/types';
 import { create } from 'zustand';
 
 export const useRoomStore = create<RoomStoreType>((set) => ({

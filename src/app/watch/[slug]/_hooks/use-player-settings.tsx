@@ -1,6 +1,6 @@
 import { storageKeys } from '@/constants';
 import { useAuth } from '@/hooks';
-import { SettingResType } from '@/types';
+import type { SettingResType } from '@/types';
 import { getData, setData } from '@/utils';
 import { useEffect, useReducer } from 'react';
 

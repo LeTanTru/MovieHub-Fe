@@ -35,7 +35,7 @@ import {
   VIDEO_QUALITY_AUTO,
   VIDEO_QUALITY_MAX
 } from '@/constants/constant';
-import { OptionType } from '@/types';
+import type { OptionType } from '@/types';
 import type { StaticImageData } from 'next/image';
 
 export const movieItemKinds = {

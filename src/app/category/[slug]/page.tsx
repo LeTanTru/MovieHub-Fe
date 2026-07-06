@@ -11,7 +11,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getIdFromSlug } from '@/utils';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { MovieList } from '@/app/category/[slug]/_components';
-import { ApiResponseList, MovieResType, MovieSearchType } from '@/types';
+import type { ApiResponseList, MovieResType, MovieSearchType } from '@/types';
 import { BreadcrumbListJsonLd, ItemListJsonLd } from '@/components/seo';
 import type { Metadata } from 'next';
 import { envConfig } from '@/config';

@@ -5,7 +5,7 @@ import { ButtonToggle } from '@/components/app/button-toggle';
 import { cn } from '@/lib';
 import { EpisodeCard } from '@/components/app/episode';
 import { FaBarsStaggered, FaCaretDown } from 'react-icons/fa6';
-import { EpisodeResType, MetadataType } from '@/types';
+import type { EpisodeResType, MetadataType } from '@/types';
 import { MovieTabHeading } from '@/components/app/heading';
 import { notify, parseJSON } from '@/utils';
 import { route } from '@/routes';

@@ -1,6 +1,6 @@
 import { AvatarField } from '@/components/form';
 import { route } from '@/routes';
-import { PersonResType } from '@/types';
+import type { PersonResType } from '@/types';
 import { renderImageUrl } from '@/utils';
 import Link from 'next/link';
 

@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib';
-import { NotificationResType } from '@/types';
+import type { NotificationResType } from '@/types';
 import { EllipsisVertical } from 'lucide-react';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { ListItem } from '@/components/list';

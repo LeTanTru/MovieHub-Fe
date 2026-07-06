@@ -1,7 +1,7 @@
 'use client';
 
 import './top-movie-card.css';
-import { MetadataType, MovieResType } from '@/types';
+import type { MetadataType, MovieResType } from '@/types';
 import { m, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';

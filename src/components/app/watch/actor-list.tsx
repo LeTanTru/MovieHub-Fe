@@ -2,7 +2,7 @@
 
 import { ActorCell } from './actor-cell';
 import { cn } from '@/lib';
-import { PersonResType } from '@/types';
+import type { PersonResType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type ActorListProps = {

@@ -13,7 +13,7 @@ import { logger } from '@/logger';
 import { useVerifyOtpMutation } from '@/queries';
 import { route } from '@/routes';
 import { otpSchema } from '@/schemaValidations';
-import { VerifyOtpBodyType } from '@/types';
+import type { VerifyOtpBodyType } from '@/types';
 import {
   applyFormErrors,
   buildAuthPathWithRedirect,

@@ -22,7 +22,7 @@ import { useAuth, useLoadMore, useSlugId } from '@/hooks';
 import { useMovieStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 import { commentApiRequest, reviewApiRequest } from '@/api-requests';
-import {
+import type {
   CommentResType,
   CommentSearchType,
   CommentSortType,

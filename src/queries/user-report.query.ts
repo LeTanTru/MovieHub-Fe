@@ -1,6 +1,6 @@
 import { userReportApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { UserReportBodyType } from '@/types';
+import type { UserReportBodyType } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 
 export const useCreateUserReportMutation = () => {

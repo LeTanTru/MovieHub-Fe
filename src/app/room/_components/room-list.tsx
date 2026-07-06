@@ -6,7 +6,7 @@ import { queryKeys, ROOM_STATE_ALL } from '@/constants';
 import { roomApiRequest } from '@/api-requests';
 import { RoomCard } from './room-card';
 import { RoomListHeader } from './room-list-header';
-import { RoomResType, RoomSearchType } from '@/types';
+import type { RoomResType, RoomSearchType } from '@/types';
 import { useAuth, useLoadMore } from '@/hooks';
 import { useState } from 'react';
 import { useDeleteRoomMutation } from '@/queries';

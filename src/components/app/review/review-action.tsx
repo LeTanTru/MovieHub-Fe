@@ -2,7 +2,7 @@ import { DislikeIcon, LikeIcon } from '@/assets';
 import { ConfirmModal } from '@/components/modal';
 import { REACTION_TYPE_DISLIKE, REACTION_TYPE_LIKE } from '@/constants';
 import { cn } from '@/lib';
-import { ReviewResType } from '@/types';
+import type { ReviewResType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
 import { Flag } from 'lucide-react';
 import { FaEllipsis, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa6';

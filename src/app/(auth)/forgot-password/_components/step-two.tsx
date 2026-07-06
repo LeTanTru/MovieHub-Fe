@@ -8,7 +8,7 @@ import {
   PasswordField,
   Row
 } from '@/components/form';
-import { ForgotPasswordBodyType } from '@/types';
+import type { ForgotPasswordBodyType } from '@/types';
 import { Separator } from '@/components/ui/separator';
 
 const MAX_RESEND = 3; // RESEND LIMIT EACH 10 MINUTES

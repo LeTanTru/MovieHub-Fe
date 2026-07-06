@@ -4,7 +4,7 @@ import {
   GENDER_OTHER,
   UPLOAD_AVATAR
 } from '@/constants/constant';
-import { OptionType } from '@/types';
+import type { OptionType } from '@/types';
 import { FaInfinity, FaMars, FaVenus } from 'react-icons/fa6';
 import { IconType } from 'react-icons/lib';
 

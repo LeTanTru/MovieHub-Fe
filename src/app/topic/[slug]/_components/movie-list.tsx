@@ -4,7 +4,7 @@ import './topic-detail.css';
 import { DEFAULT_PAGE_SIZE, ErrorCode } from '@/constants';
 import { getColorList } from '@/utils';
 import { MovieGrid } from '@/components/app/movie-grid';
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 import { NoData } from '@/components/no-data';
 import { Pagination } from '@/components/pagination';
 import { Skeleton } from '@/components/ui/skeleton';

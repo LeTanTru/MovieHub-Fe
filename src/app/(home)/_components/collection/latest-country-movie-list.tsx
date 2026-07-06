@@ -3,7 +3,7 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './latest-country-movie-list.css';
-import { CollectionResType } from '@/types';
+import type { CollectionResType } from '@/types';
 import { LatestCountryMovieItem } from '@/components/app/collection';
 
 type LastestCountryMovieListProps = {

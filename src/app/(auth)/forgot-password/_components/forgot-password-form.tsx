@@ -6,7 +6,7 @@ import {
   forgotPasswordStep1Schema,
   forgotPasswordStep2Schema
 } from '@/schemaValidations';
-import { ForgotPasswordBodyType } from '@/types';
+import type { ForgotPasswordBodyType } from '@/types';
 import { forgotPasswordErrorMaps, storageKeys } from '@/constants';
 import {
   applyFormErrors,

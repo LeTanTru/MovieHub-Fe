@@ -9,7 +9,7 @@ import {
   queryKeys
 } from '@/constants';
 import { categoryApiRequest, movieApiRequest } from '@/api-requests';
-import { MovieSearchType, SearchParamsType } from '@/types';
+import type { MovieSearchType, SearchParamsType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Metadata } from 'next';
 import { envConfig } from '@/config';

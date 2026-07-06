@@ -1,5 +1,5 @@
 import { SuggestionItem } from './suggestion-item';
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type SuggestionListProps = {

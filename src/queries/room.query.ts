@@ -1,6 +1,6 @@
 import { roomApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { RoomAddParticipantBodyType, RoomBodyType } from '@/types';
+import type { RoomAddParticipantBodyType, RoomBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useCheckRoomMutation = () => {

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { CollectionResType } from '@/types';
+import type { CollectionResType } from '@/types';
 import { route } from '@/routes';
 import { FaChevronRight } from 'react-icons/fa6';
 import { Navigation } from 'swiper/modules';

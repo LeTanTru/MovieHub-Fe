@@ -19,7 +19,7 @@ import {
 } from '@/hooks';
 import { ButtonLike } from '@/components/app/button-like';
 import { ButtonSharePerson } from '@/components/app/button-share';
-import { PersonResType, PersonSearchType } from '@/types';
+import type { PersonResType, PersonSearchType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type PersonSidebarProps = {

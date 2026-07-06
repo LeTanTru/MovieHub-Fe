@@ -14,7 +14,7 @@ import {
 } from '@/constants';
 import { useAuth, useClickOutside, useNavigate } from '@/hooks';
 import { cn } from '@/lib';
-import { ItemProps, ProfileResType } from '@/types';
+import type { ItemProps, ProfileResType } from '@/types';
 import { buildLoginRedirectPath, renderImageUrl } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import { ChevronDown, X } from 'lucide-react';

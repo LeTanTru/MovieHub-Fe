@@ -3,7 +3,7 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './anime-movie-list.css';
-import { CollectionResType } from '@/types';
+import type { CollectionResType } from '@/types';
 import { route } from '@/routes';
 import { generateSlug, renderImageUrl } from '@/utils';
 import { Swiper, SwiperClass, SwiperSlide } from 'swiper/react';

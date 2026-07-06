@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib';
-import { MovieSearchType } from '@/types';
+import type { MovieSearchType } from '@/types';
 
 type SearchKeys = keyof MovieSearchType;
 

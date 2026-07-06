@@ -1,5 +1,5 @@
 import { apiConfig } from '@/constants';
-import { ApiResponse, AppVersionLatestResType } from '@/types';
+import type { ApiResponse, AppVersionLatestResType } from '@/types';
 import { http } from '@/utils';
 
 export const getLatest = (signal?: AbortSignal) =>

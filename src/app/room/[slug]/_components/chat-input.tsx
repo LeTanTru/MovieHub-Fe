@@ -9,7 +9,7 @@ import { cn } from '@/lib';
 import { logger } from '@/logger';
 import { chatSchema } from '@/schemaValidations';
 import { useRoomStore } from '@/store';
-import { ChatBodyType } from '@/types';
+import type { ChatBodyType } from '@/types';
 import type { UseFormReturn } from 'react-hook-form';
 import {
   convertLocalToUTC,
