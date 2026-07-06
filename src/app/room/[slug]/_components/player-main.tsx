@@ -82,6 +82,13 @@ export function PlayerMain() {
 
   const isHost = !!room && profile?.id === room.host.id;
 
+  // Auto-join the host while their room is running so they skip the join prompt
+  useEffect(() => {
+    if (isHost && room?.state === ROOM_STATE_RUNNING && !isJoined) {
+      useRoomStore.getState().setIsJoined(true);
+    }
+  }, [isHost, room?.state, isJoined]);
+
   useEffect(() => {
     useRoomStore
       .getState()
@@ -233,7 +240,9 @@ export function PlayerMain() {
       {isPending && <PopupPending room={room} />}
       {isEnded && <PopupEnded room={room} />}
       {isRunning && isKicked && <PopupKicked room={room} />}
-      {isRunning && !isJoined && !isKicked && <PopupRunning room={room} />}
+      {isRunning && !isJoined && !isKicked && !isHost && (
+        <PopupRunning room={room} />
+      )}
       {isRunning && isJoined && !isKicked && video ? (
         isLoadingToken ? (
           <div className='flex size-full items-center justify-center bg-black'>
@@ -305,14 +314,7 @@ function PopupRunning({ room }: { room: RoomResType }) {
   const setIsJoined = useRoomStore((state) => state.setIsJoined);
   const [isUnauthorized, setIsUnauthorized] = useState(false);
 
-  const isHost = profile?.id === room.host.id;
-
   const handleJoinRoom = () => {
-    if (isHost) {
-      setIsJoined(true);
-      return;
-    }
-
     joinRoom(room.id, {
       onSuccess: async (res) => {
         if (res.result) {
@@ -395,7 +397,7 @@ function PopupRunning({ room }: { room: RoomResType }) {
         className='max-640:px-3 max-640:py-1.5 max-640:text-sm mx-auto flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-white/80'
       >
         <FaPlay />
-        <span>{isHost ? 'Tiếp tục' : 'Tham gia'}</span>
+        <span>Tham gia</span>
       </button>
     </div>
   );
