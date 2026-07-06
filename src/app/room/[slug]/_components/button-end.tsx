@@ -20,11 +20,7 @@ export function ButtonEnd() {
       onSuccess: (res) => {
         if (res.result) {
           notify.success('Kết thúc phòng thành công');
-          invalidateQueries(
-            [queryKeys.ROOM, id],
-            [queryKeys.ROOM_LIST],
-            [queryKeys.MY_ROOM_LIST]
-          );
+          invalidateQueries([queryKeys.ROOM_LIST], [queryKeys.MY_ROOM_LIST]);
         } else {
           notify.error('Kết thúc phòng thất bại');
         }

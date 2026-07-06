@@ -51,11 +51,7 @@ export function ButtonLeave() {
       notify.success('Rời phòng thành công');
       setIsJoined(false);
 
-      invalidateQueries(
-        [queryKeys.ROOM, id],
-        [queryKeys.ROOM_LIST],
-        [queryKeys.MY_ROOM_LIST]
-      );
+      invalidateQueries([queryKeys.ROOM_LIST], [queryKeys.MY_ROOM_LIST]);
 
       if (isHost) {
         navigate.back();

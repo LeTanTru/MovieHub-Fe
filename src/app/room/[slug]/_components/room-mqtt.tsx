@@ -345,7 +345,7 @@ export function RoomMqtt({ room }: RoomMqttProps) {
   });
 
   useEffect(() => {
-    if (participantList && useRoomStore.getState().participants.length === 0) {
+    if (participantList) {
       useRoomStore.getState().setParticipants(participantList);
     }
   }, [participantList]);

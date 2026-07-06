@@ -22,32 +22,47 @@ export function ButtonRoom({ className }: ButtonRoomProps) {
   const navigate = useNavigate();
 
   const { isAuthenticated } = useAuth();
-  const { currentSeason, isSingle, isSeries } = useMovieInfo();
+  const {
+    movie,
+    currentSeason,
+    isSingle,
+    isSeries,
+    latestSeason,
+    latestEpisode
+  } = useMovieInfo();
   const isMounted = useIsMounted();
 
   const {
-    searchParams: { episode }
+    searchParams: { season, episode }
   } = useQueryParams<{ season?: string; episode?: string }>();
 
   const handleClick = () => {
     let movieItemId: string = '';
 
-    if (!currentSeason) {
+    const seasonLabel = season || latestSeason;
+    const targetSeason =
+      movie?.seasons?.find((s) => s.label === String(seasonLabel)) ||
+      currentSeason;
+
+    if (!targetSeason) {
       notify.error('Có lỗi xảy ra, vui lòng thử lại sau.');
       return;
     }
 
-    if (isSingle) movieItemId = currentSeason?.id;
-    if (isSeries)
+    if (isSingle) movieItemId = targetSeason.id;
+    if (isSeries) {
+      const episodeLabel = episode || latestEpisode;
       movieItemId =
-        currentSeason?.episodes?.find((ep) => ep.label === episode)?.id || '';
+        targetSeason.episodes?.find((ep) => ep.label === episodeLabel)?.id ||
+        '';
+    }
 
     if (!movieItemId) {
       notify.error('Có lỗi xảy ra, vui lòng thử lại sau.');
       return;
     }
 
-    setData(storageKeys.ROOM_CURRENT_SEASON_ID, currentSeason.id);
+    setData(storageKeys.ROOM_CURRENT_SEASON_ID, targetSeason.id);
     setData(storageKeys.ROOM_MOVIE_ITEM_ID, movieItemId);
     navigate.push(route.room.new.path);
   };
