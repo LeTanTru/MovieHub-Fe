@@ -12,6 +12,7 @@ export * from './movie-item.query';
 export * from './movie-person.query';
 export * from './movie.query';
 export * from './notification.query';
+export * from './participant.query';
 export * from './person.query';
 export * from './playlist.query';
 export * from './review.query';

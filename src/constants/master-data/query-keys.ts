@@ -104,6 +104,10 @@ export const personQueryKeys = {
   PERSON: 'person'
 };
 
+export const participantQueryKeys = {
+  PARTICIPANT_LIST: 'participant-list'
+};
+
 export const playlistQueryKeys = {
   PLAYLIST_BY_MOVIES: 'playlist-by-movies',
   PLAYLIST_CREATE: 'playlist-create',
@@ -182,6 +186,7 @@ export const queryKeys = {
   ...movieQueryKeys,
   ...notificationQueryKeys,
   ...personQueryKeys,
+  ...participantQueryKeys,
   ...playlistQueryKeys,
   ...reviewQueryKeys,
   ...roomQueryKeys,

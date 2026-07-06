@@ -1,9 +1,9 @@
 import {
-  roomAddParticipantSchema,
   roomCodeSearchSchema,
   roomSchema,
   roomSearchSchema
 } from '@/schemaValidations';
+import { ParticipantResType } from '@/types/participant.type';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 
@@ -56,6 +56,7 @@ export type RoomResType = {
   endTime: string;
   state: number;
   participantCount: number;
+  reasonEnd: string;
 };
 
 export type RoomSearchType = z.infer<typeof roomSearchSchema> & BaseSearchType;
@@ -79,19 +80,23 @@ export type RoomEndReasonType = {
 export type RoomState = {
   room: RoomResType | null;
   isJoined: boolean;
+  isKicked: boolean;
   participantCount: number;
   playerState: RoomPlayerStateType;
-  endReason: string;
+  reasonEnd: string;
   getPlayerCurrentTime: () => number;
+  participants: ParticipantResType[];
 };
 
 export type RoomActions = {
   setRoom: (room: RoomResType | null) => void;
   setIsJoined: (isJoined: boolean) => void;
+  setIsKicked: (isKicked: boolean) => void;
   setParticipantCount: (count: number) => void;
   setPlayerState: (playerState: RoomPlayerStateType) => void;
-  setEndReason: (endReason: string) => void;
+  setReasonEnd: (reasonEnd: string) => void;
   setGetPlayerCurrentTime: (fn: () => number) => void;
+  setParticipants: (participants: ParticipantResType[]) => void;
 };
 
 export type RoomStoreType = RoomState & RoomActions;
@@ -104,6 +109,7 @@ export type RoomEndType = {
 export type RoomUpdateParticipantCountType = {
   currentViewers: number;
   roomId: string;
+  participants: ParticipantResType[];
 };
 
 export type RoomParticipantJoinType = {
@@ -114,6 +120,7 @@ export type RoomSyncType = {
   id: string;
 };
 
-export type RoomAddParticipantBodyType = z.infer<
-  typeof roomAddParticipantSchema
->;
+export type RoomKickType = {
+  roomId: string;
+  targetUserId: string;
+};

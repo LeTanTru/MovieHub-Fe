@@ -7,12 +7,9 @@ import { apiConfig, queryKeys } from '@/constants';
 import { useAuth, useDisclosure } from '@/hooks';
 import { logger } from '@/logger';
 import { useAddParticipantsMutation } from '@/queries';
-import { roomAddParticipantSchema } from '@/schemaValidations';
+import { participantSchema } from '@/schemaValidations/participant.schema';
 import { useRoomStore } from '@/store';
-import type {
-  RoomAddParticipantBodyType,
-  UserAutoCompleteResType
-} from '@/types';
+import type { ParticipantBodyType, UserAutoCompleteResType } from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { UserPlus } from 'lucide-react';
 import { useMemo } from 'react';
@@ -29,7 +26,7 @@ export function ButtonAddParticipantModal() {
 
   const { mutate: addParticipants, isPending } = useAddParticipantsMutation();
 
-  const defaultValues: RoomAddParticipantBodyType = useMemo(
+  const defaultValues: ParticipantBodyType = useMemo(
     () => ({
       roomId: room?.id || '',
       accountIds: []
@@ -37,7 +34,7 @@ export function ButtonAddParticipantModal() {
     [room?.id]
   );
 
-  const onSubmit = (values: RoomAddParticipantBodyType) => {
+  const onSubmit = (values: ParticipantBodyType) => {
     addParticipants(values, {
       onSuccess: (res) => {
         if (!res.result) {
@@ -74,7 +71,7 @@ export function ButtonAddParticipantModal() {
         <Modal.Body scrollable className='max-h-[min(32.5rem,75vh)]'>
           <BaseForm
             onSubmit={onSubmit}
-            schema={roomAddParticipantSchema}
+            schema={participantSchema}
             defaultValues={defaultValues}
             initialValues={defaultValues}
             className='bg-transparent'
@@ -84,7 +81,7 @@ export function ButtonAddParticipantModal() {
                 <Row>
                   <Col className='grid-c-12 grid-col-no-gutters'>
                     <AutoCompleteField<
-                      RoomAddParticipantBodyType,
+                      ParticipantBodyType,
                       UserAutoCompleteResType
                     >
                       control={form.control}
