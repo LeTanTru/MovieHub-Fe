@@ -23,9 +23,11 @@ export function WatchPlayerControls() {
     handleToggleSkipIntro
   } = useWatchPlayer();
 
-  const { hasTrailer, canWatch, episodes } = useMovieInfo();
+  const { hasTrailer, canWatch, episodes, isSingle, isSeries } = useMovieInfo();
 
   const isHasEpisodes = episodes && episodes.length > 0;
+
+  const hideRoomButton = (isSingle && !video) || (isSeries && !isHasEpisodes);
 
   if (!movie) return <WatchPlayerControls.Skeleton />;
 
@@ -69,20 +71,18 @@ export function WatchPlayerControls() {
             className='max-990:hidden'
           />
         )}
-        {isHasEpisodes && (
-          <ButtonSkipIntro
-            handleToggleSkipIntro={handleToggleSkipIntro}
-            skipIntro={skipIntro}
-            className='max-990:hidden'
-          />
-        )}
+        <ButtonSkipIntro
+          handleToggleSkipIntro={handleToggleSkipIntro}
+          skipIntro={skipIntro}
+          className='max-990:hidden'
+        />
         <ButtonMovieTheater className='max-1120:hidden' />
         <div className='backdrop-movie-theater'></div>
         <ButtonShareMovie
           variant='watch'
           className='max-640:px-2! max-520:px-4!'
         />
-        {isHasEpisodes && (
+        {!hideRoomButton && (
           <ButtonRoom className='max-640:px-2! max-520:px-4!' />
         )}
         <div className='grow'></div>
