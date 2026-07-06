@@ -22,7 +22,7 @@ export function WatchPlayerControls() {
     handleToggleSkipIntro
   } = useWatchPlayer();
 
-  const { hasTrailer, watchLink, episodes } = useMovieInfo();
+  const { hasTrailer, canWatch, episodes } = useMovieInfo();
 
   const isHasEpisodes = episodes && episodes.length > 0;
 
@@ -30,7 +30,7 @@ export function WatchPlayerControls() {
 
   return (
     <div className='player-controls bg-covert-black max-990:h-13.5 max-640:h-10 max-800:rounded-none flex h-16 items-center rounded-br-[12px] rounded-bl-[12px]'>
-      {watchLink && (
+      {!canWatch && (
         <div
           role='button'
           className='group max-640:px-2 relative flex h-full shrink-0 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-bl-[12px] px-5 text-center text-black hover:shadow-[0_0_24px_6px_rgba(255,207,89,0.3)]'
