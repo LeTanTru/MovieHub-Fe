@@ -41,6 +41,11 @@ export function ButtonViewParticipants() {
   const isRunning = room?.state === ROOM_STATE_RUNNING;
   const isEnded = room?.state === ROOM_STATE_ENDED;
 
+  // Live current viewers while running, total participants otherwise
+  const viewerCount = isRunning
+    ? participantCount
+    : (room?.participantCount ?? 0);
+
   const displayedParticipants = isEnded
     ? participants
     : participants.filter(
@@ -79,7 +84,7 @@ export function ButtonViewParticipants() {
         className='hover:text-golden-glow inline-flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
       >
         <FaEye />
-        <span>{participantCount}</span>
+        <span>{viewerCount}</span>
       </button>
 
       <Modal

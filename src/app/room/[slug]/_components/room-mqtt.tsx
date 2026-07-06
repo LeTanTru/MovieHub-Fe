@@ -120,10 +120,8 @@ export function RoomMqtt({ room }: RoomMqttProps) {
 
       invalidateQueries(
         [queryKeys.ROOM, data.roomId],
-        [queryKeys.PARTICIPANT_LIST]
+        [queryKeys.PARTICIPANT_LIST, { roomId: data.roomId }]
       );
-
-      useRoomStore.getState().setParticipantCount(room.participantCount);
 
       if (isHost) return;
 
@@ -132,11 +130,11 @@ export function RoomMqtt({ room }: RoomMqttProps) {
   });
   // Handle room end event
 
-  // Set participant count when room.participantCount changes
+  // Set current viewers count when room.currentViewers changes
   useEffect(() => {
-    useRoomStore.getState().setParticipantCount(room.participantCount);
-  }, [room.participantCount]);
-  // Set participant count when room.participantCount changes
+    useRoomStore.getState().setParticipantCount(room.currentViewers);
+  }, [room.currentViewers]);
+  // Set current viewers count when room.currentViewers changes
 
   // Reset kicked state when entering a room
   useEffect(() => {

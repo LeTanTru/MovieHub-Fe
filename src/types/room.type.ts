@@ -57,6 +57,7 @@ export type RoomResType = {
   state: number;
   participantCount: number;
   reasonEnd: string;
+  currentViewers: number;
 };
 
 export type RoomSearchType = z.infer<typeof roomSearchSchema> & BaseSearchType;
