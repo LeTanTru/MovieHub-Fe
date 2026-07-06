@@ -12,7 +12,7 @@ import { SliderItem } from './slider-item';
 import { useToggleFavourite } from '@/hooks';
 import { VerticalBarLoading } from '@/components/loading';
 import Image from 'next/image';
-import { SidebarResType } from '@/types';
+import type { SidebarResType } from '@/types';
 
 type SliderProps = {
   sidebarList: SidebarResType[];

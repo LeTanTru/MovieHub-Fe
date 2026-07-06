@@ -9,7 +9,7 @@ import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { favouriteApiRequest } from '@/api-requests';
 import { FavouriteList } from '@/app/user/favourite/_components';
-import { FavouriteSearchType } from '@/types';
+import type { FavouriteSearchType } from '@/types';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { Sidebar } from '@/app/user/_components';
 import { envConfig } from '@/config';

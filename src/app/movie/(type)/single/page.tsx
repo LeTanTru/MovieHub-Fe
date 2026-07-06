@@ -10,7 +10,7 @@ import {
   OG_IMAGE_WIDTH,
   OG_IMAGE_HEIGHT
 } from '@/constants';
-import { MovieSearchType } from '@/types';
+import type { MovieSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { envConfig } from '@/config';

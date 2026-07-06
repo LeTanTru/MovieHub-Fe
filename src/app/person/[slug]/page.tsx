@@ -1,4 +1,8 @@
-import { ApiResponse, MoviePersonSearchType, PersonResType } from '@/types';
+import type {
+  ApiResponse,
+  MoviePersonSearchType,
+  PersonResType
+} from '@/types';
 import { Container } from '@/components/layout';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import {

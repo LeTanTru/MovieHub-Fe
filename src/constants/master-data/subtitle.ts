@@ -9,7 +9,7 @@ import {
   SUBTITLE_TEXT_COLOR_WHITE,
   SUBTITLE_TEXT_COLOR_YELLOW
 } from '@/constants/constant';
-import { OptionType } from '@/types';
+import type { OptionType } from '@/types';
 
 export const subtitleFontSizes: OptionType[] = [
   { value: SUBTITLE_FONT_SIZE_SMALL, label: 'Nhỏ', pixels: 14 },

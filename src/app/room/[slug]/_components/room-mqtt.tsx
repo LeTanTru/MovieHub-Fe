@@ -20,6 +20,7 @@ import type {
   ChatBodyType,
   ChatResType,
   RoomEndType,
+  RoomKickType,
   RoomParticipantJoinType,
   RoomPlayerStateType,
   RoomResType,
@@ -28,7 +29,7 @@ import type {
 } from '@/types';
 import { useEffect } from 'react';
 import { useAuth, useMqtt, useMqttSubscribe } from '@/hooks';
-import { useChatListQuery } from '@/queries';
+import { useChatListQuery, useParticipantListQuery } from '@/queries';
 import { useChatStore, useRoomStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
 
@@ -39,7 +40,7 @@ type RoomMqttProps = {
 };
 
 export function RoomMqtt({ room }: RoomMqttProps) {
-  const { profile } = useAuth();
+  const { profile, isAuthenticated } = useAuth();
   const { isJoined } = useRoomStore(
     useShallow((state) => ({
       isJoined: state.isJoined
@@ -110,14 +111,19 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     cmd: mqttCMDs.END_ROOM,
     callback: (data) => {
       const reason = roomEndReasons.find(
-        (r) => String(r.value) === String(data?.reason)
+        (r) => String(r.value) === String(data.reason)
       )?.label;
 
       const message = reason || 'Chủ phòng đã kết thúc buổi xem chung';
 
-      useRoomStore.getState().setEndReason(message);
+      useRoomStore.getState().setReasonEnd(data.reason);
 
-      invalidateQueries([queryKeys.ROOM, data.roomId]);
+      invalidateQueries(
+        [queryKeys.ROOM, data.roomId],
+        [queryKeys.PARTICIPANT_LIST]
+      );
+
+      useRoomStore.getState().setParticipantCount(room.participantCount);
 
       if (isHost) return;
 
@@ -132,6 +138,12 @@ export function RoomMqtt({ room }: RoomMqttProps) {
   }, [room.participantCount]);
   // Set participant count when room.participantCount changes
 
+  // Reset kicked state when entering a room
+  useEffect(() => {
+    useRoomStore.getState().setIsKicked(false);
+  }, [room.id]);
+  // Reset kicked state when entering a room
+
   // CMD_UPDATE_PARTICIPANT_COUNT
   // Handle room update participant count event
   useMqtt<RoomUpdateParticipantCountType>({
@@ -139,6 +151,7 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     cmd: mqttCMDs.UPDATE_PARTICIPANT_COUNT,
     callback: (data) => {
       useRoomStore.getState().setParticipantCount(data.currentViewers);
+      useRoomStore.getState().setParticipants(data.participants || []);
     }
   });
   // Handle room update participant count event
@@ -170,6 +183,34 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     }
   });
   // Handle participant join event
+
+  // CMD_KICK
+  // Handle participant kicked event
+  useMqtt<RoomKickType>({
+    topic: generateMqttTopic(mqttTopics.ROOM_USER, {
+      roomId: room?.id || '',
+      userId: profile?.id || ''
+    }),
+    cmd: mqttCMDs.KICK_PARTICIPANT,
+    callback: (data) => {
+      if (isHost) return;
+      if (data.targetUserId !== profile?.id) return;
+
+      useRoomStore.getState().setIsKicked(true);
+      useRoomStore.getState().setIsJoined(false);
+
+      publishMqttMessage(
+        generateMqttTopic(mqttTopics.ROOM, { roomId: data.roomId }),
+        {
+          cmd: mqttCMDs.PARTICIPANT_LEFT,
+          data: {
+            accountId: profile?.id
+          }
+        }
+      );
+    }
+  });
+  // Handle participant kicked event
 
   // CMD_ROOM_SYNC
   // Host responds with accurate live position from playerRef via store getter to the requesting participant
@@ -262,16 +303,16 @@ export function RoomMqtt({ room }: RoomMqttProps) {
   // Handle all room state event (sent by the host to a new participant)
 
   // Fetch chat history on first join
-  const { data: chatHistory } = useChatListQuery({
+  const { data: chatList } = useChatListQuery({
     params: { roomId: room.id },
     enabled: isJoined && isRunning
   });
 
   useEffect(() => {
-    if (chatHistory && !useChatStore.getState().messagesLoaded) {
-      useChatStore.getState().setMessages(chatHistory);
+    if (chatList && !useChatStore.getState().messagesLoaded) {
+      useChatStore.getState().setMessages(chatList);
     }
-  }, [chatHistory]);
+  }, [chatList]);
   // Fetch chat history on first join
 
   // CMD_CREATE_CHAT
@@ -299,6 +340,19 @@ export function RoomMqtt({ room }: RoomMqttProps) {
   });
   // Handle incoming chat message
 
+  // Fetch participant list on first join
+  const { data: participantList } = useParticipantListQuery({
+    params: { roomId: room.id },
+    enabled: isAuthenticated
+  });
+
+  useEffect(() => {
+    if (participantList && useRoomStore.getState().participants.length === 0) {
+      useRoomStore.getState().setParticipants(participantList);
+    }
+  }, [participantList]);
+  // Fetch participant list on first join
+
   // Clear chat messages on unmount
   useEffect(() => {
     return () => {
@@ -306,6 +360,14 @@ export function RoomMqtt({ room }: RoomMqttProps) {
     };
   }, []);
   // Clear chat messages on unmount
+
+  // Clear participants on unmount
+  useEffect(() => {
+    return () => {
+      useRoomStore.getState().setParticipants([]);
+    };
+  }, []);
+  // Clear participants on unmount
 
   return null;
 }

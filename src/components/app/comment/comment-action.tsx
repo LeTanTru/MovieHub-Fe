@@ -1,7 +1,7 @@
 import { DislikeIcon, LikeIcon } from '@/assets';
 import { REACTION_TYPE_DISLIKE, REACTION_TYPE_LIKE } from '@/constants';
 import { cn } from '@/lib';
-import { CommentResType } from '@/types';
+import type { CommentResType } from '@/types';
 import { convertUTCToLocal, timeAgo } from '@/utils';
 import { AnimatePresence, m } from 'framer-motion';
 import { AiOutlineEdit } from 'react-icons/ai';

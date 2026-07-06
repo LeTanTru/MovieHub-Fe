@@ -1,6 +1,6 @@
 import { MovieCard } from '@/components/app/movie-card';
 import { cn } from '@/lib';
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 
 type Dir = 'up' | 'down';

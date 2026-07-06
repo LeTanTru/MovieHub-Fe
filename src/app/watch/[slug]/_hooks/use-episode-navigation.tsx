@@ -1,6 +1,6 @@
-import { useNavigate } from '@/hooks';
+import type { useNavigate } from '@/hooks';
 import { route } from '@/routes';
-import { MovieItemResType, MovieResType, SeasonResType } from '@/types';
+import type { MovieItemResType, MovieResType, SeasonResType } from '@/types';
 import { useCallback } from 'react';
 
 type useEpisodeNavigationProps = {

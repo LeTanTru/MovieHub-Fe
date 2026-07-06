@@ -1,4 +1,4 @@
-import { OptionType } from '@/types';
+import type { OptionType } from '@/types';
 
 export const USER_REPORT_REASON_OTHER = 'Khác';
 
@@ -50,6 +50,37 @@ export const reportReasons: OptionType[] = [
   {
     label: 'Vi phạm bản quyền',
     value: 'Vi phạm bản quyền'
+  },
+  {
+    label: USER_REPORT_REASON_OTHER,
+    value: USER_REPORT_REASON_OTHER
+  }
+];
+
+export const videoReportReasons: OptionType[] = [
+  {
+    label: 'Video không phát được',
+    value: 'Video không phát được'
+  },
+  {
+    label: 'Video bị giật/lag',
+    value: 'Video bị giật/lag'
+  },
+  {
+    label: 'Âm thanh bị lỗi',
+    value: 'Âm thanh bị lỗi'
+  },
+  {
+    label: 'Phụ đề bị lỗi/sai',
+    value: 'Phụ đề bị lỗi/sai'
+  },
+  {
+    label: 'Chất lượng video kém',
+    value: 'Chất lượng video kém'
+  },
+  {
+    label: 'Video không khớp với nội dung phim/tập',
+    value: 'Video không khớp với nội dung phim/tập'
   },
   {
     label: USER_REPORT_REASON_OTHER,

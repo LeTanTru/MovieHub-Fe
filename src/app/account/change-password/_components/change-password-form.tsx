@@ -6,7 +6,7 @@ import { changePasswordErrorMaps, storageKeys } from '@/constants';
 import { logger } from '@/logger';
 import { useChangePasswordMutation, useLogoutMutation } from '@/queries';
 import { changePasswordSchema } from '@/schemaValidations';
-import { ChangePasswordBodyType } from '@/types';
+import type { ChangePasswordBodyType } from '@/types';
 import {
   applyFormErrors,
   buildLoginRedirectPath,

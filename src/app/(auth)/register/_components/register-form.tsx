@@ -1,6 +1,6 @@
 'use client';
 
-import { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 import {
   Button,
   CheckboxField,
@@ -11,7 +11,7 @@ import {
 } from '@/components/form';
 import Link from 'next/link';
 import { registerSchema } from '@/schemaValidations';
-import { RegisterType } from '@/types';
+import type { RegisterType } from '@/types';
 import { registerErrorMaps, storageKeys } from '@/constants';
 import {
   applyFormErrors,

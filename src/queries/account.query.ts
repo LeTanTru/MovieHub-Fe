@@ -1,7 +1,7 @@
 import { accountApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
 import { useAuthStore } from '@/store';
-import { ProfileResType, UpdateProfileBodyType } from '@/types';
+import type { ProfileResType, UpdateProfileBodyType } from '@/types';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { useMutation, useQuery } from '@tanstack/react-query';
 

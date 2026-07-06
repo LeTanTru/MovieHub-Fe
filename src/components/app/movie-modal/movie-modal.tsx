@@ -5,7 +5,7 @@ import { ageRatings, MOVIE_TYPE_SERIES, MOVIE_TYPE_SINGLE } from '@/constants';
 import { Button } from '@/components/form';
 import { FaInfoCircle } from 'react-icons/fa';
 import { AnimatePresence, m } from 'framer-motion';
-import { MetadataType, MovieResType } from '@/types';
+import type { MetadataType, MovieResType } from '@/types';
 import Link from 'next/link';
 import {
   formatDuration,

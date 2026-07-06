@@ -4,22 +4,21 @@ import { AvatarField } from '@/components/form';
 import { ButtonAddParticipantModal } from './button-add-participant-modal';
 import { ButtonShare } from './button-share';
 import { ButtonSync } from './button-sync';
+import { ButtonViewParticipants } from './button-view-participants';
 import { ButtonWatchAlone } from './button-watch-alone';
 import { cn } from '@/lib';
+import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
 import { ROOM_STATE_RUNNING } from '@/constants';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
 import { useRoomStore } from '@/store';
-import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
-import { FaEye } from 'react-icons/fa6';
 import { useShallow } from 'zustand/shallow';
 
 export function PlayerFooter() {
   const { profile } = useAuth();
-  const { room, participantCount } = useRoomStore(
+  const { room } = useRoomStore(
     useShallow((state) => ({
-      room: state.room,
-      participantCount: state.participantCount
+      room: state.room
     }))
   );
 
@@ -55,10 +54,7 @@ export function PlayerFooter() {
             </span>
           </div>
         </div>
-        <div className='inline-flex items-center gap-2'>
-          <FaEye />
-          <span>{participantCount}</span>
-        </div>
+        <ButtonViewParticipants />
         <ButtonShare />
         <ButtonWatchAlone />
         {isParticipant && <ButtonSync />}

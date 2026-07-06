@@ -1,4 +1,4 @@
-import { OptionType } from '@/types';
+import type { OptionType } from '@/types';
 
 export const countries: OptionType[] = [
   {

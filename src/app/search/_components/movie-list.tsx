@@ -3,7 +3,7 @@
 import { NoData } from '@/components/no-data';
 import { MovieGrid } from '@/components/app/movie-grid';
 import { Pagination } from '@/components/pagination';
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 import { Element } from 'react-scroll';
 import { SEARCH_MOVIE_LIST_ID } from '@/constants';
 

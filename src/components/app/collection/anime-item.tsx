@@ -8,7 +8,7 @@ import { ageRatings, MOVIE_TYPE_SERIES } from '@/constants';
 import { useClickAnimation } from '@/hooks';
 import { cn } from '@/lib';
 import { route } from '@/routes';
-import { MetadataType, MovieResType } from '@/types';
+import type { MetadataType, MovieResType } from '@/types';
 import {
   formatDuration,
   getYearFromDate,

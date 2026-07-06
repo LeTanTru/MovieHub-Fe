@@ -1,6 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib';
-import { PlaylistResType } from '@/types';
+import type { PlaylistResType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 type PlaylistItemProps = {

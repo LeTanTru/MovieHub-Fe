@@ -10,7 +10,7 @@ import {
   MOVIE_TYPE_SINGLE
 } from '@/constants';
 import { useCategoryListQuery } from '@/queries';
-import { MovieSearchType } from '@/types';
+import type { MovieSearchType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
 import { FaArrowRight, FaFilter } from 'react-icons/fa6';
 

@@ -1,6 +1,6 @@
 import { collectionItemApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { CollectionItemSearchType } from '@/types';
+import type { CollectionItemSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useCollectionItemListQuery = ({

@@ -1,7 +1,7 @@
 'use client';
 
 import { List } from '@/components/list';
-import { NotificationResType } from '@/types';
+import type { NotificationResType } from '@/types';
 import { useUpdateReadNotificationMutation } from '@/queries';
 import { NoData } from '@/components/no-data';
 import { invalidateQueries } from '@/utils';

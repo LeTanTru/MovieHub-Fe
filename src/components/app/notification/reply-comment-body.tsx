@@ -2,7 +2,10 @@ import { AvatarField, ImageField } from '@/components/form';
 import { DISCUSSION_TAB_COMMENT } from '@/constants';
 import { route } from '@/routes';
 import { useDiscussionTab, useNotificationCommentActions } from '@/hooks';
-import { NotificationResType, ReplyCommentNotificationType } from '@/types';
+import type {
+  NotificationResType,
+  ReplyCommentNotificationType
+} from '@/types';
 import {
   convertUTCToLocal,
   generateSlug,

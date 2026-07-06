@@ -1,4 +1,4 @@
-import { ChangePasswordBodyType, UpdateProfileBodyType } from '@/types';
+import type { ChangePasswordBodyType, UpdateProfileBodyType } from '@/types';
 import { ErrorMaps } from '@/types/form-error.type';
 import { ErrorCode } from './error-code';
 

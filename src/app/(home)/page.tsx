@@ -1,5 +1,5 @@
 import { collectionApiRequest, sidebarApiRequest } from '@/api-requests';
-import {
+import type {
   ApiResponseList,
   CollectionResType,
   CollectionSearchType,

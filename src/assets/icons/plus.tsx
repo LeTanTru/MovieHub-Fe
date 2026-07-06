@@ -3,7 +3,7 @@
 import { useImperativeHandle } from 'react';
 import { m, useAnimate } from 'framer-motion';
 import { FaPlus } from 'react-icons/fa6';
-import { AnimatedIconHandle, AnimatedIconProps } from '@/types';
+import type { AnimatedIconHandle, AnimatedIconProps } from '@/types';
 
 export function PlusIcon({
   size = 24,

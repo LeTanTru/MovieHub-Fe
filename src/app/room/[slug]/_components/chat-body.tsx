@@ -87,7 +87,7 @@ export function ChatBody() {
                     >
                       {msg.content}
                     </div>
-                    <span className='px-1 text-[11px] text-gray-500'>
+                    {/* <span className='px-1 text-[11px] text-gray-500'>
                       {formatTime(
                         convertUTCToLocal(
                           msg.createdDate,
@@ -96,7 +96,7 @@ export function ChatBody() {
                         ),
                         TIME_SHORT
                       )}
-                    </span>
+                    </span> */}
                   </div>
                 </div>
               );

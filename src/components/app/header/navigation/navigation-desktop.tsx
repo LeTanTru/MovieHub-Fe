@@ -1,6 +1,6 @@
 'use client';
 
-import { ItemProps } from '@/types';
+import type { ItemProps } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { AnimatePresence, m } from 'framer-motion';

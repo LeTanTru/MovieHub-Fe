@@ -3,7 +3,7 @@
 import { AvatarField, Button } from '@/components/form';
 import { Separator } from '@/components/ui/separator';
 import { dropdownAvatarAccountList } from '@/constants';
-import { ProfileResType } from '@/types';
+import type { ProfileResType } from '@/types';
 import { ChevronDown } from 'lucide-react';
 import { AnimatePresence, m } from 'framer-motion';
 import Link from 'next/link';

@@ -1,5 +1,5 @@
 import { route } from '@/routes';
-import { DropdownAvatarItemType, UserSidebarItemType } from '@/types';
+import type { DropdownAvatarItemType, UserSidebarItemType } from '@/types';
 import { LockKeyhole, Settings } from 'lucide-react';
 import { FaHistory } from 'react-icons/fa';
 import { FaBell, FaHeart, FaList, FaUser } from 'react-icons/fa6';

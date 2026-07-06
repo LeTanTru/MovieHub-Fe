@@ -31,7 +31,7 @@ import {
 } from '@/queries';
 import { route } from '@/routes';
 import { roomSchema } from '@/schemaValidations';
-import { RoomBodyType, UserAutoCompleteResType } from '@/types';
+import type { RoomBodyType, UserAutoCompleteResType } from '@/types';
 import { generateSlug, getData, invalidateQueries, notify } from '@/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMemo, useState } from 'react';

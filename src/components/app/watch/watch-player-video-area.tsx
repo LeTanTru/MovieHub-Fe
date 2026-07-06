@@ -18,8 +18,8 @@ import { usePlayerSettings } from '@/app/watch/[slug]/_hooks';
 import { useState } from 'react';
 import { useVideoLibrarySubtitleListQuery } from '@/queries';
 import { useWatchPlayer } from '@/app/watch/[slug]/_context';
-import { VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
-import { VideoLibrarySubtitleResType } from '@/types';
+import { languages, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
+import type { VideoLibrarySubtitleResType } from '@/types';
 import { VideoPlayer } from '@/components/video-player';
 import { WatchAskContinueModal } from './watch-ask-continue-modal';
 import type { TrackProps } from '@vidstack/react';
@@ -84,7 +84,9 @@ export function WatchPlayerVideoArea() {
   const textTracks: TrackProps[] = videoLibrarySubtitles.map(
     (subtitle: VideoLibrarySubtitleResType) => ({
       src: renderVttUrl(video.hostname, subtitle.fileUrl, video.sourceType),
-      label: subtitle.label,
+      label:
+        languages.find((lang) => lang.value === subtitle.language)?.label ||
+        subtitle.label,
       language: subtitle.language,
       kind: 'subtitles',
       type: 'vtt',

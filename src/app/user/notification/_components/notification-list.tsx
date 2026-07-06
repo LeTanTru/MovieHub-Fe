@@ -24,7 +24,7 @@ import {
   useCountUnreadNotificationQuery,
   useUpdateReadNotificationMutation
 } from '@/queries';
-import { NotificationResType, NotificationSearchType } from '@/types';
+import type { NotificationResType, NotificationSearchType } from '@/types';
 import { invalidateQueries } from '@/utils';
 import { logger } from '@/logger';
 import { CheckCheck, Trash } from 'lucide-react';

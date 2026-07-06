@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Col, InputField, PasswordField, Row } from '@/components/form';
-import { LoginBodyType, LoginType } from '@/types';
+import type { LoginBodyType, LoginType } from '@/types';
 import { loginSchema } from '@/schemaValidations';
 import {
   buildAuthPathWithRedirect,

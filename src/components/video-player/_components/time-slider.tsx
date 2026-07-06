@@ -3,7 +3,7 @@
 import { TimeSlider as BaseTimeSlider } from '@vidstack/react';
 import { TimeSliderHighlight } from './time-slider-highlight';
 import { TimeSliderMarker } from './time-slider-marker';
-import { TimeSliderMarkerType } from '@/types';
+import type { TimeSliderMarkerType } from '@/types';
 
 type TimeSliderProps = {
   introStart: number;

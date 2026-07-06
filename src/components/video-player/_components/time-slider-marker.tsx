@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib';
-import { TimeSliderMarkerType } from '@/types';
+import type { TimeSliderMarkerType } from '@/types';
 
 type TimeSliderMarkerProps = {
   markers?: TimeSliderMarkerType[];

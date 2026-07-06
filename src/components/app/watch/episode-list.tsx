@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
-import { SeasonResType } from '@/types';
+import type { SeasonResType } from '@/types';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 import { FaBarsStaggered, FaCaretDown } from 'react-icons/fa6';

@@ -182,6 +182,7 @@ export const useMovieInfo = () => {
     releaseYear,
     hasTrailer,
     watchLink,
-    trailerLink
+    trailerLink,
+    canWatch: !!watchLink
   };
 };

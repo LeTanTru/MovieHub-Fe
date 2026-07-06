@@ -12,6 +12,7 @@ export * as movieApiRequest from './movie.api-request';
 export * as movieItemApiRequest from './movie-item.api-request';
 export * as moviePersonApiRequest from './movie-person.api-request';
 export * as notificationApiRequest from './notification.api-request';
+export * as participantApiRequest from './participant.api-request';
 export * as personApiRequest from './person.api-request';
 export * as playlistApiRequest from './playlist.api-request';
 export * as reviewApiRequest from './review.api-request';

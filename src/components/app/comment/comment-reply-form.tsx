@@ -1,5 +1,5 @@
 import { CommentForm } from './comment-form';
-import { CommentResType, ProfileResType } from '@/types';
+import type { CommentResType, ProfileResType } from '@/types';
 import { AnimatePresence, m } from 'framer-motion';
 
 type CommentReplyFormProps = {

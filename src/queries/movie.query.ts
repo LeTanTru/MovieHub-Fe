@@ -1,6 +1,6 @@
 import { movieApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { MovieSearchType, MovieSuggestByWatchedSearchType } from '@/types';
+import type { MovieSearchType, MovieSuggestByWatchedSearchType } from '@/types';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 export const useMovieHistoryListQuery = ({

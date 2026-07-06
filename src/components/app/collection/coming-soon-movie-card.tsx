@@ -1,6 +1,6 @@
 'use client';
 
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 import { m, Variants, Transition } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';

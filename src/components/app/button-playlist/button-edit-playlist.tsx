@@ -3,7 +3,7 @@
 import { PlaylistModal } from './playlist-modal';
 import { Button, ToolTip } from '@/components/form';
 import { useDisclosure } from '@/hooks';
-import { PlaylistResType } from '@/types';
+import type { PlaylistResType } from '@/types';
 import { FaPen } from 'react-icons/fa6';
 
 type ButtonEditPlaylistProps = {

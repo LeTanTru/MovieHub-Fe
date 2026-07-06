@@ -1,4 +1,4 @@
-import { PlaylistStoreType } from '@/types';
+import type { PlaylistStoreType } from '@/types';
 import { create } from 'zustand';
 
 export const usePlaylistStore = create<PlaylistStoreType>((set) => ({

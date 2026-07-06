@@ -12,7 +12,7 @@ import {
   STYLE_TOP_RANKING
 } from '@/constants';
 import { collectionApiRequest } from '@/api-requests';
-import {
+import type {
   CollectionCountryGroupType,
   CollectionResType,
   CollectionSearchType

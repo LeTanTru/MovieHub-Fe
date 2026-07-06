@@ -1,6 +1,6 @@
 import { MovieCard } from '@/components/app/movie-card';
 import { cn } from '@/lib';
-import { MovieResType } from '@/types';
+import type { MovieResType } from '@/types';
 import { getYearFromDate } from '@/utils';
 
 function groupByYear(list: MovieResType[]) {

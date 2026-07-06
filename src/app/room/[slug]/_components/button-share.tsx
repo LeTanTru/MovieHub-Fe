@@ -18,8 +18,8 @@ export function ButtonShare() {
     const text = `${window.location.origin}${route.room.path}/${generateSlug(room.name)}.${room.id}`;
 
     const ok = await copyTextToClipboard(text);
-    if (ok) notify.success('Đã sao chép link phòng');
-    else notify.error('Không thể sao chép link phòng');
+    if (ok) notify.success('Đã sao chép liên kết phòng');
+    else notify.error('Không thể sao chép liên kết phòng');
   };
 
   const handleCopyRoomId = async () => {
@@ -54,7 +54,7 @@ export function ButtonShare() {
             className='hover:bg-transparent-black-8 flex w-full cursor-pointer items-center gap-3 px-4 py-2 text-left text-white transition-colors duration-200 ease-linear'
           >
             <FaLink className='text-gray-400' />
-            <span>Sao chép link</span>
+            <span>Sao chép liên kết</span>
           </button>
           <button
             onClick={async () => {

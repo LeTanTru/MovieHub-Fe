@@ -1,6 +1,6 @@
 import { authApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import {
+import type {
   ChangePasswordBodyType,
   ForgotPasswordBodyType,
   LoginBodyType,

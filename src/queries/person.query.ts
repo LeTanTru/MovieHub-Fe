@@ -1,6 +1,6 @@
 import { personApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { PersonSearchType } from '@/types';
+import type { PersonSearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const usePersonListQuery = ({

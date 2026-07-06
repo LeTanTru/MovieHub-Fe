@@ -8,7 +8,7 @@ import {
 } from '@/constants';
 import { Metadata } from 'next';
 import { generateSlug, getIdFromSlug } from '@/utils';
-import { MovieSearchType, ApiResponseList, MovieResType } from '@/types';
+import type { MovieSearchType, ApiResponseList, MovieResType } from '@/types';
 import { getQueryClient } from '@/components/providers/query-provider';
 import { movieApiRequest } from '@/api-requests';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';

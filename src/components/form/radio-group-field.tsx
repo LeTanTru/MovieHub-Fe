@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib';
-import { OptionType } from '@/types';
+import type { OptionType } from '@/types';
 
 type RadioGroupFieldProps<T extends FieldValues> = {
   name: FieldPath<T>;

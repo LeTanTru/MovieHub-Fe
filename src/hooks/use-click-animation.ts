@@ -1,4 +1,4 @@
-import { AnimatedIconHandle } from '@/types';
+import type { AnimatedIconHandle } from '@/types';
 import { useRef } from 'react';
 
 export const useClickAnimation = () => {

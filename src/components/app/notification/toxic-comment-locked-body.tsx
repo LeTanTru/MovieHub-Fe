@@ -3,7 +3,7 @@ import { DISCUSSION_TAB_COMMENT } from '@/constants';
 import { useDiscussionTab, useQueryParams } from '@/hooks';
 import { route } from '@/routes';
 import { useCommentStore } from '@/store';
-import {
+import type {
   NotificationResType,
   ToxicCommentLockedNotificationType
 } from '@/types';

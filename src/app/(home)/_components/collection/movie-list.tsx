@@ -3,7 +3,7 @@
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { CollectionResType } from '@/types';
+import type { CollectionResType } from '@/types';
 import { route } from '@/routes';
 import { Navigation } from 'swiper/modules';
 import { useRef } from 'react';

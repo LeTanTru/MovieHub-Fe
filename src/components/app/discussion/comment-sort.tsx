@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { SelectField } from '@/components/form';
 import { Form } from '@/components/ui/form';
 import { sortOptions } from '@/constants';
-import { CommentSortType } from '@/types';
+import type { CommentSortType } from '@/types';
 
 type CommentSortProps = {
   selectedSort: CommentSortType;

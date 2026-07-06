@@ -6,7 +6,7 @@ import { logger } from '@/logger';
 import { useCreateCommentMutation, useUpdateCommentMutation } from '@/queries';
 import { commentSchema } from '@/schemaValidations';
 import { useCommentStore } from '@/store';
-import { CommentBodyType } from '@/types';
+import type { CommentBodyType } from '@/types';
 import { notify } from '@/utils';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { FaRegFaceGrinBeam } from 'react-icons/fa6';

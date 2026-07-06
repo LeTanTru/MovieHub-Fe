@@ -26,7 +26,7 @@ import {
   useWatchHistory,
   useWatchPlayerData
 } from '@/app/watch/[slug]/_hooks';
-import { MovieResType, VideoResType } from '@/types';
+import type { MovieResType, VideoResType } from '@/types';
 
 type PlaybackState = {
   introSkipped: boolean;

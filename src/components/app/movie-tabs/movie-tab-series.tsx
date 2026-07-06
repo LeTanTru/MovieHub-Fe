@@ -4,7 +4,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import { ButtonToggle } from '@/components/app/button-toggle';
 import { cn } from '@/lib';
 import { EpisodeCard } from '@/components/app/episode';
-import { EpisodeResType, MetadataType, MovieResType } from '@/types';
+import type { EpisodeResType, MetadataType, MovieResType } from '@/types';
 import { FaBarsStaggered, FaCaretDown } from 'react-icons/fa6';
 import { MovieTabHeading } from '@/components/app/heading';
 import { parseJSON } from '@/utils';

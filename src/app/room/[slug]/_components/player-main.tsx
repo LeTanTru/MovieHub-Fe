@@ -9,6 +9,7 @@ import {
   ROOM_STATE_ENDED,
   ROOM_STATE_PENDING,
   ROOM_STATE_RUNNING,
+  roomEndReasons,
   VIDEO_SOURCE_TYPE_INTERNAL
 } from '@/constants';
 import { route } from '@/routes';
@@ -31,7 +32,13 @@ import {
   renderVttUrl
 } from '@/utils';
 import Link from 'next/link';
-import { FaHourglassHalf, FaLock, FaPlay, FaPodcast } from 'react-icons/fa6';
+import {
+  FaBan,
+  FaHourglassHalf,
+  FaLock,
+  FaPlay,
+  FaPodcast
+} from 'react-icons/fa6';
 import {
   useJoinRoomMutation,
   useMovieItemQuery,
@@ -49,10 +56,11 @@ export function PlayerMain() {
   const { profile } = useAuth();
   const playerRef = useRef<MediaPlayerInstance>(null);
 
-  const { room, isJoined, playerState } = useRoomStore(
+  const { room, isJoined, isKicked, playerState } = useRoomStore(
     useShallow((state) => ({
       room: state.room,
       isJoined: state.isJoined,
+      isKicked: state.isKicked,
       playerState: state.playerState
     }))
   );
@@ -220,8 +228,9 @@ export function PlayerMain() {
     <div className='relative aspect-video w-full overflow-hidden bg-transparent'>
       {isPending && <PopupPending room={room} />}
       {isEnded && <PopupEnded room={room} />}
-      {isRunning && !isJoined && <PopupRunning room={room} />}
-      {isRunning && isJoined && video ? (
+      {isRunning && isKicked && <PopupKicked room={room} />}
+      {isRunning && !isJoined && !isKicked && <PopupRunning room={room} />}
+      {isRunning && isJoined && !isKicked && video ? (
         isLoadingToken ? (
           <div className='flex size-full items-center justify-center bg-black'>
             <div className='size-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-transparent'></div>
@@ -406,8 +415,12 @@ function PopupPending({ room }: { room: RoomResType }) {
 
 function PopupEnded({ room }: { room: RoomResType }) {
   const { profile } = useAuth();
-  const endReason = useRoomStore((state) => state.endReason);
+  const reasonEnd = useRoomStore((state) => state.reasonEnd) || room.reasonEnd;
   const isHost = profile?.id === room.host.id;
+
+  const message = roomEndReasons.find(
+    (r) => String(r.value) === reasonEnd
+  )?.label;
 
   return (
     <div className='bg-transparent-black-2 border-black-alpha-8 max-640:gap-2 max-640:rounded-xl max-640:p-4 max-480:w-[75%] max-420:w-[85%] max-480:p-3 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
@@ -416,8 +429,8 @@ function PopupEnded({ room }: { room: RoomResType }) {
         <span className='max-640:text-base text-golden-glow text-xl font-semibold'>
           {room.movieItem.movie.title}
         </span>
-        {endReason && !isHost && (
-          <span className='text-dark-gray'>{endReason}</span>
+        {message && !isHost && (
+          <span className='text-dark-gray'>{message}</span>
         )}
       </div>
 
@@ -437,6 +450,61 @@ function PopupEnded({ room }: { room: RoomResType }) {
           <span>Phòng khác</span>
         </Link>
       </div>
+    </div>
+  );
+}
+
+function PopupKicked({ room }: { room: RoomResType }) {
+  const { profile } = useAuth();
+  const { mutate: joinRoom } = useJoinRoomMutation();
+  const setIsJoined = useRoomStore((state) => state.setIsJoined);
+  const setIsKicked = useRoomStore((state) => state.setIsKicked);
+
+  const handleJoinRoom = () => {
+    joinRoom(room.id, {
+      onSuccess: async (res) => {
+        if (res.result) {
+          notify.success('Tham gia phòng thành công');
+          await publishMqttMessage(
+            generateMqttTopic(mqttTopics.ROOM, { roomId: room.id }),
+            {
+              cmd: mqttCMDs.PARTICIPANT_JOIN,
+              data: { id: profile?.id || '' }
+            }
+          );
+          setIsKicked(false);
+          setIsJoined(true);
+        } else {
+          notify.error('Tham gia phòng thất bại');
+        }
+      },
+      onError: (error) => {
+        logger.error('[JOIN_ROOM_ERROR]', error);
+        notify.error('Tham gia phòng thất bại');
+      }
+    });
+  };
+
+  return (
+    <div className='bg-transparent-black-2 border-black-alpha-8 max-640:gap-2 max-640:rounded-xl max-640:p-4 max-480:w-[75%] max-420:w-[85%] max-480:p-3 absolute top-1/2 left-1/2 z-3 flex w-full max-w-110 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-4 rounded-2xl border border-solid p-8 text-center shadow-[0_20px_20px_10px_var(--color-transparent-black-3)] backdrop-blur-[20px]'>
+      <div className='max-640:text-sm text-base'>Buổi xem chung</div>
+      <div className='flex flex-col gap-2'>
+        <span className='max-640:text-base text-golden-glow text-xl font-semibold'>
+          {room.movieItem.movie.title}
+        </span>
+        <div className='max-640:gap-1.5 max-640:px-3 max-640:py-1.5 max-640:text-sm flex items-center gap-2 rounded-md bg-white px-4 py-2 text-black'>
+          <FaBan />
+          <span>Bạn đã bị mời ra khỏi phòng</span>
+        </div>
+      </div>
+
+      <button
+        onClick={handleJoinRoom}
+        className='max-640:px-3 max-640:py-1.5 max-640:text-sm mx-auto flex cursor-pointer items-center gap-2 rounded-md bg-white px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-white/80'
+      >
+        <FaPlay />
+        <span>Tham gia lại</span>
+      </button>
     </div>
   );
 }

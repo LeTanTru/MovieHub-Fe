@@ -17,7 +17,7 @@ import { CommentContent } from './comment-content';
 import { CommentHeader } from './comment-header';
 import { CommentReplyForm } from './comment-reply-form';
 import { CommentReplyList } from './comment-reply-list';
-import { CommentResType, CommentSearchType, ToxicSpan } from '@/types';
+import type { CommentResType, CommentSearchType, ToxicSpan } from '@/types';
 import { Element, scroller } from 'react-scroll';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { renderImageUrl, invalidateQueries, parseJSON } from '@/utils';

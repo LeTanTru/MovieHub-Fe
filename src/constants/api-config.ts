@@ -1,5 +1,5 @@
 import { AppConstants } from '@/constants/app';
-import { ApiConfigGroup } from '@/types';
+import type { ApiConfigGroup } from '@/types';
 
 const baseHeader = { 'Content-Type': 'application/json' };
 const multipartHeader = { 'Content-Type': 'multipart/form-data' };
@@ -601,6 +601,26 @@ export const apiConfig = defineApiConfig({
   chat: {
     getList: {
       baseUrl: `${AppConstants.apiUrl}/v1/chat/list`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    }
+  },
+  participant: {
+    create: {
+      baseUrl: `${AppConstants.apiUrl}/v1/participant/create`,
+      method: 'POST',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    getById: {
+      baseUrl: `${AppConstants.apiUrl}/v1/participant/get/:id`,
+      method: 'GET',
+      headers: baseHeader,
+      isRequiredXClientType: true
+    },
+    getList: {
+      baseUrl: `${AppConstants.apiUrl}/v1/participant/list`,
       method: 'GET',
       headers: baseHeader,
       isRequiredXClientType: true

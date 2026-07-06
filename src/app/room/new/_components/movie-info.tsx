@@ -28,7 +28,7 @@ import {
 import { route } from '@/routes';
 import { useAuth } from '@/hooks';
 import { PlayIcon } from 'lucide-react';
-import { MetadataType } from '@/types';
+import type { MetadataType } from '@/types';
 
 export function MovieInfo() {
   const { isAuthenticated } = useAuth();

@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks';
 import { useMovieItemQuery, useMovieQuery } from '@/queries';
 import { route } from '@/routes';
 import { useRoomStore } from '@/store';
-import { MetadataType } from '@/types';
+import type { MetadataType } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   formatDuration,

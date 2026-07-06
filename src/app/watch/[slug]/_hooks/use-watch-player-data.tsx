@@ -1,6 +1,6 @@
 import { MOVIE_TYPE_SERIES, MOVIE_TYPE_SINGLE } from '@/constants';
 import { useQueryParams } from '@/hooks';
-import { MovieItemResType, MovieResType } from '@/types';
+import type { MovieItemResType, MovieResType } from '@/types';
 import { useMemo } from 'react';
 
 export const useWatchPlayerData = (movie: MovieResType | null) => {

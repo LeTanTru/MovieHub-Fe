@@ -1,6 +1,6 @@
 import { favouriteApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import {
+import type {
   FavouriteDeleteType,
   FavouriteBodyType,
   FavouriteGetType,

@@ -1,9 +1,9 @@
 import { apiConfig } from '@/constants';
-import {
+import type {
   ApiResponse,
   PublicSettingResType,
-  type ApiResponseNoData,
-  type SettingBodyType
+  ApiResponseNoData,
+  SettingBodyType
 } from '@/types';
 import { http } from '@/utils';
 

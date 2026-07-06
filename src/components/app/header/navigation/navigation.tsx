@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryResType, ItemProps } from '@/types';
+import type { CategoryResType, ItemProps } from '@/types';
 import { useCategoryListQuery } from '@/queries';
 import { route } from '@/routes';
 import { countries, MAX_PAGE_SIZE } from '@/constants';

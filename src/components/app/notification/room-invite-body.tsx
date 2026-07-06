@@ -1,6 +1,6 @@
 import { AvatarField, ImageField } from '@/components/form';
 import { route } from '@/routes';
-import { NotificationResType, NotificationRoomInviteType } from '@/types';
+import type { NotificationResType, NotificationRoomInviteType } from '@/types';
 import {
   convertUTCToLocal,
   generateSlug,

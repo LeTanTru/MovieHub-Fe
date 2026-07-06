@@ -10,7 +10,7 @@ import {
   OG_IMAGE_WIDTH,
   OG_IMAGE_HEIGHT
 } from '@/constants';
-import { PersonSearchType } from '@/types';
+import type { PersonSearchType } from '@/types';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import type { Metadata } from 'next';
 import { envConfig } from '@/config';

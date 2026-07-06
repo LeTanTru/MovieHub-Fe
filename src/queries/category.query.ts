@@ -1,6 +1,6 @@
 import { categoryApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { CategorySearchType } from '@/types';
+import type { CategorySearchType } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 
 export const useCategoryListQuery = ({

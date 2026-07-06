@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { SelectField } from '@/components/form';
 import { Form } from '@/components/ui/form';
-import { ReviewSortType } from '@/types';
+import type { ReviewSortType } from '@/types';
 
 type ReviewSortProps = {
   selectedSort: ReviewSortType;
@@ -43,8 +43,8 @@ export function ReviewSort({ selectedSort, onSortChange }: ReviewSortProps) {
             onSortChange(val as ReviewSortType);
           }
         }}
-        className='max-640:w-36 max-480:w-28 h-8 w-40 rounded-md px-2! text-xs text-white'
-        formItemClassName='text-xs'
+        className='max-640:text-[13px] rounded-md text-white'
+        formItemClassName='max-640:flex-1 max-768:w-1/3 h-8 w-50'
         renderOption={(option) => (
           <span title={option.label} className='text-xs'>
             {option.label}

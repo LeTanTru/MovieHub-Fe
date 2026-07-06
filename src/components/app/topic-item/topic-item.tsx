@@ -1,6 +1,6 @@
 import './topic.css';
 import { route } from '@/routes';
-import { CollectionResType } from '@/types';
+import type { CollectionResType } from '@/types';
 import { generateSlug, getColorList } from '@/utils';
 import { cn } from '@/lib';
 import Link from 'next/link';

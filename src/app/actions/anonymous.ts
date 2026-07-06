@@ -1,7 +1,7 @@
 'use server';
 
 import { apiConfig } from '@/constants';
-import { AnonymousResType } from '@/types';
+import type { AnonymousResType } from '@/types';
 import { http } from '@/utils';
 
 export async function getAnonymousToken() {

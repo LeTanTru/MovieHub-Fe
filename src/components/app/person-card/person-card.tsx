@@ -3,7 +3,7 @@
 import './person-card.css';
 import { cn } from '@/lib';
 import { route } from '@/routes';
-import { PersonResType, PersonSearchType } from '@/types';
+import type { PersonResType, PersonSearchType } from '@/types';
 import { generateSlug, renderImageUrl } from '@/utils';
 import { User, X } from 'lucide-react';
 import Image from 'next/image';

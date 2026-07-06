@@ -1,6 +1,6 @@
 import { reviewApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import { ReviewBodyType, ReviewVoteBodyType } from '@/types';
+import type { ReviewBodyType, ReviewVoteBodyType } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 export const useCheckMovieQuery = ({

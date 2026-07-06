@@ -2,7 +2,7 @@
 
 import { AndroidIcon } from '@/assets/icons/android';
 import { Modal } from '@/components/modal';
-import { AppVersionLatestResType } from '@/types';
+import type { AppVersionLatestResType } from '@/types';
 import { renderFileUrl } from '@/utils';
 import { Download, QrCode, Smartphone } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';

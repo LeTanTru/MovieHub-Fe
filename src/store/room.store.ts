@@ -1,9 +1,10 @@
-import { RoomStoreType } from '@/types';
+import type { RoomStoreType } from '@/types';
 import { create } from 'zustand';
 
 export const useRoomStore = create<RoomStoreType>((set) => ({
   room: null,
   isJoined: false,
+  isKicked: false,
   participantCount: 0,
   playerState: {
     currentPositionMovie: 0,
@@ -11,13 +12,16 @@ export const useRoomStore = create<RoomStoreType>((set) => ({
     playSpeed: 1,
     subCmd: ''
   },
-  endReason: '',
+  reasonEnd: '',
   getPlayerCurrentTime: () => 0,
+  participants: [],
 
   setRoom: (room) => set({ room }),
   setIsJoined: (isJoined) => set({ isJoined }),
+  setIsKicked: (isKicked) => set({ isKicked }),
   setParticipantCount: (participantCount) => set({ participantCount }),
   setPlayerState: (playerState) => set({ playerState }),
-  setEndReason: (endReason) => set({ endReason }),
-  setGetPlayerCurrentTime: (fn) => set({ getPlayerCurrentTime: fn })
+  setReasonEnd: (reasonEnd) => set({ reasonEnd }),
+  setGetPlayerCurrentTime: (fn) => set({ getPlayerCurrentTime: fn }),
+  setParticipants: (participants) => set({ participants })
 }));

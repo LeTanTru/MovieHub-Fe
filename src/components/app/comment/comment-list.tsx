@@ -2,7 +2,7 @@
 
 import { NoData } from '@/components/no-data';
 import { CommentItem } from './comment-item';
-import { CommentResType, MovieResType } from '@/types';
+import type { CommentResType, MovieResType } from '@/types';
 import { emptyDiscussion } from '@/assets';
 import { useAuth, useValidatePermission } from '@/hooks';
 import {

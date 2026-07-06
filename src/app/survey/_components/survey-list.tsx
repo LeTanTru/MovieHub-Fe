@@ -3,7 +3,7 @@
 import { SurveyCard } from './survey-card';
 import { useAuth, useNavigate } from '@/hooks';
 import { useMakeSurveyMutation, useSurveyListQuery } from '@/queries';
-import { SurveyResType } from '@/types';
+import type { SurveyResType } from '@/types';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/form';
 import { notify } from '@/utils';

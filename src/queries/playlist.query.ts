@@ -1,6 +1,6 @@
 import { playlistApiRequest } from '@/api-requests';
 import { queryKeys } from '@/constants';
-import {
+import type {
   PlaylistBodyType,
   PlaylistItemBodyType,
   PlaylistSearchType,
