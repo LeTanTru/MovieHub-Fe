@@ -62,6 +62,10 @@ export function ButtonStart() {
             notify.error(
               'Bạn đã có một phòng đang diễn ra, vui lòng kết thúc phòng trước khi bắt đầu phòng mới'
             );
+          } else if (errorCode === ErrorCode.ROOM_ERROR_INVALID_TIME) {
+            notify.error(
+              'Phòng này chưa đến thời gian bắt đầu, vui lòng thử lại sau'
+            );
           } else {
             notify.error('Bắt đầu phòng thất bại');
           }

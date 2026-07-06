@@ -32,7 +32,13 @@ import {
 import { route } from '@/routes';
 import { roomSchema } from '@/schemaValidations';
 import type { RoomBodyType, UserAutoCompleteResType } from '@/types';
-import { generateSlug, getData, invalidateQueries, notify } from '@/utils';
+import {
+  convertLocalToUTC,
+  generateSlug,
+  getData,
+  invalidateQueries,
+  notify
+} from '@/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMemo, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
@@ -77,42 +83,53 @@ export default function NewRoomForm() {
   }, [movieItem?.movie?.title, movieItemId]);
 
   const onSubmit = (values: RoomBodyType) => {
-    createRoom(values, {
-      onSuccess: (res) => {
-        if (!res.result || !res.data) {
-          notify.error('Tạo phòng thất bại');
-          return;
-        }
-
-        const roomId = res.data.id;
-        notify.success('Tạo phòng thành công');
-
-        if (values.isStartNow) {
-          startRoom(roomId, {
-            onSuccess: () => {
-              joinRoom(roomId, {
-                onSuccess: () => {
-                  navigate.push(
-                    `${route.room.path}/${generateSlug(values.name)}.${roomId}`
-                  );
-                }
-              });
-            },
-            onError: () => {
-              navigate.push(route.room.manage.path);
-            }
-          });
-        } else {
-          navigate.push(route.room.manage.path);
-        }
-
-        invalidateQueries([queryKeys.ROOM_LIST], [queryKeys.MY_ROOM_LIST]);
+    createRoom(
+      {
+        ...values,
+        startTime: values.startTime ? convertLocalToUTC(values.startTime) : ''
       },
-      onError: (error) => {
-        logger.error('[CREATE_NEW_ROOM_ERROR]', error);
-        notify.error('Tạo phòng thất bại');
+      {
+        onSuccess: (res) => {
+          if (!res.result || !res.data) {
+            notify.error('Tạo phòng thất bại');
+            return;
+          }
+
+          const roomId = res.data.id;
+          notify.success('Tạo phòng thành công');
+
+          if (values.isStartNow) {
+            startRoom(roomId, {
+              onSuccess: () => {
+                joinRoom(roomId, {
+                  onSuccess: () => {
+                    navigate.push(
+                      `${route.room.path}/${generateSlug(values.name)}.${roomId}`
+                    );
+                  }
+                });
+              },
+              onError: (error) => {
+                logger.error('[START_ROOM_ERROR]', error);
+                navigate.push(
+                  `${route.room.path}/${generateSlug(values.name)}.${roomId}`
+                );
+              }
+            });
+          } else {
+            navigate.push(
+              `${route.room.path}/${generateSlug(values.name)}.${roomId}`
+            );
+          }
+
+          invalidateQueries([queryKeys.ROOM_LIST], [queryKeys.MY_ROOM_LIST]);
+        },
+        onError: (error) => {
+          logger.error('[CREATE_NEW_ROOM_ERROR]', error);
+          notify.error('Tạo phòng thất bại');
+        }
       }
-    });
+    );
   };
 
   const handleCancel = (form: UseFormReturn<RoomBodyType>) => {

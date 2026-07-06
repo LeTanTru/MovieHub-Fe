@@ -221,8 +221,9 @@ export function DateTimePickerField<T extends FieldValues>({
                       <Calendar
                         className='w-full flex-1 p-0'
                         classNames={{
+                          today: 'bg-dark-gray text-black rounded-md',
                           day_button:
-                            'data-[selected-single=true]:bg-light-gray data-[selected-single=true]:text-white cursor-pointer ring-0! !focus-visible:ring-0 !focus-visible:ring-offset-0',
+                            'data-[selected-single=true]:bg-light-gray data-[selected-single=true]:text-black cursor-pointer ring-0! !focus-visible:ring-0 !focus-visible:ring-offset-0',
                           button_next:
                             'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-[color,box-shadow] disabled:pointer-events-none disabled:opacity-50 transition-all ease-linear duration-200 outline-none focus-visible:border-transparent focus-visible:ring-transparent focus-visible:ring-0 hover:bg-transparent size-8 -mr-2 aria-disabled:opacity-50 p-0 select-none rdp-button_previous cursor-pointer hover:text-light-gray',
                           button_previous:
