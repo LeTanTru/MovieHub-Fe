@@ -2,20 +2,29 @@
 
 import { Button } from '@/components/form';
 import { ConfirmModal } from '@/components/modal';
-import { ErrorCode, queryKeys } from '@/constants';
+import { ErrorCode, mqttCMDs, mqttTopics, queryKeys } from '@/constants';
+import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
-import { useStartRoomMutation } from '@/queries';
+import { useJoinRoomMutation, useStartRoomMutation } from '@/queries';
 import { useRoomStore } from '@/store';
-import { getIdFromSlug, invalidateQueries, notify } from '@/utils';
+import {
+  generateMqttTopic,
+  getIdFromSlug,
+  invalidateQueries,
+  notify,
+  publishMqttMessage
+} from '@/utils';
 import { useParams } from 'next/navigation';
 import { FaPlay } from 'react-icons/fa6';
 
 export function ButtonStart() {
+  const { profile } = useAuth();
   const { slug } = useParams<{ slug: string }>();
   const id = getIdFromSlug(slug);
 
   const setIsJoined = useRoomStore((state) => state.setIsJoined);
   const { mutate: startRoom, isPending } = useStartRoomMutation();
+  const { mutate: joinRoom } = useJoinRoomMutation();
 
   const handleStartRoom = () => {
     startRoom(id, {
@@ -27,6 +36,25 @@ export function ButtonStart() {
             [queryKeys.ROOM_LIST],
             [queryKeys.MY_ROOM_LIST]
           );
+          joinRoom(id, {
+            onSuccess: async (res) => {
+              if (res.result) {
+                notify.success('Tham gia phòng thành công');
+                await publishMqttMessage(
+                  generateMqttTopic(mqttTopics.ROOM, { roomId: id }),
+                  {
+                    cmd: mqttCMDs.PARTICIPANT_JOIN,
+                    data: { id: profile?.id || '' }
+                  }
+                );
+                setIsJoined(true);
+              }
+            },
+            onError: (error) => {
+              logger.error('[JOIN_ROOM_ERROR]', error);
+              notify.error('Tham gia phòng thất bại');
+            }
+          });
           notify.success('Bắt đầu phòng thành công');
         } else {
           const errorCode = res.code;
