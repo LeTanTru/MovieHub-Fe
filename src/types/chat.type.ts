@@ -1,4 +1,4 @@
-import { chatSchema, chatSearchSchema } from '@/schemaValidations/chat.schema';
+import { chatSchema, chatSearchSchema } from '@/schemaValidations';
 import { BaseSearchType } from '@/types/search.type';
 import z from 'zod';
 

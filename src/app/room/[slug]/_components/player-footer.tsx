@@ -24,7 +24,7 @@ export function PlayerFooter() {
 
   if (!room) return <PlayerFooter.Skeleton />;
 
-  const isLive = room.state === ROOM_STATE_RUNNING;
+  const isRunning = room.state === ROOM_STATE_RUNNING;
   const isParticipant = room.host.id !== profile?.id;
   const isHost = room.host.id === profile?.id;
 
@@ -35,13 +35,13 @@ export function PlayerFooter() {
           <div
             className={cn('relative shrink-0 overflow-hidden rounded-full', {
               'live-avatar bg-charade border-2 border-solid border-red-500':
-                isLive
+                isRunning
             })}
           >
             <AvatarField
               src={renderImageUrl(room.host.avatarPath)}
               size={40}
-              className={cn({ 'scale-80': isLive })}
+              className={cn({ 'scale-80': isRunning })}
             />
           </div>
           <div className='flex flex-col gap-1'>
@@ -57,8 +57,8 @@ export function PlayerFooter() {
         <ButtonViewParticipants />
         <ButtonShare />
         <ButtonWatchAlone />
-        {isParticipant && <ButtonSync />}
-        {isHost && isLive && <ButtonAddParticipantModal />}
+        {isParticipant && isRunning && <ButtonSync />}
+        {isHost && isRunning && <ButtonAddParticipantModal />}
       </div>
     </div>
   );

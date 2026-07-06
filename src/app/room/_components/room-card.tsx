@@ -39,7 +39,7 @@ export function RoomCard({
   onDelete
 }: RoomCardProps) {
   const isPending = room.state === ROOM_STATE_PENDING;
-  const isLive = room.state === ROOM_STATE_RUNNING;
+  const isRunning = room.state === ROOM_STATE_RUNNING;
   const isEnd = room.state === ROOM_STATE_ENDED;
 
   const movieItem = room.movieItem;
@@ -67,7 +67,7 @@ export function RoomCard({
             <FaHourglassHalf className='live-pending' /> Đang chờ
           </div>
         )}
-        {isLive && (
+        {isRunning && (
           <>
             <div className='bg-thunderbird absolute top-2 left-2 z-3 flex h-6 items-center gap-1 rounded px-1.5 text-xs leading-5 font-semibold text-white uppercase shadow-[0_0_5px_5px_var(--color-transparent-black-1)]'>
               <div className='live-flash block size-1.5 rounded-full bg-white before:content-[""]'></div>
@@ -108,13 +108,13 @@ export function RoomCard({
         <div
           className={cn('relative shrink-0 overflow-hidden rounded-full', {
             'live-avatar bg-charade border-2 border-solid border-red-500':
-              isLive
+              isRunning
           })}
         >
           <AvatarField
             src={renderImageUrl(room.host.avatarPath)}
             size={40}
-            className={cn({ 'scale-80': isLive })}
+            className={cn({ 'scale-80': isRunning })}
           />
         </div>
 
