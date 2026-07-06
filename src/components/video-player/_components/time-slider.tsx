@@ -13,6 +13,7 @@ type TimeSliderProps = {
   vttUrl: string;
   markers?: TimeSliderMarkerType[];
   activeMarkerId?: string | null;
+  disabled?: boolean;
 };
 
 export function TimeSlider({
@@ -22,11 +23,15 @@ export function TimeSlider({
   duration,
   vttUrl,
   markers,
-  activeMarkerId
+  activeMarkerId,
+  disabled
 }: TimeSliderProps) {
   return (
     <div className='relative mx-[7.5px] inline-flex h-10 w-full'>
-      <BaseTimeSlider.Root className='group relative inline-flex h-full w-full cursor-pointer touch-none items-center rounded outline-none select-none aria-hidden:hidden'>
+      <BaseTimeSlider.Root
+        disabled={disabled}
+        className='group relative inline-flex h-full w-full cursor-pointer touch-none items-center rounded outline-none select-none aria-hidden:hidden data-[disabled]:cursor-not-allowed'
+      >
         <BaseTimeSlider.Track className='relative z-0 h-1.25 w-full overflow-hidden rounded-sm bg-white/30 ring-sky-400 group-data-focus:ring-[3px]'>
           <BaseTimeSlider.TrackFill className='absolute h-full w-(--slider-fill) rounded-sm bg-[#f5f5f5] will-change-[width]' />
           <BaseTimeSlider.Progress className='absolute z-10 h-full w-(--slider-progress) rounded-sm bg-[#ffffff80] will-change-[width]' />

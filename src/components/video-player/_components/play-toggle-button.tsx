@@ -3,12 +3,12 @@
 import { PlayButton, Tooltip, useMediaState } from '@vidstack/react';
 import { PauseIcon, PlayIcon } from '@vidstack/react/icons';
 
-export function PlayToggleButton() {
+export function PlayToggleButton({ disabled }: { disabled?: boolean }) {
   const isPaused = useMediaState('paused');
   return (
     <Tooltip.Root>
       <Tooltip.Trigger asChild>
-        <PlayButton className='vds-button'>
+        <PlayButton className='vds-button' disabled={disabled}>
           {isPaused ? (
             <PlayIcon className='vds-icon' />
           ) : (
