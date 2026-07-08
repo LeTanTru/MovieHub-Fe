@@ -10,6 +10,10 @@ export type SettingResType = {
   brightness: number;
   audio: number;
   playbackSpeed: number;
+  subtitleEnabled: boolean;
+  subtitleFontSize: number;
+  subtitleBackgroundColor: number;
+  subtitleTextColor: number;
 };
 
 export type PublicSettingResType = {
