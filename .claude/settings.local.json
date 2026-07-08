@@ -11,7 +11,28 @@
       "Bash(grep -v \"^--$\")",
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(node -e \"console.log\\(JSON.stringify\\(require\\('./package.json'\\).scripts, null, 2\\)\\)\")",
+      "Bash(ls -la .cursor)",
+      "Bash(ls -la .github)",
+      "Bash(find . -maxdepth 1 -iname \".cursorrules\")",
+      "Bash(ls .agents)",
+      "Bash(sort -t: -k1)",
+      "Bash(node -e ' *)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill *)",
+      "Bash(git stash *)",
+      "Bash(git commit *)",
+      "Bash(git --no-pager diff --stat HEAD)",
+      "Bash(git --no-pager diff --cached --stat)",
+      "Bash(git *)",
+      "Bash(npx eslint *)",
+      "Bash(node -e \"const p=require\\('./package.json'\\);console.log\\('vidstack:',p.dependencies['@vidstack/react']||p.dependencies.vidstack\\)\")",
+      "mcp__context7__query-docs",
+      "mcp__context7__resolve-library-id",
+      "Bash(curl -s -o /dev/null -w \"http_code=%{http_code} time_total=%{time_total}s\\\\n\" --max-time 20 \"https://movie-api.moviehub.io.vn/v1/movie/list?size=24\" -H \"X-Client-Type: WEB\")",
+      "Bash(git diff *)",
+      "Read(//tmp/**)"
     ]
   }
 }

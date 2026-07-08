@@ -86,10 +86,10 @@ export function WatchPlayerControls() {
           <ButtonRoom className='max-640:px-2! max-520:px-4!' />
         )}
         <div className='grow'></div>
-        {/* <ButtonReport
+        <ButtonReport
           videoId={video?.id ?? ''}
           className='max-640:px-2! max-520:px-4!'
-        /> */}
+        />
       </div>
     </div>
   );

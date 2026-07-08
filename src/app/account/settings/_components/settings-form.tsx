@@ -20,7 +20,7 @@ import { useAuth } from '@/hooks';
 import { logger } from '@/logger';
 import { useUpdateSettingsMutation } from '@/queries';
 import { settingsSchema } from '@/schemaValidations';
-import type { OptionType, SettingBodyType } from '@/types';
+import type { OptionType, SettingBodyType, SettingResType } from '@/types';
 import { invalidateQueries, notify } from '@/utils';
 import { useMemo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
@@ -46,6 +46,10 @@ const renderColorOption = (option: OptionType) => (
   </div>
 );
 
+const PLAYBACK_SPEED_MIN = 0.25;
+const PLAYBACK_SPEED_MAX = 2;
+const PLAYBACK_SPEED_STEP = 0.05;
+
 const defaultValues: SettingBodyType = {
   audio: 100, // max
   autoNextEpisode: true,
@@ -62,7 +66,7 @@ const defaultValues: SettingBodyType = {
 export function SettingsForm() {
   const { profile } = useAuth();
 
-  const settings = useMemo<Partial<SettingBodyType>>(
+  const settings = useMemo<Partial<SettingResType>>(
     () => JSON.parse(profile?.settings || '{}'),
     [profile?.settings]
   );
@@ -70,10 +74,6 @@ export function SettingsForm() {
   const { mutate: updateSetting, isPending } = useUpdateSettingsMutation();
 
   const [showConfirmCancel, setShowConfirmCancel] = useState(false);
-
-  const playbackSpeedMin = 0.25;
-  const playbackSpeedMax = 2;
-  const playbackSpeedStep = 0.05;
 
   const initialValues: SettingBodyType = useMemo(
     () => ({
@@ -94,7 +94,18 @@ export function SettingsForm() {
       subtitleTextColor:
         settings.subtitleTextColor ?? defaultValues.subtitleTextColor
     }),
-    [settings]
+    [
+      settings.audio,
+      settings.autoNextEpisode,
+      settings.autoSkipIntro,
+      settings.brightness,
+      settings.playbackSpeed,
+      settings.resolution,
+      settings.subtitleBackgroundColor,
+      settings.subtitleEnabled,
+      settings.subtitleFontSize,
+      settings.subtitleTextColor
+    ]
   );
 
   const onSubmit = (
@@ -166,9 +177,9 @@ export function SettingsForm() {
                     name='playbackSpeed'
                     required
                     unit='x'
-                    min={playbackSpeedMin}
-                    max={playbackSpeedMax}
-                    step={playbackSpeedStep}
+                    min={PLAYBACK_SPEED_MIN}
+                    max={PLAYBACK_SPEED_MAX}
+                    step={PLAYBACK_SPEED_STEP}
                   />
                 </Col>
               </Row>
