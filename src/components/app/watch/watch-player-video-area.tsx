@@ -54,7 +54,17 @@ export function WatchPlayerVideoArea() {
     handleWatchHistoryTimeUpdate,
     handleSeeked,
     handleVideoEnded,
-    handlePlayerCanPlay
+    handlePlayerCanPlay,
+    brightness,
+    subtitleEnabled,
+    subtitleFontSize,
+    subtitleTextColor,
+    subtitleBackgroundColor,
+    handleChangeBrightness,
+    handleToggleSubtitleEnabled,
+    handleChangeSubtitleFontSize,
+    handleChangeSubtitleTextColor,
+    handleChangeSubtitleBackgroundColor
   } = useWatchPlayer();
 
   const { data: videoLibrarySubtitleListData } =
@@ -90,7 +100,7 @@ export function WatchPlayerVideoArea() {
       language: subtitle.language,
       kind: 'subtitles',
       type: 'vtt',
-      default: subtitle.isDefault
+      default: subtitleEnabled && subtitle.isDefault
     })
   );
 
@@ -166,6 +176,18 @@ export function WatchPlayerVideoArea() {
             onLoadedMetadata={handlePlayerCanPlay}
             onFullscreenChange={setIsFullscreen}
             textTracks={textTracks}
+            brightness={brightness}
+            subtitleEnabled={subtitleEnabled}
+            subtitleFontSize={subtitleFontSize}
+            subtitleTextColor={subtitleTextColor}
+            subtitleBackgroundColor={subtitleBackgroundColor}
+            onBrightnessChange={handleChangeBrightness}
+            onSubtitleEnabledToggle={handleToggleSubtitleEnabled}
+            onSubtitleFontSizeChange={handleChangeSubtitleFontSize}
+            onSubtitleTextColorChange={handleChangeSubtitleTextColor}
+            onSubtitleBackgroundColorChange={
+              handleChangeSubtitleBackgroundColor
+            }
           />
           <WatchAskContinueModal
             opened={isShowContinueModal}

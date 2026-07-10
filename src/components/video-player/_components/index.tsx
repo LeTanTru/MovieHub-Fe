@@ -1,3 +1,4 @@
+export { BrightnessSubmenu } from './brightness-submenu';
 export { BufferingIndicator } from './buffering-indicator';
 export { CaptionButton } from './caption-button';
 export { DefaultQuality } from './default-quality';
@@ -17,3 +18,4 @@ export { TimeSlider } from './time-slider';
 export { TimeSliderMarker } from './time-slider-marker';
 export { VolumeIndicator } from './volume-indicator';
 export { VolumeToggleButton } from './volume-toggle-button';
+export { SubtitleStyleSubmenu } from './subtitle-style-submenu';

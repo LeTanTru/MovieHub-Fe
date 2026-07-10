@@ -26,6 +26,7 @@ import { VolumeIndicator } from './_components/volume-indicator';
 import {
   Gesture,
   isHLSProvider,
+  isTrackCaptionKind,
   MediaPlayer,
   MediaPlayerInstance,
   MediaProvider,
@@ -34,7 +35,8 @@ import {
   MediaTimeUpdateEvent,
   Poster,
   TextTrack,
-  TrackProps
+  TrackProps,
+  useMediaState
 } from '@vidstack/react';
 import {
   DefaultVideoLayout,
@@ -54,6 +56,11 @@ import { cn } from '@/lib';
 import './video-player.css';
 import type { TimeSliderMarkerType } from '@/types';
 import { IndicatorAction, IndicatorContext } from './indicator-context';
+import {
+  subtitleFontSizes,
+  subtitleTextColors,
+  subtitleBackgroundColors
+} from '@/constants';
 
 type VideoPlayerProps = Omit<
   ComponentProps<typeof MediaPlayer>,
@@ -81,6 +88,17 @@ type VideoPlayerProps = Omit<
   thumbnailUrl: string;
   token?: string;
   vttUrl: string;
+  // — Brightness & subtitle style (optional; omitted → room player fallback)
+  brightness?: number;
+  subtitleEnabled?: boolean;
+  subtitleFontSize?: number;
+  subtitleTextColor?: number;
+  subtitleBackgroundColor?: number;
+  onBrightnessChange?: (value: number) => void;
+  onSubtitleEnabledToggle?: () => void;
+  onSubtitleFontSizeChange?: (value: number) => void;
+  onSubtitleTextColorChange?: (value: number) => void;
+  onSubtitleBackgroundColorChange?: (value: number) => void;
   onNextClick?: () => void;
   onPrevClick?: () => void;
   onSeeked?: (currentTime: number) => void;
@@ -113,6 +131,16 @@ export function VideoPlayer({
   token,
   volume = 0.5,
   vttUrl,
+  brightness,
+  subtitleEnabled,
+  subtitleFontSize,
+  subtitleTextColor,
+  subtitleBackgroundColor,
+  onBrightnessChange,
+  onSubtitleEnabledToggle,
+  onSubtitleFontSizeChange,
+  onSubtitleTextColorChange,
+  onSubtitleBackgroundColorChange,
   onEnded,
   onNextClick,
   onPrevClick,
@@ -163,6 +191,32 @@ export function VideoPlayer({
     onTimeUpdate?.(detail, nativeEvent);
   };
 
+  // Resolve numeric enum subtitle values → CSS strings, falling back to the
+  // same values that were previously hardcoded in video-player.css.
+  const resolvedFontSize =
+    subtitleFontSize !== undefined
+      ? `${subtitleFontSizes.find((s) => s.value === subtitleFontSize)?.pixels ?? 20}px`
+      : '20px';
+  const resolvedTextColor =
+    subtitleTextColor !== undefined
+      ? (subtitleTextColors.find((s) => s.value === subtitleTextColor)?.color ??
+        'inherit')
+      : 'inherit';
+  const resolvedBgColor =
+    subtitleBackgroundColor !== undefined
+      ? (subtitleBackgroundColors.find(
+          (s) => s.value === subtitleBackgroundColor
+        )?.color ?? 'transparent')
+      : 'transparent';
+
+  const mediaPlayerStyle = {
+    '--media-cue-font-size': resolvedFontSize,
+    '--media-user-text-color':
+      resolvedTextColor !== 'inherit' ? resolvedTextColor : undefined,
+    '--media-user-text-bg':
+      resolvedBgColor !== 'transparent' ? resolvedBgColor : undefined
+  } as ComponentProps<typeof MediaPlayer>['style'];
+
   return (
     <IndicatorContext.Provider value={{ currentAction, setCurrentAction }}>
       <MediaPlayer
@@ -187,8 +241,17 @@ export function VideoPlayer({
         onSeeked={onSeeked}
         onEnded={onEnded}
         {...mediaPlayerProps}
+        style={{ ...mediaPlayerProps.style, ...mediaPlayerStyle }}
       >
-        <MediaProvider slot='media' className='cursor-pointer'>
+        <MediaProvider
+          slot='media'
+          className='cursor-pointer'
+          style={
+            brightness !== undefined
+              ? { filter: `brightness(${brightness}%)` }
+              : undefined
+          }
+        >
           {!hidePoster && <Poster className='vds-poster' src={thumbnailUrl} />}
         </MediaProvider>
         {!hideControls && !disablePlayPause && (
@@ -199,6 +262,11 @@ export function VideoPlayer({
           />
         )}
         <TextTrackSync textTracks={textTracks} playerRef={playerRef} />
+        <SubtitleSync
+          subtitleEnabled={subtitleEnabled}
+          playerRef={playerRef}
+          onSubtitleEnabledToggle={onSubtitleEnabledToggle}
+        />
         <DefaultQuality defaultQuality={defaultQuality} />
         {!hideControls && (
           <DefaultVideoLayout
@@ -216,6 +284,18 @@ export function VideoPlayer({
                   placement='top end'
                   tooltipPlacement='top'
                   disableSpeed={disableSpeed}
+                  brightness={brightness}
+                  subtitleEnabled={subtitleEnabled}
+                  subtitleFontSize={subtitleFontSize}
+                  subtitleTextColor={subtitleTextColor}
+                  subtitleBackgroundColor={subtitleBackgroundColor}
+                  onBrightnessChange={onBrightnessChange}
+                  onSubtitleEnabledToggle={onSubtitleEnabledToggle}
+                  onSubtitleFontSizeChange={onSubtitleFontSizeChange}
+                  onSubtitleTextColorChange={onSubtitleTextColorChange}
+                  onSubtitleBackgroundColorChange={
+                    onSubtitleBackgroundColorChange
+                  }
                 />
               ),
               captionButton: <CaptionButton />,
@@ -329,6 +409,81 @@ function TextTrackSync({
   return null;
 }
 
+/**
+ * Bridges Vidstack's native CC button with our subtitleEnabled setting in
+ * both directions:
+ *   CC button click → updates our subtitleEnabled state (via onSubtitleEnabledToggle)
+ *   subtitleEnabled change → imperatively sets track mode on the player
+ */
+function SubtitleSync({
+  subtitleEnabled,
+  playerRef,
+  onSubtitleEnabledToggle
+}: {
+  subtitleEnabled?: boolean;
+  playerRef: React.RefObject<MediaPlayerInstance | null>;
+  onSubtitleEnabledToggle?: () => void;
+}) {
+  // Vidstack's reactive state: the currently active text track (null when off)
+  const activeTrack = useMediaState('textTrack');
+  const isVidstackOn = !!(activeTrack && isTrackCaptionKind(activeTrack));
+
+  // Remembers which track was showing before subtitles were last disabled, so
+  // re-enabling restores the user's actual selection instead of the default.
+  const lastActiveTrackIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (isVidstackOn && activeTrack) {
+      lastActiveTrackIdRef.current = activeTrack.id;
+    }
+  }, [isVidstackOn, activeTrack]);
+
+  // Direction 1: CC button → our state
+  // When Vidstack's track state disagrees with subtitleEnabled, sync our state.
+  const prevVidstackOnRef = useRef<boolean | null>(null);
+  useEffect(() => {
+    if (subtitleEnabled === undefined || !onSubtitleEnabledToggle) return;
+    // Only fire on actual changes (skip the initial mount snapshot)
+    if (prevVidstackOnRef.current === null) {
+      prevVidstackOnRef.current = isVidstackOn;
+      return;
+    }
+    if (prevVidstackOnRef.current !== isVidstackOn) {
+      prevVidstackOnRef.current = isVidstackOn;
+      if (isVidstackOn !== subtitleEnabled) {
+        onSubtitleEnabledToggle();
+      }
+    }
+  }, [isVidstackOn, subtitleEnabled, onSubtitleEnabledToggle]);
+
+  // Direction 2: our state → CC button
+  // When subtitleEnabled flips, imperatively set the mode on all caption tracks.
+  useEffect(() => {
+    if (subtitleEnabled === undefined) return;
+    const player = playerRef.current;
+    if (!player) return;
+
+    // Find all caption/subtitle tracks
+    const tracks = [...player.textTracks].filter((t) => isTrackCaptionKind(t));
+    if (tracks.length === 0) return;
+
+    if (subtitleEnabled) {
+      // Restore whichever track was last showing, falling back to the default
+      const preferred =
+        tracks.find((t) => t.id === lastActiveTrackIdRef.current) ??
+        tracks.find((t) => t.default) ??
+        tracks[0];
+      preferred.mode = 'showing';
+    } else {
+      // Disable all caption tracks
+      for (const t of tracks) {
+        t.mode = 'disabled';
+      }
+    }
+  }, [subtitleEnabled, playerRef]);
+
+  return null;
+}
+
 function onProviderChange(
   provider: MediaProviderAdapter | null,
   token?: string
@@ -341,47 +496,3 @@ function onProviderChange(
     };
   }
 }
-
-/*
-    * Set pointer to 'fine' for both touch and mouse devices
-    
-    useEffect(() => {
-      let rafId: number;
-
-      const setPointerFine = () => {
-        const player = playerRef.current;
-        if (!player) return;
-        // Set via internal state signal so vidstack's reactive system reflects 'fine'
-        player.$state.pointer.set('fine');
-      };
-
-      const setup = () => {
-        const el = playerRef.current?.el;
-        if (!el) return false;
-
-        // Apply immediately for the current connection
-        setPointerFine();
-
-        // Re-apply every time vidstack reconnects (e.g. modal open/close).
-        // 'media-player-connect' is dispatched at the end of onConnect,
-        // after #onPointerChange has already set pointer to 'coarse'.
-        el.addEventListener('media-player-connect', setPointerFine);
-        return true;
-      };
-
-      let el: HTMLElement | undefined;
-      if (!setup()) {
-        rafId = requestAnimationFrame(() => {
-          setup();
-          el = playerRef.current?.el;
-        });
-      } else {
-        el = playerRef.current?.el;
-      }
-
-      return () => {
-        cancelAnimationFrame(rafId);
-        el?.removeEventListener('media-player-connect', setPointerFine);
-      };
-    }, []);
-    */
