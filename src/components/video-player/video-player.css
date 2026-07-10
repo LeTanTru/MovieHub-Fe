@@ -9,11 +9,10 @@
 }
 
 [data-part='cue-display'] {
-  font-size: 20px;
   background: transparent !important;
 
   & [data-part='cue'] {
-    --cue-bg-color: transparent;
+    --cue-bg-color: var(--media-user-text-bg, transparent);
     backdrop-filter: none;
     box-shadow: none;
   }

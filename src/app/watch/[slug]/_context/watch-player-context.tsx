@@ -73,8 +73,18 @@ type WatchPlayerContextType = {
   handlePlayerCanPlay: () => void;
   autoNextEpisode: boolean;
   skipIntro: boolean;
+  brightness: number;
+  subtitleEnabled: boolean;
+  subtitleFontSize: number;
+  subtitleTextColor: number;
+  subtitleBackgroundColor: number;
   handleToggleAutoNextEpisode: () => void;
   handleToggleSkipIntro: () => void;
+  handleChangeBrightness: (value: number) => void;
+  handleToggleSubtitleEnabled: () => void;
+  handleChangeSubtitleFontSize: (value: number) => void;
+  handleChangeSubtitleTextColor: (value: number) => void;
+  handleChangeSubtitleBackgroundColor: (value: number) => void;
 };
 
 const WatchPlayerContext = createContext<WatchPlayerContextType | null>(null);
@@ -125,8 +135,18 @@ export function WatchPlayerProvider({
   const {
     autoNextEpisode,
     skipIntro,
+    brightness,
+    subtitleEnabled,
+    subtitleFontSize,
+    subtitleTextColor,
+    subtitleBackgroundColor,
     handleToggleAutoNextEpisode,
-    handleToggleSkipIntro
+    handleToggleSkipIntro,
+    handleChangeBrightness,
+    handleToggleSubtitleEnabled,
+    handleChangeSubtitleFontSize,
+    handleChangeSubtitleTextColor,
+    handleChangeSubtitleBackgroundColor
   } = usePlayerSettings();
 
   // — Watch history API
@@ -237,8 +257,18 @@ export function WatchPlayerProvider({
         handlePlayerCanPlay,
         autoNextEpisode,
         skipIntro,
+        brightness,
+        subtitleEnabled,
+        subtitleFontSize,
+        subtitleTextColor,
+        subtitleBackgroundColor,
         handleToggleAutoNextEpisode,
-        handleToggleSkipIntro
+        handleToggleSkipIntro,
+        handleChangeBrightness,
+        handleToggleSubtitleEnabled,
+        handleChangeSubtitleFontSize,
+        handleChangeSubtitleTextColor,
+        handleChangeSubtitleBackgroundColor
       }}
     >
       {children}

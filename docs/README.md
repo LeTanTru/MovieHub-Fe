@@ -16,6 +16,13 @@ Use this index to find the right project notes quickly. These docs describe the 
 | --------------------------------------------- | ---------------------------------------- |
 | [Export style conventions](./export-style.md) | Canonical export style by file category. |
 
+## Video Playback
+
+| Document                          | Purpose                                                                                           |
+| --------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [Video player](./video-player.md) | Structure and API of the reusable `<VideoPlayer>` (Vidstack + HLS.js), settings menu, submenus.   |
+| [Watch player](./watch-player.md) | How the watch page (`/watch/[slug]`) wires episodes, watch history, and settings into the player. |
+
 ## Reviews And Audit Reports
 
 | Document                                                              | Purpose                                                           |

@@ -12,6 +12,7 @@ import { BaseForm } from '@/components/form/base-form';
 import {
   qualityOptions,
   queryKeys,
+  SUBTITLE_BACKGROUND_COLOR_TRANSPARENT,
   subtitleBackgroundColors,
   subtitleFontSizes,
   subtitleTextColors
@@ -57,7 +58,7 @@ const defaultValues: SettingBodyType = {
   brightness: 100, // max
   playbackSpeed: 1,
   resolution: 0, // Auto
-  subtitleBackgroundColor: 0,
+  subtitleBackgroundColor: SUBTITLE_BACKGROUND_COLOR_TRANSPARENT,
   subtitleEnabled: true,
   subtitleFontSize: 0,
   subtitleTextColor: 0
