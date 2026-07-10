@@ -120,7 +120,9 @@ export function RoomMqtt({ room }: RoomMqttProps) {
 
       invalidateQueries(
         [queryKeys.ROOM, data.roomId],
-        [queryKeys.PARTICIPANT_LIST, { roomId: data.roomId }]
+        [queryKeys.PARTICIPANT_LIST, { roomId: data.roomId }],
+        [queryKeys.ROOM_LIST],
+        ...(isHost ? [[queryKeys.MY_ROOM_LIST]] : [])
       );
 
       if (isHost) return;
