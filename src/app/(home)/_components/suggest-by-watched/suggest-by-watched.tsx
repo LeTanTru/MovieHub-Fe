@@ -11,9 +11,9 @@ export function SuggestByWatched({ page }: { page: number }) {
   const { isAuthenticated } = useAuth();
 
   const { ref, inView } = useInView({
-    threshold: 0.5,
+    threshold: 0,
     rootMargin: '0px 0px 400px 0px',
-    triggerOnce: false
+    triggerOnce: true
   });
 
   const { data: movieListData, isLoading } = useMovieSuggestByWatchedQuery({
@@ -28,17 +28,17 @@ export function SuggestByWatched({ page }: { page: number }) {
 
   if (!isAuthenticated) return null;
 
-  if (isLoading) return <VerticalBarLoading />;
-
-  if (!watchedMovie) return null;
-
   return (
-    <div ref={ref}>
-      <MovieList
-        loading={isLoading}
-        movieList={movieList}
-        title={`Vì bạn đã xem ${watchedMovie.title}`}
-      />
+    <div ref={ref} className='min-h-px'>
+      {isLoading ? (
+        <VerticalBarLoading />
+      ) : watchedMovie ? (
+        <MovieList
+          loading={isLoading}
+          movieList={movieList}
+          title={`Vì bạn đã xem ${watchedMovie.title}`}
+        />
+      ) : null}
     </div>
   );
 }
