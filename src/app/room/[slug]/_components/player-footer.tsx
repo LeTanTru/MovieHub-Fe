@@ -29,7 +29,7 @@ export function PlayerFooter() {
   const isHost = room.host.id === profile?.id;
 
   return (
-    <div className='bg-transparent-black-b0 relative flex h-20 shrink-0 items-center justify-between gap-2 px-6'>
+    <div className='bg-transparent-black-b0 max-640:px-4 relative flex h-20 shrink-0 items-center justify-between gap-2 px-6'>
       <div className='flex w-full items-center justify-between gap-8'>
         <div className='inline-flex grow items-center gap-2 text-white'>
           <div
