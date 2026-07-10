@@ -71,7 +71,6 @@ export function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
                 onToggle={handleToggle}
                 text='Rút gọn'
                 disabled={isLoadingToken}
-                className='max-640:hidden'
               />
             </>
           )}
@@ -144,11 +143,7 @@ export function MovieTabTrailer({ direction }: MovieTabTrailerProps) {
                   <CircleLoading />
                 ) : (
                   <>
-                    <div
-                      className={cn(
-                        'transition-color hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex items-center gap-2.5 font-medium text-white duration-200 ease-linear'
-                      )}
-                    >
+                    <div className='transition-color hover:text-golden-glow max-640:text-[13px] flex items-center gap-2.5 font-medium text-white duration-200 ease-linear'>
                       <div className='block shrink-0 text-xs'>
                         <FaPlay />
                       </div>

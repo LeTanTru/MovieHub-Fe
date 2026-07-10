@@ -173,7 +173,6 @@ export function WatchSeries() {
               toggle={toggle}
               onToggle={handleToggle}
               text='Rút gọn'
-              className='max-640:hidden'
             />
           </>
         )}

@@ -18,14 +18,14 @@ export function NotFound() {
       <div className='max-1280:text-2xl max-640:text-base max-768:text-xl max-768:mb-2 mb-4 text-3xl leading-normal font-bold text-white'>
         Lỗi 404 - Không tìm thấy chủ đề này
       </div>
-      <div className='text-statuary max-1280:mb-8 max-640:mb-4 max-768:mb-6 mb-12'>
+      <div className='text-statuary mb-6'>
         Chủ đề phim bạn đang tìm kiếm không tồn tại.
         <br className='max-640:block hidden' /> Vui lòng kiểm tra đường dẫn hoặc
         quay về trang chủ.
       </div>
       <Link className='mx-auto block w-fit' href={route.home.path}>
         <Button
-          className='hover:bg-golden-glow bg-golden-glow max-1280:h-10 max-640:h-8 max-768:gap-1 max-640:text-sm max-520:text-xs mx-auto flex h-12.5 items-center gap-2 rounded-full text-base font-semibold text-black'
+          className='hover:bg-golden-glow bg-golden-glow max-1280:h-10 max-640:h-8 max-768:gap-1 max-640:text-sm mx-auto flex h-12.5 items-center gap-2 rounded-full text-base font-semibold text-black'
           size='lg'
         >
           <FaChevronLeft />

@@ -101,7 +101,7 @@ export function MovieTabs() {
                 tabRefs.current[tabKey] = el;
               }}
               className={cn(
-                'max-640:px-3 max-520:px-2 max-480:px-1 max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center justify-center px-4 py-3 font-medium text-white opacity-90 transition-opacity duration-200 ease-linear',
+                'max-640:px-3 max-520:px-2 max-480:px-1 max-640:text-[13px] flex cursor-pointer items-center justify-center px-4 py-3 font-medium text-white opacity-90 transition-opacity duration-200 ease-linear',
                 {
                   'text-golden-glow opacity-100': isActive
                 }

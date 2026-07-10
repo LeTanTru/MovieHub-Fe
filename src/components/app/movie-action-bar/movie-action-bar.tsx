@@ -79,26 +79,26 @@ export function MovieActionBar() {
         <div className='max-800:gap-4 flex grow items-center justify-between'>
           <div className='max-1120:gap-2 max-800:gap-3 max-640:gap-2 flex grow items-center gap-4'>
             <ButtonLike
-              className='max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
+              className='max-860:min-w-15 max-640:text-[13px]'
               targetId={movie.id}
               variant='detail'
             />
             <ButtonAddToPlaylist
-              className='max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
+              className='max-860:min-w-15 max-640:text-[13px]'
               movieId={movie.id}
               variant='detail'
             />
             <ButtonShareMovie
-              className='max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
+              className='max-860:min-w-15 max-640:text-[13px]'
               variant='detail'
             />
             <ButtonViewComment
-              className='max-520:hidden max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
+              className='max-520:hidden max-860:min-w-15 max-640:text-[13px]'
               to={MOVIE_DETAIL_DISCUSSION_ID}
               variant='detail'
             />
             <ButtonViewReview
-              className='max-520:hidden max-860:min-w-15 max-640:text-[13px] max-520:text-xs'
+              className='max-520:hidden max-860:min-w-15 max-640:text-[13px]'
               to={MOVIE_DETAIL_DISCUSSION_ID}
               variant='detail'
             />
@@ -123,10 +123,9 @@ MovieActionBar.Skeleton = function MovieActionBarSkeleton() {
             {Array.from({ length: 5 }).map((_, index) => (
               <Skeleton
                 key={`action-skeleton-${index}`}
-                className={cn(
-                  'skeleton size-15 rounded-lg!',
-                  index >= 3 && 'max-520:hidden'
-                )}
+                className={cn('skeleton size-15 rounded-lg!', {
+                  'max-520:hidden': index >= 3
+                })}
               />
             ))}
           </div>

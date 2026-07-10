@@ -47,7 +47,7 @@ export function WatchPlayerControls() {
           {!hasTrailer && (
             <Calendar className='max-640:size-4 relative size-5 animate-bounce font-semibold' />
           )}
-          <span className='max-640:text-xs relative font-semibold uppercase transition-transform duration-200 group-hover:scale-105'>
+          <span className='max-640:text-[13px] relative font-semibold uppercase transition-transform duration-200 group-hover:scale-105'>
             {!hasTrailer ? 'Sắp ra mắt' : 'Phim sắp ra mắt'}
           </span>
         </div>

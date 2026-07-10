@@ -119,7 +119,7 @@ export function NotificationList() {
       <h3 className='max-640:text-base text-xl leading-normal font-semibold text-white'>
         Thông báo ({totalUnread} chưa đọc)
       </h3>
-      <div className='max-640:flex-col max-640:gap-3 flex w-full items-center justify-between gap-4'>
+      <div className='max-640:gap-3 flex w-full items-center justify-between gap-4'>
         <div className='flex flex-wrap gap-2' role='tablist'>
           <div className='relative flex shrink-0 items-stretch'>
             {notificationTabs.map((action) => (
@@ -129,7 +129,7 @@ export function NotificationList() {
                 action={String(action.value)}
                 activeTab={activeTab}
                 setActiveTab={handleChangeTab}
-                className='max-640:text-[13px] max-480:text-xs max-640:py-1 max-640:px-1.5'
+                className='max-640:text-[13px] max-640:py-1 max-640:px-1.5'
               />
             ))}
           </div>

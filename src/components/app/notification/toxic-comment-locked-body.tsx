@@ -54,7 +54,7 @@ export function ToxicCommentLockedBody({
         })
       )}
     >
-      <div className='flex shrink-0 justify-center'>
+      <div className='flex w-10 shrink-0 justify-center'>
         <AvatarField
           size={40}
           src={renderImageUrl(body?.author?.avatarPath)}
@@ -62,21 +62,24 @@ export function ToxicCommentLockedBody({
           disablePreview
         />
       </div>
-      <div className='flex flex-1 flex-col justify-between'>
-        <h3 className='line-clamp-2 font-medium' title={notification.title}>
+      <div className='flex flex-1 flex-col justify-between gap-2'>
+        <h3
+          className='max-640:text-[13px] line-clamp-2'
+          title={notification.title}
+        >
           {notification.title}:&nbsp;&quot;
           <span className='font-normal'>{body?.content}</span>
           &quot;&nbsp;trong phim&nbsp;
           <span className='font-semibold'>{body?.movieTitle}</span>
         </h3>
         <div
-          className='text-muted-foreground mt-2 shrink-0 text-xs'
+          className='text-muted-foreground max-640:text-xs shrink-0'
           title={convertUTCToLocal(notification.createdDate)}
         >
           {timeAgo(notification.createdDate)}
         </div>
       </div>
-      <div className='relative aspect-video w-20 shrink-0'>
+      <div className='max-480:hidden relative aspect-video w-20 shrink-0'>
         <ImageField
           src={renderImageUrl(body?.movieThumbnail)}
           alt={body?.movieTitle}

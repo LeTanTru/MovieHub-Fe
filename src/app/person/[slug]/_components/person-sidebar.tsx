@@ -89,12 +89,12 @@ export function PersonSidebar({ person }: PersonSidebarProps) {
         {kind === PERSON_KIND_ACTOR ||
         person.kinds.includes(PERSON_KIND_ACTOR) ? (
           <ButtonLike
-            className='max-640:text-[13px] max-480:text-xs'
+            className='max-640:text-[13px]'
             targetId={person.id}
             variant='person'
           />
         ) : null}
-        <ButtonSharePerson className='max-640:text-[13px] max-480:text-xs' />
+        <ButtonSharePerson className='max-640:text-[13px]' />
       </div>
 
       <div className='max-1120:bg-[rgba(0,0,0,.2)] max-1120:p-4 max-1120:rounded-md'>

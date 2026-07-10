@@ -42,7 +42,7 @@ export function ReviewHeader({
           <Badge
             variant='outline'
             className={cn(
-              'max-640:text-xs max-520:text-[10px] max-640:px-1 border text-sm font-medium uppercase',
+              'max-640:text-[13px] max-640:px-1 border text-sm font-medium uppercase',
               kind.style
             )}
           >
@@ -58,7 +58,7 @@ export function ReviewHeader({
               height={16}
               unoptimized
             />
-            <span className='max-640:text-[10px] max-520:text-[10px] text-xs'>
+            <span className='max-640:text-[10px] text-xs'>
               {ratingInfo.label}
             </span>
           </div>
@@ -84,7 +84,7 @@ export function ReviewHeader({
       </div>
       <span
         title={convertUTCToLocal(review.createdDate, DATE_TIME_FORMAT)}
-        className='max-640:text-[13px] max-520:text-xs whitespace-nowrap text-gray-400'
+        className='max-640:text-[13px] whitespace-nowrap text-gray-400'
       >
         <span className='max-640:hidden block'>
           {timeAgo(review.createdDate)}

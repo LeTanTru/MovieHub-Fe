@@ -62,7 +62,7 @@ export function CommentReplyList({
       {comment.totalChildren > 0 &&
         (!isActiveParent ? (
           <button
-            className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs mt-4 flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
+            className='hover:text-golden-glow max-640:text-[13px] mt-4 flex cursor-pointer items-center gap-2 transition-colors duration-200 ease-linear'
             onClick={onViewReplies}
             type='button'
           >
@@ -79,7 +79,7 @@ export function CommentReplyList({
               <Button
                 variant='ghost'
                 type='button'
-                className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex h-5! items-center p-0! font-medium hover:bg-transparent'
+                className='hover:text-golden-glow max-640:text-[13px] flex h-5! items-center p-0! font-medium hover:bg-transparent'
                 onClick={onLoadMore}
               >
                 <FaChevronDown /> Xem thêm&nbsp;
@@ -89,7 +89,7 @@ export function CommentReplyList({
             <Button
               variant='ghost'
               type='button'
-              className='max-640:text-[13px] max-520:text-xs flex h-5! items-center p-0! font-medium hover:bg-transparent hover:text-rose-500'
+              className='max-640:text-[13px] flex h-5! items-center p-0! font-medium hover:bg-transparent hover:text-rose-500'
               onClick={onHideReplies}
             >
               <FaChevronUp /> Ẩn trả lời

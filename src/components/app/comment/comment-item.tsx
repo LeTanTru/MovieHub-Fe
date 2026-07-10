@@ -354,7 +354,7 @@ export function CommentItem({
             breakpoints={[{ breakpoint: 640, size: level > 0 ? 38 : 50 }]}
           />
           {isAuthor && (
-            <span className='max-640:block text-golden-glow max-640:text-[13px] max-520:text-xs hidden font-semibold'>
+            <span className='max-640:block text-golden-glow max-640:text-[13px] hidden font-semibold'>
               Bạn
             </span>
           )}

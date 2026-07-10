@@ -195,7 +195,7 @@ export function CommentInput({ movie, selectedSeason }: CommentInputProps) {
                 <TextAreaField
                   control={form.control}
                   name='content'
-                  className='bg-black-denim max-640:text-[13px] max-520:text-xs max-640:placeholder:text-[13px] max-520:placeholder:text-xs block w-full resize-none rounded-md border border-solid border-transparent text-sm leading-normal font-normal text-white'
+                  className='bg-black-denim max-640:text-[13px] max-640:placeholder:text-[13px] block w-full resize-none rounded-md border border-solid border-transparent text-sm leading-normal font-normal text-white'
                   placeholder='Viết bình luận'
                   maxLength={1000}
                 />
@@ -218,7 +218,7 @@ export function CommentInput({ movie, selectedSeason }: CommentInputProps) {
                     <FaRegFaceGrinBeam className='text-golden-glow size-5' />
                   </Button>
                   <Button
-                    className='text-golden-glow hover:text-golden-glow max-640:text-[13px] max-520:text-xs max-640:pr-2! max-640:py-0 h-fit gap-2 bg-transparent px-2! py-0 font-medium hover:bg-transparent'
+                    className='text-golden-glow hover:text-golden-glow max-640:text-[13px] max-640:pr-2! max-640:py-0 h-fit gap-2 bg-transparent px-2! py-0 font-medium hover:bg-transparent'
                     disabled={isPending || !form.formState.isDirty}
                     type='submit'
                     variant='ghost'

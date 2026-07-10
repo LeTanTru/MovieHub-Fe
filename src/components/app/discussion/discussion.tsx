@@ -50,7 +50,7 @@ export function Discussion({
 }: DiscussionProps) {
   const { id } = useSlugId();
 
-  const { profile, isAuthenticated } = useAuth();
+  const { profile } = useAuth();
   const { movie, discussionTab, selectedSeason, setDiscussionTab } =
     useMovieStore(
       useShallow((s) => ({
@@ -164,7 +164,7 @@ export function Discussion({
                 action={action.key}
                 activeTab={discussionTab}
                 setActiveTab={setDiscussionTab}
-                className='max-640:text-[13px] max-520:text-xs'
+                className='max-640:text-[13px]'
               />
             ))}
           </div>
@@ -200,11 +200,7 @@ export function Discussion({
             </div>
           )}
           <CommentInput movie={movie} selectedSeason={selectedSeason} />
-          <div
-            className={cn('my-2 flex items-center gap-2', {
-              'my-4': isAuthenticated
-            })}
-          >
+          <div className='my-4 flex items-center gap-2'>
             <CommentSort selectedSort={sortBy} onSortChange={setSortBy} />
             <CommentFilter
               movie={movie}
@@ -223,11 +219,7 @@ export function Discussion({
           />
         </Activity>
         <Activity visible={isReviewTab}>
-          <div
-            className={cn('my-2 flex items-center gap-2', {
-              'my-4': isAuthenticated
-            })}
-          >
+          <div className='my-4 flex items-center gap-2'>
             <ReviewSort
               selectedSort={sortByReview}
               onSortChange={setSortByReview}

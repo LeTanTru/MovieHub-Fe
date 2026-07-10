@@ -29,7 +29,7 @@ export function Sidebar() {
           >
             <Link
               href={item.link}
-              className='max-768:flex-col max-640:text-[13px] max-640:px-1.5 max-480:text-xs flex items-center gap-2 px-2 py-4'
+              className='max-768:flex-col max-640:text-[13px] max-640:px-1.5 flex items-center gap-2 px-2 py-4'
             >
               <item.icon className={item.className} />
               {item.title}
