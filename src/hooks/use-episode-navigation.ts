@@ -1,4 +1,4 @@
-import type { useNavigate } from '@/hooks';
+import type { useNavigate } from './use-navigate';
 import { route } from '@/routes';
 import type { MovieItemResType, MovieResType, SeasonResType } from '@/types';
 import { useCallback } from 'react';

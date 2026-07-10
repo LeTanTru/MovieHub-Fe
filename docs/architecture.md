@@ -196,8 +196,8 @@ Rendering pattern in comments and reviews:
 The watch page is centered around:
 
 - `src/app/watch/[slug]/page.tsx` for SSR prefetch and metadata.
-- `src/app/watch/[slug]/_context/watch-player-context.tsx` for playback state/actions.
-- `src/app/watch/[slug]/_hooks/` for continue-watching, episode navigation, intro/outro skip, player settings, watch history, and player data.
+- `src/contexts/watch-player-context.tsx` for playback state/actions.
+- `src/hooks/` for continue-watching, episode navigation, intro/outro skip, player settings, watch history, and player data.
 - `src/components/video-player/video-player.tsx` for the reusable Vidstack player.
 
 The player supports:

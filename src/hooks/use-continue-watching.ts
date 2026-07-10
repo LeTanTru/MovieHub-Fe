@@ -1,4 +1,4 @@
-import { useDisclosure } from '@/hooks';
+import { useDisclosure } from './use-disclosure';
 import type { VideoResType, WatchHistoryBodyType } from '@/types';
 import type { MediaPlayerInstance } from '@vidstack/react';
 import { useEffect, useState } from 'react';

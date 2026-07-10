@@ -6,6 +6,7 @@ import { submenuClass } from './styles';
 import { SubmenuButton } from './submenu-button';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
+import { BRIGHTNESS_MAX, BRIGHTNESS_MIN } from '@/constants';
 
 type BrightnessSubmenuProps = {
   brightness: number;
@@ -24,22 +25,20 @@ export function BrightnessSubmenu({
 
       <Menu.Content className={submenuClass}>
         <div className='p-2'>
-          <div className='flex items-center gap-3 rounded-sm bg-white/10 px-3 py-2'>
+          <div className='flex items-center justify-between gap-2 rounded-sm bg-white/10 px-3 py-2'>
             <SunIcon className='size-4 shrink-0 text-white/70' />
             <Slider
-              min={0}
-              max={100}
+              min={BRIGHTNESS_MIN}
+              max={BRIGHTNESS_MAX}
               step={5}
               value={[brightness]}
               onValueChange={([v]) => onBrightnessChange(v)}
-              showTooltip
-              tooltipContent={(v) => `${v}%`}
               className='w-full'
               rangeClassName='bg-white cursor-pointer'
               thumbClassName='border-white bg-white cursor-pointer'
               trackClassName='bg-white/20'
             />
-            <Badge className='w-10 shrink-0 text-right text-sm text-white/70'>
+            <Badge className='w-10 bg-transparent p-0 text-right text-sm text-white/70 hover:bg-transparent'>
               {hint}
             </Badge>
           </div>

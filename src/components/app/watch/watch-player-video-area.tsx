@@ -12,21 +12,19 @@ import {
 import { Button } from '@/components/form';
 import { cn } from '@/lib';
 import { EpisodeList } from './episode-list';
+import { languages, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
 import { PlaylistIcon } from '@/assets';
 import { useDisclosure } from '@/hooks';
-import { usePlayerSettings } from '@/app/watch/[slug]/_hooks';
 import { useState } from 'react';
 import { useVideoLibrarySubtitleListQuery } from '@/queries';
-import { useWatchPlayer } from '@/app/watch/[slug]/_context';
-import { languages, VIDEO_SOURCE_TYPE_INTERNAL } from '@/constants';
-import type { VideoLibrarySubtitleResType } from '@/types';
+import { useWatchPlayer } from '@/contexts';
 import { VideoPlayer } from '@/components/video-player';
 import { WatchAskContinueModal } from './watch-ask-continue-modal';
 import type { TrackProps } from '@vidstack/react';
+import type { VideoLibrarySubtitleResType } from '@/types';
 
 export function WatchPlayerVideoArea() {
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const playerSettings = usePlayerSettings();
 
   const {
     opened: isEpisodeListOpen,
@@ -55,7 +53,10 @@ export function WatchPlayerVideoArea() {
     handleSeeked,
     handleVideoEnded,
     handlePlayerCanPlay,
+    audio,
     brightness,
+    playbackSpeed,
+    resolution,
     subtitleEnabled,
     subtitleFontSize,
     subtitleTextColor,
@@ -160,11 +161,11 @@ export function WatchPlayerVideoArea() {
             }}
             volume={
               isMobileDevice() || isTabletDevice()
-                ? playerSettings.audio / 100 || 1
-                : playerSettings.audio / 100 || 0.5
+                ? audio / 100 || 1
+                : audio / 100 || 0.5
             }
-            playbackRate={playerSettings.playbackSpeed || 1}
-            defaultQuality={playerSettings.resolution}
+            playbackRate={playbackSpeed || 1}
+            defaultQuality={resolution}
             prev={isSeries && !isFirstEpisode}
             next={isSeries && !isLastEpisode}
             skipOutro={isSeries && !isLastEpisode}

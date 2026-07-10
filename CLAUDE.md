@@ -108,9 +108,10 @@ QueryProvider
 - Logging: use `logger` from `@/logger`; do not use `console.log`.
 - Dynamic movie-like routes use `slug.id`; extract ID with `getIdFromSlug()` or `useSlugId()`.
 - Plain id routes, such as `/person/[id]`, use the raw `id`.
-- Video player logic uses Vidstack + HLS.js and watch-specific hooks/context under `src/app/watch/[slug]/`.
+- Video player logic uses Vidstack + HLS.js; watch-specific hooks live in `src/hooks/` and the player context in `src/contexts/`.
 - Conventional commits: `type(scope): description`.
-- Barrel exports are expected in `api-requests/`, `queries/`, `hooks/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, and `schemaValidations/`.
+- Barrel exports are expected in `api-requests/`, `queries/`, `hooks/`, `contexts/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, and `schemaValidations/`.
+- Import sibling modules directly inside a barrel directory (`./use-auth`, not `@/hooks`) to avoid circular imports through the barrel.
 
 ## Environment Variables
 
@@ -145,19 +146,22 @@ Do not read `.env`, `.env.local`, `supersecrets.txt`, or `credentials.json`.
 
 ## Naming Conventions
 
-| Type           | Pattern                                | Example                |
-| -------------- | -------------------------------------- | ---------------------- |
-| API files      | `<domain>.api-request.ts`              | `movie.api-request.ts` |
-| Query files    | `<domain>.query.ts`                    | `movie.query.ts`       |
-| Type files     | `<domain>.type.ts`                     | `movie.type.ts`        |
-| Schema files   | `<domain>.schema.ts`                   | `auth.schema.ts`       |
-| Store files    | `<domain>.store.ts`                    | `auth.store.ts`        |
-| Utils          | `<name>.util.ts`                       | `http.util.ts`         |
-| Response types | `*ResType`                             | `MovieResType`         |
-| Search types   | `*SearchType`                          | `MovieSearchType`      |
-| Body types     | `*BodyType`                            | `LoginBodyType`        |
-| Store types    | `*StoreType`                           | `AuthStoreType`        |
-| Private dirs   | `_components/`, `_hooks/`, `_context/` | `_components/slider/`  |
+| Type           | Pattern                   | Example                |
+| -------------- | ------------------------- | ---------------------- |
+| API files      | `<domain>.api-request.ts` | `movie.api-request.ts` |
+| Query files    | `<domain>.query.ts`       | `movie.query.ts`       |
+| Type files     | `<domain>.type.ts`        | `movie.type.ts`        |
+| Schema files   | `<domain>.schema.ts`      | `auth.schema.ts`       |
+| Store files    | `<domain>.store.ts`       | `auth.store.ts`        |
+| Utils          | `<name>.util.ts`          | `http.util.ts`         |
+| Response types | `*ResType`                | `MovieResType`         |
+| Search types   | `*SearchType`             | `MovieSearchType`      |
+| Body types     | `*BodyType`               | `LoginBodyType`        |
+| Store types    | `*StoreType`              | `AuthStoreType`        |
+| Private dirs   | `_components/`            | `_components/slider/`  |
+
+Route-local `_components/` is the only private route dir still in use. Hooks
+and contexts are shared: they belong in `src/hooks/` and `src/contexts/`.
 
 ### Export Style
 

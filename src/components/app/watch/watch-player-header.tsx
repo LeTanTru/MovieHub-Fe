@@ -1,10 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { FaChevronLeft } from 'react-icons/fa6';
 import { route } from '@/routes';
-import { useWatchPlayer } from '@/app/watch/[slug]/_context';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useWatchPlayer } from '@/contexts';
+import Link from 'next/link';
 
 export function WatchPlayerHeader() {
   const { movie, videoTitle } = useWatchPlayer();

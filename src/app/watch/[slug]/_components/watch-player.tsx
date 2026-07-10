@@ -1,4 +1,4 @@
-import { WatchPlayerProvider } from '@/app/watch/[slug]/_context';
+import { WatchPlayerProvider } from '@/contexts';
 import './watch-player.css';
 
 import {

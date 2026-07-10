@@ -163,3 +163,6 @@ export const MILLISECOND = 1_000;
 export const ROOM_REASON_TIMEOUT = 'ROOM_TIMEOUT';
 export const ROOM_REASON_END = 'ROOM_END';
 export const ROOM_REASON_HOST_LEFT = 'HOST_LEFT';
+
+export const BRIGHTNESS_MIN = 0;
+export const BRIGHTNESS_MAX = 100;

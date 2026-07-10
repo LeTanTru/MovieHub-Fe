@@ -167,8 +167,8 @@ Conventions:
 
 When changing watch behavior:
 
-- Start from `src/app/watch/[slug]/_context/watch-player-context.tsx`.
-- Keep playback state and navigation logic in watch-specific hooks/context.
+- Start from `src/contexts/watch-player-context.tsx`.
+- Keep playback state and navigation logic in `src/hooks`/`src/contexts`.
 - Keep `src/components/video-player/video-player.tsx` reusable.
 - Preserve watch-history updates, continue-watching modal behavior, skip intro/outro, and episode navigation.
 - Use `renderVideoUrl()`, `renderImageUrl()`, and `renderVttUrl()` for media URLs.

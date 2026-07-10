@@ -8,7 +8,19 @@ import {
   useReducer,
   useRef
 } from 'react';
-import { useAuth, useAnonymousToken, useNavigate, useMovie } from '@/hooks';
+import {
+  useAuth,
+  useAnonymousToken,
+  useNavigate,
+  useMovie,
+  useContinueWatching,
+  useEpisodeNavigation,
+  useIntroSkip,
+  useOutroSkip,
+  usePlayerSettings,
+  useWatchHistory,
+  useWatchPlayerData
+} from '@/hooks';
 import {
   useWatchHistoryTrackingMutation,
   useWatchHistoryListQuery
@@ -17,15 +29,6 @@ import type {
   MediaTimeUpdateEventDetail,
   MediaPlayerInstance
 } from '@vidstack/react';
-import {
-  useContinueWatching,
-  useEpisodeNavigation,
-  useIntroSkip,
-  useOutroSkip,
-  usePlayerSettings,
-  useWatchHistory,
-  useWatchPlayerData
-} from '@/app/watch/[slug]/_hooks';
 import type { MovieResType, VideoResType } from '@/types';
 
 type PlaybackState = {
@@ -72,19 +75,25 @@ type WatchPlayerContextType = {
   handleVideoEnded: () => void;
   handlePlayerCanPlay: () => void;
   autoNextEpisode: boolean;
-  skipIntro: boolean;
+  audio: number;
   brightness: number;
+  playbackSpeed: number;
+  resolution: number;
+  skipIntro: boolean;
+  subtitleBackgroundColor: number;
   subtitleEnabled: boolean;
   subtitleFontSize: number;
   subtitleTextColor: number;
-  subtitleBackgroundColor: number;
-  handleToggleAutoNextEpisode: () => void;
-  handleToggleSkipIntro: () => void;
+  handleChangeAudio: (value: number) => void;
   handleChangeBrightness: (value: number) => void;
-  handleToggleSubtitleEnabled: () => void;
+  handleChangePlaybackSpeed: (value: number) => void;
+  handleChangeResolution: (value: number) => void;
+  handleChangeSubtitleBackgroundColor: (value: number) => void;
   handleChangeSubtitleFontSize: (value: number) => void;
   handleChangeSubtitleTextColor: (value: number) => void;
-  handleChangeSubtitleBackgroundColor: (value: number) => void;
+  handleToggleAutoNextEpisode: () => void;
+  handleToggleSkipIntro: () => void;
+  handleToggleSubtitleEnabled: () => void;
 };
 
 const WatchPlayerContext = createContext<WatchPlayerContextType | null>(null);
@@ -133,20 +142,26 @@ export function WatchPlayerProvider({
 
   // — Settings
   const {
+    audio,
     autoNextEpisode,
-    skipIntro,
     brightness,
+    playbackSpeed,
+    resolution,
+    skipIntro,
+    subtitleBackgroundColor,
     subtitleEnabled,
     subtitleFontSize,
     subtitleTextColor,
-    subtitleBackgroundColor,
-    handleToggleAutoNextEpisode,
-    handleToggleSkipIntro,
+    handleChangeAudio,
     handleChangeBrightness,
-    handleToggleSubtitleEnabled,
+    handleChangePlaybackSpeed,
+    handleChangeResolution,
+    handleChangeSubtitleBackgroundColor,
     handleChangeSubtitleFontSize,
     handleChangeSubtitleTextColor,
-    handleChangeSubtitleBackgroundColor
+    handleToggleAutoNextEpisode,
+    handleToggleSkipIntro,
+    handleToggleSubtitleEnabled
   } = usePlayerSettings();
 
   // — Watch history API
@@ -256,19 +271,25 @@ export function WatchPlayerProvider({
         handleVideoEnded,
         handlePlayerCanPlay,
         autoNextEpisode,
-        skipIntro,
+        audio,
         brightness,
+        playbackSpeed,
+        resolution,
+        skipIntro,
+        subtitleBackgroundColor,
         subtitleEnabled,
         subtitleFontSize,
         subtitleTextColor,
-        subtitleBackgroundColor,
-        handleToggleAutoNextEpisode,
-        handleToggleSkipIntro,
+        handleChangeAudio,
         handleChangeBrightness,
-        handleToggleSubtitleEnabled,
+        handleChangePlaybackSpeed,
+        handleChangeResolution,
+        handleChangeSubtitleBackgroundColor,
         handleChangeSubtitleFontSize,
         handleChangeSubtitleTextColor,
-        handleChangeSubtitleBackgroundColor
+        handleToggleAutoNextEpisode,
+        handleToggleSkipIntro,
+        handleToggleSubtitleEnabled
       }}
     >
       {children}

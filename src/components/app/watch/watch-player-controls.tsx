@@ -8,10 +8,10 @@ import { ButtonReport } from './button-report';
 import { ButtonRoom } from './button-room';
 import { ButtonShareMovie } from '@/components/app/button-share';
 import { ButtonSkipIntro } from './button-skip-intro';
-import { useWatchPlayer } from '@/app/watch/[slug]/_context';
+import { Calendar } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMovieInfo } from '@/hooks';
-import { Calendar } from 'lucide-react';
+import { useWatchPlayer } from '@/contexts';
 
 export function WatchPlayerControls() {
   const {
