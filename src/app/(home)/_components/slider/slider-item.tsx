@@ -108,10 +108,10 @@ export function SliderItem({
                     src={renderImageUrl(slider.movie.imageTitleUrl)}
                     alt={slider.movie.title}
                     loading={slider.ordering === 0 ? 'eager' : 'lazy'}
-                    width={400}
-                    height={130}
+                    width={1200}
+                    height={390}
+                    sizes='400px'
                     decoding='async'
-                    preload={slider.ordering === 0}
                     priority={slider.ordering === 0}
                   />
                 </Link>
