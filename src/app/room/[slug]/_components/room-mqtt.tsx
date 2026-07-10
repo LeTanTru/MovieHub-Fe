@@ -303,7 +303,7 @@ export function RoomMqtt({ room }: RoomMqttProps) {
   // Fetch chat history on first join
   const { data: chatList } = useChatListQuery({
     params: { roomId: room.id },
-    enabled: isJoined && isRunning
+    enabled: isAuthenticated
   });
 
   useEffect(() => {

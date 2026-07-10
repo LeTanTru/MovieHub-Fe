@@ -2,6 +2,7 @@
 
 import {
   ErrorCode,
+  languages,
   MILLISECOND,
   mqttCMDs,
   mqttTopics,
@@ -139,7 +140,9 @@ export function PlayerMain() {
         subtitle.fileUrl,
         video?.sourceType || 1
       ),
-      label: subtitle.label,
+      label:
+        languages.find((lang) => lang.value === subtitle.language)?.label ||
+        subtitle.label,
       language: subtitle.language,
       kind: 'subtitles',
       type: 'vtt',

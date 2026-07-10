@@ -4,15 +4,20 @@ import mqtt, { MqttClient } from 'mqtt';
 
 let client: MqttClient;
 
-const MQTT_RECONNECT_PERIOD = 3000;
-const MQTT_CONNECT_TIMEOUT = 30000;
-const MQTT_KEEPALIVE = 30;
+const generateClientId = () =>
+  `moviehub_${Math.random().toString(36).slice(2, 10)}_${Date.now()}`;
+
+const MQTT_CONNECT_TIMEOUT = 10_000;
+const MQTT_KEEPALIVE = 60;
+const MQTT_RECONNECT_PERIOD = 5_000;
 
 export const getMqttClient = () => {
   if (!client) {
     client = mqtt.connect(envConfig.NEXT_PUBLIC_MQTT_BROKER as string, {
       username: envConfig.NEXT_PUBLIC_MQTT_USERNAME as string,
       password: envConfig.NEXT_PUBLIC_MQTT_PASSWORD as string,
+      clientId: generateClientId(),
+      clean: true, // always start a fresh session; prevents stale broker state
       reconnectPeriod: MQTT_RECONNECT_PERIOD,
       connectTimeout: MQTT_CONNECT_TIMEOUT,
       keepalive: MQTT_KEEPALIVE

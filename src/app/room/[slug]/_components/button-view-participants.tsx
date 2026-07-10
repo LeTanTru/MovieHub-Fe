@@ -123,7 +123,9 @@ export function ButtonViewParticipants() {
                           </span>
                         )}
                       </span>
-                      {participant.user.id === profile?.id && ' (Bạn)'}
+                      <span className='text-xs'>
+                        {participant.user.id === profile?.id && ' (Bạn)'}
+                      </span>
                     </div>
                     <span className='text-xs'>{participant.user.email}</span>
                   </div>

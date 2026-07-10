@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { SelectField } from '@/components/form';
 import { Form } from '@/components/ui/form';
 import type { ReviewSortType } from '@/types';
+import { sortOptions } from '@/constants';
 
 type ReviewSortProps = {
   selectedSort: ReviewSortType;
@@ -12,12 +13,6 @@ type ReviewSortProps = {
 type FormValues = {
   sortType: ReviewSortType;
 };
-
-const sortOptions = [
-  { value: 'newest', label: 'Mới nhất' },
-  { value: 'topLiked', label: 'Nhiều lượt thích nhất' },
-  { value: 'topDisliked', label: 'Nhiều lượt không thích nhất' }
-];
 
 export function ReviewSort({ selectedSort, onSortChange }: ReviewSortProps) {
   const form = useForm<FormValues>({
@@ -46,9 +41,7 @@ export function ReviewSort({ selectedSort, onSortChange }: ReviewSortProps) {
         className='max-640:text-[13px] rounded-md text-white'
         formItemClassName='max-640:flex-1 max-768:w-1/3 h-8 w-50'
         renderOption={(option) => (
-          <span title={option.label} className='text-xs'>
-            {option.label}
-          </span>
+          <span title={option.label}>{option.label}</span>
         )}
       />
     </Form>

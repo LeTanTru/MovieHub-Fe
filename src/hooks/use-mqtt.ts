@@ -55,16 +55,31 @@ export const useMqttSubscribe = (topic: string, enabled: boolean = true) => {
   useEffect(() => {
     if (!enabled || !topic) return;
 
-    client.subscribe(topic, (err) => {
-      if (!err) {
-        logger.info(`[MQTT] Subscribed to MQTT topic: ${topic}`);
-      } else {
-        logger.error(`[MQTT_SUBSCRIBE_ERROR] ${topic}`, err);
-      }
-    });
+    const subscribe = () => {
+      client.subscribe(topic, (err) => {
+        if (!err) {
+          logger.info(`[MQTT] Subscribed to MQTT topic: ${topic}`);
+        } else {
+          logger.error(`[MQTT_SUBSCRIBE_ERROR] ${topic}`, err);
+        }
+      });
+    };
+
+    // If already connected, subscribe immediately; otherwise wait for connect
+    if (client.connected) {
+      subscribe();
+    } else {
+      client.once('connect', subscribe);
+    }
+
+    // Re-subscribe after every reconnect
+    client.on('connect', subscribe);
 
     return () => {
-      client.unsubscribe(topic);
+      client.off('connect', subscribe);
+      if (client.connected) {
+        client.unsubscribe(topic);
+      }
     };
   }, [client, enabled, topic]);
 };
