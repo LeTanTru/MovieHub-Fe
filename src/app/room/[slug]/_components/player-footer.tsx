@@ -8,11 +8,12 @@ import { ButtonViewParticipants } from './button-view-participants';
 import { ButtonWatchAlone } from './button-watch-alone';
 import { cn } from '@/lib';
 import { convertUTCToLocal, renderImageUrl, timeAgo } from '@/utils';
-import { ROOM_STATE_RUNNING } from '@/constants';
+import { MINUTE, ROOM_STATE_RUNNING, SECOND } from '@/constants';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/hooks';
 import { useRoomStore } from '@/store';
 import { useShallow } from 'zustand/shallow';
+import { useState, useEffect, useRef } from 'react';
 
 export function PlayerFooter() {
   const { profile } = useAuth();
@@ -21,6 +22,38 @@ export function PlayerFooter() {
       room: state.room
     }))
   );
+
+  const [timeAgoText, setTimeAgoText] = useState(() =>
+    timeAgo(room?.createdDate || '')
+  );
+
+  const slowIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    const date = room?.createdDate || '';
+    setTimeAgoText(timeAgo(date));
+
+    const ageMs = Date.now() - new Date(date).getTime();
+    const remainingMs = Math.max(0, MINUTE - ageMs);
+
+    const fastInterval = setInterval(() => {
+      setTimeAgoText(timeAgo(date));
+    }, 10 * SECOND);
+
+    const switchTimeout = setTimeout(() => {
+      clearInterval(fastInterval);
+      setTimeAgoText(timeAgo(date));
+      slowIntervalRef.current = setInterval(() => {
+        setTimeAgoText(timeAgo(date));
+      }, MINUTE);
+    }, remainingMs);
+
+    return () => {
+      clearInterval(fastInterval);
+      clearTimeout(switchTimeout);
+      if (slowIntervalRef.current) clearInterval(slowIntervalRef.current);
+    };
+  }, [room?.createdDate]);
 
   if (!room) return <PlayerFooter.Skeleton />;
 
@@ -50,7 +83,7 @@ export function PlayerFooter() {
               className='text-dark-gray text-xs'
               title={convertUTCToLocal(room.createdDate)}
             >
-              {timeAgo(room.createdDate)}
+              {timeAgoText}
             </span>
           </div>
         </div>
