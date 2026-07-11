@@ -57,8 +57,6 @@ export function PlayerMain() {
   const { profile } = useAuth();
   const playerRef = useRef<MediaPlayerInstance>(null);
 
-  // Per-viewer visual settings (brightness + subtitle style). These are local
-  // preferences and must NOT be synced over MQTT like play/seek/speed.
   const {
     brightness,
     subtitleEnabled,
