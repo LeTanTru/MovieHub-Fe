@@ -47,7 +47,7 @@ import {
 } from '@/queries';
 import { VideoPlayer } from '@/components/video-player';
 import type { MediaPlayerInstance, TrackProps } from '@vidstack/react';
-import { useAnonymousToken, useAuth } from '@/hooks';
+import { useAnonymousToken, useAuth, usePlayerSettings } from '@/hooks';
 import { logger } from '@/logger';
 import { useShallow } from 'zustand/shallow';
 import { useEffect, useRef, useState } from 'react';
@@ -56,6 +56,21 @@ export function PlayerMain() {
   const { token, isLoadingToken } = useAnonymousToken();
   const { profile } = useAuth();
   const playerRef = useRef<MediaPlayerInstance>(null);
+
+  // Per-viewer visual settings (brightness + subtitle style). These are local
+  // preferences and must NOT be synced over MQTT like play/seek/speed.
+  const {
+    brightness,
+    subtitleEnabled,
+    subtitleFontSize,
+    subtitleTextColor,
+    subtitleBackgroundColor,
+    handleChangeBrightness,
+    handleToggleSubtitleEnabled,
+    handleChangeSubtitleFontSize,
+    handleChangeSubtitleTextColor,
+    handleChangeSubtitleBackgroundColor
+  } = usePlayerSettings();
 
   const { room, isJoined, isKicked, playerState } = useRoomStore(
     useShallow((state) => ({
@@ -75,10 +90,8 @@ export function PlayerMain() {
 
   const { data: videoLibrarySubtitleListData } =
     useVideoLibrarySubtitleListQuery({
-      params: {
-        videoLibraryId: video?.id || ''
-      },
-      enabled: !!video && room?.state === ROOM_STATE_RUNNING
+      params: { videoLibraryId: video?.id || '' },
+      enabled: !!video?.id && room?.state === ROOM_STATE_RUNNING
     });
 
   const isHost = !!room && profile?.id === room.host.id;
@@ -146,7 +159,7 @@ export function PlayerMain() {
       language: subtitle.language,
       kind: 'subtitles',
       type: 'vtt',
-      default: subtitle.isDefault
+      default: subtitleEnabled && subtitle.isDefault
     })
   );
 
@@ -280,6 +293,18 @@ export function PlayerMain() {
             keyDisabled={!isHost}
             hidePoster={playerState.currentPositionMovie > 0}
             textTracks={textTracks}
+            brightness={brightness}
+            subtitleEnabled={subtitleEnabled}
+            subtitleFontSize={subtitleFontSize}
+            subtitleTextColor={subtitleTextColor}
+            subtitleBackgroundColor={subtitleBackgroundColor}
+            onBrightnessChange={handleChangeBrightness}
+            onSubtitleEnabledToggle={handleToggleSubtitleEnabled}
+            onSubtitleFontSizeChange={handleChangeSubtitleFontSize}
+            onSubtitleTextColorChange={handleChangeSubtitleTextColor}
+            onSubtitleBackgroundColorChange={
+              handleChangeSubtitleBackgroundColor
+            }
             onCanPlay={handleCanPlay}
             onRateChange={handleRateChange}
             onSeeked={handleSeek}
