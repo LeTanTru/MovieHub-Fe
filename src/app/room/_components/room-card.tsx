@@ -150,7 +150,7 @@ export function RoomCard({
             trigger={
               <button
                 type='button'
-                className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
+                className='hover:text-golden-glow flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
               >
                 <FaEllipsisVertical className='size-5' />
               </button>

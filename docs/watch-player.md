@@ -14,16 +14,6 @@ app/watch/[slug]/
   page.tsx                # SSR: resolves id from slug, prefetches queries, sets metadata/JSON-LD
   layout.tsx
   loading.tsx
-  _context/
-    watch-player-context.tsx   # WatchPlayerProvider / useWatchPlayer()
-  _hooks/
-    use-watch-player-data.tsx  # resolves season/episode/video from movie + query params
-    use-player-settings.tsx    # brightness/subtitle/auto-next/skip-intro settings (persisted)
-    use-continue-watching.tsx  # "resume or start over" modal
-    use-watch-history.tsx      # periodic + on-unload watch-history tracking
-    use-intro-skip.tsx         # auto-skip intro window
-    use-outro-skip.tsx         # auto-advance to next episode at outro
-    use-episode-navigation.tsx # prev/next/ended episode routing
   _components/
     watch.tsx              # top-level: fetches movie, seeds movie store, renders player + container
     watch-player.tsx        # WatchPlayerProvider wrapper + header/video-area/controls layout
@@ -31,6 +21,24 @@ app/watch/[slug]/
     watch-main.tsx           # info, schedule badge, episode list, discussion
     watch-side.tsx           # actor list, suggestions, review/comment buttons
     not-found.tsx
+```
+
+`WatchPlayerProvider`/`useWatchPlayer()` and the watch-specific hooks it
+composes are not private to this route anymore — they live in the shared
+`src/contexts/` and `src/hooks/` directories so they follow the project's
+normal barrel-export convention:
+
+```text
+contexts/
+  watch-player-context.tsx   # WatchPlayerProvider / useWatchPlayer()
+hooks/
+  use-watch-player-data.ts   # resolves season/episode/video from movie + query params
+  use-player-settings.ts     # brightness/subtitle/audio/speed/resolution/auto-next/skip-intro settings
+  use-continue-watching.ts   # "resume or start over" modal
+  use-watch-history.ts       # periodic + on-unload watch-history tracking
+  use-intro-skip.ts          # auto-skip intro window
+  use-outro-skip.ts          # auto-advance to next episode at outro
+  use-episode-navigation.ts  # prev/next/ended episode routing
 ```
 
 The actual player-facing UI (video area, controls, header) lives in
@@ -57,7 +65,7 @@ components/app/watch/
 WatchPage (page.tsx, server component)
   └─ Watch (fetches movie by id, seeds useMovieStore)
        ├─ WatchPlayer
-       │    └─ WatchPlayerProvider            (_context/watch-player-context.tsx)
+       │    └─ WatchPlayerProvider            (contexts/watch-player-context.tsx)
        │         ├─ WatchPlayerHeader
        │         └─ watch-player-container
        │              ├─ WatchPlayerVideoArea  → <VideoPlayer> (video-player.md)
@@ -121,37 +129,37 @@ and additionally fetches `videoLibrarySubtitleListData` to build the
 
 ## Player Settings
 
-`usePlayerSettings()` (`_hooks/use-player-settings.tsx`) manages seven
-settings: `autoNextEpisode`, `skipIntro`, `brightness`, `subtitleEnabled`,
-`subtitleFontSize`, `subtitleTextColor`, `subtitleBackgroundColor`. It's a
-`useReducer` with one action per field (`TOGGLE_*` / `SET_*`) plus a
-`LOAD_SETTINGS` bulk-replace action.
+`usePlayerSettings()` (`src/hooks/use-player-settings.ts`) manages ten
+settings: `audio`, `autoNextEpisode`, `brightness`, `playbackSpeed`,
+`resolution`, `skipIntro`, `subtitleBackgroundColor`, `subtitleEnabled`,
+`subtitleFontSize`, `subtitleTextColor`. It's a `useReducer` with one action
+per field (`TOGGLE_*` / `SET_*`) plus a `LOAD_SETTINGS` bulk-replace action.
 
-**Resolution order for each setting**, highest priority first:
+The reducer is initialized (and re-synced via a `useEffect`) from the
+signed-in user's persisted profile settings (`profile.settings` JSON via
+`useAuth()`), falling back to hardcoded defaults (e.g.
+`SUBTITLE_FONT_SIZE_SMALL`, `SUBTITLE_BACKGROUND_COLOR_TRANSPARENT`,
+`BRIGHTNESS_MAX` for brightness) when a field is absent.
 
-1. Per-browser `localStorage` value (`storageKeys.WATCH_*`), if present —
-   loaded once on mount via a `useEffect` and the `loadStored(key, fallback,
-parse)` helper.
-2. The signed-in user's persisted profile settings
-   (`SettingResType`, parsed from `profile.settings` JSON via `useAuth()`).
-3. A hardcoded default (e.g. `SUBTITLE_FONT_SIZE_SMALL`,
-   `SUBTITLE_BACKGROUND_COLOR_TRANSPARENT`, `100` for brightness).
-
-Every `handleChange*`/`handleToggle*` setter goes through a shared
-`dispatchAndPersist(action, key, value)` helper: it dispatches the reducer
-action _and_ writes the new value to `localStorage` in the same call, so
-in-memory state and persisted state never drift apart within a session.
-
-This hook is intentionally **local/session-scoped** — it does not call any
-mutation to persist to the backend. The account-level defaults a user sees the
-first time they open the watch page on a new device come from
-`src/app/account/settings/_components/settings-form.tsx` (backed by
-`settingsSchema` in `src/schemaValidations/settings.schema.ts`), which is a
-separate, explicit "Settings" page under `/account/settings`. Keep the
-defaults in both places (`use-player-settings.tsx`, `settings.schema.ts`,
-`settings-form.tsx`, and `setting-menu.tsx`'s own fallback) in sync — see the
-`SUBTITLE_*` constants in `src/constants/constant.ts` and the option lists in
+This hook is **in-memory/session-scoped only** — `handleChange*`/
+`handleToggle*` setters just dispatch to the reducer; nothing writes to
+`localStorage` or calls a mutation to persist changes back to the backend.
+Any change made from the watch page (brightness, subtitle style, skip-intro,
+auto-next-episode, etc.) is lost on reload/navigation unless the account-level
+"Settings" page (`src/app/account/settings/_components/settings-form.tsx`,
+backed by `settingsSchema` in `src/schemaValidations/settings.schema.ts`) is
+used to persist it to the profile. Keep the defaults in both places
+(`use-player-settings.ts`, `settings.schema.ts`, `settings-form.tsx`, and
+`setting-menu.tsx`'s own fallback) in sync — see the `SUBTITLE_*`/`BRIGHTNESS_*`
+constants in `src/constants/constant.ts` and the option lists in
 `src/constants/master-data/subtitle.ts`.
+
+`useWatchPlayer()` is the **only** place that should call `usePlayerSettings()`
+within the watch-player tree — it's already part of `WatchPlayerProvider`'s
+composed state. Consumers (`WatchPlayerVideoArea`, `WatchPlayerControls`, etc.)
+should read settings off `useWatchPlayer()` rather than calling
+`usePlayerSettings()` again, since a second call creates an independent
+reducer instance that can drift out of sync with the provider's copy.
 
 ## Data Flow Summary
 
@@ -166,7 +174,7 @@ Watch (client)
 
 WatchPlayerProvider
   → useWatchPlayerData(movie)       → season/episode/video resolution
-  → usePlayerSettings()             → persisted playback preferences
+  → usePlayerSettings()             → session-scoped playback preferences
   → useWatchHistory* hooks          → resume position, periodic save
   → useIntroSkip / useOutroSkip     → time-based automatic actions
   → useEpisodeNavigation            → prev/next/ended routing
@@ -180,13 +188,13 @@ WatchPlayerVideoArea
 ## Conventions For This Route
 
 - Keep movie/episode/watch-history/settings domain logic in
-  `_context`/`_hooks` here, not inside `VideoPlayer`. `VideoPlayer` should stay
-  reusable for the room player and trailer modal, which don't have this
+  `src/contexts`/`src/hooks`, not inside `VideoPlayer`. `VideoPlayer` should
+  stay reusable for the room player and trailer modal, which don't have this
   context available.
 - New per-user playback preferences should follow the existing
-  `usePlayerSettings` pattern (reducer action + `dispatchAndPersist` + a
-  `storageKeys.WATCH_*` entry) rather than introducing a separate storage
-  mechanism.
+  `usePlayerSettings` pattern (reducer action + `SET_*`/`TOGGLE_*`), and should
+  only be read/dispatched through `useWatchPlayer()` — don't call
+  `usePlayerSettings()` a second time elsewhere in the tree.
 - `useWatchPlayer()` throws if used outside `WatchPlayerProvider` — only
   components rendered under `<WatchPlayer>` (i.e. inside
   `components/app/watch/watch-player-*`) may call it.

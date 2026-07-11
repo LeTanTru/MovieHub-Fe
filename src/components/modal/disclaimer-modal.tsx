@@ -11,7 +11,7 @@ import { AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/form/button';
 import { useEffect } from 'react';
 import { storageKeys } from '@/constants';
-import { getData, setData } from '@/utils';
+import { getData, removeData, setData } from '@/utils';
 import { useDisclosure, useIsMounted } from '@/hooks';
 import { envConfig } from '@/config';
 
@@ -59,6 +59,20 @@ export function DisclaimerModal() {
 
     close();
   }, [close, isMounted, open]);
+
+  // Ctrl+Shift+D clears the saved acknowledgment and shows the modal again
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.shiftKey && e.code === 'KeyD') {
+        e.preventDefault();
+        removeData(storageKeys.DISCLAIMER_SHOWN);
+        open();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open]);
 
   if (!isMounted) return null;
 

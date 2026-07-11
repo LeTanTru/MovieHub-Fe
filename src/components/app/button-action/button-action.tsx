@@ -34,7 +34,7 @@ export function ButtonAction({
       <Button
         variant='ghost'
         className={cn(
-          'relative flex h-7 min-w-20 cursor-pointer items-center rounded-none px-2 transition-all duration-200 ease-linear hover:bg-transparent',
+          'relative flex h-8 min-w-25 cursor-pointer items-center rounded-none px-2 transition-all duration-200 ease-linear hover:bg-transparent',
           {
             'text-gray-200 hover:opacity-80': !isActive,
             'text-black hover:text-black': isActive

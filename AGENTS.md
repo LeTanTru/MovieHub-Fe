@@ -46,7 +46,7 @@
 ## Repo-Specific Conventions
 
 - Imports: use `@/*` alias for `src/*`.
-- Barrel exports: keep `index.ts` or `index.tsx` exports in `api-requests/`, `queries/`, `hooks/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, and `schemaValidations/`.
+- Barrel exports: keep `index.ts` or `index.tsx` exports in `api-requests/`, `queries/`, `hooks/`, `contexts/`, `store/`, `constants/`, `utils/`, `types/`, `routes/`, and `schemaValidations/`. Within a barrel directory, import siblings by relative path (`./use-auth`) rather than through the barrel, to avoid circular imports.
 - Naming:
   - API: `<domain>.api-request.ts`
   - Query: `<domain>.query.ts`
@@ -54,7 +54,7 @@
   - Schema: `<domain>.schema.ts`
   - Store: `<domain>.store.ts`
   - Utils: `<name>.util.ts`
-  - Private route dirs: `_components/`, `_hooks/`, `_context/`
+  - Private route dirs: `_components/` (hooks and contexts are shared, in `src/hooks/` and `src/contexts/`)
   - Types: `*ResType`, `*SearchType`, `*BodyType`, `*StoreType`
 - Dynamic routes: most movie-like links use `slug.id`; extract IDs via `getIdFromSlug()` or `useSlugId()`. Plain id routes such as `/person/[id]` keep the raw `id`.
 - UI: shadcn/ui new-york style, Tailwind CSS v4, custom breakpoints `max-990`, `max-860`, `max-768`, `max-640`, `max-520`, `max-480`, `max-420`.

@@ -37,7 +37,8 @@ src/
   assets/              Local icons and images
   components/          Shared UI, app widgets, layout, providers, video player
   constants/           API configs, query keys, storage keys, master data
-  hooks/               Reusable client hooks
+  contexts/            Shared React contexts, including the watch player context
+  hooks/               Reusable client hooks, including the watch player hooks
   lib/                 Shared helpers, including `cn` and MQTT client setup
   logger/              Logging wrapper
   queries/             TanStack Query hooks by domain

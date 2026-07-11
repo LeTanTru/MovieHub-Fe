@@ -125,13 +125,16 @@ imperatively sets `mode = 'showing'` / `'disabled'` on the caption tracks.
 
 ### Brightness & Subtitle Style
 
-`brightness`, `subtitleFontSize`, `subtitleTextColor`, and
-`subtitleBackgroundColor` are numeric enum values (see
-`src/constants/constant.ts` and `src/constants/master-data/subtitle.ts` for the
-`SUBTITLE_*` constants and the `subtitleFontSizes` / `subtitleTextColors` /
-`subtitleBackgroundColors` option lists). `video-player.tsx` resolves these
-enums to concrete CSS values and writes them as custom properties on
-`<MediaPlayer style={...}>`:
+`subtitleFontSize`, `subtitleTextColor`, and `subtitleBackgroundColor` are
+numeric enum values (see `src/constants/constant.ts` and
+`src/constants/master-data/subtitle.ts` for the `SUBTITLE_*` constants and the
+`subtitleFontSizes` / `subtitleTextColors` / `subtitleBackgroundColors` option
+lists). `brightness` is instead a plain percentage bounded by `BRIGHTNESS_MIN`
+(0) and `BRIGHTNESS_MAX` (100) in `src/constants/constant.ts`; `BrightnessSubmenu`
+uses those as its slider `min`/`max` and shows the current value in a `Badge`
+rather than a slider tooltip. `video-player.tsx` resolves the subtitle enums to
+concrete CSS values and writes them, along with brightness, as custom
+properties on `<MediaPlayer style={...}>`:
 
 | Enum prop                 | CSS custom property       | Consumed by                                                               |
 | ------------------------- | ------------------------- | ------------------------------------------------------------------------- |

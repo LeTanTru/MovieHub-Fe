@@ -37,7 +37,7 @@ export function CommentHeader({
           <Badge
             variant='outline'
             className={cn(
-              'max-640:text-xs max-520:text-[10px] max-640:px-1 border text-sm font-medium uppercase',
+              'max-640:text-xs max-640:px-1 border text-sm font-medium uppercase',
               kind.style
             )}
           >
@@ -81,7 +81,7 @@ export function CommentHeader({
       {comment.createdDate !== comment.modifiedDate && (
         <span
           title={convertUTCToLocal(comment.modifiedDate)}
-          className='max-640:text-[13px] max-520:text-xs whitespace-nowrap text-gray-400'
+          className='max-640:text-[13px] whitespace-nowrap text-gray-400'
         >
           (đã cập nhật)
         </span>

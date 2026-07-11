@@ -20,10 +20,10 @@ export function MovieItemBody({
   return (
     <Link
       onClick={handleClick}
-      className='max-480:flex-col max-480:gap-1 flex flex-1 items-center justify-between gap-2 pl-1'
+      className='flex flex-1 items-center justify-between gap-2 pl-1'
       href={`${route.watch.path}/${body.movie.slug}.${body.movie.id}`}
     >
-      <div className='max-480:hidden relative aspect-video w-20 shrink-0'>
+      <div className='relative aspect-video w-20 shrink-0'>
         <ImageField
           src={renderImageUrl(body?.thumbnailUrl)}
           alt={body?.title}
@@ -34,7 +34,7 @@ export function MovieItemBody({
       </div>
       <div className='flex flex-1 flex-col justify-between gap-2'>
         <h3
-          className='max-640:text-[13px] max-520:text-xs line-clamp-2'
+          className='max-640:text-[13px] line-clamp-2'
           title={notification.title}
         >
           <span>{notification.title}: Phim </span>
@@ -43,12 +43,12 @@ export function MovieItemBody({
             {body.movie.title} - {body.movie.originalTitle}
           </span>
 
-          <p className='max-640:text-[13px] max-520:text-xs mt-1'>
+          <p className='max-640:text-[13px] mt-1'>
             Ngày chiếu: {convertUTCToLocal(body.releaseDate)}
           </p>
         </h3>
         <div
-          className='text-muted-foreground max-640:text-[11px] shrink-0 text-xs'
+          className='text-muted-foreground max-640:text-xs shrink-0'
           title={convertUTCToLocal(notification.createdDate)}
         >
           {timeAgo(notification.createdDate)}

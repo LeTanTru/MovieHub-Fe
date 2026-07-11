@@ -47,7 +47,7 @@ export function ChatBody() {
   if (messages.length > 0) {
     return (
       <div className='relative min-h-0 flex-1 overflow-hidden'>
-        <ScrollArea className='h-full px-4 py-4'>
+        <ScrollArea className='max-800:max-h-[40dvh] h-full px-4 py-4'>
           <div className='flex flex-col gap-4'>
             {messages.map((msg) => {
               const isOwn = msg.user.id === profile?.id;

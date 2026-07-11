@@ -160,7 +160,6 @@ export function MovieTabSeries({ movie }: MovieTabSeriesProps) {
               toggle={toggle}
               onToggle={handleToggle}
               text='Rút gọn'
-              className='max-640:hidden'
             />
           </>
         )}

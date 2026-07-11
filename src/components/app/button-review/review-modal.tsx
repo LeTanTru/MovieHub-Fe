@@ -145,7 +145,7 @@ export function ReviewModal({ opened, movie, onClose }: ReviewModalProps) {
                           unoptimized
                         />
                       </div>
-                      <span className='max-640:text-[13px] max-520:text-xs'>
+                      <span className='max-640:text-[13px]'>
                         {rating.label}
                       </span>
                     </button>

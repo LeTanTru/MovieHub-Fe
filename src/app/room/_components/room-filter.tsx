@@ -51,9 +51,7 @@ export function RoomFilter({ roomState, setRoomState }: RoomFilterProps) {
               scale: 0.8
             }}
             transition={{ duration: 0.1, ease: 'linear' }}
-            className={cn(
-              'max-640:min-w-36 absolute top-10 -left-5 z-10 min-w-40 origin-[20px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg'
-            )}
+            className='max-640:min-w-38 absolute top-8 -left-5 z-10 min-w-40 origin-[20px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg'
           >
             {roomStates.map((state) => {
               const isActive = roomState === Number(state.value);
@@ -63,7 +61,7 @@ export function RoomFilter({ roomState, setRoomState }: RoomFilterProps) {
                   key={state.value}
                   type='button'
                   className={cn(
-                    'max-640:text-[13px] max-520:text-xs w-full cursor-pointer px-4 py-2 text-left text-black transition-all duration-200 ease-linear hover:text-black/80',
+                    'max-640:text-[13px] w-full cursor-pointer px-4 py-2 text-left text-black transition-all duration-200 ease-linear hover:text-black/80',
                     {
                       'bg-golden-glow': isActive,
                       'hover:bg-gray-300': !isActive

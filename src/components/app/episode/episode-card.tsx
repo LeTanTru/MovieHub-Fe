@@ -85,7 +85,7 @@ export function EpisodeCard({
         </m.div>
         <div
           className={cn(
-            'max-640:gap-1 max-640:text-[13px] max-520:text-xs group-hover:text-golden-glow flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear',
+            'max-640:gap-1 max-640:text-[13px] group-hover:text-golden-glow flex items-center gap-2.5 text-sm font-medium transition-all duration-200 ease-linear',
             {
               'group-hover:text-black': isPlaying && toggle
             }

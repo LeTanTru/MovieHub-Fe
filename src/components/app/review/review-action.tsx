@@ -86,7 +86,7 @@ export function ReviewAction({
         {showMore && (
           <button
             type='button'
-            className='hover:text-golden-glow max-640:text-[13px] max-520:text-xs flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
+            className='hover:text-golden-glow max-640:text-[13px] flex cursor-pointer items-center gap-1 text-gray-400 transition-all duration-200 ease-linear select-none'
             onClick={onToggleDropdown}
           >
             <FaEllipsis /> <span>Thêm</span>
@@ -109,12 +109,12 @@ export function ReviewAction({
                 scale: 0.8
               }}
               transition={{ duration: 0.1, ease: 'linear' }}
-              className='max-640:min-w-36 absolute top-5 -left-5 z-10 min-w-40 origin-[10px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg'
+              className='max-640:min-w-36 absolute top-6 -left-5 z-10 min-w-40 origin-[10px_-50%] overflow-hidden rounded-lg bg-gray-100 py-1 shadow-lg'
             >
               {isHidden && (
                 <button
                   type='button'
-                  className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                  className='max-640:text-[13px] flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
                   onClick={onToggleBlurredContent}
                 >
                   {isVisible ? (
@@ -136,7 +136,7 @@ export function ReviewAction({
                   onConfirm={onDelete}
                   trigger={
                     <button
-                      className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-rose-500'
+                      className='max-640:text-[13px] flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-rose-500'
                       type='button'
                     >
                       <FaTrash />
@@ -148,7 +148,7 @@ export function ReviewAction({
               {canReport && (
                 <button
                   type='button'
-                  className='max-640:text-[13px] max-520:text-xs flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
+                  className='max-640:text-[13px] flex w-full cursor-pointer items-center gap-2 px-4 py-2 text-black transition-all duration-200 ease-linear hover:bg-gray-300 hover:text-black/80'
                   onClick={onOpenReportModal}
                 >
                   <Flag className='size-4 fill-black' />

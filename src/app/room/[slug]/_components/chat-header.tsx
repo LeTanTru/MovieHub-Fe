@@ -40,7 +40,7 @@ export function ChatHeader() {
   };
 
   return (
-    <div className='flex shrink-0 items-center gap-4 p-4'>
+    <div className='max-1200:p-0 flex shrink-0 items-center gap-4 p-4'>
       {/* Menu button */}
       <div className='max-1200:hidden relative cursor-pointer'>
         <PortalDropdown
@@ -89,7 +89,7 @@ export function ChatHeader() {
 
 ChatHeader.Skeleton = function ChatHeaderSkeleton() {
   return (
-    <div className='flex shrink-0 items-center gap-4 p-4'>
+    <div className='max-1200:p-0 flex shrink-0 items-center gap-4 p-4'>
       <div className='max-1200:hidden inline-flex items-center gap-2'>
         <Skeleton className='bg-transparent-black-8 skeleton size-4 rounded!' />
         <Skeleton className='bg-transparent-black-8 skeleton h-4 w-16 rounded!' />

@@ -42,11 +42,11 @@ export function VoteCommentBody({
   return (
     <Link
       onClick={handleClick}
-      className='max-480:flex-col max-480:gap-1 flex flex-1 items-center justify-between gap-2 pl-1'
+      className='flex flex-1 items-center justify-between gap-2 pl-1'
       href={`${route.movie.path}/${generateSlug(body.movieTitle)}.${body.movieId}`}
     >
       <div className='flex flex-1 items-center gap-2'>
-        <div className='max-640:w-8 max-520:w-7 flex w-10 shrink-0 justify-center'>
+        <div className='flex w-10 shrink-0 justify-center'>
           <AvatarField
             size={40}
             src={renderImageUrl(body?.author?.avatarPath)}
@@ -56,7 +56,7 @@ export function VoteCommentBody({
         </div>
         <div className='flex flex-1 flex-col justify-between gap-2'>
           <h3
-            className='max-640:text-[13px] max-520:text-xs line-clamp-2'
+            className='max-640:text-[13px] line-clamp-2'
             title={notification.title}
           >
             {notification.title}&nbsp;trong phim&nbsp;
@@ -65,7 +65,7 @@ export function VoteCommentBody({
             </span>
           </h3>
           <div
-            className='text-muted-foreground max-640:text-[11px] shrink-0 text-xs'
+            className='text-muted-foreground max-640:text-xs shrink-0'
             title={convertUTCToLocal(notification.createdDate)}
           >
             {timeAgo(notification.createdDate)}

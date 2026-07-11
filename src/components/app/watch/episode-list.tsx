@@ -33,7 +33,7 @@ export function EpisodeList({
     currentSeason || seasons.length
   );
   const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useClickOutside<HTMLDivElement>(() =>
+  const seasonSelectRef = useClickOutside<HTMLDivElement>(() =>
     setShowDropdown(false)
   );
 
@@ -71,7 +71,7 @@ export function EpisodeList({
             </span>
           </Button>
         </div>
-        <div className='relative px-4 py-2'>
+        <div ref={seasonSelectRef} className='relative px-4 py-2'>
           <button
             type='button'
             className='flex max-w-30 cursor-pointer items-center justify-start gap-2.5 rounded border border-solid border-white p-2 text-white transition-all duration-200 ease-linear select-none hover:opacity-80'
@@ -84,7 +84,6 @@ export function EpisodeList({
           <AnimatePresence>
             {showDropdown && (
               <m.div
-                ref={dropdownRef}
                 initial={{
                   opacity: 0.5,
                   scale: 0.8,

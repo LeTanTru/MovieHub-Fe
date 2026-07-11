@@ -1,5 +1,5 @@
 import { MOVIE_TYPE_SERIES, MOVIE_TYPE_SINGLE } from '@/constants';
-import { useQueryParams } from '@/hooks';
+import { useQueryParams } from './use-query-params';
 import type { MovieItemResType, MovieResType } from '@/types';
 import { useMemo } from 'react';
 

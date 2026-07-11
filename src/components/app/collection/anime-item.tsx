@@ -113,6 +113,11 @@ export function AnimeItem({
               </Link>
             </h3>
             <div className='hl-tags'>
+              {movie.imdbRating && (
+                <div className='tag-imdb'>
+                  <span>{movie.imdbRating}</span>
+                </div>
+              )}
               <div className='tag-model'>
                 <span className='last'>{ageRating?.label}</span>
               </div>

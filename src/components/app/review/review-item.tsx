@@ -171,12 +171,19 @@ export function ReviewItem({
           }
         )}
       >
-        <AvatarField
-          src={renderImageUrl(author?.avatarPath)}
-          size={45}
-          alt={author?.fullName}
-          breakpoints={[{ breakpoint: 640, size: 50 }]}
-        />
+        <div className='flex flex-col items-center gap-y-0.5'>
+          <AvatarField
+            src={renderImageUrl(author?.avatarPath)}
+            size={45}
+            alt={author?.fullName}
+            breakpoints={[{ breakpoint: 640, size: 50 }]}
+          />
+          {isAuthor && (
+            <span className='max-640:block text-golden-glow max-640:text-[13px] hidden font-semibold'>
+              Bạn
+            </span>
+          )}
+        </div>
         <div className='grow'>
           <ReviewHeader
             review={review}

@@ -199,6 +199,8 @@
                   display: none;
                 }
                 & img {
+                  width: auto;
+                  height: auto;
                   max-width: 400px;
                   max-height: 130px;
                 }
@@ -259,7 +261,6 @@
                   font-weight: 500;
                   cursor: default;
                   line-height: 24px;
-                  font-size: 12px;
                   padding: 0 0.4rem;
                   flex-shrink: 0;
                   display: inline-flex;
@@ -279,7 +280,6 @@
                 & .tag-model {
                   border-radius: 4px;
                   align-items: center;
-                  font-size: 12px;
                   background-color: #fff;
                   color: #000;
                   font-weight: 500;
@@ -299,7 +299,6 @@
                   display: inline-flex;
                   border-radius: 4px;
                   align-items: center;
-                  font-size: 12px;
                 }
 
                 & .tag-topic {
@@ -310,7 +309,6 @@
                   display: inline-flex;
                   border-radius: 4px;
                   align-items: center;
-                  font-size: 12px;
                   transition: color 0.2s linear;
 
                   &:hover {

@@ -56,7 +56,7 @@ export function MovieList({ personId }: MovieListProps) {
                   action={action.key}
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
-                  className='max-640:text-[13px] max-480:text-xs max-640:py-1 max-640:px-1.5'
+                  className='max-640:text-[13px] max-640:py-1 max-640:px-1.5'
                 />
               ))}
             </div>

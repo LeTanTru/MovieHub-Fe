@@ -88,7 +88,7 @@ QueryProvider
 - Use `cn()` from `@/lib` for dynamic class composition.
 - Use `notify.success()` and `notify.error()` from `@/utils` for API mutations.
 - Use `logger` from `@/logger`; do not use `console.log`.
-- Keep route-local components under `_components/`, hooks under `_hooks/`, and context under `_context/`.
+- Keep route-local components under `_components/`; hooks and contexts are shared and live in `src/hooks/` and `src/contexts/`.
 - Use `useShallow` for Zustand selectors that return objects.
 - Dynamic movie-like routes use `slug.id`; extract IDs with `getIdFromSlug()` or `useSlugId()`.
 - Plain id routes such as `/person/[id]` keep the raw `id`.
@@ -145,6 +145,8 @@ Do not read `.env`, `.env.local`, `supersecrets.txt`, or `credentials.json`.
 - `src/components/ui/`: shadcn/ui primitives.
 - `src/components/video-player/`: reusable Vidstack player.
 - `src/constants/`: API config, query keys, storage keys, master data.
+- `src/contexts/`: shared React contexts, including the watch player context.
+- `src/hooks/`: reusable client hooks, including the watch player hooks.
 - `src/queries/`: TanStack Query hooks.
 - `src/schemaValidations/`: Zod schemas.
 - `src/store/`: Zustand stores.
