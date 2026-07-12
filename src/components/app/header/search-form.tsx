@@ -75,6 +75,10 @@ export function SearchForm({ className, formClassName }: SearchFormProps) {
     [searchParams.keyword]
   );
 
+  useEffect(() => {
+    setKeyword(searchParams.keyword ?? '');
+  }, [searchParams.keyword, setKeyword]);
+
   const latestSearchSync = useRef({
     isSearchPage,
     setKeyword,
